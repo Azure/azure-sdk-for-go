@@ -115,17 +115,18 @@ func (client RecommendationMetadataClient) GetResponder(resp *http.Response) (re
 }
 
 // List sends the list request.
-func (client RecommendationMetadataClient) List(ctx context.Context) (result MetadataEntityListResult, err error) {
+func (client RecommendationMetadataClient) List(ctx context.Context) (result MetadataEntityListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendationMetadataClient.List")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.melr.Response.Response != nil {
+				sc = result.melr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.RecommendationMetadataClient", "List", nil, "Failure preparing request")
@@ -134,12 +135,12 @@ func (client RecommendationMetadataClient) List(ctx context.Context) (result Met
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.melr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "advisor.RecommendationMetadataClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.melr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.RecommendationMetadataClient", "List", resp, "Failure responding to request")
 	}
@@ -179,5 +180,42 @@ func (client RecommendationMetadataClient) ListResponder(resp *http.Response) (r
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNextResults retrieves the next set of results, if any.
+func (client RecommendationMetadataClient) listNextResults(ctx context.Context, lastResults MetadataEntityListResult) (result MetadataEntityListResult, err error) {
+	req, err := lastResults.metadataEntityListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "advisor.RecommendationMetadataClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "advisor.RecommendationMetadataClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "advisor.RecommendationMetadataClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client RecommendationMetadataClient) ListComplete(ctx context.Context) (result MetadataEntityListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendationMetadataClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.List(ctx)
 	return
 }

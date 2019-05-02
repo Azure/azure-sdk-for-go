@@ -64,6 +64,8 @@ type ConfigurationListResultPage = original.ConfigurationListResultPage
 type ConfigurationsClient = original.ConfigurationsClient
 type MetadataEntity = original.MetadataEntity
 type MetadataEntityListResult = original.MetadataEntityListResult
+type MetadataEntityListResultIterator = original.MetadataEntityListResultIterator
+type MetadataEntityListResultPage = original.MetadataEntityListResultPage
 type MetadataEntityProperties = original.MetadataEntityProperties
 type MetadataSupportedValueDetail = original.MetadataSupportedValueDetail
 type OperationDisplayInfo = original.OperationDisplayInfo
@@ -103,6 +105,12 @@ func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
 }
 func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
 	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMetadataEntityListResultIterator(page MetadataEntityListResultPage) MetadataEntityListResultIterator {
+	return original.NewMetadataEntityListResultIterator(page)
+}
+func NewMetadataEntityListResultPage(getNextPage func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)) MetadataEntityListResultPage {
+	return original.NewMetadataEntityListResultPage(getNextPage)
 }
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)

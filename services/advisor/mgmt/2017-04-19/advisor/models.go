@@ -407,6 +407,145 @@ type MetadataEntityListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of metadata entities.
 	Value *[]MetadataEntity `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of metadata.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MetadataEntityListResultIterator provides access to a complete listing of MetadataEntity values.
+type MetadataEntityListResultIterator struct {
+	i    int
+	page MetadataEntityListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *MetadataEntityListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MetadataEntityListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *MetadataEntityListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter MetadataEntityListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter MetadataEntityListResultIterator) Response() MetadataEntityListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter MetadataEntityListResultIterator) Value() MetadataEntity {
+	if !iter.page.NotDone() {
+		return MetadataEntity{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the MetadataEntityListResultIterator type.
+func NewMetadataEntityListResultIterator(page MetadataEntityListResultPage) MetadataEntityListResultIterator {
+	return MetadataEntityListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (melr MetadataEntityListResult) IsEmpty() bool {
+	return melr.Value == nil || len(*melr.Value) == 0
+}
+
+// metadataEntityListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (melr MetadataEntityListResult) metadataEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if melr.NextLink == nil || len(to.String(melr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(melr.NextLink)))
+}
+
+// MetadataEntityListResultPage contains a page of MetadataEntity values.
+type MetadataEntityListResultPage struct {
+	fn   func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)
+	melr MetadataEntityListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *MetadataEntityListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MetadataEntityListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.melr)
+	if err != nil {
+		return err
+	}
+	page.melr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *MetadataEntityListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page MetadataEntityListResultPage) NotDone() bool {
+	return !page.melr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page MetadataEntityListResultPage) Response() MetadataEntityListResult {
+	return page.melr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page MetadataEntityListResultPage) Values() []MetadataEntity {
+	if page.melr.IsEmpty() {
+		return nil
+	}
+	return *page.melr.Value
+}
+
+// Creates a new instance of the MetadataEntityListResultPage type.
+func NewMetadataEntityListResultPage(getNextPage func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)) MetadataEntityListResultPage {
+	return MetadataEntityListResultPage{fn: getNextPage}
 }
 
 // MetadataEntityProperties the metadata entity properties

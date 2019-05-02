@@ -35,6 +35,7 @@ type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoli
 type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PlaybookConfigurationsClientAPI = original.PlaybookConfigurationsClientAPI
 type PricingsClientAPI = original.PricingsClientAPI
 type RegulatoryComplianceAssessmentsClientAPI = original.RegulatoryComplianceAssessmentsClientAPI
 type RegulatoryComplianceControlsClientAPI = original.RegulatoryComplianceControlsClientAPI

@@ -23,6 +23,18 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// PlaybookConfigurationsClientAPI contains the set of methods on the PlaybookConfigurationsClient type.
+type PlaybookConfigurationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfiguration, err error)
+	Delete(ctx context.Context, resourceGroupName string, playbookConfigurationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, playbookConfigurationName string) (result security.PlaybookConfiguration, err error)
+	List(ctx context.Context) (result security.PlaybookConfigurationList, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.PlaybookConfigurationList, err error)
+	Validate(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfigurationValidationStatus, err error)
+}
+
+var _ PlaybookConfigurationsClientAPI = (*security.PlaybookConfigurationsClient)(nil)
+
 // RegulatoryComplianceStandardsClientAPI contains the set of methods on the RegulatoryComplianceStandardsClient type.
 type RegulatoryComplianceStandardsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string) (result security.RegulatoryComplianceStandard, err error)

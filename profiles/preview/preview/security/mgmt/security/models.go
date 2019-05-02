@@ -98,11 +98,40 @@ const (
 	KindExternalSecuritySolution KindEnum = original.KindExternalSecuritySolution
 )
 
+type Operator = original.Operator
+
+const (
+	Contains             Operator = original.Contains
+	EndsWith             Operator = original.EndsWith
+	Equals               Operator = original.Equals
+	EqualsIgnoreCase     Operator = original.EqualsIgnoreCase
+	GreaterThan          Operator = original.GreaterThan
+	GreaterThanOrEqualTo Operator = original.GreaterThanOrEqualTo
+	LesserThan           Operator = original.LesserThan
+	LesserThanOrEqualTo  Operator = original.LesserThanOrEqualTo
+	NotEquals            Operator = original.NotEquals
+	NotEqualsIgnoreCase  Operator = original.NotEqualsIgnoreCase
+	StartsWith           Operator = original.StartsWith
+)
+
 type PricingTier = original.PricingTier
 
 const (
 	Free     PricingTier = original.Free
 	Standard PricingTier = original.Standard
+)
+
+type PropertyType = original.PropertyType
+
+const (
+	SystemBoolean PropertyType = original.SystemBoolean
+	SystemByte    PropertyType = original.SystemByte
+	SystemChar    PropertyType = original.SystemChar
+	SystemDouble  PropertyType = original.SystemDouble
+	SystemInt16   PropertyType = original.SystemInt16
+	SystemInt32   PropertyType = original.SystemInt32
+	SystemSingle  PropertyType = original.SystemSingle
+	SystemString  PropertyType = original.SystemString
 )
 
 type Protocol = original.Protocol
@@ -246,6 +275,7 @@ type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutio
 type DiscoveredSecuritySolutionListPage = original.DiscoveredSecuritySolutionListPage
 type DiscoveredSecuritySolutionProperties = original.DiscoveredSecuritySolutionProperties
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
+type ETag = original.ETag
 type EffectiveNetworkSecurityGroups = original.EffectiveNetworkSecurityGroups
 type ExternalSecuritySolution = original.ExternalSecuritySolution
 type ExternalSecuritySolutionKind1 = original.ExternalSecuritySolutionKind1
@@ -287,6 +317,17 @@ type OperationList = original.OperationList
 type OperationListIterator = original.OperationListIterator
 type OperationListPage = original.OperationListPage
 type OperationsClient = original.OperationsClient
+type PlaybookConfiguration = original.PlaybookConfiguration
+type PlaybookConfigurationAction = original.PlaybookConfigurationAction
+type PlaybookConfigurationList = original.PlaybookConfigurationList
+type PlaybookConfigurationMetadata = original.PlaybookConfigurationMetadata
+type PlaybookConfigurationProperties = original.PlaybookConfigurationProperties
+type PlaybookConfigurationRuleSet = original.PlaybookConfigurationRuleSet
+type PlaybookConfigurationScope = original.PlaybookConfigurationScope
+type PlaybookConfigurationSource = original.PlaybookConfigurationSource
+type PlaybookConfigurationTriggeringRule = original.PlaybookConfigurationTriggeringRule
+type PlaybookConfigurationValidationStatus = original.PlaybookConfigurationValidationStatus
+type PlaybookConfigurationsClient = original.PlaybookConfigurationsClient
 type Pricing = original.Pricing
 type PricingList = original.PricingList
 type PricingProperties = original.PricingProperties
@@ -318,6 +359,7 @@ type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
 type SettingsListPage = original.SettingsListPage
+type Tags = original.Tags
 type Task = original.Task
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
@@ -336,6 +378,7 @@ type TopologyResourceProperties = original.TopologyResourceProperties
 type TopologySingleResource = original.TopologySingleResource
 type TopologySingleResourceChild = original.TopologySingleResourceChild
 type TopologySingleResourceParent = original.TopologySingleResourceParent
+type TrackedResource = original.TrackedResource
 type WorkspaceSetting = original.WorkspaceSetting
 type WorkspaceSettingList = original.WorkspaceSettingList
 type WorkspaceSettingListIterator = original.WorkspaceSettingListIterator
@@ -508,6 +551,12 @@ func NewOperationsClient(subscriptionID string, ascLocation string) OperationsCl
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewPlaybookConfigurationsClient(subscriptionID string, ascLocation string) PlaybookConfigurationsClient {
+	return original.NewPlaybookConfigurationsClient(subscriptionID, ascLocation)
+}
+func NewPlaybookConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) PlaybookConfigurationsClient {
+	return original.NewPlaybookConfigurationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewPricingsClient(subscriptionID string, ascLocation string) PricingsClient {
 	return original.NewPricingsClient(subscriptionID, ascLocation)
 }
@@ -628,8 +677,14 @@ func PossibleFamilyValues() []Family {
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
 }
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
+}
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()
+}
+func PossiblePropertyTypeValues() []PropertyType {
+	return original.PossiblePropertyTypeValues()
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()

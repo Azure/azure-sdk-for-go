@@ -778,59 +778,59 @@ type CustomDomainPropertiesParameters struct {
 	HostName *string `json:"hostName,omitempty"`
 }
 
-// CustomDomainsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type CustomDomainsCreateFuture struct {
+// CustomDomainsGroupCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CustomDomainsGroupCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *CustomDomainsCreateFuture) Result(client CustomDomainsClient) (cd CustomDomain, err error) {
+func (future *CustomDomainsGroupCreateFuture) Result(client CustomDomainsGroupClient) (cd CustomDomain, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsGroupCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsGroupCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
 		cd, err = client.CreateResponder(cd.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsCreateFuture", "Result", cd.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsGroupCreateFuture", "Result", cd.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// CustomDomainsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type CustomDomainsDeleteFuture struct {
+// CustomDomainsGroupDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CustomDomainsGroupDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *CustomDomainsDeleteFuture) Result(client CustomDomainsClient) (cd CustomDomain, err error) {
+func (future *CustomDomainsGroupDeleteFuture) Result(client CustomDomainsGroupClient) (cd CustomDomain, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsGroupDeleteFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
 		cd, err = client.DeleteResponder(cd.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDeleteFuture", "Result", cd.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsGroupDeleteFuture", "Result", cd.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1766,186 +1766,186 @@ type EndpointPropertiesUpdateParametersDeliveryPolicy struct {
 	Rules *[]DeliveryRule `json:"rules,omitempty"`
 }
 
-// EndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// EndpointsGroupCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type EndpointsCreateFuture struct {
+type EndpointsGroupCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *EndpointsCreateFuture) Result(client EndpointsClient) (e Endpoint, err error) {
+func (future *EndpointsGroupCreateFuture) Result(client EndpointsGroupClient) (e Endpoint, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsGroupCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
 		e, err = client.CreateResponder(e.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "cdn.EndpointsCreateFuture", "Result", e.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupCreateFuture", "Result", e.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// EndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// EndpointsGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type EndpointsDeleteFuture struct {
+type EndpointsGroupDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *EndpointsDeleteFuture) Result(client EndpointsClient) (ar autorest.Response, err error) {
+func (future *EndpointsGroupDeleteFuture) Result(client EndpointsGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsGroupDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// EndpointsLoadContentFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type EndpointsLoadContentFuture struct {
+// EndpointsGroupLoadContentFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type EndpointsGroupLoadContentFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *EndpointsLoadContentFuture) Result(client EndpointsClient) (ar autorest.Response, err error) {
+func (future *EndpointsGroupLoadContentFuture) Result(client EndpointsGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsLoadContentFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupLoadContentFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsLoadContentFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsGroupLoadContentFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// EndpointsPurgeContentFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type EndpointsPurgeContentFuture struct {
+// EndpointsGroupPurgeContentFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type EndpointsGroupPurgeContentFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *EndpointsPurgeContentFuture) Result(client EndpointsClient) (ar autorest.Response, err error) {
+func (future *EndpointsGroupPurgeContentFuture) Result(client EndpointsGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsPurgeContentFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupPurgeContentFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsPurgeContentFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsGroupPurgeContentFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// EndpointsStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// EndpointsGroupStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type EndpointsStartFuture struct {
+type EndpointsGroupStartFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *EndpointsStartFuture) Result(client EndpointsClient) (e Endpoint, err error) {
+func (future *EndpointsGroupStartFuture) Result(client EndpointsGroupClient) (e Endpoint, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsStartFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupStartFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsStartFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsGroupStartFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
 		e, err = client.StartResponder(e.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "cdn.EndpointsStartFuture", "Result", e.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupStartFuture", "Result", e.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// EndpointsStopFuture an abstraction for monitoring and retrieving the results of a long-running
+// EndpointsGroupStopFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type EndpointsStopFuture struct {
+type EndpointsGroupStopFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *EndpointsStopFuture) Result(client EndpointsClient) (e Endpoint, err error) {
+func (future *EndpointsGroupStopFuture) Result(client EndpointsGroupClient) (e Endpoint, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsStopFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupStopFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsStopFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsGroupStopFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
 		e, err = client.StopResponder(e.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "cdn.EndpointsStopFuture", "Result", e.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupStopFuture", "Result", e.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// EndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// EndpointsGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type EndpointsUpdateFuture struct {
+type EndpointsGroupUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *EndpointsUpdateFuture) Result(client EndpointsClient) (e Endpoint, err error) {
+func (future *EndpointsGroupUpdateFuture) Result(client EndpointsGroupClient) (e Endpoint, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsGroupUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
 		e, err = client.UpdateResponder(e.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "cdn.EndpointsUpdateFuture", "Result", e.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupUpdateFuture", "Result", e.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2543,30 +2543,30 @@ type OriginPropertiesParameters struct {
 	HTTPSPort *int32 `json:"httpsPort,omitempty"`
 }
 
-// OriginsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// OriginsGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type OriginsUpdateFuture struct {
+type OriginsGroupUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *OriginsUpdateFuture) Result(client OriginsClient) (o Origin, err error) {
+func (future *OriginsGroupUpdateFuture) Result(client OriginsGroupClient) (o Origin, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.OriginsUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.OriginsGroupUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
 		o, err = client.UpdateResponder(o.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "cdn.OriginsUpdateFuture", "Result", o.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "cdn.OriginsGroupUpdateFuture", "Result", o.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2880,82 +2880,82 @@ type ProfileProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ProfilesGroupCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ProfilesCreateFuture struct {
+type ProfilesGroupCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ProfilesCreateFuture) Result(client ProfilesClient) (p Profile, err error) {
+func (future *ProfilesGroupCreateFuture) Result(client ProfilesGroupClient) (p Profile, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesGroupCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
 		p, err = client.CreateResponder(p.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "cdn.ProfilesCreateFuture", "Result", p.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupCreateFuture", "Result", p.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// ProfilesGroupDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ProfilesDeleteFuture struct {
+type ProfilesGroupDeleteFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ProfilesDeleteFuture) Result(client ProfilesClient) (ar autorest.Response, err error) {
+func (future *ProfilesGroupDeleteFuture) Result(client ProfilesGroupClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesGroupDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ProfilesGroupUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ProfilesUpdateFuture struct {
+type ProfilesGroupUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ProfilesUpdateFuture) Result(client ProfilesClient) (p Profile, err error) {
+func (future *ProfilesGroupUpdateFuture) Result(client ProfilesGroupClient) (p Profile, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesGroupUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
 		p, err = client.UpdateResponder(p.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "cdn.ProfilesUpdateFuture", "Result", p.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupUpdateFuture", "Result", p.Response.Response, "Failure responding to request")
 		}
 	}
 	return

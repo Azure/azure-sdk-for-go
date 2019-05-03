@@ -25,26 +25,26 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must
-// make sure that requests made to these resources are secure.
-type OperationsClient struct {
+// OperationsGroupClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You
+// must make sure that requests made to these resources are secure.
+type OperationsGroupClient struct {
 	BaseClient
 }
 
-// NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewOperationsGroupClient creates an instance of the OperationsGroupClient client.
+func NewOperationsGroupClient(subscriptionID string) OperationsGroupClient {
+	return NewOperationsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewOperationsGroupClientWithBaseURI creates an instance of the OperationsGroupClient client.
+func NewOperationsGroupClientWithBaseURI(baseURI string, subscriptionID string) OperationsGroupClient {
+	return OperationsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all of the available CDN REST API operations.
-func (client OperationsClient) List(ctx context.Context) (result OperationsListResultPage, err error) {
+func (client OperationsGroupClient) List(ctx context.Context) (result OperationsListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsGroupClient.List")
 		defer func() {
 			sc := -1
 			if result.olr.Response.Response != nil {
@@ -56,27 +56,27 @@ func (client OperationsClient) List(ctx context.Context) (result OperationsListR
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OperationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.OperationsGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.olr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.OperationsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OperationsGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.olr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OperationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.OperationsGroupClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client OperationsGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2017-10-12"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -92,14 +92,14 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client OperationsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) ListResponder(resp *http.Response) (result OperationsListResult, err error) {
+func (client OperationsGroupClient) ListResponder(resp *http.Response) (result OperationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -111,10 +111,10 @@ func (client OperationsClient) ListResponder(resp *http.Response) (result Operat
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client OperationsClient) listNextResults(ctx context.Context, lastResults OperationsListResult) (result OperationsListResult, err error) {
+func (client OperationsGroupClient) listNextResults(ctx context.Context, lastResults OperationsListResult) (result OperationsListResult, err error) {
 	req, err := lastResults.operationsListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn.OperationsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.OperationsGroupClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -122,19 +122,19 @@ func (client OperationsClient) listNextResults(ctx context.Context, lastResults 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn.OperationsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.OperationsGroupClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OperationsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "cdn.OperationsGroupClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client OperationsClient) ListComplete(ctx context.Context) (result OperationsListResultIterator, err error) {
+func (client OperationsGroupClient) ListComplete(ctx context.Context) (result OperationsListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsGroupClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

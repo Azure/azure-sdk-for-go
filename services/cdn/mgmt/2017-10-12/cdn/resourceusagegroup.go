@@ -25,26 +25,26 @@ import (
 	"net/http"
 )
 
-// ResourceUsageClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must
-// make sure that requests made to these resources are secure.
-type ResourceUsageClient struct {
+// ResourceUsageGroupClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You
+// must make sure that requests made to these resources are secure.
+type ResourceUsageGroupClient struct {
 	BaseClient
 }
 
-// NewResourceUsageClient creates an instance of the ResourceUsageClient client.
-func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
-	return NewResourceUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewResourceUsageGroupClient creates an instance of the ResourceUsageGroupClient client.
+func NewResourceUsageGroupClient(subscriptionID string) ResourceUsageGroupClient {
+	return NewResourceUsageGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewResourceUsageClientWithBaseURI creates an instance of the ResourceUsageClient client.
-func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageClient {
-	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewResourceUsageGroupClientWithBaseURI creates an instance of the ResourceUsageGroupClient client.
+func NewResourceUsageGroupClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageGroupClient {
+	return ResourceUsageGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List check the quota and actual usage of the CDN profiles under the given subscription.
-func (client ResourceUsageClient) List(ctx context.Context) (result ResourceUsageListResultPage, err error) {
+func (client ResourceUsageGroupClient) List(ctx context.Context) (result ResourceUsageListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceUsageClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceUsageGroupClient.List")
 		defer func() {
 			sc := -1
 			if result.rulr.Response.Response != nil {
@@ -56,27 +56,27 @@ func (client ResourceUsageClient) List(ctx context.Context) (result ResourceUsag
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.rulr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.rulr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageGroupClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ResourceUsageClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client ResourceUsageGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -96,14 +96,14 @@ func (client ResourceUsageClient) ListPreparer(ctx context.Context) (*http.Reque
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ResourceUsageClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ResourceUsageGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ResourceUsageClient) ListResponder(resp *http.Response) (result ResourceUsageListResult, err error) {
+func (client ResourceUsageGroupClient) ListResponder(resp *http.Response) (result ResourceUsageListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -115,10 +115,10 @@ func (client ResourceUsageClient) ListResponder(resp *http.Response) (result Res
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ResourceUsageClient) listNextResults(ctx context.Context, lastResults ResourceUsageListResult) (result ResourceUsageListResult, err error) {
+func (client ResourceUsageGroupClient) listNextResults(ctx context.Context, lastResults ResourceUsageListResult) (result ResourceUsageListResult, err error) {
 	req, err := lastResults.resourceUsageListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ResourceUsageGroupClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -126,19 +126,19 @@ func (client ResourceUsageClient) listNextResults(ctx context.Context, lastResul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ResourceUsageGroupClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageGroupClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ResourceUsageClient) ListComplete(ctx context.Context) (result ResourceUsageListResultIterator, err error) {
+func (client ResourceUsageGroupClient) ListComplete(ctx context.Context) (result ResourceUsageListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceUsageClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceUsageGroupClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

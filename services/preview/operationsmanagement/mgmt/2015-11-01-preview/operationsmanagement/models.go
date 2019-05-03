@@ -178,7 +178,7 @@ func (s Solution) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SolutionPatch the properties of a Soluton that can be patched.
+// SolutionPatch the properties of a Solution that can be patched.
 type SolutionPatch struct {
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`

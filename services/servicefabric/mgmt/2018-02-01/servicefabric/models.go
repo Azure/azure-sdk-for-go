@@ -20,13 +20,16 @@ package servicefabric
 import (
 	"context"
 	"encoding/json"
-	"net/http"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
+
+// The package's fully qualified name.
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2018-02-01/servicefabric"
 
 // ClusterState enumerates the values for cluster state.
 type ClusterState string
@@ -447,8 +450,8 @@ func PossibleX509StoreName1Values() []X509StoreName1 {
 	return []X509StoreName1{X509StoreName1AddressBook, X509StoreName1AuthRoot, X509StoreName1CertificateAuthority, X509StoreName1Disallowed, X509StoreName1My, X509StoreName1Root, X509StoreName1TrustedPeople, X509StoreName1TrustedPublisher}
 }
 
-// ApplicationDeltaHealthPolicy defines a delta health policy used to evaluate the health of an application or one
-// of its child entities when upgrading the cluster.
+// ApplicationDeltaHealthPolicy defines a delta health policy used to evaluate the health of an application
+// or one of its child entities when upgrading the cluster.
 type ApplicationDeltaHealthPolicy struct {
 	// DefaultServiceTypeDeltaHealthPolicy - The delta health policy used by default to evaluate the health of a service type when upgrading the cluster.
 	DefaultServiceTypeDeltaHealthPolicy *ServiceTypeDeltaHealthPolicy `json:"defaultServiceTypeDeltaHealthPolicy,omitempty"`
@@ -468,24 +471,13 @@ func (adhp ApplicationDeltaHealthPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of its
-// children entities.
+// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of
+// its children entities.
 type ApplicationHealthPolicy struct {
 	// DefaultServiceTypeHealthPolicy - The health policy used by default to evaluate the health of a service type.
 	DefaultServiceTypeHealthPolicy *ServiceTypeHealthPolicy `json:"defaultServiceTypeHealthPolicy,omitempty"`
 	// ServiceTypeHealthPolicies - The map with service type health policy per service type name. The map is empty by default.
 	ServiceTypeHealthPolicies map[string]*ServiceTypeHealthPolicy `json:"serviceTypeHealthPolicies"`
-	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
-	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
-	// MaxPercentUnhealthyDeployedApplications - The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to 100.
-	// The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before the application is considered in error.
-	// This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the application is currently deployed on in the cluster.
-	// The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
-	MaxPercentUnhealthyDeployedApplications *int32 `json:"MaxPercentUnhealthyDeployedApplications,omitempty"`
-	// DefaultServiceTypeHealthPolicy1 - The health policy used by default to evaluate the health of a service type.
-	DefaultServiceTypeHealthPolicy1 *ServiceTypeHealthPolicy `json:"DefaultServiceTypeHealthPolicy,omitempty"`
-	// ServiceTypeHealthPolicyMap - The map with service type health policy per service type name. The map is empty by default.
-	ServiceTypeHealthPolicyMap map[string]*ServiceTypeHealthPolicy `json:"ServiceTypeHealthPolicyMap"`
 }
 
 // MarshalJSON is the custom marshaler for ApplicationHealthPolicy.
@@ -497,23 +489,11 @@ func (ahp ApplicationHealthPolicy) MarshalJSON() ([]byte, error) {
 	if ahp.ServiceTypeHealthPolicies != nil {
 		objectMap["serviceTypeHealthPolicies"] = ahp.ServiceTypeHealthPolicies
 	}
-	if ahp.ConsiderWarningAsError != nil {
-		objectMap["ConsiderWarningAsError"] = ahp.ConsiderWarningAsError
-	}
-	if ahp.MaxPercentUnhealthyDeployedApplications != nil {
-		objectMap["MaxPercentUnhealthyDeployedApplications"] = ahp.MaxPercentUnhealthyDeployedApplications
-	}
-	if ahp.DefaultServiceTypeHealthPolicy1 != nil {
-		objectMap["DefaultServiceTypeHealthPolicy"] = ahp.DefaultServiceTypeHealthPolicy1
-	}
-	if ahp.ServiceTypeHealthPolicyMap != nil {
-		objectMap["ServiceTypeHealthPolicyMap"] = ahp.ServiceTypeHealthPolicyMap
-	}
 	return json.Marshal(objectMap)
 }
 
-// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This can be
-// used to limit the total consumption of this metric by the services of this application.
+// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This
+// can be used to limit the total consumption of this metric by the services of this application.
 type ApplicationMetricDescription struct {
 	// Name - The name of the metric.
 	Name *string `json:"Name,omitempty"`
@@ -540,11 +520,11 @@ type ApplicationResource struct {
 	autorest.Response `json:"-"`
 	// ApplicationResourceProperties - The application resource properties.
 	*ApplicationResourceProperties `json:"properties,omitempty"`
-	// ID - Azure resource identifier.
+	// ID - READ-ONLY; Azure resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
@@ -555,15 +535,6 @@ func (ar ApplicationResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ar.ApplicationResourceProperties != nil {
 		objectMap["properties"] = ar.ApplicationResourceProperties
-	}
-	if ar.ID != nil {
-		objectMap["id"] = ar.ID
-	}
-	if ar.Name != nil {
-		objectMap["name"] = ar.Name
-	}
-	if ar.Type != nil {
-		objectMap["type"] = ar.Type
 	}
 	if ar.Location != nil {
 		objectMap["location"] = ar.Location
@@ -639,7 +610,7 @@ type ApplicationResourceList struct {
 
 // ApplicationResourceProperties the application resource properties.
 type ApplicationResourceProperties struct {
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// TypeName - The application type name as defined in the application manifest.
 	TypeName *string `json:"typeName,omitempty"`
@@ -662,9 +633,6 @@ type ApplicationResourceProperties struct {
 // MarshalJSON is the custom marshaler for ApplicationResourceProperties.
 func (arp ApplicationResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if arp.ProvisioningState != nil {
-		objectMap["provisioningState"] = arp.ProvisioningState
-	}
 	if arp.TypeName != nil {
 		objectMap["typeName"] = arp.TypeName
 	}
@@ -697,11 +665,11 @@ type ApplicationResourceUpdate struct {
 	autorest.Response `json:"-"`
 	// ApplicationResourceUpdateProperties - The application resource properties for patch operations.
 	*ApplicationResourceUpdateProperties `json:"properties,omitempty"`
-	// ID - Azure resource identifier.
+	// ID - READ-ONLY; Azure resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
@@ -712,15 +680,6 @@ func (aru ApplicationResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if aru.ApplicationResourceUpdateProperties != nil {
 		objectMap["properties"] = aru.ApplicationResourceUpdateProperties
-	}
-	if aru.ID != nil {
-		objectMap["id"] = aru.ID
-	}
-	if aru.Name != nil {
-		objectMap["name"] = aru.Name
-	}
-	if aru.Type != nil {
-		objectMap["type"] = aru.Type
 	}
 	if aru.Location != nil {
 		objectMap["location"] = aru.Location
@@ -833,7 +792,8 @@ func (arup ApplicationResourceUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ApplicationsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ApplicationsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ApplicationsCreateFuture struct {
 	azure.Future
 }
@@ -861,7 +821,8 @@ func (future *ApplicationsCreateFuture) Result(client ApplicationsClient) (ar Ap
 	return
 }
 
-// ApplicationsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ApplicationsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ApplicationsDeleteFuture struct {
 	azure.Future
 }
@@ -883,7 +844,8 @@ func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar au
 	return
 }
 
-// ApplicationsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ApplicationsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ApplicationsUpdateFuture struct {
 	azure.Future
 }
@@ -916,11 +878,11 @@ type ApplicationTypeResource struct {
 	autorest.Response `json:"-"`
 	// ApplicationTypeResourceProperties - The application type name properties
 	*ApplicationTypeResourceProperties `json:"properties,omitempty"`
-	// ID - Azure resource identifier.
+	// ID - READ-ONLY; Azure resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
@@ -931,15 +893,6 @@ func (atr ApplicationTypeResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if atr.ApplicationTypeResourceProperties != nil {
 		objectMap["properties"] = atr.ApplicationTypeResourceProperties
-	}
-	if atr.ID != nil {
-		objectMap["id"] = atr.ID
-	}
-	if atr.Name != nil {
-		objectMap["name"] = atr.Name
-	}
-	if atr.Type != nil {
-		objectMap["type"] = atr.Type
 	}
 	if atr.Location != nil {
 		objectMap["location"] = atr.Location
@@ -1015,7 +968,7 @@ type ApplicationTypeResourceList struct {
 
 // ApplicationTypeResourceProperties the application type name properties
 type ApplicationTypeResourceProperties struct {
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
@@ -1042,17 +995,17 @@ func (future *ApplicationTypesDeleteFuture) Result(client ApplicationTypesClient
 	return
 }
 
-// ApplicationTypeVersionResource an application type version resource for the specified application type name
-// resource.
+// ApplicationTypeVersionResource an application type version resource for the specified application type
+// name resource.
 type ApplicationTypeVersionResource struct {
 	autorest.Response `json:"-"`
 	// ApplicationTypeVersionResourceProperties - The properties of the application type version resource.
 	*ApplicationTypeVersionResourceProperties `json:"properties,omitempty"`
-	// ID - Azure resource identifier.
+	// ID - READ-ONLY; Azure resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
@@ -1063,15 +1016,6 @@ func (atvr ApplicationTypeVersionResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if atvr.ApplicationTypeVersionResourceProperties != nil {
 		objectMap["properties"] = atvr.ApplicationTypeVersionResourceProperties
-	}
-	if atvr.ID != nil {
-		objectMap["id"] = atvr.ID
-	}
-	if atvr.Name != nil {
-		objectMap["name"] = atvr.Name
-	}
-	if atvr.Type != nil {
-		objectMap["type"] = atvr.Type
 	}
 	if atvr.Location != nil {
 		objectMap["location"] = atvr.Location
@@ -1139,8 +1083,8 @@ func (atvr *ApplicationTypeVersionResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ApplicationTypeVersionResourceList the list of application type version resources for the specified application
-// type name resource.
+// ApplicationTypeVersionResourceList the list of application type version resources for the specified
+// application type name resource.
 type ApplicationTypeVersionResourceList struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationTypeVersionResource `json:"value,omitempty"`
@@ -1148,31 +1092,25 @@ type ApplicationTypeVersionResourceList struct {
 
 // ApplicationTypeVersionResourceProperties the properties of the application type version resource.
 type ApplicationTypeVersionResourceProperties struct {
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AppPackageURL - The URL to the application package
 	AppPackageURL *string `json:"appPackageUrl,omitempty"`
-	// DefaultParameterList - List of application type parameters that can be overridden when creating or updating the application.
+	// DefaultParameterList - READ-ONLY; List of application type parameters that can be overridden when creating or updating the application.
 	DefaultParameterList map[string]*string `json:"defaultParameterList"`
 }
 
 // MarshalJSON is the custom marshaler for ApplicationTypeVersionResourceProperties.
 func (atvrp ApplicationTypeVersionResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if atvrp.ProvisioningState != nil {
-		objectMap["provisioningState"] = atvrp.ProvisioningState
-	}
 	if atvrp.AppPackageURL != nil {
 		objectMap["appPackageUrl"] = atvrp.AppPackageURL
-	}
-	if atvrp.DefaultParameterList != nil {
-		objectMap["defaultParameterList"] = atvrp.DefaultParameterList
 	}
 	return json.Marshal(objectMap)
 }
 
-// ApplicationTypeVersionsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ApplicationTypeVersionsCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ApplicationTypeVersionsCreateFuture struct {
 	azure.Future
 }
@@ -1200,8 +1138,8 @@ func (future *ApplicationTypeVersionsCreateFuture) Result(client ApplicationType
 	return
 }
 
-// ApplicationTypeVersionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ApplicationTypeVersionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ApplicationTypeVersionsDeleteFuture struct {
 	azure.Future
 }
@@ -1232,7 +1170,41 @@ type ApplicationUpgradePolicy struct {
 	// RollingUpgradeMonitoringPolicy - The policy used for monitoring the application upgrade
 	RollingUpgradeMonitoringPolicy *RollingUpgradeMonitoringPolicy `json:"rollingUpgradeMonitoringPolicy,omitempty"`
 	// ApplicationHealthPolicy - Defines a health policy used to evaluate the health of an application or one of its children entities.
-	ApplicationHealthPolicy *ApplicationHealthPolicy `json:"applicationHealthPolicy,omitempty"`
+	ApplicationHealthPolicy *ArmApplicationHealthPolicy `json:"applicationHealthPolicy,omitempty"`
+}
+
+// ArmApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one
+// of its children entities.
+type ArmApplicationHealthPolicy struct {
+	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
+	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
+	// MaxPercentUnhealthyDeployedApplications - The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to 100.
+	// The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before the application is considered in error.
+	// This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the application is currently deployed on in the cluster.
+	// The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
+	MaxPercentUnhealthyDeployedApplications *int32 `json:"MaxPercentUnhealthyDeployedApplications,omitempty"`
+	// DefaultServiceTypeHealthPolicy - The health policy used by default to evaluate the health of a service type.
+	DefaultServiceTypeHealthPolicy *ServiceTypeHealthPolicy `json:"DefaultServiceTypeHealthPolicy,omitempty"`
+	// ServiceTypeHealthPolicyMap - The map with service type health policy per service type name. The map is empty by default.
+	ServiceTypeHealthPolicyMap map[string]*ServiceTypeHealthPolicy `json:"ServiceTypeHealthPolicyMap"`
+}
+
+// MarshalJSON is the custom marshaler for ArmApplicationHealthPolicy.
+func (aahp ArmApplicationHealthPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aahp.ConsiderWarningAsError != nil {
+		objectMap["ConsiderWarningAsError"] = aahp.ConsiderWarningAsError
+	}
+	if aahp.MaxPercentUnhealthyDeployedApplications != nil {
+		objectMap["MaxPercentUnhealthyDeployedApplications"] = aahp.MaxPercentUnhealthyDeployedApplications
+	}
+	if aahp.DefaultServiceTypeHealthPolicy != nil {
+		objectMap["DefaultServiceTypeHealthPolicy"] = aahp.DefaultServiceTypeHealthPolicy
+	}
+	if aahp.ServiceTypeHealthPolicyMap != nil {
+		objectMap["ServiceTypeHealthPolicyMap"] = aahp.ServiceTypeHealthPolicyMap
+	}
+	return json.Marshal(objectMap)
 }
 
 // AvailableOperationDisplay operation supported by Service Fabric resource provider
@@ -1290,11 +1262,11 @@ type Cluster struct {
 	autorest.Response `json:"-"`
 	// ClusterProperties - The cluster resource properties
 	*ClusterProperties `json:"properties,omitempty"`
-	// ID - Azure resource identifier.
+	// ID - READ-ONLY; Azure resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
@@ -1307,15 +1279,6 @@ func (c Cluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.ClusterProperties != nil {
 		objectMap["properties"] = c.ClusterProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	if c.Location != nil {
 		objectMap["location"] = c.Location
@@ -1484,7 +1447,8 @@ func (ccvr *ClusterCodeVersionsResult) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster node.
+// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster
+// node.
 type ClusterHealthPolicy struct {
 	// MaxPercentUnhealthyNodes - The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be 10.
 	// The percentage represents the maximum tolerated percentage of nodes that can be unhealthy before the cluster is considered in error.
@@ -1530,7 +1494,7 @@ type ClusterListResult struct {
 type ClusterProperties struct {
 	// AddOnFeatures - The list of add-on features to enable in the cluster.
 	AddOnFeatures *[]string `json:"addOnFeatures,omitempty"`
-	// AvailableClusterVersions - The Service Fabric runtime versions available for this cluster.
+	// AvailableClusterVersions - READ-ONLY; The Service Fabric runtime versions available for this cluster.
 	AvailableClusterVersions *[]ClusterVersionDetails `json:"availableClusterVersions,omitempty"`
 	// AzureActiveDirectory - The AAD authentication settings of the cluster.
 	AzureActiveDirectory *AzureActiveDirectory `json:"azureActiveDirectory,omitempty"`
@@ -1544,11 +1508,11 @@ type ClusterProperties struct {
 	ClientCertificateThumbprints *[]ClientCertificateThumbprint `json:"clientCertificateThumbprints,omitempty"`
 	// ClusterCodeVersion - The Service Fabric runtime version of the cluster. This property can only by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new clusters use [ClusterVersion API](./ClusterVersion.md). To get the list of available version for existing clusters use **availableClusterVersions**.
 	ClusterCodeVersion *string `json:"clusterCodeVersion,omitempty"`
-	// ClusterEndpoint - The Azure Resource Provider endpoint. A system service in the cluster connects to this  endpoint.
+	// ClusterEndpoint - READ-ONLY; The Azure Resource Provider endpoint. A system service in the cluster connects to this  endpoint.
 	ClusterEndpoint *string `json:"clusterEndpoint,omitempty"`
-	// ClusterID - A service generated unique identifier for the cluster resource.
+	// ClusterID - READ-ONLY; A service generated unique identifier for the cluster resource.
 	ClusterID *string `json:"clusterId,omitempty"`
-	// ClusterState - The current state of the cluster.
+	// ClusterState - READ-ONLY; The current state of the cluster.
 	//   - WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for Service Fabric VM extension to boot up and report to it.
 	//   - Deploying - Indicates that the Service Fabric runtime is being installed on the VMs. Cluster resource will be in this state until the cluster boots up and system services are up.
 	//   - BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version. This upgrade is automatically initiated when the cluster boots up for the first time.
@@ -1569,7 +1533,7 @@ type ClusterProperties struct {
 	ManagementEndpoint *string `json:"managementEndpoint,omitempty"`
 	// NodeTypes - The list of node types in the cluster.
 	NodeTypes *[]NodeTypeDescription `json:"nodeTypes,omitempty"`
-	// ProvisioningState - The provisioning state of the cluster resource. Possible values include: 'Updating', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the cluster resource. Possible values include: 'Updating', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ReliabilityLevel - The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity).
 	//   - None - Run the System services with a target replica set count of 1. This should only be used for test clusters.
@@ -1594,8 +1558,8 @@ type ClusterProperties struct {
 	VMImage *string `json:"vmImage,omitempty"`
 }
 
-// ClusterPropertiesUpdateParameters describes the cluster resource properties that can be updated during PATCH
-// operation.
+// ClusterPropertiesUpdateParameters describes the cluster resource properties that can be updated during
+// PATCH operation.
 type ClusterPropertiesUpdateParameters struct {
 	// AddOnFeatures - The list of add-on features to enable in the cluster.
 	AddOnFeatures *[]string `json:"addOnFeatures,omitempty"`
@@ -1632,7 +1596,8 @@ type ClusterPropertiesUpdateParameters struct {
 	UpgradeMode UpgradeMode1 `json:"upgradeMode,omitempty"`
 }
 
-// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersCreateFuture struct {
 	azure.Future
 }
@@ -1660,7 +1625,8 @@ func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, er
 	return
 }
 
-// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 }
@@ -1809,7 +1775,8 @@ type ClusterVersionDetails struct {
 	Environment Environment `json:"environment,omitempty"`
 }
 
-// DiagnosticsStorageAccountConfig the storage account information for storing Service Fabric diagnostic logs.
+// DiagnosticsStorageAccountConfig the storage account information for storing Service Fabric diagnostic
+// logs.
 type DiagnosticsStorageAccountConfig struct {
 	// StorageAccountName - The Azure storage account name.
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
@@ -1896,8 +1863,8 @@ func (npsd NamedPartitionSchemeDescription) AsBasicPartitionSchemeDescription() 
 	return &npsd, true
 }
 
-// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in the
-// cluster.
+// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in
+// the cluster.
 type NodeTypeDescription struct {
 	// Name - The name of the node type.
 	Name *string `json:"name,omitempty"`
@@ -1971,7 +1938,7 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Service Fabric operations supported by the Microsoft.ServiceFabric resource provider.
 	Value *[]OperationResult `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1981,20 +1948,37 @@ type OperationListResultIterator struct {
 	page OperationListResultPage
 }
 
-// Next advances to the next value.  If there was an error making
+// NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *OperationListResultIterator) Next() error {
+func (iter *OperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
 	iter.i++
 	if iter.i < len(iter.page.Values()) {
 		return nil
 	}
-	err := iter.page.Next()
+	err = iter.page.NextWithContext(ctx)
 	if err != nil {
 		iter.i--
 		return err
 	}
 	iter.i = 0
 	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *OperationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
@@ -2016,6 +2000,11 @@ func (iter OperationListResultIterator) Value() OperationResult {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
@@ -2023,11 +2012,11 @@ func (olr OperationListResult) IsEmpty() bool {
 
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (olr OperationListResult) operationListResultPreparer() (*http.Request, error) {
+func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
 	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
 		return nil, nil
 	}
-	return autorest.Prepare(&http.Request{},
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
 		autorest.WithBaseURL(to.String(olr.NextLink)))
@@ -2035,19 +2024,36 @@ func (olr OperationListResult) operationListResultPreparer() (*http.Request, err
 
 // OperationListResultPage contains a page of OperationResult values.
 type OperationListResultPage struct {
-	fn  func(OperationListResult) (OperationListResult, error)
+	fn  func(context.Context, OperationListResult) (OperationListResult, error)
 	olr OperationListResult
 }
 
-// Next advances to the next page of values.  If there was an error making
+// NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *OperationListResultPage) Next() error {
-	next, err := page.fn(page.olr)
+func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.olr)
 	if err != nil {
 		return err
 	}
 	page.olr = next
 	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *OperationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
@@ -2066,6 +2072,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OperationResult available operation list result
@@ -2176,11 +2187,11 @@ func (psd PartitionSchemeDescription) AsBasicPartitionSchemeDescription() (Basic
 
 // ProxyResource the resource model definition for proxy-only resource.
 type ProxyResource struct {
-	// ID - Azure resource identifier.
+	// ID - READ-ONLY; Azure resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
@@ -2188,11 +2199,11 @@ type ProxyResource struct {
 
 // Resource the resource model definition.
 type Resource struct {
-	// ID - Azure resource identifier.
+	// ID - READ-ONLY; Azure resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
@@ -2203,15 +2214,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -2243,8 +2245,8 @@ type ServerCertificateCommonName struct {
 	CertificateIssuerThumbprint *string `json:"certificateIssuerThumbprint,omitempty"`
 }
 
-// ServerCertificateCommonNames describes a list of server certificates referenced by common name that are used to
-// secure the cluster.
+// ServerCertificateCommonNames describes a list of server certificates referenced by common name that are
+// used to secure the cluster.
 type ServerCertificateCommonNames struct {
 	// CommonNames - The list of server certificates referenced by common name that are used to secure the cluster.
 	CommonNames *[]ServerCertificateCommonName `json:"commonNames,omitempty"`
@@ -2343,11 +2345,11 @@ type ServiceResource struct {
 	autorest.Response `json:"-"`
 	// BasicServiceResourceProperties - The service resource properties.
 	BasicServiceResourceProperties `json:"properties,omitempty"`
-	// ID - Azure resource identifier.
+	// ID - READ-ONLY; Azure resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
@@ -2357,15 +2359,6 @@ type ServiceResource struct {
 func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = sr.BasicServiceResourceProperties
-	if sr.ID != nil {
-		objectMap["id"] = sr.ID
-	}
-	if sr.Name != nil {
-		objectMap["name"] = sr.Name
-	}
-	if sr.Type != nil {
-		objectMap["type"] = sr.Type
-	}
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
 	}
@@ -2446,7 +2439,7 @@ type BasicServiceResourceProperties interface {
 
 // ServiceResourceProperties the service resource properties.
 type ServiceResourceProperties struct {
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ServiceTypeName - The name of the service type
 	ServiceTypeName *string `json:"serviceTypeName,omitempty"`
@@ -2511,9 +2504,6 @@ func unmarshalBasicServiceResourcePropertiesArray(body []byte) ([]BasicServiceRe
 func (srp ServiceResourceProperties) MarshalJSON() ([]byte, error) {
 	srp.ServiceKind = ServiceKindServiceResourceProperties
 	objectMap := make(map[string]interface{})
-	if srp.ProvisioningState != nil {
-		objectMap["provisioningState"] = srp.ProvisioningState
-	}
 	if srp.ServiceTypeName != nil {
 		objectMap["serviceTypeName"] = srp.ServiceTypeName
 	}
@@ -2731,11 +2721,11 @@ type ServiceResourceUpdate struct {
 	autorest.Response `json:"-"`
 	// BasicServiceResourceUpdateProperties - The service resource properties for patch operations.
 	BasicServiceResourceUpdateProperties `json:"properties,omitempty"`
-	// ID - Azure resource identifier.
+	// ID - READ-ONLY; Azure resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
@@ -2745,15 +2735,6 @@ type ServiceResourceUpdate struct {
 func (sru ServiceResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = sru.BasicServiceResourceUpdateProperties
-	if sru.ID != nil {
-		objectMap["id"] = sru.ID
-	}
-	if sru.Name != nil {
-		objectMap["name"] = sru.Name
-	}
-	if sru.Type != nil {
-		objectMap["type"] = sru.Type
-	}
 	if sru.Location != nil {
 		objectMap["location"] = sru.Location
 	}
@@ -2996,7 +2977,8 @@ func (srup *ServiceResourceUpdateProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServicesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesCreateFuture struct {
 	azure.Future
 }
@@ -3024,7 +3006,8 @@ func (future *ServicesCreateFuture) Result(client ServicesClient) (sr ServiceRes
 	return
 }
 
-// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesDeleteFuture struct {
 	azure.Future
 }
@@ -3046,7 +3029,8 @@ func (future *ServicesDeleteFuture) Result(client ServicesClient) (ar autorest.R
 	return
 }
 
-// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesUpdateFuture struct {
 	azure.Future
 }
@@ -3083,8 +3067,8 @@ type ServiceTypeDeltaHealthPolicy struct {
 	MaxPercentDeltaUnhealthyServices *int32 `json:"maxPercentDeltaUnhealthyServices,omitempty"`
 }
 
-// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging to a
-// service type.
+// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging
+// to a service type.
 type ServiceTypeHealthPolicy struct {
 	// MaxPercentUnhealthyServices - The maximum percentage of services allowed to be unhealthy before your application is considered in error.
 	MaxPercentUnhealthyServices *int32 `json:"maxPercentUnhealthyServices,omitempty"`
@@ -3162,7 +3146,7 @@ type StatefulServiceProperties struct {
 	QuorumLossWaitDuration *date.Time `json:"quorumLossWaitDuration,omitempty"`
 	// StandByReplicaKeepDuration - The definition on how long StandBy replicas should be maintained before being removed, represented in ISO 8601 format (hh:mm:ss.s).
 	StandByReplicaKeepDuration *date.Time `json:"standByReplicaKeepDuration,omitempty"`
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ServiceTypeName - The name of the service type
 	ServiceTypeName *string `json:"serviceTypeName,omitempty"`
@@ -3203,9 +3187,6 @@ func (ssp StatefulServiceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ssp.StandByReplicaKeepDuration != nil {
 		objectMap["standByReplicaKeepDuration"] = ssp.StandByReplicaKeepDuration
-	}
-	if ssp.ProvisioningState != nil {
-		objectMap["provisioningState"] = ssp.ProvisioningState
 	}
 	if ssp.ServiceTypeName != nil {
 		objectMap["serviceTypeName"] = ssp.ServiceTypeName
@@ -3603,7 +3584,7 @@ func (ssup *StatefulServiceUpdateProperties) UnmarshalJSON(body []byte) error {
 type StatelessServiceProperties struct {
 	// InstanceCount - The instance count.
 	InstanceCount *int32 `json:"instanceCount,omitempty"`
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ServiceTypeName - The name of the service type
 	ServiceTypeName *string `json:"serviceTypeName,omitempty"`
@@ -3629,9 +3610,6 @@ func (ssp StatelessServiceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ssp.InstanceCount != nil {
 		objectMap["instanceCount"] = ssp.InstanceCount
-	}
-	if ssp.ProvisioningState != nil {
-		objectMap["provisioningState"] = ssp.ProvisioningState
 	}
 	if ssp.ServiceTypeName != nil {
 		objectMap["serviceTypeName"] = ssp.ServiceTypeName
@@ -3924,8 +3902,8 @@ func (ssup *StatelessServiceUpdateProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// UniformInt64RangePartitionSchemeDescription describes a partitioning scheme where an integer range is allocated
-// evenly across a number of partitions.
+// UniformInt64RangePartitionSchemeDescription describes a partitioning scheme where an integer range is
+// allocated evenly across a number of partitions.
 type UniformInt64RangePartitionSchemeDescription struct {
 	// Count - The number of partitions.
 	Count *int32 `json:"Count,omitempty"`

@@ -257,7 +257,7 @@ func (e *Entity) MarshalJSON() ([]byte, error) {
 		case int64:
 			completeMap[typeKey] = OdataInt64
 			completeMap[k] = fmt.Sprintf("%v", v)
-		case float64:
+		case float32, float64:
 			completeMap[typeKey] = OdataDouble
 			completeMap[k] = fmt.Sprintf("%v", v)
 		default:

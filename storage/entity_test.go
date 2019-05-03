@@ -42,7 +42,7 @@ func (s *StorageEntitySuite) TestGet(c *chk.C) {
 	entity := table.GetEntityReference("mypartitionkey", "myrowkey")
 
 	props := map[string]interface{}{
-		"AmountDue":      float64(200.23),
+		"AmountDue":      float32(200.23),
 		"CustomerCode":   uuid.FromStringOrNil("c9da6455-213d-42c9-9a79-3e9149a57833"),
 		"CustomerSince":  time.Date(1992, time.December, 20, 21, 55, 0, 0, time.UTC),
 		"IsActive":       true,
@@ -91,7 +91,7 @@ func (s *StorageEntitySuite) TestInsert(c *chk.C) {
 	entity := table.GetEntityReference("mypartitionkey", "myrowkey")
 
 	props := map[string]interface{}{
-		"AmountDue":      float64(200.23),
+		"AmountDue":      float32(200.23),
 		"CustomerCode":   uuid.FromStringOrNil("c9da6455-213d-42c9-9a79-3e9149a57833"),
 		"CustomerSince":  time.Date(1992, time.December, 20, 21, 55, 0, 0, time.UTC),
 		"IsActive":       true,
@@ -134,7 +134,7 @@ func (s *StorageEntitySuite) TestUpdate(c *chk.C) {
 
 	entity := table.GetEntityReference("mypartitionkey", "myrowkey")
 	entity.Properties = map[string]interface{}{
-		"AmountDue":      float64(200.23),
+		"AmountDue":      float32(200.23),
 		"CustomerCode":   uuid.FromStringOrNil("c9da6455-213d-42c9-9a79-3e9149a57833"),
 		"CustomerSince":  time.Date(1992, time.December, 20, 21, 55, 0, 0, time.UTC),
 		"IsActive":       true,

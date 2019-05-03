@@ -4667,7 +4667,7 @@ type RequestBodyMatchConditionParameters struct {
 	Transforms *[]Transform `json:"transforms,omitempty"`
 }
 
-// RequestHeaderMatchConditionParameters defines the parameters for generall match conditions
+// RequestHeaderMatchConditionParameters defines the parameters for RequestHeader match conditions
 type RequestHeaderMatchConditionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
 	// Selector - Name of Header to be matched
@@ -4682,7 +4682,7 @@ type RequestHeaderMatchConditionParameters struct {
 	Transforms *[]Transform `json:"transforms,omitempty"`
 }
 
-// RequestMethodMatchConditionParameters defines the parameters for match conditions for RequestMethod
+// RequestMethodMatchConditionParameters defines the parameters for RequestMethod match conditions
 type RequestMethodMatchConditionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
 	// Operator - Describes operator to be matched
@@ -4693,7 +4693,7 @@ type RequestMethodMatchConditionParameters struct {
 	MatchValues *[]string `json:"matchValues,omitempty"`
 }
 
-// RequestSchemeMatchConditionParameters defines the parameters for match conditions for RequestScheme
+// RequestSchemeMatchConditionParameters defines the parameters for RequestScheme match conditions
 type RequestSchemeMatchConditionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
 	// Operator - Describes operator to be matched

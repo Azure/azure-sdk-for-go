@@ -26,20 +26,20 @@ import (
 	"net/http"
 )
 
-// ProfilesGroupClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must
-// make sure that requests made to these resources are secure.
-type ProfilesGroupClient struct {
+// ProfilesClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must make
+// sure that requests made to these resources are secure.
+type ProfilesClient struct {
 	BaseClient
 }
 
-// NewProfilesGroupClient creates an instance of the ProfilesGroupClient client.
-func NewProfilesGroupClient(subscriptionID string) ProfilesGroupClient {
-	return NewProfilesGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProfilesClient creates an instance of the ProfilesClient client.
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProfilesGroupClientWithBaseURI creates an instance of the ProfilesGroupClient client.
-func NewProfilesGroupClientWithBaseURI(baseURI string, subscriptionID string) ProfilesGroupClient {
-	return ProfilesGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProfilesClientWithBaseURI creates an instance of the ProfilesClient client.
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new CDN profile with a profile name under the specified subscription and resource group.
@@ -47,9 +47,9 @@ func NewProfilesGroupClientWithBaseURI(baseURI string, subscriptionID string) Pr
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
 // profile - profile properties needed to create a new profile.
-func (client ProfilesGroupClient) Create(ctx context.Context, resourceGroupName string, profileName string, profile Profile) (result ProfilesGroupCreateFuture, err error) {
+func (client ProfilesClient) Create(ctx context.Context, resourceGroupName string, profileName string, profile Profile) (result ProfilesCreateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.Create")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -65,18 +65,18 @@ func (client ProfilesGroupClient) Create(ctx context.Context, resourceGroupName 
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: profile,
 			Constraints: []validation.Constraint{{Target: "profile.Sku", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.ProfilesGroupClient", "Create", err.Error())
+		return result, validation.NewError("cdn.ProfilesClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, resourceGroupName, profileName, profile)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -84,7 +84,7 @@ func (client ProfilesGroupClient) Create(ctx context.Context, resourceGroupName 
 }
 
 // CreatePreparer prepares the Create request.
-func (client ProfilesGroupClient) CreatePreparer(ctx context.Context, resourceGroupName string, profileName string, profile Profile) (*http.Request, error) {
+func (client ProfilesClient) CreatePreparer(ctx context.Context, resourceGroupName string, profileName string, profile Profile) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -108,7 +108,7 @@ func (client ProfilesGroupClient) CreatePreparer(ctx context.Context, resourceGr
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesGroupClient) CreateSender(req *http.Request) (future ProfilesGroupCreateFuture, err error) {
+func (client ProfilesClient) CreateSender(req *http.Request) (future ProfilesCreateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -121,7 +121,7 @@ func (client ProfilesGroupClient) CreateSender(req *http.Request) (future Profil
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ProfilesGroupClient) CreateResponder(resp *http.Response) (result Profile, err error) {
+func (client ProfilesClient) CreateResponder(resp *http.Response) (result Profile, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -137,9 +137,9 @@ func (client ProfilesGroupClient) CreateResponder(resp *http.Response) (result P
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
-func (client ProfilesGroupClient) Delete(ctx context.Context, resourceGroupName string, profileName string) (result ProfilesGroupDeleteFuture, err error) {
+func (client ProfilesClient) Delete(ctx context.Context, resourceGroupName string, profileName string) (result ProfilesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -153,18 +153,18 @@ func (client ProfilesGroupClient) Delete(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.ProfilesGroupClient", "Delete", err.Error())
+		return result, validation.NewError("cdn.ProfilesClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, resourceGroupName, profileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -172,7 +172,7 @@ func (client ProfilesGroupClient) Delete(ctx context.Context, resourceGroupName 
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ProfilesGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) DeletePreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -194,7 +194,7 @@ func (client ProfilesGroupClient) DeletePreparer(ctx context.Context, resourceGr
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesGroupClient) DeleteSender(req *http.Request) (future ProfilesGroupDeleteFuture, err error) {
+func (client ProfilesClient) DeleteSender(req *http.Request) (future ProfilesDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -207,7 +207,7 @@ func (client ProfilesGroupClient) DeleteSender(req *http.Request) (future Profil
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ProfilesGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ProfilesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -224,9 +224,9 @@ func (client ProfilesGroupClient) DeleteResponder(resp *http.Response) (result a
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
-func (client ProfilesGroupClient) GenerateSsoURI(ctx context.Context, resourceGroupName string, profileName string) (result SsoURI, err error) {
+func (client ProfilesClient) GenerateSsoURI(ctx context.Context, resourceGroupName string, profileName string) (result SsoURI, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.GenerateSsoURI")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.GenerateSsoURI")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -240,32 +240,32 @@ func (client ProfilesGroupClient) GenerateSsoURI(ctx context.Context, resourceGr
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.ProfilesGroupClient", "GenerateSsoURI", err.Error())
+		return result, validation.NewError("cdn.ProfilesClient", "GenerateSsoURI", err.Error())
 	}
 
 	req, err := client.GenerateSsoURIPreparer(ctx, resourceGroupName, profileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "GenerateSsoURI", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "GenerateSsoURI", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GenerateSsoURISender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "GenerateSsoURI", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "GenerateSsoURI", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GenerateSsoURIResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "GenerateSsoURI", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "GenerateSsoURI", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GenerateSsoURIPreparer prepares the GenerateSsoURI request.
-func (client ProfilesGroupClient) GenerateSsoURIPreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) GenerateSsoURIPreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -287,14 +287,14 @@ func (client ProfilesGroupClient) GenerateSsoURIPreparer(ctx context.Context, re
 
 // GenerateSsoURISender sends the GenerateSsoURI request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesGroupClient) GenerateSsoURISender(req *http.Request) (*http.Response, error) {
+func (client ProfilesClient) GenerateSsoURISender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GenerateSsoURIResponder handles the response to the GenerateSsoURI request. The method always
 // closes the http.Response Body.
-func (client ProfilesGroupClient) GenerateSsoURIResponder(resp *http.Response) (result SsoURI, err error) {
+func (client ProfilesClient) GenerateSsoURIResponder(resp *http.Response) (result SsoURI, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -309,9 +309,9 @@ func (client ProfilesGroupClient) GenerateSsoURIResponder(resp *http.Response) (
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
-func (client ProfilesGroupClient) Get(ctx context.Context, resourceGroupName string, profileName string) (result Profile, err error) {
+func (client ProfilesClient) Get(ctx context.Context, resourceGroupName string, profileName string) (result Profile, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -325,32 +325,32 @@ func (client ProfilesGroupClient) Get(ctx context.Context, resourceGroupName str
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.ProfilesGroupClient", "Get", err.Error())
+		return result, validation.NewError("cdn.ProfilesClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, profileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ProfilesGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) GetPreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -372,14 +372,14 @@ func (client ProfilesGroupClient) GetPreparer(ctx context.Context, resourceGroup
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ProfilesClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ProfilesGroupClient) GetResponder(resp *http.Response) (result Profile, err error) {
+func (client ProfilesClient) GetResponder(resp *http.Response) (result Profile, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -391,9 +391,9 @@ func (client ProfilesGroupClient) GetResponder(resp *http.Response) (result Prof
 }
 
 // List lists all of the CDN profiles within an Azure subscription.
-func (client ProfilesGroupClient) List(ctx context.Context) (result ProfileListResultPage, err error) {
+func (client ProfilesClient) List(ctx context.Context) (result ProfileListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.List")
 		defer func() {
 			sc := -1
 			if result.plr.Response.Response != nil {
@@ -405,27 +405,27 @@ func (client ProfilesGroupClient) List(ctx context.Context) (result ProfileListR
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.plr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.plr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ProfilesGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client ProfilesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -445,14 +445,14 @@ func (client ProfilesGroupClient) ListPreparer(ctx context.Context) (*http.Reque
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesGroupClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProfilesClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProfilesGroupClient) ListResponder(resp *http.Response) (result ProfileListResult, err error) {
+func (client ProfilesClient) ListResponder(resp *http.Response) (result ProfileListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -464,10 +464,10 @@ func (client ProfilesGroupClient) ListResponder(resp *http.Response) (result Pro
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ProfilesGroupClient) listNextResults(ctx context.Context, lastResults ProfileListResult) (result ProfileListResult, err error) {
+func (client ProfilesClient) listNextResults(ctx context.Context, lastResults ProfileListResult) (result ProfileListResult, err error) {
 	req, err := lastResults.profileListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -475,19 +475,19 @@ func (client ProfilesGroupClient) listNextResults(ctx context.Context, lastResul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProfilesGroupClient) ListComplete(ctx context.Context) (result ProfileListResultIterator, err error) {
+func (client ProfilesClient) ListComplete(ctx context.Context) (result ProfileListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -503,9 +503,9 @@ func (client ProfilesGroupClient) ListComplete(ctx context.Context) (result Prof
 // ListByResourceGroup lists all of the CDN profiles within a resource group.
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
-func (client ProfilesGroupClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ProfileListResultPage, err error) {
+func (client ProfilesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ProfileListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
 			if result.plr.Response.Response != nil {
@@ -519,33 +519,33 @@ func (client ProfilesGroupClient) ListByResourceGroup(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.ProfilesGroupClient", "ListByResourceGroup", err.Error())
+		return result, validation.NewError("cdn.ProfilesClient", "ListByResourceGroup", err.Error())
 	}
 
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.plr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
 	result.plr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client ProfilesGroupClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client ProfilesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -566,14 +566,14 @@ func (client ProfilesGroupClient) ListByResourceGroupPreparer(ctx context.Contex
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesGroupClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client ProfilesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client ProfilesGroupClient) ListByResourceGroupResponder(resp *http.Response) (result ProfileListResult, err error) {
+func (client ProfilesClient) ListByResourceGroupResponder(resp *http.Response) (result ProfileListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -585,10 +585,10 @@ func (client ProfilesGroupClient) ListByResourceGroupResponder(resp *http.Respon
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client ProfilesGroupClient) listByResourceGroupNextResults(ctx context.Context, lastResults ProfileListResult) (result ProfileListResult, err error) {
+func (client ProfilesClient) listByResourceGroupNextResults(ctx context.Context, lastResults ProfileListResult) (result ProfileListResult, err error) {
 	req, err := lastResults.profileListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -596,19 +596,19 @@ func (client ProfilesGroupClient) listByResourceGroupNextResults(ctx context.Con
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProfilesGroupClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ProfileListResultIterator, err error) {
+func (client ProfilesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result ProfileListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -625,9 +625,9 @@ func (client ProfilesGroupClient) ListByResourceGroupComplete(ctx context.Contex
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
-func (client ProfilesGroupClient) ListResourceUsage(ctx context.Context, resourceGroupName string, profileName string) (result ResourceUsageListResultPage, err error) {
+func (client ProfilesClient) ListResourceUsage(ctx context.Context, resourceGroupName string, profileName string) (result ResourceUsageListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.ListResourceUsage")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.ListResourceUsage")
 		defer func() {
 			sc := -1
 			if result.rulr.Response.Response != nil {
@@ -641,33 +641,33 @@ func (client ProfilesGroupClient) ListResourceUsage(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.ProfilesGroupClient", "ListResourceUsage", err.Error())
+		return result, validation.NewError("cdn.ProfilesClient", "ListResourceUsage", err.Error())
 	}
 
 	result.fn = client.listResourceUsageNextResults
 	req, err := client.ListResourceUsagePreparer(ctx, resourceGroupName, profileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "ListResourceUsage", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListResourceUsage", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListResourceUsageSender(req)
 	if err != nil {
 		result.rulr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "ListResourceUsage", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListResourceUsage", resp, "Failure sending request")
 		return
 	}
 
 	result.rulr, err = client.ListResourceUsageResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "ListResourceUsage", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListResourceUsage", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListResourceUsagePreparer prepares the ListResourceUsage request.
-func (client ProfilesGroupClient) ListResourceUsagePreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) ListResourceUsagePreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -689,14 +689,14 @@ func (client ProfilesGroupClient) ListResourceUsagePreparer(ctx context.Context,
 
 // ListResourceUsageSender sends the ListResourceUsage request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesGroupClient) ListResourceUsageSender(req *http.Request) (*http.Response, error) {
+func (client ProfilesClient) ListResourceUsageSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResourceUsageResponder handles the response to the ListResourceUsage request. The method always
 // closes the http.Response Body.
-func (client ProfilesGroupClient) ListResourceUsageResponder(resp *http.Response) (result ResourceUsageListResult, err error) {
+func (client ProfilesClient) ListResourceUsageResponder(resp *http.Response) (result ResourceUsageListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -708,10 +708,10 @@ func (client ProfilesGroupClient) ListResourceUsageResponder(resp *http.Response
 }
 
 // listResourceUsageNextResults retrieves the next set of results, if any.
-func (client ProfilesGroupClient) listResourceUsageNextResults(ctx context.Context, lastResults ResourceUsageListResult) (result ResourceUsageListResult, err error) {
+func (client ProfilesClient) listResourceUsageNextResults(ctx context.Context, lastResults ResourceUsageListResult) (result ResourceUsageListResult, err error) {
 	req, err := lastResults.resourceUsageListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "listResourceUsageNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "listResourceUsageNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -719,19 +719,19 @@ func (client ProfilesGroupClient) listResourceUsageNextResults(ctx context.Conte
 	resp, err := client.ListResourceUsageSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "listResourceUsageNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ProfilesClient", "listResourceUsageNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResourceUsageResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "listResourceUsageNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "listResourceUsageNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListResourceUsageComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProfilesGroupClient) ListResourceUsageComplete(ctx context.Context, resourceGroupName string, profileName string) (result ResourceUsageListResultIterator, err error) {
+func (client ProfilesClient) ListResourceUsageComplete(ctx context.Context, resourceGroupName string, profileName string) (result ResourceUsageListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.ListResourceUsage")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.ListResourceUsage")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -749,9 +749,9 @@ func (client ProfilesGroupClient) ListResourceUsageComplete(ctx context.Context,
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
-func (client ProfilesGroupClient) ListSupportedOptimizationTypes(ctx context.Context, resourceGroupName string, profileName string) (result SupportedOptimizationTypesListResult, err error) {
+func (client ProfilesClient) ListSupportedOptimizationTypes(ctx context.Context, resourceGroupName string, profileName string) (result SupportedOptimizationTypesListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.ListSupportedOptimizationTypes")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.ListSupportedOptimizationTypes")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -765,32 +765,32 @@ func (client ProfilesGroupClient) ListSupportedOptimizationTypes(ctx context.Con
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.ProfilesGroupClient", "ListSupportedOptimizationTypes", err.Error())
+		return result, validation.NewError("cdn.ProfilesClient", "ListSupportedOptimizationTypes", err.Error())
 	}
 
 	req, err := client.ListSupportedOptimizationTypesPreparer(ctx, resourceGroupName, profileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "ListSupportedOptimizationTypes", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListSupportedOptimizationTypes", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSupportedOptimizationTypesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "ListSupportedOptimizationTypes", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListSupportedOptimizationTypes", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListSupportedOptimizationTypesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "ListSupportedOptimizationTypes", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListSupportedOptimizationTypes", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListSupportedOptimizationTypesPreparer prepares the ListSupportedOptimizationTypes request.
-func (client ProfilesGroupClient) ListSupportedOptimizationTypesPreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client ProfilesClient) ListSupportedOptimizationTypesPreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -812,14 +812,14 @@ func (client ProfilesGroupClient) ListSupportedOptimizationTypesPreparer(ctx con
 
 // ListSupportedOptimizationTypesSender sends the ListSupportedOptimizationTypes request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesGroupClient) ListSupportedOptimizationTypesSender(req *http.Request) (*http.Response, error) {
+func (client ProfilesClient) ListSupportedOptimizationTypesSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListSupportedOptimizationTypesResponder handles the response to the ListSupportedOptimizationTypes request. The method always
 // closes the http.Response Body.
-func (client ProfilesGroupClient) ListSupportedOptimizationTypesResponder(resp *http.Response) (result SupportedOptimizationTypesListResult, err error) {
+func (client ProfilesClient) ListSupportedOptimizationTypesResponder(resp *http.Response) (result SupportedOptimizationTypesListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -836,9 +836,9 @@ func (client ProfilesGroupClient) ListSupportedOptimizationTypesResponder(resp *
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
 // profileUpdateParameters - profile properties needed to update an existing profile.
-func (client ProfilesGroupClient) Update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters) (result ProfilesGroupUpdateFuture, err error) {
+func (client ProfilesClient) Update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters) (result ProfilesUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesGroupClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -852,18 +852,18 @@ func (client ProfilesGroupClient) Update(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.ProfilesGroupClient", "Update", err.Error())
+		return result, validation.NewError("cdn.ProfilesClient", "Update", err.Error())
 	}
 
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, profileName, profileUpdateParameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesGroupClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -871,7 +871,7 @@ func (client ProfilesGroupClient) Update(ctx context.Context, resourceGroupName 
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ProfilesGroupClient) UpdatePreparer(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters) (*http.Request, error) {
+func (client ProfilesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters ProfileUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -895,7 +895,7 @@ func (client ProfilesGroupClient) UpdatePreparer(ctx context.Context, resourceGr
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProfilesGroupClient) UpdateSender(req *http.Request) (future ProfilesGroupUpdateFuture, err error) {
+func (client ProfilesClient) UpdateSender(req *http.Request) (future ProfilesUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -908,7 +908,7 @@ func (client ProfilesGroupClient) UpdateSender(req *http.Request) (future Profil
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ProfilesGroupClient) UpdateResponder(resp *http.Response) (result Profile, err error) {
+func (client ProfilesClient) UpdateResponder(resp *http.Response) (result Profile, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

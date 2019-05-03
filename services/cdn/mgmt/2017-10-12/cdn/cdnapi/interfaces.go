@@ -22,85 +22,85 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-10-12/cdn"
 )
 
-// ProfilesGroupClientAPI contains the set of methods on the ProfilesGroupClient type.
-type ProfilesGroupClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, profileName string, profile cdn.Profile) (result cdn.ProfilesGroupCreateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, profileName string) (result cdn.ProfilesGroupDeleteFuture, err error)
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	CheckNameAvailability(ctx context.Context, checkNameAvailabilityInput cdn.CheckNameAvailabilityInput) (result cdn.CheckNameAvailabilityOutput, err error)
+	CheckNameAvailabilityWithSubscription(ctx context.Context, checkNameAvailabilityInput cdn.CheckNameAvailabilityInput) (result cdn.CheckNameAvailabilityOutput, err error)
+	ValidateProbe(ctx context.Context, validateProbeInput cdn.ValidateProbeInput) (result cdn.ValidateProbeOutput, err error)
+}
+
+var _ BaseClientAPI = (*cdn.BaseClient)(nil)
+
+// ProfilesClientAPI contains the set of methods on the ProfilesClient type.
+type ProfilesClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, profileName string, profile cdn.Profile) (result cdn.ProfilesCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, profileName string) (result cdn.ProfilesDeleteFuture, err error)
 	GenerateSsoURI(ctx context.Context, resourceGroupName string, profileName string) (result cdn.SsoURI, err error)
 	Get(ctx context.Context, resourceGroupName string, profileName string) (result cdn.Profile, err error)
 	List(ctx context.Context) (result cdn.ProfileListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result cdn.ProfileListResultPage, err error)
 	ListResourceUsage(ctx context.Context, resourceGroupName string, profileName string) (result cdn.ResourceUsageListResultPage, err error)
 	ListSupportedOptimizationTypes(ctx context.Context, resourceGroupName string, profileName string) (result cdn.SupportedOptimizationTypesListResult, err error)
-	Update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters cdn.ProfileUpdateParameters) (result cdn.ProfilesGroupUpdateFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, profileName string, profileUpdateParameters cdn.ProfileUpdateParameters) (result cdn.ProfilesUpdateFuture, err error)
 }
 
-var _ ProfilesGroupClientAPI = (*cdn.ProfilesGroupClient)(nil)
+var _ ProfilesClientAPI = (*cdn.ProfilesClient)(nil)
 
-// EndpointsGroupClientAPI contains the set of methods on the EndpointsGroupClient type.
-type EndpointsGroupClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint cdn.Endpoint) (result cdn.EndpointsGroupCreateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.EndpointsGroupDeleteFuture, err error)
+// EndpointsClientAPI contains the set of methods on the EndpointsClient type.
+type EndpointsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint cdn.Endpoint) (result cdn.EndpointsCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.EndpointsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.Endpoint, err error)
 	ListByProfile(ctx context.Context, resourceGroupName string, profileName string) (result cdn.EndpointListResultPage, err error)
 	ListResourceUsage(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.ResourceUsageListResultPage, err error)
-	LoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths cdn.LoadParameters) (result cdn.EndpointsGroupLoadContentFuture, err error)
-	PurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths cdn.PurgeParameters) (result cdn.EndpointsGroupPurgeContentFuture, err error)
-	Start(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.EndpointsGroupStartFuture, err error)
-	Stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.EndpointsGroupStopFuture, err error)
-	Update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties cdn.EndpointUpdateParameters) (result cdn.EndpointsGroupUpdateFuture, err error)
+	LoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths cdn.LoadParameters) (result cdn.EndpointsLoadContentFuture, err error)
+	PurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths cdn.PurgeParameters) (result cdn.EndpointsPurgeContentFuture, err error)
+	Start(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.EndpointsStartFuture, err error)
+	Stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.EndpointsStopFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties cdn.EndpointUpdateParameters) (result cdn.EndpointsUpdateFuture, err error)
 	ValidateCustomDomain(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties cdn.ValidateCustomDomainInput) (result cdn.ValidateCustomDomainOutput, err error)
 }
 
-var _ EndpointsGroupClientAPI = (*cdn.EndpointsGroupClient)(nil)
+var _ EndpointsClientAPI = (*cdn.EndpointsClient)(nil)
 
-// OriginsGroupClientAPI contains the set of methods on the OriginsGroupClient type.
-type OriginsGroupClientAPI interface {
+// OriginsClientAPI contains the set of methods on the OriginsClient type.
+type OriginsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string) (result cdn.Origin, err error)
 	ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.OriginListResultPage, err error)
-	Update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties cdn.OriginUpdateParameters) (result cdn.OriginsGroupUpdateFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties cdn.OriginUpdateParameters) (result cdn.OriginsUpdateFuture, err error)
 }
 
-var _ OriginsGroupClientAPI = (*cdn.OriginsGroupClient)(nil)
+var _ OriginsClientAPI = (*cdn.OriginsClient)(nil)
 
-// CustomDomainsGroupClientAPI contains the set of methods on the CustomDomainsGroupClient type.
-type CustomDomainsGroupClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties cdn.CustomDomainParameters) (result cdn.CustomDomainsGroupCreateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string) (result cdn.CustomDomainsGroupDeleteFuture, err error)
+// CustomDomainsClientAPI contains the set of methods on the CustomDomainsClient type.
+type CustomDomainsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties cdn.CustomDomainParameters) (result cdn.CustomDomainsCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string) (result cdn.CustomDomainsDeleteFuture, err error)
 	DisableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string) (result cdn.CustomDomain, err error)
 	EnableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainHTTPSParameters *cdn.BasicCustomDomainHTTPSParameters) (result cdn.CustomDomain, err error)
 	Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string) (result cdn.CustomDomain, err error)
 	ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.CustomDomainListResultPage, err error)
 }
 
-var _ CustomDomainsGroupClientAPI = (*cdn.CustomDomainsGroupClient)(nil)
+var _ CustomDomainsClientAPI = (*cdn.CustomDomainsClient)(nil)
 
-// GroupClientAPI contains the set of methods on the GroupClient type.
-type GroupClientAPI interface {
-	CheckNameAvailability(ctx context.Context, checkNameAvailabilityInput cdn.CheckNameAvailabilityInput) (result cdn.CheckNameAvailabilityOutput, err error)
-	CheckNameAvailabilityWithSubscription(ctx context.Context, checkNameAvailabilityInput cdn.CheckNameAvailabilityInput) (result cdn.CheckNameAvailabilityOutput, err error)
-	ValidateProbe(ctx context.Context, validateProbeInput cdn.ValidateProbeInput) (result cdn.ValidateProbeOutput, err error)
-}
-
-var _ GroupClientAPI = (*cdn.GroupClient)(nil)
-
-// ResourceUsageGroupClientAPI contains the set of methods on the ResourceUsageGroupClient type.
-type ResourceUsageGroupClientAPI interface {
+// ResourceUsageClientAPI contains the set of methods on the ResourceUsageClient type.
+type ResourceUsageClientAPI interface {
 	List(ctx context.Context) (result cdn.ResourceUsageListResultPage, err error)
 }
 
-var _ ResourceUsageGroupClientAPI = (*cdn.ResourceUsageGroupClient)(nil)
+var _ ResourceUsageClientAPI = (*cdn.ResourceUsageClient)(nil)
 
-// OperationsGroupClientAPI contains the set of methods on the OperationsGroupClient type.
-type OperationsGroupClientAPI interface {
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
 	List(ctx context.Context) (result cdn.OperationsListResultPage, err error)
 }
 
-var _ OperationsGroupClientAPI = (*cdn.OperationsGroupClient)(nil)
+var _ OperationsClientAPI = (*cdn.OperationsClient)(nil)
 
-// EdgeNodesGroupClientAPI contains the set of methods on the EdgeNodesGroupClient type.
-type EdgeNodesGroupClientAPI interface {
+// EdgeNodesClientAPI contains the set of methods on the EdgeNodesClient type.
+type EdgeNodesClientAPI interface {
 	List(ctx context.Context) (result cdn.EdgenodeResultPage, err error)
 }
 
-var _ EdgeNodesGroupClientAPI = (*cdn.EdgeNodesGroupClient)(nil)
+var _ EdgeNodesClientAPI = (*cdn.EdgeNodesClient)(nil)

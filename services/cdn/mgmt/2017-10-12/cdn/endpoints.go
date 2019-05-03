@@ -26,20 +26,20 @@ import (
 	"net/http"
 )
 
-// EndpointsGroupClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You
-// must make sure that requests made to these resources are secure.
-type EndpointsGroupClient struct {
+// EndpointsClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must
+// make sure that requests made to these resources are secure.
+type EndpointsClient struct {
 	BaseClient
 }
 
-// NewEndpointsGroupClient creates an instance of the EndpointsGroupClient client.
-func NewEndpointsGroupClient(subscriptionID string) EndpointsGroupClient {
-	return NewEndpointsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewEndpointsClient creates an instance of the EndpointsClient client.
+func NewEndpointsClient(subscriptionID string) EndpointsClient {
+	return NewEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEndpointsGroupClientWithBaseURI creates an instance of the EndpointsGroupClient client.
-func NewEndpointsGroupClientWithBaseURI(baseURI string, subscriptionID string) EndpointsGroupClient {
-	return EndpointsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewEndpointsClientWithBaseURI creates an instance of the EndpointsClient client.
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+	return EndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group
@@ -49,9 +49,9 @@ func NewEndpointsGroupClientWithBaseURI(baseURI string, subscriptionID string) E
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
 // endpoint - endpoint properties
-func (client EndpointsGroupClient) Create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint) (result EndpointsGroupCreateFuture, err error) {
+func (client EndpointsClient) Create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint) (result EndpointsCreateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.Create")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -68,18 +68,18 @@ func (client EndpointsGroupClient) Create(ctx context.Context, resourceGroupName
 		{TargetValue: endpoint,
 			Constraints: []validation.Constraint{{Target: "endpoint.EndpointProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "endpoint.EndpointProperties.Origins", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "Create", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "Create", err.Error())
 	}
 
 	req, err := client.CreatePreparer(ctx, resourceGroupName, profileName, endpointName, endpoint)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -87,7 +87,7 @@ func (client EndpointsGroupClient) Create(ctx context.Context, resourceGroupName
 }
 
 // CreatePreparer prepares the Create request.
-func (client EndpointsGroupClient) CreatePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint) (*http.Request, error) {
+func (client EndpointsClient) CreatePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint Endpoint) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -112,7 +112,7 @@ func (client EndpointsGroupClient) CreatePreparer(ctx context.Context, resourceG
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) CreateSender(req *http.Request) (future EndpointsGroupCreateFuture, err error) {
+func (client EndpointsClient) CreateSender(req *http.Request) (future EndpointsCreateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -125,7 +125,7 @@ func (client EndpointsGroupClient) CreateSender(req *http.Request) (future Endpo
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) CreateResponder(resp *http.Response) (result Endpoint, err error) {
+func (client EndpointsClient) CreateResponder(resp *http.Response) (result Endpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -142,9 +142,9 @@ func (client EndpointsGroupClient) CreateResponder(resp *http.Response) (result 
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
-func (client EndpointsGroupClient) Delete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result EndpointsGroupDeleteFuture, err error) {
+func (client EndpointsClient) Delete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result EndpointsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -158,18 +158,18 @@ func (client EndpointsGroupClient) Delete(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "Delete", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, resourceGroupName, profileName, endpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -177,7 +177,7 @@ func (client EndpointsGroupClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client EndpointsGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
+func (client EndpointsClient) DeletePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -200,7 +200,7 @@ func (client EndpointsGroupClient) DeletePreparer(ctx context.Context, resourceG
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) DeleteSender(req *http.Request) (future EndpointsGroupDeleteFuture, err error) {
+func (client EndpointsClient) DeleteSender(req *http.Request) (future EndpointsDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -213,7 +213,7 @@ func (client EndpointsGroupClient) DeleteSender(req *http.Request) (future Endpo
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client EndpointsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -229,9 +229,9 @@ func (client EndpointsGroupClient) DeleteResponder(resp *http.Response) (result 
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
-func (client EndpointsGroupClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result Endpoint, err error) {
+func (client EndpointsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result Endpoint, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -245,32 +245,32 @@ func (client EndpointsGroupClient) Get(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "Get", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, profileName, endpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client EndpointsGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
+func (client EndpointsClient) GetPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -293,14 +293,14 @@ func (client EndpointsGroupClient) GetPreparer(ctx context.Context, resourceGrou
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client EndpointsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) GetResponder(resp *http.Response) (result Endpoint, err error) {
+func (client EndpointsClient) GetResponder(resp *http.Response) (result Endpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -315,9 +315,9 @@ func (client EndpointsGroupClient) GetResponder(resp *http.Response) (result End
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
-func (client EndpointsGroupClient) ListByProfile(ctx context.Context, resourceGroupName string, profileName string) (result EndpointListResultPage, err error) {
+func (client EndpointsClient) ListByProfile(ctx context.Context, resourceGroupName string, profileName string) (result EndpointListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.ListByProfile")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.ListByProfile")
 		defer func() {
 			sc := -1
 			if result.elr.Response.Response != nil {
@@ -331,33 +331,33 @@ func (client EndpointsGroupClient) ListByProfile(ctx context.Context, resourceGr
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "ListByProfile", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "ListByProfile", err.Error())
 	}
 
 	result.fn = client.listByProfileNextResults
 	req, err := client.ListByProfilePreparer(ctx, resourceGroupName, profileName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "ListByProfile", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByProfileSender(req)
 	if err != nil {
 		result.elr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "ListByProfile", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure sending request")
 		return
 	}
 
 	result.elr, err = client.ListByProfileResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "ListByProfile", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByProfilePreparer prepares the ListByProfile request.
-func (client EndpointsGroupClient) ListByProfilePreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
+func (client EndpointsClient) ListByProfilePreparer(ctx context.Context, resourceGroupName string, profileName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"profileName":       autorest.Encode("path", profileName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -379,14 +379,14 @@ func (client EndpointsGroupClient) ListByProfilePreparer(ctx context.Context, re
 
 // ListByProfileSender sends the ListByProfile request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) ListByProfileSender(req *http.Request) (*http.Response, error) {
+func (client EndpointsClient) ListByProfileSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByProfileResponder handles the response to the ListByProfile request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) ListByProfileResponder(resp *http.Response) (result EndpointListResult, err error) {
+func (client EndpointsClient) ListByProfileResponder(resp *http.Response) (result EndpointListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -398,10 +398,10 @@ func (client EndpointsGroupClient) ListByProfileResponder(resp *http.Response) (
 }
 
 // listByProfileNextResults retrieves the next set of results, if any.
-func (client EndpointsGroupClient) listByProfileNextResults(ctx context.Context, lastResults EndpointListResult) (result EndpointListResult, err error) {
+func (client EndpointsClient) listByProfileNextResults(ctx context.Context, lastResults EndpointListResult) (result EndpointListResult, err error) {
 	req, err := lastResults.endpointListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "listByProfileNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "listByProfileNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -409,19 +409,19 @@ func (client EndpointsGroupClient) listByProfileNextResults(ctx context.Context,
 	resp, err := client.ListByProfileSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "listByProfileNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "listByProfileNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByProfileResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "listByProfileNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "listByProfileNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByProfileComplete enumerates all values, automatically crossing page boundaries as required.
-func (client EndpointsGroupClient) ListByProfileComplete(ctx context.Context, resourceGroupName string, profileName string) (result EndpointListResultIterator, err error) {
+func (client EndpointsClient) ListByProfileComplete(ctx context.Context, resourceGroupName string, profileName string) (result EndpointListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.ListByProfile")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.ListByProfile")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -439,9 +439,9 @@ func (client EndpointsGroupClient) ListByProfileComplete(ctx context.Context, re
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
-func (client EndpointsGroupClient) ListResourceUsage(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result ResourceUsageListResultPage, err error) {
+func (client EndpointsClient) ListResourceUsage(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result ResourceUsageListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.ListResourceUsage")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.ListResourceUsage")
 		defer func() {
 			sc := -1
 			if result.rulr.Response.Response != nil {
@@ -455,33 +455,33 @@ func (client EndpointsGroupClient) ListResourceUsage(ctx context.Context, resour
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "ListResourceUsage", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "ListResourceUsage", err.Error())
 	}
 
 	result.fn = client.listResourceUsageNextResults
 	req, err := client.ListResourceUsagePreparer(ctx, resourceGroupName, profileName, endpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "ListResourceUsage", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListResourceUsage", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListResourceUsageSender(req)
 	if err != nil {
 		result.rulr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "ListResourceUsage", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListResourceUsage", resp, "Failure sending request")
 		return
 	}
 
 	result.rulr, err = client.ListResourceUsageResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "ListResourceUsage", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListResourceUsage", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListResourceUsagePreparer prepares the ListResourceUsage request.
-func (client EndpointsGroupClient) ListResourceUsagePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
+func (client EndpointsClient) ListResourceUsagePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -504,14 +504,14 @@ func (client EndpointsGroupClient) ListResourceUsagePreparer(ctx context.Context
 
 // ListResourceUsageSender sends the ListResourceUsage request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) ListResourceUsageSender(req *http.Request) (*http.Response, error) {
+func (client EndpointsClient) ListResourceUsageSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResourceUsageResponder handles the response to the ListResourceUsage request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) ListResourceUsageResponder(resp *http.Response) (result ResourceUsageListResult, err error) {
+func (client EndpointsClient) ListResourceUsageResponder(resp *http.Response) (result ResourceUsageListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -523,10 +523,10 @@ func (client EndpointsGroupClient) ListResourceUsageResponder(resp *http.Respons
 }
 
 // listResourceUsageNextResults retrieves the next set of results, if any.
-func (client EndpointsGroupClient) listResourceUsageNextResults(ctx context.Context, lastResults ResourceUsageListResult) (result ResourceUsageListResult, err error) {
+func (client EndpointsClient) listResourceUsageNextResults(ctx context.Context, lastResults ResourceUsageListResult) (result ResourceUsageListResult, err error) {
 	req, err := lastResults.resourceUsageListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "listResourceUsageNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "listResourceUsageNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -534,19 +534,19 @@ func (client EndpointsGroupClient) listResourceUsageNextResults(ctx context.Cont
 	resp, err := client.ListResourceUsageSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "listResourceUsageNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.EndpointsClient", "listResourceUsageNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResourceUsageResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "listResourceUsageNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "listResourceUsageNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListResourceUsageComplete enumerates all values, automatically crossing page boundaries as required.
-func (client EndpointsGroupClient) ListResourceUsageComplete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result ResourceUsageListResultIterator, err error) {
+func (client EndpointsClient) ListResourceUsageComplete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result ResourceUsageListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.ListResourceUsage")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.ListResourceUsage")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -566,9 +566,9 @@ func (client EndpointsGroupClient) ListResourceUsageComplete(ctx context.Context
 // endpointName - name of the endpoint under the profile which is unique globally.
 // contentFilePaths - the path to the content to be loaded. Path should be a full URL, e.g.
 // ‘/pictures/city.png' which loads a single file
-func (client EndpointsGroupClient) LoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters) (result EndpointsGroupLoadContentFuture, err error) {
+func (client EndpointsClient) LoadContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters) (result EndpointsLoadContentFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.LoadContent")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.LoadContent")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -584,18 +584,18 @@ func (client EndpointsGroupClient) LoadContent(ctx context.Context, resourceGrou
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: contentFilePaths,
 			Constraints: []validation.Constraint{{Target: "contentFilePaths.ContentPaths", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "LoadContent", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "LoadContent", err.Error())
 	}
 
 	req, err := client.LoadContentPreparer(ctx, resourceGroupName, profileName, endpointName, contentFilePaths)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "LoadContent", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "LoadContent", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.LoadContentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "LoadContent", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "LoadContent", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -603,7 +603,7 @@ func (client EndpointsGroupClient) LoadContent(ctx context.Context, resourceGrou
 }
 
 // LoadContentPreparer prepares the LoadContent request.
-func (client EndpointsGroupClient) LoadContentPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters) (*http.Request, error) {
+func (client EndpointsClient) LoadContentPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths LoadParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -628,7 +628,7 @@ func (client EndpointsGroupClient) LoadContentPreparer(ctx context.Context, reso
 
 // LoadContentSender sends the LoadContent request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) LoadContentSender(req *http.Request) (future EndpointsGroupLoadContentFuture, err error) {
+func (client EndpointsClient) LoadContentSender(req *http.Request) (future EndpointsLoadContentFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -641,7 +641,7 @@ func (client EndpointsGroupClient) LoadContentSender(req *http.Request) (future 
 
 // LoadContentResponder handles the response to the LoadContent request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) LoadContentResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client EndpointsClient) LoadContentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -659,9 +659,9 @@ func (client EndpointsGroupClient) LoadContentResponder(resp *http.Response) (re
 // contentFilePaths - the path to the content to be purged. Path can be a full URL, e.g. '/pictures/city.png'
 // which removes a single file, or a directory with a wildcard, e.g. '/pictures/*' which removes all folders
 // and files in the directory.
-func (client EndpointsGroupClient) PurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters) (result EndpointsGroupPurgeContentFuture, err error) {
+func (client EndpointsClient) PurgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters) (result EndpointsPurgeContentFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.PurgeContent")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.PurgeContent")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -677,18 +677,18 @@ func (client EndpointsGroupClient) PurgeContent(ctx context.Context, resourceGro
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: contentFilePaths,
 			Constraints: []validation.Constraint{{Target: "contentFilePaths.ContentPaths", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "PurgeContent", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "PurgeContent", err.Error())
 	}
 
 	req, err := client.PurgeContentPreparer(ctx, resourceGroupName, profileName, endpointName, contentFilePaths)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "PurgeContent", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "PurgeContent", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.PurgeContentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "PurgeContent", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "PurgeContent", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -696,7 +696,7 @@ func (client EndpointsGroupClient) PurgeContent(ctx context.Context, resourceGro
 }
 
 // PurgeContentPreparer prepares the PurgeContent request.
-func (client EndpointsGroupClient) PurgeContentPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters) (*http.Request, error) {
+func (client EndpointsClient) PurgeContentPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contentFilePaths PurgeParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -721,7 +721,7 @@ func (client EndpointsGroupClient) PurgeContentPreparer(ctx context.Context, res
 
 // PurgeContentSender sends the PurgeContent request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) PurgeContentSender(req *http.Request) (future EndpointsGroupPurgeContentFuture, err error) {
+func (client EndpointsClient) PurgeContentSender(req *http.Request) (future EndpointsPurgeContentFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -734,7 +734,7 @@ func (client EndpointsGroupClient) PurgeContentSender(req *http.Request) (future
 
 // PurgeContentResponder handles the response to the PurgeContent request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) PurgeContentResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client EndpointsClient) PurgeContentResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -749,9 +749,9 @@ func (client EndpointsGroupClient) PurgeContentResponder(resp *http.Response) (r
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
-func (client EndpointsGroupClient) Start(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result EndpointsGroupStartFuture, err error) {
+func (client EndpointsClient) Start(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result EndpointsStartFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.Start")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.Start")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -765,18 +765,18 @@ func (client EndpointsGroupClient) Start(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "Start", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "Start", err.Error())
 	}
 
 	req, err := client.StartPreparer(ctx, resourceGroupName, profileName, endpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Start", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Start", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -784,7 +784,7 @@ func (client EndpointsGroupClient) Start(ctx context.Context, resourceGroupName 
 }
 
 // StartPreparer prepares the Start request.
-func (client EndpointsGroupClient) StartPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
+func (client EndpointsClient) StartPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -807,7 +807,7 @@ func (client EndpointsGroupClient) StartPreparer(ctx context.Context, resourceGr
 
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) StartSender(req *http.Request) (future EndpointsGroupStartFuture, err error) {
+func (client EndpointsClient) StartSender(req *http.Request) (future EndpointsStartFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -820,7 +820,7 @@ func (client EndpointsGroupClient) StartSender(req *http.Request) (future Endpoi
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) StartResponder(resp *http.Response) (result Endpoint, err error) {
+func (client EndpointsClient) StartResponder(resp *http.Response) (result Endpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -836,9 +836,9 @@ func (client EndpointsGroupClient) StartResponder(resp *http.Response) (result E
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
-func (client EndpointsGroupClient) Stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result EndpointsGroupStopFuture, err error) {
+func (client EndpointsClient) Stop(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result EndpointsStopFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.Stop")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.Stop")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -852,18 +852,18 @@ func (client EndpointsGroupClient) Stop(ctx context.Context, resourceGroupName s
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "Stop", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "Stop", err.Error())
 	}
 
 	req, err := client.StopPreparer(ctx, resourceGroupName, profileName, endpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Stop", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Stop", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Stop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -871,7 +871,7 @@ func (client EndpointsGroupClient) Stop(ctx context.Context, resourceGroupName s
 }
 
 // StopPreparer prepares the Stop request.
-func (client EndpointsGroupClient) StopPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
+func (client EndpointsClient) StopPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -894,7 +894,7 @@ func (client EndpointsGroupClient) StopPreparer(ctx context.Context, resourceGro
 
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) StopSender(req *http.Request) (future EndpointsGroupStopFuture, err error) {
+func (client EndpointsClient) StopSender(req *http.Request) (future EndpointsStopFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -907,7 +907,7 @@ func (client EndpointsGroupClient) StopSender(req *http.Request) (future Endpoin
 
 // StopResponder handles the response to the Stop request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) StopResponder(resp *http.Response) (result Endpoint, err error) {
+func (client EndpointsClient) StopResponder(resp *http.Response) (result Endpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -926,9 +926,9 @@ func (client EndpointsGroupClient) StopResponder(resp *http.Response) (result En
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
 // endpointUpdateProperties - endpoint update properties
-func (client EndpointsGroupClient) Update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters) (result EndpointsGroupUpdateFuture, err error) {
+func (client EndpointsClient) Update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters) (result EndpointsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -942,18 +942,18 @@ func (client EndpointsGroupClient) Update(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "Update", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "Update", err.Error())
 	}
 
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -961,7 +961,7 @@ func (client EndpointsGroupClient) Update(ctx context.Context, resourceGroupName
 }
 
 // UpdatePreparer prepares the Update request.
-func (client EndpointsGroupClient) UpdatePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters) (*http.Request, error) {
+func (client EndpointsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties EndpointUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -986,7 +986,7 @@ func (client EndpointsGroupClient) UpdatePreparer(ctx context.Context, resourceG
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) UpdateSender(req *http.Request) (future EndpointsGroupUpdateFuture, err error) {
+func (client EndpointsClient) UpdateSender(req *http.Request) (future EndpointsUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -999,7 +999,7 @@ func (client EndpointsGroupClient) UpdateSender(req *http.Request) (future Endpo
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) UpdateResponder(resp *http.Response) (result Endpoint, err error) {
+func (client EndpointsClient) UpdateResponder(resp *http.Response) (result Endpoint, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1016,9 +1016,9 @@ func (client EndpointsGroupClient) UpdateResponder(resp *http.Response) (result 
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
 // customDomainProperties - custom domain to be validated.
-func (client EndpointsGroupClient) ValidateCustomDomain(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput) (result ValidateCustomDomainOutput, err error) {
+func (client EndpointsClient) ValidateCustomDomain(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput) (result ValidateCustomDomainOutput, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsGroupClient.ValidateCustomDomain")
+		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointsClient.ValidateCustomDomain")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -1034,32 +1034,32 @@ func (client EndpointsGroupClient) ValidateCustomDomain(ctx context.Context, res
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: customDomainProperties,
 			Constraints: []validation.Constraint{{Target: "customDomainProperties.HostName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.EndpointsGroupClient", "ValidateCustomDomain", err.Error())
+		return result, validation.NewError("cdn.EndpointsClient", "ValidateCustomDomain", err.Error())
 	}
 
 	req, err := client.ValidateCustomDomainPreparer(ctx, resourceGroupName, profileName, endpointName, customDomainProperties)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "ValidateCustomDomain", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ValidateCustomDomainSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "ValidateCustomDomain", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ValidateCustomDomainResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.EndpointsGroupClient", "ValidateCustomDomain", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ValidateCustomDomain", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ValidateCustomDomainPreparer prepares the ValidateCustomDomain request.
-func (client EndpointsGroupClient) ValidateCustomDomainPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput) (*http.Request, error) {
+func (client EndpointsClient) ValidateCustomDomainPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -1084,14 +1084,14 @@ func (client EndpointsGroupClient) ValidateCustomDomainPreparer(ctx context.Cont
 
 // ValidateCustomDomainSender sends the ValidateCustomDomain request. The method will close the
 // http.Response Body if it receives an error.
-func (client EndpointsGroupClient) ValidateCustomDomainSender(req *http.Request) (*http.Response, error) {
+func (client EndpointsClient) ValidateCustomDomainSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ValidateCustomDomainResponder handles the response to the ValidateCustomDomain request. The method always
 // closes the http.Response Body.
-func (client EndpointsGroupClient) ValidateCustomDomainResponder(resp *http.Response) (result ValidateCustomDomainOutput, err error) {
+func (client EndpointsClient) ValidateCustomDomainResponder(resp *http.Response) (result ValidateCustomDomainOutput, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

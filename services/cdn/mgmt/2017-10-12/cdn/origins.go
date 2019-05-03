@@ -26,20 +26,20 @@ import (
 	"net/http"
 )
 
-// OriginsGroupClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must
-// make sure that requests made to these resources are secure.
-type OriginsGroupClient struct {
+// OriginsClient is the use these APIs to manage Azure CDN resources through the Azure Resource Manager. You must make
+// sure that requests made to these resources are secure.
+type OriginsClient struct {
 	BaseClient
 }
 
-// NewOriginsGroupClient creates an instance of the OriginsGroupClient client.
-func NewOriginsGroupClient(subscriptionID string) OriginsGroupClient {
-	return NewOriginsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewOriginsClient creates an instance of the OriginsClient client.
+func NewOriginsClient(subscriptionID string) OriginsClient {
+	return NewOriginsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewOriginsGroupClientWithBaseURI creates an instance of the OriginsGroupClient client.
-func NewOriginsGroupClientWithBaseURI(baseURI string, subscriptionID string) OriginsGroupClient {
-	return OriginsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewOriginsClientWithBaseURI creates an instance of the OriginsClient client.
+func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
+	return OriginsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets an existing origin within an endpoint.
@@ -48,9 +48,9 @@ func NewOriginsGroupClientWithBaseURI(baseURI string, subscriptionID string) Ori
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
 // originName - name of the origin which is unique within the endpoint.
-func (client OriginsGroupClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string) (result Origin, err error) {
+func (client OriginsClient) Get(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string) (result Origin, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsGroupClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -64,32 +64,32 @@ func (client OriginsGroupClient) Get(ctx context.Context, resourceGroupName stri
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.OriginsGroupClient", "Get", err.Error())
+		return result, validation.NewError("cdn.OriginsClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, profileName, endpointName, originName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client OriginsGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string) (*http.Request, error) {
+func (client OriginsClient) GetPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"originName":        autorest.Encode("path", originName),
@@ -113,14 +113,14 @@ func (client OriginsGroupClient) GetPreparer(ctx context.Context, resourceGroupN
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client OriginsGroupClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client OriginsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client OriginsGroupClient) GetResponder(resp *http.Response) (result Origin, err error) {
+func (client OriginsClient) GetResponder(resp *http.Response) (result Origin, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -136,9 +136,9 @@ func (client OriginsGroupClient) GetResponder(resp *http.Response) (result Origi
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // profileName - name of the CDN profile which is unique within the resource group.
 // endpointName - name of the endpoint under the profile which is unique globally.
-func (client OriginsGroupClient) ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result OriginListResultPage, err error) {
+func (client OriginsClient) ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result OriginListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsGroupClient.ListByEndpoint")
+		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsClient.ListByEndpoint")
 		defer func() {
 			sc := -1
 			if result.olr.Response.Response != nil {
@@ -152,33 +152,33 @@ func (client OriginsGroupClient) ListByEndpoint(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.OriginsGroupClient", "ListByEndpoint", err.Error())
+		return result, validation.NewError("cdn.OriginsClient", "ListByEndpoint", err.Error())
 	}
 
 	result.fn = client.listByEndpointNextResults
 	req, err := client.ListByEndpointPreparer(ctx, resourceGroupName, profileName, endpointName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "ListByEndpoint", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "ListByEndpoint", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByEndpointSender(req)
 	if err != nil {
 		result.olr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "ListByEndpoint", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "ListByEndpoint", resp, "Failure sending request")
 		return
 	}
 
 	result.olr, err = client.ListByEndpointResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "ListByEndpoint", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "ListByEndpoint", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByEndpointPreparer prepares the ListByEndpoint request.
-func (client OriginsGroupClient) ListByEndpointPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
+func (client OriginsClient) ListByEndpointPreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"profileName":       autorest.Encode("path", profileName),
@@ -201,14 +201,14 @@ func (client OriginsGroupClient) ListByEndpointPreparer(ctx context.Context, res
 
 // ListByEndpointSender sends the ListByEndpoint request. The method will close the
 // http.Response Body if it receives an error.
-func (client OriginsGroupClient) ListByEndpointSender(req *http.Request) (*http.Response, error) {
+func (client OriginsClient) ListByEndpointSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByEndpointResponder handles the response to the ListByEndpoint request. The method always
 // closes the http.Response Body.
-func (client OriginsGroupClient) ListByEndpointResponder(resp *http.Response) (result OriginListResult, err error) {
+func (client OriginsClient) ListByEndpointResponder(resp *http.Response) (result OriginListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -220,10 +220,10 @@ func (client OriginsGroupClient) ListByEndpointResponder(resp *http.Response) (r
 }
 
 // listByEndpointNextResults retrieves the next set of results, if any.
-func (client OriginsGroupClient) listByEndpointNextResults(ctx context.Context, lastResults OriginListResult) (result OriginListResult, err error) {
+func (client OriginsClient) listByEndpointNextResults(ctx context.Context, lastResults OriginListResult) (result OriginListResult, err error) {
 	req, err := lastResults.originListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "listByEndpointNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "listByEndpointNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -231,19 +231,19 @@ func (client OriginsGroupClient) listByEndpointNextResults(ctx context.Context, 
 	resp, err := client.ListByEndpointSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "listByEndpointNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.OriginsClient", "listByEndpointNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByEndpointResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "listByEndpointNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "listByEndpointNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByEndpointComplete enumerates all values, automatically crossing page boundaries as required.
-func (client OriginsGroupClient) ListByEndpointComplete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result OriginListResultIterator, err error) {
+func (client OriginsClient) ListByEndpointComplete(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result OriginListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsGroupClient.ListByEndpoint")
+		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsClient.ListByEndpoint")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -263,9 +263,9 @@ func (client OriginsGroupClient) ListByEndpointComplete(ctx context.Context, res
 // endpointName - name of the endpoint under the profile which is unique globally.
 // originName - name of the origin which is unique within the endpoint.
 // originUpdateProperties - origin properties
-func (client OriginsGroupClient) Update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties OriginUpdateParameters) (result OriginsGroupUpdateFuture, err error) {
+func (client OriginsClient) Update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties OriginUpdateParameters) (result OriginsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsGroupClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -279,18 +279,18 @@ func (client OriginsGroupClient) Update(ctx context.Context, resourceGroupName s
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("cdn.OriginsGroupClient", "Update", err.Error())
+		return result, validation.NewError("cdn.OriginsClient", "Update", err.Error())
 	}
 
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, profileName, endpointName, originName, originUpdateProperties)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsGroupClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -298,7 +298,7 @@ func (client OriginsGroupClient) Update(ctx context.Context, resourceGroupName s
 }
 
 // UpdatePreparer prepares the Update request.
-func (client OriginsGroupClient) UpdatePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties OriginUpdateParameters) (*http.Request, error) {
+func (client OriginsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, profileName string, endpointName string, originName string, originUpdateProperties OriginUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"endpointName":      autorest.Encode("path", endpointName),
 		"originName":        autorest.Encode("path", originName),
@@ -324,7 +324,7 @@ func (client OriginsGroupClient) UpdatePreparer(ctx context.Context, resourceGro
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client OriginsGroupClient) UpdateSender(req *http.Request) (future OriginsGroupUpdateFuture, err error) {
+func (client OriginsClient) UpdateSender(req *http.Request) (future OriginsUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -337,7 +337,7 @@ func (client OriginsGroupClient) UpdateSender(req *http.Request) (future Origins
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client OriginsGroupClient) UpdateResponder(resp *http.Response) (result Origin, err error) {
+func (client OriginsClient) UpdateResponder(resp *http.Response) (result Origin, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -3449,7 +3449,7 @@ func (sp *ServicePrincipal) UnmarshalJSON(body []byte) error {
 // PATCH
 type ServicePrincipalBase struct {
 	// AccountEnabled - whether or not the service principal account is enabled
-	AccountEnabled *string `json:"accountEnabled,omitempty"`
+	AccountEnabled *bool `json:"accountEnabled,omitempty"`
 	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
 	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
 	// KeyCredentials - The collection of key credentials associated with the service principal.
@@ -3467,7 +3467,7 @@ type ServicePrincipalCreateParameters struct {
 	// AppID - The application ID.
 	AppID *string `json:"appId,omitempty"`
 	// AccountEnabled - whether or not the service principal account is enabled
-	AccountEnabled *string `json:"accountEnabled,omitempty"`
+	AccountEnabled *bool `json:"accountEnabled,omitempty"`
 	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
 	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
 	// KeyCredentials - The collection of key credentials associated with the service principal.
@@ -3626,7 +3626,7 @@ type ServicePrincipalObjectResult struct {
 // ServicePrincipalUpdateParameters request parameters for update an existing service principal.
 type ServicePrincipalUpdateParameters struct {
 	// AccountEnabled - whether or not the service principal account is enabled
-	AccountEnabled *string `json:"accountEnabled,omitempty"`
+	AccountEnabled *bool `json:"accountEnabled,omitempty"`
 	// AppRoleAssignmentRequired - Specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
 	AppRoleAssignmentRequired *bool `json:"appRoleAssignmentRequired,omitempty"`
 	// KeyCredentials - The collection of key credentials associated with the service principal.

@@ -162,21 +162,6 @@ func PossibleKindValues() []Kind {
 	return []Kind{KindDataConnection, KindEventGrid, KindEventHub}
 }
 
-// NameAvailable enumerates the values for name available.
-type NameAvailable string
-
-const (
-	// Available ...
-	Available NameAvailable = "Available"
-	// NotAvailable ...
-	NotAvailable NameAvailable = "NotAvailable"
-)
-
-// PossibleNameAvailableValues returns an array of possible values for the NameAvailable const type.
-func PossibleNameAvailableValues() []NameAvailable {
-	return []NameAvailable{Available, NotAvailable}
-}
-
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -196,6 +181,21 @@ const (
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Creating, Deleting, Failed, Running, Succeeded}
+}
+
+// Reason enumerates the values for reason.
+type Reason string
+
+const (
+	// AlreadyExists ...
+	AlreadyExists Reason = "AlreadyExists"
+	// Invalid ...
+	Invalid Reason = "Invalid"
+)
+
+// PossibleReasonValues returns an array of possible values for the Reason const type.
+func PossibleReasonValues() []Reason {
+	return []Reason{AlreadyExists, Invalid}
 }
 
 // State enumerates the values for state.
@@ -271,17 +271,6 @@ type AzureSku struct {
 	Tier *string `json:"tier,omitempty"`
 }
 
-// CheckNameAvailabilityResult the result returned from a check name availability request.
-type CheckNameAvailabilityResult struct {
-	autorest.Response `json:"-"`
-	// NameAvailable - Specifies whether or not the name is available. Possible values include: 'Available', 'NotAvailable'
-	NameAvailable NameAvailable `json:"nameAvailable,omitempty"`
-	// Name - The name that was checked.
-	Name *string `json:"name,omitempty"`
-	// Message - Message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.
-	Message *string `json:"message,omitempty"`
-}
-
 // CheckNameResult the result returned from a check name availability request.
 type CheckNameResult struct {
 	autorest.Response `json:"-"`
@@ -291,6 +280,8 @@ type CheckNameResult struct {
 	Name *string `json:"name,omitempty"`
 	// Message - Message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.
 	Message *string `json:"message,omitempty"`
+	// Reason - Message providing the reason why the given name is invalid. Possible values include: 'Invalid', 'AlreadyExists'
+	Reason Reason `json:"reason,omitempty"`
 }
 
 // CloudError an error response from Kusto.

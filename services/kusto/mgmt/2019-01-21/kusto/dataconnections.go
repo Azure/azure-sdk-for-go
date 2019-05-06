@@ -49,7 +49,7 @@ func NewDataConnectionsClientWithBaseURI(baseURI string, subscriptionID string) 
 // clusterName - the name of the Kusto cluster.
 // databaseName - the name of the database in the Kusto cluster.
 // dataConnectionName - the name of the data connection.
-func (client DataConnectionsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest) (result CheckNameAvailabilityResult, err error) {
+func (client DataConnectionsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest) (result CheckNameResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectionsClient.CheckNameAvailability")
 		defer func() {
@@ -121,7 +121,7 @@ func (client DataConnectionsClient) CheckNameAvailabilitySender(req *http.Reques
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
 // closes the http.Response Body.
-func (client DataConnectionsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameAvailabilityResult, err error) {
+func (client DataConnectionsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

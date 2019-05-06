@@ -92,13 +92,6 @@ const (
 	KindEventHub       Kind = original.KindEventHub
 )
 
-type NameAvailable = original.NameAvailable
-
-const (
-	Available    NameAvailable = original.Available
-	NotAvailable NameAvailable = original.NotAvailable
-)
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -107,6 +100,13 @@ const (
 	Failed    ProvisioningState = original.Failed
 	Running   ProvisioningState = original.Running
 	Succeeded ProvisioningState = original.Succeeded
+)
+
+type Reason = original.Reason
+
+const (
+	AlreadyExists Reason = original.AlreadyExists
+	Invalid       Reason = original.Invalid
 )
 
 type State = original.State
@@ -129,7 +129,6 @@ type AzureResourceSku = original.AzureResourceSku
 type AzureSku = original.AzureSku
 type BaseClient = original.BaseClient
 type BasicDataConnection = original.BasicDataConnection
-type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type CheckNameResult = original.CheckNameResult
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -239,11 +238,11 @@ func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
-func PossibleNameAvailableValues() []NameAvailable {
-	return original.PossibleNameAvailableValues()
-}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleReasonValues() []Reason {
+	return original.PossibleReasonValues()
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()

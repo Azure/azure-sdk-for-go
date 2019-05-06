@@ -1017,7 +1017,10 @@ func (client BlobContainersClient) LeaseResponder(resp *http.Response) (result L
 // insensitive.
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-func (client BlobContainersClient) List(ctx context.Context, resourceGroupName string, accountName string) (result ListContainerItems, err error) {
+// skipToken - optional. Continuation token for the list operation.
+// maxpagesize - optional. Specified maximum number of containers that can be included in the list.
+// filter - optional. When specified, only container names starting with the filter will be listed.
+func (client BlobContainersClient) List(ctx context.Context, resourceGroupName string, accountName string, skipToken string, maxpagesize string, filter string) (result ListContainerItems, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BlobContainersClient.List")
 		defer func() {
@@ -1041,7 +1044,7 @@ func (client BlobContainersClient) List(ctx context.Context, resourceGroupName s
 		return result, validation.NewError("storage.BlobContainersClient", "List", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, resourceGroupName, accountName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, accountName, skipToken, maxpagesize, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storage.BlobContainersClient", "List", nil, "Failure preparing request")
 		return
@@ -1063,7 +1066,7 @@ func (client BlobContainersClient) List(ctx context.Context, resourceGroupName s
 }
 
 // ListPreparer prepares the List request.
-func (client BlobContainersClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+func (client BlobContainersClient) ListPreparer(ctx context.Context, resourceGroupName string, accountName string, skipToken string, maxpagesize string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1073,6 +1076,15 @@ func (client BlobContainersClient) ListPreparer(ctx context.Context, resourceGro
 	const APIVersion = "2019-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(skipToken) > 0 {
+		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
+	}
+	if len(maxpagesize) > 0 {
+		queryParameters["$maxpagesize"] = autorest.Encode("query", maxpagesize)
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 
 	preparer := autorest.CreatePreparer(

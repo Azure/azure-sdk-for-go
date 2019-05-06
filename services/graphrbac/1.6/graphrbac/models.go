@@ -3054,7 +3054,7 @@ func (ra *ResourceAccess) UnmarshalJSON(body []byte) error {
 type ServicePrincipal struct {
 	autorest.Response `json:"-"`
 	// AccountEnabled - whether or not the service principal account is enabled
-	AccountEnabled *string `json:"accountEnabled,omitempty"`
+	AccountEnabled *bool `json:"accountEnabled,omitempty"`
 	// AlternativeNames - alternative names
 	AlternativeNames *[]string `json:"alternativeNames,omitempty"`
 	// AppDisplayName - READ-ONLY; The display name exposed by the associated application.
@@ -3213,7 +3213,7 @@ func (sp *ServicePrincipal) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "accountEnabled":
 			if v != nil {
-				var accountEnabled string
+				var accountEnabled bool
 				err = json.Unmarshal(*v, &accountEnabled)
 				if err != nil {
 					return err

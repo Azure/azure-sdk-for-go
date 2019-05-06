@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## `v29.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| cdn | 2019-04-15 |
+| customproviders | 2018-09-01-preview |
+| formrecognizer | v1.0 |
+| inkrecognizer | v1.0 |
+| portal | 2015-11-01-preview |
+| runtime | luis |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| insights | 2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01 |
+| locks | 2016-09-01 |
+| sql | 2014-04-01<br/>2017-10-01-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-01-01 |
+| containerservice | 2019-04-30 |
+| graphrbac | 1.6 |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview |
+| storage | 2019-04-01 |
+
 ## `v28.1.0`
 
 Fixed build issue in legacy storage package affecting some consumers.

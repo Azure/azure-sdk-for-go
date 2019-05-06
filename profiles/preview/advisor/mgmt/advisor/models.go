@@ -54,6 +54,7 @@ const (
 	Warning Risk = original.Warning
 )
 
+type ARMErrorResponse = original.ARMErrorResponse
 type ARMErrorResponseBody = original.ARMErrorResponseBody
 type BaseClient = original.BaseClient
 type ConfigData = original.ConfigData

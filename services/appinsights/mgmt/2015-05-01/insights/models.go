@@ -1764,8 +1764,26 @@ type WorkItemCreateConfiguration struct {
 	ConnectorID *string `json:"ConnectorId,omitempty"`
 	// ConnectorDataConfiguration - Serialized JSON object for detailed properties
 	ConnectorDataConfiguration *string `json:"ConnectorDataConfiguration,omitempty"`
-	// ValidateOnly - Boolean indicating validate only
-	ValidateOnly *bool `json:"ValidateOnly,omitempty"`
+	// ValidateOnly - True or false string indicating validate only
+	ValidateOnly *string `json:"ValidateOnly,omitempty"`
 	// WorkItemProperties - Custom work item properties
-	WorkItemProperties *string `json:"WorkItemProperties,omitempty"`
+	WorkItemProperties map[string]*string `json:"WorkItemProperties"`
+}
+
+// MarshalJSON is the custom marshaler for WorkItemCreateConfiguration.
+func (wicc WorkItemCreateConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wicc.ConnectorID != nil {
+		objectMap["ConnectorId"] = wicc.ConnectorID
+	}
+	if wicc.ConnectorDataConfiguration != nil {
+		objectMap["ConnectorDataConfiguration"] = wicc.ConnectorDataConfiguration
+	}
+	if wicc.ValidateOnly != nil {
+		objectMap["ValidateOnly"] = wicc.ValidateOnly
+	}
+	if wicc.WorkItemProperties != nil {
+		objectMap["WorkItemProperties"] = wicc.WorkItemProperties
+	}
+	return json.Marshal(objectMap)
 }

@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -1040,9 +1041,9 @@ func (ap AssignmentProperties) MarshalJSON() ([]byte, error) {
 // AssignmentStatus the status of a blueprint assignment. This field is readonly.
 type AssignmentStatus struct {
 	// TimeCreated - READ-ONLY; Creation time of this blueprint definition.
-	TimeCreated *string `json:"timeCreated,omitempty"`
+	TimeCreated *date.Time `json:"timeCreated,omitempty"`
 	// LastModified - READ-ONLY; Last modified time of this blueprint definition.
-	LastModified *string `json:"lastModified,omitempty"`
+	LastModified *date.Time `json:"lastModified,omitempty"`
 }
 
 // AzureResourceBase common properties for all Azure resources.
@@ -2028,9 +2029,9 @@ type ResourceProviderOperationList struct {
 // ResourceStatusBase shared status properties between all blueprint resources.
 type ResourceStatusBase struct {
 	// TimeCreated - READ-ONLY; Creation time of this blueprint definition.
-	TimeCreated *string `json:"timeCreated,omitempty"`
+	TimeCreated *date.Time `json:"timeCreated,omitempty"`
 	// LastModified - READ-ONLY; Last modified time of this blueprint definition.
-	LastModified *string `json:"lastModified,omitempty"`
+	LastModified *date.Time `json:"lastModified,omitempty"`
 }
 
 // RoleAssignmentArtifact blueprint artifact that applies a Role assignment.
@@ -2219,9 +2220,9 @@ func (sbp SharedBlueprintProperties) MarshalJSON() ([]byte, error) {
 // Status the status of the blueprint. This field is readonly.
 type Status struct {
 	// TimeCreated - READ-ONLY; Creation time of this blueprint definition.
-	TimeCreated *string `json:"timeCreated,omitempty"`
+	TimeCreated *date.Time `json:"timeCreated,omitempty"`
 	// LastModified - READ-ONLY; Last modified time of this blueprint definition.
-	LastModified *string `json:"lastModified,omitempty"`
+	LastModified *date.Time `json:"lastModified,omitempty"`
 }
 
 // TemplateArtifact blueprint artifact that deploys a Resource Manager template.

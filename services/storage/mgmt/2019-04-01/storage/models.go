@@ -1719,11 +1719,14 @@ func (lci *ListContainerItem) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ListContainerItems the list of blob containers.
+// ListContainerItems response schema. Contains list of blobs returned, and if paging is requested or
+// required, a URL to next page of containers.
 type ListContainerItems struct {
 	autorest.Response `json:"-"`
-	// Value - The list of blob containers.
+	// Value - READ-ONLY; List of blobs containers returned.
 	Value *[]ListContainerItem `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers exceed maximum page size.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // ListServiceSasResponse the List service SAS credentials operation response.

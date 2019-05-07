@@ -62,12 +62,19 @@ type ConfigurationListResult = original.ConfigurationListResult
 type ConfigurationListResultIterator = original.ConfigurationListResultIterator
 type ConfigurationListResultPage = original.ConfigurationListResultPage
 type ConfigurationsClient = original.ConfigurationsClient
+type MetadataEntity = original.MetadataEntity
+type MetadataEntityListResult = original.MetadataEntityListResult
+type MetadataEntityListResultIterator = original.MetadataEntityListResultIterator
+type MetadataEntityListResultPage = original.MetadataEntityListResultPage
+type MetadataEntityProperties = original.MetadataEntityProperties
+type MetadataSupportedValueDetail = original.MetadataSupportedValueDetail
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type OperationEntityListResultIterator = original.OperationEntityListResultIterator
 type OperationEntityListResultPage = original.OperationEntityListResultPage
 type OperationsClient = original.OperationsClient
+type RecommendationMetadataClient = original.RecommendationMetadataClient
 type RecommendationProperties = original.RecommendationProperties
 type RecommendationsClient = original.RecommendationsClient
 type Resource = original.Resource
@@ -75,6 +82,7 @@ type ResourceRecommendationBase = original.ResourceRecommendationBase
 type ResourceRecommendationBaseListResult = original.ResourceRecommendationBaseListResult
 type ResourceRecommendationBaseListResultIterator = original.ResourceRecommendationBaseListResultIterator
 type ResourceRecommendationBaseListResultPage = original.ResourceRecommendationBaseListResultPage
+type SetObject = original.SetObject
 type ShortDescription = original.ShortDescription
 type SuppressionContract = original.SuppressionContract
 type SuppressionContractListResult = original.SuppressionContractListResult
@@ -98,6 +106,12 @@ func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
 func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
 	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewMetadataEntityListResultIterator(page MetadataEntityListResultPage) MetadataEntityListResultIterator {
+	return original.NewMetadataEntityListResultIterator(page)
+}
+func NewMetadataEntityListResultPage(getNextPage func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)) MetadataEntityListResultPage {
+	return original.NewMetadataEntityListResultPage(getNextPage)
+}
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
 }
@@ -109,6 +123,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRecommendationMetadataClient(subscriptionID string) RecommendationMetadataClient {
+	return original.NewRecommendationMetadataClient(subscriptionID)
+}
+func NewRecommendationMetadataClientWithBaseURI(baseURI string, subscriptionID string) RecommendationMetadataClient {
+	return original.NewRecommendationMetadataClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRecommendationsClient(subscriptionID string) RecommendationsClient {
 	return original.NewRecommendationsClient(subscriptionID)

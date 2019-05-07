@@ -183,6 +183,21 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Creating, Deleting, Failed, Running, Succeeded}
 }
 
+// Reason enumerates the values for reason.
+type Reason string
+
+const (
+	// AlreadyExists ...
+	AlreadyExists Reason = "AlreadyExists"
+	// Invalid ...
+	Invalid Reason = "Invalid"
+)
+
+// PossibleReasonValues returns an array of possible values for the Reason const type.
+func PossibleReasonValues() []Reason {
+	return []Reason{AlreadyExists, Invalid}
+}
+
 // State enumerates the values for state.
 type State string
 
@@ -265,6 +280,8 @@ type CheckNameResult struct {
 	Name *string `json:"name,omitempty"`
 	// Message - Message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.
 	Message *string `json:"message,omitempty"`
+	// Reason - Message providing the reason why the given name is invalid. Possible values include: 'Invalid', 'AlreadyExists'
+	Reason Reason `json:"reason,omitempty"`
 }
 
 // CloudError an error response from Kusto.
@@ -1079,6 +1096,15 @@ func (dc DataConnection) AsDataConnection() (*DataConnection, bool) {
 // AsBasicDataConnection is the BasicDataConnection implementation for DataConnection.
 func (dc DataConnection) AsBasicDataConnection() (BasicDataConnection, bool) {
 	return &dc, true
+}
+
+// DataConnectionCheckNameRequest the result returned from a data connections check name availability
+// request.
+type DataConnectionCheckNameRequest struct {
+	// Name - Data Connection name.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of resource, Microsoft.Kusto/clusters/databases/dataConnections.
+	Type *string `json:"type,omitempty"`
 }
 
 // DataConnectionListResult the list Kusto data connections operation response.

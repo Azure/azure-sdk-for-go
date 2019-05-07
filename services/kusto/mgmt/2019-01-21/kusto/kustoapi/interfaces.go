@@ -56,6 +56,7 @@ var _ DatabasesClientAPI = (*kusto.DatabasesClient)(nil)
 
 // DataConnectionsClientAPI contains the set of methods on the DataConnectionsClient type.
 type DataConnectionsClientAPI interface {
+	CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName kusto.DataConnectionCheckNameRequest) (result kusto.CheckNameResult, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters kusto.BasicDataConnection) (result kusto.DataConnectionsCreateOrUpdateFuture, err error)
 	DataConnectionValidationMethod(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters kusto.DataConnectionValidation) (result kusto.DataConnectionValidationListResult, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string) (result kusto.DataConnectionsDeleteFuture, err error)

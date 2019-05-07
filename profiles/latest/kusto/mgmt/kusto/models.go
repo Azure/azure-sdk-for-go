@@ -102,6 +102,13 @@ const (
 	Succeeded ProvisioningState = original.Succeeded
 )
 
+type Reason = original.Reason
+
+const (
+	AlreadyExists Reason = original.AlreadyExists
+	Invalid       Reason = original.Invalid
+)
+
 type State = original.State
 
 const (
@@ -137,6 +144,7 @@ type ClustersStartFuture = original.ClustersStartFuture
 type ClustersStopFuture = original.ClustersStopFuture
 type ClustersUpdateFuture = original.ClustersUpdateFuture
 type DataConnection = original.DataConnection
+type DataConnectionCheckNameRequest = original.DataConnectionCheckNameRequest
 type DataConnectionListResult = original.DataConnectionListResult
 type DataConnectionModel = original.DataConnectionModel
 type DataConnectionValidation = original.DataConnectionValidation
@@ -232,6 +240,9 @@ func PossibleKindValues() []Kind {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleReasonValues() []Reason {
+	return original.PossibleReasonValues()
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()

@@ -1,4 +1,4 @@
-// Package formrecognizer implements the Azure ARM Formrecognizer service API version v1.0-preview.
+// Package formrecognizer implements the Azure ARM Formrecognizer service API version 1.0-preview.
 //
 // Extracts information from forms and images into structured data based on a model created by a set of representative
 // training forms.

@@ -3325,6 +3325,8 @@ type EndpointProperties struct {
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 	// DeliveryPolicy - A policy that specifies the delivery rules to be used for an endpoint.
 	DeliveryPolicy *EndpointPropertiesUpdateParametersDeliveryPolicy `json:"deliveryPolicy,omitempty"`
+	// WebApplicationFirewallPolicyLink - Defines the Web Application Firewall policy for the endpoint (if applicable)
+	WebApplicationFirewallPolicyLink *EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
 }
 
 // EndpointPropertiesUpdateParameters the JSON object containing endpoint update parameters.
@@ -3351,6 +3353,8 @@ type EndpointPropertiesUpdateParameters struct {
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 	// DeliveryPolicy - A policy that specifies the delivery rules to be used for an endpoint.
 	DeliveryPolicy *EndpointPropertiesUpdateParametersDeliveryPolicy `json:"deliveryPolicy,omitempty"`
+	// WebApplicationFirewallPolicyLink - Defines the Web Application Firewall policy for the endpoint (if applicable)
+	WebApplicationFirewallPolicyLink *EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
 }
 
 // EndpointPropertiesUpdateParametersDeliveryPolicy a policy that specifies the delivery rules to be used
@@ -3360,6 +3364,13 @@ type EndpointPropertiesUpdateParametersDeliveryPolicy struct {
 	Description *string `json:"description,omitempty"`
 	// Rules - A list of the delivery rules.
 	Rules *[]DeliveryRule `json:"rules,omitempty"`
+}
+
+// EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink defines the Web Application Firewall
+// policy for the endpoint (if applicable)
+type EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink struct {
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
 }
 
 // EndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running

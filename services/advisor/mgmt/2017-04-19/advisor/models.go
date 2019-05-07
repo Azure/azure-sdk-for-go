@@ -84,11 +84,6 @@ func PossibleRiskValues() []Risk {
 	return []Risk{Error, None, Warning}
 }
 
-// ARMErrorResponse ...
-type ARMErrorResponse struct {
-	Error *ARMErrorResponseBody `json:"error,omitempty"`
-}
-
 // ARMErrorResponseBody ARM error response body.
 type ARMErrorResponseBody struct {
 	autorest.Response `json:"-"`

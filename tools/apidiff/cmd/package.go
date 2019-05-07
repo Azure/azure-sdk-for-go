@@ -15,12 +15,15 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 	"github.com/spf13/cobra"
 )
+
+var dirMode bool
 
 var packageCmd = &cobra.Command{
 	Use:   "package <package dir> (<base commit> <target commit(s)>) | (<commit sequence>)",
@@ -41,12 +44,17 @@ Commit sequences must be comma-delimited.`,
 }
 
 // split into its own func as we can't call os.Exit from it (the defer won't get executed)
-func thePackageCmd(args []string) (rpt commitPkgReport, err error) {
+func thePackageCmd(args []string) (rs reportStatus, err error) {
+	if dirMode {
+		return packageCmdDirMode(args)
+	}
+
 	cloneRepo, err := processArgsAndClone(args)
 	if err != nil {
 		return
 	}
 
+	var rpt commitPkgReport
 	rpt.CommitsReports = map[string]pkgReport{}
 	worker := func(pkgDir string, cloneRepo repo.WorkingTree, baseCommit, targetCommit string) error {
 		// lhs
@@ -82,6 +90,7 @@ func thePackageCmd(args []string) (rpt commitPkgReport, err error) {
 }
 
 func init() {
+	packageCmd.PersistentFlags().BoolVarP(&dirMode, "directories", "i", false, "compares packages in two different directories")
 	rootCmd.AddCommand(packageCmd)
 }
 
@@ -97,4 +106,21 @@ func getContentForCommit(wt repo.WorkingTree, dir, commit string) (cnt exports.C
 		err = fmt.Errorf("failed to get exports for commit '%s': %s", commit, err)
 	}
 	return
+}
+
+func packageCmdDirMode(args []string) (rs reportStatus, err error) {
+	if len(args) != 2 {
+		return nil, errors.New("directories mode requires two arguments")
+	}
+	lhs, err := exports.Get(args[0])
+	if err != nil {
+		return nil, fmt.Errorf("failed to get exports for package '%s': %s", args[0], err)
+	}
+	rhs, err := exports.Get(args[1])
+	if err != nil {
+		return nil, fmt.Errorf("failed to get exports for package '%s': %s", args[1], err)
+	}
+	r := getPkgReport(lhs, rhs)
+	err = printReport(r)
+	return r, err
 }

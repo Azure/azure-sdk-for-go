@@ -124,14 +124,10 @@ const (
 type PropertyType = original.PropertyType
 
 const (
-	SystemBoolean PropertyType = original.SystemBoolean
-	SystemByte    PropertyType = original.SystemByte
-	SystemChar    PropertyType = original.SystemChar
-	SystemDouble  PropertyType = original.SystemDouble
-	SystemInt16   PropertyType = original.SystemInt16
-	SystemInt32   PropertyType = original.SystemInt32
-	SystemSingle  PropertyType = original.SystemSingle
-	SystemString  PropertyType = original.SystemString
+	Boolean PropertyType = original.Boolean
+	Integer PropertyType = original.Integer
+	Number  PropertyType = original.Number
+	String  PropertyType = original.String
 )
 
 type Protocol = original.Protocol
@@ -192,8 +188,8 @@ const (
 type ValueType = original.ValueType
 
 const (
-	IPCidr ValueType = original.IPCidr
-	String ValueType = original.String
+	ValueTypeIPCidr ValueType = original.ValueTypeIPCidr
+	ValueTypeString ValueType = original.ValueTypeString
 )
 
 type AadConnectivityState1 = original.AadConnectivityState1
@@ -320,6 +316,8 @@ type OperationsClient = original.OperationsClient
 type PlaybookConfiguration = original.PlaybookConfiguration
 type PlaybookConfigurationAction = original.PlaybookConfigurationAction
 type PlaybookConfigurationList = original.PlaybookConfigurationList
+type PlaybookConfigurationListIterator = original.PlaybookConfigurationListIterator
+type PlaybookConfigurationListPage = original.PlaybookConfigurationListPage
 type PlaybookConfigurationMetadata = original.PlaybookConfigurationMetadata
 type PlaybookConfigurationProperties = original.PlaybookConfigurationProperties
 type PlaybookConfigurationRuleSet = original.PlaybookConfigurationRuleSet
@@ -550,6 +548,12 @@ func NewOperationsClient(subscriptionID string, ascLocation string) OperationsCl
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewPlaybookConfigurationListIterator(page PlaybookConfigurationListPage) PlaybookConfigurationListIterator {
+	return original.NewPlaybookConfigurationListIterator(page)
+}
+func NewPlaybookConfigurationListPage(getNextPage func(context.Context, PlaybookConfigurationList) (PlaybookConfigurationList, error)) PlaybookConfigurationListPage {
+	return original.NewPlaybookConfigurationListPage(getNextPage)
 }
 func NewPlaybookConfigurationsClient(subscriptionID string, ascLocation string) PlaybookConfigurationsClient {
 	return original.NewPlaybookConfigurationsClient(subscriptionID, ascLocation)

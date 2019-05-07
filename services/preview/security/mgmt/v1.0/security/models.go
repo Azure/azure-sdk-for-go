@@ -231,27 +231,19 @@ func PossiblePricingTierValues() []PricingTier {
 type PropertyType string
 
 const (
-	// SystemBoolean ...
-	SystemBoolean PropertyType = "System.Boolean"
-	// SystemByte ...
-	SystemByte PropertyType = "System.Byte"
-	// SystemChar ...
-	SystemChar PropertyType = "System.Char"
-	// SystemDouble ...
-	SystemDouble PropertyType = "System.Double"
-	// SystemInt16 ...
-	SystemInt16 PropertyType = "System.Int16"
-	// SystemInt32 ...
-	SystemInt32 PropertyType = "System.Int32"
-	// SystemSingle ...
-	SystemSingle PropertyType = "System.Single"
-	// SystemString ...
-	SystemString PropertyType = "System.String"
+	// Boolean ...
+	Boolean PropertyType = "boolean"
+	// Integer ...
+	Integer PropertyType = "integer"
+	// Number ...
+	Number PropertyType = "number"
+	// String ...
+	String PropertyType = "string"
 )
 
 // PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
 func PossiblePropertyTypeValues() []PropertyType {
-	return []PropertyType{SystemBoolean, SystemByte, SystemChar, SystemDouble, SystemInt16, SystemInt32, SystemSingle, SystemString}
+	return []PropertyType{Boolean, Integer, Number, String}
 }
 
 // Protocol enumerates the values for protocol.
@@ -375,15 +367,15 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 type ValueType string
 
 const (
-	// IPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
-	IPCidr ValueType = "IpCidr"
-	// String Any string value.
-	String ValueType = "String"
+	// ValueTypeIPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
+	ValueTypeIPCidr ValueType = "IpCidr"
+	// ValueTypeString Any string value.
+	ValueTypeString ValueType = "String"
 )
 
 // PossibleValueTypeValues returns an array of possible values for the ValueType const type.
 func PossibleValueTypeValues() []ValueType {
-	return []ValueType{IPCidr, String}
+	return []ValueType{ValueTypeIPCidr, ValueTypeString}
 }
 
 // AadConnectivityState1 describes an Azure resource with kind
@@ -1379,7 +1371,7 @@ type AllowedConnectionsResourceProperties struct {
 type AllowlistCustomAlertRule struct {
 	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
 	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -2747,7 +2739,7 @@ type DataExportSettingProperties struct {
 type DenylistCustomAlertRule struct {
 	// DenylistValues - The values to deny. The format of the values depends on the rule type.
 	DenylistValues *[]string `json:"denylistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -4241,7 +4233,7 @@ type Kind struct {
 
 // ListCustomAlertRule a List custom alert rule
 type ListCustomAlertRule struct {
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -4571,6 +4563,143 @@ type PlaybookConfigurationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// PlaybookConfigurationListIterator provides access to a complete listing of PlaybookConfiguration values.
+type PlaybookConfigurationListIterator struct {
+	i    int
+	page PlaybookConfigurationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PlaybookConfigurationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PlaybookConfigurationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PlaybookConfigurationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PlaybookConfigurationListIterator) Response() PlaybookConfigurationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PlaybookConfigurationListIterator) Value() PlaybookConfiguration {
+	if !iter.page.NotDone() {
+		return PlaybookConfiguration{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PlaybookConfigurationListIterator type.
+func NewPlaybookConfigurationListIterator(page PlaybookConfigurationListPage) PlaybookConfigurationListIterator {
+	return PlaybookConfigurationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (pcl PlaybookConfigurationList) IsEmpty() bool {
+	return pcl.Value == nil || len(*pcl.Value) == 0
+}
+
+// playbookConfigurationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pcl PlaybookConfigurationList) playbookConfigurationListPreparer(ctx context.Context) (*http.Request, error) {
+	if pcl.NextLink == nil || len(to.String(pcl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pcl.NextLink)))
+}
+
+// PlaybookConfigurationListPage contains a page of PlaybookConfiguration values.
+type PlaybookConfigurationListPage struct {
+	fn  func(context.Context, PlaybookConfigurationList) (PlaybookConfigurationList, error)
+	pcl PlaybookConfigurationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PlaybookConfigurationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pcl)
+	if err != nil {
+		return err
+	}
+	page.pcl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PlaybookConfigurationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PlaybookConfigurationListPage) NotDone() bool {
+	return !page.pcl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PlaybookConfigurationListPage) Response() PlaybookConfigurationList {
+	return page.pcl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PlaybookConfigurationListPage) Values() []PlaybookConfiguration {
+	if page.pcl.IsEmpty() {
+		return nil
+	}
+	return *page.pcl.Value
+}
+
+// Creates a new instance of the PlaybookConfigurationListPage type.
+func NewPlaybookConfigurationListPage(getNextPage func(context.Context, PlaybookConfigurationList) (PlaybookConfigurationList, error)) PlaybookConfigurationListPage {
+	return PlaybookConfigurationListPage{fn: getNextPage}
+}
+
 // PlaybookConfigurationMetadata the metadata of the playbook configuration resource.
 type PlaybookConfigurationMetadata struct {
 	// CreatedDateTimeUtc - READ-ONLY; The playbook configuration creation date.
@@ -4627,7 +4756,7 @@ type PlaybookConfigurationSource struct {
 type PlaybookConfigurationTriggeringRule struct {
 	// PropertyJPath - The JPath of the entity model property that should be checked.
 	PropertyJPath *string `json:"propertyJPath,omitempty"`
-	// PropertyType - The data type of the compared operands. Possible values include: 'SystemString', 'SystemBoolean', 'SystemByte', 'SystemInt16', 'SystemInt32', 'SystemSingle', 'SystemDouble', 'SystemChar'
+	// PropertyType - The data type of the compared operands. Possible values include: 'String', 'Integer', 'Number', 'Boolean'
 	PropertyType PropertyType `json:"propertyType,omitempty"`
 	// ExpectedValue - The expected value.
 	ExpectedValue *string `json:"expectedValue,omitempty"`

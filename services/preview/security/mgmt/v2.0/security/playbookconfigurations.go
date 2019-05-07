@@ -310,13 +310,13 @@ func (client PlaybookConfigurationsClient) GetResponder(resp *http.Response) (re
 }
 
 // List get all playbook configurations in a subscription.
-func (client PlaybookConfigurationsClient) List(ctx context.Context) (result PlaybookConfigurationList, err error) {
+func (client PlaybookConfigurationsClient) List(ctx context.Context) (result PlaybookConfigurationListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationsClient.List")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.pcl.Response.Response != nil {
+				sc = result.pcl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -327,6 +327,7 @@ func (client PlaybookConfigurationsClient) List(ctx context.Context) (result Pla
 		return result, validation.NewError("security.PlaybookConfigurationsClient", "List", err.Error())
 	}
 
+	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "List", nil, "Failure preparing request")
@@ -335,12 +336,12 @@ func (client PlaybookConfigurationsClient) List(ctx context.Context) (result Pla
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.pcl.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result.pcl, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "List", resp, "Failure responding to request")
 	}
@@ -387,17 +388,54 @@ func (client PlaybookConfigurationsClient) ListResponder(resp *http.Response) (r
 	return
 }
 
+// listNextResults retrieves the next set of results, if any.
+func (client PlaybookConfigurationsClient) listNextResults(ctx context.Context, lastResults PlaybookConfigurationList) (result PlaybookConfigurationList, err error) {
+	req, err := lastResults.playbookConfigurationListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client PlaybookConfigurationsClient) ListComplete(ctx context.Context) (result PlaybookConfigurationListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationsClient.List")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.List(ctx)
+	return
+}
+
 // ListByResourceGroup get all playbook configurations in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-func (client PlaybookConfigurationsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result PlaybookConfigurationList, err error) {
+func (client PlaybookConfigurationsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result PlaybookConfigurationListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationsClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.pcl.Response.Response != nil {
+				sc = result.pcl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -412,6 +450,7 @@ func (client PlaybookConfigurationsClient) ListByResourceGroup(ctx context.Conte
 		return result, validation.NewError("security.PlaybookConfigurationsClient", "ListByResourceGroup", err.Error())
 	}
 
+	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -420,12 +459,12 @@ func (client PlaybookConfigurationsClient) ListByResourceGroup(ctx context.Conte
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.pcl.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByResourceGroupResponder(resp)
+	result.pcl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
@@ -463,6 +502,134 @@ func (client PlaybookConfigurationsClient) ListByResourceGroupSender(req *http.R
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
 func (client PlaybookConfigurationsClient) ListByResourceGroupResponder(resp *http.Response) (result PlaybookConfigurationList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client PlaybookConfigurationsClient) listByResourceGroupNextResults(ctx context.Context, lastResults PlaybookConfigurationList) (result PlaybookConfigurationList, err error) {
+	req, err := lastResults.playbookConfigurationListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client PlaybookConfigurationsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result PlaybookConfigurationListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationsClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	return
+}
+
+// Patch patch an existing playbook configuration. Supports only Tags
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// playbookConfigurationName - the playbook Configuration name.
+// playbookConfiguration - the playbook configuration resource
+func (client PlaybookConfigurationsClient) Patch(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration PlaybookConfiguration) (result PlaybookConfiguration, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationsClient.Patch")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.PlaybookConfigurationsClient", "Patch", err.Error())
+	}
+
+	req, err := client.PatchPreparer(ctx, resourceGroupName, playbookConfigurationName, playbookConfiguration)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "Patch", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.PatchSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "Patch", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.PatchResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.PlaybookConfigurationsClient", "Patch", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// PatchPreparer prepares the Patch request.
+func (client PlaybookConfigurationsClient) PatchPreparer(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration PlaybookConfiguration) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"playbookConfigurationName": autorest.Encode("path", playbookConfigurationName),
+		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
+		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/playbookConfigurations/{playbookConfigurationName}", pathParameters),
+		autorest.WithJSON(playbookConfiguration),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PatchSender sends the Patch request. The method will close the
+// http.Response Body if it receives an error.
+func (client PlaybookConfigurationsClient) PatchSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// PatchResponder handles the response to the Patch request. The method always
+// closes the http.Response Body.
+func (client PlaybookConfigurationsClient) PatchResponder(resp *http.Response) (result PlaybookConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

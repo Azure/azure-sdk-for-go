@@ -397,7 +397,6 @@ type EndpointListResultPage = original.EndpointListResultPage
 type EndpointProperties = original.EndpointProperties
 type EndpointPropertiesUpdateParameters = original.EndpointPropertiesUpdateParameters
 type EndpointPropertiesUpdateParametersDeliveryPolicy = original.EndpointPropertiesUpdateParametersDeliveryPolicy
-type EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink = original.EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink
 type EndpointUpdateParameters = original.EndpointUpdateParameters
 type EndpointsClient = original.EndpointsClient
 type EndpointsCreateFuture = original.EndpointsCreateFuture

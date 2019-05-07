@@ -42,12 +42,14 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
 type Solution = original.Solution
+type SolutionPatch = original.SolutionPatch
 type SolutionPlan = original.SolutionPlan
 type SolutionProperties = original.SolutionProperties
 type SolutionPropertiesList = original.SolutionPropertiesList
 type SolutionsClient = original.SolutionsClient
 type SolutionsCreateOrUpdateFuture = original.SolutionsCreateOrUpdateFuture
 type SolutionsDeleteFuture = original.SolutionsDeleteFuture
+type SolutionsUpdateFuture = original.SolutionsUpdateFuture
 
 func New(subscriptionID string, providerName string, resourceType string, resourceName string) BaseClient {
 	return original.New(subscriptionID, providerName, resourceType, resourceName)

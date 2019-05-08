@@ -3982,7 +3982,7 @@ type ManagedRuleSet struct {
 	RuleSetType *string `json:"ruleSetType,omitempty"`
 	// RuleSetVersion - Defines the version of the rule set to use.
 	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
-	// AnomalyScore - Verizon only : If the rule set supports anomaly detection mode, this descibes the threshold for blocking requests.
+	// AnomalyScore - Verizon only : If the rule set supports anomaly detection mode, this describes the threshold for blocking requests.
 	AnomalyScore *int32 `json:"anomalyScore,omitempty"`
 	// RuleGroupOverrides - Defines the rule overrides to apply to the rule set.
 	RuleGroupOverrides *[]ManagedRuleGroupOverride `json:"ruleGroupOverrides,omitempty"`

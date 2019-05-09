@@ -118,7 +118,9 @@ type WorkItemConfigurationsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigurationProperties insights.WorkItemCreateConfiguration) (result insights.WorkItemConfiguration, err error)
 	Delete(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string) (result insights.SetObject, err error)
 	GetDefault(ctx context.Context, resourceGroupName string, resourceName string) (result insights.WorkItemConfiguration, err error)
+	GetItem(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string) (result insights.WorkItemConfiguration, err error)
 	List(ctx context.Context, resourceGroupName string, resourceName string) (result insights.WorkItemConfigurationsListResult, err error)
+	UpdateItem(ctx context.Context, resourceGroupName string, resourceName string, workItemConfigID string, workItemConfigurationProperties insights.WorkItemCreateConfiguration) (result insights.WorkItemConfiguration, err error)
 }
 
 var _ WorkItemConfigurationsClientAPI = (*insights.WorkItemConfigurationsClient)(nil)

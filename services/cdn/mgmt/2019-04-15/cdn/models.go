@@ -569,6 +569,8 @@ type SkuName string
 const (
 	// CustomVerizon ...
 	CustomVerizon SkuName = "Custom_Verizon"
+	// PremiumChinaCdn ...
+	PremiumChinaCdn SkuName = "Premium_ChinaCdn"
 	// PremiumVerizon ...
 	PremiumVerizon SkuName = "Premium_Verizon"
 	// StandardAkamai ...
@@ -583,7 +585,7 @@ const (
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
-	return []SkuName{CustomVerizon, PremiumVerizon, StandardAkamai, StandardChinaCdn, StandardMicrosoft, StandardVerizon}
+	return []SkuName{CustomVerizon, PremiumChinaCdn, PremiumVerizon, StandardAkamai, StandardChinaCdn, StandardMicrosoft, StandardVerizon}
 }
 
 // Transform enumerates the values for transform.
@@ -4887,7 +4889,7 @@ func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUs
 
 // Sku the pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
 type Sku struct {
-	// Name - Name of the pricing tier. Possible values include: 'StandardVerizon', 'PremiumVerizon', 'CustomVerizon', 'StandardAkamai', 'StandardChinaCdn', 'StandardMicrosoft'
+	// Name - Name of the pricing tier. Possible values include: 'StandardVerizon', 'PremiumVerizon', 'CustomVerizon', 'StandardAkamai', 'StandardChinaCdn', 'StandardMicrosoft', 'PremiumChinaCdn'
 	Name SkuName `json:"name,omitempty"`
 }
 

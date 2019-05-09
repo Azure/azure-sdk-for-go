@@ -287,6 +287,7 @@ type SkuName = original.SkuName
 
 const (
 	CustomVerizon     SkuName = original.CustomVerizon
+	PremiumChinaCdn   SkuName = original.PremiumChinaCdn
 	PremiumVerizon    SkuName = original.PremiumVerizon
 	StandardAkamai    SkuName = original.StandardAkamai
 	StandardChinaCdn  SkuName = original.StandardChinaCdn

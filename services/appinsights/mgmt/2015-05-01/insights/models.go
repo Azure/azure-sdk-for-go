@@ -1764,8 +1764,8 @@ type WorkItemCreateConfiguration struct {
 	ConnectorID *string `json:"ConnectorId,omitempty"`
 	// ConnectorDataConfiguration - Serialized JSON object for detailed properties
 	ConnectorDataConfiguration *string `json:"ConnectorDataConfiguration,omitempty"`
-	// ValidateOnly - True or false string indicating validate only
-	ValidateOnly *string `json:"ValidateOnly,omitempty"`
+	// ValidateOnly - Boolean indicating validate only
+	ValidateOnly *bool `json:"ValidateOnly,omitempty"`
 	// WorkItemProperties - Custom work item properties
 	WorkItemProperties map[string]*string `json:"WorkItemProperties"`
 }

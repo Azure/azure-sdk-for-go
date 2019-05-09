@@ -4889,7 +4889,7 @@ func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUs
 
 // Sku the pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
 type Sku struct {
-	// Name - Name of the pricing tier. Possible values include: 'StandardVerizon', 'PremiumVerizon', 'CustomVerizon', 'StandardAkamai', 'StandardChinaCdn', 'PremiumChinaCdn', 'StandardMicrosoft'
+	// Name - Name of the pricing tier. Possible values include: 'StandardVerizon', 'PremiumVerizon', 'CustomVerizon', 'StandardAkamai', 'StandardChinaCdn', 'StandardMicrosoft', 'PremiumChinaCdn'
 	Name SkuName `json:"name,omitempty"`
 }
 

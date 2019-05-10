@@ -24,6 +24,14 @@ import (
 	"github.com/satori/go.uuid"
 )
 
+// RecommendationMetadataClientAPI contains the set of methods on the RecommendationMetadataClient type.
+type RecommendationMetadataClientAPI interface {
+	Get(ctx context.Context, name string) (result advisor.SetObject, err error)
+	List(ctx context.Context) (result advisor.MetadataEntityListResultPage, err error)
+}
+
+var _ RecommendationMetadataClientAPI = (*advisor.RecommendationMetadataClient)(nil)
+
 // ConfigurationsClientAPI contains the set of methods on the ConfigurationsClient type.
 type ConfigurationsClientAPI interface {
 	CreateInResourceGroup(ctx context.Context, configContract advisor.ConfigData, resourceGroup string) (result advisor.ARMErrorResponseBody, err error)

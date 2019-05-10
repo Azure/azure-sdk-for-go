@@ -9263,26 +9263,106 @@ func (sc *SchemaContract) UnmarshalJSON(body []byte) error {
 
 // SchemaContractProperties schema contract Properties.
 type SchemaContractProperties struct {
-	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml).
+	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml). </br> - `Swagger` Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` </br> - `WSDL` Schema use `application/vnd.ms-azure-apim.xsd+xml` </br> - `OpenApi` Schema use `application/vnd.oai.openapi.components+json` </br> - `WADL Schema` use `application/vnd.ms-azure-apim.wadl.grammars+xml`.
 	ContentType *string `json:"contentType,omitempty"`
-	// SchemaDocumentProperties - Properties of the Schema Document.
-	*SchemaDocumentProperties `json:"document,omitempty"`
+	// Document - Properties of the Schema Document.
+	Document interface{} `json:"document,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for SchemaContractProperties.
-func (scp SchemaContractProperties) MarshalJSON() ([]byte, error) {
+// SchemaCreateOrUpdateContract schema Contract details.
+type SchemaCreateOrUpdateContract struct {
+	// SchemaCreateOrUpdateProperties - Properties of the Schema.
+	*SchemaCreateOrUpdateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type for API Management resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SchemaCreateOrUpdateContract.
+func (scouc SchemaCreateOrUpdateContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if scp.ContentType != nil {
-		objectMap["contentType"] = scp.ContentType
-	}
-	if scp.SchemaDocumentProperties != nil {
-		objectMap["document"] = scp.SchemaDocumentProperties
+	if scouc.SchemaCreateOrUpdateProperties != nil {
+		objectMap["properties"] = scouc.SchemaCreateOrUpdateProperties
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for SchemaContractProperties struct.
-func (scp *SchemaContractProperties) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for SchemaCreateOrUpdateContract struct.
+func (scouc *SchemaCreateOrUpdateContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var schemaCreateOrUpdateProperties SchemaCreateOrUpdateProperties
+				err = json.Unmarshal(*v, &schemaCreateOrUpdateProperties)
+				if err != nil {
+					return err
+				}
+				scouc.SchemaCreateOrUpdateProperties = &schemaCreateOrUpdateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				scouc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				scouc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				scouc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SchemaCreateOrUpdateProperties API Schema create or update contract Properties.
+type SchemaCreateOrUpdateProperties struct {
+	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml). </br> - `Swagger` Schema use `application/vnd.ms-azure-apim.swagger.definitions+json` </br> - `WSDL` Schema use `application/vnd.ms-azure-apim.xsd+xml` </br> - `OpenApi` Schema use `application/vnd.oai.openapi.components+json` </br> - `WADL Schema` use `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+	ContentType *string `json:"contentType,omitempty"`
+	// SchemaDocumentProperties - Create or update Properties of the Schema Document.
+	*SchemaDocumentProperties `json:"document,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SchemaCreateOrUpdateProperties.
+func (scoup SchemaCreateOrUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scoup.ContentType != nil {
+		objectMap["contentType"] = scoup.ContentType
+	}
+	if scoup.SchemaDocumentProperties != nil {
+		objectMap["document"] = scoup.SchemaDocumentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SchemaCreateOrUpdateProperties struct.
+func (scoup *SchemaCreateOrUpdateProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -9297,7 +9377,7 @@ func (scp *SchemaContractProperties) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				scp.ContentType = &contentType
+				scoup.ContentType = &contentType
 			}
 		case "document":
 			if v != nil {
@@ -9306,7 +9386,7 @@ func (scp *SchemaContractProperties) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				scp.SchemaDocumentProperties = &schemaDocumentProperties
+				scoup.SchemaDocumentProperties = &schemaDocumentProperties
 			}
 		}
 	}
@@ -9959,7 +10039,7 @@ func (future *ServiceRestoreFuture) Result(client ServiceClient) (sr ServiceReso
 type ServiceSkuProperties struct {
 	// Name - Name of the Sku. Possible values include: 'SkuTypeDeveloper', 'SkuTypeStandard', 'SkuTypePremium', 'SkuTypeBasic', 'SkuTypeConsumption'
 	Name SkuType `json:"name,omitempty"`
-	// Capacity - Capacity of the SKU (number of deployed units of the SKU). The default value is 1.
+	// Capacity - Capacity of the SKU (number of deployed units of the SKU).
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 

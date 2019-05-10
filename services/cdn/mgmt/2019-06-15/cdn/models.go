@@ -4818,7 +4818,7 @@ type PolicySettings struct {
 	Mode PolicyMode `json:"mode,omitempty"`
 	// DefaultRedirectURL - If action type is redirect, this field represents the default redirect URL for the client.
 	DefaultRedirectURL *string `json:"defaultRedirectUrl,omitempty"`
-	// DefaultCustomBlockResponseStatusCode - If the action type is block, this field defines the default customer overridable response status code.
+	// DefaultCustomBlockResponseStatusCode - If the action type is block, this field defines the default customer overridable http response status code.
 	DefaultCustomBlockResponseStatusCode *int32 `json:"defaultCustomBlockResponseStatusCode,omitempty"`
 	// DefaultCustomBlockResponseBody - If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
 	DefaultCustomBlockResponseBody *string `json:"defaultCustomBlockResponseBody,omitempty"`

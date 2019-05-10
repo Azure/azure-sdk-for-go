@@ -16,17 +16,16 @@ package cmd
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
-	"strconv"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/versioner/internal/modinfo"
 	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 )
@@ -52,8 +51,7 @@ next latest major vesion and the go.mod file is updated.
 }
 
 var (
-	lhsExports exports.Content
-	rhsExports exports.Content
+	semverRegex = regexp.MustCompile(`v\d+\.\d+\.\d+$`)
 )
 
 // Execute executes the specified command.
@@ -64,68 +62,55 @@ func Execute() {
 }
 
 func theCommand(args []string) error {
+	// TODO: handle brand new module!!!
 	stage := filepath.Clean(args[0])
 	lmv, err := findLatestMajorVersion(stage)
 	if err != nil {
 		return fmt.Errorf("failed to find latest major version: %v", err)
 	}
-	if err = loadExports(lmv, stage); err != nil {
-		return fmt.Errorf("failed to load exports: %v", err)
+	mod, err := modinfo.GetModuleInfo(lmv, stage)
+	if err != nil {
+		return fmt.Errorf("failed to create module info: %v", err)
 	}
+	// TODO: no changelog for new module
 	if err = writeChangelog(stage); err != nil {
 		return fmt.Errorf("failed to write changelog: %v", err)
 	}
-	hasBreaks := hasBreakingChanges(lmv, stage)
-	// check if the LMV has a v2+ directory suffix
-	hasVer, err := regexp.MatchString(`v\d+$`, lmv)
-	if err != nil {
-		return fmt.Errorf("failed to check for major version suffix: %v", err)
-	}
-	dest := filepath.Dir(stage)
-	if hasBreaks {
-		// move staging to new LMV directory
-		v := 2
-		if hasVer {
-			s := string(lmv[len(lmv)-1])
-			v, err = strconv.Atoi(s)
-			if err != nil {
-				return fmt.Errorf("failed to convert '%s' to int: %v", s, err)
-			}
-			v++
-		}
+	if mod.BreakingChanges() {
 		// update the go.mod file with the new major version
-		ver := fmt.Sprintf("v%d", v)
+		ver := modinfo.FindVersionSuffix(mod.DestDir())
 		if err = updateGoModVer(stage, ver); err != nil {
 			return fmt.Errorf("failed to update go.mod file: %v", err)
 		}
-		dest = filepath.Join(dest, ver)
-		if err = os.Rename(stage, dest); err != nil {
-			return fmt.Errorf("failed to rename '%s' to '%s': %v", stage, dest, err)
+		// move staging to new LMV directory
+		if err = os.Rename(stage, mod.DestDir()); err != nil {
+			return fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
 		}
-		var tag string
+		/*var tag string
 		if tag, err = calculateModuleTag(true, true, dest); err != nil {
 			return fmt.Errorf("failed to calculate module tag: %v", err)
 		}
-		fmt.Printf("tag: %s\n", tag)
+		fmt.Printf("tag: %s\n", tag)*/
 		return nil
 	}
 	// move staging directory over the LMV by first deleting LMV then renaming stage
-	if hasVer {
+	if modinfo.HasVersionSuffix(lmv) {
 		if err = os.RemoveAll(lmv); err != nil {
 			return fmt.Errorf("failed to delete '%s': %v", lmv, err)
 		}
-		if err = os.Rename(stage, lmv); err != nil {
+		if err = os.Rename(stage, mod.DestDir()); err != nil {
 			return fmt.Errorf("failed to rename '%s' toi '%s': %v", stage, lmv, err)
 		}
-		var tag string
+		/*var tag string
 		if tag, err = calculateModuleTag(false, true, lmv); err != nil {
 			return fmt.Errorf("failed to calculate module tag: %v", err)
 		}
-		fmt.Printf("tag: %s\n", tag)
+		fmt.Printf("tag: %s\n", tag)*/
 		return nil
 	}
 	// for v1 it's a bit more complicated since stage is a subdir of LMV.
 	// first move stage to a temp dir outside of LMV, then remove LMV, then move temp to LMV
+	dest := filepath.Dir(stage)
 	temp := dest + "1temp"
 	if err = os.Rename(stage, temp); err != nil {
 		return fmt.Errorf("failed to rename '%s' to '%s': %v", stage, temp, err)
@@ -136,11 +121,11 @@ func theCommand(args []string) error {
 	if err = os.Rename(temp, dest); err != nil {
 		return fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
 	}
-	var tag string
+	/*var tag string
 	if tag, err = calculateModuleTag(false, false, dest); err != nil {
 		return fmt.Errorf("failed to calculate module tag: %v", err)
 	}
-	fmt.Printf("tag: %s\n", tag)
+	fmt.Printf("tag: %s\n", tag)*/
 	return nil
 }
 
@@ -184,36 +169,6 @@ func findLatestMajorVersion(stage string) (string, error) {
 	return dirs[len(dirs)-1], nil
 }
 
-// loads exported content in lhsExports and rhsExports vars
-func loadExports(lmv, stage string) error {
-	var err error
-	lhsExports, err = exports.Get(lmv)
-	if err != nil {
-		return fmt.Errorf("failed to get exports for package '%s': %s", lmv, err)
-	}
-	rhsExports, err = exports.Get(stage)
-	if err != nil {
-		return fmt.Errorf("failed to get exports for package '%s': %s", stage, err)
-	}
-	return nil
-}
-
-// returns true if the package in stage contains breaking changes
-func hasBreakingChanges(lmv, stage string) bool {
-	// check for changed content
-	if len(delta.GetConstTypeChanges(lhsExports, rhsExports)) > 0 ||
-		len(delta.GetFuncSigChanges(lhsExports, rhsExports)) > 0 ||
-		len(delta.GetInterfaceMethodSigChanges(lhsExports, rhsExports)) > 0 ||
-		len(delta.GetStructFieldChanges(lhsExports, rhsExports)) > 0 {
-		return true
-	}
-	// check for removed content
-	if removed := delta.GetExports(rhsExports, lhsExports); !removed.IsEmpty() {
-		return true
-	}
-	return false
-}
-
 // updates the module version inside the go.mod file
 func updateGoModVer(stage, newVer string) error {
 	goMod := filepath.Join(stage, "go.mod")
@@ -247,34 +202,22 @@ func writeChangelog(stage string) error {
 	return nil
 }
 
-// returns the appropriate module tag based on the package version info
-func calculateModuleTag(hasBreaks, hasVer bool, dest string) (string, error) {
-	// if this has breaking changes then it's simply the dest minus the repo path
-	// e.g. ~/work/src/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis/v2
-	// would return services/redis/mgmt/2018-03-01/redis/v2.0.0
-	tagPrefix := dest[strings.Index(dest, "github.com")+34:]
-	if hasBreaks {
-		return tagPrefix + ".0.0", nil
-	}
-	if !hasVer {
-		tagPrefix = tagPrefix + "/v1"
-	}
-	wt, err := repo.Get(dest)
+// returns a slice of tags for the specified repo and tag prefix
+func getTags(repoPath, tagPrefix string) ([]string, error) {
+	wt, err := repo.Get(repoPath)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	tags, err := wt.ListTags(tagPrefix + "*")
-	if err != nil {
-		return "", err
-	}
-	if len(tags) == 0 {
-		// this is v1.0.0
-		return tagPrefix + ".0.0", nil
-	}
-	regex := regexp.MustCompile(`v\d+\.\d+\.\d+$`)
+	return wt.ListTags(tagPrefix + "*")
+}
+
+// sorts module tags based on their semantic versions.
+// this is necessary because lexically sorted is not sufficient
+// due to v10.0.0 appearing before v2.0.0
+func sortModuleTagsBySemver(tags []string) {
 	sort.SliceStable(tags, func(i, j int) bool {
-		l := regex.FindString(tags[i])
-		r := regex.FindString(tags[j])
+		l := semverRegex.FindString(tags[i])
+		r := semverRegex.FindString(tags[j])
 		if l == "" || r == "" {
 			panic("semver missing in module tag!")
 		}
@@ -288,11 +231,53 @@ func calculateModuleTag(hasBreaks, hasVer bool, dest string) (string, error) {
 		}
 		return lv.LessThan(rv)
 	})
+}
+
+// returns the tag prefix for the specified package.
+// assumes repo root of github.com/Azure/azure-sdk-for-go/
+func getTagPrefix(pkgDir string) (string, error) {
+	// e.g. /work/src/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis/v2
+	// would return services/redis/mgmt/2018-03-01/redis/v2.0.0
+	const repoRoot = "github.com/Azure/azure-sdk-for-go/"
+	i := strings.Index(pkgDir, repoRoot)
+	if i < 0 {
+		return "", fmt.Errorf("didn't find '%s' in '%s'", repoRoot, pkgDir)
+	}
+	return pkgDir[i+len(repoRoot):], nil
+}
+
+// returns the appropriate module tag based on the package version info
+// tags - list of all current tags for the module
+func calculateModuleTag(tags []string, mod modinfo.Provider) (string, error) {
+	if mod.BreakingChanges() && !mod.VersionSuffix() {
+		return "", errors.New("package has breaking changes but directory has no version suffix")
+	}
+	tagPrefix, err := getTagPrefix(mod.DestDir())
+	if err != nil {
+		return "", err
+	}
+	// if this has breaking changes then it's simply the prefix as a new major version
+	if mod.BreakingChanges() {
+		return tagPrefix + ".0.0", nil
+	}
+	if !mod.VersionSuffix() {
+		tagPrefix = tagPrefix + "/v1"
+	}
+	if len(tags) == 0 {
+		// this is v1.0.0
+		return tagPrefix + ".0.0", nil
+	}
 	tag := tags[len(tags)-1]
-	v := regex.FindString(tag)
-	sv, _ := semver.NewVersion(v)
+	v := semverRegex.FindString(tag)
+	if v == "" {
+		return "", fmt.Errorf("didn't find semver in tag '%s'", tag)
+	}
+	sv, err := semver.NewVersion(v)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse semver: %v", err)
+	}
 	// for non-breaking changes determine if this is a minor or patch update.
-	if adds := delta.GetExports(lhsExports, rhsExports); !adds.IsEmpty() {
+	if mod.NewExports() {
 		// new exports, this is a minor update so bump minor version
 		n := sv.IncMinor()
 		sv = &n
@@ -301,5 +286,5 @@ func calculateModuleTag(hasBreaks, hasVer bool, dest string) (string, error) {
 		n := sv.IncPatch()
 		sv = &n
 	}
-	return strings.Replace(tag, v, sv.String(), 1), nil
+	return strings.Replace(tag, v, "v"+sv.String(), 1), nil
 }

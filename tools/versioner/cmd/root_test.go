@@ -23,6 +23,10 @@ import (
 )
 
 func Test_getTags(t *testing.T) {
+	if os.Getenv("TRAVIS") == "true" {
+		// travis does a shallow clone so tag count is not consistent
+		t.SkipNow()
+	}
 	cwd, err := os.Getwd()
 	if err != nil {
 		t.Fatalf("failed to get cwd: %v", err)

@@ -15,8 +15,10 @@
 package cmd
 
 import (
+	"bytes"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/tools/versioner/internal/modinfo"
@@ -215,5 +217,69 @@ func Test_findLatestMajorVersion(t *testing.T) {
 	}
 	if ver != "testdata/modb/v2" {
 		t.Fatalf("bad LMV %s", ver)
+	}
+}
+
+type byteBufferSeeker struct {
+	buf *bytes.Buffer
+}
+
+func (b byteBufferSeeker) Read(p []byte) (int, error) {
+	return b.buf.Read(p)
+}
+
+func (b byteBufferSeeker) Write(p []byte) (int, error) {
+	return b.buf.Write(p)
+}
+
+func (b byteBufferSeeker) Seek(offset int64, whence int) (int64, error) {
+	if offset != 0 && whence != 0 {
+		panic("seek only supports 0, 0")
+	}
+	b.buf.Reset()
+	return 0, nil
+}
+
+func Test_updateGoModVerA(t *testing.T) {
+	// updates from v1 to v2
+	const before = `module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo
+
+go 1.12
+`
+	buf := byteBufferSeeker{
+		buf: bytes.NewBuffer([]byte(before)),
+	}
+	err := updateGoModVer(buf, "v2")
+	if err != nil {
+		t.Fatalf("updateGoModVerA failed: %v", err)
+	}
+	const after = `module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2
+
+go 1.12
+`
+	if !strings.EqualFold(buf.buf.String(), after) {
+		t.Fatalf("bad go.mod update, epected %s got %s", after, buf.buf.String())
+	}
+}
+
+func Test_updateGoModVerB(t *testing.T) {
+	// updates from v2 to v3
+	const before = `module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2
+
+go 1.12
+`
+	buf := byteBufferSeeker{
+		buf: bytes.NewBuffer([]byte(before)),
+	}
+	err := updateGoModVer(buf, "v3")
+	if err != nil {
+		t.Fatalf("updateGoModVerA failed: %v", err)
+	}
+	const after = `module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v3
+
+go 1.12
+`
+	if !strings.EqualFold(buf.buf.String(), after) {
+		t.Fatalf("bad go.mod update, epected %s got %s", after, buf.buf.String())
 	}
 }

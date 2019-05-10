@@ -18,6 +18,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -78,8 +79,13 @@ func theCommand(args []string) error {
 	}
 	if mod.BreakingChanges() {
 		// update the go.mod file with the new major version
+		goMod := filepath.Join(stage, "go.mod")
+		file, err := os.OpenFile(goMod, os.O_RDWR, 0666)
+		if err != nil {
+			return fmt.Errorf("failed to open for read '%s': %v", goMod, err)
+		}
 		ver := modinfo.FindVersionSuffix(mod.DestDir())
-		if err = updateGoModVer(stage, ver); err != nil {
+		if err = updateGoModVer(file, ver); err != nil {
 			return fmt.Errorf("failed to update go.mod file: %v", err)
 		}
 		// move staging to new LMV directory
@@ -170,29 +176,26 @@ func findLatestMajorVersion(stage string) (string, error) {
 }
 
 // updates the module version inside the go.mod file
-func updateGoModVer(stage, newVer string) error {
-	goMod := filepath.Join(stage, "go.mod")
-	file, err := os.Open(goMod)
-	if err != nil {
-		return fmt.Errorf("failed to open for read '%s': %v", goMod, err)
-	}
-	scanner := bufio.NewScanner(file)
+func updateGoModVer(goMod io.ReadWriteSeeker, newVer string) error {
+	scanner := bufio.NewScanner(goMod)
 	scanner.Split(bufio.ScanLines)
 	lines := []string{}
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 	}
-	file.Close()
-	file, err = os.Create(goMod)
+	_, err := goMod.Seek(0, io.SeekStart)
 	if err != nil {
-		return fmt.Errorf("failed to open for write '%s': %v", goMod, err)
+		return fmt.Errorf("failed to seek to start: %v", err)
 	}
-	defer file.Close()
 	for _, line := range lines {
 		if strings.Index(line, "module") > -1 {
-			line = line + "/" + newVer
+			if modinfo.HasVersionSuffix(line) {
+				line = strings.Replace(line, "/"+modinfo.FindVersionSuffix(line), "/"+newVer, 1)
+			} else {
+				line = line + "/" + newVer
+			}
 		}
-		fmt.Fprintln(file, line)
+		fmt.Fprintln(goMod, line)
 	}
 	return nil
 }

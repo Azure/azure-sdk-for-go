@@ -21,7 +21,7 @@ import (
 
 func Test_ScenarioA(t *testing.T) {
 	// scenario A has no breaking changes, additive only
-	mod, err := GetModuleInfo("./testdata/scenarioa/foo", "./testdata/scenarioa/foo/stage")
+	mod, err := GetModuleInfo("../../testdata/scenarioa/foo", "../../testdata/scenarioa/foo/stage")
 	if err != nil {
 		t.Fatalf("failed to get module info: %v", err)
 	}
@@ -42,7 +42,7 @@ func Test_ScenarioA(t *testing.T) {
 
 func Test_ScenarioB(t *testing.T) {
 	// scenario B has a breaking change
-	mod, err := GetModuleInfo("./testdata/scenariob/foo", "./testdata/scenariob/foo/stage")
+	mod, err := GetModuleInfo("../../testdata/scenariob/foo", "../../testdata/scenariob/foo/stage")
 	if err != nil {
 		t.Fatalf("failed to get module info: %v", err)
 	}
@@ -63,7 +63,7 @@ func Test_ScenarioB(t *testing.T) {
 
 func Test_ScenarioC(t *testing.T) {
 	// scenario C has no new exports or breaking changes (function body/doc changes only)
-	mod, err := GetModuleInfo("./testdata/scenarioc/foo", "./testdata/scenarioc/foo/stage")
+	mod, err := GetModuleInfo("../../testdata/scenarioc/foo", "../../testdata/scenarioc/foo/stage")
 	if err != nil {
 		t.Fatalf("failed to get module info: %v", err)
 	}
@@ -84,7 +84,7 @@ func Test_ScenarioC(t *testing.T) {
 
 func Test_ScenarioD(t *testing.T) {
 	// scenario D has a breaking change on top of a v2 release
-	mod, err := GetModuleInfo("./testdata/scenariod/foo/v2", "./testdata/scenariod/foo/stage")
+	mod, err := GetModuleInfo("../../testdata/scenariod/foo/v2", "../../testdata/scenariod/foo/stage")
 	if err != nil {
 		t.Fatalf("failed to get module info: %v", err)
 	}
@@ -105,7 +105,7 @@ func Test_ScenarioD(t *testing.T) {
 
 func Test_ScenarioE(t *testing.T) {
 	// scenario E has a new export on top of a v2 release
-	mod, err := GetModuleInfo("./testdata/scenarioe/foo/v2", "./testdata/scenarioe/foo/stage")
+	mod, err := GetModuleInfo("../../testdata/scenarioe/foo/v2", "../../testdata/scenarioe/foo/stage")
 	if err != nil {
 		t.Fatalf("failed to get module info: %v", err)
 	}

@@ -7313,6 +7313,7 @@ type DeletedAppRestoreRequestProperties struct {
 
 // DeletedSite a deleted app.
 type DeletedSite struct {
+	autorest.Response `json:"-"`
 	// DeletedSiteProperties - DeletedSite resource specific properties
 	*DeletedSiteProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id.

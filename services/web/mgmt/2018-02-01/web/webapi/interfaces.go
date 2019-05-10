@@ -131,7 +131,9 @@ var _ CertificatesClientAPI = (*web.CertificatesClient)(nil)
 
 // DeletedWebAppsClientAPI contains the set of methods on the DeletedWebAppsClient type.
 type DeletedWebAppsClientAPI interface {
+	GetDeletedWebAppByLocation(ctx context.Context, location string, deletedSiteID string) (result web.DeletedSite, err error)
 	List(ctx context.Context) (result web.DeletedWebAppCollectionPage, err error)
+	ListByLocation(ctx context.Context, location string) (result web.DeletedWebAppCollectionPage, err error)
 }
 
 var _ DeletedWebAppsClientAPI = (*web.DeletedWebAppsClient)(nil)

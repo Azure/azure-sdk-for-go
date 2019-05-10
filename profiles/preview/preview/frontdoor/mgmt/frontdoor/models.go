@@ -211,6 +211,14 @@ const (
 	HTTPS Protocol = original.HTTPS
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+)
+
 type Query = original.Query
 
 const (
@@ -570,6 +578,9 @@ func PossiblePolicyResourceStateValues() []PolicyResourceState {
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleQueryValues() []Query {
 	return original.PossibleQueryValues()

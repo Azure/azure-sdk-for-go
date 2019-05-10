@@ -283,3 +283,11 @@ go 1.12
 		t.Fatalf("bad go.mod update, epected %s got %s", after, buf.buf.String())
 	}
 }
+
+func Test_theCommandImplMajor(t *testing.T) {
+	t.Fail()
+}
+
+func Test_theCommandImplMinor(t *testing.T) {
+	t.Fail()
+}

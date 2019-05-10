@@ -62,77 +62,98 @@ func Execute() {
 	}
 }
 
+// wrapper for cobra, prints tag to stdout
 func theCommand(args []string) error {
+	tag, err := theCommandImpl(args)
+	if err == nil {
+		fmt.Printf("tag: %s\n", tag)
+	}
+	return err
+}
+
+// does the actual work
+func theCommandImpl(args []string) (string, error) {
 	// TODO: handle brand new module!!!
 	stage := filepath.Clean(args[0])
 	lmv, err := findLatestMajorVersion(stage)
 	if err != nil {
-		return fmt.Errorf("failed to find latest major version: %v", err)
+		return "", fmt.Errorf("failed to find latest major version: %v", err)
 	}
 	mod, err := modinfo.GetModuleInfo(lmv, stage)
 	if err != nil {
-		return fmt.Errorf("failed to create module info: %v", err)
+		return "", fmt.Errorf("failed to create module info: %v", err)
 	}
 	// TODO: no changelog for new module
 	if err = writeChangelog(stage); err != nil {
-		return fmt.Errorf("failed to write changelog: %v", err)
+		return "", fmt.Errorf("failed to write changelog: %v", err)
 	}
+	var tag string
 	if mod.BreakingChanges() {
-		// update the go.mod file with the new major version
-		goMod := filepath.Join(stage, "go.mod")
-		file, err := os.OpenFile(goMod, os.O_RDWR, 0666)
-		if err != nil {
-			return fmt.Errorf("failed to open for read '%s': %v", goMod, err)
-		}
-		ver := modinfo.FindVersionSuffix(mod.DestDir())
-		if err = updateGoModVer(file, ver); err != nil {
-			return fmt.Errorf("failed to update go.mod file: %v", err)
-		}
-		// move staging to new LMV directory
-		if err = os.Rename(stage, mod.DestDir()); err != nil {
-			return fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
-		}
-		/*var tag string
-		if tag, err = calculateModuleTag(true, true, dest); err != nil {
-			return fmt.Errorf("failed to calculate module tag: %v", err)
-		}
-		fmt.Printf("tag: %s\n", tag)*/
-		return nil
+		tag, err = forSideBySideRelease(stage, mod)
+	} else {
+		tag, err = forInplaceUpdate(lmv, stage, mod)
+	}
+	return tag, err
+}
+
+// releases the module as a new side-by-side major version
+func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
+	// update the go.mod file with the new major version
+	goMod := filepath.Join(stage, "go.mod")
+	file, err := os.OpenFile(goMod, os.O_RDWR, 0666)
+	if err != nil {
+		return "", fmt.Errorf("failed to open for read '%s': %v", goMod, err)
+	}
+	ver := modinfo.FindVersionSuffix(mod.DestDir())
+	if err = updateGoModVer(file, ver); err != nil {
+		return "", fmt.Errorf("failed to update go.mod file: %v", err)
+	}
+	// move staging to new LMV directory
+	if err = os.Rename(stage, mod.DestDir()); err != nil {
+		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
+	}
+	var tag string
+	if tag, err = calculateModuleTag(nil, mod); err != nil {
+		return "", fmt.Errorf("failed to calculate module tag: %v", err)
+	}
+	return tag, nil
+}
+
+// releases the module as an in-place update (minor or patch)
+func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
+	// find existing tags for this module and create a new one
+	tags, err := getTags(lmv, "prefix")
+	if err != nil {
+		return "", fmt.Errorf("failed to retrieve tags: %v", err)
+	}
+	var tag string
+	if tag, err = calculateModuleTag(tags, mod); err != nil {
+		return "", fmt.Errorf("failed to calculate module tag: %v", err)
 	}
 	// move staging directory over the LMV by first deleting LMV then renaming stage
 	if modinfo.HasVersionSuffix(lmv) {
-		if err = os.RemoveAll(lmv); err != nil {
-			return fmt.Errorf("failed to delete '%s': %v", lmv, err)
+		if err := os.RemoveAll(lmv); err != nil {
+			return "", fmt.Errorf("failed to delete '%s': %v", lmv, err)
 		}
-		if err = os.Rename(stage, mod.DestDir()); err != nil {
-			return fmt.Errorf("failed to rename '%s' toi '%s': %v", stage, lmv, err)
+		if err := os.Rename(stage, mod.DestDir()); err != nil {
+			return "", fmt.Errorf("failed to rename '%s' toi '%s': %v", stage, lmv, err)
 		}
-		/*var tag string
-		if tag, err = calculateModuleTag(false, true, lmv); err != nil {
-			return fmt.Errorf("failed to calculate module tag: %v", err)
-		}
-		fmt.Printf("tag: %s\n", tag)*/
-		return nil
+		return tag, nil
 	}
 	// for v1 it's a bit more complicated since stage is a subdir of LMV.
 	// first move stage to a temp dir outside of LMV, then remove LMV, then move temp to LMV
 	dest := filepath.Dir(stage)
 	temp := dest + "1temp"
-	if err = os.Rename(stage, temp); err != nil {
-		return fmt.Errorf("failed to rename '%s' to '%s': %v", stage, temp, err)
+	if err := os.Rename(stage, temp); err != nil {
+		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, temp, err)
 	}
-	if err = os.RemoveAll(dest); err != nil {
-		return fmt.Errorf("failed to delete '%s': %v", dest, err)
+	if err := os.RemoveAll(dest); err != nil {
+		return "", fmt.Errorf("failed to delete '%s': %v", dest, err)
 	}
-	if err = os.Rename(temp, dest); err != nil {
-		return fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
+	if err := os.Rename(temp, dest); err != nil {
+		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
 	}
-	/*var tag string
-	if tag, err = calculateModuleTag(false, false, dest); err != nil {
-		return fmt.Errorf("failed to calculate module tag: %v", err)
-	}
-	fmt.Printf("tag: %s\n", tag)*/
-	return nil
+	return tag, nil
 }
 
 // returns the absolute path to the latest major version based on the provided staging directory.

@@ -1,4 +1,4 @@
-// Package cdn implements the Azure ARM Cdn service API version 2019-06-15.
+// Package cdn implements the Azure ARM Cdn service API version .
 //
 // Cdn Management Client
 package cdn

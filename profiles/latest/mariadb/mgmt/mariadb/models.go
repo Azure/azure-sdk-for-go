@@ -91,6 +91,13 @@ const (
 	SslEnforcementEnumEnabled  SslEnforcementEnum = original.SslEnforcementEnumEnabled
 )
 
+type StorageAutogrow = original.StorageAutogrow
+
+const (
+	StorageAutogrowDisabled StorageAutogrow = original.StorageAutogrowDisabled
+	StorageAutogrowEnabled  StorageAutogrow = original.StorageAutogrowEnabled
+)
+
 type VirtualNetworkRuleState = original.VirtualNetworkRuleState
 
 const (
@@ -272,6 +279,9 @@ func PossibleSkuTierValues() []SkuTier {
 }
 func PossibleSslEnforcementEnumValues() []SslEnforcementEnum {
 	return original.PossibleSslEnforcementEnumValues()
+}
+func PossibleStorageAutogrowValues() []StorageAutogrow {
+	return original.PossibleStorageAutogrowValues()
 }
 func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
 	return original.PossibleVirtualNetworkRuleStateValues()

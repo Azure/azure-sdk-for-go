@@ -528,7 +528,7 @@ type OriginsClient = original.OriginsClient
 type OriginsUpdateFuture = original.OriginsUpdateFuture
 type PoliciesClient = original.PoliciesClient
 type PoliciesCreateOrUpdateFuture = original.PoliciesCreateOrUpdateFuture
-type PoliciesDeleteFuture = original.PoliciesDeleteFuture
+type PoliciesUpdateFuture = original.PoliciesUpdateFuture
 type PolicySettings = original.PolicySettings
 type PostArgsMatchConditionParameters = original.PostArgsMatchConditionParameters
 type Profile = original.Profile
@@ -576,6 +576,7 @@ type WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicy
 type WebApplicationFirewallPolicyList = original.WebApplicationFirewallPolicyList
 type WebApplicationFirewallPolicyListIterator = original.WebApplicationFirewallPolicyListIterator
 type WebApplicationFirewallPolicyListPage = original.WebApplicationFirewallPolicyListPage
+type WebApplicationFirewallPolicyPatchParameters = original.WebApplicationFirewallPolicyPatchParameters
 type WebApplicationFirewallPolicyProperties = original.WebApplicationFirewallPolicyProperties
 
 func New(subscriptionID string, subscriptionID1 string) BaseClient {

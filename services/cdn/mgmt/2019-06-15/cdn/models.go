@@ -4787,26 +4787,32 @@ func (future *PoliciesCreateOrUpdateFuture) Result(client PoliciesClient) (wafp 
 	return
 }
 
-// PoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// PoliciesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type PoliciesDeleteFuture struct {
+type PoliciesUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *PoliciesDeleteFuture) Result(client PoliciesClient) (ar autorest.Response, err error) {
+func (future *PoliciesUpdateFuture) Result(client PoliciesClient) (wafp WebApplicationFirewallPolicy, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.PoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "cdn.PoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("cdn.PoliciesDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("cdn.PoliciesUpdateFuture")
 		return
 	}
-	ar.Response = future.Response()
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if wafp.Response.Response, err = future.GetResult(sender); err == nil && wafp.Response.Response.StatusCode != http.StatusNoContent {
+		wafp, err = client.UpdateResponder(wafp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.PoliciesUpdateFuture", "Result", wafp.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 
@@ -6012,6 +6018,22 @@ func (page WebApplicationFirewallPolicyListPage) Values() []WebApplicationFirewa
 // Creates a new instance of the WebApplicationFirewallPolicyListPage type.
 func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
 	return WebApplicationFirewallPolicyListPage{fn: getNextPage}
+}
+
+// WebApplicationFirewallPolicyPatchParameters properties required to update a
+// CdnWebApplicationFirewallPolicy.
+type WebApplicationFirewallPolicyPatchParameters struct {
+	// Tags - CdnWebApplicationFirewallPolicy tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicyPatchParameters.
+func (wafppp WebApplicationFirewallPolicyPatchParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafppp.Tags != nil {
+		objectMap["tags"] = wafppp.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // WebApplicationFirewallPolicyProperties defines CDN web application firewall policy properties.

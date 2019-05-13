@@ -20,6 +20,7 @@ package cdnapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2019-06-15/cdn"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
@@ -108,9 +109,10 @@ var _ EdgeNodesClientAPI = (*cdn.EdgeNodesClient)(nil)
 // PoliciesClientAPI contains the set of methods on the PoliciesClient type.
 type PoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicy cdn.WebApplicationFirewallPolicy) (result cdn.PoliciesCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, policyName string) (result cdn.PoliciesDeleteFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, policyName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, policyName string) (result cdn.WebApplicationFirewallPolicy, err error)
 	List(ctx context.Context, resourceGroupName string) (result cdn.WebApplicationFirewallPolicyListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicyPatchParameters cdn.WebApplicationFirewallPolicyPatchParameters) (result cdn.PoliciesUpdateFuture, err error)
 }
 
 var _ PoliciesClientAPI = (*cdn.PoliciesClient)(nil)

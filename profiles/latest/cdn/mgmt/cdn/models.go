@@ -274,6 +274,14 @@ const (
 	ServerNameIndication ProtocolType = original.ServerNameIndication
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+)
+
 type QueryStringCachingBehavior = original.QueryStringCachingBehavior
 
 const (
@@ -767,6 +775,9 @@ func PossibleProfileResourceStateValues() []ProfileResourceState {
 }
 func PossibleProtocolTypeValues() []ProtocolType {
 	return original.PossibleProtocolTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleQueryStringCachingBehaviorValues() []QueryStringCachingBehavior {
 	return original.PossibleQueryStringCachingBehaviorValues()

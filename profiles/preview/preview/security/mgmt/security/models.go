@@ -37,6 +37,13 @@ const (
 	NotLicensed AadConnectivityState = original.NotLicensed
 )
 
+type ActionType = original.ActionType
+
+const (
+	ActionTypeLogicApp                    ActionType = original.ActionTypeLogicApp
+	ActionTypePlaybookConfigurationAction ActionType = original.ActionTypePlaybookConfigurationAction
+)
+
 type AlertNotifications = original.AlertNotifications
 
 const (
@@ -235,6 +242,7 @@ type AutoProvisioningSettingProperties = original.AutoProvisioningSettingPropert
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
 type BaseClient = original.BaseClient
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
+type BasicPlaybookConfigurationAction = original.BasicPlaybookConfigurationAction
 type CefExternalSecuritySolution = original.CefExternalSecuritySolution
 type CefSolutionProperties = original.CefSolutionProperties
 type CloudError = original.CloudError
@@ -315,6 +323,7 @@ type OperationListPage = original.OperationListPage
 type OperationsClient = original.OperationsClient
 type PlaybookConfiguration = original.PlaybookConfiguration
 type PlaybookConfigurationAction = original.PlaybookConfigurationAction
+type PlaybookConfigurationActionLogicApp = original.PlaybookConfigurationActionLogicApp
 type PlaybookConfigurationList = original.PlaybookConfigurationList
 type PlaybookConfigurationListIterator = original.PlaybookConfigurationListIterator
 type PlaybookConfigurationListPage = original.PlaybookConfigurationListPage
@@ -656,6 +665,9 @@ func NewWorkspaceSettingsClientWithBaseURI(baseURI string, subscriptionID string
 }
 func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return original.PossibleAadConnectivityStateValues()
+}
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
 }
 func PossibleAlertNotificationsValues() []AlertNotifications {
 	return original.PossibleAlertNotificationsValues()

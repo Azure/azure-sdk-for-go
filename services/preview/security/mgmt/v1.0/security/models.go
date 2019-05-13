@@ -49,6 +49,21 @@ func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return []AadConnectivityState{Connected, Discovered, NotLicensed}
 }
 
+// ActionType enumerates the values for action type.
+type ActionType string
+
+const (
+	// ActionTypeLogicApp ...
+	ActionTypeLogicApp ActionType = "LogicApp"
+	// ActionTypePlaybookConfigurationAction ...
+	ActionTypePlaybookConfigurationAction ActionType = "PlaybookConfigurationAction"
+)
+
+// PossibleActionTypeValues returns an array of possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{ActionTypeLogicApp, ActionTypePlaybookConfigurationAction}
+}
+
 // AlertNotifications enumerates the values for alert notifications.
 type AlertNotifications string
 
@@ -4544,14 +4559,119 @@ func (pc *PlaybookConfiguration) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BasicPlaybookConfigurationAction the action that should be triggered.
+type BasicPlaybookConfigurationAction interface {
+	AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool)
+	AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool)
+}
+
 // PlaybookConfigurationAction the action that should be triggered.
 type PlaybookConfigurationAction struct {
-	// ResourceID - The triggered resource id.
-	ResourceID *string `json:"resourceId,omitempty"`
-	// ResourceProviderNamespace - The resource provider name.
-	ResourceProviderNamespace *string `json:"resourceProviderNamespace,omitempty"`
+	// ActionType - Possible values include: 'ActionTypePlaybookConfigurationAction', 'ActionTypeLogicApp'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+func unmarshalBasicPlaybookConfigurationAction(body []byte) (BasicPlaybookConfigurationAction, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["actionType"] {
+	case string(ActionTypeLogicApp):
+		var pcala PlaybookConfigurationActionLogicApp
+		err := json.Unmarshal(body, &pcala)
+		return pcala, err
+	default:
+		var pca PlaybookConfigurationAction
+		err := json.Unmarshal(body, &pca)
+		return pca, err
+	}
+}
+func unmarshalBasicPlaybookConfigurationActionArray(body []byte) ([]BasicPlaybookConfigurationAction, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	pcaArray := make([]BasicPlaybookConfigurationAction, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		pca, err := unmarshalBasicPlaybookConfigurationAction(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		pcaArray[index] = pca
+	}
+	return pcaArray, nil
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) MarshalJSON() ([]byte, error) {
+	pca.ActionType = ActionTypePlaybookConfigurationAction
+	objectMap := make(map[string]interface{})
+	if pca.ActionType != "" {
+		objectMap["actionType"] = pca.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsPlaybookConfigurationActionLogicApp is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool) {
+	return nil, false
+}
+
+// AsPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool) {
+	return &pca, true
+}
+
+// AsBasicPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsBasicPlaybookConfigurationAction() (BasicPlaybookConfigurationAction, bool) {
+	return &pca, true
+}
+
+// PlaybookConfigurationActionLogicApp the logic app action that should be triggered.
+type PlaybookConfigurationActionLogicApp struct {
+	// LogicAppResourceID - The triggered resource id.
+	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
 	// URI - The uri that should be triggered by an Http GET request.
 	URI *string `json:"uri,omitempty"`
+	// ActionType - Possible values include: 'ActionTypePlaybookConfigurationAction', 'ActionTypeLogicApp'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) MarshalJSON() ([]byte, error) {
+	pcala.ActionType = ActionTypeLogicApp
+	objectMap := make(map[string]interface{})
+	if pcala.LogicAppResourceID != nil {
+		objectMap["logicAppResourceId"] = pcala.LogicAppResourceID
+	}
+	if pcala.URI != nil {
+		objectMap["uri"] = pcala.URI
+	}
+	if pcala.ActionType != "" {
+		objectMap["actionType"] = pcala.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsPlaybookConfigurationActionLogicApp is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool) {
+	return &pcala, true
+}
+
+// AsPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool) {
+	return nil, false
+}
+
+// AsBasicPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsBasicPlaybookConfigurationAction() (BasicPlaybookConfigurationAction, bool) {
+	return &pcala, true
 }
 
 // PlaybookConfigurationList list of playbook configurations response.
@@ -4725,7 +4845,75 @@ type PlaybookConfigurationProperties struct {
 	// Sources - A collection of the source event types which evaluate the playbook configuration set of rules.
 	Sources *[]PlaybookConfigurationSource `json:"sources,omitempty"`
 	// Actions - A collection of the actions which are triggered if all the configured rule set evaluation is true.
-	Actions *[]PlaybookConfigurationAction `json:"actions,omitempty"`
+	Actions *[]BasicPlaybookConfigurationAction `json:"actions,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PlaybookConfigurationProperties struct.
+func (pcp *PlaybookConfigurationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				pcp.Description = &description
+			}
+		case "isEnabled":
+			if v != nil {
+				var isEnabled bool
+				err = json.Unmarshal(*v, &isEnabled)
+				if err != nil {
+					return err
+				}
+				pcp.IsEnabled = &isEnabled
+			}
+		case "metadata":
+			if v != nil {
+				var metadata PlaybookConfigurationMetadata
+				err = json.Unmarshal(*v, &metadata)
+				if err != nil {
+					return err
+				}
+				pcp.Metadata = &metadata
+			}
+		case "scopes":
+			if v != nil {
+				var scopes []PlaybookConfigurationScope
+				err = json.Unmarshal(*v, &scopes)
+				if err != nil {
+					return err
+				}
+				pcp.Scopes = &scopes
+			}
+		case "sources":
+			if v != nil {
+				var sources []PlaybookConfigurationSource
+				err = json.Unmarshal(*v, &sources)
+				if err != nil {
+					return err
+				}
+				pcp.Sources = &sources
+			}
+		case "actions":
+			if v != nil {
+				actions, err := unmarshalBasicPlaybookConfigurationActionArray(*v)
+				if err != nil {
+					return err
+				}
+				pcp.Actions = &actions
+			}
+		}
+	}
+
+	return nil
 }
 
 // PlaybookConfigurationRuleSet a rule set which evaluates all its rules upon an event interception.

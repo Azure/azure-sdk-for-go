@@ -332,29 +332,6 @@ func PossibleX509StoreNameValues() []X509StoreName {
 	return []X509StoreName{AddressBook, AuthRoot, CertificateAuthority, Disallowed, My, Root, TrustedPeople, TrustedPublisher}
 }
 
-// ApplicationDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ApplicationDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationDeleteFuture) Result(client ApplicationClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of
 // its children entities.
 type ApplicationHealthPolicy struct {
@@ -401,35 +378,6 @@ type ApplicationParameter struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// ApplicationPatchFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ApplicationPatchFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationPatchFuture) Result(client ApplicationClient) (aru ApplicationResourceUpdate, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPatchFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationPatchFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if aru.Response.Response, err = future.GetResult(sender); err == nil && aru.Response.Response.StatusCode != http.StatusNoContent {
-		aru, err = client.PatchResponder(aru.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPatchFuture", "Result", aru.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // ApplicationProperties the application resource properties.
 type ApplicationProperties struct {
 	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
@@ -447,38 +395,8 @@ type ApplicationProperties struct {
 	Metrics                   *[]ApplicationMetricDescription `json:"metrics,omitempty"`
 }
 
-// ApplicationPutFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ApplicationPutFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationPutFuture) Result(client ApplicationClient) (ar ApplicationResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPutFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationPutFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ar.Response.Response, err = future.GetResult(sender); err == nil && ar.Response.Response.StatusCode != http.StatusNoContent {
-		ar, err = client.PutResponder(ar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPutFuture", "Result", ar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // ApplicationResource the application resource.
 type ApplicationResource struct {
-	autorest.Response      `json:"-"`
 	*ApplicationProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
@@ -564,13 +482,11 @@ func (ar *ApplicationResource) UnmarshalJSON(body []byte) error {
 
 // ApplicationResourceList the list of application resources.
 type ApplicationResourceList struct {
-	autorest.Response `json:"-"`
-	Value             *[]ApplicationResource `json:"value,omitempty"`
+	Value *[]ApplicationResource `json:"value,omitempty"`
 }
 
 // ApplicationResourceUpdate the application resource for patch operations.
 type ApplicationResourceUpdate struct {
-	autorest.Response            `json:"-"`
 	*ApplicationUpdateProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
@@ -654,29 +570,6 @@ func (aru *ApplicationResourceUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ApplicationTypeDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ApplicationTypeDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationTypeDeleteFuture) Result(client ApplicationTypeClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationTypeDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // ApplicationTypeProperties the application type name properties
 type ApplicationTypeProperties struct {
 	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response.
@@ -685,7 +578,6 @@ type ApplicationTypeProperties struct {
 
 // ApplicationTypeResource the application type name resource
 type ApplicationTypeResource struct {
-	autorest.Response          `json:"-"`
 	*ApplicationTypeProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
@@ -771,8 +663,7 @@ func (atr *ApplicationTypeResource) UnmarshalJSON(body []byte) error {
 
 // ApplicationTypeResourceList the list of application type names.
 type ApplicationTypeResourceList struct {
-	autorest.Response `json:"-"`
-	Value             *[]ApplicationTypeResource `json:"value,omitempty"`
+	Value *[]ApplicationTypeResource `json:"value,omitempty"`
 }
 
 // ApplicationUpdateProperties the application resource properties for patch operations.
@@ -1730,29 +1621,6 @@ type ServiceCorrelationDescription struct {
 	ServiceName *string `json:"ServiceName,omitempty"`
 }
 
-// ServiceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ServiceDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServiceDeleteFuture) Result(client ServiceClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServiceDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ServiceDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // ServiceLoadMetricDescription specifies a metric to load balance a service during runtime.
 type ServiceLoadMetricDescription struct {
 	// Name - The name of the metric. If the service chooses to report load during runtime, the load metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive.
@@ -1765,34 +1633,6 @@ type ServiceLoadMetricDescription struct {
 	SecondaryDefaultLoad *int32 `json:"SecondaryDefaultLoad,omitempty"`
 	// DefaultLoad - Used only for Stateless services. The default amount of load, as a number, that this service creates for this metric.
 	DefaultLoad *int32 `json:"DefaultLoad,omitempty"`
-}
-
-// ServicePatchFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ServicePatchFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServicePatchFuture) Result(client ServiceClient) (sru ServiceResourceUpdate, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicePatchFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ServicePatchFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sru.Response.Response, err = future.GetResult(sender); err == nil && sru.Response.Response.StatusCode != http.StatusNoContent {
-		sru, err = client.PatchResponder(sru.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ServicePatchFuture", "Result", sru.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // BasicServicePlacementPolicyDescription describes the policy to be used for placement of a Service Fabric service.
@@ -2138,37 +1978,8 @@ func (spb *ServicePropertiesBase) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicePutFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ServicePutFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServicePutFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicePutFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ServicePutFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
-		sr, err = client.PutResponder(sr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ServicePutFuture", "Result", sr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // ServiceResource the service resource.
 type ServiceResource struct {
-	autorest.Response      `json:"-"`
 	BasicServiceProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
@@ -2251,13 +2062,11 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 
 // ServiceResourceList the list of service resources.
 type ServiceResourceList struct {
-	autorest.Response `json:"-"`
-	Value             *[]ServiceResource `json:"value,omitempty"`
+	Value *[]ServiceResource `json:"value,omitempty"`
 }
 
 // ServiceResourceUpdate the service resource for patch operations.
 type ServiceResourceUpdate struct {
-	autorest.Response            `json:"-"`
 	BasicServiceUpdateProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
@@ -3421,29 +3230,6 @@ func (ui6rpsd UniformInt64RangePartitionSchemeDescription) AsBasicPartitionSchem
 	return &ui6rpsd, true
 }
 
-// VersionDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VersionDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VersionDeleteFuture) Result(client VersionClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.VersionDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.VersionDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // VersionProperties the properties of the version resource.
 type VersionProperties struct {
 	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
@@ -3454,37 +3240,8 @@ type VersionProperties struct {
 	DefaultParameterList *[]ApplicationParameter `json:"defaultParameterList,omitempty"`
 }
 
-// VersionPutFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type VersionPutFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VersionPutFuture) Result(client VersionClient) (vr VersionResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.VersionPutFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.VersionPutFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vr.Response.Response, err = future.GetResult(sender); err == nil && vr.Response.Response.StatusCode != http.StatusNoContent {
-		vr, err = client.PutResponder(vr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.VersionPutFuture", "Result", vr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // VersionResource a version resource for the specified application type name.
 type VersionResource struct {
-	autorest.Response  `json:"-"`
 	*VersionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
@@ -3570,6 +3327,5 @@ func (vr *VersionResource) UnmarshalJSON(body []byte) error {
 
 // VersionResourceList the list of version resources for the specified application type name.
 type VersionResourceList struct {
-	autorest.Response `json:"-"`
-	Value             *[]VersionResource `json:"value,omitempty"`
+	Value *[]VersionResource `json:"value,omitempty"`
 }

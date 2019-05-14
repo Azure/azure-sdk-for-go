@@ -429,7 +429,7 @@ func (client ApplicationsClient) UpdateSender(req *http.Request) (future Applica
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ApplicationsClient) UpdateResponder(resp *http.Response) (result ApplicationResourceUpdate, err error) {
+func (client ApplicationsClient) UpdateResponder(resp *http.Response) (result ApplicationResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

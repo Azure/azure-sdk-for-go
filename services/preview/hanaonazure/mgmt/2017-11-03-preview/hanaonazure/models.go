@@ -115,6 +115,31 @@ func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
 	return []HanaInstanceSizeNamesEnum{S144, S144m, S192, S192m, S192xm, S384, S384m, S384xm, S384xxm, S576m, S576xm, S72, S72m, S768, S768m, S768xm, S96, S960m}
 }
 
+// HanaProvisioningStatesEnum enumerates the values for hana provisioning states enum.
+type HanaProvisioningStatesEnum string
+
+const (
+	// Accepted ...
+	Accepted HanaProvisioningStatesEnum = "Accepted"
+	// Creating ...
+	Creating HanaProvisioningStatesEnum = "Creating"
+	// Deleting ...
+	Deleting HanaProvisioningStatesEnum = "Deleting"
+	// Failed ...
+	Failed HanaProvisioningStatesEnum = "Failed"
+	// Migrating ...
+	Migrating HanaProvisioningStatesEnum = "Migrating"
+	// Succeeded ...
+	Succeeded HanaProvisioningStatesEnum = "Succeeded"
+	// Updating ...
+	Updating HanaProvisioningStatesEnum = "Updating"
+)
+
+// PossibleHanaProvisioningStatesEnumValues returns an array of possible values for the HanaProvisioningStatesEnum const type.
+func PossibleHanaProvisioningStatesEnumValues() []HanaProvisioningStatesEnum {
+	return []HanaProvisioningStatesEnum{Accepted, Creating, Deleting, Failed, Migrating, Succeeded, Updating}
+}
+
 // Disk specifies the disk information fo the HANA instance
 type Disk struct {
 	// Name - The disk name.
@@ -260,6 +285,10 @@ type HanaInstanceProperties struct {
 	ProximityPlacementGroup *string `json:"proximityPlacementGroup,omitempty"`
 	// HwRevision - READ-ONLY; Hardware revision of a HANA instance
 	HwRevision *string `json:"hwRevision,omitempty"`
+	// PartnerNodeID - READ-ONLY; ARM ID of another HanaInstance that will share a network with this HanaInstance
+	PartnerNodeID *string `json:"partnerNodeId,omitempty"`
+	// ProvisioningState - READ-ONLY; State of provisioning of the HanaInstance. Possible values include: 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting', 'Migrating'
+	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
 }
 
 // HanaInstancesEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a
@@ -515,6 +544,8 @@ type OSProfile struct {
 	OsType *string `json:"osType,omitempty"`
 	// Version - READ-ONLY; Specifies version of operating system.
 	Version *string `json:"version,omitempty"`
+	// SSHPublicKey - READ-ONLY; Specifies the SSH public key used to access the operating system.
+	SSHPublicKey *string `json:"sshPublicKey,omitempty"`
 }
 
 // Resource the resource model definition.

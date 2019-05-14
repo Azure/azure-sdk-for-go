@@ -2759,7 +2759,8 @@ func (client DatabaseAccountsClient) GetGremlinGraphResponder(resp *http.Respons
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-func (client DatabaseAccountsClient) GetGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result Throughput, err error) {
+// graphName - cosmos DB graph name.
+func (client DatabaseAccountsClient) GetGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result Throughput, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetGremlinGraphThroughput")
 		defer func() {
@@ -2781,7 +2782,7 @@ func (client DatabaseAccountsClient) GetGremlinGraphThroughput(ctx context.Conte
 		return result, validation.NewError("documentdb.DatabaseAccountsClient", "GetGremlinGraphThroughput", err.Error())
 	}
 
-	req, err := client.GetGremlinGraphThroughputPreparer(ctx, resourceGroupName, accountName, databaseName)
+	req, err := client.GetGremlinGraphThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, graphName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetGremlinGraphThroughput", nil, "Failure preparing request")
 		return
@@ -2803,10 +2804,11 @@ func (client DatabaseAccountsClient) GetGremlinGraphThroughput(ctx context.Conte
 }
 
 // GetGremlinGraphThroughputPreparer prepares the GetGremlinGraphThroughput request.
-func (client DatabaseAccountsClient) GetGremlinGraphThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
+func (client DatabaseAccountsClient) GetGremlinGraphThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
+		"graphName":         autorest.Encode("path", graphName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -5903,8 +5905,9 @@ func (client DatabaseAccountsClient) UpdateGremlinDatabaseThroughputResponder(re
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
+// graphName - cosmos DB graph name.
 // updateThroughputParameters - the parameters to provide for the current Gremlin graph throughput.
-func (client DatabaseAccountsClient) UpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateGremlinGraphThroughputFuture, err error) {
+func (client DatabaseAccountsClient) UpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateGremlinGraphThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateGremlinGraphThroughput")
 		defer func() {
@@ -5931,7 +5934,7 @@ func (client DatabaseAccountsClient) UpdateGremlinGraphThroughput(ctx context.Co
 		return result, validation.NewError("documentdb.DatabaseAccountsClient", "UpdateGremlinGraphThroughput", err.Error())
 	}
 
-	req, err := client.UpdateGremlinGraphThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters)
+	req, err := client.UpdateGremlinGraphThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, graphName, updateThroughputParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateGremlinGraphThroughput", nil, "Failure preparing request")
 		return
@@ -5947,10 +5950,11 @@ func (client DatabaseAccountsClient) UpdateGremlinGraphThroughput(ctx context.Co
 }
 
 // UpdateGremlinGraphThroughputPreparer prepares the UpdateGremlinGraphThroughput request.
-func (client DatabaseAccountsClient) UpdateGremlinGraphThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputUpdateParameters) (*http.Request, error) {
+func (client DatabaseAccountsClient) UpdateGremlinGraphThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
+		"graphName":         autorest.Encode("path", graphName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -6396,9 +6400,9 @@ func (client DatabaseAccountsClient) UpdateSQLDatabaseThroughputResponder(resp *
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
-// databaseName - cosmos DB database name.
+// tableName - cosmos DB table name.
 // updateThroughputParameters - the parameters to provide for the current Table throughput.
-func (client DatabaseAccountsClient) UpdateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateTableThroughputFuture, err error) {
+func (client DatabaseAccountsClient) UpdateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateTableThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateTableThroughput")
 		defer func() {
@@ -6425,7 +6429,7 @@ func (client DatabaseAccountsClient) UpdateTableThroughput(ctx context.Context, 
 		return result, validation.NewError("documentdb.DatabaseAccountsClient", "UpdateTableThroughput", err.Error())
 	}
 
-	req, err := client.UpdateTableThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters)
+	req, err := client.UpdateTableThroughputPreparer(ctx, resourceGroupName, accountName, tableName, updateThroughputParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateTableThroughput", nil, "Failure preparing request")
 		return
@@ -6441,12 +6445,12 @@ func (client DatabaseAccountsClient) UpdateTableThroughput(ctx context.Context, 
 }
 
 // UpdateTableThroughputPreparer prepares the UpdateTableThroughput request.
-func (client DatabaseAccountsClient) UpdateTableThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputUpdateParameters) (*http.Request, error) {
+func (client DatabaseAccountsClient) UpdateTableThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
-		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"tableName":         autorest.Encode("path", tableName),
 	}
 
 	const APIVersion = "2015-04-08"

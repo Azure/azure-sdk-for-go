@@ -54,7 +54,7 @@ type DatabaseAccountsClientAPI interface {
 	GetGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.GremlinDatabase, err error)
 	GetGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.Throughput, err error)
 	GetGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result documentdb.GremlinGraph, err error)
-	GetGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.Throughput, err error)
+	GetGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result documentdb.Throughput, err error)
 	GetMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result documentdb.MongoDBCollection, err error)
 	GetMongoDBCollectionThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result documentdb.Throughput, err error)
 	GetMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.MongoDBDatabase, err error)
@@ -89,12 +89,12 @@ type DatabaseAccountsClientAPI interface {
 	RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate documentdb.DatabaseAccountRegenerateKeyParameters) (result documentdb.DatabaseAccountsRegenerateKeyFuture, err error)
 	UpdateCassandraKeyspaceThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateCassandraKeyspaceThroughputFuture, err error)
 	UpdateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateGremlinDatabaseThroughputFuture, err error)
-	UpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateGremlinGraphThroughputFuture, err error)
+	UpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateGremlinGraphThroughputFuture, err error)
 	UpdateMongoDBCollectionThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateMongoDBCollectionThroughputFuture, err error)
 	UpdateMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture, err error)
 	UpdateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateSQLContainerThroughputFuture, err error)
 	UpdateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateSQLDatabaseThroughputFuture, err error)
-	UpdateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateTableThroughputFuture, err error)
+	UpdateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.DatabaseAccountsUpdateTableThroughputFuture, err error)
 }
 
 var _ DatabaseAccountsClientAPI = (*documentdb.DatabaseAccountsClient)(nil)

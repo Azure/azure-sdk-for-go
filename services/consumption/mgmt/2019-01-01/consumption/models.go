@@ -149,12 +149,6 @@ type TimeGrainType string
 const (
 	// TimeGrainTypeAnnually ...
 	TimeGrainTypeAnnually TimeGrainType = "Annually"
-	// TimeGrainTypeBillingAnnual ...
-	TimeGrainTypeBillingAnnual TimeGrainType = "BillingAnnual"
-	// TimeGrainTypeBillingMonth ...
-	TimeGrainTypeBillingMonth TimeGrainType = "BillingMonth"
-	// TimeGrainTypeBillingQuarter ...
-	TimeGrainTypeBillingQuarter TimeGrainType = "BillingQuarter"
 	// TimeGrainTypeMonthly ...
 	TimeGrainTypeMonthly TimeGrainType = "Monthly"
 	// TimeGrainTypeQuarterly ...
@@ -163,7 +157,7 @@ const (
 
 // PossibleTimeGrainTypeValues returns an array of possible values for the TimeGrainType const type.
 func PossibleTimeGrainTypeValues() []TimeGrainType {
-	return []TimeGrainType{TimeGrainTypeAnnually, TimeGrainTypeBillingAnnual, TimeGrainTypeBillingMonth, TimeGrainTypeBillingQuarter, TimeGrainTypeMonthly, TimeGrainTypeQuarterly}
+	return []TimeGrainType{TimeGrainTypeAnnually, TimeGrainTypeMonthly, TimeGrainTypeQuarterly}
 }
 
 // Balance a balance resource.
@@ -391,7 +385,7 @@ type BudgetProperties struct {
 	Category CategoryType `json:"category,omitempty"`
 	// Amount - The total amount of cost to track with the budget
 	Amount *decimal.Decimal `json:"amount,omitempty"`
-	// TimeGrain - The time covered by a budget. Tracking of the amount will be reset based on the time grain. Possible values include: 'TimeGrainTypeMonthly', 'TimeGrainTypeQuarterly', 'TimeGrainTypeAnnually', 'TimeGrainTypeBillingMonth', 'TimeGrainTypeBillingQuarter', 'TimeGrainTypeBillingAnnual'
+	// TimeGrain - The time covered by a budget. Tracking of the amount will be reset based on the time grain. Possible values include: 'TimeGrainTypeMonthly', 'TimeGrainTypeQuarterly', 'TimeGrainTypeAnnually'
 	TimeGrain TimeGrainType `json:"timeGrain,omitempty"`
 	// TimePeriod - Has start and end date of the budget. The start date must be first of the month and should be less than the end date. Budget start date must be on or after June 1, 2017. Future start date should not be more than three months. Past start date should  be selected within the timegrain period. There are no restrictions on the end date.
 	TimePeriod *BudgetTimePeriod `json:"timePeriod,omitempty"`

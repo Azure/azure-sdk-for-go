@@ -205,7 +205,7 @@ type Dimension struct {
 
 // Feature feature of a SignalR resource, which controls the SignalR runtime behavior.
 type Feature struct {
-	// Flag - Name of the feature. Required.
+	// Flag - Kind of feature. Required.
 	Flag *string `json:"flag,omitempty"`
 	// Value - Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/en-us/azure/azure-signalr/ for allowed values.
 	Value *string `json:"value,omitempty"`

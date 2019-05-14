@@ -402,7 +402,8 @@ func (client ClustersClient) DetachFollowerDatabases(ctx context.Context, resour
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: followerDatabasesToRemove,
-			Constraints: []validation.Constraint{{Target: "followerDatabasesToRemove.ClusterResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "followerDatabasesToRemove.ClusterResourceID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "followerDatabasesToRemove.DatabaseName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("kusto.ClustersClient", "DetachFollowerDatabases", err.Error())
 	}
 

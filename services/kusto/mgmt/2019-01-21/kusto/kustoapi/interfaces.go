@@ -58,9 +58,9 @@ var _ DatabasesClientAPI = (*kusto.DatabasesClient)(nil)
 
 // AttachedDatabaseConfigurationsClientAPI contains the set of methods on the AttachedDatabaseConfigurationsClient type.
 type AttachedDatabaseConfigurationsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters kusto.BasicAttachedDatabaseConfiguration) (result kusto.AttachedDatabaseConfigurationsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters kusto.AttachedDatabaseConfiguration) (result kusto.AttachedDatabaseConfigurationsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string) (result kusto.AttachedDatabaseConfigurationsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string) (result kusto.AttachedDatabaseConfigurationModel, err error)
+	Get(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string) (result kusto.AttachedDatabaseConfiguration, err error)
 }
 
 var _ AttachedDatabaseConfigurationsClientAPI = (*kusto.AttachedDatabaseConfigurationsClient)(nil)

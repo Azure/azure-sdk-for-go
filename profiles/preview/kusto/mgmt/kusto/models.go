@@ -91,16 +91,9 @@ const (
 type Kind = original.Kind
 
 const (
-	All      Kind = original.All
-	Specific Kind = original.Specific
-)
-
-type KindBasicAttachedDatabaseConfiguration = original.KindBasicAttachedDatabaseConfiguration
-
-const (
-	KindAll                           KindBasicAttachedDatabaseConfiguration = original.KindAll
-	KindAttachedDatabaseConfiguration KindBasicAttachedDatabaseConfiguration = original.KindAttachedDatabaseConfiguration
-	KindSpecific                      KindBasicAttachedDatabaseConfiguration = original.KindSpecific
+	KindDatabase         Kind = original.KindDatabase
+	KindReadOnlyAttached Kind = original.KindReadOnlyAttached
+	KindReadWrite        Kind = original.KindReadWrite
 )
 
 type KindBasicDataConnection = original.KindBasicDataConnection
@@ -109,14 +102,6 @@ const (
 	KindDataConnection KindBasicDataConnection = original.KindDataConnection
 	KindEventGrid      KindBasicDataConnection = original.KindEventGrid
 	KindEventHub       KindBasicDataConnection = original.KindEventHub
-)
-
-type KindBasicDatabase = original.KindBasicDatabase
-
-const (
-	KindDatabase         KindBasicDatabase = original.KindDatabase
-	KindReadOnlyAttached KindBasicDatabase = original.KindReadOnlyAttached
-	KindReadWrite        KindBasicDatabase = original.KindReadWrite
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -158,10 +143,8 @@ const (
 	MicrosoftKustoclustersdatabases                      Type = original.MicrosoftKustoclustersdatabases
 )
 
-type AllAttachedDatabaseConfiguration = original.AllAttachedDatabaseConfiguration
-type AllAttachedDatabaseConfigurationProperties = original.AllAttachedDatabaseConfigurationProperties
 type AttachedDatabaseConfiguration = original.AttachedDatabaseConfiguration
-type AttachedDatabaseConfigurationModel = original.AttachedDatabaseConfigurationModel
+type AttachedDatabaseConfigurationProperties = original.AttachedDatabaseConfigurationProperties
 type AttachedDatabaseConfigurationsClient = original.AttachedDatabaseConfigurationsClient
 type AttachedDatabaseConfigurationsCreateOrUpdateFuture = original.AttachedDatabaseConfigurationsCreateOrUpdateFuture
 type AttachedDatabaseConfigurationsDeleteFuture = original.AttachedDatabaseConfigurationsDeleteFuture
@@ -170,7 +153,6 @@ type AzureEntityResource = original.AzureEntityResource
 type AzureResourceSku = original.AzureResourceSku
 type AzureSku = original.AzureSku
 type BaseClient = original.BaseClient
-type BasicAttachedDatabaseConfiguration = original.BasicAttachedDatabaseConfiguration
 type BasicDataConnection = original.BasicDataConnection
 type BasicDatabase = original.BasicDatabase
 type CheckNameRequest = original.CheckNameRequest
@@ -234,8 +216,6 @@ type Resource = original.Resource
 type SkuDescription = original.SkuDescription
 type SkuDescriptionList = original.SkuDescriptionList
 type SkuLocationInfoItem = original.SkuLocationInfoItem
-type SpecificAttachedDatabaseConfiguration = original.SpecificAttachedDatabaseConfiguration
-type SpecificAttachedDatabaseConfigurationProperties = original.SpecificAttachedDatabaseConfigurationProperties
 type TrackedResource = original.TrackedResource
 type TrustedExternalTenant = original.TrustedExternalTenant
 
@@ -296,14 +276,8 @@ func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
 func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
 	return original.PossibleDatabasePrincipalTypeValues()
 }
-func PossibleKindBasicAttachedDatabaseConfigurationValues() []KindBasicAttachedDatabaseConfiguration {
-	return original.PossibleKindBasicAttachedDatabaseConfigurationValues()
-}
 func PossibleKindBasicDataConnectionValues() []KindBasicDataConnection {
 	return original.PossibleKindBasicDataConnectionValues()
-}
-func PossibleKindBasicDatabaseValues() []KindBasicDatabase {
-	return original.PossibleKindBasicDatabaseValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()

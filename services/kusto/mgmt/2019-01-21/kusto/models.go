@@ -157,49 +157,17 @@ func PossibleDataFormatValues() []DataFormat {
 type Kind string
 
 const (
-	// All ...
-	All Kind = "All"
-	// Specific ...
-	Specific Kind = "Specific"
+	// KindDatabase ...
+	KindDatabase Kind = "Database"
+	// KindReadOnlyAttached ...
+	KindReadOnlyAttached Kind = "ReadOnlyAttached"
+	// KindReadWrite ...
+	KindReadWrite Kind = "ReadWrite"
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
-	return []Kind{All, Specific}
-}
-
-// KindBasicAttachedDatabaseConfiguration enumerates the values for kind basic attached database configuration.
-type KindBasicAttachedDatabaseConfiguration string
-
-const (
-	// KindAll ...
-	KindAll KindBasicAttachedDatabaseConfiguration = "All"
-	// KindAttachedDatabaseConfiguration ...
-	KindAttachedDatabaseConfiguration KindBasicAttachedDatabaseConfiguration = "AttachedDatabaseConfiguration"
-	// KindSpecific ...
-	KindSpecific KindBasicAttachedDatabaseConfiguration = "Specific"
-)
-
-// PossibleKindBasicAttachedDatabaseConfigurationValues returns an array of possible values for the KindBasicAttachedDatabaseConfiguration const type.
-func PossibleKindBasicAttachedDatabaseConfigurationValues() []KindBasicAttachedDatabaseConfiguration {
-	return []KindBasicAttachedDatabaseConfiguration{KindAll, KindAttachedDatabaseConfiguration, KindSpecific}
-}
-
-// KindBasicDatabase enumerates the values for kind basic database.
-type KindBasicDatabase string
-
-const (
-	// KindDatabase ...
-	KindDatabase KindBasicDatabase = "Database"
-	// KindReadOnlyAttached ...
-	KindReadOnlyAttached KindBasicDatabase = "ReadOnlyAttached"
-	// KindReadWrite ...
-	KindReadWrite KindBasicDatabase = "ReadWrite"
-)
-
-// PossibleKindBasicDatabaseValues returns an array of possible values for the KindBasicDatabase const type.
-func PossibleKindBasicDatabaseValues() []KindBasicDatabase {
-	return []KindBasicDatabase{KindDatabase, KindReadOnlyAttached, KindReadWrite}
+	return []Kind{KindDatabase, KindReadOnlyAttached, KindReadWrite}
 }
 
 // KindBasicDataConnection enumerates the values for kind basic data connection.
@@ -301,61 +269,35 @@ func PossibleTypeValues() []Type {
 	return []Type{MicrosoftKustoclustersattachedDatabaseConfigurations, MicrosoftKustoclustersdatabases}
 }
 
-// AllAttachedDatabaseConfiguration class representing an attached database configuration for a all
-// attached database kind.
-type AllAttachedDatabaseConfiguration struct {
-	// AllAttachedDatabaseConfigurationProperties - The properties of the attached database configuration of all kind.
-	*AllAttachedDatabaseConfigurationProperties `json:"properties,omitempty"`
+// AttachedDatabaseConfiguration class representing an attached database configuration.
+type AttachedDatabaseConfiguration struct {
+	autorest.Response `json:"-"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+	// AttachedDatabaseConfigurationProperties - The properties of the attached database configuration.
+	*AttachedDatabaseConfigurationProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindAttachedDatabaseConfiguration', 'KindAll', 'KindSpecific'
-	Kind KindBasicAttachedDatabaseConfiguration `json:"kind,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for AllAttachedDatabaseConfiguration.
-func (aadc AllAttachedDatabaseConfiguration) MarshalJSON() ([]byte, error) {
-	aadc.Kind = KindAll
+// MarshalJSON is the custom marshaler for AttachedDatabaseConfiguration.
+func (adc AttachedDatabaseConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if aadc.AllAttachedDatabaseConfigurationProperties != nil {
-		objectMap["properties"] = aadc.AllAttachedDatabaseConfigurationProperties
+	if adc.Location != nil {
+		objectMap["location"] = adc.Location
 	}
-	if aadc.Location != nil {
-		objectMap["location"] = aadc.Location
-	}
-	if aadc.Kind != "" {
-		objectMap["kind"] = aadc.Kind
+	if adc.AttachedDatabaseConfigurationProperties != nil {
+		objectMap["properties"] = adc.AttachedDatabaseConfigurationProperties
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsAllAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for AllAttachedDatabaseConfiguration.
-func (aadc AllAttachedDatabaseConfiguration) AsAllAttachedDatabaseConfiguration() (*AllAttachedDatabaseConfiguration, bool) {
-	return &aadc, true
-}
-
-// AsSpecificAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for AllAttachedDatabaseConfiguration.
-func (aadc AllAttachedDatabaseConfiguration) AsSpecificAttachedDatabaseConfiguration() (*SpecificAttachedDatabaseConfiguration, bool) {
-	return nil, false
-}
-
-// AsAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for AllAttachedDatabaseConfiguration.
-func (aadc AllAttachedDatabaseConfiguration) AsAttachedDatabaseConfiguration() (*AttachedDatabaseConfiguration, bool) {
-	return nil, false
-}
-
-// AsBasicAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for AllAttachedDatabaseConfiguration.
-func (aadc AllAttachedDatabaseConfiguration) AsBasicAttachedDatabaseConfiguration() (BasicAttachedDatabaseConfiguration, bool) {
-	return &aadc, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for AllAttachedDatabaseConfiguration struct.
-func (aadc *AllAttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for AttachedDatabaseConfiguration struct.
+func (adc *AttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -363,15 +305,6 @@ func (aadc *AllAttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "properties":
-			if v != nil {
-				var allAttachedDatabaseConfigurationProperties AllAttachedDatabaseConfigurationProperties
-				err = json.Unmarshal(*v, &allAttachedDatabaseConfigurationProperties)
-				if err != nil {
-					return err
-				}
-				aadc.AllAttachedDatabaseConfigurationProperties = &allAttachedDatabaseConfigurationProperties
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -379,16 +312,16 @@ func (aadc *AllAttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				aadc.Location = &location
+				adc.Location = &location
 			}
-		case "kind":
+		case "properties":
 			if v != nil {
-				var kind KindBasicAttachedDatabaseConfiguration
-				err = json.Unmarshal(*v, &kind)
+				var attachedDatabaseConfigurationProperties AttachedDatabaseConfigurationProperties
+				err = json.Unmarshal(*v, &attachedDatabaseConfigurationProperties)
 				if err != nil {
 					return err
 				}
-				aadc.Kind = kind
+				adc.AttachedDatabaseConfigurationProperties = &attachedDatabaseConfigurationProperties
 			}
 		case "id":
 			if v != nil {
@@ -397,7 +330,7 @@ func (aadc *AllAttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				aadc.ID = &ID
+				adc.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -406,7 +339,7 @@ func (aadc *AllAttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				aadc.Name = &name
+				adc.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -415,7 +348,7 @@ func (aadc *AllAttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				aadc.Type = &typeVar
+				adc.Type = &typeVar
 			}
 		}
 	}
@@ -423,126 +356,15 @@ func (aadc *AllAttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AllAttachedDatabaseConfigurationProperties class representing the an attached database configuration
-// properties of kind all.
-type AllAttachedDatabaseConfigurationProperties struct {
-	// DatabaseNames - READ-ONLY; The list of current databases that are attached.
-	DatabaseNames *[]string `json:"databaseNames,omitempty"`
+// AttachedDatabaseConfigurationProperties class representing the an attached database configuration
+// properties of kind specific.
+type AttachedDatabaseConfigurationProperties struct {
+	// DatabaseName - The name of the database which you would like to attach, use * if you want to follow all current and future databases.
+	DatabaseName *string `json:"databaseName,omitempty"`
 	// ClusterResourceID - The resource id of the cluster where the databases you would like to attach reside.
 	ClusterResourceID *string `json:"clusterResourceId,omitempty"`
-}
-
-// BasicAttachedDatabaseConfiguration class representing an attached database configuration.
-type BasicAttachedDatabaseConfiguration interface {
-	AsAllAttachedDatabaseConfiguration() (*AllAttachedDatabaseConfiguration, bool)
-	AsSpecificAttachedDatabaseConfiguration() (*SpecificAttachedDatabaseConfiguration, bool)
-	AsAttachedDatabaseConfiguration() (*AttachedDatabaseConfiguration, bool)
-}
-
-// AttachedDatabaseConfiguration class representing an attached database configuration.
-type AttachedDatabaseConfiguration struct {
-	autorest.Response `json:"-"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Kind - Possible values include: 'KindAttachedDatabaseConfiguration', 'KindAll', 'KindSpecific'
-	Kind KindBasicAttachedDatabaseConfiguration `json:"kind,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty"`
-}
-
-func unmarshalBasicAttachedDatabaseConfiguration(body []byte) (BasicAttachedDatabaseConfiguration, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["kind"] {
-	case string(KindAll):
-		var aadc AllAttachedDatabaseConfiguration
-		err := json.Unmarshal(body, &aadc)
-		return aadc, err
-	case string(KindSpecific):
-		var sadc SpecificAttachedDatabaseConfiguration
-		err := json.Unmarshal(body, &sadc)
-		return sadc, err
-	default:
-		var adc AttachedDatabaseConfiguration
-		err := json.Unmarshal(body, &adc)
-		return adc, err
-	}
-}
-func unmarshalBasicAttachedDatabaseConfigurationArray(body []byte) ([]BasicAttachedDatabaseConfiguration, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	adcArray := make([]BasicAttachedDatabaseConfiguration, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		adc, err := unmarshalBasicAttachedDatabaseConfiguration(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		adcArray[index] = adc
-	}
-	return adcArray, nil
-}
-
-// MarshalJSON is the custom marshaler for AttachedDatabaseConfiguration.
-func (adc AttachedDatabaseConfiguration) MarshalJSON() ([]byte, error) {
-	adc.Kind = KindAttachedDatabaseConfiguration
-	objectMap := make(map[string]interface{})
-	if adc.Location != nil {
-		objectMap["location"] = adc.Location
-	}
-	if adc.Kind != "" {
-		objectMap["kind"] = adc.Kind
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAllAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for AttachedDatabaseConfiguration.
-func (adc AttachedDatabaseConfiguration) AsAllAttachedDatabaseConfiguration() (*AllAttachedDatabaseConfiguration, bool) {
-	return nil, false
-}
-
-// AsSpecificAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for AttachedDatabaseConfiguration.
-func (adc AttachedDatabaseConfiguration) AsSpecificAttachedDatabaseConfiguration() (*SpecificAttachedDatabaseConfiguration, bool) {
-	return nil, false
-}
-
-// AsAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for AttachedDatabaseConfiguration.
-func (adc AttachedDatabaseConfiguration) AsAttachedDatabaseConfiguration() (*AttachedDatabaseConfiguration, bool) {
-	return &adc, true
-}
-
-// AsBasicAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for AttachedDatabaseConfiguration.
-func (adc AttachedDatabaseConfiguration) AsBasicAttachedDatabaseConfiguration() (BasicAttachedDatabaseConfiguration, bool) {
-	return &adc, true
-}
-
-// AttachedDatabaseConfigurationModel ...
-type AttachedDatabaseConfigurationModel struct {
-	autorest.Response `json:"-"`
-	Value             BasicAttachedDatabaseConfiguration `json:"value,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for AttachedDatabaseConfigurationModel struct.
-func (adcm *AttachedDatabaseConfigurationModel) UnmarshalJSON(body []byte) error {
-	adc, err := unmarshalBasicAttachedDatabaseConfiguration(body)
-	if err != nil {
-		return err
-	}
-	adcm.Value = adc
-
-	return nil
+	// AttachedDatabaseNames - READ-ONLY; The list of databases from the clusterResourceId which are currently attached to the cluster.
+	AttachedDatabaseNames *[]string `json:"AttachedDatabaseNames,omitempty"`
 }
 
 // AttachedDatabaseConfigurationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
@@ -553,7 +375,7 @@ type AttachedDatabaseConfigurationsCreateOrUpdateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *AttachedDatabaseConfigurationsCreateOrUpdateFuture) Result(client AttachedDatabaseConfigurationsClient) (adcm AttachedDatabaseConfigurationModel, err error) {
+func (future *AttachedDatabaseConfigurationsCreateOrUpdateFuture) Result(client AttachedDatabaseConfigurationsClient) (adc AttachedDatabaseConfiguration, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -565,10 +387,10 @@ func (future *AttachedDatabaseConfigurationsCreateOrUpdateFuture) Result(client 
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if adcm.Response.Response, err = future.GetResult(sender); err == nil && adcm.Response.Response.StatusCode != http.StatusNoContent {
-		adcm, err = client.CreateOrUpdateResponder(adcm.Response.Response)
+	if adc.Response.Response, err = future.GetResult(sender); err == nil && adc.Response.Response.StatusCode != http.StatusNoContent {
+		adc, err = client.CreateOrUpdateResponder(adc.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "kusto.AttachedDatabaseConfigurationsCreateOrUpdateFuture", "Result", adcm.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "kusto.AttachedDatabaseConfigurationsCreateOrUpdateFuture", "Result", adc.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1079,7 +901,7 @@ type Database struct {
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyAttached'
-	Kind KindBasicDatabase `json:"kind,omitempty"`
+	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -1892,21 +1714,17 @@ type FollowerDatabaseListResult struct {
 
 // FollowerDatabaseRequest a class representing follower database request.
 type FollowerDatabaseRequest struct {
-	// Kind - Kind of the attached database. Possible values include: 'All', 'Specific'
-	Kind Kind `json:"kind,omitempty"`
 	// ClusterResourceID - Resource id of the cluster that follows a database owned by this cluster.
 	ClusterResourceID *string `json:"clusterResourceId,omitempty"`
-	// DatabaseName - The database name owned by this cluster that was followed. Empty in case following all databases.
+	// DatabaseName - The database name owned by this cluster that was followed. * in case following all databases.
 	DatabaseName *string `json:"databaseName,omitempty"`
 }
 
 // FollowerDatabaseResult a class representing database principal entity.
 type FollowerDatabaseResult struct {
-	// Kind - Kind of the attached database. Possible values include: 'All', 'Specific'
-	Kind Kind `json:"kind,omitempty"`
 	// ClusterResourceID - List of resource ids of clusters that are following the database owned by this cluster.
 	ClusterResourceID *[]string `json:"clusterResourceId,omitempty"`
-	// DatabaseName - The database name owned by this cluster that was followed. Empty in case following all databases.
+	// DatabaseName - The database name owned by this cluster that was followed. * in case following all databases.
 	DatabaseName *string `json:"databaseName,omitempty"`
 }
 
@@ -2107,7 +1925,7 @@ type ReadOnlyAttachedDatabase struct {
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyAttached'
-	Kind KindBasicDatabase `json:"kind,omitempty"`
+	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -2181,7 +1999,7 @@ func (road *ReadOnlyAttachedDatabase) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicDatabase
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -2240,7 +2058,7 @@ type ReadWriteDatabase struct {
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyAttached'
-	Kind KindBasicDatabase `json:"kind,omitempty"`
+	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -2314,7 +2132,7 @@ func (rwd *ReadWriteDatabase) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicDatabase
+				var kind Kind
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -2405,137 +2223,6 @@ type SkuLocationInfoItem struct {
 	Location *string `json:"location,omitempty"`
 	// Zones - The available zone of the SKU.
 	Zones *[]string `json:"zones,omitempty"`
-}
-
-// SpecificAttachedDatabaseConfiguration class representing an attached database configuration for a
-// specific attached database kind.
-type SpecificAttachedDatabaseConfiguration struct {
-	// SpecificAttachedDatabaseConfigurationProperties - The properties of the attached database configuration of specific kind.
-	*SpecificAttachedDatabaseConfigurationProperties `json:"properties,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Kind - Possible values include: 'KindAttachedDatabaseConfiguration', 'KindAll', 'KindSpecific'
-	Kind KindBasicAttachedDatabaseConfiguration `json:"kind,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SpecificAttachedDatabaseConfiguration.
-func (sadc SpecificAttachedDatabaseConfiguration) MarshalJSON() ([]byte, error) {
-	sadc.Kind = KindSpecific
-	objectMap := make(map[string]interface{})
-	if sadc.SpecificAttachedDatabaseConfigurationProperties != nil {
-		objectMap["properties"] = sadc.SpecificAttachedDatabaseConfigurationProperties
-	}
-	if sadc.Location != nil {
-		objectMap["location"] = sadc.Location
-	}
-	if sadc.Kind != "" {
-		objectMap["kind"] = sadc.Kind
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAllAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for SpecificAttachedDatabaseConfiguration.
-func (sadc SpecificAttachedDatabaseConfiguration) AsAllAttachedDatabaseConfiguration() (*AllAttachedDatabaseConfiguration, bool) {
-	return nil, false
-}
-
-// AsSpecificAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for SpecificAttachedDatabaseConfiguration.
-func (sadc SpecificAttachedDatabaseConfiguration) AsSpecificAttachedDatabaseConfiguration() (*SpecificAttachedDatabaseConfiguration, bool) {
-	return &sadc, true
-}
-
-// AsAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for SpecificAttachedDatabaseConfiguration.
-func (sadc SpecificAttachedDatabaseConfiguration) AsAttachedDatabaseConfiguration() (*AttachedDatabaseConfiguration, bool) {
-	return nil, false
-}
-
-// AsBasicAttachedDatabaseConfiguration is the BasicAttachedDatabaseConfiguration implementation for SpecificAttachedDatabaseConfiguration.
-func (sadc SpecificAttachedDatabaseConfiguration) AsBasicAttachedDatabaseConfiguration() (BasicAttachedDatabaseConfiguration, bool) {
-	return &sadc, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for SpecificAttachedDatabaseConfiguration struct.
-func (sadc *SpecificAttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var specificAttachedDatabaseConfigurationProperties SpecificAttachedDatabaseConfigurationProperties
-				err = json.Unmarshal(*v, &specificAttachedDatabaseConfigurationProperties)
-				if err != nil {
-					return err
-				}
-				sadc.SpecificAttachedDatabaseConfigurationProperties = &specificAttachedDatabaseConfigurationProperties
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				sadc.Location = &location
-			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicAttachedDatabaseConfiguration
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				sadc.Kind = kind
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				sadc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				sadc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				sadc.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// SpecificAttachedDatabaseConfigurationProperties class representing the an attached database
-// configuration properties of kind specific.
-type SpecificAttachedDatabaseConfigurationProperties struct {
-	// DatabaseName - The name of the database which you would like to attach.
-	DatabaseName *string `json:"databaseName,omitempty"`
-	// ClusterResourceID - The resource id of the cluster where the databases you would like to attach reside.
-	ClusterResourceID *string `json:"clusterResourceId,omitempty"`
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

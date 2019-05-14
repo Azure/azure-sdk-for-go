@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -49,7 +50,7 @@ func NewAttachedDatabaseConfigurationsClientWithBaseURI(baseURI string, subscrip
 // clusterName - the name of the Kusto cluster.
 // attachedDatabaseConfigurationName - the name of the attached database configuration.
 // parameters - the database parameters supplied to the CreateOrUpdate operation.
-func (client AttachedDatabaseConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters BasicAttachedDatabaseConfiguration) (result AttachedDatabaseConfigurationsCreateOrUpdateFuture, err error) {
+func (client AttachedDatabaseConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration) (result AttachedDatabaseConfigurationsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AttachedDatabaseConfigurationsClient.CreateOrUpdate")
 		defer func() {
@@ -60,6 +61,15 @@ func (client AttachedDatabaseConfigurationsClient) CreateOrUpdate(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.AttachedDatabaseConfigurationProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.AttachedDatabaseConfigurationProperties.DatabaseName", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.AttachedDatabaseConfigurationProperties.ClusterResourceID", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("kusto.AttachedDatabaseConfigurationsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.AttachedDatabaseConfigurationsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -76,7 +86,7 @@ func (client AttachedDatabaseConfigurationsClient) CreateOrUpdate(ctx context.Co
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AttachedDatabaseConfigurationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters BasicAttachedDatabaseConfiguration) (*http.Request, error) {
+func (client AttachedDatabaseConfigurationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"attachedDatabaseConfigurationName": autorest.Encode("path", attachedDatabaseConfigurationName),
 		"clusterName":                       autorest.Encode("path", clusterName),
@@ -114,7 +124,7 @@ func (client AttachedDatabaseConfigurationsClient) CreateOrUpdateSender(req *htt
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AttachedDatabaseConfigurationsClient) CreateOrUpdateResponder(resp *http.Response) (result AttachedDatabaseConfigurationModel, err error) {
+func (client AttachedDatabaseConfigurationsClient) CreateOrUpdateResponder(resp *http.Response) (result AttachedDatabaseConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -208,7 +218,7 @@ func (client AttachedDatabaseConfigurationsClient) DeleteResponder(resp *http.Re
 // resourceGroupName - the name of the resource group containing the Kusto cluster.
 // clusterName - the name of the Kusto cluster.
 // attachedDatabaseConfigurationName - the name of the attached database configuration.
-func (client AttachedDatabaseConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string) (result AttachedDatabaseConfigurationModel, err error) {
+func (client AttachedDatabaseConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string) (result AttachedDatabaseConfiguration, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AttachedDatabaseConfigurationsClient.Get")
 		defer func() {
@@ -271,7 +281,7 @@ func (client AttachedDatabaseConfigurationsClient) GetSender(req *http.Request) 
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AttachedDatabaseConfigurationsClient) GetResponder(resp *http.Response) (result AttachedDatabaseConfigurationModel, err error) {
+func (client AttachedDatabaseConfigurationsClient) GetResponder(resp *http.Response) (result AttachedDatabaseConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

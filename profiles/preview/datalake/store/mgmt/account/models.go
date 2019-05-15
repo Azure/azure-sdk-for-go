@@ -124,6 +124,17 @@ const (
 	TrustedIDProviderStateEnabled  TrustedIDProviderState = original.TrustedIDProviderStateEnabled
 )
 
+type UsageUnit = original.UsageUnit
+
+const (
+	Bytes           UsageUnit = original.Bytes
+	BytesPerSecond  UsageUnit = original.BytesPerSecond
+	Count           UsageUnit = original.Count
+	CountsPerSecond UsageUnit = original.CountsPerSecond
+	Percent         UsageUnit = original.Percent
+	Seconds         UsageUnit = original.Seconds
+)
+
 type AccountsClient = original.AccountsClient
 type AccountsCreateFutureType = original.AccountsCreateFutureType
 type AccountsDeleteFutureType = original.AccountsDeleteFutureType
@@ -185,6 +196,9 @@ type UpdateTrustedIDProviderWithAccountParameters = original.UpdateTrustedIDProv
 type UpdateVirtualNetworkRuleParameters = original.UpdateVirtualNetworkRuleParameters
 type UpdateVirtualNetworkRuleProperties = original.UpdateVirtualNetworkRuleProperties
 type UpdateVirtualNetworkRuleWithAccountParameters = original.UpdateVirtualNetworkRuleWithAccountParameters
+type Usage = original.Usage
+type UsageListResult = original.UsageListResult
+type UsageName = original.UsageName
 type VirtualNetworkRule = original.VirtualNetworkRule
 type VirtualNetworkRuleListResult = original.VirtualNetworkRuleListResult
 type VirtualNetworkRuleListResultIterator = original.VirtualNetworkRuleListResultIterator
@@ -290,6 +304,9 @@ func PossibleTierTypeValues() []TierType {
 }
 func PossibleTrustedIDProviderStateValues() []TrustedIDProviderState {
 	return original.PossibleTrustedIDProviderStateValues()
+}
+func PossibleUsageUnitValues() []UsageUnit {
+	return original.PossibleUsageUnitValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

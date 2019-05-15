@@ -16,7 +16,11 @@ package cmd
 
 import (
 	"bytes"
+	"fmt"
+	"io/ioutil"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -284,10 +288,127 @@ go 1.12
 	}
 }
 
+func cleanTestData() {
+	cmd := exec.Command("git", "clean", "-xdf", "../testdata")
+	err := cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+	cmd = exec.Command("git", "checkout", "--", "../testdata")
+	err = cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func Test_theCommandImplMajor(t *testing.T) {
-	t.SkipNow()
+	cleanTestData()
+	defer cleanTestData()
+	getTagsHook = func(root, prefix string) ([]string, error) {
+		// root doesn't matter
+		if !strings.HasSuffix(prefix, "/testdata/scenariob/foo") {
+			return nil, fmt.Errorf("bad prefix '%s'", prefix)
+		}
+		return []string{
+			"tools/versioner/testdata/scenariob/foo/v1.0.0",
+			"tools/versioner/testdata/scenariob/foo/v1.1.0",
+		}, nil
+	}
+	pkg, err := filepath.Abs("../testdata/scenariob/foo/stage")
+	if err != nil {
+		t.Fatalf("failed to get absolute path: %v", err)
+	}
+	tag, err := theCommandImpl([]string{pkg})
+	if err != nil {
+		t.Fatalf("failed: %v", err)
+	}
+	const expected = "tools/versioner/testdata/scenariob/foo/v2.0.0"
+	if tag != expected {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expected, tag)
+	}
+	b, err := ioutil.ReadFile("../testdata/scenariob/foo/v2/go.mod")
+	if err != nil {
+		t.Fatalf("failed to read go.mod file: %v", err)
+	}
+	const after = `module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenariob/foo/v2
+
+go 1.12
+`
+	if !strings.EqualFold(string(b), after) {
+		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
+	}
 }
 
 func Test_theCommandImplMinor(t *testing.T) {
-	t.SkipNow()
+	cleanTestData()
+	defer cleanTestData()
+	getTagsHook = func(root, prefix string) ([]string, error) {
+		// root doesn't matter
+		if !strings.HasSuffix(prefix, "/testdata/scenarioa/foo") {
+			return nil, fmt.Errorf("bad prefix '%s'", prefix)
+		}
+		return []string{
+			"tools/versioner/testdata/scenarioa/foo/v1.0.0",
+		}, nil
+	}
+	pkg, err := filepath.Abs("../testdata/scenarioa/foo/stage")
+	if err != nil {
+		t.Fatalf("failed to get absolute path: %v", err)
+	}
+	tag, err := theCommandImpl([]string{pkg})
+	if err != nil {
+		t.Fatalf("failed: %v", err)
+	}
+	const expected = "tools/versioner/testdata/scenarioa/foo/v1.1.0"
+	if tag != expected {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expected, tag)
+	}
+	b, err := ioutil.ReadFile("../testdata/scenarioa/foo/go.mod")
+	if err != nil {
+		t.Fatalf("failed to read go.mod file: %v", err)
+	}
+	const after = `module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenarioa/foo
+
+go 1.12
+`
+	if !strings.EqualFold(string(b), after) {
+		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
+	}
+}
+
+func Test_theCommandImplPatch(t *testing.T) {
+	cleanTestData()
+	defer cleanTestData()
+	getTagsHook = func(root, prefix string) ([]string, error) {
+		// root doesn't matter
+		if !strings.HasSuffix(prefix, "/testdata/scenarioc/foo") {
+			return nil, fmt.Errorf("bad prefix '%s'", prefix)
+		}
+		return []string{
+			"tools/versioner/testdata/scenarioc/foo/v1.0.0",
+		}, nil
+	}
+	pkg, err := filepath.Abs("../testdata/scenarioc/foo/stage")
+	if err != nil {
+		t.Fatalf("failed to get absolute path: %v", err)
+	}
+	tag, err := theCommandImpl([]string{pkg})
+	if err != nil {
+		t.Fatalf("failed: %v", err)
+	}
+	const expected = "tools/versioner/testdata/scenarioc/foo/v1.0.1"
+	if tag != expected {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expected, tag)
+	}
+	b, err := ioutil.ReadFile("../testdata/scenarioc/foo/go.mod")
+	if err != nil {
+		t.Fatalf("failed to read go.mod file: %v", err)
+	}
+	const after = `module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenarioc/foo
+
+go 1.12
+`
+	if !strings.EqualFold(string(b), after) {
+		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
+	}
 }

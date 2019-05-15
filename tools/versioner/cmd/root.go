@@ -53,7 +53,14 @@ next latest major vesion and the go.mod file is updated.
 
 var (
 	semverRegex = regexp.MustCompile(`v\d+\.\d+\.\d+$`)
+	// this is used so tests can hook getTags() to return whatever tags
+	getTagsHook func(string, string) ([]string, error)
 )
+
+func init() {
+	// default to the real version
+	getTagsHook = getTags
+}
 
 // Execute executes the specified command.
 func Execute() {
@@ -122,7 +129,11 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 // releases the module as an in-place update (minor or patch)
 func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 	// find existing tags for this module and create a new one
-	tags, err := getTags(lmv, "prefix")
+	prefix, err := getTagPrefix(lmv)
+	if err != nil {
+		return "", fmt.Errorf("failed to get tag prefix: %v", err)
+	}
+	tags, err := getTagsHook(lmv, prefix)
 	if err != nil {
 		return "", fmt.Errorf("failed to retrieve tags: %v", err)
 	}

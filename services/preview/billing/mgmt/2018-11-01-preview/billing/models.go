@@ -2143,6 +2143,24 @@ func (p *Profile) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ProfileCreationParameters the parameters for creating a new billing profile.
+type ProfileCreationParameters struct {
+	// DisplayName - The billing profile name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// PoNumber - Purchase order number.
+	PoNumber *string `json:"poNumber,omitempty"`
+	// Address - Billing address.
+	Address *Address `json:"address,omitempty"`
+	// InvoiceEmailOptIn - If the billing profile is opted in to receive invoices via email.
+	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
+	// EnableAzureSkuIds - Azure skus to enable for this billing profile.
+	EnableAzureSkuIds *[]string `json:"enableAzureSkuIds,omitempty"`
+	// CreateAzureSubscriptions - Create azure subscriptions when creating this billing profile.
+	CreateAzureSubscriptions *bool `json:"createAzureSubscriptions,omitempty"`
+	// PaymentInstrumentID - The paymentInstrument associated with the billing profile at creation.
+	PaymentInstrumentID *string `json:"paymentInstrumentId,omitempty"`
+}
+
 // ProfileListResult result of listing billing profiles.
 type ProfileListResult struct {
 	autorest.Response `json:"-"`
@@ -2172,6 +2190,35 @@ type ProfileProperties struct {
 	EnabledAzureSKUs *[]EnabledAzureSKUs `json:"enabledAzureSKUs,omitempty"`
 	// InvoiceSections - The invoice sections associated to the billing profile.
 	InvoiceSections *[]InvoiceSection `json:"invoiceSections,omitempty"`
+}
+
+// ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ProfilesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ProfilesCreateFuture) Result(client ProfilesClient) (p Profile, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.ProfilesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+		p, err = client.CreateResponder(p.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", p.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

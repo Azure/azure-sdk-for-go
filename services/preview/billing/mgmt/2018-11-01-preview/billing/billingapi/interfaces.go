@@ -47,6 +47,7 @@ var _ PaymentMethodsClientAPI = (*billing.PaymentMethodsClient)(nil)
 
 // ProfilesClientAPI contains the set of methods on the ProfilesClient type.
 type ProfilesClientAPI interface {
+	Create(ctx context.Context, billingAccountName string, parameters billing.ProfileCreationParameters) (result billing.ProfilesCreateFuture, err error)
 	Get(ctx context.Context, billingAccountName string, billingProfileName string, expand string) (result billing.Profile, err error)
 	ListByBillingAccountName(ctx context.Context, billingAccountName string, expand string) (result billing.ProfileListResult, err error)
 	Update(ctx context.Context, billingAccountName string, billingProfileName string, parameters billing.Profile) (result billing.ProfilesUpdateFuture, err error)

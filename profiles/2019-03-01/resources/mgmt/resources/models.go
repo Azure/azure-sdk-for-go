@@ -56,7 +56,12 @@ type AliasPathType = original.AliasPathType
 type AliasType = original.AliasType
 type BaseClient = original.BaseClient
 type BasicDependency = original.BasicDependency
+type Client = original.Client
+type CreateOrUpdateByIDFuture = original.CreateOrUpdateByIDFuture
+type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type DebugSetting = original.DebugSetting
+type DeleteByIDFuture = original.DeleteByIDFuture
+type DeleteFuture = original.DeleteFuture
 type Dependency = original.Dependency
 type Deployment = original.Deployment
 type DeploymentExportResult = original.DeploymentExportResult
@@ -67,40 +72,31 @@ type DeploymentListResultIterator = original.DeploymentListResultIterator
 type DeploymentListResultPage = original.DeploymentListResultPage
 type DeploymentOperation = original.DeploymentOperation
 type DeploymentOperationProperties = original.DeploymentOperationProperties
-type DeploymentOperationsGroupClient = original.DeploymentOperationsGroupClient
+type DeploymentOperationsClient = original.DeploymentOperationsClient
 type DeploymentOperationsListResult = original.DeploymentOperationsListResult
 type DeploymentOperationsListResultIterator = original.DeploymentOperationsListResultIterator
 type DeploymentOperationsListResultPage = original.DeploymentOperationsListResultPage
 type DeploymentProperties = original.DeploymentProperties
 type DeploymentPropertiesExtended = original.DeploymentPropertiesExtended
 type DeploymentValidateResult = original.DeploymentValidateResult
-type DeploymentsGroupClient = original.DeploymentsGroupClient
-type DeploymentsGroupCreateOrUpdateAtSubscriptionScopeFuture = original.DeploymentsGroupCreateOrUpdateAtSubscriptionScopeFuture
-type DeploymentsGroupCreateOrUpdateFuture = original.DeploymentsGroupCreateOrUpdateFuture
-type DeploymentsGroupDeleteAtSubscriptionScopeFuture = original.DeploymentsGroupDeleteAtSubscriptionScopeFuture
-type DeploymentsGroupDeleteFuture = original.DeploymentsGroupDeleteFuture
+type DeploymentsClient = original.DeploymentsClient
+type DeploymentsCreateOrUpdateAtSubscriptionScopeFuture = original.DeploymentsCreateOrUpdateAtSubscriptionScopeFuture
+type DeploymentsCreateOrUpdateFuture = original.DeploymentsCreateOrUpdateFuture
+type DeploymentsDeleteAtSubscriptionScopeFuture = original.DeploymentsDeleteAtSubscriptionScopeFuture
+type DeploymentsDeleteFuture = original.DeploymentsDeleteFuture
 type ExportTemplateRequest = original.ExportTemplateRequest
 type GenericResource = original.GenericResource
 type GenericResourceFilter = original.GenericResourceFilter
 type Group = original.Group
-type GroupClient = original.GroupClient
-type GroupCreateOrUpdateByIDFuture = original.GroupCreateOrUpdateByIDFuture
-type GroupCreateOrUpdateFuture = original.GroupCreateOrUpdateFuture
-type GroupDeleteByIDFuture = original.GroupDeleteByIDFuture
-type GroupDeleteFuture = original.GroupDeleteFuture
 type GroupExportResult = original.GroupExportResult
 type GroupFilter = original.GroupFilter
 type GroupListResult = original.GroupListResult
 type GroupListResultIterator = original.GroupListResultIterator
 type GroupListResultPage = original.GroupListResultPage
-type GroupMoveResourcesFuture = original.GroupMoveResourcesFuture
 type GroupPatchable = original.GroupPatchable
 type GroupProperties = original.GroupProperties
-type GroupUpdateByIDFuture = original.GroupUpdateByIDFuture
-type GroupUpdateFuture = original.GroupUpdateFuture
-type GroupValidateMoveResourcesFuture = original.GroupValidateMoveResourcesFuture
-type GroupsGroupClient = original.GroupsGroupClient
-type GroupsGroupDeleteFuture = original.GroupsGroupDeleteFuture
+type GroupsClient = original.GroupsClient
+type GroupsDeleteFuture = original.GroupsDeleteFuture
 type HTTPMessage = original.HTTPMessage
 type Identity = original.Identity
 type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
@@ -109,6 +105,7 @@ type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
 type ManagementErrorWithDetails = original.ManagementErrorWithDetails
 type MoveInfo = original.MoveInfo
+type MoveResourcesFuture = original.MoveResourcesFuture
 type OnErrorDeployment = original.OnErrorDeployment
 type OnErrorDeploymentExtended = original.OnErrorDeploymentExtended
 type Operation = original.Operation
@@ -116,7 +113,7 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
-type OperationsGroupClient = original.OperationsGroupClient
+type OperationsClient = original.OperationsClient
 type ParametersLink = original.ParametersLink
 type Plan = original.Plan
 type Provider = original.Provider
@@ -125,22 +122,31 @@ type ProviderListResultIterator = original.ProviderListResultIterator
 type ProviderListResultPage = original.ProviderListResultPage
 type ProviderOperationDisplayProperties = original.ProviderOperationDisplayProperties
 type ProviderResourceType = original.ProviderResourceType
-type ProvidersGroupClient = original.ProvidersGroupClient
+type ProvidersClient = original.ProvidersClient
 type Resource = original.Resource
 type Sku = original.Sku
 type SubResource = original.SubResource
 type TagCount = original.TagCount
 type TagDetails = original.TagDetails
 type TagValue = original.TagValue
-type TagsGroupClient = original.TagsGroupClient
+type TagsClient = original.TagsClient
 type TagsListResult = original.TagsListResult
 type TagsListResultIterator = original.TagsListResultIterator
 type TagsListResultPage = original.TagsListResultPage
 type TargetResource = original.TargetResource
 type TemplateLink = original.TemplateLink
+type UpdateByIDFuture = original.UpdateByIDFuture
+type UpdateFuture = original.UpdateFuture
+type ValidateMoveResourcesFuture = original.ValidateMoveResourcesFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDeploymentListResultIterator(page DeploymentListResultPage) DeploymentListResultIterator {
 	return original.NewDeploymentListResultIterator(page)
@@ -148,11 +154,11 @@ func NewDeploymentListResultIterator(page DeploymentListResultPage) DeploymentLi
 func NewDeploymentListResultPage(getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
 	return original.NewDeploymentListResultPage(getNextPage)
 }
-func NewDeploymentOperationsGroupClient(subscriptionID string) DeploymentOperationsGroupClient {
-	return original.NewDeploymentOperationsGroupClient(subscriptionID)
+func NewDeploymentOperationsClient(subscriptionID string) DeploymentOperationsClient {
+	return original.NewDeploymentOperationsClient(subscriptionID)
 }
-func NewDeploymentOperationsGroupClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsGroupClient {
-	return original.NewDeploymentOperationsGroupClientWithBaseURI(baseURI, subscriptionID)
+func NewDeploymentOperationsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentOperationsClient {
+	return original.NewDeploymentOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDeploymentOperationsListResultIterator(page DeploymentOperationsListResultPage) DeploymentOperationsListResultIterator {
 	return original.NewDeploymentOperationsListResultIterator(page)
@@ -160,17 +166,11 @@ func NewDeploymentOperationsListResultIterator(page DeploymentOperationsListResu
 func NewDeploymentOperationsListResultPage(getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
 	return original.NewDeploymentOperationsListResultPage(getNextPage)
 }
-func NewDeploymentsGroupClient(subscriptionID string) DeploymentsGroupClient {
-	return original.NewDeploymentsGroupClient(subscriptionID)
+func NewDeploymentsClient(subscriptionID string) DeploymentsClient {
+	return original.NewDeploymentsClient(subscriptionID)
 }
-func NewDeploymentsGroupClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsGroupClient {
-	return original.NewDeploymentsGroupClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewGroupClient(subscriptionID string) GroupClient {
-	return original.NewGroupClient(subscriptionID)
-}
-func NewGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupClient {
-	return original.NewGroupClientWithBaseURI(baseURI, subscriptionID)
+func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) DeploymentsClient {
+	return original.NewDeploymentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
 	return original.NewGroupListResultIterator(page)
@@ -178,11 +178,11 @@ func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterato
 func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
 	return original.NewGroupListResultPage(getNextPage)
 }
-func NewGroupsGroupClient(subscriptionID string) GroupsGroupClient {
-	return original.NewGroupsGroupClient(subscriptionID)
+func NewGroupsClient(subscriptionID string) GroupsClient {
+	return original.NewGroupsClient(subscriptionID)
 }
-func NewGroupsGroupClientWithBaseURI(baseURI string, subscriptionID string) GroupsGroupClient {
-	return original.NewGroupsGroupClientWithBaseURI(baseURI, subscriptionID)
+func NewGroupsClientWithBaseURI(baseURI string, subscriptionID string) GroupsClient {
+	return original.NewGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
@@ -196,11 +196,11 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsGroupClient(subscriptionID string) OperationsGroupClient {
-	return original.NewOperationsGroupClient(subscriptionID)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsGroupClientWithBaseURI(baseURI string, subscriptionID string) OperationsGroupClient {
-	return original.NewOperationsGroupClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProviderListResultIterator(page ProviderListResultPage) ProviderListResultIterator {
 	return original.NewProviderListResultIterator(page)
@@ -208,17 +208,17 @@ func NewProviderListResultIterator(page ProviderListResultPage) ProviderListResu
 func NewProviderListResultPage(getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
 	return original.NewProviderListResultPage(getNextPage)
 }
-func NewProvidersGroupClient(subscriptionID string) ProvidersGroupClient {
-	return original.NewProvidersGroupClient(subscriptionID)
+func NewProvidersClient(subscriptionID string) ProvidersClient {
+	return original.NewProvidersClient(subscriptionID)
 }
-func NewProvidersGroupClientWithBaseURI(baseURI string, subscriptionID string) ProvidersGroupClient {
-	return original.NewProvidersGroupClientWithBaseURI(baseURI, subscriptionID)
+func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) ProvidersClient {
+	return original.NewProvidersClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTagsGroupClient(subscriptionID string) TagsGroupClient {
-	return original.NewTagsGroupClient(subscriptionID)
+func NewTagsClient(subscriptionID string) TagsClient {
+	return original.NewTagsClient(subscriptionID)
 }
-func NewTagsGroupClientWithBaseURI(baseURI string, subscriptionID string) TagsGroupClient {
-	return original.NewTagsGroupClientWithBaseURI(baseURI, subscriptionID)
+func NewTagsClientWithBaseURI(baseURI string, subscriptionID string) TagsClient {
+	return original.NewTagsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTagsListResultIterator(page TagsListResultPage) TagsListResultIterator {
 	return original.NewTagsListResultIterator(page)

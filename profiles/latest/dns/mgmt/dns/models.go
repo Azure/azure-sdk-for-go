@@ -22,7 +22,7 @@ package dns
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2017-10-01/dns"
+	original "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2018-05-01/dns"
 )
 
 const (
@@ -44,9 +44,15 @@ const (
 	TXT   RecordType = original.TXT
 )
 
+type ZoneType = original.ZoneType
+
+const (
+	Private ZoneType = original.Private
+	Public  ZoneType = original.Public
+)
+
 type ARecord = original.ARecord
 type AaaaRecord = original.AaaaRecord
-type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CaaRecord = original.CaaRecord
 type CloudError = original.CloudError
@@ -54,7 +60,6 @@ type CloudErrorBody = original.CloudErrorBody
 type CnameRecord = original.CnameRecord
 type MxRecord = original.MxRecord
 type NsRecord = original.NsRecord
-type ProxyResource = original.ProxyResource
 type PtrRecord = original.PtrRecord
 type RecordSet = original.RecordSet
 type RecordSetListResult = original.RecordSetListResult
@@ -64,10 +69,15 @@ type RecordSetProperties = original.RecordSetProperties
 type RecordSetUpdateParameters = original.RecordSetUpdateParameters
 type RecordSetsClient = original.RecordSetsClient
 type Resource = original.Resource
+type ResourceReference = original.ResourceReference
+type ResourceReferenceClient = original.ResourceReferenceClient
+type ResourceReferenceRequest = original.ResourceReferenceRequest
+type ResourceReferenceRequestProperties = original.ResourceReferenceRequestProperties
+type ResourceReferenceResult = original.ResourceReferenceResult
+type ResourceReferenceResultProperties = original.ResourceReferenceResultProperties
 type SoaRecord = original.SoaRecord
 type SrvRecord = original.SrvRecord
 type SubResource = original.SubResource
-type TrackedResource = original.TrackedResource
 type TxtRecord = original.TxtRecord
 type Zone = original.Zone
 type ZoneListResult = original.ZoneListResult
@@ -93,6 +103,12 @@ func NewRecordSetsClient(subscriptionID string) RecordSetsClient {
 func NewRecordSetsClientWithBaseURI(baseURI string, subscriptionID string) RecordSetsClient {
 	return original.NewRecordSetsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceReferenceClient(subscriptionID string) ResourceReferenceClient {
+	return original.NewResourceReferenceClient(subscriptionID)
+}
+func NewResourceReferenceClientWithBaseURI(baseURI string, subscriptionID string) ResourceReferenceClient {
+	return original.NewResourceReferenceClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -110,6 +126,9 @@ func NewZonesClientWithBaseURI(baseURI string, subscriptionID string) ZonesClien
 }
 func PossibleRecordTypeValues() []RecordType {
 	return original.PossibleRecordTypeValues()
+}
+func PossibleZoneTypeValues() []ZoneType {
+	return original.PossibleZoneTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

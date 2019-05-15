@@ -46,9 +46,8 @@ func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) Usa
 // later.
 // Parameters:
 // scope - the scope associated with usage details operations. This includes '/subscriptions/{subscriptionId}/'
-// for subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for
-// resourceGroup scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account
-// scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope,
+// for subscription scope, '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing
+// Account scope, '/providers/Microsoft.Billing/departments/{departmentId}' for Department scope,
 // '/providers/Microsoft.Billing/enrollmentAccounts/{enrollmentAccountId}' for EnrollmentAccount scope and
 // '/providers/Microsoft.Management/managementGroups/{managementGroupId}' for Management Group scope. For
 // subscription, billing account, department, enrollment account and management group, you can also add billing

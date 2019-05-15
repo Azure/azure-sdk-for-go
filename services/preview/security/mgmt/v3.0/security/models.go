@@ -2085,6 +2085,8 @@ type ComplianceResultList struct {
 	autorest.Response `json:"-"`
 	// Value - List of compliance results
 	Value *[]ComplianceResult `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // ComplianceResultListIterator provides access to a complete listing of ComplianceResult values.

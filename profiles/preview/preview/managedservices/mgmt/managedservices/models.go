@@ -22,7 +22,7 @@ package managedservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/managedservices/mgmt/2018-06-01/managedservices"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/managedservices/mgmt/2019-04-01/managedservices"
 )
 
 const (
@@ -53,6 +53,9 @@ type ErrorResponseError = original.ErrorResponseError
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
+type OperationStatus = original.OperationStatus
+type OperationStatusesClient = original.OperationStatusesClient
+type OperationStatusesGetFuture = original.OperationStatusesGetFuture
 type OperationsClient = original.OperationsClient
 type Plan = original.Plan
 type RegistrationAssignment = original.RegistrationAssignment
@@ -63,15 +66,24 @@ type RegistrationAssignmentProperties = original.RegistrationAssignmentPropertie
 type RegistrationAssignmentPropertiesRegistrationDefinition = original.RegistrationAssignmentPropertiesRegistrationDefinition
 type RegistrationAssignmentPropertiesRegistrationDefinitionProperties = original.RegistrationAssignmentPropertiesRegistrationDefinitionProperties
 type RegistrationAssignmentsClient = original.RegistrationAssignmentsClient
+type RegistrationAssignmentsCreateOrUpdateFuture = original.RegistrationAssignmentsCreateOrUpdateFuture
+type RegistrationAssignmentsDeleteFuture = original.RegistrationAssignmentsDeleteFuture
 type RegistrationDefinition = original.RegistrationDefinition
 type RegistrationDefinitionList = original.RegistrationDefinitionList
 type RegistrationDefinitionListIterator = original.RegistrationDefinitionListIterator
 type RegistrationDefinitionListPage = original.RegistrationDefinitionListPage
 type RegistrationDefinitionProperties = original.RegistrationDefinitionProperties
 type RegistrationDefinitionsClient = original.RegistrationDefinitionsClient
+type RegistrationDefinitionsCreateOrUpdateFuture = original.RegistrationDefinitionsCreateOrUpdateFuture
 
 func New() BaseClient {
 	return original.New()
+}
+func NewOperationStatusesClient() OperationStatusesClient {
+	return original.NewOperationStatusesClient()
+}
+func NewOperationStatusesClientWithBaseURI(baseURI string) OperationStatusesClient {
+	return original.NewOperationStatusesClientWithBaseURI(baseURI)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

@@ -536,7 +536,7 @@ type LandmarksModel struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
-// Line json object representing a recognized text line.
+// Line an object representing a recognized text line.
 type Line struct {
 	// BoundingBox - Bounding box of a recognized line.
 	BoundingBox *[]int32 `json:"boundingBox,omitempty"`
@@ -620,7 +620,7 @@ type ReadOperationResult struct {
 	autorest.Response `json:"-"`
 	// Status - Status of the read operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
 	Status TextOperationStatusCodes `json:"status,omitempty"`
-	// RecognitionResults - A array of text recognition result of the read operation.
+	// RecognitionResults - An array of text recognition result of the read operation.
 	RecognitionResults *[]TextRecognitionResult `json:"recognitionResults,omitempty"`
 }
 
@@ -643,7 +643,7 @@ type TextOperationResult struct {
 	RecognitionResult *TextRecognitionResult `json:"recognitionResult,omitempty"`
 }
 
-// TextRecognitionResult json object representing a recognized text region
+// TextRecognitionResult an object representing a recognized text region
 type TextRecognitionResult struct {
 	// Page - The 1-based page number of the recognition result.
 	Page *int32 `json:"page,omitempty"`
@@ -653,13 +653,13 @@ type TextRecognitionResult struct {
 	Width *float64 `json:"width,omitempty"`
 	// Height - The height of the image in pixels or the PDF in inches.
 	Height *float64 `json:"height,omitempty"`
-	// Unit - The unit used in the Width, Height and BoundingBox. For images, the unit is "pixel". For PDF, the unit is "inch". Possible values include: 'Pixel', 'Inch'
+	// Unit - The unit used in the Width, Height and BoundingBox. For images, the unit is 'pixel'. For PDF, the unit is 'inch'. Possible values include: 'Pixel', 'Inch'
 	Unit TextRecognitionResultDimensionUnit `json:"unit,omitempty"`
 	// Lines - A list of recognized text lines.
 	Lines *[]Line `json:"lines,omitempty"`
 }
 
-// Word json object representing a recognized word.
+// Word an object representing a recognized word.
 type Word struct {
 	// BoundingBox - Bounding box of a recognized word.
 	BoundingBox *[]int32 `json:"boundingBox,omitempty"`

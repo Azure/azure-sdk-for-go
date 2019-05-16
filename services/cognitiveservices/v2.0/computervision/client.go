@@ -459,12 +459,11 @@ func (client BaseClient) AnalyzeImageInStreamResponder(resp *http.Response) (res
 
 // BatchReadFile use this interface to get the result of a Read operation, employing the state-of-the-art Optical
 // Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the
-// response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must
-// use for your "Read Operation Result" operation to access OCR results.​
+// response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must
+// use for your 'GetReadOperationResult' operation to access OCR results.​
 // Parameters:
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
-// mode - type of text to recognize.
-func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (result autorest.Response, err error) {
+func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.BatchReadFile")
 		defer func() {
@@ -481,7 +480,7 @@ func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL, m
 		return result, validation.NewError("computervision.BaseClient", "BatchReadFile", err.Error())
 	}
 
-	req, err := client.BatchReadFilePreparer(ctx, imageURL, mode)
+	req, err := client.BatchReadFilePreparer(ctx, imageURL)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFile", nil, "Failure preparing request")
 		return
@@ -503,13 +502,9 @@ func (client BaseClient) BatchReadFile(ctx context.Context, imageURL ImageURL, m
 }
 
 // BatchReadFilePreparer prepares the BatchReadFile request.
-func (client BaseClient) BatchReadFilePreparer(ctx context.Context, imageURL ImageURL, mode TextRecognitionMode) (*http.Request, error) {
+func (client BaseClient) BatchReadFilePreparer(ctx context.Context, imageURL ImageURL) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
-	}
-
-	queryParameters := map[string]interface{}{
-		"mode": autorest.Encode("query", mode),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -517,8 +512,7 @@ func (client BaseClient) BatchReadFilePreparer(ctx context.Context, imageURL Ima
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/read/core/asyncBatchAnalyze"),
-		autorest.WithJSON(imageURL),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithJSON(imageURL))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -543,12 +537,11 @@ func (client BaseClient) BatchReadFileResponder(resp *http.Response) (result aut
 
 // BatchReadFileInStream use this interface to get the result of a Read Document operation, employing the
 // state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the
-// Read Document interface, the response contains a field called "Operation-Location". The "Operation-Location" field
-// contains the URL that you must use for your "Get Read Result operation" to access OCR results.​
+// Read Document interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field
+// contains the URL that you must use for your 'Get Read Result operation' to access OCR results.​
 // Parameters:
 // imageParameter - an image stream.
-// mode - type of text to recognize.
-func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (result autorest.Response, err error) {
+func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParameter io.ReadCloser) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.BatchReadFileInStream")
 		defer func() {
@@ -559,7 +552,7 @@ func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParamet
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.BatchReadFileInStreamPreparer(ctx, imageParameter, mode)
+	req, err := client.BatchReadFileInStreamPreparer(ctx, imageParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "BatchReadFileInStream", nil, "Failure preparing request")
 		return
@@ -581,13 +574,9 @@ func (client BaseClient) BatchReadFileInStream(ctx context.Context, imageParamet
 }
 
 // BatchReadFileInStreamPreparer prepares the BatchReadFileInStream request.
-func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, mode TextRecognitionMode) (*http.Request, error) {
+func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
-	}
-
-	queryParameters := map[string]interface{}{
-		"mode": autorest.Encode("query", mode),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -595,8 +584,7 @@ func (client BaseClient) BatchReadFileInStreamPreparer(ctx context.Context, imag
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/vision/v2.0", urlParameters),
 		autorest.WithPath("/read/core/asyncBatchAnalyze"),
-		autorest.WithFile(imageParameter),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithFile(imageParameter))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1321,9 +1309,9 @@ func (client BaseClient) GetAreaOfInterestInStreamResponder(resp *http.Response)
 }
 
 // GetReadOperationResult this interface is used for getting OCR results of Read operation. The URL to this interface
-// should be retrieved from "Operation-Location" field returned from Batch Read File interface.
+// should be retrieved from 'Operation-Location' field returned from Batch Read File interface.
 // Parameters:
-// operationID - id of read operation returned in the response of the "Batch Read File" interface.
+// operationID - id of read operation returned in the response of the 'Batch Read File' interface.
 func (client BaseClient) GetReadOperationResult(ctx context.Context, operationID string) (result ReadOperationResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetReadOperationResult")

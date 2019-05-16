@@ -291,6 +291,35 @@ type HanaInstanceProperties struct {
 	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
 }
 
+// HanaInstancesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type HanaInstancesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HanaInstancesCreateFuture) Result(client HanaInstancesClient) (hi HanaInstance, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if hi.Response.Response, err = future.GetResult(sender); err == nil && hi.Response.Response.StatusCode != http.StatusNoContent {
+		hi, err = client.CreateResponder(hi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", hi.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // HanaInstancesEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type HanaInstancesEnableMonitoringFuture struct {

@@ -2153,12 +2153,10 @@ type ProfileCreationParameters struct {
 	Address *Address `json:"address,omitempty"`
 	// InvoiceEmailOptIn - If the billing profile is opted in to receive invoices via email.
 	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
-	// EnableAzureSkuIds - Azure skus to enable for this billing profile.
-	EnableAzureSkuIds *[]string `json:"enableAzureSkuIds,omitempty"`
+	// EnableAzureSKUs - Azure skus to enable for this billing profile..
+	EnableAzureSKUs *[]EnabledAzureSKUs `json:"enableAzureSKUs,omitempty"`
 	// CreateAzureSubscriptions - Create azure subscriptions when creating this billing profile.
 	CreateAzureSubscriptions *bool `json:"createAzureSubscriptions,omitempty"`
-	// PaymentInstrumentID - The paymentInstrument associated with the billing profile at creation.
-	PaymentInstrumentID *string `json:"paymentInstrumentId,omitempty"`
 }
 
 // ProfileListResult result of listing billing profiles.

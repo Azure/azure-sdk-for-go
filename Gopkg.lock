@@ -29,6 +29,14 @@
   version = "v12.0.0"
 
 [[projects]]
+  digest = "1:55388fd080150b9a072912f97b1f5891eb0b50df43401f8b75fb4273d3fec9fc"
+  name = "github.com/Masterminds/semver"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "c7af12943936e8c39859482e61f0574c2fd7fc75"
+  version = "v1.4.2"
+
+[[projects]]
   digest = "1:fdb4ed936abeecb46a8c27dcac83f75c05c87a46d9ec7711411eb785c213fa02"
   name = "github.com/census-instrumentation/opencensus-proto"
   packages = [
@@ -401,6 +409,7 @@
     "github.com/Azure/go-autorest/autorest/to",
     "github.com/Azure/go-autorest/autorest/validation",
     "github.com/Azure/go-autorest/tracing",
+    "github.com/Masterminds/semver",
     "github.com/dnaeon/go-vcr/cassette",
     "github.com/dnaeon/go-vcr/recorder",
     "github.com/globalsign/mgo",

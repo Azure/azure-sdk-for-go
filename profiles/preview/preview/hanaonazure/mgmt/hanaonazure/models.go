@@ -77,6 +77,7 @@ type ErrorResponse = original.ErrorResponse
 type HanaInstance = original.HanaInstance
 type HanaInstanceProperties = original.HanaInstanceProperties
 type HanaInstancesClient = original.HanaInstancesClient
+type HanaInstancesDeleteFuture = original.HanaInstancesDeleteFuture
 type HanaInstancesEnableMonitoringFuture = original.HanaInstancesEnableMonitoringFuture
 type HanaInstancesListResult = original.HanaInstancesListResult
 type HanaInstancesListResultIterator = original.HanaInstancesListResultIterator

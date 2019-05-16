@@ -44,13 +44,13 @@ func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) Ha
 // Parameters:
 // resourceGroupName - name of the resource group.
 // hanaInstanceName - name of the SAP HANA on Azure instance.
-func (client HanaInstancesClient) Delete(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result HanaInstance, err error) {
+func (client HanaInstancesClient) Delete(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result HanaInstancesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -61,16 +61,10 @@ func (client HanaInstancesClient) Delete(ctx context.Context, resourceGroupName 
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -99,9 +93,15 @@ func (client HanaInstancesClient) DeletePreparer(ctx context.Context, resourceGr
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client HanaInstancesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
+func (client HanaInstancesClient) DeleteSender(req *http.Request) (future HanaInstancesDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -110,7 +110,7 @@ func (client HanaInstancesClient) DeleteResponder(resp *http.Response) (result H
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

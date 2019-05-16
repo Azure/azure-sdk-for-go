@@ -262,6 +262,35 @@ type HanaInstanceProperties struct {
 	HwRevision *string `json:"hwRevision,omitempty"`
 }
 
+// HanaInstancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type HanaInstancesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HanaInstancesDeleteFuture) Result(client HanaInstancesClient) (hi HanaInstance, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesDeleteFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if hi.Response.Response, err = future.GetResult(sender); err == nil && hi.Response.Response.StatusCode != http.StatusNoContent {
+		hi, err = client.DeleteResponder(hi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesDeleteFuture", "Result", hi.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // HanaInstancesEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type HanaInstancesEnableMonitoringFuture struct {

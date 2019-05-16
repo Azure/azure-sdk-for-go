@@ -31,7 +31,7 @@ var _ OperationsClientAPI = (*hanaonazure.OperationsClient)(nil)
 
 // HanaInstancesClientAPI contains the set of methods on the HanaInstancesClient type.
 type HanaInstancesClientAPI interface {
-	Delete(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstance, err error)
+	Delete(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstancesDeleteFuture, err error)
 	EnableMonitoring(ctx context.Context, resourceGroupName string, hanaInstanceName string, monitoringParameter hanaonazure.MonitoringDetails) (result hanaonazure.HanaInstancesEnableMonitoringFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result hanaonazure.HanaInstance, err error)
 	List(ctx context.Context) (result hanaonazure.HanaInstancesListResultPage, err error)

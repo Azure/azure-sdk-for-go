@@ -123,3 +123,24 @@ func Test_ScenarioE(t *testing.T) {
 		t.Fatalf("bad destination dir: %s", mod.DestDir())
 	}
 }
+
+func Test_ScenarioF(t *testing.T) {
+	// scenario F is a new module
+	mod, err := GetModuleInfo("../../testdata/scenariof/foo", "../../testdata/scenariof/foo/stage")
+	if err != nil {
+		t.Fatalf("failed to get module info: %v", err)
+	}
+	if mod.BreakingChanges() {
+		t.Fatal("unexpected breaking changes in scenario F")
+	}
+	if !mod.NewExports() {
+		t.Fatal("expected new exports in scenario F")
+	}
+	if mod.VersionSuffix() {
+		t.Fatalf("unexpected version suffix in scenario F")
+	}
+	regex := regexp.MustCompile(`testdata/scenariof/foo$`)
+	if !regex.MatchString(mod.DestDir()) {
+		t.Fatalf("bad destination dir: %s", mod.DestDir())
+	}
+}

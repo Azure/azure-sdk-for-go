@@ -222,6 +222,13 @@ func Test_findLatestMajorVersion(t *testing.T) {
 	if ver != "../testdata/scenariod/foo/v2" {
 		t.Fatalf("bad LMV %s", ver)
 	}
+	ver, err = findLatestMajorVersion("../testdata/scenariof/foo/stage")
+	if err != nil {
+		t.Fatalf("failed to find LMV: %v", err)
+	}
+	if ver != "../testdata/scenariof/foo" {
+		t.Fatalf("bad LMV %s", ver)
+	}
 }
 
 type byteBufferSeeker struct {
@@ -405,6 +412,41 @@ func Test_theCommandImplPatch(t *testing.T) {
 		t.Fatalf("failed to read go.mod file: %v", err)
 	}
 	const after = `module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenarioc/foo
+
+go 1.12
+`
+	if !strings.EqualFold(string(b), after) {
+		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
+	}
+}
+
+func Test_theCommandImplNewMod(t *testing.T) {
+	cleanTestData()
+	defer cleanTestData()
+	getTagsHook = func(root, prefix string) ([]string, error) {
+		// root doesn't matter
+		if !strings.HasSuffix(prefix, "/testdata/scenariof/foo") {
+			return nil, fmt.Errorf("bad prefix '%s'", prefix)
+		}
+		return []string{}, nil
+	}
+	pkg, err := filepath.Abs("../testdata/scenariof/foo/stage")
+	if err != nil {
+		t.Fatalf("failed to get absolute path: %v", err)
+	}
+	tag, err := theCommandImpl([]string{pkg})
+	if err != nil {
+		t.Fatalf("failed: %v", err)
+	}
+	const expected = "tools/versioner/testdata/scenariof/foo/v1.0.0"
+	if tag != expected {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expected, tag)
+	}
+	b, err := ioutil.ReadFile("../testdata/scenariof/foo/go.mod")
+	if err != nil {
+		t.Fatalf("failed to read go.mod file: %v", err)
+	}
+	const after = `module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenariof/foo
 
 go 1.12
 `

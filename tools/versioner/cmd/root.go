@@ -91,7 +91,7 @@ func theCommandImpl(args []string) (string, error) {
 		return "", fmt.Errorf("failed to create module info: %v", err)
 	}
 	// TODO: no changelog for new module
-	if err = writeChangelog(stage); err != nil {
+	if err = writeChangelog(stage, mod); err != nil {
 		return "", fmt.Errorf("failed to write changelog: %v", err)
 	}
 	var tag string
@@ -232,7 +232,7 @@ func updateGoModVer(goMod io.ReadWriteSeeker, newVer string) error {
 	return nil
 }
 
-func writeChangelog(stage string) error {
+func writeChangelog(stage string, mod modinfo.Provider) error {
 	// TODO
 	return nil
 }

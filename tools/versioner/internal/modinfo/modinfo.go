@@ -59,7 +59,10 @@ func GetModuleInfo(baseline, staged string) (Provider, error) {
 	// TODO: verify staged is a child of baseline
 	lhs, err := exports.Get(baseline)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get exports for package '%s': %s", baseline, err)
+		// if baseline has no content then this is a v1 package
+		if ei, ok := err.(exports.LoadPackageErrorInfo); !ok || ei.PkgCount() != 0 {
+			return nil, fmt.Errorf("failed to get exports for package '%s': %s", baseline, err)
+		}
 	}
 	rhs, err := exports.Get(staged)
 	if err != nil {
@@ -96,12 +99,18 @@ func (m module) DestDir() string {
 
 // NewExports returns true if the module contains any additive changes.
 func (m module) NewExports() bool {
+	if m.lhs.IsEmpty() {
+		return true
+	}
 	adds := delta.GetExports(m.lhs, m.rhs)
 	return !adds.IsEmpty()
 }
 
 // BreakingChanges returns true if the module contains breaking changes.
 func (m module) BreakingChanges() bool {
+	if m.lhs.IsEmpty() {
+		return false
+	}
 	// check for changed content
 	if len(delta.GetConstTypeChanges(m.lhs, m.rhs)) > 0 ||
 		len(delta.GetFuncSigChanges(m.lhs, m.rhs)) > 0 ||

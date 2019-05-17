@@ -36,6 +36,20 @@ const (
 	Key2 KeyName = original.Key2
 )
 
+type NetworkRuleAction = original.NetworkRuleAction
+
+const (
+	Allow NetworkRuleAction = original.Allow
+	Deny  NetworkRuleAction = original.Deny
+)
+
+type NetworkRuleBypassOptions = original.NetworkRuleBypassOptions
+
+const (
+	AzureServices NetworkRuleBypassOptions = original.AzureServices
+	None          NetworkRuleBypassOptions = original.None
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -107,7 +121,9 @@ type CheckSkuAvailabilityResult = original.CheckSkuAvailabilityResult
 type CheckSkuAvailabilityResultList = original.CheckSkuAvailabilityResultList
 type Error = original.Error
 type ErrorBody = original.ErrorBody
+type IPRule = original.IPRule
 type MetricName = original.MetricName
+type NetworkRuleSet = original.NetworkRuleSet
 type OperationDisplayInfo = original.OperationDisplayInfo
 type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
@@ -126,6 +142,7 @@ type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Sku = original.Sku
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
+type VirtualNetworkRule = original.VirtualNetworkRule
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -177,6 +194,12 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleKeyNameValues() []KeyName {
 	return original.PossibleKeyNameValues()
+}
+func PossibleNetworkRuleActionValues() []NetworkRuleAction {
+	return original.PossibleNetworkRuleActionValues()
+}
+func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
+	return original.PossibleNetworkRuleBypassOptionsValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

@@ -29,12 +29,19 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AccessLevel = original.AccessLevel
+
+const (
+	None AccessLevel = original.None
+	Read AccessLevel = original.Read
+)
+
 type CachingTypes = original.CachingTypes
 
 const (
-	None      CachingTypes = original.None
-	ReadOnly  CachingTypes = original.ReadOnly
-	ReadWrite CachingTypes = original.ReadWrite
+	CachingTypesNone      CachingTypes = original.CachingTypesNone
+	CachingTypesReadOnly  CachingTypes = original.CachingTypesReadOnly
+	CachingTypesReadWrite CachingTypes = original.CachingTypesReadWrite
 )
 
 type ComponentNames = original.ComponentNames
@@ -43,12 +50,22 @@ const (
 	MicrosoftWindowsShellSetup ComponentNames = original.MicrosoftWindowsShellSetup
 )
 
+type DiskCreateOption = original.DiskCreateOption
+
+const (
+	Attach    DiskCreateOption = original.Attach
+	Copy      DiskCreateOption = original.Copy
+	Empty     DiskCreateOption = original.Empty
+	FromImage DiskCreateOption = original.FromImage
+	Import    DiskCreateOption = original.Import
+)
+
 type DiskCreateOptionTypes = original.DiskCreateOptionTypes
 
 const (
-	Attach    DiskCreateOptionTypes = original.Attach
-	Empty     DiskCreateOptionTypes = original.Empty
-	FromImage DiskCreateOptionTypes = original.FromImage
+	DiskCreateOptionTypesAttach    DiskCreateOptionTypes = original.DiskCreateOptionTypesAttach
+	DiskCreateOptionTypesEmpty     DiskCreateOptionTypes = original.DiskCreateOptionTypesEmpty
+	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = original.DiskCreateOptionTypesFromImage
 )
 
 type IPVersion = original.IPVersion
@@ -116,6 +133,28 @@ const (
 	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
 	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
+type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
+
+const (
+	ResourceSkuCapacityScaleTypeAutomatic ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeAutomatic
+	ResourceSkuCapacityScaleTypeManual    ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeManual
+	ResourceSkuCapacityScaleTypeNone      ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeNone
+)
+
+type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
+
+const (
+	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
+	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
+)
+
+type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
+
+const (
+	Location ResourceSkuRestrictionsType = original.Location
+	Zone     ResourceSkuRestrictionsType = original.Zone
 )
 
 type RollingUpgradeActionType = original.RollingUpgradeActionType
@@ -376,6 +415,9 @@ const (
 type APIEntityReference = original.APIEntityReference
 type APIError = original.APIError
 type APIErrorBase = original.APIErrorBase
+type AccessURI = original.AccessURI
+type AccessURIOutput = original.AccessURIOutput
+type AccessURIRaw = original.AccessURIRaw
 type AdditionalUnattendContent = original.AdditionalUnattendContent
 type AutoOSUpgradePolicy = original.AutoOSUpgradePolicy
 type AvailabilitySet = original.AvailabilitySet
@@ -388,14 +430,32 @@ type AvailabilitySetsClient = original.AvailabilitySetsClient
 type BaseClient = original.BaseClient
 type BootDiagnostics = original.BootDiagnostics
 type BootDiagnosticsInstanceView = original.BootDiagnosticsInstanceView
+type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
 type DiagnosticsProfile = original.DiagnosticsProfile
+type Disk = original.Disk
 type DiskEncryptionSettings = original.DiskEncryptionSettings
 type DiskInstanceView = original.DiskInstanceView
+type DiskList = original.DiskList
+type DiskListIterator = original.DiskListIterator
+type DiskListPage = original.DiskListPage
+type DiskProperties = original.DiskProperties
+type DiskSku = original.DiskSku
+type DiskUpdate = original.DiskUpdate
+type DiskUpdateProperties = original.DiskUpdateProperties
+type DisksClient = original.DisksClient
+type DisksCreateOrUpdateFuture = original.DisksCreateOrUpdateFuture
+type DisksDeleteFuture = original.DisksDeleteFuture
+type DisksGrantAccessFuture = original.DisksGrantAccessFuture
+type DisksRevokeAccessFuture = original.DisksRevokeAccessFuture
+type DisksUpdateFuture = original.DisksUpdateFuture
+type EncryptionSettings = original.EncryptionSettings
+type GrantAccessData = original.GrantAccessData
 type HardwareProfile = original.HardwareProfile
 type Image = original.Image
 type ImageDataDisk = original.ImageDataDisk
+type ImageDiskReference = original.ImageDiskReference
 type ImageListResult = original.ImageListResult
 type ImageListResultIterator = original.ImageListResultIterator
 type ImageListResultPage = original.ImageListResultPage
@@ -410,6 +470,8 @@ type ImagesDeleteFuture = original.ImagesDeleteFuture
 type ImagesUpdateFuture = original.ImagesUpdateFuture
 type InnerError = original.InnerError
 type InstanceViewStatus = original.InstanceViewStatus
+type KeyVaultAndKeyReference = original.KeyVaultAndKeyReference
+type KeyVaultAndSecretReference = original.KeyVaultAndSecretReference
 type KeyVaultKeyReference = original.KeyVaultKeyReference
 type KeyVaultSecretReference = original.KeyVaultSecretReference
 type LinuxConfiguration = original.LinuxConfiguration
@@ -443,6 +505,18 @@ type PurchasePlan = original.PurchasePlan
 type RecoveryWalkResponse = original.RecoveryWalkResponse
 type RequestRateByIntervalInput = original.RequestRateByIntervalInput
 type Resource = original.Resource
+type ResourceSku = original.ResourceSku
+type ResourceSkuCapabilities = original.ResourceSkuCapabilities
+type ResourceSkuCapacity = original.ResourceSkuCapacity
+type ResourceSkuCosts = original.ResourceSkuCosts
+type ResourceSkuLocationInfo = original.ResourceSkuLocationInfo
+type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
+type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkusClient = original.ResourceSkusClient
+type ResourceSkusResult = original.ResourceSkusResult
+type ResourceSkusResultIterator = original.ResourceSkusResultIterator
+type ResourceSkusResultPage = original.ResourceSkusResultPage
+type ResourceUpdate = original.ResourceUpdate
 type RollbackStatusInfo = original.RollbackStatusInfo
 type RollingUpgradePolicy = original.RollingUpgradePolicy
 type RollingUpgradeProgressInfo = original.RollingUpgradeProgressInfo
@@ -462,6 +536,18 @@ type RunCommandResultProperties = original.RunCommandResultProperties
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
 type Sku = original.Sku
+type Snapshot = original.Snapshot
+type SnapshotList = original.SnapshotList
+type SnapshotListIterator = original.SnapshotListIterator
+type SnapshotListPage = original.SnapshotListPage
+type SnapshotUpdate = original.SnapshotUpdate
+type SnapshotsClient = original.SnapshotsClient
+type SnapshotsCreateOrUpdateFuture = original.SnapshotsCreateOrUpdateFuture
+type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
+type SnapshotsGrantAccessFuture = original.SnapshotsGrantAccessFuture
+type SnapshotsRevokeAccessFuture = original.SnapshotsRevokeAccessFuture
+type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
+type SourceVault = original.SourceVault
 type StorageProfile = original.StorageProfile
 type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
@@ -638,6 +724,18 @@ func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
 func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
 	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewDiskListIterator(page DiskListPage) DiskListIterator {
+	return original.NewDiskListIterator(page)
+}
+func NewDiskListPage(getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
+	return original.NewDiskListPage(getNextPage)
+}
+func NewDisksClient(subscriptionID string) DisksClient {
+	return original.NewDisksClient(subscriptionID)
+}
+func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClient {
+	return original.NewDisksClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewImageListResultIterator(page ImageListResultPage) ImageListResultIterator {
 	return original.NewImageListResultIterator(page)
 }
@@ -668,11 +766,35 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID)
+}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
+	return original.NewResourceSkusResultIterator(page)
+}
+func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return original.NewResourceSkusResultPage(getNextPage)
+}
 func NewRunCommandListResultIterator(page RunCommandListResultPage) RunCommandListResultIterator {
 	return original.NewRunCommandListResultIterator(page)
 }
 func NewRunCommandListResultPage(getNextPage func(context.Context, RunCommandListResult) (RunCommandListResult, error)) RunCommandListResultPage {
 	return original.NewRunCommandListResultPage(getNextPage)
+}
+func NewSnapshotListIterator(page SnapshotListPage) SnapshotListIterator {
+	return original.NewSnapshotListIterator(page)
+}
+func NewSnapshotListPage(getNextPage func(context.Context, SnapshotList) (SnapshotList, error)) SnapshotListPage {
+	return original.NewSnapshotListPage(getNextPage)
+}
+func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
+	return original.NewSnapshotsClient(subscriptionID)
+}
+func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
+	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUsageClient(subscriptionID string) UsageClient {
 	return original.NewUsageClient(subscriptionID)
@@ -785,6 +907,9 @@ func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAccessLevelValues() []AccessLevel {
+	return original.PossibleAccessLevelValues()
+}
 func PossibleCachingTypesValues() []CachingTypes {
 	return original.PossibleCachingTypesValues()
 }
@@ -793,6 +918,9 @@ func PossibleComponentNamesValues() []ComponentNames {
 }
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return original.PossibleDiskCreateOptionTypesValues()
+}
+func PossibleDiskCreateOptionValues() []DiskCreateOption {
+	return original.PossibleDiskCreateOptionValues()
 }
 func PossibleIPVersionValues() []IPVersion {
 	return original.PossibleIPVersionValues()
@@ -820,6 +948,15 @@ func PossibleProtocolTypesValues() []ProtocolTypes {
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
+	return original.PossibleResourceSkuCapacityScaleTypeValues()
+}
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
+}
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return original.PossibleResourceSkuRestrictionsTypeValues()
 }
 func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 	return original.PossibleRollingUpgradeActionTypeValues()

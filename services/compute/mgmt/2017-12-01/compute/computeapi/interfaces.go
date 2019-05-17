@@ -203,3 +203,38 @@ type VirtualMachineRunCommandsClientAPI interface {
 }
 
 var _ VirtualMachineRunCommandsClientAPI = (*compute.VirtualMachineRunCommandsClient)(nil)
+
+// ResourceSkusClientAPI contains the set of methods on the ResourceSkusClient type.
+type ResourceSkusClientAPI interface {
+	List(ctx context.Context) (result compute.ResourceSkusResultPage, err error)
+}
+
+var _ ResourceSkusClientAPI = (*compute.ResourceSkusClient)(nil)
+
+// DisksClientAPI contains the set of methods on the DisksClient type.
+type DisksClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk compute.Disk) (result compute.DisksCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, diskName string) (result compute.DisksDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, diskName string) (result compute.Disk, err error)
+	GrantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData compute.GrantAccessData) (result compute.DisksGrantAccessFuture, err error)
+	List(ctx context.Context) (result compute.DiskListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.DiskListPage, err error)
+	RevokeAccess(ctx context.Context, resourceGroupName string, diskName string) (result compute.DisksRevokeAccessFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, diskName string, disk compute.DiskUpdate) (result compute.DisksUpdateFuture, err error)
+}
+
+var _ DisksClientAPI = (*compute.DisksClient)(nil)
+
+// SnapshotsClientAPI contains the set of methods on the SnapshotsClient type.
+type SnapshotsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot compute.Snapshot) (result compute.SnapshotsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, snapshotName string) (result compute.SnapshotsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, snapshotName string) (result compute.Snapshot, err error)
+	GrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData compute.GrantAccessData) (result compute.SnapshotsGrantAccessFuture, err error)
+	List(ctx context.Context) (result compute.SnapshotListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.SnapshotListPage, err error)
+	RevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string) (result compute.SnapshotsRevokeAccessFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot compute.SnapshotUpdate) (result compute.SnapshotsUpdateFuture, err error)
+}
+
+var _ SnapshotsClientAPI = (*compute.SnapshotsClient)(nil)

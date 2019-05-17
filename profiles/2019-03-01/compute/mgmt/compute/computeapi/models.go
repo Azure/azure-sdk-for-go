@@ -22,9 +22,12 @@ package computeapi
 import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-12-01/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
+type DisksClientAPI = original.DisksClientAPI
 type ImagesClientAPI = original.ImagesClientAPI
 type LogAnalyticsClientAPI = original.LogAnalyticsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type ResourceSkusClientAPI = original.ResourceSkusClientAPI
+type SnapshotsClientAPI = original.SnapshotsClientAPI
 type UsageClientAPI = original.UsageClientAPI
 type VirtualMachineExtensionImagesClientAPI = original.VirtualMachineExtensionImagesClientAPI
 type VirtualMachineExtensionsClientAPI = original.VirtualMachineExtensionsClientAPI

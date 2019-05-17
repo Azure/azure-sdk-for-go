@@ -629,7 +629,7 @@ type MetricName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
-// NetworkRuleSet a set of rules governing the network accessibility of a vault.
+// NetworkRuleSet a set of rules governing the network accessibility.
 type NetworkRuleSet struct {
 	// Bypass - Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'.  If not specified the default is 'AzureServices'. Possible values include: 'AzureServices', 'None'
 	Bypass NetworkRuleBypassOptions `json:"bypass,omitempty"`

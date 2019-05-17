@@ -1046,4 +1046,6 @@ type VirtualNetworkRule struct {
 	ID *string `json:"id,omitempty"`
 	// State - Gets the state of virtual network rule.
 	State *string `json:"state,omitempty"`
+	// IgnoreMissingVnetServiceEndpoint - Ignore missing vnet service endpoint or not.
+	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
 }

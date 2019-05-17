@@ -24,7 +24,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var dirMode bool
+var (
+	dirMode    bool
+	asMarkdown bool
+)
 
 var packageCmd = &cobra.Command{
 	Use:   "package <package dir> (<base commit> <target commit(s)>) | (<commit sequence>)",
@@ -92,6 +95,7 @@ func thePackageCmd(args []string) (rs reportStatus, err error) {
 
 func init() {
 	packageCmd.PersistentFlags().BoolVarP(&dirMode, "directories", "i", false, "compares packages in two different directories")
+	packageCmd.PersistentFlags().BoolVarP(&asMarkdown, "markdown", "m", false, "emits the report in markdown format")
 	rootCmd.AddCommand(packageCmd)
 }
 
@@ -122,6 +126,10 @@ func packageCmdDirMode(args []string) (rs reportStatus, err error) {
 		return nil, fmt.Errorf("failed to get exports for package '%s': %s", args[1], err)
 	}
 	r := report.Generate(lhs, rhs, onlyBreakingChangesFlag, onlyAdditionsFlag)
-	err = printReport(r)
+	if asMarkdown && !suppressReport {
+		println(r.ToMarkdown())
+	} else {
+		err = printReport(r)
+	}
 	return r, err
 }

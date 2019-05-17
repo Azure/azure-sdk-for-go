@@ -21,7 +21,7 @@ import (
 
 // Package represents a per-package report that contains additive and breaking changes.
 type Package struct {
-	AdditiveChanges *exports.Content `json:"additiveChanges,omitempty"`
+	AdditiveChanges *delta.Content   `json:"additiveChanges,omitempty"`
 	BreakingChanges *BreakingChanges `json:"breakingChanges,omitempty"`
 }
 
@@ -47,7 +47,7 @@ type BreakingChanges struct {
 	Funcs      map[string]delta.FuncSig      `json:"funcs,omitempty"`
 	Interfaces map[string]delta.InterfaceDef `json:"interfaces,omitempty"`
 	Structs    map[string]delta.StructDef    `json:"structs,omitempty"`
-	Removed    *exports.Content              `json:"removed,omitempty"`
+	Removed    *delta.Content                `json:"removed,omitempty"`
 }
 
 // IsEmpty returns true if there are no breaking changes.
@@ -81,4 +81,12 @@ func Generate(lhs, rhs exports.Content, onlyBreakingChanges, onlyAdditions bool)
 		}
 	}
 	return r
+}
+
+// ToMarkdown creates a report of the package changes in markdown format.
+func (r Package) ToMarkdown() string {
+	if r.IsEmpty() {
+		return ""
+	}
+	return formatAsMarkdown(r)
 }

@@ -22,6 +22,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 )
 
 var (
@@ -44,6 +45,8 @@ type Provider interface {
 	NewExports() bool
 	BreakingChanges() bool
 	VersionSuffix() bool
+	NewModule() bool
+	GenerateReport() report.Package
 }
 
 type module struct {
@@ -128,4 +131,14 @@ func (m module) BreakingChanges() bool {
 // VersionSuffix returns true if the module path contains a version suffix.
 func (m module) VersionSuffix() bool {
 	return verSuffixRegex.MatchString(m.dest)
+}
+
+// NewModule returns true if the module is new, i.e. v1.0.0.
+func (m module) NewModule() bool {
+	return m.lhs.IsEmpty()
+}
+
+// GenerateReport generates a package report for the module.
+func (m module) GenerateReport() report.Package {
+	return report.Generate(m.lhs, m.rhs, false, false)
 }

@@ -139,6 +139,9 @@ func Test_ScenarioF(t *testing.T) {
 	if mod.VersionSuffix() {
 		t.Fatalf("unexpected version suffix in scenario F")
 	}
+	if !mod.NewModule() {
+		t.Fatal("expected new module in scenario F")
+	}
 	regex := regexp.MustCompile(`testdata/scenariof/foo$`)
 	if !regex.MatchString(mod.DestDir()) {
 		t.Fatalf("bad destination dir: %s", mod.DestDir())

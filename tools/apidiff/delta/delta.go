@@ -15,13 +15,30 @@
 package delta
 
 import (
+	"sort"
+
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 )
 
+// Content defines the set of exported constants, funcs, and structs.
+type Content struct {
+	exports.Content
+
+	// contains the names of structs that are modified in whole (i.e. new/removed)
+	CompleteStructs []string `json:"newStructs,omitempty"`
+}
+
+// NewContent returns an initialized Content object.
+func NewContent() Content {
+	return Content{
+		Content: exports.NewContent(),
+	}
+}
+
 // GetExports returns a exports.Content struct containing all exports in rhs that aren't in lhs.
 // This includes any new fields added to structs or methods added to interfaces.
-func GetExports(lhs, rhs exports.Content) exports.Content {
-	nc := exports.NewContent()
+func GetExports(lhs, rhs exports.Content) Content {
+	nc := NewContent()
 
 	for n, v := range rhs.Consts {
 		if _, ok := lhs.Consts[n]; !ok {
@@ -44,6 +61,7 @@ func GetExports(lhs, rhs exports.Content) exports.Content {
 	for n, v := range rhs.Structs {
 		if _, ok := lhs.Structs[n]; !ok {
 			nc.Structs[n] = v
+			nc.CompleteStructs = append(nc.CompleteStructs, n)
 		}
 	}
 
@@ -61,6 +79,7 @@ func GetExports(lhs, rhs exports.Content) exports.Content {
 		}
 	}
 
+	sort.Strings(nc.CompleteStructs)
 	return nc
 }
 

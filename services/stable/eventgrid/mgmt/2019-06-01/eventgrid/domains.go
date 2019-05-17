@@ -284,7 +284,7 @@ func (client DomainsClient) GetResponder(resp *http.Response) (result Domain, er
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client DomainsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32) (result DomainsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.ListByResourceGroup")
@@ -410,7 +410,7 @@ func (client DomainsClient) ListByResourceGroupComplete(ctx context.Context, res
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client DomainsClient) ListBySubscription(ctx context.Context, filter string, top *int32) (result DomainsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainsClient.ListBySubscription")

@@ -284,7 +284,7 @@ func (client TopicsClient) GetResponder(resp *http.Response) (result Topic, err 
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client TopicsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32) (result TopicsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TopicsClient.ListByResourceGroup")
@@ -410,7 +410,7 @@ func (client TopicsClient) ListByResourceGroupComplete(ctx context.Context, reso
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client TopicsClient) ListBySubscription(ctx context.Context, filter string, top *int32) (result TopicsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TopicsClient.ListBySubscription")

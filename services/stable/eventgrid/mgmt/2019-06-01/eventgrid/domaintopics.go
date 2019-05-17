@@ -287,7 +287,7 @@ func (client DomainTopicsClient) GetResponder(resp *http.Response) (result Domai
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client DomainTopicsClient) ListByDomain(ctx context.Context, resourceGroupName string, domainName string, filter string, top *int32) (result DomainTopicsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DomainTopicsClient.ListByDomain")

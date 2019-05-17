@@ -388,7 +388,7 @@ func (client EventSubscriptionsClient) GetFullURLResponder(resp *http.Response) 
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListByDomainTopic(ctx context.Context, resourceGroupName string, domainName string, topicName string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListByDomainTopic")
@@ -520,7 +520,7 @@ func (client EventSubscriptionsClient) ListByDomainTopicComplete(ctx context.Con
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListByResource(ctx context.Context, resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListByResource")
@@ -651,7 +651,7 @@ func (client EventSubscriptionsClient) ListByResourceComplete(ctx context.Contex
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListGlobalByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListGlobalByResourceGroup")
@@ -780,7 +780,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupComplete(ctx con
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicType(ctx context.Context, resourceGroupName string, topicTypeName string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListGlobalByResourceGroupForTopicType")
@@ -907,7 +907,7 @@ func (client EventSubscriptionsClient) ListGlobalByResourceGroupForTopicTypeComp
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListGlobalBySubscription(ctx context.Context, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListGlobalBySubscription")
@@ -1034,7 +1034,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionComplete(ctx cont
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicType(ctx context.Context, topicTypeName string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListGlobalBySubscriptionForTopicType")
@@ -1163,7 +1163,7 @@ func (client EventSubscriptionsClient) ListGlobalBySubscriptionForTopicTypeCompl
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListRegionalByResourceGroup(ctx context.Context, resourceGroupName string, location string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListRegionalByResourceGroup")
@@ -1294,7 +1294,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupComplete(ctx c
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicType(ctx context.Context, resourceGroupName string, location string, topicTypeName string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListRegionalByResourceGroupForTopicType")
@@ -1423,7 +1423,7 @@ func (client EventSubscriptionsClient) ListRegionalByResourceGroupForTopicTypeCo
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListRegionalBySubscription(ctx context.Context, location string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListRegionalBySubscription")
@@ -1552,7 +1552,7 @@ func (client EventSubscriptionsClient) ListRegionalBySubscriptionComplete(ctx co
 // 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
 // 'westus'.
 // top - the number of results to return per page for the list operation. Valid range for top parameter is 1 to
-// 100. If not specified, the default number of results to be returned is 20 iterms per page.
+// 100. If not specified, the default number of results to be returned is 20 items per page.
 func (client EventSubscriptionsClient) ListRegionalBySubscriptionForTopicType(ctx context.Context, location string, topicTypeName string, filter string, top *int32) (result EventSubscriptionsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSubscriptionsClient.ListRegionalBySubscriptionForTopicType")

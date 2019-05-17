@@ -2132,7 +2132,7 @@ type DataDisk struct {
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// ManagedDisk - The managed disk parameters.
 	ManagedDisk *ManagedDiskParameters `json:"managedDisk,omitempty"`
-	// ToBeDetached - Specifies whether the datadisk is in process of detachment from the VirtualMachine/VirtualMachineScaleset
+	// ToBeDetached - Specifies whether the data disk is in process of detachment from the VirtualMachine/VirtualMachineScaleset
 	ToBeDetached *bool `json:"toBeDetached,omitempty"`
 }
 

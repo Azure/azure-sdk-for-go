@@ -45,7 +45,7 @@ func NewShowbackRuleClientWithBaseURI(baseURI string, subscriptionID string) Sho
 // billingAccountID - billingAccount ID
 // ruleName - showback rule name
 // showbackRule - showback rule to create or update.
-func (client ShowbackRuleClient) CreateUpdateRule(ctx context.Context, billingAccountID string, ruleName string, showbackRule ShowbackRuleProperties) (result ShowbackRule, err error) {
+func (client ShowbackRuleClient) CreateUpdateRule(ctx context.Context, billingAccountID string, ruleName string, showbackRule ShowbackRule) (result ShowbackRule, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ShowbackRuleClient.CreateUpdateRule")
 		defer func() {
@@ -78,7 +78,7 @@ func (client ShowbackRuleClient) CreateUpdateRule(ctx context.Context, billingAc
 }
 
 // CreateUpdateRulePreparer prepares the CreateUpdateRule request.
-func (client ShowbackRuleClient) CreateUpdateRulePreparer(ctx context.Context, billingAccountID string, ruleName string, showbackRule ShowbackRuleProperties) (*http.Request, error) {
+func (client ShowbackRuleClient) CreateUpdateRulePreparer(ctx context.Context, billingAccountID string, ruleName string, showbackRule ShowbackRule) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountId": autorest.Encode("path", billingAccountID),
 		"ruleName":         autorest.Encode("path", ruleName),
@@ -89,10 +89,9 @@ func (client ShowbackRuleClient) CreateUpdateRulePreparer(ctx context.Context, b
 		"api-version": APIVersion,
 	}
 
-	showbackRule.Version = nil
-	showbackRule.CreationTime = nil
-	showbackRule.DeprecationTime = nil
-	showbackRule.ModificationTime = nil
+	showbackRule.ID = nil
+	showbackRule.Name = nil
+	showbackRule.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

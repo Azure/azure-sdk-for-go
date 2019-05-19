@@ -47,11 +47,12 @@ const (
 	ConnectorStatusWarning ConnectorStatus = original.ConnectorStatusWarning
 )
 
-type CustomChargeRecurring = original.CustomChargeRecurring
+type CostAllocationPolicy = original.CostAllocationPolicy
 
 const (
-	False CustomChargeRecurring = original.False
-	True  CustomChargeRecurring = original.True
+	Evenly       CostAllocationPolicy = original.Evenly
+	Fixed        CostAllocationPolicy = original.Fixed
+	Proportional CostAllocationPolicy = original.Proportional
 )
 
 type Direction = original.Direction
@@ -91,19 +92,19 @@ const (
 	ReportConfigColumnTypeTag       ReportConfigColumnType = original.ReportConfigColumnTypeTag
 )
 
+type RuleType = original.RuleType
+
+const (
+	RuleTypeCostAllocation         RuleType = original.RuleTypeCostAllocation
+	RuleTypeCustomPrice            RuleType = original.RuleTypeCustomPrice
+	RuleTypeShowbackRuleProperties RuleType = original.RuleTypeShowbackRuleProperties
+)
+
 type ShowbackRuleStatus = original.ShowbackRuleStatus
 
 const (
 	Active    ShowbackRuleStatus = original.Active
 	NotActive ShowbackRuleStatus = original.NotActive
-)
-
-type ShowbackRulesKind = original.ShowbackRulesKind
-
-const (
-	ShowbackRulesKindCostAllocation ShowbackRulesKind = original.ShowbackRulesKindCostAllocation
-	ShowbackRulesKindCustomChange   ShowbackRulesKind = original.ShowbackRulesKindCustomChange
-	ShowbackRulesKindCustomPrice    ShowbackRulesKind = original.ShowbackRulesKindCustomPrice
 )
 
 type TimeframeType = original.TimeframeType
@@ -116,17 +117,17 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type BasicShowbackRuleProperties = original.BasicShowbackRuleProperties
 type CloudConnectorClient = original.CloudConnectorClient
 type ConnectorCollectionErrorInfo = original.ConnectorCollectionErrorInfo
 type ConnectorCollectionInfo = original.ConnectorCollectionInfo
 type ConnectorDefinition = original.ConnectorDefinition
 type ConnectorDefinitionListResult = original.ConnectorDefinitionListResult
 type ConnectorProperties = original.ConnectorProperties
-type CostAllocation = original.CostAllocation
-type CustomCharge = original.CustomCharge
-type CustomChargeProperties = original.CustomChargeProperties
-type CustomPrice = original.CustomPrice
-type CustomPriceProperties = original.CustomPriceProperties
+type CostAllocationDetails = original.CostAllocationDetails
+type CostAllocationDetailsKind = original.CostAllocationDetailsKind
+type CustomPriceDetails = original.CustomPriceDetails
+type CustomPriceDetailsKind = original.CustomPriceDetailsKind
 type Dimension = original.Dimension
 type DimensionProperties = original.DimensionProperties
 type DimensionsClient = original.DimensionsClient
@@ -172,7 +173,6 @@ type ShowbackRuleClient = original.ShowbackRuleClient
 type ShowbackRuleListResult = original.ShowbackRuleListResult
 type ShowbackRuleProperties = original.ShowbackRuleProperties
 type ShowbackRulesClient = original.ShowbackRulesClient
-type ShowbackRulesKind1 = original.ShowbackRulesKind1
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -246,8 +246,8 @@ func PossibleConnectorBillingModelValues() []ConnectorBillingModel {
 func PossibleConnectorStatusValues() []ConnectorStatus {
 	return original.PossibleConnectorStatusValues()
 }
-func PossibleCustomChargeRecurringValues() []CustomChargeRecurring {
-	return original.PossibleCustomChargeRecurringValues()
+func PossibleCostAllocationPolicyValues() []CostAllocationPolicy {
+	return original.PossibleCostAllocationPolicyValues()
 }
 func PossibleDirectionValues() []Direction {
 	return original.PossibleDirectionValues()
@@ -264,11 +264,11 @@ func PossibleOperatorTypeValues() []OperatorType {
 func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
 	return original.PossibleReportConfigColumnTypeValues()
 }
+func PossibleRuleTypeValues() []RuleType {
+	return original.PossibleRuleTypeValues()
+}
 func PossibleShowbackRuleStatusValues() []ShowbackRuleStatus {
 	return original.PossibleShowbackRuleStatusValues()
-}
-func PossibleShowbackRulesKindValues() []ShowbackRulesKind {
-	return original.PossibleShowbackRulesKindValues()
 }
 func PossibleTimeframeTypeValues() []TimeframeType {
 	return original.PossibleTimeframeTypeValues()

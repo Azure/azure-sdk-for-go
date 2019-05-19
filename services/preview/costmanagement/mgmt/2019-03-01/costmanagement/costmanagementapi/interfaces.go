@@ -99,7 +99,7 @@ var _ ShowbackRulesClientAPI = (*costmanagement.ShowbackRulesClient)(nil)
 
 // ShowbackRuleClientAPI contains the set of methods on the ShowbackRuleClient type.
 type ShowbackRuleClientAPI interface {
-	CreateUpdateRule(ctx context.Context, billingAccountID string, ruleName string, showbackRule costmanagement.ShowbackRuleProperties) (result costmanagement.ShowbackRule, err error)
+	CreateUpdateRule(ctx context.Context, billingAccountID string, ruleName string, showbackRule costmanagement.ShowbackRule) (result costmanagement.ShowbackRule, err error)
 	GetBillingAccountID(ctx context.Context, billingAccountID string, ruleName string) (result costmanagement.ShowbackRule, err error)
 }
 

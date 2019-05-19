@@ -68,19 +68,21 @@ func PossibleConnectorStatusValues() []ConnectorStatus {
 	return []ConnectorStatus{ConnectorStatusActive, ConnectorStatusError, ConnectorStatusExpired, ConnectorStatusWarning}
 }
 
-// CustomChargeRecurring enumerates the values for custom charge recurring.
-type CustomChargeRecurring string
+// CostAllocationPolicy enumerates the values for cost allocation policy.
+type CostAllocationPolicy string
 
 const (
-	// False ...
-	False CustomChargeRecurring = "false"
-	// True ...
-	True CustomChargeRecurring = "true"
+	// Evenly ...
+	Evenly CostAllocationPolicy = "Evenly"
+	// Fixed ...
+	Fixed CostAllocationPolicy = "Fixed"
+	// Proportional ...
+	Proportional CostAllocationPolicy = "Proportional"
 )
 
-// PossibleCustomChargeRecurringValues returns an array of possible values for the CustomChargeRecurring const type.
-func PossibleCustomChargeRecurringValues() []CustomChargeRecurring {
-	return []CustomChargeRecurring{False, True}
+// PossibleCostAllocationPolicyValues returns an array of possible values for the CostAllocationPolicy const type.
+func PossibleCostAllocationPolicyValues() []CostAllocationPolicy {
+	return []CostAllocationPolicy{Evenly, Fixed, Proportional}
 }
 
 // Direction enumerates the values for direction.
@@ -162,21 +164,21 @@ func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
 	return []ReportConfigColumnType{ReportConfigColumnTypeDimension, ReportConfigColumnTypeTag}
 }
 
-// ShowbackRulesKind enumerates the values for showback rules kind.
-type ShowbackRulesKind string
+// RuleType enumerates the values for rule type.
+type RuleType string
 
 const (
-	// ShowbackRulesKindCostAllocation ...
-	ShowbackRulesKindCostAllocation ShowbackRulesKind = "CostAllocation"
-	// ShowbackRulesKindCustomChange ...
-	ShowbackRulesKindCustomChange ShowbackRulesKind = "CustomChange"
-	// ShowbackRulesKindCustomPrice ...
-	ShowbackRulesKindCustomPrice ShowbackRulesKind = "CustomPrice"
+	// RuleTypeCostAllocation ...
+	RuleTypeCostAllocation RuleType = "CostAllocation"
+	// RuleTypeCustomPrice ...
+	RuleTypeCustomPrice RuleType = "CustomPrice"
+	// RuleTypeShowbackRuleProperties ...
+	RuleTypeShowbackRuleProperties RuleType = "ShowbackRuleProperties"
 )
 
-// PossibleShowbackRulesKindValues returns an array of possible values for the ShowbackRulesKind const type.
-func PossibleShowbackRulesKindValues() []ShowbackRulesKind {
-	return []ShowbackRulesKind{ShowbackRulesKindCostAllocation, ShowbackRulesKindCustomChange, ShowbackRulesKindCustomPrice}
+// PossibleRuleTypeValues returns an array of possible values for the RuleType const type.
+func PossibleRuleTypeValues() []RuleType {
+	return []RuleType{RuleTypeCostAllocation, RuleTypeCustomPrice, RuleTypeShowbackRuleProperties}
 }
 
 // ShowbackRuleStatus enumerates the values for showback rule status.
@@ -366,9 +368,16 @@ type ConnectorProperties struct {
 	CollectionInfo *ConnectorCollectionInfo `json:"collectionInfo,omitempty"`
 }
 
-// CostAllocation represents cost allocation showback rule model
-type CostAllocation struct {
-	Details interface{} `json:"details,omitempty"`
+// CostAllocationDetails represents CostAllocation showback rule model
+type CostAllocationDetails struct {
+	// Policy - Cost allocation policy. Possible values include: 'Proportional', 'Evenly', 'Fixed'
+	Policy CostAllocationPolicy `json:"policy,omitempty"`
+}
+
+// CostAllocationDetailsKind represents CostAllocation showback rule model
+type CostAllocationDetailsKind struct {
+	// CostAllocationDetails - The CostAllocation properties to validate.
+	*CostAllocationDetails `json:"details,omitempty"`
 	// Description - Description of a showback rule.
 	Description *string `json:"description,omitempty"`
 	// Status - The current status of the showback rule. Possible values include: 'NotActive', 'Active'
@@ -383,69 +392,315 @@ type CostAllocation struct {
 	DeprecationTime *date.Time `json:"deprecationTime,omitempty"`
 	// ModificationTime - READ-ONLY; The current status when showback rule was modified.
 	ModificationTime *date.Time `json:"modificationTime,omitempty"`
-	// RuleType - The rule type of the showback rule solution. Possible values include: 'ShowbackRulesKindCustomPrice', 'ShowbackRulesKindCustomChange', 'ShowbackRulesKindCostAllocation'
-	RuleType ShowbackRulesKind `json:"RuleType,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeShowbackRuleProperties', 'RuleTypeCustomPrice', 'RuleTypeCostAllocation'
+	RuleType RuleType `json:"ruleType,omitempty"`
 }
 
-// CustomCharge represents custom charge showback rule model
-type CustomCharge struct {
-	Details *CustomChargeProperties `json:"details,omitempty"`
-	// Description - Description of a showback rule.
-	Description *string `json:"description,omitempty"`
-	// Status - The current status of the showback rule. Possible values include: 'NotActive', 'Active'
-	Status ShowbackRuleStatus `json:"status,omitempty"`
-	// Version - READ-ONLY; The current version of showback rule.
-	Version *int32 `json:"version,omitempty"`
-	// Scopes - List of authorized assigned scopes.
-	Scopes *[]Scope `json:"scopes,omitempty"`
-	// CreationTime - READ-ONLY; The time when the showback rule was created.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// DeprecationTime - READ-ONLY; The current time when showback rule was deprecate.
-	DeprecationTime *date.Time `json:"deprecationTime,omitempty"`
-	// ModificationTime - READ-ONLY; The current status when showback rule was modified.
-	ModificationTime *date.Time `json:"modificationTime,omitempty"`
-	// RuleType - The rule type of the showback rule solution. Possible values include: 'ShowbackRulesKindCustomPrice', 'ShowbackRulesKindCustomChange', 'ShowbackRulesKindCostAllocation'
-	RuleType ShowbackRulesKind `json:"RuleType,omitempty"`
+// MarshalJSON is the custom marshaler for CostAllocationDetailsKind.
+func (cadk CostAllocationDetailsKind) MarshalJSON() ([]byte, error) {
+	cadk.RuleType = RuleTypeCostAllocation
+	objectMap := make(map[string]interface{})
+	if cadk.CostAllocationDetails != nil {
+		objectMap["details"] = cadk.CostAllocationDetails
+	}
+	if cadk.Description != nil {
+		objectMap["description"] = cadk.Description
+	}
+	if cadk.Status != "" {
+		objectMap["status"] = cadk.Status
+	}
+	if cadk.Scopes != nil {
+		objectMap["scopes"] = cadk.Scopes
+	}
+	if cadk.RuleType != "" {
+		objectMap["ruleType"] = cadk.RuleType
+	}
+	return json.Marshal(objectMap)
 }
 
-// CustomChargeProperties ...
-type CustomChargeProperties struct {
-	// Recurring - READ-ONLY; Recurring of the charge. Possible values include: 'True', 'False'
-	Recurring      CustomChargeRecurring `json:"recurring,omitempty"`
-	ChargeType     *string               `json:"chargeType,omitempty"`
-	ChargeValue    *string               `json:"ChargeValue,omitempty"`
-	EffectiveMonth *date.Time            `json:"EffectiveMonth,omitempty"`
-	EndMonth       *date.Time            `json:"EndMonth,omitempty"`
+// AsCustomPriceDetailsKind is the BasicShowbackRuleProperties implementation for CostAllocationDetailsKind.
+func (cadk CostAllocationDetailsKind) AsCustomPriceDetailsKind() (*CustomPriceDetailsKind, bool) {
+	return nil, false
 }
 
-// CustomPrice represents Custom price showback rule model
-type CustomPrice struct {
-	Details *CustomPriceProperties `json:"details,omitempty"`
-	// Description - Description of a showback rule.
-	Description *string `json:"description,omitempty"`
-	// Status - The current status of the showback rule. Possible values include: 'NotActive', 'Active'
-	Status ShowbackRuleStatus `json:"status,omitempty"`
-	// Version - READ-ONLY; The current version of showback rule.
-	Version *int32 `json:"version,omitempty"`
-	// Scopes - List of authorized assigned scopes.
-	Scopes *[]Scope `json:"scopes,omitempty"`
-	// CreationTime - READ-ONLY; The time when the showback rule was created.
-	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// DeprecationTime - READ-ONLY; The current time when showback rule was deprecate.
-	DeprecationTime *date.Time `json:"deprecationTime,omitempty"`
-	// ModificationTime - READ-ONLY; The current status when showback rule was modified.
-	ModificationTime *date.Time `json:"modificationTime,omitempty"`
-	// RuleType - The rule type of the showback rule solution. Possible values include: 'ShowbackRulesKindCustomPrice', 'ShowbackRulesKindCustomChange', 'ShowbackRulesKindCostAllocation'
-	RuleType ShowbackRulesKind `json:"RuleType,omitempty"`
+// AsCostAllocationDetailsKind is the BasicShowbackRuleProperties implementation for CostAllocationDetailsKind.
+func (cadk CostAllocationDetailsKind) AsCostAllocationDetailsKind() (*CostAllocationDetailsKind, bool) {
+	return &cadk, true
 }
 
-// CustomPriceProperties ...
-type CustomPriceProperties struct {
+// AsShowbackRuleProperties is the BasicShowbackRuleProperties implementation for CostAllocationDetailsKind.
+func (cadk CostAllocationDetailsKind) AsShowbackRuleProperties() (*ShowbackRuleProperties, bool) {
+	return nil, false
+}
+
+// AsBasicShowbackRuleProperties is the BasicShowbackRuleProperties implementation for CostAllocationDetailsKind.
+func (cadk CostAllocationDetailsKind) AsBasicShowbackRuleProperties() (BasicShowbackRuleProperties, bool) {
+	return &cadk, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CostAllocationDetailsKind struct.
+func (cadk *CostAllocationDetailsKind) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "details":
+			if v != nil {
+				var costAllocationDetails CostAllocationDetails
+				err = json.Unmarshal(*v, &costAllocationDetails)
+				if err != nil {
+					return err
+				}
+				cadk.CostAllocationDetails = &costAllocationDetails
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				cadk.Description = &description
+			}
+		case "status":
+			if v != nil {
+				var status ShowbackRuleStatus
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				cadk.Status = status
+			}
+		case "version":
+			if v != nil {
+				var version int32
+				err = json.Unmarshal(*v, &version)
+				if err != nil {
+					return err
+				}
+				cadk.Version = &version
+			}
+		case "scopes":
+			if v != nil {
+				var scopes []Scope
+				err = json.Unmarshal(*v, &scopes)
+				if err != nil {
+					return err
+				}
+				cadk.Scopes = &scopes
+			}
+		case "creationTime":
+			if v != nil {
+				var creationTime date.Time
+				err = json.Unmarshal(*v, &creationTime)
+				if err != nil {
+					return err
+				}
+				cadk.CreationTime = &creationTime
+			}
+		case "deprecationTime":
+			if v != nil {
+				var deprecationTime date.Time
+				err = json.Unmarshal(*v, &deprecationTime)
+				if err != nil {
+					return err
+				}
+				cadk.DeprecationTime = &deprecationTime
+			}
+		case "modificationTime":
+			if v != nil {
+				var modificationTime date.Time
+				err = json.Unmarshal(*v, &modificationTime)
+				if err != nil {
+					return err
+				}
+				cadk.ModificationTime = &modificationTime
+			}
+		case "ruleType":
+			if v != nil {
+				var ruleType RuleType
+				err = json.Unmarshal(*v, &ruleType)
+				if err != nil {
+					return err
+				}
+				cadk.RuleType = ruleType
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomPriceDetails represents Custom price showback rule model
+type CustomPriceDetails struct {
 	Pricesheet *string `json:"pricesheet,omitempty"`
 	// Benefits - Array of benefits.
 	Benefits *[]FunctionType `json:"benefits,omitempty"`
 	// Markups - List of markups.
 	Markups *[]Markup `json:"markups,omitempty"`
+}
+
+// CustomPriceDetailsKind represents Custom price showback rule model
+type CustomPriceDetailsKind struct {
+	// CustomPriceDetails - The Custom price properties to validate.
+	*CustomPriceDetails `json:"details,omitempty"`
+	// Description - Description of a showback rule.
+	Description *string `json:"description,omitempty"`
+	// Status - The current status of the showback rule. Possible values include: 'NotActive', 'Active'
+	Status ShowbackRuleStatus `json:"status,omitempty"`
+	// Version - READ-ONLY; The current version of showback rule.
+	Version *int32 `json:"version,omitempty"`
+	// Scopes - List of authorized assigned scopes.
+	Scopes *[]Scope `json:"scopes,omitempty"`
+	// CreationTime - READ-ONLY; The time when the showback rule was created.
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// DeprecationTime - READ-ONLY; The current time when showback rule was deprecate.
+	DeprecationTime *date.Time `json:"deprecationTime,omitempty"`
+	// ModificationTime - READ-ONLY; The current status when showback rule was modified.
+	ModificationTime *date.Time `json:"modificationTime,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeShowbackRuleProperties', 'RuleTypeCustomPrice', 'RuleTypeCostAllocation'
+	RuleType RuleType `json:"ruleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomPriceDetailsKind.
+func (cpdk CustomPriceDetailsKind) MarshalJSON() ([]byte, error) {
+	cpdk.RuleType = RuleTypeCustomPrice
+	objectMap := make(map[string]interface{})
+	if cpdk.CustomPriceDetails != nil {
+		objectMap["details"] = cpdk.CustomPriceDetails
+	}
+	if cpdk.Description != nil {
+		objectMap["description"] = cpdk.Description
+	}
+	if cpdk.Status != "" {
+		objectMap["status"] = cpdk.Status
+	}
+	if cpdk.Scopes != nil {
+		objectMap["scopes"] = cpdk.Scopes
+	}
+	if cpdk.RuleType != "" {
+		objectMap["ruleType"] = cpdk.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCustomPriceDetailsKind is the BasicShowbackRuleProperties implementation for CustomPriceDetailsKind.
+func (cpdk CustomPriceDetailsKind) AsCustomPriceDetailsKind() (*CustomPriceDetailsKind, bool) {
+	return &cpdk, true
+}
+
+// AsCostAllocationDetailsKind is the BasicShowbackRuleProperties implementation for CustomPriceDetailsKind.
+func (cpdk CustomPriceDetailsKind) AsCostAllocationDetailsKind() (*CostAllocationDetailsKind, bool) {
+	return nil, false
+}
+
+// AsShowbackRuleProperties is the BasicShowbackRuleProperties implementation for CustomPriceDetailsKind.
+func (cpdk CustomPriceDetailsKind) AsShowbackRuleProperties() (*ShowbackRuleProperties, bool) {
+	return nil, false
+}
+
+// AsBasicShowbackRuleProperties is the BasicShowbackRuleProperties implementation for CustomPriceDetailsKind.
+func (cpdk CustomPriceDetailsKind) AsBasicShowbackRuleProperties() (BasicShowbackRuleProperties, bool) {
+	return &cpdk, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomPriceDetailsKind struct.
+func (cpdk *CustomPriceDetailsKind) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "details":
+			if v != nil {
+				var customPriceDetails CustomPriceDetails
+				err = json.Unmarshal(*v, &customPriceDetails)
+				if err != nil {
+					return err
+				}
+				cpdk.CustomPriceDetails = &customPriceDetails
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				cpdk.Description = &description
+			}
+		case "status":
+			if v != nil {
+				var status ShowbackRuleStatus
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				cpdk.Status = status
+			}
+		case "version":
+			if v != nil {
+				var version int32
+				err = json.Unmarshal(*v, &version)
+				if err != nil {
+					return err
+				}
+				cpdk.Version = &version
+			}
+		case "scopes":
+			if v != nil {
+				var scopes []Scope
+				err = json.Unmarshal(*v, &scopes)
+				if err != nil {
+					return err
+				}
+				cpdk.Scopes = &scopes
+			}
+		case "creationTime":
+			if v != nil {
+				var creationTime date.Time
+				err = json.Unmarshal(*v, &creationTime)
+				if err != nil {
+					return err
+				}
+				cpdk.CreationTime = &creationTime
+			}
+		case "deprecationTime":
+			if v != nil {
+				var deprecationTime date.Time
+				err = json.Unmarshal(*v, &deprecationTime)
+				if err != nil {
+					return err
+				}
+				cpdk.DeprecationTime = &deprecationTime
+			}
+		case "modificationTime":
+			if v != nil {
+				var modificationTime date.Time
+				err = json.Unmarshal(*v, &modificationTime)
+				if err != nil {
+					return err
+				}
+				cpdk.ModificationTime = &modificationTime
+			}
+		case "ruleType":
+			if v != nil {
+				var ruleType RuleType
+				err = json.Unmarshal(*v, &ruleType)
+				if err != nil {
+					return err
+				}
+				cpdk.RuleType = ruleType
+			}
+		}
+	}
+
+	return nil
 }
 
 // Dimension ...
@@ -1222,16 +1477,14 @@ type ShowbackRule struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Rule type
 	Type *string `json:"type,omitempty"`
-	// ShowbackRuleProperties - Showback rule properties
-	*ShowbackRuleProperties `json:"properties,omitempty"`
+	// BasicShowbackRuleProperties - Showback rule properties
+	BasicShowbackRuleProperties `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ShowbackRule.
 func (sr ShowbackRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if sr.ShowbackRuleProperties != nil {
-		objectMap["properties"] = sr.ShowbackRuleProperties
-	}
+	objectMap["properties"] = sr.BasicShowbackRuleProperties
 	return json.Marshal(objectMap)
 }
 
@@ -1273,12 +1526,11 @@ func (sr *ShowbackRule) UnmarshalJSON(body []byte) error {
 			}
 		case "properties":
 			if v != nil {
-				var showbackRuleProperties ShowbackRuleProperties
-				err = json.Unmarshal(*v, &showbackRuleProperties)
+				basicShowbackRuleProperties, err := unmarshalBasicShowbackRuleProperties(*v)
 				if err != nil {
 					return err
 				}
-				sr.ShowbackRuleProperties = &showbackRuleProperties
+				sr.BasicShowbackRuleProperties = basicShowbackRuleProperties
 			}
 		}
 	}
@@ -1292,6 +1544,13 @@ type ShowbackRuleListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of showback rules.
 	Value *[]ShowbackRule `json:"value,omitempty"`
+}
+
+// BasicShowbackRuleProperties the properties of a showback rule.
+type BasicShowbackRuleProperties interface {
+	AsCustomPriceDetailsKind() (*CustomPriceDetailsKind, bool)
+	AsCostAllocationDetailsKind() (*CostAllocationDetailsKind, bool)
+	AsShowbackRuleProperties() (*ShowbackRuleProperties, bool)
 }
 
 // ShowbackRuleProperties the properties of a showback rule.
@@ -1310,12 +1569,86 @@ type ShowbackRuleProperties struct {
 	DeprecationTime *date.Time `json:"deprecationTime,omitempty"`
 	// ModificationTime - READ-ONLY; The current status when showback rule was modified.
 	ModificationTime *date.Time `json:"modificationTime,omitempty"`
-	// RuleType - The rule type of the showback rule solution. Possible values include: 'ShowbackRulesKindCustomPrice', 'ShowbackRulesKindCustomChange', 'ShowbackRulesKindCostAllocation'
-	RuleType ShowbackRulesKind `json:"RuleType,omitempty"`
+	// RuleType - Possible values include: 'RuleTypeShowbackRuleProperties', 'RuleTypeCustomPrice', 'RuleTypeCostAllocation'
+	RuleType RuleType `json:"ruleType,omitempty"`
 }
 
-// ShowbackRulesKind1 describes Showback rule with rule type
-type ShowbackRulesKind1 struct {
-	// RuleType - The rule type of the showback rule solution. Possible values include: 'ShowbackRulesKindCustomPrice', 'ShowbackRulesKindCustomChange', 'ShowbackRulesKindCostAllocation'
-	RuleType ShowbackRulesKind `json:"RuleType,omitempty"`
+func unmarshalBasicShowbackRuleProperties(body []byte) (BasicShowbackRuleProperties, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["ruleType"] {
+	case string(RuleTypeCustomPrice):
+		var cpdk CustomPriceDetailsKind
+		err := json.Unmarshal(body, &cpdk)
+		return cpdk, err
+	case string(RuleTypeCostAllocation):
+		var cadk CostAllocationDetailsKind
+		err := json.Unmarshal(body, &cadk)
+		return cadk, err
+	default:
+		var srp ShowbackRuleProperties
+		err := json.Unmarshal(body, &srp)
+		return srp, err
+	}
+}
+func unmarshalBasicShowbackRulePropertiesArray(body []byte) ([]BasicShowbackRuleProperties, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	srpArray := make([]BasicShowbackRuleProperties, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		srp, err := unmarshalBasicShowbackRuleProperties(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		srpArray[index] = srp
+	}
+	return srpArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ShowbackRuleProperties.
+func (srp ShowbackRuleProperties) MarshalJSON() ([]byte, error) {
+	srp.RuleType = RuleTypeShowbackRuleProperties
+	objectMap := make(map[string]interface{})
+	if srp.Description != nil {
+		objectMap["description"] = srp.Description
+	}
+	if srp.Status != "" {
+		objectMap["status"] = srp.Status
+	}
+	if srp.Scopes != nil {
+		objectMap["scopes"] = srp.Scopes
+	}
+	if srp.RuleType != "" {
+		objectMap["ruleType"] = srp.RuleType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCustomPriceDetailsKind is the BasicShowbackRuleProperties implementation for ShowbackRuleProperties.
+func (srp ShowbackRuleProperties) AsCustomPriceDetailsKind() (*CustomPriceDetailsKind, bool) {
+	return nil, false
+}
+
+// AsCostAllocationDetailsKind is the BasicShowbackRuleProperties implementation for ShowbackRuleProperties.
+func (srp ShowbackRuleProperties) AsCostAllocationDetailsKind() (*CostAllocationDetailsKind, bool) {
+	return nil, false
+}
+
+// AsShowbackRuleProperties is the BasicShowbackRuleProperties implementation for ShowbackRuleProperties.
+func (srp ShowbackRuleProperties) AsShowbackRuleProperties() (*ShowbackRuleProperties, bool) {
+	return &srp, true
+}
+
+// AsBasicShowbackRuleProperties is the BasicShowbackRuleProperties implementation for ShowbackRuleProperties.
+func (srp ShowbackRuleProperties) AsBasicShowbackRuleProperties() (BasicShowbackRuleProperties, bool) {
+	return &srp, true
 }

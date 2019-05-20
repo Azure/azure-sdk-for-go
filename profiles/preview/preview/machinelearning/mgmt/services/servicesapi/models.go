@@ -23,4 +23,5 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearn
 
 type MachineLearningComputeClientAPI = original.MachineLearningComputeClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type QuotasClientAPI = original.QuotasClientAPI
 type WorkspacesClientAPI = original.WorkspacesClientAPI

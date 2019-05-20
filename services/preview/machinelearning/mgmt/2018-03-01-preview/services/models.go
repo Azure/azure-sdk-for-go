@@ -929,6 +929,152 @@ type ListWorkspaceKeysResult struct {
 	ContainerRegistryCredentials *RegistryListCredentialsResult `json:"containerRegistryCredentials,omitempty"`
 }
 
+// ListWorkspaceQuotasByVMFamily the List WorkspaceQuotasByVMFamily operation response.
+type ListWorkspaceQuotasByVMFamily struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of Workspace Quotas by VM Family
+	Value *[]ResourceQuota `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page of workspace quota information by VM Family. Call ListNext() with this to fetch the next page of Workspace Quota information.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ListWorkspaceQuotasByVMFamilyIterator provides access to a complete listing of ResourceQuota values.
+type ListWorkspaceQuotasByVMFamilyIterator struct {
+	i    int
+	page ListWorkspaceQuotasByVMFamilyPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ListWorkspaceQuotasByVMFamilyIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListWorkspaceQuotasByVMFamilyIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ListWorkspaceQuotasByVMFamilyIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ListWorkspaceQuotasByVMFamilyIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ListWorkspaceQuotasByVMFamilyIterator) Response() ListWorkspaceQuotasByVMFamily {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ListWorkspaceQuotasByVMFamilyIterator) Value() ResourceQuota {
+	if !iter.page.NotDone() {
+		return ResourceQuota{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ListWorkspaceQuotasByVMFamilyIterator type.
+func NewListWorkspaceQuotasByVMFamilyIterator(page ListWorkspaceQuotasByVMFamilyPage) ListWorkspaceQuotasByVMFamilyIterator {
+	return ListWorkspaceQuotasByVMFamilyIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lwqbvf ListWorkspaceQuotasByVMFamily) IsEmpty() bool {
+	return lwqbvf.Value == nil || len(*lwqbvf.Value) == 0
+}
+
+// listWorkspaceQuotasByVMFamilyPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lwqbvf ListWorkspaceQuotasByVMFamily) listWorkspaceQuotasByVMFamilyPreparer(ctx context.Context) (*http.Request, error) {
+	if lwqbvf.NextLink == nil || len(to.String(lwqbvf.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lwqbvf.NextLink)))
+}
+
+// ListWorkspaceQuotasByVMFamilyPage contains a page of ResourceQuota values.
+type ListWorkspaceQuotasByVMFamilyPage struct {
+	fn     func(context.Context, ListWorkspaceQuotasByVMFamily) (ListWorkspaceQuotasByVMFamily, error)
+	lwqbvf ListWorkspaceQuotasByVMFamily
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ListWorkspaceQuotasByVMFamilyPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListWorkspaceQuotasByVMFamilyPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.lwqbvf)
+	if err != nil {
+		return err
+	}
+	page.lwqbvf = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ListWorkspaceQuotasByVMFamilyPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ListWorkspaceQuotasByVMFamilyPage) NotDone() bool {
+	return !page.lwqbvf.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ListWorkspaceQuotasByVMFamilyPage) Response() ListWorkspaceQuotasByVMFamily {
+	return page.lwqbvf
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ListWorkspaceQuotasByVMFamilyPage) Values() []ResourceQuota {
+	if page.lwqbvf.IsEmpty() {
+		return nil
+	}
+	return *page.lwqbvf.Value
+}
+
+// Creates a new instance of the ListWorkspaceQuotasByVMFamilyPage type.
+func NewListWorkspaceQuotasByVMFamilyPage(getNextPage func(context.Context, ListWorkspaceQuotasByVMFamily) (ListWorkspaceQuotasByVMFamily, error)) ListWorkspaceQuotasByVMFamilyPage {
+	return ListWorkspaceQuotasByVMFamilyPage{fn: getNextPage}
+}
+
 // MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MachineLearningComputeCreateOrUpdateFuture struct {
@@ -1200,6 +1346,44 @@ type PrincipalCredentials struct {
 	ClientSecret *string `json:"clientSecret,omitempty"`
 }
 
+// QuotaBaseProperties the properties for Quota update or retrieval.
+type QuotaBaseProperties struct {
+	// VMFamily - The family name of the virtual machine size.
+	VMFamily *string `json:"vmFamily,omitempty"`
+	// WorkspaceID - Fully qualified resource indentifier of the workspace.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// Quota - Quota.
+	Quota *int32 `json:"quota,omitempty"`
+}
+
+// QuotasUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type QuotasUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *QuotasUpdateFuture) Result(client QuotasClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "services.QuotasUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("services.QuotasUpdateFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// QuotaUpdateParameters quota update parameters.
+type QuotaUpdateParameters struct {
+	// Properties - READ-ONLY; The properties for update quota.
+	Properties *[]QuotaBaseProperties `json:"properties,omitempty"`
+}
+
 // RegistryListCredentialsResult ...
 type RegistryListCredentialsResult struct {
 	// Location - READ-ONLY
@@ -1235,6 +1419,26 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// ResourceName the Resource Name.
+type ResourceName struct {
+	// Value - READ-ONLY; The name of the resource.
+	Value *string `json:"value,omitempty"`
+	// LocalizedValue - READ-ONLY; The localized name of the resource.
+	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// ResourceQuota the quota assigned to a resource.
+type ResourceQuota struct {
+	// ResourceName - READ-ONLY; Name of the resource.
+	ResourceName *ResourceName `json:"resourceName,omitempty"`
+	// Quota - READ-ONLY; Quota assigned to the resource.
+	Quota *int32 `json:"quota,omitempty"`
+	// Unit - READ-ONLY; The units used to represent the quota.
+	Unit *string `json:"unit,omitempty"`
+	// QuotaDistribution - READ-ONLY; The quota distribution among resources.
+	QuotaDistribution *[]ResourceQuota `json:"quotaDistribution,omitempty"`
 }
 
 // ScaleSettings scale settings for BatchAI Compute

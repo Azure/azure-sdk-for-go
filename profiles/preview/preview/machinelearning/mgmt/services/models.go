@@ -102,6 +102,9 @@ type HDInsight = original.HDInsight
 type HDInsightProperties = original.HDInsightProperties
 type Identity = original.Identity
 type ListWorkspaceKeysResult = original.ListWorkspaceKeysResult
+type ListWorkspaceQuotasByVMFamily = original.ListWorkspaceQuotasByVMFamily
+type ListWorkspaceQuotasByVMFamilyIterator = original.ListWorkspaceQuotasByVMFamilyIterator
+type ListWorkspaceQuotasByVMFamilyPage = original.ListWorkspaceQuotasByVMFamilyPage
 type MachineLearningComputeClient = original.MachineLearningComputeClient
 type MachineLearningComputeCreateOrUpdateFuture = original.MachineLearningComputeCreateOrUpdateFuture
 type MachineLearningComputeDeleteFuture = original.MachineLearningComputeDeleteFuture
@@ -116,8 +119,14 @@ type PaginatedComputeResourcesListIterator = original.PaginatedComputeResourcesL
 type PaginatedComputeResourcesListPage = original.PaginatedComputeResourcesListPage
 type Password = original.Password
 type PrincipalCredentials = original.PrincipalCredentials
+type QuotaBaseProperties = original.QuotaBaseProperties
+type QuotaUpdateParameters = original.QuotaUpdateParameters
+type QuotasClient = original.QuotasClient
+type QuotasUpdateFuture = original.QuotasUpdateFuture
 type RegistryListCredentialsResult = original.RegistryListCredentialsResult
 type Resource = original.Resource
+type ResourceName = original.ResourceName
+type ResourceQuota = original.ResourceQuota
 type ScaleSettings = original.ScaleSettings
 type SslConfiguration = original.SslConfiguration
 type SystemService = original.SystemService
@@ -137,6 +146,12 @@ type WorkspacesClient = original.WorkspacesClient
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewListWorkspaceQuotasByVMFamilyIterator(page ListWorkspaceQuotasByVMFamilyPage) ListWorkspaceQuotasByVMFamilyIterator {
+	return original.NewListWorkspaceQuotasByVMFamilyIterator(page)
+}
+func NewListWorkspaceQuotasByVMFamilyPage(getNextPage func(context.Context, ListWorkspaceQuotasByVMFamily) (ListWorkspaceQuotasByVMFamily, error)) ListWorkspaceQuotasByVMFamilyPage {
+	return original.NewListWorkspaceQuotasByVMFamilyPage(getNextPage)
+}
 func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
 	return original.NewMachineLearningComputeClient(subscriptionID)
 }
@@ -154,6 +169,12 @@ func NewPaginatedComputeResourcesListIterator(page PaginatedComputeResourcesList
 }
 func NewPaginatedComputeResourcesListPage(getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
 	return original.NewPaginatedComputeResourcesListPage(getNextPage)
+}
+func NewQuotasClient(subscriptionID string) QuotasClient {
+	return original.NewQuotasClient(subscriptionID)
+}
+func NewQuotasClientWithBaseURI(baseURI string, subscriptionID string) QuotasClient {
+	return original.NewQuotasClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

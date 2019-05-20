@@ -35,6 +35,31 @@ func NewContent() Content {
 	}
 }
 
+// GetModifiedStructs returns the subset, if any, of structs that are modified.
+func (c Content) GetModifiedStructs() map[string]exports.Struct {
+	if len(c.CompleteStructs) == 0 {
+		return c.Structs
+	}
+	ms := map[string]exports.Struct{}
+	for k, v := range c.Structs {
+		if contains(c.CompleteStructs, k) {
+			continue
+		}
+		ms[k] = v
+	}
+	return ms
+}
+
+// returns true if sl contains x
+func contains(sl []string, x string) bool {
+	for _, s := range sl {
+		if s == x {
+			return true
+		}
+	}
+	return false
+}
+
 // GetExports returns a exports.Content struct containing all exports in rhs that aren't in lhs.
 // This includes any new fields added to structs or methods added to interfaces.
 func GetExports(lhs, rhs exports.Content) Content {

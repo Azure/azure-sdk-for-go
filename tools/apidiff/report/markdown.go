@@ -154,16 +154,6 @@ func writeNewContent(p Package, md *mdWriter) {
 	writeStructs(p.AdditiveChanges, "New Structs", "New Struct Fields", md)
 }
 
-// returns true if sl contains x
-func contains(sl []string, x string) bool {
-	for _, s := range sl {
-		if s == x {
-			return true
-		}
-	}
-	return false
-}
-
 // writes out const information formatted as TypeName.ConstName
 func writeConsts(co map[string]exports.Const, subheader string, md *mdWriter) {
 	if len(co) == 0 {
@@ -212,7 +202,7 @@ func writeFuncs(funcs map[string]exports.Func, subheader string, md *mdWriter) {
 }
 
 // writes out struct information
-// sheader1 is for added/removed struct types
+// sheader1 is for added/removed struct types formatted as TypeName
 // sheader2 is for added/removed struct fields formatted as TypeName.FieldName
 func writeStructs(content *delta.Content, sheader1, sheader2 string, md *mdWriter) {
 	if len(content.Structs) == 0 {
@@ -225,14 +215,11 @@ func writeStructs(content *delta.Content, sheader1, sheader2 string, md *mdWrite
 			md.WriteLine(fmt.Sprintf("1. %s", s))
 		}
 	}
-	if len(content.Structs) > len(content.CompleteStructs) {
+	modified := content.GetModifiedStructs()
+	if len(modified) > 0 {
 		md.WriteSubheader(sheader2)
 		items := make([]string, 0, len(content.Structs)-len(content.CompleteStructs))
-		for s, f := range content.Structs {
-			// skip new/removed structs as they are reported separately
-			if contains(content.CompleteStructs, s) {
-				continue
-			}
+		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
 				items = append(items, fmt.Sprintf("1. %s.%s", s, af))
 			}

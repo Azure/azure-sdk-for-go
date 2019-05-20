@@ -128,92 +128,6 @@ func (client ClustersClient) CheckNameAvailabilityResponder(resp *http.Response)
 	return
 }
 
-// CheckNameAvailability1 checks that the database name is valid and is not already in use.
-// Parameters:
-// resourceGroupName - the name of the resource group containing the Kusto cluster.
-// clusterName - the name of the Kusto cluster.
-// resourceName - the name of the resource.
-func (client ClustersClient) CheckNameAvailability1(ctx context.Context, resourceGroupName string, clusterName string, resourceName CheckNameRequest) (result CheckNameResult, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.CheckNameAvailability1")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceName,
-			Constraints: []validation.Constraint{{Target: "resourceName.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("kusto.ClustersClient", "CheckNameAvailability1", err.Error())
-	}
-
-	req, err := client.CheckNameAvailability1Preparer(ctx, resourceGroupName, clusterName, resourceName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "CheckNameAvailability1", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CheckNameAvailability1Sender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "CheckNameAvailability1", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CheckNameAvailability1Responder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "CheckNameAvailability1", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CheckNameAvailability1Preparer prepares the CheckNameAvailability1 request.
-func (client ClustersClient) CheckNameAvailability1Preparer(ctx context.Context, resourceGroupName string, clusterName string, resourceName CheckNameRequest) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"clusterName":       autorest.Encode("path", clusterName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-01-21"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/checkNameAvailability", pathParameters),
-		autorest.WithJSON(resourceName),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CheckNameAvailability1Sender sends the CheckNameAvailability1 request. The method will close the
-// http.Response Body if it receives an error.
-func (client ClustersClient) CheckNameAvailability1Sender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CheckNameAvailability1Responder handles the response to the CheckNameAvailability1 request. The method always
-// closes the http.Response Body.
-func (client ClustersClient) CheckNameAvailability1Responder(resp *http.Response) (result CheckNameResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // CreateOrUpdate create or update a Kusto cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group containing the Kusto cluster.
@@ -232,8 +146,7 @@ func (client ClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.Sku.Tier", Name: validation.Null, Rule: true, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.ClusterProperties", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.IntelligentAutoscale", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.ClusterProperties.IntelligentAutoscale.Version", Name: validation.Null, Rule: true, Chain: nil},

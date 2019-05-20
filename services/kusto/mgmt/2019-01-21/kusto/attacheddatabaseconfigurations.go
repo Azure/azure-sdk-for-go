@@ -291,3 +291,80 @@ func (client AttachedDatabaseConfigurationsClient) GetResponder(resp *http.Respo
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// ListByCluster returns the list of attached database configurations of the given Kusto cluster.
+// Parameters:
+// resourceGroupName - the name of the resource group containing the Kusto cluster.
+// clusterName - the name of the Kusto cluster.
+func (client AttachedDatabaseConfigurationsClient) ListByCluster(ctx context.Context, resourceGroupName string, clusterName string) (result AttachedDatabaseConfigurationListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AttachedDatabaseConfigurationsClient.ListByCluster")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListByClusterPreparer(ctx, resourceGroupName, clusterName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "kusto.AttachedDatabaseConfigurationsClient", "ListByCluster", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByClusterSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "kusto.AttachedDatabaseConfigurationsClient", "ListByCluster", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByClusterResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "kusto.AttachedDatabaseConfigurationsClient", "ListByCluster", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByClusterPreparer prepares the ListByCluster request.
+func (client AttachedDatabaseConfigurationsClient) ListByClusterPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-01-21"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/attachedDatabaseConfigurations", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByClusterSender sends the ListByCluster request. The method will close the
+// http.Response Body if it receives an error.
+func (client AttachedDatabaseConfigurationsClient) ListByClusterSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListByClusterResponder handles the response to the ListByCluster request. The method always
+// closes the http.Response Body.
+func (client AttachedDatabaseConfigurationsClient) ListByClusterResponder(resp *http.Response) (result AttachedDatabaseConfigurationListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

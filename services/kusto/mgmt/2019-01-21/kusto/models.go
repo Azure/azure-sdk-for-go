@@ -51,6 +51,8 @@ func PossibleAzureScaleTypeValues() []AzureScaleType {
 type AzureSkuName string
 
 const (
+	// DevNoSLAStandardD11V2 ...
+	DevNoSLAStandardD11V2 AzureSkuName = "Dev(No SLA)_Standard_D11_v2"
 	// StandardD11V2 ...
 	StandardD11V2 AzureSkuName = "Standard_D11_v2"
 	// StandardD12V2 ...
@@ -77,7 +79,22 @@ const (
 
 // PossibleAzureSkuNameValues returns an array of possible values for the AzureSkuName const type.
 func PossibleAzureSkuNameValues() []AzureSkuName {
-	return []AzureSkuName{StandardD11V2, StandardD12V2, StandardD13V2, StandardD14V2, StandardDS13V21TBPS, StandardDS13V22TBPS, StandardDS14V23TBPS, StandardDS14V24TBPS, StandardL16s, StandardL4s, StandardL8s}
+	return []AzureSkuName{DevNoSLAStandardD11V2, StandardD11V2, StandardD12V2, StandardD13V2, StandardD14V2, StandardDS13V21TBPS, StandardDS13V22TBPS, StandardDS14V23TBPS, StandardDS14V24TBPS, StandardL16s, StandardL4s, StandardL8s}
+}
+
+// AzureSkuTier enumerates the values for azure sku tier.
+type AzureSkuTier string
+
+const (
+	// Basic ...
+	Basic AzureSkuTier = "Basic"
+	// Standard ...
+	Standard AzureSkuTier = "Standard"
+)
+
+// PossibleAzureSkuTierValues returns an array of possible values for the AzureSkuTier const type.
+func PossibleAzureSkuTierValues() []AzureSkuTier {
+	return []AzureSkuTier{Basic, Standard}
 }
 
 // DatabasePrincipalRole enumerates the values for database principal role.
@@ -356,6 +373,13 @@ func (adc *AttachedDatabaseConfiguration) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AttachedDatabaseConfigurationListResult the list attached database configurations operation response.
+type AttachedDatabaseConfigurationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of attached database configurations.
+	Value *[]AttachedDatabaseConfiguration `json:"value,omitempty"`
+}
+
 // AttachedDatabaseConfigurationProperties class representing the an attached database configuration
 // properties of kind specific.
 type AttachedDatabaseConfigurationProperties struct {
@@ -455,12 +479,12 @@ type AzureResourceSku struct {
 
 // AzureSku azure SKU definition.
 type AzureSku struct {
-	// Name - SKU name. Possible values include: 'StandardDS13V21TBPS', 'StandardDS13V22TBPS', 'StandardDS14V23TBPS', 'StandardDS14V24TBPS', 'StandardD13V2', 'StandardD14V2', 'StandardL8s', 'StandardL16s', 'StandardD11V2', 'StandardD12V2', 'StandardL4s'
+	// Name - SKU name. Possible values include: 'StandardDS13V21TBPS', 'StandardDS13V22TBPS', 'StandardDS14V23TBPS', 'StandardDS14V24TBPS', 'StandardD13V2', 'StandardD14V2', 'StandardL8s', 'StandardL16s', 'StandardD11V2', 'StandardD12V2', 'StandardL4s', 'DevNoSLAStandardD11V2'
 	Name AzureSkuName `json:"name,omitempty"`
 	// Capacity - SKU capacity.
 	Capacity *int32 `json:"capacity,omitempty"`
-	// Tier - SKU tier.
-	Tier *string `json:"tier,omitempty"`
+	// Tier - SKU tier. Possible values include: 'Basic', 'Standard'
+	Tier AzureSkuTier `json:"tier,omitempty"`
 }
 
 // CheckNameRequest the result returned from a database check name availability request.

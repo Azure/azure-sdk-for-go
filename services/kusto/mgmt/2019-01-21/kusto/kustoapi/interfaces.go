@@ -25,7 +25,6 @@ import (
 // ClustersClientAPI contains the set of methods on the ClustersClient type.
 type ClustersClientAPI interface {
 	CheckNameAvailability(ctx context.Context, location string, clusterName kusto.ClusterCheckNameRequest) (result kusto.CheckNameResult, err error)
-	CheckNameAvailability1(ctx context.Context, resourceGroupName string, clusterName string, resourceName kusto.CheckNameRequest) (result kusto.CheckNameResult, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters kusto.Cluster) (result kusto.ClustersCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string) (result kusto.ClustersDeleteFuture, err error)
 	DetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabasesToRemove kusto.FollowerDatabaseRequest) (result kusto.FollowerDatabaseListResult, err error)
@@ -45,6 +44,7 @@ var _ ClustersClientAPI = (*kusto.ClustersClient)(nil)
 // DatabasesClientAPI contains the set of methods on the DatabasesClient type.
 type DatabasesClientAPI interface {
 	AddPrincipals(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, databasePrincipalsToAdd kusto.DatabasePrincipalListRequest) (result kusto.DatabasePrincipalListResult, err error)
+	CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, resourceName kusto.CheckNameRequest) (result kusto.CheckNameResult, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters kusto.BasicDatabase) (result kusto.DatabasesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string) (result kusto.DatabasesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string, databaseName string) (result kusto.DatabaseModel, err error)
@@ -61,6 +61,7 @@ type AttachedDatabaseConfigurationsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters kusto.AttachedDatabaseConfiguration) (result kusto.AttachedDatabaseConfigurationsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string) (result kusto.AttachedDatabaseConfigurationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string) (result kusto.AttachedDatabaseConfiguration, err error)
+	ListByCluster(ctx context.Context, resourceGroupName string, clusterName string) (result kusto.AttachedDatabaseConfigurationListResult, err error)
 }
 
 var _ AttachedDatabaseConfigurationsClientAPI = (*kusto.AttachedDatabaseConfigurationsClient)(nil)

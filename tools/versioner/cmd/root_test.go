@@ -25,6 +25,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/Azure/azure-sdk-for-go/tools/versioner/internal/modinfo"
 )
 
@@ -120,6 +121,16 @@ func (mock mockModInfo) BreakingChanges() bool {
 
 func (mock mockModInfo) VersionSuffix() bool {
 	return modinfo.HasVersionSuffix(mock.dir)
+}
+
+func (mock mockModInfo) NewModule() bool {
+	// not needed by tests
+	return false
+}
+
+func (mock mockModInfo) GenerateReport() report.Package {
+	// not needed by tests
+	return report.Package{}
 }
 
 func Test_calculateModuleTagMajorV1(t *testing.T) {
@@ -308,6 +319,16 @@ func cleanTestData() {
 	}
 }
 
+func fileExists(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true
+	} else if os.IsNotExist(err) {
+		return false
+	}
+	panic(err)
+}
+
 func Test_theCommandImplMajor(t *testing.T) {
 	cleanTestData()
 	defer cleanTestData()
@@ -343,6 +364,9 @@ go 1.12
 `
 	if !strings.EqualFold(string(b), after) {
 		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
+	}
+	if !fileExists(filepath.Join("../testdata/scenariob/foo/v2", "CHANGELOG.md")) {
+		t.Fatal("expected changelog in scenariob")
 	}
 }
 
@@ -381,6 +405,9 @@ go 1.12
 	if !strings.EqualFold(string(b), after) {
 		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
 	}
+	if !fileExists(filepath.Join("../testdata/scenarioa/foo", "CHANGELOG.md")) {
+		t.Fatal("expected changelog in scenarioa")
+	}
 }
 
 func Test_theCommandImplPatch(t *testing.T) {
@@ -418,6 +445,9 @@ go 1.12
 	if !strings.EqualFold(string(b), after) {
 		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
 	}
+	if !fileExists(filepath.Join("../testdata/scenarioc/foo", "CHANGELOG.md")) {
+		t.Fatal("expected changelog in scenarioc")
+	}
 }
 
 func Test_theCommandImplNewMod(t *testing.T) {
@@ -452,5 +482,8 @@ go 1.12
 `
 	if !strings.EqualFold(string(b), after) {
 		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
+	}
+	if fileExists(filepath.Join("../testdata/scenariof/foo", "CHANGELOG.md")) {
+		t.Fatal("unexpected changelog in scenariof")
 	}
 }

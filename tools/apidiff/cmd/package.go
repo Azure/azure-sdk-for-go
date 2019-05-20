@@ -20,10 +20,14 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/spf13/cobra"
 )
 
-var dirMode bool
+var (
+	dirMode    bool
+	asMarkdown bool
+)
 
 var packageCmd = &cobra.Command{
 	Use:   "package <package dir> (<base commit> <target commit(s)>) | (<commit sequence>)",
@@ -55,7 +59,7 @@ func thePackageCmd(args []string) (rs reportStatus, err error) {
 	}
 
 	var rpt commitPkgReport
-	rpt.CommitsReports = map[string]pkgReport{}
+	rpt.CommitsReports = map[string]report.Package{}
 	worker := func(pkgDir string, cloneRepo repo.WorkingTree, baseCommit, targetCommit string) error {
 		// lhs
 		vprintf("checking out base commit %s and gathering exports\n", baseCommit)
@@ -72,8 +76,8 @@ func thePackageCmd(args []string) (rs reportStatus, err error) {
 		if err != nil {
 			return err
 		}
-		r := getPkgReport(lhs, rhs)
-		if r.hasBreakingChanges() {
+		r := report.Generate(lhs, rhs, onlyBreakingChangesFlag, onlyAdditionsFlag)
+		if r.HasBreakingChanges() {
 			rpt.BreakingChanges = append(rpt.BreakingChanges, targetCommit)
 		}
 		rpt.CommitsReports[fmt.Sprintf("%s:%s", baseCommit, targetCommit)] = r
@@ -91,6 +95,7 @@ func thePackageCmd(args []string) (rs reportStatus, err error) {
 
 func init() {
 	packageCmd.PersistentFlags().BoolVarP(&dirMode, "directories", "i", false, "compares packages in two different directories")
+	packageCmd.PersistentFlags().BoolVarP(&asMarkdown, "markdown", "m", false, "emits the report in markdown format")
 	rootCmd.AddCommand(packageCmd)
 }
 
@@ -120,7 +125,11 @@ func packageCmdDirMode(args []string) (rs reportStatus, err error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to get exports for package '%s': %s", args[1], err)
 	}
-	r := getPkgReport(lhs, rhs)
-	err = printReport(r)
+	r := report.Generate(lhs, rhs, onlyBreakingChangesFlag, onlyAdditionsFlag)
+	if asMarkdown && !suppressReport {
+		println(r.ToMarkdown())
+	} else {
+		err = printReport(r)
+	}
 	return r, err
 }

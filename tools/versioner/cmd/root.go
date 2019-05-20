@@ -80,7 +80,6 @@ func theCommand(args []string) error {
 
 // does the actual work
 func theCommandImpl(args []string) (string, error) {
-	// TODO: handle brand new module!!!
 	stage := filepath.Clean(args[0])
 	lmv, err := findLatestMajorVersion(stage)
 	if err != nil {
@@ -90,7 +89,6 @@ func theCommandImpl(args []string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to create module info: %v", err)
 	}
-	// TODO: no changelog for new module
 	if err = writeChangelog(stage, mod); err != nil {
 		return "", fmt.Errorf("failed to write changelog: %v", err)
 	}
@@ -233,8 +231,23 @@ func updateGoModVer(goMod io.ReadWriteSeeker, newVer string) error {
 }
 
 func writeChangelog(stage string, mod modinfo.Provider) error {
-	// TODO
-	return nil
+	// don't write a changelog for a new module
+	if mod.NewModule() {
+		return nil
+	}
+	const changeLogName = "CHANGELOG.md"
+	rpt := mod.GenerateReport()
+	log, err := os.Create(filepath.Join(stage, changeLogName))
+	if err != nil {
+		return fmt.Errorf("failed to create %s: %v", changeLogName, err)
+	}
+	defer log.Close()
+	if rpt.IsEmpty() {
+		_, err = log.WriteString("No changes to exported content compared to the previous release.\n")
+		return err
+	}
+	_, err = log.WriteString(rpt.ToMarkdown())
+	return err
 }
 
 // returns a slice of tags for the specified repo and tag prefix

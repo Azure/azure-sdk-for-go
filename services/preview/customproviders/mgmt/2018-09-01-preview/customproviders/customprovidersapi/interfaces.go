@@ -40,3 +40,13 @@ type CustomResourceProviderClientAPI interface {
 }
 
 var _ CustomResourceProviderClientAPI = (*customproviders.CustomResourceProviderClient)(nil)
+
+// AssociationClientAPI contains the set of methods on the AssociationClient type.
+type AssociationClientAPI interface {
+	CreateOrUpdate(ctx context.Context, scope string, associationName string, parameters customproviders.Association) (result customproviders.AssociationCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, scope string, associationName string) (result customproviders.AssociationDeleteFuture, err error)
+	Get(ctx context.Context, scope string, associationName string) (result customproviders.Association, err error)
+	GetAll(ctx context.Context, scope string) (result customproviders.AssociationsListPage, err error)
+}
+
+var _ AssociationClientAPI = (*customproviders.AssociationClient)(nil)

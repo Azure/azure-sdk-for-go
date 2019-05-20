@@ -1981,6 +1981,34 @@ type ServiceBusDeadletterMessagesAvailableWithNoListenersEventData struct {
 	SubscriptionName *string `json:"subscriptionName,omitempty"`
 }
 
+// SignalRServiceClientConnectionConnectedEventData schema of the Data property of an EventGridEvent for a
+// Microsoft.SignalRService.ClientConnectionConnected event.
+type SignalRServiceClientConnectionConnectedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Hub - The hub of connected client connection.
+	Hub *string `json:"hub,omitempty"`
+	// ConnectionID - The connection Id of connected client connection.
+	ConnectionID *string `json:"connectionId,omitempty"`
+	// UserID - The user Id of connected client connection.
+	UserID *string `json:"userId,omitempty"`
+}
+
+// SignalRServiceClientConnectionDisconnectedEventData schema of the Data property of an EventGridEvent for
+// a Microsoft.SignalRService.ClientConnectionDisconnected event.
+type SignalRServiceClientConnectionDisconnectedEventData struct {
+	// Timestamp - The time at which the event occurred.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Hub - The hub of connected client connection.
+	Hub *string `json:"hub,omitempty"`
+	// ConnectionID - The connection Id of connected client connection.
+	ConnectionID *string `json:"connectionId,omitempty"`
+	// UserID - The user Id of connected client connection.
+	UserID *string `json:"userId,omitempty"`
+	// ErrorMessage - The message of error that cause the client connection disconnected.
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
 // StorageBlobCreatedEventData schema of the Data property of an EventGridEvent for an
 // Microsoft.Storage.BlobCreated event.
 type StorageBlobCreatedEventData struct {

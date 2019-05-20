@@ -14,6 +14,8 @@
 
 package foo
 
+// new module
+
 func DoItOne(string) {}
 
 func DoItTwo(int) {}

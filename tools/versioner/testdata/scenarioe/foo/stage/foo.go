@@ -16,4 +16,5 @@ package foo
 
 func DoItOne(string) {}
 
+// additive change on top of a v2
 func DoItTwo(int) {}

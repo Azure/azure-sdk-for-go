@@ -14,4 +14,5 @@
 
 package foo
 
+// breaking change on top of a v2
 func DoItOne(int) {}

@@ -44,7 +44,8 @@ func NewHanaInstancesClientWithBaseURI(baseURI string, subscriptionID string) Ha
 // Parameters:
 // resourceGroupName - name of the resource group.
 // hanaInstanceName - name of the SAP HANA on Azure instance.
-func (client HanaInstancesClient) Create(ctx context.Context, resourceGroupName string, hanaInstanceName string) (result HanaInstancesCreateFuture, err error) {
+// hanaInstanceParameter - request body representing a HanaInstance
+func (client HanaInstancesClient) Create(ctx context.Context, resourceGroupName string, hanaInstanceName string, hanaInstanceParameter HanaInstance) (result HanaInstancesCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HanaInstancesClient.Create")
 		defer func() {
@@ -55,7 +56,7 @@ func (client HanaInstancesClient) Create(ctx context.Context, resourceGroupName 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, resourceGroupName, hanaInstanceName)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, hanaInstanceName, hanaInstanceParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Create", nil, "Failure preparing request")
 		return
@@ -71,7 +72,7 @@ func (client HanaInstancesClient) Create(ctx context.Context, resourceGroupName 
 }
 
 // CreatePreparer prepares the Create request.
-func (client HanaInstancesClient) CreatePreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string) (*http.Request, error) {
+func (client HanaInstancesClient) CreatePreparer(ctx context.Context, resourceGroupName string, hanaInstanceName string, hanaInstanceParameter HanaInstance) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"hanaInstanceName":  autorest.Encode("path", hanaInstanceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -84,9 +85,11 @@ func (client HanaInstancesClient) CreatePreparer(ctx context.Context, resourceGr
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}", pathParameters),
+		autorest.WithJSON(hanaInstanceParameter),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

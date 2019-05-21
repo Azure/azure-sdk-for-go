@@ -4,7 +4,7 @@
       "dep ensure",
       "go generate ./profiles/generate.go",
       "gofmt -w ./profiles/",
-      "gofmt -w ./services/"
+      "gofmt -w ./$(relativePackageFolderPath)/"
     ],
     "autorest_options": {
       "use": "@microsoft.azure/autorest.go@~2.1.127",

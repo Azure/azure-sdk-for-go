@@ -1350,7 +1350,7 @@ type PrincipalCredentials struct {
 type QuotaBaseProperties struct {
 	// VMFamily - The family name of the virtual machine size.
 	VMFamily *string `json:"vmFamily,omitempty"`
-	// WorkspaceID - Fully qualified resource indentifier of the workspace.
+	// WorkspaceID - Fully qualified resource identifier of the workspace.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 	// Quota - Quota.
 	Quota *int32 `json:"quota,omitempty"`

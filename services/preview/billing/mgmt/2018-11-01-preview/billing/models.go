@@ -47,6 +47,21 @@ func PossibleAccountTypeValues() []AccountType {
 	return []AccountType{AccountTypeEnrollment, AccountTypeOrganization}
 }
 
+// AddressValidationStatus enumerates the values for address validation status.
+type AddressValidationStatus string
+
+const (
+	// Invalid ...
+	Invalid AddressValidationStatus = "Invalid"
+	// Valid ...
+	Valid AddressValidationStatus = "Valid"
+)
+
+// PossibleAddressValidationStatusValues returns an array of possible values for the AddressValidationStatus const type.
+func PossibleAddressValidationStatusValues() []AddressValidationStatus {
+	return []AddressValidationStatus{Invalid, Valid}
+}
+
 // EligibleProductType enumerates the values for eligible product type.
 type EligibleProductType string
 
@@ -1351,7 +1366,7 @@ type LineOfCreditsIncreaseFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *LineOfCreditsIncreaseFuture) Result(client LineOfCreditsClient) (ar autorest.Response, err error) {
+func (future *LineOfCreditsIncreaseFuture) Result(client LineOfCreditsClient) (loc LineOfCredit, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -1362,7 +1377,13 @@ func (future *LineOfCreditsIncreaseFuture) Result(client LineOfCreditsClient) (a
 		err = azure.NewAsyncOpIncompleteError("billing.LineOfCreditsIncreaseFuture")
 		return
 	}
-	ar.Response = future.Response()
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if loc.Response.Response, err = future.GetResult(sender); err == nil && loc.Response.Response.StatusCode != http.StatusNoContent {
+		loc, err = client.IncreaseResponder(loc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.LineOfCreditsIncreaseFuture", "Result", loc.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 
@@ -3771,4 +3792,15 @@ type UpdateAutoRenewOperationSummaryProperties struct {
 type UpdateAutoRenewRequest struct {
 	// AutoRenew - Request parameters to update auto renew policy a product. Possible values include: 'True', 'False'
 	AutoRenew UpdateAutoRenew `json:"autoRenew,omitempty"`
+}
+
+// ValidateAddressResponse result of the address validation
+type ValidateAddressResponse struct {
+	autorest.Response `json:"-"`
+	// Status - status of the address validation. Possible values include: 'Valid', 'Invalid'
+	Status AddressValidationStatus `json:"status,omitempty"`
+	// SuggestedAddresses - list of suggested addresses.
+	SuggestedAddresses *[]Address `json:"suggestedAddresses,omitempty"`
+	// ValidationMessage - Validation error message.
+	ValidationMessage *string `json:"validationMessage,omitempty"`
 }

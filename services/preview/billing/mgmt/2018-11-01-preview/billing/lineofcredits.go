@@ -177,12 +177,13 @@ func (client LineOfCreditsClient) IncreaseSender(req *http.Request) (future Line
 
 // IncreaseResponder handles the response to the Increase request. The method always
 // closes the http.Response Body.
-func (client LineOfCreditsClient) IncreaseResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client LineOfCreditsClient) IncreaseResponder(resp *http.Response) (result LineOfCredit, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

@@ -1352,7 +1352,7 @@ type QuotaBaseProperties struct {
 	VMFamily *string `json:"vmFamily,omitempty"`
 	// WorkspaceID - Fully qualified resource identifier of the workspace.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
-	// Quota - Quota.
+	// Quota - The workspace level quota.
 	Quota *int32 `json:"quota,omitempty"`
 }
 

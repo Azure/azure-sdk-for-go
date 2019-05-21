@@ -416,23 +416,6 @@ func PossibleProtocolValues() []Protocol {
 	return []Protocol{HTTP, HTTPS}
 }
 
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCreating ...
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCreating, ProvisioningStateFailed, ProvisioningStateSucceeded}
-}
-
 // Query enumerates the values for query.
 type Query string
 
@@ -3843,8 +3826,8 @@ type WebApplicationFirewallPolicyProperties struct {
 	ManagedRules *ManagedRuleSetList `json:"managedRules,omitempty"`
 	// FrontendEndpointLinks - READ-ONLY; Describes Frontend Endpoints associated with this Web Application Firewall policy.
 	FrontendEndpointLinks *[]FrontendEndpointLink `json:"frontendEndpointLinks,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the policy. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateCreating', 'ProvisioningStateFailed'
-	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the policy.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ResourceState - READ-ONLY; Possible values include: 'PolicyResourceStateCreating', 'PolicyResourceStateEnabling', 'PolicyResourceStateEnabled', 'PolicyResourceStateDisabling', 'PolicyResourceStateDisabled', 'PolicyResourceStateDeleting'
 	ResourceState PolicyResourceState `json:"resourceState,omitempty"`
 }

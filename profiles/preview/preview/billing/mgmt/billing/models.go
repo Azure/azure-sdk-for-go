@@ -155,6 +155,7 @@ type Account = original.Account
 type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
+type AccountsUpdateFuture = original.AccountsUpdateFuture
 type Address = original.Address
 type Agreement = original.Agreement
 type AgreementListResult = original.AgreementListResult

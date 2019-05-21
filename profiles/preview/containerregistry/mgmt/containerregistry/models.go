@@ -22,7 +22,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-04-01/containerregistry"
+	original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-06-01/containerregistry"
 )
 
 const (
@@ -144,8 +144,7 @@ const (
 type SecretObjectType = original.SecretObjectType
 
 const (
-	Opaque      SecretObjectType = original.Opaque
-	Vaultsecret SecretObjectType = original.Vaultsecret
+	Opaque SecretObjectType = original.Opaque
 )
 
 type SkuName = original.SkuName
@@ -316,6 +315,7 @@ type OperationMetricSpecificationDefinition = original.OperationMetricSpecificat
 type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
 type OperationsClient = original.OperationsClient
+type OverrideTaskStepProperties = original.OverrideTaskStepProperties
 type PlatformProperties = original.PlatformProperties
 type PlatformUpdateParameters = original.PlatformUpdateParameters
 type ProxyResource = original.ProxyResource

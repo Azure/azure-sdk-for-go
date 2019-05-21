@@ -54,8 +54,6 @@ type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
 type OperationStatus = original.OperationStatus
-type OperationStatusesClient = original.OperationStatusesClient
-type OperationStatusesGetFuture = original.OperationStatusesGetFuture
 type OperationsClient = original.OperationsClient
 type Plan = original.Plan
 type RegistrationAssignment = original.RegistrationAssignment
@@ -78,12 +76,6 @@ type RegistrationDefinitionsCreateOrUpdateFuture = original.RegistrationDefiniti
 
 func New() BaseClient {
 	return original.New()
-}
-func NewOperationStatusesClient() OperationStatusesClient {
-	return original.NewOperationStatusesClient()
-}
-func NewOperationStatusesClientWithBaseURI(baseURI string) OperationStatusesClient {
-	return original.NewOperationStatusesClientWithBaseURI(baseURI)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

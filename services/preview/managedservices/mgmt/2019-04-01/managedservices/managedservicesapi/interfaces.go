@@ -20,12 +20,13 @@ package managedservicesapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/managedservices/mgmt/2019-04-01/managedservices"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // RegistrationDefinitionsClientAPI contains the set of methods on the RegistrationDefinitionsClient type.
 type RegistrationDefinitionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody managedservices.RegistrationDefinition) (result managedservices.RegistrationDefinitionsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, registrationDefinitionID string, scope string) (result managedservices.RegistrationDefinition, err error)
+	Delete(ctx context.Context, registrationDefinitionID string, scope string) (result autorest.Response, err error)
 	Get(ctx context.Context, scope string, registrationDefinitionID string) (result managedservices.RegistrationDefinition, err error)
 	List(ctx context.Context, scope string) (result managedservices.RegistrationDefinitionListPage, err error)
 }
@@ -41,13 +42,6 @@ type RegistrationAssignmentsClientAPI interface {
 }
 
 var _ RegistrationAssignmentsClientAPI = (*managedservices.RegistrationAssignmentsClient)(nil)
-
-// OperationStatusesClientAPI contains the set of methods on the OperationStatusesClient type.
-type OperationStatusesClientAPI interface {
-	Get(ctx context.Context, scope string, operationID string) (result managedservices.OperationStatusesGetFuture, err error)
-}
-
-var _ OperationStatusesClientAPI = (*managedservices.OperationStatusesClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {

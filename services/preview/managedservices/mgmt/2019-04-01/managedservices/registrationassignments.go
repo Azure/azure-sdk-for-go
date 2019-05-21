@@ -204,14 +204,13 @@ func (client RegistrationAssignmentsClient) DeleteSender(req *http.Request) (fut
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client RegistrationAssignmentsClient) DeleteResponder(resp *http.Response) (result RegistrationAssignment, err error) {
+func (client RegistrationAssignmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 

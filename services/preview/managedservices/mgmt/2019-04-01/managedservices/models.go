@@ -117,38 +117,8 @@ type OperationList struct {
 
 // OperationStatus operation status.
 type OperationStatus struct {
-	autorest.Response `json:"-"`
 	// Status - READ-ONLY; The status of the operation.
 	Status *string `json:"status,omitempty"`
-}
-
-// OperationStatusesGetFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type OperationStatusesGetFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *OperationStatusesGetFuture) Result(client OperationStatusesClient) (osVar OperationStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedservices.OperationStatusesGetFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedservices.OperationStatusesGetFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
-		osVar, err = client.GetResponder(osVar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managedservices.OperationStatusesGetFuture", "Result", osVar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // Plan plan details for the managed services.
@@ -406,7 +376,7 @@ type RegistrationAssignmentsDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *RegistrationAssignmentsDeleteFuture) Result(client RegistrationAssignmentsClient) (ra RegistrationAssignment, err error) {
+func (future *RegistrationAssignmentsDeleteFuture) Result(client RegistrationAssignmentsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -417,13 +387,7 @@ func (future *RegistrationAssignmentsDeleteFuture) Result(client RegistrationAss
 		err = azure.NewAsyncOpIncompleteError("managedservices.RegistrationAssignmentsDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ra.Response.Response, err = future.GetResult(sender); err == nil && ra.Response.Response.StatusCode != http.StatusNoContent {
-		ra, err = client.DeleteResponder(ra.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsDeleteFuture", "Result", ra.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 

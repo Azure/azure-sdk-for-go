@@ -46,8 +46,8 @@ func NewAssociationsClientWithBaseURI(baseURI string, subscriptionID string) Ass
 // '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/Microsoft.Compute/virtualMachines/{vm-name}'
 // for a virtual machine resource.
 // associationName - the name of the association.
-// parameters - the parameters required to create or update an association.
-func (client AssociationsClient) CreateOrUpdate(ctx context.Context, scope string, associationName string, parameters Association) (result AssociationsCreateOrUpdateFuture, err error) {
+// association - the parameters required to create or update an association.
+func (client AssociationsClient) CreateOrUpdate(ctx context.Context, scope string, associationName string, association Association) (result AssociationsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationsClient.CreateOrUpdate")
 		defer func() {
@@ -58,7 +58,7 @@ func (client AssociationsClient) CreateOrUpdate(ctx context.Context, scope strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, scope, associationName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, scope, associationName, association)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -74,7 +74,7 @@ func (client AssociationsClient) CreateOrUpdate(ctx context.Context, scope strin
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AssociationsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, associationName string, parameters Association) (*http.Request, error) {
+func (client AssociationsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, associationName string, association Association) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"associationName": autorest.Encode("path", associationName),
 		"scope":           scope,
@@ -85,15 +85,15 @@ func (client AssociationsClient) CreateOrUpdatePreparer(ctx context.Context, sco
 		"api-version": APIVersion,
 	}
 
-	parameters.ID = nil
-	parameters.Name = nil
-	parameters.Type = nil
+	association.ID = nil
+	association.Name = nil
+	association.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/{scope}/providers/Microsoft.CustomProviders/associations/{associationName}", pathParameters),
-		autorest.WithJSON(parameters),
+		autorest.WithJSON(association),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

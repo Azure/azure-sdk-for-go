@@ -43,7 +43,7 @@ var _ CustomResourceProviderClientAPI = (*customproviders.CustomResourceProvider
 
 // AssociationsClientAPI contains the set of methods on the AssociationsClient type.
 type AssociationsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, associationName string, parameters customproviders.Association) (result customproviders.AssociationsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, scope string, associationName string, association customproviders.Association) (result customproviders.AssociationsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, scope string, associationName string) (result customproviders.AssociationsDeleteFuture, err error)
 	Get(ctx context.Context, scope string, associationName string) (result customproviders.Association, err error)
 	ListAll(ctx context.Context, scope string) (result customproviders.AssociationsListPage, err error)

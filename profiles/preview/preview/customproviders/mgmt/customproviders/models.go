@@ -59,10 +59,10 @@ const (
 )
 
 type Association = original.Association
-type AssociationClient = original.AssociationClient
-type AssociationCreateOrUpdateFuture = original.AssociationCreateOrUpdateFuture
-type AssociationDeleteFuture = original.AssociationDeleteFuture
 type AssociationProperties = original.AssociationProperties
+type AssociationsClient = original.AssociationsClient
+type AssociationsCreateOrUpdateFuture = original.AssociationsCreateOrUpdateFuture
+type AssociationsDeleteFuture = original.AssociationsDeleteFuture
 type AssociationsList = original.AssociationsList
 type AssociationsListIterator = original.AssociationsListIterator
 type AssociationsListPage = original.AssociationsListPage
@@ -93,11 +93,11 @@ type ResourceProvidersUpdate = original.ResourceProvidersUpdate
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewAssociationClient(subscriptionID string) AssociationClient {
-	return original.NewAssociationClient(subscriptionID)
+func NewAssociationsClient(subscriptionID string) AssociationsClient {
+	return original.NewAssociationsClient(subscriptionID)
 }
-func NewAssociationClientWithBaseURI(baseURI string, subscriptionID string) AssociationClient {
-	return original.NewAssociationClientWithBaseURI(baseURI, subscriptionID)
+func NewAssociationsClientWithBaseURI(baseURI string, subscriptionID string) AssociationsClient {
+	return original.NewAssociationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAssociationsListIterator(page AssociationsListPage) AssociationsListIterator {
 	return original.NewAssociationsListIterator(page)

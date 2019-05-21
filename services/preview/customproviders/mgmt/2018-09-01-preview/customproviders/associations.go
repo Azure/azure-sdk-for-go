@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// AssociationClient is the allows extension of ARM control plane with custom resource providers.
-type AssociationClient struct {
+// AssociationsClient is the allows extension of ARM control plane with custom resource providers.
+type AssociationsClient struct {
 	BaseClient
 }
 
-// NewAssociationClient creates an instance of the AssociationClient client.
-func NewAssociationClient(subscriptionID string) AssociationClient {
-	return NewAssociationClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAssociationsClient creates an instance of the AssociationsClient client.
+func NewAssociationsClient(subscriptionID string) AssociationsClient {
+	return NewAssociationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAssociationClientWithBaseURI creates an instance of the AssociationClient client.
-func NewAssociationClientWithBaseURI(baseURI string, subscriptionID string) AssociationClient {
-	return AssociationClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAssociationsClientWithBaseURI creates an instance of the AssociationsClient client.
+func NewAssociationsClientWithBaseURI(baseURI string, subscriptionID string) AssociationsClient {
+	return AssociationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or update an association.
@@ -47,9 +47,9 @@ func NewAssociationClientWithBaseURI(baseURI string, subscriptionID string) Asso
 // for a virtual machine resource.
 // associationName - the name of the association.
 // parameters - the parameters required to create or update an association.
-func (client AssociationClient) CreateOrUpdate(ctx context.Context, scope string, associationName string, parameters Association) (result AssociationCreateOrUpdateFuture, err error) {
+func (client AssociationsClient) CreateOrUpdate(ctx context.Context, scope string, associationName string, parameters Association) (result AssociationsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -60,13 +60,13 @@ func (client AssociationClient) CreateOrUpdate(ctx context.Context, scope string
 	}
 	req, err := client.CreateOrUpdatePreparer(ctx, scope, associationName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -74,7 +74,7 @@ func (client AssociationClient) CreateOrUpdate(ctx context.Context, scope string
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AssociationClient) CreateOrUpdatePreparer(ctx context.Context, scope string, associationName string, parameters Association) (*http.Request, error) {
+func (client AssociationsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, associationName string, parameters Association) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"associationName": autorest.Encode("path", associationName),
 		"scope":           scope,
@@ -100,7 +100,7 @@ func (client AssociationClient) CreateOrUpdatePreparer(ctx context.Context, scop
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client AssociationClient) CreateOrUpdateSender(req *http.Request) (future AssociationCreateOrUpdateFuture, err error) {
+func (client AssociationsClient) CreateOrUpdateSender(req *http.Request) (future AssociationsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
@@ -113,7 +113,7 @@ func (client AssociationClient) CreateOrUpdateSender(req *http.Request) (future 
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AssociationClient) CreateOrUpdateResponder(resp *http.Response) (result Association, err error) {
+func (client AssociationsClient) CreateOrUpdateResponder(resp *http.Response) (result Association, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -128,9 +128,9 @@ func (client AssociationClient) CreateOrUpdateResponder(resp *http.Response) (re
 // Parameters:
 // scope - the scope of the association.
 // associationName - the name of the association.
-func (client AssociationClient) Delete(ctx context.Context, scope string, associationName string) (result AssociationDeleteFuture, err error) {
+func (client AssociationsClient) Delete(ctx context.Context, scope string, associationName string) (result AssociationsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationsClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -141,13 +141,13 @@ func (client AssociationClient) Delete(ctx context.Context, scope string, associ
 	}
 	req, err := client.DeletePreparer(ctx, scope, associationName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -155,7 +155,7 @@ func (client AssociationClient) Delete(ctx context.Context, scope string, associ
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AssociationClient) DeletePreparer(ctx context.Context, scope string, associationName string) (*http.Request, error) {
+func (client AssociationsClient) DeletePreparer(ctx context.Context, scope string, associationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"associationName": autorest.Encode("path", associationName),
 		"scope":           scope,
@@ -176,7 +176,7 @@ func (client AssociationClient) DeletePreparer(ctx context.Context, scope string
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AssociationClient) DeleteSender(req *http.Request) (future AssociationDeleteFuture, err error) {
+func (client AssociationsClient) DeleteSender(req *http.Request) (future AssociationsDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
@@ -189,7 +189,7 @@ func (client AssociationClient) DeleteSender(req *http.Request) (future Associat
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AssociationClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AssociationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -203,9 +203,9 @@ func (client AssociationClient) DeleteResponder(resp *http.Response) (result aut
 // Parameters:
 // scope - the scope of the association.
 // associationName - the name of the association.
-func (client AssociationClient) Get(ctx context.Context, scope string, associationName string) (result Association, err error) {
+func (client AssociationsClient) Get(ctx context.Context, scope string, associationName string) (result Association, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -216,27 +216,27 @@ func (client AssociationClient) Get(ctx context.Context, scope string, associati
 	}
 	req, err := client.GetPreparer(ctx, scope, associationName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client AssociationClient) GetPreparer(ctx context.Context, scope string, associationName string) (*http.Request, error) {
+func (client AssociationsClient) GetPreparer(ctx context.Context, scope string, associationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"associationName": autorest.Encode("path", associationName),
 		"scope":           scope,
@@ -257,14 +257,14 @@ func (client AssociationClient) GetPreparer(ctx context.Context, scope string, a
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AssociationClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AssociationsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AssociationClient) GetResponder(resp *http.Response) (result Association, err error) {
+func (client AssociationsClient) GetResponder(resp *http.Response) (result Association, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -275,12 +275,12 @@ func (client AssociationClient) GetResponder(resp *http.Response) (result Associ
 	return
 }
 
-// GetAll gets all association for the given scope.
+// ListAll gets all association for the given scope.
 // Parameters:
 // scope - the scope of the association.
-func (client AssociationClient) GetAll(ctx context.Context, scope string) (result AssociationsListPage, err error) {
+func (client AssociationsClient) ListAll(ctx context.Context, scope string) (result AssociationsListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationClient.GetAll")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationsClient.ListAll")
 		defer func() {
 			sc := -1
 			if result.al.Response.Response != nil {
@@ -289,30 +289,30 @@ func (client AssociationClient) GetAll(ctx context.Context, scope string) (resul
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.fn = client.getAllNextResults
-	req, err := client.GetAllPreparer(ctx, scope)
+	result.fn = client.listAllNextResults
+	req, err := client.ListAllPreparer(ctx, scope)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "GetAll", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "ListAll", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetAllSender(req)
+	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.al.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "GetAll", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "ListAll", resp, "Failure sending request")
 		return
 	}
 
-	result.al, err = client.GetAllResponder(resp)
+	result.al, err = client.ListAllResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "GetAll", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "ListAll", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetAllPreparer prepares the GetAll request.
-func (client AssociationClient) GetAllPreparer(ctx context.Context, scope string) (*http.Request, error) {
+// ListAllPreparer prepares the ListAll request.
+func (client AssociationsClient) ListAllPreparer(ctx context.Context, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"scope": scope,
 	}
@@ -330,16 +330,16 @@ func (client AssociationClient) GetAllPreparer(ctx context.Context, scope string
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetAllSender sends the GetAll request. The method will close the
+// ListAllSender sends the ListAll request. The method will close the
 // http.Response Body if it receives an error.
-func (client AssociationClient) GetAllSender(req *http.Request) (*http.Response, error) {
+func (client AssociationsClient) ListAllSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// GetAllResponder handles the response to the GetAll request. The method always
+// ListAllResponder handles the response to the ListAll request. The method always
 // closes the http.Response Body.
-func (client AssociationClient) GetAllResponder(resp *http.Response) (result AssociationsList, err error) {
+func (client AssociationsClient) ListAllResponder(resp *http.Response) (result AssociationsList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -350,31 +350,31 @@ func (client AssociationClient) GetAllResponder(resp *http.Response) (result Ass
 	return
 }
 
-// getAllNextResults retrieves the next set of results, if any.
-func (client AssociationClient) getAllNextResults(ctx context.Context, lastResults AssociationsList) (result AssociationsList, err error) {
+// listAllNextResults retrieves the next set of results, if any.
+func (client AssociationsClient) listAllNextResults(ctx context.Context, lastResults AssociationsList) (result AssociationsList, err error) {
 	req, err := lastResults.associationsListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "customproviders.AssociationClient", "getAllNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "listAllNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.GetAllSender(req)
+	resp, err := client.ListAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "customproviders.AssociationClient", "getAllNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "listAllNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.GetAllResponder(resp)
+	result, err = client.ListAllResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationClient", "getAllNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsClient", "listAllNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// GetAllComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AssociationClient) GetAllComplete(ctx context.Context, scope string) (result AssociationsListIterator, err error) {
+// ListAllComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AssociationsClient) ListAllComplete(ctx context.Context, scope string) (result AssociationsListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationClient.GetAll")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationsClient.ListAll")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -383,6 +383,6 @@ func (client AssociationClient) GetAllComplete(ctx context.Context, scope string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.GetAll(ctx, scope)
+	result.page, err = client.ListAll(ctx, scope)
 	return
 }

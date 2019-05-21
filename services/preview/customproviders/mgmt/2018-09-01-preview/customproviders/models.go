@@ -165,64 +165,64 @@ func (a *Association) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AssociationCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type AssociationCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AssociationCreateOrUpdateFuture) Result(client AssociationClient) (a Association, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customproviders.AssociationCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.CreateOrUpdateResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "customproviders.AssociationCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// AssociationDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type AssociationDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *AssociationDeleteFuture) Result(client AssociationClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "customproviders.AssociationDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("customproviders.AssociationDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // AssociationProperties the properties of the association.
 type AssociationProperties struct {
 	// TargetResourceID - The REST resource instance of the target resource for this association.
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the association. Possible values include: 'Accepted', 'Deleting', 'Running', 'Succeeded', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// AssociationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AssociationsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AssociationsCreateOrUpdateFuture) Result(client AssociationsClient) (a Association, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("customproviders.AssociationsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a, err = client.CreateOrUpdateResponder(a.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customproviders.AssociationsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AssociationsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AssociationsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AssociationsDeleteFuture) Result(client AssociationsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("customproviders.AssociationsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // AssociationsList list of associations.

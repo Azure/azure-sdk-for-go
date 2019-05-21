@@ -31,19 +31,20 @@ type AccountsClientAPI interface {
 
 var _ AccountsClientAPI = (*billing.AccountsClient)(nil)
 
+// PaymentMethodsClientAPI contains the set of methods on the PaymentMethodsClient type.
+type PaymentMethodsClientAPI interface {
+	ListByBillingAccountName(ctx context.Context, billingAccountName string) (result billing.PaymentMethodsListResultPage, err error)
+	ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.PaymentMethodsListResultPage, err error)
+}
+
+var _ PaymentMethodsClientAPI = (*billing.PaymentMethodsClient)(nil)
+
 // AvailableBalancesClientAPI contains the set of methods on the AvailableBalancesClient type.
 type AvailableBalancesClientAPI interface {
 	GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.AvailableBalance, err error)
 }
 
 var _ AvailableBalancesClientAPI = (*billing.AvailableBalancesClient)(nil)
-
-// PaymentMethodsClientAPI contains the set of methods on the PaymentMethodsClient type.
-type PaymentMethodsClientAPI interface {
-	ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.PaymentMethodsListResultPage, err error)
-}
-
-var _ PaymentMethodsClientAPI = (*billing.PaymentMethodsClient)(nil)
 
 // ProfilesClientAPI contains the set of methods on the ProfilesClient type.
 type ProfilesClientAPI interface {

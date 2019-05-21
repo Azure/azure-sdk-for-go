@@ -947,6 +947,12 @@ type ErrorResponse struct {
 	Error *ErrorDetails `json:"error,omitempty"`
 }
 
+// IncreaseLineOfCreditRequestProperties request parameters to increase line of credit.
+type IncreaseLineOfCreditRequestProperties struct {
+	// DesiredCreditLimit - The desired credit limit.
+	DesiredCreditLimit *float64 `json:"desiredCreditLimit,omitempty"`
+}
+
 // InitiateTransferProperties request parameters to initiate transfer.
 type InitiateTransferProperties struct {
 	// BillingProfileID - Target Usage context for devTest subscriptions.
@@ -1250,6 +1256,114 @@ type InvoiceSummaryProperties struct {
 	DocumentUrls *[]DownloadProperties `json:"documentUrls,omitempty"`
 	// Payments - READ-ONLY; List of payments.
 	Payments *[]PaymentProperties `json:"payments,omitempty"`
+}
+
+// LineOfCredit line of credit resource.
+type LineOfCredit struct {
+	autorest.Response `json:"-"`
+	// LineOfCreditProperties - A line of credit.
+	*LineOfCreditProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LineOfCredit.
+func (loc LineOfCredit) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if loc.LineOfCreditProperties != nil {
+		objectMap["properties"] = loc.LineOfCreditProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LineOfCredit struct.
+func (loc *LineOfCredit) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var lineOfCreditProperties LineOfCreditProperties
+				err = json.Unmarshal(*v, &lineOfCreditProperties)
+				if err != nil {
+					return err
+				}
+				loc.LineOfCreditProperties = &lineOfCreditProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				loc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				loc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				loc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// LineOfCreditProperties the properties of the line of credit.
+type LineOfCreditProperties struct {
+	// CreditLimit - READ-ONLY; The current credit limit.
+	CreditLimit *Amount `json:"creditLimit,omitempty"`
+	// Reason - READ-ONLY; The reason for the line of credit status when not approved.
+	Reason *string `json:"reason,omitempty"`
+	// RemainingBalance - READ-ONLY; Remaining balance.
+	RemainingBalance *Amount `json:"remainingBalance,omitempty"`
+	// Status - READ-ONLY; The line of credit status.
+	Status *string `json:"status,omitempty"`
+}
+
+// LineOfCreditsIncreaseFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type LineOfCreditsIncreaseFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *LineOfCreditsIncreaseFuture) Result(client LineOfCreditsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsIncreaseFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.LineOfCreditsIncreaseFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // Operation a Billing REST API operation.

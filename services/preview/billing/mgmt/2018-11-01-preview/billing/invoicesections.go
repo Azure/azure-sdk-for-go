@@ -543,7 +543,7 @@ func (client InvoiceSectionsClient) UpdatePreparer(ctx context.Context, billingA
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
+		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}", pathParameters),
 		autorest.WithJSON(parameters),

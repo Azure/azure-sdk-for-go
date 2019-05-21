@@ -183,6 +183,7 @@ type EnrollmentPolicies = original.EnrollmentPolicies
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
+type IncreaseLineOfCreditRequestProperties = original.IncreaseLineOfCreditRequestProperties
 type InitiateTransferProperties = original.InitiateTransferProperties
 type InitiateTransferRequest = original.InitiateTransferRequest
 type InvoiceListResult = original.InvoiceListResult
@@ -195,6 +196,10 @@ type InvoiceSectionsUpdateFuture = original.InvoiceSectionsUpdateFuture
 type InvoiceSummary = original.InvoiceSummary
 type InvoiceSummaryProperties = original.InvoiceSummaryProperties
 type InvoicesClient = original.InvoicesClient
+type LineOfCredit = original.LineOfCredit
+type LineOfCreditProperties = original.LineOfCreditProperties
+type LineOfCreditsClient = original.LineOfCreditsClient
+type LineOfCreditsIncreaseFuture = original.LineOfCreditsIncreaseFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -321,6 +326,12 @@ func NewInvoicesClient(subscriptionID string) InvoicesClient {
 }
 func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
 	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLineOfCreditsClient(subscriptionID string) LineOfCreditsClient {
+	return original.NewLineOfCreditsClient(subscriptionID)
+}
+func NewLineOfCreditsClientWithBaseURI(baseURI string, subscriptionID string) LineOfCreditsClient {
+	return original.NewLineOfCreditsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

@@ -44,10 +44,10 @@ func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) Agent
 // CreateOrUpdate creates or updates an agent pool in the specified managed cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// managedClusterName - the name of the managed cluster resource.
+// resourceName - the name of the managed cluster resource.
 // agentPoolName - the name of the agent pool.
 // parameters - parameters supplied to the Create or Update an agent pool operation.
-func (client AgentPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, managedClusterName string, agentPoolName string, parameters AgentPool) (result AgentPoolsCreateOrUpdateFuture, err error) {
+func (client AgentPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPool) (result AgentPoolsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolsClient.CreateOrUpdate")
 		defer func() {
@@ -61,6 +61,10 @@ func (client AgentPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ManagedClusterAgentPoolProfileProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.ManagedClusterAgentPoolProfileProperties.Count", Name: validation.Null, Rule: true,
@@ -71,7 +75,7 @@ func (client AgentPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 		return result, validation.NewError("containerservice.AgentPoolsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, managedClusterName, agentPoolName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, resourceName, agentPoolName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -87,12 +91,12 @@ func (client AgentPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AgentPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, managedClusterName string, agentPoolName string, parameters AgentPool) (*http.Request, error) {
+func (client AgentPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"agentPoolName":      autorest.Encode("path", agentPoolName),
-		"managedClusterName": autorest.Encode("path", managedClusterName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"agentPoolName":     autorest.Encode("path", agentPoolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-04-01"
@@ -104,7 +108,7 @@ func (client AgentPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resou
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{managedClusterName}/agentPools/{agentPoolName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -139,9 +143,9 @@ func (client AgentPoolsClient) CreateOrUpdateResponder(resp *http.Response) (res
 // Delete deletes the agent pool in the specified managed cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// managedClusterName - the name of the managed cluster resource.
+// resourceName - the name of the managed cluster resource.
 // agentPoolName - the name of the agent pool.
-func (client AgentPoolsClient) Delete(ctx context.Context, resourceGroupName string, managedClusterName string, agentPoolName string) (result AgentPoolsDeleteFuture, err error) {
+func (client AgentPoolsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string) (result AgentPoolsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolsClient.Delete")
 		defer func() {
@@ -154,11 +158,15 @@ func (client AgentPoolsClient) Delete(ctx context.Context, resourceGroupName str
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerservice.AgentPoolsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, managedClusterName, agentPoolName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, resourceName, agentPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -174,12 +182,12 @@ func (client AgentPoolsClient) Delete(ctx context.Context, resourceGroupName str
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AgentPoolsClient) DeletePreparer(ctx context.Context, resourceGroupName string, managedClusterName string, agentPoolName string) (*http.Request, error) {
+func (client AgentPoolsClient) DeletePreparer(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"agentPoolName":      autorest.Encode("path", agentPoolName),
-		"managedClusterName": autorest.Encode("path", managedClusterName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"agentPoolName":     autorest.Encode("path", agentPoolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-04-01"
@@ -190,7 +198,7 @@ func (client AgentPoolsClient) DeletePreparer(ctx context.Context, resourceGroup
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{managedClusterName}/agentPools/{agentPoolName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -223,9 +231,9 @@ func (client AgentPoolsClient) DeleteResponder(resp *http.Response) (result auto
 // Get gets the details of the agent pool by managed cluster and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// managedClusterName - the name of the managed cluster resource.
+// resourceName - the name of the managed cluster resource.
 // agentPoolName - the name of the agent pool.
-func (client AgentPoolsClient) Get(ctx context.Context, resourceGroupName string, managedClusterName string, agentPoolName string) (result AgentPool, err error) {
+func (client AgentPoolsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string) (result AgentPool, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolsClient.Get")
 		defer func() {
@@ -238,11 +246,15 @@ func (client AgentPoolsClient) Get(ctx context.Context, resourceGroupName string
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerservice.AgentPoolsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, managedClusterName, agentPoolName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, resourceName, agentPoolName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsClient", "Get", nil, "Failure preparing request")
 		return
@@ -264,12 +276,12 @@ func (client AgentPoolsClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // GetPreparer prepares the Get request.
-func (client AgentPoolsClient) GetPreparer(ctx context.Context, resourceGroupName string, managedClusterName string, agentPoolName string) (*http.Request, error) {
+func (client AgentPoolsClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"agentPoolName":      autorest.Encode("path", agentPoolName),
-		"managedClusterName": autorest.Encode("path", managedClusterName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"agentPoolName":     autorest.Encode("path", agentPoolName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-04-01"
@@ -280,7 +292,7 @@ func (client AgentPoolsClient) GetPreparer(ctx context.Context, resourceGroupNam
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{managedClusterName}/agentPools/{agentPoolName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -309,8 +321,8 @@ func (client AgentPoolsClient) GetResponder(resp *http.Response) (result AgentPo
 // pool.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// managedClusterName - the name of the managed cluster resource.
-func (client AgentPoolsClient) List(ctx context.Context, resourceGroupName string, managedClusterName string) (result AgentPoolListResultPage, err error) {
+// resourceName - the name of the managed cluster resource.
+func (client AgentPoolsClient) List(ctx context.Context, resourceGroupName string, resourceName string) (result AgentPoolListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolsClient.List")
 		defer func() {
@@ -323,12 +335,16 @@ func (client AgentPoolsClient) List(ctx context.Context, resourceGroupName strin
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceName,
+			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "resourceName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerservice.AgentPoolsClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, managedClusterName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsClient", "List", nil, "Failure preparing request")
 		return
@@ -350,11 +366,11 @@ func (client AgentPoolsClient) List(ctx context.Context, resourceGroupName strin
 }
 
 // ListPreparer prepares the List request.
-func (client AgentPoolsClient) ListPreparer(ctx context.Context, resourceGroupName string, managedClusterName string) (*http.Request, error) {
+func (client AgentPoolsClient) ListPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"managedClusterName": autorest.Encode("path", managedClusterName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-04-01"
@@ -365,7 +381,7 @@ func (client AgentPoolsClient) ListPreparer(ctx context.Context, resourceGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{managedClusterName}/agentPools", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -412,7 +428,7 @@ func (client AgentPoolsClient) listNextResults(ctx context.Context, lastResults 
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AgentPoolsClient) ListComplete(ctx context.Context, resourceGroupName string, managedClusterName string) (result AgentPoolListResultIterator, err error) {
+func (client AgentPoolsClient) ListComplete(ctx context.Context, resourceGroupName string, resourceName string) (result AgentPoolListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolsClient.List")
 		defer func() {
@@ -423,6 +439,6 @@ func (client AgentPoolsClient) ListComplete(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, managedClusterName)
+	result.page, err = client.List(ctx, resourceGroupName, resourceName)
 	return
 }

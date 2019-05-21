@@ -20,16 +20,15 @@ package servicefabric
 import (
 	"context"
 	"encoding/json"
-	"net/http"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/servicefabric/mgmt/2016-09-01/servicefabric"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2016-09-01/servicefabric"
 
 // ClusterState enumerates the values for cluster state.
 type ClusterState string
@@ -260,11 +259,11 @@ type ClientCertificateThumbprint struct {
 type Cluster struct {
 	autorest.Response  `json:"-"`
 	*ClusterProperties `json:"properties,omitempty"`
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -277,15 +276,6 @@ func (c Cluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.ClusterProperties != nil {
 		objectMap["properties"] = c.ClusterProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	if c.Location != nil {
 		objectMap["location"] = c.Location
@@ -432,6 +422,11 @@ func (iter ClusterCodeVersionsListResultIterator) Value() ClusterCodeVersionsRes
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ClusterCodeVersionsListResultIterator type.
+func NewClusterCodeVersionsListResultIterator(page ClusterCodeVersionsListResultPage) ClusterCodeVersionsListResultIterator {
+	return ClusterCodeVersionsListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (ccvlr ClusterCodeVersionsListResult) IsEmpty() bool {
 	return ccvlr.Value == nil || len(*ccvlr.Value) == 0
@@ -499,6 +494,11 @@ func (page ClusterCodeVersionsListResultPage) Values() []ClusterCodeVersionsResu
 		return nil
 	}
 	return *page.ccvlr.Value
+}
+
+// Creates a new instance of the ClusterCodeVersionsListResultPage type.
+func NewClusterCodeVersionsListResultPage(getNextPage func(context.Context, ClusterCodeVersionsListResult) (ClusterCodeVersionsListResult, error)) ClusterCodeVersionsListResultPage {
+	return ClusterCodeVersionsListResultPage{fn: getNextPage}
 }
 
 // ClusterCodeVersionsResult the result of the ServiceFabric runtime versions
@@ -657,6 +657,11 @@ func (iter ClusterListResultIterator) Value() Cluster {
 	return iter.page.Values()[iter.i]
 }
 
+// Creates a new instance of the ClusterListResultIterator type.
+func NewClusterListResultIterator(page ClusterListResultPage) ClusterListResultIterator {
+	return ClusterListResultIterator{page: page}
+}
+
 // IsEmpty returns true if the ListResult contains no values.
 func (clr ClusterListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
@@ -726,15 +731,20 @@ func (page ClusterListResultPage) Values() []Cluster {
 	return *page.clr.Value
 }
 
+// Creates a new instance of the ClusterListResultPage type.
+func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{fn: getNextPage}
+}
+
 // ClusterProperties the cluster resource properties
 type ClusterProperties struct {
-	// AvailableClusterVersions - The available cluster code version which the cluster can upgrade to, note that you must choose upgradeMode to manual to upgrade to
+	// AvailableClusterVersions - READ-ONLY; The available cluster code version which the cluster can upgrade to, note that you must choose upgradeMode to manual to upgrade to
 	AvailableClusterVersions *[]ClusterVersionDetails `json:"availableClusterVersions,omitempty"`
-	// ClusterID - The unique identifier for the cluster resource
+	// ClusterID - READ-ONLY; The unique identifier for the cluster resource
 	ClusterID *string `json:"clusterId,omitempty"`
-	// ClusterState - The state for the cluster. Possible values include: 'WaitingForNodes', 'Deploying', 'BaselineUpgrade', 'UpdatingUserConfiguration', 'UpdatingUserCertificate', 'UpdatingInfrastructure', 'EnforcingClusterVersion', 'UpgradeServiceUnreachable', 'AutoScale', 'Ready'
+	// ClusterState - READ-ONLY; The state for the cluster. Possible values include: 'WaitingForNodes', 'Deploying', 'BaselineUpgrade', 'UpdatingUserConfiguration', 'UpdatingUserCertificate', 'UpdatingInfrastructure', 'EnforcingClusterVersion', 'UpgradeServiceUnreachable', 'AutoScale', 'Ready'
 	ClusterState ClusterState `json:"clusterState,omitempty"`
-	// ClusterEndpoint - The endpoint for the cluster connecting to servicefabric resource provider
+	// ClusterEndpoint - READ-ONLY; The endpoint for the cluster connecting to servicefabric resource provider
 	ClusterEndpoint *string `json:"clusterEndpoint,omitempty"`
 	// ClusterCodeVersion - The ServiceFabric code version running in your cluster
 	ClusterCodeVersion *string `json:"clusterCodeVersion,omitempty"`
@@ -758,7 +768,7 @@ type ClusterProperties struct {
 	NodeTypes *[]NodeTypeDescription `json:"nodeTypes,omitempty"`
 	// AzureActiveDirectory - The settings to enable AAD authentication on the cluster
 	AzureActiveDirectory *AzureActiveDirectory `json:"azureActiveDirectory,omitempty"`
-	// ProvisioningState - The provisioning state of the cluster resource. Possible values include: 'Updating', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the cluster resource. Possible values include: 'Updating', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VMImage - The name of VM image VMSS has been configured with. Generic names such as Windows or Linux can be used.
 	VMImage *string `json:"vmImage,omitempty"`
@@ -1052,9 +1062,9 @@ func (ntd NodeTypeDescription) MarshalJSON() ([]byte, error) {
 // operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of ServiceFabric operations supported by the Microsoft.ServiceFabric resource provider.
+	// Value - READ-ONLY; List of ServiceFabric operations supported by the Microsoft.ServiceFabric resource provider.
 	Value *[]OperationResult `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1114,6 +1124,11 @@ func (iter OperationListResultIterator) Value() OperationResult {
 		return OperationResult{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -1185,6 +1200,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 	return *page.olr.Value
 }
 
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
+}
+
 // OperationResult available operation list result
 type OperationResult struct {
 	// Name - Result name
@@ -1199,11 +1219,11 @@ type OperationResult struct {
 
 // Resource the resource model definition.
 type Resource struct {
-	// ID - Resource ID.
+	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name.
+	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type.
+	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -1214,15 +1234,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

@@ -930,6 +930,10 @@ const (
 type TypeBasicSsisObjectMetadata = original.TypeBasicSsisObjectMetadata
 
 const (
+	TypeEnvironment        TypeBasicSsisObjectMetadata = original.TypeEnvironment
+	TypeFolder             TypeBasicSsisObjectMetadata = original.TypeFolder
+	TypePackage            TypeBasicSsisObjectMetadata = original.TypePackage
+	TypeProject            TypeBasicSsisObjectMetadata = original.TypeProject
 	TypeSsisObjectMetadata TypeBasicSsisObjectMetadata = original.TypeSsisObjectMetadata
 )
 
@@ -1526,9 +1530,16 @@ type SquareLinkedService = original.SquareLinkedService
 type SquareLinkedServiceTypeProperties = original.SquareLinkedServiceTypeProperties
 type SquareObjectDataset = original.SquareObjectDataset
 type SquareSource = original.SquareSource
+type SsisEnvironment = original.SsisEnvironment
+type SsisEnvironmentReference = original.SsisEnvironmentReference
+type SsisFolder = original.SsisFolder
 type SsisObjectMetadata = original.SsisObjectMetadata
 type SsisObjectMetadataListResponse = original.SsisObjectMetadataListResponse
 type SsisObjectMetadataStatusResponse = original.SsisObjectMetadataStatusResponse
+type SsisPackage = original.SsisPackage
+type SsisParameter = original.SsisParameter
+type SsisProject = original.SsisProject
+type SsisVariable = original.SsisVariable
 type StagingSettings = original.StagingSettings
 type StoredProcedureParameter = original.StoredProcedureParameter
 type SubResource = original.SubResource

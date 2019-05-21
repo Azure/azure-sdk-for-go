@@ -388,7 +388,7 @@ type AttachedDatabaseConfigurationProperties struct {
 	// ClusterResourceID - The resource id of the cluster where the databases you would like to attach reside.
 	ClusterResourceID *string `json:"clusterResourceId,omitempty"`
 	// AttachedDatabaseNames - READ-ONLY; The list of databases from the clusterResourceId which are currently attached to the cluster.
-	AttachedDatabaseNames *[]string `json:"AttachedDatabaseNames,omitempty"`
+	AttachedDatabaseNames *[]string `json:"attachedDatabaseNames,omitempty"`
 }
 
 // AttachedDatabaseConfigurationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the

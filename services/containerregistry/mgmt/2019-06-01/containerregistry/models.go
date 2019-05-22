@@ -52,13 +52,15 @@ const (
 	Amd64 Architecture = "amd64"
 	// Arm ...
 	Arm Architecture = "arm"
+	// Arm64 ...
+	Arm64 Architecture = "arm64"
 	// X86 ...
 	X86 Architecture = "x86"
 )
 
 // PossibleArchitectureValues returns an array of possible values for the Architecture const type.
 func PossibleArchitectureValues() []Architecture {
-	return []Architecture{Amd64, Arm, X86}
+	return []Architecture{Amd64, Arm, Arm64, X86}
 }
 
 // BaseImageDependencyType enumerates the values for base image dependency type.
@@ -275,11 +277,13 @@ type SecretObjectType string
 const (
 	// Opaque ...
 	Opaque SecretObjectType = "Opaque"
+	// Vaultsecret ...
+	Vaultsecret SecretObjectType = "Vaultsecret"
 )
 
 // PossibleSecretObjectTypeValues returns an array of possible values for the SecretObjectType const type.
 func PossibleSecretObjectTypeValues() []SecretObjectType {
-	return []SecretObjectType{Opaque}
+	return []SecretObjectType{Opaque, Vaultsecret}
 }
 
 // SkuName enumerates the values for sku name.
@@ -2051,7 +2055,7 @@ type OverrideTaskStepProperties struct {
 type PlatformProperties struct {
 	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
 	Os OS `json:"os,omitempty"`
-	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm'
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm', 'Arm64'
 	Architecture Architecture `json:"architecture,omitempty"`
 	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
 	Variant Variant `json:"variant,omitempty"`
@@ -2061,7 +2065,7 @@ type PlatformProperties struct {
 type PlatformUpdateParameters struct {
 	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
 	Os OS `json:"os,omitempty"`
-	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm'
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm', 'Arm64'
 	Architecture Architecture `json:"architecture,omitempty"`
 	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
 	Variant Variant `json:"variant,omitempty"`
@@ -3522,7 +3526,7 @@ type SecretObject struct {
 	// used as is without any modification.
 	Value *string `json:"value,omitempty"`
 	// Type - The type of the secret object which determines how the value of the secret object has to be
-	// interpreted. Possible values include: 'Opaque'
+	// interpreted. Possible values include: 'Opaque', 'Vaultsecret'
 	Type SecretObjectType `json:"type,omitempty"`
 }
 

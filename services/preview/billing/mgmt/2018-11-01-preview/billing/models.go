@@ -47,6 +47,21 @@ func PossibleAccountTypeValues() []AccountType {
 	return []AccountType{AccountTypeEnrollment, AccountTypeOrganization}
 }
 
+// AddressValidationStatus enumerates the values for address validation status.
+type AddressValidationStatus string
+
+const (
+	// Invalid ...
+	Invalid AddressValidationStatus = "Invalid"
+	// Valid ...
+	Valid AddressValidationStatus = "Valid"
+)
+
+// PossibleAddressValidationStatusValues returns an array of possible values for the AddressValidationStatus const type.
+func PossibleAddressValidationStatusValues() []AddressValidationStatus {
+	return []AddressValidationStatus{Invalid, Valid}
+}
+
 // EligibleProductType enumerates the values for eligible product type.
 type EligibleProductType string
 
@@ -161,6 +176,35 @@ func PossibleProductTransferStatusValues() []ProductTransferStatus {
 	return []ProductTransferStatus{Completed, Failed, InProgress, NotStarted}
 }
 
+// ProductTransferValidationErrorCode enumerates the values for product transfer validation error code.
+type ProductTransferValidationErrorCode string
+
+const (
+	// CrossBillingAccountNotAllowed ...
+	CrossBillingAccountNotAllowed ProductTransferValidationErrorCode = "CrossBillingAccountNotAllowed"
+	// DestinationBillingProfilePastDue ...
+	DestinationBillingProfilePastDue ProductTransferValidationErrorCode = "DestinationBillingProfilePastDue"
+	// InsufficienctPermissionOnDestination ...
+	InsufficienctPermissionOnDestination ProductTransferValidationErrorCode = "InsufficienctPermissionOnDestination"
+	// InsufficienctPermissionOnSource ...
+	InsufficienctPermissionOnSource ProductTransferValidationErrorCode = "InsufficienctPermissionOnSource"
+	// InvalidSource ...
+	InvalidSource ProductTransferValidationErrorCode = "InvalidSource"
+	// NotAvailableForDestinationMarket ...
+	NotAvailableForDestinationMarket ProductTransferValidationErrorCode = "NotAvailableForDestinationMarket"
+	// OneTimePurchaseProductTransferNotAllowed ...
+	OneTimePurchaseProductTransferNotAllowed ProductTransferValidationErrorCode = "OneTimePurchaseProductTransferNotAllowed"
+	// ProductNotActive ...
+	ProductNotActive ProductTransferValidationErrorCode = "ProductNotActive"
+	// ProductTypeNotSupported ...
+	ProductTypeNotSupported ProductTransferValidationErrorCode = "ProductTypeNotSupported"
+)
+
+// PossibleProductTransferValidationErrorCodeValues returns an array of possible values for the ProductTransferValidationErrorCode const type.
+func PossibleProductTransferValidationErrorCodeValues() []ProductTransferValidationErrorCode {
+	return []ProductTransferValidationErrorCode{CrossBillingAccountNotAllowed, DestinationBillingProfilePastDue, InsufficienctPermissionOnDestination, InsufficienctPermissionOnSource, InvalidSource, NotAvailableForDestinationMarket, OneTimePurchaseProductTransferNotAllowed, ProductNotActive, ProductTypeNotSupported}
+}
+
 // ProductType enumerates the values for product type.
 type ProductType string
 
@@ -229,6 +273,34 @@ const (
 // PossibleSubscriptionStatusTypeValues returns an array of possible values for the SubscriptionStatusType const type.
 func PossibleSubscriptionStatusTypeValues() []SubscriptionStatusType {
 	return []SubscriptionStatusType{SubscriptionStatusTypeAbandoned, SubscriptionStatusTypeActive, SubscriptionStatusTypeDeleted, SubscriptionStatusTypeInactive, SubscriptionStatusTypeWarning}
+}
+
+// SubscriptionTransferValidationErrorCode enumerates the values for subscription transfer validation error
+// code.
+type SubscriptionTransferValidationErrorCode string
+
+const (
+	// SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed ...
+	SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed SubscriptionTransferValidationErrorCode = "CrossBillingAccountNotAllowed"
+	// SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue ...
+	SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue SubscriptionTransferValidationErrorCode = "DestinationBillingProfilePastDue"
+	// SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination ...
+	SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination SubscriptionTransferValidationErrorCode = "InsufficienctPermissionOnDestination"
+	// SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource ...
+	SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource SubscriptionTransferValidationErrorCode = "InsufficienctPermissionOnSource"
+	// SubscriptionTransferValidationErrorCodeInvalidSource ...
+	SubscriptionTransferValidationErrorCodeInvalidSource SubscriptionTransferValidationErrorCode = "InvalidSource"
+	// SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket ...
+	SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket SubscriptionTransferValidationErrorCode = "NotAvailableForDestinationMarket"
+	// SubscriptionTransferValidationErrorCodeSubscriptionNotActive ...
+	SubscriptionTransferValidationErrorCodeSubscriptionNotActive SubscriptionTransferValidationErrorCode = "SubscriptionNotActive"
+	// SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported ...
+	SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported SubscriptionTransferValidationErrorCode = "SubscriptionTypeNotSupported"
+)
+
+// PossibleSubscriptionTransferValidationErrorCodeValues returns an array of possible values for the SubscriptionTransferValidationErrorCode const type.
+func PossibleSubscriptionTransferValidationErrorCodeValues() []SubscriptionTransferValidationErrorCode {
+	return []SubscriptionTransferValidationErrorCode{SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed, SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue, SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination, SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource, SubscriptionTransferValidationErrorCodeInvalidSource, SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket, SubscriptionTransferValidationErrorCodeSubscriptionNotActive, SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported}
 }
 
 // TransactionTypeKind enumerates the values for transaction type kind.
@@ -3343,6 +3415,8 @@ func (tbsr *TransferBillingSubscriptionRequest) UnmarshalJSON(body []byte) error
 type TransferBillingSubscriptionRequestProperties struct {
 	// DestinationInvoiceSectionID - The destination invoice section id.
 	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`
+	// DestinationBillingProfileID - The destination billing profile id.
+	DestinationBillingProfileID *string `json:"destinationBillingProfileId,omitempty"`
 }
 
 // TransferBillingSubscriptionResult request parameters to transfer billing subscription.
@@ -3579,8 +3653,10 @@ func NewTransferDetailsListResultPage(getNextPage func(context.Context, Transfer
 
 // TransferProductRequestProperties the properties of the product to initiate a transfer.
 type TransferProductRequestProperties struct {
-	// DestinationInvoiceSectionID - Destination invoice section id.
+	// DestinationInvoiceSectionID - The destination invoice section id.
 	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`
+	// DestinationBillingProfileID - The destination billing profile id.
+	DestinationBillingProfileID *string `json:"destinationBillingProfileId,omitempty"`
 }
 
 // TransferProperties transfer details
@@ -3657,4 +3733,51 @@ type UpdateAutoRenewOperationSummaryProperties struct {
 type UpdateAutoRenewRequest struct {
 	// AutoRenew - Request parameters to update auto renew policy a product. Possible values include: 'True', 'False'
 	AutoRenew UpdateAutoRenew `json:"autoRenew,omitempty"`
+}
+
+// ValidateAddressResponse result of the address validation
+type ValidateAddressResponse struct {
+	autorest.Response `json:"-"`
+	// Status - status of the address validation. Possible values include: 'Valid', 'Invalid'
+	Status AddressValidationStatus `json:"status,omitempty"`
+	// SuggestedAddresses - list of suggested addresses.
+	SuggestedAddresses *[]Address `json:"suggestedAddresses,omitempty"`
+	// ValidationMessage - Validation error message.
+	ValidationMessage *string `json:"validationMessage,omitempty"`
+}
+
+// ValidateProductTransferEligibilityError error details of the product transfer eligibility validation.
+type ValidateProductTransferEligibilityError struct {
+	// Code - Error code for the product transfer validation. Possible values include: 'InvalidSource', 'ProductNotActive', 'InsufficienctPermissionOnSource', 'InsufficienctPermissionOnDestination', 'DestinationBillingProfilePastDue', 'ProductTypeNotSupported', 'CrossBillingAccountNotAllowed', 'NotAvailableForDestinationMarket', 'OneTimePurchaseProductTransferNotAllowed'
+	Code ProductTransferValidationErrorCode `json:"code,omitempty"`
+	// Message - The error message.
+	Message *string `json:"message,omitempty"`
+	// Details - Detailed error message explaining the error.
+	Details *string `json:"details,omitempty"`
+}
+
+// ValidateProductTransferEligibilityResult result of the product transfer eligibility validation.
+type ValidateProductTransferEligibilityResult struct {
+	// IsTransferEligible - READ-ONLY; Specifies whether the transfer is eligible or not.
+	IsTransferEligible *bool `json:"isTransferEligible,omitempty"`
+	// ErrorDetails - Validation error details.
+	ErrorDetails *ValidateProductTransferEligibilityError `json:"errorDetails,omitempty"`
+}
+
+// ValidateSubscriptionTransferEligibilityError error details of the transfer eligibility validation
+type ValidateSubscriptionTransferEligibilityError struct {
+	// Code - Error code for the product transfer validation. Possible values include: 'SubscriptionTransferValidationErrorCodeInvalidSource', 'SubscriptionTransferValidationErrorCodeSubscriptionNotActive', 'SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource', 'SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination', 'SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue', 'SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported', 'SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed', 'SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket'
+	Code SubscriptionTransferValidationErrorCode `json:"code,omitempty"`
+	// Message - The error message.
+	Message *string `json:"message,omitempty"`
+	// Details - Detailed error message explaining the error.
+	Details *string `json:"details,omitempty"`
+}
+
+// ValidateSubscriptionTransferEligibilityResult result of the transfer eligibility validation.
+type ValidateSubscriptionTransferEligibilityResult struct {
+	// IsTransferEligible - READ-ONLY; Specifies whether the transfer is eligible or not.
+	IsTransferEligible *bool `json:"isTransferEligible,omitempty"`
+	// ErrorDetails - Validation error details.
+	ErrorDetails *ValidateSubscriptionTransferEligibilityError `json:"errorDetails,omitempty"`
 }

@@ -36,6 +36,13 @@ const (
 	AccountTypeOrganization AccountType = original.AccountTypeOrganization
 )
 
+type AddressValidationStatus = original.AddressValidationStatus
+
+const (
+	Invalid AddressValidationStatus = original.Invalid
+	Valid   AddressValidationStatus = original.Valid
+)
+
 type EligibleProductType = original.EligibleProductType
 
 const (
@@ -90,6 +97,20 @@ const (
 	NotStarted ProductTransferStatus = original.NotStarted
 )
 
+type ProductTransferValidationErrorCode = original.ProductTransferValidationErrorCode
+
+const (
+	CrossBillingAccountNotAllowed            ProductTransferValidationErrorCode = original.CrossBillingAccountNotAllowed
+	DestinationBillingProfilePastDue         ProductTransferValidationErrorCode = original.DestinationBillingProfilePastDue
+	InsufficienctPermissionOnDestination     ProductTransferValidationErrorCode = original.InsufficienctPermissionOnDestination
+	InsufficienctPermissionOnSource          ProductTransferValidationErrorCode = original.InsufficienctPermissionOnSource
+	InvalidSource                            ProductTransferValidationErrorCode = original.InvalidSource
+	NotAvailableForDestinationMarket         ProductTransferValidationErrorCode = original.NotAvailableForDestinationMarket
+	OneTimePurchaseProductTransferNotAllowed ProductTransferValidationErrorCode = original.OneTimePurchaseProductTransferNotAllowed
+	ProductNotActive                         ProductTransferValidationErrorCode = original.ProductNotActive
+	ProductTypeNotSupported                  ProductTransferValidationErrorCode = original.ProductTypeNotSupported
+)
+
 type ProductType = original.ProductType
 
 const (
@@ -121,6 +142,19 @@ const (
 	SubscriptionStatusTypeDeleted   SubscriptionStatusType = original.SubscriptionStatusTypeDeleted
 	SubscriptionStatusTypeInactive  SubscriptionStatusType = original.SubscriptionStatusTypeInactive
 	SubscriptionStatusTypeWarning   SubscriptionStatusType = original.SubscriptionStatusTypeWarning
+)
+
+type SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCode
+
+const (
+	SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed        SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed
+	SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue     SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue
+	SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination
+	SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource      SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource
+	SubscriptionTransferValidationErrorCodeInvalidSource                        SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCodeInvalidSource
+	SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket     SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket
+	SubscriptionTransferValidationErrorCodeSubscriptionNotActive                SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCodeSubscriptionNotActive
+	SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported         SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported
 )
 
 type TransactionTypeKind = original.TransactionTypeKind
@@ -155,6 +189,7 @@ type Account = original.Account
 type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
+type AccountsValidateAddressClient = original.AccountsValidateAddressClient
 type Address = original.Address
 type Agreement = original.Agreement
 type AgreementListResult = original.AgreementListResult
@@ -276,6 +311,11 @@ type TransfersClient = original.TransfersClient
 type UpdateAutoRenewOperationSummary = original.UpdateAutoRenewOperationSummary
 type UpdateAutoRenewOperationSummaryProperties = original.UpdateAutoRenewOperationSummaryProperties
 type UpdateAutoRenewRequest = original.UpdateAutoRenewRequest
+type ValidateAddressResponse = original.ValidateAddressResponse
+type ValidateProductTransferEligibilityError = original.ValidateProductTransferEligibilityError
+type ValidateProductTransferEligibilityResult = original.ValidateProductTransferEligibilityResult
+type ValidateSubscriptionTransferEligibilityError = original.ValidateSubscriptionTransferEligibilityError
+type ValidateSubscriptionTransferEligibilityResult = original.ValidateSubscriptionTransferEligibilityResult
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -285,6 +325,12 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 }
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccountsValidateAddressClient(subscriptionID string) AccountsValidateAddressClient {
+	return original.NewAccountsValidateAddressClient(subscriptionID)
+}
+func NewAccountsValidateAddressClientWithBaseURI(baseURI string, subscriptionID string) AccountsValidateAddressClient {
+	return original.NewAccountsValidateAddressClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAgreementsClient(subscriptionID string) AgreementsClient {
 	return original.NewAgreementsClient(subscriptionID)
@@ -454,6 +500,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccountTypeValues() []AccountType {
 	return original.PossibleAccountTypeValues()
 }
+func PossibleAddressValidationStatusValues() []AddressValidationStatus {
+	return original.PossibleAddressValidationStatusValues()
+}
 func PossibleEligibleProductTypeValues() []EligibleProductType {
 	return original.PossibleEligibleProductTypeValues()
 }
@@ -472,6 +521,9 @@ func PossibleProductStatusTypeValues() []ProductStatusType {
 func PossibleProductTransferStatusValues() []ProductTransferStatus {
 	return original.PossibleProductTransferStatusValues()
 }
+func PossibleProductTransferValidationErrorCodeValues() []ProductTransferValidationErrorCode {
+	return original.PossibleProductTransferValidationErrorCodeValues()
+}
 func PossibleProductTypeValues() []ProductType {
 	return original.PossibleProductTypeValues()
 }
@@ -483,6 +535,9 @@ func PossibleStatusValues() []Status {
 }
 func PossibleSubscriptionStatusTypeValues() []SubscriptionStatusType {
 	return original.PossibleSubscriptionStatusTypeValues()
+}
+func PossibleSubscriptionTransferValidationErrorCodeValues() []SubscriptionTransferValidationErrorCode {
+	return original.PossibleSubscriptionTransferValidationErrorCodeValues()
 }
 func PossibleTransactionTypeKindValues() []TransactionTypeKind {
 	return original.PossibleTransactionTypeKindValues()

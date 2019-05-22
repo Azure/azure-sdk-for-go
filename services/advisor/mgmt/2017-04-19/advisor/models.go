@@ -554,6 +554,8 @@ type MetadataEntityProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// DependsOn - The list of keys on which this entity depends on.
 	DependsOn *[]string `json:"dependsOn,omitempty"`
+	// IsAlertable - The flag to know if metadata entity can be used in alert condition.
+	IsAlertable *bool `json:"isAlertable,omitempty"`
 	// SupportedValues - The list of supported values.
 	SupportedValues *[]MetadataSupportedValueDetail `json:"supportedValues,omitempty"`
 }

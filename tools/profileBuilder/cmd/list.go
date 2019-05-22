@@ -86,8 +86,8 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 				errLog.Fatalf("Unable to clear output-folder: %v", err)
 			}
 		}
-
-		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog)
+		// use recursive build to include the *api packages
+		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, true)
 	},
 }
 

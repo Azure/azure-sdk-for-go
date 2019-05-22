@@ -83,7 +83,8 @@ By default, this command ignores API versions that are in preview.`,
 			errLog.Fatalf("failed to get root dir: %v", err)
 		}
 		listDef, err := model.GetLatestPackages(rootDir, includePreview, outputLog)
-		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog)
+		// don't recursively build profiles as we already built the list of packages recursively
+		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, false)
 	},
 }
 

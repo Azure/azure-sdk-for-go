@@ -610,6 +610,8 @@ type BaseImageTrigger struct {
 	BaseImageTriggerType BaseImageTriggerType `json:"baseImageTriggerType,omitempty"`
 	// UpdateTriggerEndpoint - The endpoint URL for receiving update triggers.
 	UpdateTriggerEndpoint *string `json:"updateTriggerEndpoint,omitempty"`
+	// IncludeTriggerMetadata - Include Trigger metadata on Base image update triggers.
+	IncludeTriggerMetadata *bool `json:"includeTriggerMetadata,omitempty"`
 	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
@@ -622,6 +624,8 @@ type BaseImageTriggerUpdateParameters struct {
 	BaseImageTriggerType BaseImageTriggerType `json:"baseImageTriggerType,omitempty"`
 	// UpdateTriggerEndpoint - The endpoint URL for receiving update triggers.
 	UpdateTriggerEndpoint *string `json:"updateTriggerEndpoint,omitempty"`
+	// IncludeTriggerMetadata - Include Trigger metadata on Base image update triggers.
+	IncludeTriggerMetadata *bool `json:"includeTriggerMetadata,omitempty"`
 	// Status - The current status of trigger. Possible values include: 'TriggerStatusDisabled', 'TriggerStatusEnabled'
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.

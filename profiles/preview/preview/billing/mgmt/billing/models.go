@@ -163,7 +163,7 @@ type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
 type Address = original.Address
-type AddressClient = original.AddressClient
+type AddressesClient = original.AddressesClient
 type Agreement = original.Agreement
 type AgreementListResult = original.AgreementListResult
 type AgreementProperties = original.AgreementProperties
@@ -295,11 +295,11 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAddressClient(subscriptionID string) AddressClient {
-	return original.NewAddressClient(subscriptionID)
+func NewAddressesClient(subscriptionID string) AddressesClient {
+	return original.NewAddressesClient(subscriptionID)
 }
-func NewAddressClientWithBaseURI(baseURI string, subscriptionID string) AddressClient {
-	return original.NewAddressClientWithBaseURI(baseURI, subscriptionID)
+func NewAddressesClientWithBaseURI(baseURI string, subscriptionID string) AddressesClient {
+	return original.NewAddressesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAgreementsClient(subscriptionID string) AgreementsClient {
 	return original.NewAgreementsClient(subscriptionID)

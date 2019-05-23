@@ -19,7 +19,7 @@ M = $(shell printf "\033[34;1m▶\033[0m")
 TIMEOUT = 1100
 
 .PHONY: all
-all: fmt lint vet ; $(info $(M) building library…) @ ## Build program
+all: fmt lint vet tidy ; $(info $(M) building library…) @ ## Build program
 	$Q cd $(BASE) && $(GO) build -tags release
 
 # Tools
@@ -45,6 +45,10 @@ check test tests: cyclo lint vet terraform.tfstate; $(info $(M) running $(NAME:%
 .PHONY: vet
 vet: $(GOLINT) ; $(info $(M) running vet…) @ ## Run vet
 	$Q cd $(BASE) && $(GO) vet ./...
+
+.PHONY: tidy
+tidy: ; $(info $(M) running tidy…) @ ## Run tidy
+	$Q $(GO) mod tidy
 
 .PHONY: lint
 lint: $(GOLINT) ; $(info $(M) running golint…) @ ## Run golint

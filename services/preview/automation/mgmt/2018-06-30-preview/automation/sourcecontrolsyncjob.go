@@ -33,13 +33,13 @@ type SourceControlSyncJobClient struct {
 }
 
 // NewSourceControlSyncJobClient creates an instance of the SourceControlSyncJobClient client.
-func NewSourceControlSyncJobClient(subscriptionID string, countType1 CountType) SourceControlSyncJobClient {
-	return NewSourceControlSyncJobClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewSourceControlSyncJobClient(subscriptionID string) SourceControlSyncJobClient {
+	return NewSourceControlSyncJobClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSourceControlSyncJobClientWithBaseURI creates an instance of the SourceControlSyncJobClient client.
-func NewSourceControlSyncJobClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SourceControlSyncJobClient {
-	return SourceControlSyncJobClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewSourceControlSyncJobClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobClient {
+	return SourceControlSyncJobClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates the sync job for a source control.

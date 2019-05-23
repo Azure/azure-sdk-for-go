@@ -32,13 +32,13 @@ type WatcherClient struct {
 }
 
 // NewWatcherClient creates an instance of the WatcherClient client.
-func NewWatcherClient(subscriptionID string, countType1 CountType) WatcherClient {
-	return NewWatcherClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewWatcherClient(subscriptionID string) WatcherClient {
+	return NewWatcherClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWatcherClientWithBaseURI creates an instance of the WatcherClient client.
-func NewWatcherClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) WatcherClient {
-	return WatcherClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewWatcherClientWithBaseURI(baseURI string, subscriptionID string) WatcherClient {
+	return WatcherClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create the watcher identified by watcher name.

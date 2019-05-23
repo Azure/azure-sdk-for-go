@@ -32,13 +32,13 @@ type WebhookClient struct {
 }
 
 // NewWebhookClient creates an instance of the WebhookClient client.
-func NewWebhookClient(subscriptionID string, countType1 CountType) WebhookClient {
-	return NewWebhookClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewWebhookClient(subscriptionID string) WebhookClient {
+	return NewWebhookClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWebhookClientWithBaseURI creates an instance of the WebhookClient client.
-func NewWebhookClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) WebhookClient {
-	return WebhookClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewWebhookClientWithBaseURI(baseURI string, subscriptionID string) WebhookClient {
+	return WebhookClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create the webhook identified by webhook name.

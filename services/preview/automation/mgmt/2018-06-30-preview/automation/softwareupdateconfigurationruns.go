@@ -33,14 +33,14 @@ type SoftwareUpdateConfigurationRunsClient struct {
 }
 
 // NewSoftwareUpdateConfigurationRunsClient creates an instance of the SoftwareUpdateConfigurationRunsClient client.
-func NewSoftwareUpdateConfigurationRunsClient(subscriptionID string, countType1 CountType) SoftwareUpdateConfigurationRunsClient {
-	return NewSoftwareUpdateConfigurationRunsClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewSoftwareUpdateConfigurationRunsClient(subscriptionID string) SoftwareUpdateConfigurationRunsClient {
+	return NewSoftwareUpdateConfigurationRunsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSoftwareUpdateConfigurationRunsClientWithBaseURI creates an instance of the SoftwareUpdateConfigurationRunsClient
 // client.
-func NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SoftwareUpdateConfigurationRunsClient {
-	return SoftwareUpdateConfigurationRunsClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationRunsClient {
+	return SoftwareUpdateConfigurationRunsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetByID get a single software update configuration Run by Id.

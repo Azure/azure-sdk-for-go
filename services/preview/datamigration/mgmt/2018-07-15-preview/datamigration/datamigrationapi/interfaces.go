@@ -61,6 +61,13 @@ type TasksClientAPI interface {
 
 var _ TasksClientAPI = (*datamigration.TasksClient)(nil)
 
+// ServiceTasksClientAPI contains the set of methods on the ServiceTasksClient type.
+type ServiceTasksClientAPI interface {
+	List(ctx context.Context, groupName string, serviceName string, taskType string) (result datamigration.TaskListPage, err error)
+}
+
+var _ ServiceTasksClientAPI = (*datamigration.ServiceTasksClient)(nil)
+
 // ProjectsClientAPI contains the set of methods on the ProjectsClient type.
 type ProjectsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, parameters datamigration.Project, groupName string, serviceName string, projectName string) (result datamigration.Project, err error)

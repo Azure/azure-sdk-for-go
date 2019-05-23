@@ -25,7 +25,6 @@ type FilesClientAPI = original.FilesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ProjectsClientAPI = original.ProjectsClientAPI
 type ResourceSkusClientAPI = original.ResourceSkusClientAPI
-type ServiceTasksClientAPI = original.ServiceTasksClientAPI
 type ServicesClientAPI = original.ServicesClientAPI
 type TasksClientAPI = original.TasksClientAPI
 type UsagesClientAPI = original.UsagesClientAPI

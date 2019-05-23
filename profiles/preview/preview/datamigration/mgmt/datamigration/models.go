@@ -895,7 +895,6 @@ type ServiceSkuList = original.ServiceSkuList
 type ServiceSkuListIterator = original.ServiceSkuListIterator
 type ServiceSkuListPage = original.ServiceSkuListPage
 type ServiceStatusResponse = original.ServiceStatusResponse
-type ServiceTasksClient = original.ServiceTasksClient
 type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type ServicesDeleteFuture = original.ServicesDeleteFuture
@@ -996,12 +995,6 @@ func NewServiceSkuListIterator(page ServiceSkuListPage) ServiceSkuListIterator {
 }
 func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
 	return original.NewServiceSkuListPage(getNextPage)
-}
-func NewServiceTasksClient(subscriptionID string) ServiceTasksClient {
-	return original.NewServiceTasksClient(subscriptionID)
-}
-func NewServiceTasksClientWithBaseURI(baseURI string, subscriptionID string) ServiceTasksClient {
-	return original.NewServiceTasksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)

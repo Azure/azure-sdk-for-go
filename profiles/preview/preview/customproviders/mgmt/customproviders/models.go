@@ -58,6 +58,14 @@ const (
 	Swagger ValidationType = original.Swagger
 )
 
+type Association = original.Association
+type AssociationProperties = original.AssociationProperties
+type AssociationsClient = original.AssociationsClient
+type AssociationsCreateOrUpdateFuture = original.AssociationsCreateOrUpdateFuture
+type AssociationsDeleteFuture = original.AssociationsDeleteFuture
+type AssociationsList = original.AssociationsList
+type AssociationsListIterator = original.AssociationsListIterator
+type AssociationsListPage = original.AssociationsListPage
 type BaseClient = original.BaseClient
 type CustomRPActionRouteDefinition = original.CustomRPActionRouteDefinition
 type CustomRPManifest = original.CustomRPManifest
@@ -84,6 +92,18 @@ type ResourceProvidersUpdate = original.ResourceProvidersUpdate
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAssociationsClient(subscriptionID string) AssociationsClient {
+	return original.NewAssociationsClient(subscriptionID)
+}
+func NewAssociationsClientWithBaseURI(baseURI string, subscriptionID string) AssociationsClient {
+	return original.NewAssociationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAssociationsListIterator(page AssociationsListPage) AssociationsListIterator {
+	return original.NewAssociationsListIterator(page)
+}
+func NewAssociationsListPage(getNextPage func(context.Context, AssociationsList) (AssociationsList, error)) AssociationsListPage {
+	return original.NewAssociationsListPage(getNextPage)
 }
 func NewCustomResourceProviderClient(subscriptionID string) CustomResourceProviderClient {
 	return original.NewCustomResourceProviderClient(subscriptionID)

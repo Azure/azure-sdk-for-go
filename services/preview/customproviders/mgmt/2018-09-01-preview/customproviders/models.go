@@ -92,6 +92,285 @@ func PossibleValidationTypeValues() []ValidationType {
 	return []ValidationType{Swagger}
 }
 
+// Association the resource definition of this association.
+type Association struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; The association id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The association name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The association type.
+	Type *string `json:"type,omitempty"`
+	// AssociationProperties - The properties of the association.
+	*AssociationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Association.
+func (a Association) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.AssociationProperties != nil {
+		objectMap["properties"] = a.AssociationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Association struct.
+func (a *Association) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				a.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var associationProperties AssociationProperties
+				err = json.Unmarshal(*v, &associationProperties)
+				if err != nil {
+					return err
+				}
+				a.AssociationProperties = &associationProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssociationProperties the properties of the association.
+type AssociationProperties struct {
+	// TargetResourceID - The REST resource instance of the target resource for this association.
+	TargetResourceID *string `json:"targetResourceId,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the association. Possible values include: 'Accepted', 'Deleting', 'Running', 'Succeeded', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// AssociationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AssociationsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AssociationsCreateOrUpdateFuture) Result(client AssociationsClient) (a Association, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("customproviders.AssociationsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a, err = client.CreateOrUpdateResponder(a.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "customproviders.AssociationsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AssociationsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AssociationsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AssociationsDeleteFuture) Result(client AssociationsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "customproviders.AssociationsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("customproviders.AssociationsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AssociationsList list of associations.
+type AssociationsList struct {
+	autorest.Response `json:"-"`
+	// Value - The array of associations.
+	Value *[]Association `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AssociationsListIterator provides access to a complete listing of Association values.
+type AssociationsListIterator struct {
+	i    int
+	page AssociationsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AssociationsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AssociationsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AssociationsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AssociationsListIterator) Response() AssociationsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AssociationsListIterator) Value() Association {
+	if !iter.page.NotDone() {
+		return Association{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AssociationsListIterator type.
+func NewAssociationsListIterator(page AssociationsListPage) AssociationsListIterator {
+	return AssociationsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (al AssociationsList) IsEmpty() bool {
+	return al.Value == nil || len(*al.Value) == 0
+}
+
+// associationsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (al AssociationsList) associationsListPreparer(ctx context.Context) (*http.Request, error) {
+	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(al.NextLink)))
+}
+
+// AssociationsListPage contains a page of Association values.
+type AssociationsListPage struct {
+	fn func(context.Context, AssociationsList) (AssociationsList, error)
+	al AssociationsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AssociationsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssociationsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.al)
+	if err != nil {
+		return err
+	}
+	page.al = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AssociationsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AssociationsListPage) NotDone() bool {
+	return !page.al.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AssociationsListPage) Response() AssociationsList {
+	return page.al
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AssociationsListPage) Values() []Association {
+	if page.al.IsEmpty() {
+		return nil
+	}
+	return *page.al.Value
+}
+
+// Creates a new instance of the AssociationsListPage type.
+func NewAssociationsListPage(getNextPage func(context.Context, AssociationsList) (AssociationsList, error)) AssociationsListPage {
+	return AssociationsListPage{fn: getNextPage}
+}
+
 // CustomResourceProviderCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type CustomResourceProviderCreateOrUpdateFuture struct {

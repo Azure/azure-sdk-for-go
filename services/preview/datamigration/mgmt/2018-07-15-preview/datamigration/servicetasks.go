@@ -120,247 +120,80 @@ func (client ServiceTasksClient) CancelResponder(resp *http.Response) (result Pr
 	return
 }
 
-// CreateOrUpdate the service tasks resource is a nested, proxy-only resource representing work performed by a DMS
-// instance. The PUT method creates a new service task or updates an existing one, although since service tasks have no
-// mutable custom properties, there is little reason to update an existing one.
+// List the services resource is the top-level resource that represents the Database Migration Service. This method
+// returns a list of service level tasks owned by a service resource. Some tasks may have a status of Unknown, which
+// indicates that an error occurred while querying the status of that task.
 // Parameters:
-// parameters - information about the task
 // groupName - name of the resource group
 // serviceName - name of the service
-// taskName - name of the Task
-func (client ServiceTasksClient) CreateOrUpdate(ctx context.Context, parameters ProjectTask, groupName string, serviceName string, taskName string) (result ProjectTask, err error) {
+// taskType - filter tasks by task type
+func (client ServiceTasksClient) List(ctx context.Context, groupName string, serviceName string, taskType string) (result TaskListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceTasksClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceTasksClient.List")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.tl.Response.Response != nil {
+				sc = result.tl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, parameters, groupName, serviceName, taskName)
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx, groupName, serviceName, taskType)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "List", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateOrUpdateSender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "CreateOrUpdate", resp, "Failure sending request")
+		result.tl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateOrUpdateResponder(resp)
+	result.tl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ServiceTasksClient) CreateOrUpdatePreparer(ctx context.Context, parameters ProjectTask, groupName string, serviceName string, taskName string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client ServiceTasksClient) ListPreparer(ctx context.Context, groupName string, serviceName string, taskType string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupName":      autorest.Encode("path", groupName),
 		"serviceName":    autorest.Encode("path", serviceName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-		"taskName":       autorest.Encode("path", taskName),
 	}
 
 	const APIVersion = "2018-07-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks/{taskName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServiceTasksClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
-// closes the http.Response Body.
-func (client ServiceTasksClient) CreateOrUpdateResponder(resp *http.Response) (result ProjectTask, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Delete the service tasks resource is a nested, proxy-only resource representing work performed by a DMS instance.
-// The DELETE method deletes a service task, canceling it first if it's running.
-// Parameters:
-// groupName - name of the resource group
-// serviceName - name of the service
-// taskName - name of the Task
-// deleteRunningTasks - delete the resource even if it contains running tasks
-func (client ServiceTasksClient) Delete(ctx context.Context, groupName string, serviceName string, taskName string, deleteRunningTasks *bool) (result autorest.Response, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceTasksClient.Delete")
-		defer func() {
-			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.DeletePreparer(ctx, groupName, serviceName, taskName, deleteRunningTasks)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Delete", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Delete", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeletePreparer prepares the Delete request.
-func (client ServiceTasksClient) DeletePreparer(ctx context.Context, groupName string, serviceName string, taskName string, deleteRunningTasks *bool) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupName":      autorest.Encode("path", groupName),
-		"serviceName":    autorest.Encode("path", serviceName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-		"taskName":       autorest.Encode("path", taskName),
-	}
-
-	const APIVersion = "2018-07-15-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if deleteRunningTasks != nil {
-		queryParameters["deleteRunningTasks"] = autorest.Encode("query", *deleteRunningTasks)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks/{taskName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServiceTasksClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client ServiceTasksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
-// Get the service tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The
-// GET method retrieves information about a service task.
-// Parameters:
-// groupName - name of the resource group
-// serviceName - name of the service
-// taskName - name of the Task
-// expand - expand the response
-func (client ServiceTasksClient) Get(ctx context.Context, groupName string, serviceName string, taskName string, expand string) (result ProjectTask, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceTasksClient.Get")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetPreparer(ctx, groupName, serviceName, taskName, expand)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Get", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Get", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Get", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetPreparer prepares the Get request.
-func (client ServiceTasksClient) GetPreparer(ctx context.Context, groupName string, serviceName string, taskName string, expand string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupName":      autorest.Encode("path", groupName),
-		"serviceName":    autorest.Encode("path", serviceName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-		"taskName":       autorest.Encode("path", taskName),
-	}
-
-	const APIVersion = "2018-07-15-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
+	if len(taskType) > 0 {
+		queryParameters["taskType"] = autorest.Encode("query", taskType)
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks/{taskName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetSender sends the Get request. The method will close the
+// ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServiceTasksClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ServiceTasksClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// GetResponder handles the response to the Get request. The method always
+// ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ServiceTasksClient) GetResponder(resp *http.Response) (result ProjectTask, err error) {
+func (client ServiceTasksClient) ListResponder(resp *http.Response) (result TaskList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -371,86 +204,39 @@ func (client ServiceTasksClient) GetResponder(resp *http.Response) (result Proje
 	return
 }
 
-// Update the service tasks resource is a nested, proxy-only resource representing work performed by a DMS instance.
-// The PATCH method updates an existing service task, but since service tasks have no mutable custom properties, there
-// is little reason to do so.
-// Parameters:
-// parameters - information about the task
-// groupName - name of the resource group
-// serviceName - name of the service
-// taskName - name of the Task
-func (client ServiceTasksClient) Update(ctx context.Context, parameters ProjectTask, groupName string, serviceName string, taskName string) (result ProjectTask, err error) {
+// listNextResults retrieves the next set of results, if any.
+func (client ServiceTasksClient) listNextResults(ctx context.Context, lastResults TaskList) (result TaskList, err error) {
+	req, err := lastResults.taskListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "listNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "listNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "listNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ServiceTasksClient) ListComplete(ctx context.Context, groupName string, serviceName string, taskType string) (result TaskListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceTasksClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceTasksClient.List")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, parameters, groupName, serviceName, taskName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Update", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.UpdateSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Update", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "Update", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// UpdatePreparer prepares the Update request.
-func (client ServiceTasksClient) UpdatePreparer(ctx context.Context, parameters ProjectTask, groupName string, serviceName string, taskName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"groupName":      autorest.Encode("path", groupName),
-		"serviceName":    autorest.Encode("path", serviceName),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-		"taskName":       autorest.Encode("path", taskName),
-	}
-
-	const APIVersion = "2018-07-15-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/serviceTasks/{taskName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdateSender sends the Update request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServiceTasksClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// UpdateResponder handles the response to the Update request. The method always
-// closes the http.Response Body.
-func (client ServiceTasksClient) UpdateResponder(resp *http.Response) (result ProjectTask, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.page, err = client.List(ctx, groupName, serviceName, taskType)
 	return
 }

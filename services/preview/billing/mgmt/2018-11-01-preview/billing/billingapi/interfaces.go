@@ -39,6 +39,13 @@ type PaymentMethodsClientAPI interface {
 
 var _ PaymentMethodsClientAPI = (*billing.PaymentMethodsClient)(nil)
 
+// ValidateAddressClientAPI contains the set of methods on the ValidateAddressClient type.
+type ValidateAddressClientAPI interface {
+	Validate(ctx context.Context, address billing.Address) (result billing.ValidateAddressResponse, err error)
+}
+
+var _ ValidateAddressClientAPI = (*billing.ValidateAddressClient)(nil)
+
 // AvailableBalancesClientAPI contains the set of methods on the AvailableBalancesClient type.
 type AvailableBalancesClientAPI interface {
 	GetByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.AvailableBalance, err error)

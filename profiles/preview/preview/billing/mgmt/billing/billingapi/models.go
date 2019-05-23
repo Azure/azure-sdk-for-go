@@ -42,3 +42,4 @@ type RoleDefinitionsClientAPI = original.RoleDefinitionsClientAPI
 type SubscriptionsClientAPI = original.SubscriptionsClientAPI
 type TransactionsClientAPI = original.TransactionsClientAPI
 type TransfersClientAPI = original.TransfersClientAPI
+type ValidateAddressClientAPI = original.ValidateAddressClientAPI

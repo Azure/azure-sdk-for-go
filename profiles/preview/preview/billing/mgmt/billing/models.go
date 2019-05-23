@@ -36,6 +36,13 @@ const (
 	AccountTypeOrganization AccountType = original.AccountTypeOrganization
 )
 
+type AddressValidationStatus = original.AddressValidationStatus
+
+const (
+	Invalid AddressValidationStatus = original.Invalid
+	Valid   AddressValidationStatus = original.Valid
+)
+
 type EligibleProductType = original.EligibleProductType
 
 const (
@@ -276,6 +283,8 @@ type TransfersClient = original.TransfersClient
 type UpdateAutoRenewOperationSummary = original.UpdateAutoRenewOperationSummary
 type UpdateAutoRenewOperationSummaryProperties = original.UpdateAutoRenewOperationSummaryProperties
 type UpdateAutoRenewRequest = original.UpdateAutoRenewRequest
+type ValidateAddressClient = original.ValidateAddressClient
+type ValidateAddressResponse = original.ValidateAddressResponse
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -448,11 +457,20 @@ func NewTransfersClient(subscriptionID string) TransfersClient {
 func NewTransfersClientWithBaseURI(baseURI string, subscriptionID string) TransfersClient {
 	return original.NewTransfersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewValidateAddressClient(subscriptionID string) ValidateAddressClient {
+	return original.NewValidateAddressClient(subscriptionID)
+}
+func NewValidateAddressClientWithBaseURI(baseURI string, subscriptionID string) ValidateAddressClient {
+	return original.NewValidateAddressClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccountTypeValues() []AccountType {
 	return original.PossibleAccountTypeValues()
+}
+func PossibleAddressValidationStatusValues() []AddressValidationStatus {
+	return original.PossibleAddressValidationStatusValues()
 }
 func PossibleEligibleProductTypeValues() []EligibleProductType {
 	return original.PossibleEligibleProductTypeValues()

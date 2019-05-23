@@ -36,6 +36,13 @@ const (
 	AccountTypeOrganization AccountType = original.AccountTypeOrganization
 )
 
+type AddressValidationStatus = original.AddressValidationStatus
+
+const (
+	Invalid AddressValidationStatus = original.Invalid
+	Valid   AddressValidationStatus = original.Valid
+)
+
 type EligibleProductType = original.EligibleProductType
 
 const (
@@ -154,8 +161,10 @@ type AcceptTransferRequest = original.AcceptTransferRequest
 type Account = original.Account
 type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
+type AccountUpdateProperties = original.AccountUpdateProperties
 type AccountsClient = original.AccountsClient
 type AccountsUpdateFuture = original.AccountsUpdateFuture
+type AccountsValidateAddressClient = original.AccountsValidateAddressClient
 type Address = original.Address
 type Agreement = original.Agreement
 type AgreementListResult = original.AgreementListResult
@@ -277,6 +286,7 @@ type TransfersClient = original.TransfersClient
 type UpdateAutoRenewOperationSummary = original.UpdateAutoRenewOperationSummary
 type UpdateAutoRenewOperationSummaryProperties = original.UpdateAutoRenewOperationSummaryProperties
 type UpdateAutoRenewRequest = original.UpdateAutoRenewRequest
+type ValidateAddressResponse = original.ValidateAddressResponse
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -286,6 +296,12 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 }
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAccountsValidateAddressClient(subscriptionID string) AccountsValidateAddressClient {
+	return original.NewAccountsValidateAddressClient(subscriptionID)
+}
+func NewAccountsValidateAddressClientWithBaseURI(baseURI string, subscriptionID string) AccountsValidateAddressClient {
+	return original.NewAccountsValidateAddressClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAgreementsClient(subscriptionID string) AgreementsClient {
 	return original.NewAgreementsClient(subscriptionID)
@@ -454,6 +470,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleAccountTypeValues() []AccountType {
 	return original.PossibleAccountTypeValues()
+}
+func PossibleAddressValidationStatusValues() []AddressValidationStatus {
+	return original.PossibleAddressValidationStatusValues()
 }
 func PossibleEligibleProductTypeValues() []EligibleProductType {
 	return original.PossibleEligibleProductTypeValues()

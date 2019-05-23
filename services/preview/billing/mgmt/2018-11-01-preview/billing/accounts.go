@@ -195,7 +195,7 @@ func (client AccountsClient) ListResponder(resp *http.Response) (result AccountL
 // Parameters:
 // billingAccountName - billing Account Id.
 // parameters - parameters supplied to the update billing account operation.
-func (client AccountsClient) Update(ctx context.Context, billingAccountName string, parameters Account) (result AccountsUpdateFuture, err error) {
+func (client AccountsClient) Update(ctx context.Context, billingAccountName string, parameters AccountUpdateProperties) (result AccountsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Update")
 		defer func() {
@@ -222,7 +222,7 @@ func (client AccountsClient) Update(ctx context.Context, billingAccountName stri
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AccountsClient) UpdatePreparer(ctx context.Context, billingAccountName string, parameters Account) (*http.Request, error) {
+func (client AccountsClient) UpdatePreparer(ctx context.Context, billingAccountName string, parameters AccountUpdateProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}

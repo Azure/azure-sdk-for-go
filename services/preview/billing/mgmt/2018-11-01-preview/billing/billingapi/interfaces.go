@@ -27,10 +27,25 @@ import (
 type AccountsClientAPI interface {
 	Get(ctx context.Context, billingAccountName string, expand string) (result billing.Account, err error)
 	List(ctx context.Context, expand string) (result billing.AccountListResult, err error)
-	Update(ctx context.Context, billingAccountName string, parameters billing.Account) (result billing.AccountsUpdateFuture, err error)
+	Update(ctx context.Context, billingAccountName string, parameters billing.AccountUpdateProperties) (result billing.AccountsUpdateFuture, err error)
 }
 
 var _ AccountsClientAPI = (*billing.AccountsClient)(nil)
+
+// PaymentMethodsClientAPI contains the set of methods on the PaymentMethodsClient type.
+type PaymentMethodsClientAPI interface {
+	ListByBillingAccountName(ctx context.Context, billingAccountName string) (result billing.PaymentMethodsListResultPage, err error)
+	ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.PaymentMethodsListResultPage, err error)
+}
+
+var _ PaymentMethodsClientAPI = (*billing.PaymentMethodsClient)(nil)
+
+// AccountsValidateAddressClientAPI contains the set of methods on the AccountsValidateAddressClient type.
+type AccountsValidateAddressClientAPI interface {
+	Post(ctx context.Context, billingAccountName string, address billing.Address) (result billing.ValidateAddressResponse, err error)
+}
+
+var _ AccountsValidateAddressClientAPI = (*billing.AccountsValidateAddressClient)(nil)
 
 // AvailableBalancesClientAPI contains the set of methods on the AvailableBalancesClient type.
 type AvailableBalancesClientAPI interface {
@@ -38,13 +53,6 @@ type AvailableBalancesClientAPI interface {
 }
 
 var _ AvailableBalancesClientAPI = (*billing.AvailableBalancesClient)(nil)
-
-// PaymentMethodsClientAPI contains the set of methods on the PaymentMethodsClient type.
-type PaymentMethodsClientAPI interface {
-	ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.PaymentMethodsListResultPage, err error)
-}
-
-var _ PaymentMethodsClientAPI = (*billing.PaymentMethodsClient)(nil)
 
 // ProfilesClientAPI contains the set of methods on the ProfilesClient type.
 type ProfilesClientAPI interface {

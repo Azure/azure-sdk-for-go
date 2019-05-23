@@ -25,25 +25,25 @@ import (
 	"net/http"
 )
 
-// ValidateAddressClient is the billing client provides access to billing resources for Azure subscriptions.
-type ValidateAddressClient struct {
+// AddressClient is the billing client provides access to billing resources for Azure subscriptions.
+type AddressClient struct {
 	BaseClient
 }
 
-// NewValidateAddressClient creates an instance of the ValidateAddressClient client.
-func NewValidateAddressClient(subscriptionID string) ValidateAddressClient {
-	return NewValidateAddressClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAddressClient creates an instance of the AddressClient client.
+func NewAddressClient(subscriptionID string) AddressClient {
+	return NewAddressClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewValidateAddressClientWithBaseURI creates an instance of the ValidateAddressClient client.
-func NewValidateAddressClientWithBaseURI(baseURI string, subscriptionID string) ValidateAddressClient {
-	return ValidateAddressClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAddressClientWithBaseURI creates an instance of the AddressClient client.
+func NewAddressClientWithBaseURI(baseURI string, subscriptionID string) AddressClient {
+	return AddressClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Validate validates the address.
-func (client ValidateAddressClient) Validate(ctx context.Context, address Address) (result ValidateAddressResponse, err error) {
+func (client AddressClient) Validate(ctx context.Context, address Address) (result ValidateAddressResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ValidateAddressClient.Validate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AddressClient.Validate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -54,27 +54,27 @@ func (client ValidateAddressClient) Validate(ctx context.Context, address Addres
 	}
 	req, err := client.ValidatePreparer(ctx, address)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ValidateAddressClient", "Validate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.AddressClient", "Validate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ValidateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.ValidateAddressClient", "Validate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.AddressClient", "Validate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ValidateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ValidateAddressClient", "Validate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.AddressClient", "Validate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ValidatePreparer prepares the Validate request.
-func (client ValidateAddressClient) ValidatePreparer(ctx context.Context, address Address) (*http.Request, error) {
+func (client AddressClient) ValidatePreparer(ctx context.Context, address Address) (*http.Request, error) {
 	const APIVersion = "2018-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -92,14 +92,14 @@ func (client ValidateAddressClient) ValidatePreparer(ctx context.Context, addres
 
 // ValidateSender sends the Validate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ValidateAddressClient) ValidateSender(req *http.Request) (*http.Response, error) {
+func (client AddressClient) ValidateSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ValidateResponder handles the response to the Validate request. The method always
 // closes the http.Response Body.
-func (client ValidateAddressClient) ValidateResponder(resp *http.Response) (result ValidateAddressResponse, err error) {
+func (client AddressClient) ValidateResponder(resp *http.Response) (result ValidateAddressResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

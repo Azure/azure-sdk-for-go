@@ -163,6 +163,7 @@ type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
 type Address = original.Address
+type AddressClient = original.AddressClient
 type Agreement = original.Agreement
 type AgreementListResult = original.AgreementListResult
 type AgreementProperties = original.AgreementProperties
@@ -283,7 +284,6 @@ type TransfersClient = original.TransfersClient
 type UpdateAutoRenewOperationSummary = original.UpdateAutoRenewOperationSummary
 type UpdateAutoRenewOperationSummaryProperties = original.UpdateAutoRenewOperationSummaryProperties
 type UpdateAutoRenewRequest = original.UpdateAutoRenewRequest
-type ValidateAddressClient = original.ValidateAddressClient
 type ValidateAddressResponse = original.ValidateAddressResponse
 
 func New(subscriptionID string) BaseClient {
@@ -294,6 +294,12 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 }
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAddressClient(subscriptionID string) AddressClient {
+	return original.NewAddressClient(subscriptionID)
+}
+func NewAddressClientWithBaseURI(baseURI string, subscriptionID string) AddressClient {
+	return original.NewAddressClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAgreementsClient(subscriptionID string) AgreementsClient {
 	return original.NewAgreementsClient(subscriptionID)
@@ -456,12 +462,6 @@ func NewTransfersClient(subscriptionID string) TransfersClient {
 }
 func NewTransfersClientWithBaseURI(baseURI string, subscriptionID string) TransfersClient {
 	return original.NewTransfersClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewValidateAddressClient(subscriptionID string) ValidateAddressClient {
-	return original.NewValidateAddressClient(subscriptionID)
-}
-func NewValidateAddressClientWithBaseURI(baseURI string, subscriptionID string) ValidateAddressClient {
-	return original.NewValidateAddressClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

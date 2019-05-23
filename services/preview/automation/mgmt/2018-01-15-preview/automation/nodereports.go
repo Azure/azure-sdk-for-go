@@ -32,13 +32,13 @@ type NodeReportsClient struct {
 }
 
 // NewNodeReportsClient creates an instance of the NodeReportsClient client.
-func NewNodeReportsClient(subscriptionID string, countType1 CountType) NodeReportsClient {
-	return NewNodeReportsClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewNodeReportsClient(subscriptionID string) NodeReportsClient {
+	return NewNodeReportsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewNodeReportsClientWithBaseURI creates an instance of the NodeReportsClient client.
-func NewNodeReportsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) NodeReportsClient {
-	return NodeReportsClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewNodeReportsClientWithBaseURI(baseURI string, subscriptionID string) NodeReportsClient {
+	return NodeReportsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get retrieve the Dsc node report data by node id and report id.

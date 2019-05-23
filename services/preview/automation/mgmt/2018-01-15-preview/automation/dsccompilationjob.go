@@ -33,13 +33,13 @@ type DscCompilationJobClient struct {
 }
 
 // NewDscCompilationJobClient creates an instance of the DscCompilationJobClient client.
-func NewDscCompilationJobClient(subscriptionID string, countType1 CountType) DscCompilationJobClient {
-	return NewDscCompilationJobClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewDscCompilationJobClient(subscriptionID string) DscCompilationJobClient {
+	return NewDscCompilationJobClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDscCompilationJobClientWithBaseURI creates an instance of the DscCompilationJobClient client.
-func NewDscCompilationJobClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscCompilationJobClient {
-	return DscCompilationJobClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewDscCompilationJobClientWithBaseURI(baseURI string, subscriptionID string) DscCompilationJobClient {
+	return DscCompilationJobClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates the Dsc compilation job of the configuration.

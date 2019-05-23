@@ -32,13 +32,13 @@ type Python2PackageClient struct {
 }
 
 // NewPython2PackageClient creates an instance of the Python2PackageClient client.
-func NewPython2PackageClient(subscriptionID string, countType1 CountType) Python2PackageClient {
-	return NewPython2PackageClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewPython2PackageClient(subscriptionID string) Python2PackageClient {
+	return NewPython2PackageClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPython2PackageClientWithBaseURI creates an instance of the Python2PackageClient client.
-func NewPython2PackageClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) Python2PackageClient {
-	return Python2PackageClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewPython2PackageClientWithBaseURI(baseURI string, subscriptionID string) Python2PackageClient {
+	return Python2PackageClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or Update the python 2 package identified by package name.

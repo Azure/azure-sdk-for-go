@@ -32,13 +32,13 @@ type ObjectDataTypesClient struct {
 }
 
 // NewObjectDataTypesClient creates an instance of the ObjectDataTypesClient client.
-func NewObjectDataTypesClient(subscriptionID string, countType1 CountType) ObjectDataTypesClient {
-	return NewObjectDataTypesClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewObjectDataTypesClient(subscriptionID string) ObjectDataTypesClient {
+	return NewObjectDataTypesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewObjectDataTypesClientWithBaseURI creates an instance of the ObjectDataTypesClient client.
-func NewObjectDataTypesClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ObjectDataTypesClient {
-	return ObjectDataTypesClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewObjectDataTypesClientWithBaseURI(baseURI string, subscriptionID string) ObjectDataTypesClient {
+	return ObjectDataTypesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListFieldsByModuleAndType retrieve a list of fields of a given type identified by module name.

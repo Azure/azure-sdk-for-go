@@ -32,13 +32,13 @@ type CredentialClient struct {
 }
 
 // NewCredentialClient creates an instance of the CredentialClient client.
-func NewCredentialClient(subscriptionID string, countType1 CountType) CredentialClient {
-	return NewCredentialClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewCredentialClient(subscriptionID string) CredentialClient {
+	return NewCredentialClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCredentialClientWithBaseURI creates an instance of the CredentialClient client.
-func NewCredentialClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) CredentialClient {
-	return CredentialClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewCredentialClientWithBaseURI(baseURI string, subscriptionID string) CredentialClient {
+	return CredentialClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create a credential.

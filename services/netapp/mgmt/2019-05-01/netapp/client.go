@@ -96,7 +96,7 @@ func (client BaseClient) CheckFilePathAvailabilityPreparer(ctx context.Context, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-08-15"
+	const APIVersion = "2019-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -171,7 +171,7 @@ func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, loca
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-08-15"
+	const APIVersion = "2019-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

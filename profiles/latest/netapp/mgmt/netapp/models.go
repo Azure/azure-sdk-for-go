@@ -28,10 +28,10 @@ const (
 type CheckNameResourceTypes = original.CheckNameResourceTypes
 
 const (
-	MicrosoftNetAppnetAppAccount                              CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccount
-	MicrosoftNetAppnetAppAccountcapacityPools                 CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountcapacityPools
-	MicrosoftNetAppnetAppAccountcapacityPoolsvolumes          CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountcapacityPoolsvolumes
-	MicrosoftNetAppnetAppAccountcapacityPoolsvolumessnapshots CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountcapacityPoolsvolumessnapshots
+	MicrosoftNetAppnetAppAccounts                              CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccounts
+	MicrosoftNetAppnetAppAccountscapacityPools                 CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPools
+	MicrosoftNetAppnetAppAccountscapacityPoolsvolumes          CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPoolsvolumes
+	MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots
 )
 
 type InAvailabilityReasonType = original.InAvailabilityReasonType

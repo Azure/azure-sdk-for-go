@@ -84,6 +84,19 @@ func PossibleRiskValues() []Risk {
 	return []Risk{Error, None, Warning}
 }
 
+// Scenario enumerates the values for scenario.
+type Scenario string
+
+const (
+	// Alerts ...
+	Alerts Scenario = "Alerts"
+)
+
+// PossibleScenarioValues returns an array of possible values for the Scenario const type.
+func PossibleScenarioValues() []Scenario {
+	return []Scenario{Alerts}
+}
+
 // ARMErrorResponseBody ARM error response body.
 type ARMErrorResponseBody struct {
 	autorest.Response `json:"-"`
@@ -554,8 +567,8 @@ type MetadataEntityProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// DependsOn - The list of keys on which this entity depends on.
 	DependsOn *[]string `json:"dependsOn,omitempty"`
-	// IsAlertable - The flag to know if metadata entity can be used in alert condition.
-	IsAlertable *bool `json:"isAlertable,omitempty"`
+	// ApplicableScenarios - The list of scenarios applicable to this metadata entity.
+	ApplicableScenarios *[]Scenario `json:"applicableScenarios,omitempty"`
 	// SupportedValues - The list of supported values.
 	SupportedValues *[]MetadataSupportedValueDetail `json:"supportedValues,omitempty"`
 }

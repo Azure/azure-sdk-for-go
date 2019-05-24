@@ -54,6 +54,12 @@ const (
 	Warning Risk = original.Warning
 )
 
+type Scenario = original.Scenario
+
+const (
+	Alerts Scenario = original.Alerts
+)
+
 type ARMErrorResponseBody = original.ARMErrorResponseBody
 type BaseClient = original.BaseClient
 type ConfigData = original.ConfigData
@@ -165,6 +171,9 @@ func PossibleImpactValues() []Impact {
 }
 func PossibleRiskValues() []Risk {
 	return original.PossibleRiskValues()
+}
+func PossibleScenarioValues() []Scenario {
+	return original.PossibleScenarioValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

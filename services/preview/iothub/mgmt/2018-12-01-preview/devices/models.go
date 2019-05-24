@@ -138,25 +138,19 @@ func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityRe
 	return []IotHubNameUnavailabilityReason{AlreadyExists, Invalid}
 }
 
-// IotHubReplicaRole enumerates the values for iot hub replica role.
-type IotHubReplicaRole string
+// IotHubReplicaRoleType enumerates the values for iot hub replica role type.
+type IotHubReplicaRoleType string
 
 const (
 	// Primary ...
-	Primary IotHubReplicaRole = "Primary"
-	// ReplicatingSecondary ...
-	ReplicatingSecondary IotHubReplicaRole = "ReplicatingSecondary"
-	// RestoringPrimary ...
-	RestoringPrimary IotHubReplicaRole = "RestoringPrimary"
-	// StandbySecondary ...
-	StandbySecondary IotHubReplicaRole = "StandbySecondary"
-	// Unprovisioned ...
-	Unprovisioned IotHubReplicaRole = "Unprovisioned"
+	Primary IotHubReplicaRoleType = "primary"
+	// Secondary ...
+	Secondary IotHubReplicaRoleType = "secondary"
 )
 
-// PossibleIotHubReplicaRoleValues returns an array of possible values for the IotHubReplicaRole const type.
-func PossibleIotHubReplicaRoleValues() []IotHubReplicaRole {
-	return []IotHubReplicaRole{Primary, ReplicatingSecondary, RestoringPrimary, StandbySecondary, Unprovisioned}
+// PossibleIotHubReplicaRoleTypeValues returns an array of possible values for the IotHubReplicaRoleType const type.
+func PossibleIotHubReplicaRoleTypeValues() []IotHubReplicaRoleType {
+	return []IotHubReplicaRoleType{Primary, Secondary}
 }
 
 // IotHubScaleType enumerates the values for iot hub scale type.
@@ -1028,14 +1022,12 @@ func NewIotHubDescriptionListResultPage(getNextPage func(context.Context, IotHub
 	return IotHubDescriptionListResultPage{fn: getNextPage}
 }
 
-// IotHubLocationInfo locations details for iot hub.
-type IotHubLocationInfo struct {
+// IotHubLocationDescription public representation of one of the locations where a resource is provisioned.
+type IotHubLocationDescription struct {
 	// Location - Azure Geo Regions
 	Location *string `json:"location,omitempty"`
-	// Role - Specific Role assigned to this location. Possible values include: 'Primary', 'StandbySecondary', 'ReplicatingSecondary', 'RestoringPrimary', 'Unprovisioned'
-	Role IotHubReplicaRole `json:"role,omitempty"`
-	// ScaleUnitName - Name of the scale unit where the resource is provisioned.
-	ScaleUnitName *string `json:"scaleUnitName,omitempty"`
+	// Role - Specific Role assigned to this location. Possible values include: 'Primary', 'Secondary'
+	Role IotHubReplicaRoleType `json:"role,omitempty"`
 }
 
 // IotHubNameAvailabilityInfo the properties indicating whether a given IoT hub name is available.
@@ -1078,7 +1070,7 @@ type IotHubProperties struct {
 	// Features - The capabilities and features enabled for the IoT hub. Possible values include: 'None', 'DeviceManagement'
 	Features Capabilities `json:"features,omitempty"`
 	// Locations - Primary and secondary location for iot hub
-	Locations *[]IotHubLocationInfo `json:"locations,omitempty"`
+	Locations *[]IotHubLocationDescription `json:"locations,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IotHubProperties.

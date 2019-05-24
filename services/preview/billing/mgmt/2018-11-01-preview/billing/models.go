@@ -210,19 +210,34 @@ func PossibleReservationTypeValues() []ReservationType {
 type Status string
 
 const (
-	// StatusDue ...
-	StatusDue Status = "Due"
-	// StatusPaid ...
-	StatusPaid Status = "Paid"
-	// StatusPastDue ...
-	StatusPastDue Status = "PastDue"
-	// StatusVoid ...
-	StatusVoid Status = "Void"
+	// Approved ...
+	Approved Status = "Approved"
+	// Rejected ...
+	Rejected Status = "Rejected"
 )
 
 // PossibleStatusValues returns an array of possible values for the Status const type.
 func PossibleStatusValues() []Status {
-	return []Status{StatusDue, StatusPaid, StatusPastDue, StatusVoid}
+	return []Status{Approved, Rejected}
+}
+
+// Status1 enumerates the values for status 1.
+type Status1 string
+
+const (
+	// Status1Due ...
+	Status1Due Status1 = "Due"
+	// Status1Paid ...
+	Status1Paid Status1 = "Paid"
+	// Status1PastDue ...
+	Status1PastDue Status1 = "PastDue"
+	// Status1Void ...
+	Status1Void Status1 = "Void"
+)
+
+// PossibleStatus1Values returns an array of possible values for the Status1 const type.
+func PossibleStatus1Values() []Status1 {
+	return []Status1{Status1Due, Status1Paid, Status1PastDue, Status1Void}
 }
 
 // SubscriptionStatusType enumerates the values for subscription status type.
@@ -1251,8 +1266,8 @@ type InvoiceSummaryProperties struct {
 	DueDate *date.Time `json:"dueDate,omitempty"`
 	// InvoiceDate - READ-ONLY; The date when invoice was created.
 	InvoiceDate *date.Time `json:"invoiceDate,omitempty"`
-	// Status - READ-ONLY; Invoice status. Possible values include: 'StatusPastDue', 'StatusDue', 'StatusPaid', 'StatusVoid'
-	Status Status `json:"status,omitempty"`
+	// Status - READ-ONLY; Invoice status. Possible values include: 'Status1PastDue', 'Status1Due', 'Status1Paid', 'Status1Void'
+	Status Status1 `json:"status,omitempty"`
 	// AmountDue - READ-ONLY; Amount due.
 	AmountDue *Amount `json:"amountDue,omitempty"`
 	// BilledAmount - READ-ONLY; Amount billed.
@@ -1354,8 +1369,8 @@ type LineOfCreditProperties struct {
 	Reason *string `json:"reason,omitempty"`
 	// RemainingBalance - READ-ONLY; Remaining balance.
 	RemainingBalance *Amount `json:"remainingBalance,omitempty"`
-	// Status - READ-ONLY; The line of credit status.
-	Status *string `json:"status,omitempty"`
+	// Status - The line of credit status. Possible values include: 'Approved', 'Rejected'
+	Status Status `json:"status,omitempty"`
 }
 
 // LineOfCreditsIncreaseFuture an abstraction for monitoring and retrieving the results of a long-running

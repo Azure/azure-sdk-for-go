@@ -114,10 +114,17 @@ const (
 type Status = original.Status
 
 const (
-	StatusDue     Status = original.StatusDue
-	StatusPaid    Status = original.StatusPaid
-	StatusPastDue Status = original.StatusPastDue
-	StatusVoid    Status = original.StatusVoid
+	Approved Status = original.Approved
+	Rejected Status = original.Rejected
+)
+
+type Status1 = original.Status1
+
+const (
+	Status1Due     Status1 = original.Status1Due
+	Status1Paid    Status1 = original.Status1Paid
+	Status1PastDue Status1 = original.Status1PastDue
+	Status1Void    Status1 = original.Status1Void
 )
 
 type SubscriptionStatusType = original.SubscriptionStatusType
@@ -506,6 +513,9 @@ func PossibleProductTypeValues() []ProductType {
 }
 func PossibleReservationTypeValues() []ReservationType {
 	return original.PossibleReservationTypeValues()
+}
+func PossibleStatus1Values() []Status1 {
+	return original.PossibleStatus1Values()
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()

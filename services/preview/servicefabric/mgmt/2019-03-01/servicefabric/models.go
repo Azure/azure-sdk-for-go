@@ -29,7 +29,22 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2018-02-01/servicefabric"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2019-03-01/servicefabric"
+
+// ArmServicePackageActivationMode enumerates the values for arm service package activation mode.
+type ArmServicePackageActivationMode string
+
+const (
+	// ExclusiveProcess Indicates the application package activation mode will use exclusive process.
+	ExclusiveProcess ArmServicePackageActivationMode = "ExclusiveProcess"
+	// SharedProcess Indicates the application package activation mode will use shared process.
+	SharedProcess ArmServicePackageActivationMode = "SharedProcess"
+)
+
+// PossibleArmServicePackageActivationModeValues returns an array of possible values for the ArmServicePackageActivationMode const type.
+func PossibleArmServicePackageActivationModeValues() []ArmServicePackageActivationMode {
+	return []ArmServicePackageActivationMode{ExclusiveProcess, SharedProcess}
+}
 
 // ArmUpgradeFailureAction enumerates the values for arm upgrade failure action.
 type ArmUpgradeFailureAction string
@@ -513,23 +528,23 @@ func (ahp ApplicationHealthPolicy) MarshalJSON() ([]byte, error) {
 // can be used to limit the total consumption of this metric by the services of this application.
 type ApplicationMetricDescription struct {
 	// Name - The name of the metric.
-	Name *string `json:"Name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// MaximumCapacity - The maximum node capacity for Service Fabric application.
 	// This is the maximum Load for an instance of this application on a single node. Even if the capacity of node is greater than this value, Service Fabric will limit the total load of services within the application on each node to this value.
 	// If set to zero, capacity for this metric is unlimited on each node.
 	// When creating a new application with application capacity defined, the product of MaximumNodes and this value must always be smaller than or equal to TotalApplicationCapacity.
 	// When updating existing application with application capacity, the product of MaximumNodes and this value must always be smaller than or equal to TotalApplicationCapacity.
-	MaximumCapacity *int64 `json:"MaximumCapacity,omitempty"`
+	MaximumCapacity *int64 `json:"maximumCapacity,omitempty"`
 	// ReservationCapacity - The node reservation capacity for Service Fabric application.
 	// This is the amount of load which is reserved on nodes which have instances of this application.
 	// If MinimumNodes is specified, then the product of these values will be the capacity reserved in the cluster for the application.
 	// If set to zero, no capacity is reserved for this metric.
 	// When setting application capacity or when updating application capacity; this value must be smaller than or equal to MaximumCapacity for each metric.
-	ReservationCapacity *int64 `json:"ReservationCapacity,omitempty"`
+	ReservationCapacity *int64 `json:"reservationCapacity,omitempty"`
 	// TotalApplicationCapacity - The total metric capacity for Service Fabric application.
 	// This is the total metric capacity for this application in the cluster. Service Fabric will try to limit the sum of loads of services within the application to this value.
 	// When creating a new application with application capacity defined, the product of MaximumNodes and MaximumCapacity must always be smaller than or equal to this value.
-	TotalApplicationCapacity *int64 `json:"TotalApplicationCapacity,omitempty"`
+	TotalApplicationCapacity *int64 `json:"totalApplicationCapacity,omitempty"`
 }
 
 // ApplicationResource the application resource.
@@ -545,6 +560,10 @@ type ApplicationResource struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Etag - READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ApplicationResource.
@@ -555,6 +574,9 @@ func (ar ApplicationResource) MarshalJSON() ([]byte, error) {
 	}
 	if ar.Location != nil {
 		objectMap["location"] = ar.Location
+	}
+	if ar.Tags != nil {
+		objectMap["tags"] = ar.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -613,6 +635,24 @@ func (ar *ApplicationResource) UnmarshalJSON(body []byte) error {
 				}
 				ar.Location = &location
 			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ar.Tags = tags
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ar.Etag = &etag
+			}
 		}
 	}
 
@@ -623,6 +663,8 @@ func (ar *ApplicationResource) UnmarshalJSON(body []byte) error {
 type ApplicationResourceList struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationResource `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next set of application list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // ApplicationResourceProperties the application resource properties.
@@ -689,6 +731,10 @@ type ApplicationResourceUpdate struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Etag - READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ApplicationResourceUpdate.
@@ -699,6 +745,9 @@ func (aru ApplicationResourceUpdate) MarshalJSON() ([]byte, error) {
 	}
 	if aru.Location != nil {
 		objectMap["location"] = aru.Location
+	}
+	if aru.Tags != nil {
+		objectMap["tags"] = aru.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -756,6 +805,24 @@ func (aru *ApplicationResourceUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				aru.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				aru.Tags = tags
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				aru.Etag = &etag
 			}
 		}
 	}
@@ -902,6 +969,10 @@ type ApplicationTypeResource struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Etag - READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ApplicationTypeResource.
@@ -912,6 +983,9 @@ func (atr ApplicationTypeResource) MarshalJSON() ([]byte, error) {
 	}
 	if atr.Location != nil {
 		objectMap["location"] = atr.Location
+	}
+	if atr.Tags != nil {
+		objectMap["tags"] = atr.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -970,6 +1044,24 @@ func (atr *ApplicationTypeResource) UnmarshalJSON(body []byte) error {
 				}
 				atr.Location = &location
 			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				atr.Tags = tags
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				atr.Etag = &etag
+			}
 		}
 	}
 
@@ -980,6 +1072,8 @@ func (atr *ApplicationTypeResource) UnmarshalJSON(body []byte) error {
 type ApplicationTypeResourceList struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationTypeResource `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next set of application type list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // ApplicationTypeResourceProperties the application type name properties
@@ -1025,6 +1119,10 @@ type ApplicationTypeVersionResource struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Etag - READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ApplicationTypeVersionResource.
@@ -1035,6 +1133,9 @@ func (atvr ApplicationTypeVersionResource) MarshalJSON() ([]byte, error) {
 	}
 	if atvr.Location != nil {
 		objectMap["location"] = atvr.Location
+	}
+	if atvr.Tags != nil {
+		objectMap["tags"] = atvr.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1093,6 +1194,24 @@ func (atvr *ApplicationTypeVersionResource) UnmarshalJSON(body []byte) error {
 				}
 				atvr.Location = &location
 			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				atvr.Tags = tags
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				atvr.Etag = &etag
+			}
 		}
 	}
 
@@ -1104,6 +1223,8 @@ func (atvr *ApplicationTypeVersionResource) UnmarshalJSON(body []byte) error {
 type ApplicationTypeVersionResourceList struct {
 	autorest.Response `json:"-"`
 	Value             *[]ApplicationTypeVersionResource `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next set of application type version list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // ApplicationTypeVersionResourceProperties the properties of the application type version resource.
@@ -1193,32 +1314,32 @@ type ApplicationUpgradePolicy struct {
 // of its children entities.
 type ArmApplicationHealthPolicy struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
-	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
+	ConsiderWarningAsError *bool `json:"considerWarningAsError,omitempty"`
 	// MaxPercentUnhealthyDeployedApplications - The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to 100.
 	// The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before the application is considered in error.
 	// This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the application is currently deployed on in the cluster.
 	// The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
-	MaxPercentUnhealthyDeployedApplications *int32 `json:"MaxPercentUnhealthyDeployedApplications,omitempty"`
+	MaxPercentUnhealthyDeployedApplications *int32 `json:"maxPercentUnhealthyDeployedApplications,omitempty"`
 	// DefaultServiceTypeHealthPolicy - The health policy used by default to evaluate the health of a service type.
-	DefaultServiceTypeHealthPolicy *ArmServiceTypeHealthPolicy `json:"DefaultServiceTypeHealthPolicy,omitempty"`
+	DefaultServiceTypeHealthPolicy *ArmServiceTypeHealthPolicy `json:"defaultServiceTypeHealthPolicy,omitempty"`
 	// ServiceTypeHealthPolicyMap - The map with service type health policy per service type name. The map is empty by default.
-	ServiceTypeHealthPolicyMap map[string]*ArmServiceTypeHealthPolicy `json:"ServiceTypeHealthPolicyMap"`
+	ServiceTypeHealthPolicyMap map[string]*ArmServiceTypeHealthPolicy `json:"serviceTypeHealthPolicyMap"`
 }
 
 // MarshalJSON is the custom marshaler for ArmApplicationHealthPolicy.
 func (aahp ArmApplicationHealthPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if aahp.ConsiderWarningAsError != nil {
-		objectMap["ConsiderWarningAsError"] = aahp.ConsiderWarningAsError
+		objectMap["considerWarningAsError"] = aahp.ConsiderWarningAsError
 	}
 	if aahp.MaxPercentUnhealthyDeployedApplications != nil {
-		objectMap["MaxPercentUnhealthyDeployedApplications"] = aahp.MaxPercentUnhealthyDeployedApplications
+		objectMap["maxPercentUnhealthyDeployedApplications"] = aahp.MaxPercentUnhealthyDeployedApplications
 	}
 	if aahp.DefaultServiceTypeHealthPolicy != nil {
-		objectMap["DefaultServiceTypeHealthPolicy"] = aahp.DefaultServiceTypeHealthPolicy
+		objectMap["defaultServiceTypeHealthPolicy"] = aahp.DefaultServiceTypeHealthPolicy
 	}
 	if aahp.ServiceTypeHealthPolicyMap != nil {
-		objectMap["ServiceTypeHealthPolicyMap"] = aahp.ServiceTypeHealthPolicyMap
+		objectMap["serviceTypeHealthPolicyMap"] = aahp.ServiceTypeHealthPolicyMap
 	}
 	return json.Marshal(objectMap)
 }
@@ -1250,7 +1371,7 @@ type ArmServiceTypeHealthPolicy struct {
 	MaxPercentUnhealthyReplicasPerPartition *int32 `json:"maxPercentUnhealthyReplicasPerPartition,omitempty"`
 }
 
-// AvailableOperationDisplay operation supported by Service Fabric resource provider
+// AvailableOperationDisplay operation supported by the Service Fabric resource provider
 type AvailableOperationDisplay struct {
 	// Provider - The name of the provider.
 	Provider *string `json:"provider,omitempty"`
@@ -1315,6 +1436,8 @@ type Cluster struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
+	// Etag - READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Cluster.
@@ -1395,13 +1518,22 @@ func (c *Cluster) UnmarshalJSON(body []byte) error {
 				}
 				c.Tags = tags
 			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				c.Etag = &etag
+			}
 		}
 	}
 
 	return nil
 }
 
-// ClusterCodeVersionsListResult the list results of the ServiceFabric runtime versions.
+// ClusterCodeVersionsListResult the list results of the Service Fabric runtime versions.
 type ClusterCodeVersionsListResult struct {
 	autorest.Response `json:"-"`
 	Value             *[]ClusterCodeVersionsResult `json:"value,omitempty"`
@@ -1409,7 +1541,7 @@ type ClusterCodeVersionsListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ClusterCodeVersionsResult the result of the ServiceFabric runtime versions
+// ClusterCodeVersionsResult the result of the Service Fabric runtime versions
 type ClusterCodeVersionsResult struct {
 	// ID - The identification of the result
 	ID *string `json:"id,omitempty"`
@@ -1570,6 +1702,8 @@ type ClusterProperties struct {
 	ClusterState ClusterState `json:"clusterState,omitempty"`
 	// DiagnosticsStorageAccountConfig - The storage account information for storing Service Fabric diagnostic logs.
 	DiagnosticsStorageAccountConfig *DiagnosticsStorageAccountConfig `json:"diagnosticsStorageAccountConfig,omitempty"`
+	// EventStoreServiceEnabled - Indicates if the event store service is enabled.
+	EventStoreServiceEnabled *bool `json:"eventStoreServiceEnabled,omitempty"`
 	// FabricSettings - The list of custom fabric settings to configure the cluster.
 	FabricSettings *[]SettingsSectionDescription `json:"fabricSettings,omitempty"`
 	// ManagementEndpoint - The http management endpoint of the cluster.
@@ -1616,6 +1750,8 @@ type ClusterPropertiesUpdateParameters struct {
 	ClientCertificateThumbprints *[]ClientCertificateThumbprint `json:"clientCertificateThumbprints,omitempty"`
 	// ClusterCodeVersion - The Service Fabric runtime version of the cluster. This property can only by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new clusters use [ClusterVersion API](./ClusterVersion.md). To get the list of available version for existing clusters use **availableClusterVersions**.
 	ClusterCodeVersion *string `json:"clusterCodeVersion,omitempty"`
+	// EventStoreServiceEnabled - Indicates if the event store service is enabled.
+	EventStoreServiceEnabled *bool `json:"eventStoreServiceEnabled,omitempty"`
 	// FabricSettings - The list of custom fabric settings to configure the cluster. This will overwrite the existing list.
 	FabricSettings *[]SettingsSectionDescription `json:"fabricSettings,omitempty"`
 	// NodeTypes - The list of node types in the cluster. This will overwrite the existing list.
@@ -1790,7 +1926,7 @@ func (cudhp ClusterUpgradeDeltaHealthPolicy) MarshalJSON() ([]byte, error) {
 type ClusterUpgradePolicy struct {
 	// ForceRestart - If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the upgrade only changes configuration or data).
 	ForceRestart *bool `json:"forceRestart,omitempty"`
-	// UpgradeReplicaSetCheckTimeout - The maximum amount of time to block processing of an upgrade domain and revent loss of availability when there are unexpected issues. When this timeout expires, processing of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
+	// UpgradeReplicaSetCheckTimeout - The maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there are unexpected issues. When this timeout expires, processing of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of each upgrade domain. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
 	UpgradeReplicaSetCheckTimeout *string `json:"upgradeReplicaSetCheckTimeout,omitempty"`
 	// HealthCheckWaitDuration - The length of time to wait after completing an upgrade domain before performing health checks. The duration can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
 	HealthCheckWaitDuration *string `json:"healthCheckWaitDuration,omitempty"`
@@ -1862,7 +1998,7 @@ type NamedPartitionSchemeDescription struct {
 	// Names - Array of size specified by the ‘Count’ parameter, for the names of the partitions.
 	Names *[]string `json:"Names,omitempty"`
 	// PartitionScheme - Possible values include: 'PartitionSchemePartitionSchemeDescription', 'PartitionSchemeNamed', 'PartitionSchemeSingleton', 'PartitionSchemeUniformInt64Range'
-	PartitionScheme PartitionSchemeBasicPartitionSchemeDescription `json:"PartitionScheme,omitempty"`
+	PartitionScheme PartitionSchemeBasicPartitionSchemeDescription `json:"partitionScheme,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for NamedPartitionSchemeDescription.
@@ -1876,7 +2012,7 @@ func (npsd NamedPartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 		objectMap["Names"] = npsd.Names
 	}
 	if npsd.PartitionScheme != "" {
-		objectMap["PartitionScheme"] = npsd.PartitionScheme
+		objectMap["partitionScheme"] = npsd.PartitionScheme
 	}
 	return json.Marshal(objectMap)
 }
@@ -1927,7 +2063,7 @@ type NodeTypeDescription struct {
 	DurabilityLevel DurabilityLevel `json:"durabilityLevel,omitempty"`
 	// ApplicationPorts - The range of ports from which cluster assigned port to Service Fabric applications.
 	ApplicationPorts *EndpointRangeDescription `json:"applicationPorts,omitempty"`
-	// EphemeralPorts - The range of empheral ports that nodes in this node type should be configured with.
+	// EphemeralPorts - The range of ephemeral ports that nodes in this node type should be configured with.
 	EphemeralPorts *EndpointRangeDescription `json:"ephemeralPorts,omitempty"`
 	// IsPrimary - The node type on which system services will run. Only one node type should be marked as primary. Primary node type cannot be deleted or changed for existing clusters.
 	IsPrimary *bool `json:"isPrimary,omitempty"`
@@ -1976,10 +2112,11 @@ func (ntd NodeTypeDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationListResult describes the result of the request to list Service Fabric operations.
+// OperationListResult describes the result of the request to list Service Fabric resource provider
+// operations.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
-	// Value - List of Service Fabric operations supported by the Microsoft.ServiceFabric resource provider.
+	// Value - List of operations supported by the Service Fabric resource provider.
 	Value *[]OperationResult `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -2145,7 +2282,7 @@ type BasicPartitionSchemeDescription interface {
 // PartitionSchemeDescription describes how the service is partitioned.
 type PartitionSchemeDescription struct {
 	// PartitionScheme - Possible values include: 'PartitionSchemePartitionSchemeDescription', 'PartitionSchemeNamed', 'PartitionSchemeSingleton', 'PartitionSchemeUniformInt64Range'
-	PartitionScheme PartitionSchemeBasicPartitionSchemeDescription `json:"PartitionScheme,omitempty"`
+	PartitionScheme PartitionSchemeBasicPartitionSchemeDescription `json:"partitionScheme,omitempty"`
 }
 
 func unmarshalBasicPartitionSchemeDescription(body []byte) (BasicPartitionSchemeDescription, error) {
@@ -2155,7 +2292,7 @@ func unmarshalBasicPartitionSchemeDescription(body []byte) (BasicPartitionScheme
 		return nil, err
 	}
 
-	switch m["PartitionScheme"] {
+	switch m["partitionScheme"] {
 	case string(PartitionSchemeNamed):
 		var npsd NamedPartitionSchemeDescription
 		err := json.Unmarshal(body, &npsd)
@@ -2198,7 +2335,7 @@ func (psd PartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 	psd.PartitionScheme = PartitionSchemePartitionSchemeDescription
 	objectMap := make(map[string]interface{})
 	if psd.PartitionScheme != "" {
-		objectMap["PartitionScheme"] = psd.PartitionScheme
+		objectMap["partitionScheme"] = psd.PartitionScheme
 	}
 	return json.Marshal(objectMap)
 }
@@ -2238,6 +2375,22 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Etag - READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.Location != nil {
+		objectMap["location"] = pr.Location
+	}
+	if pr.Tags != nil {
+		objectMap["tags"] = pr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource the resource model definition.
@@ -2252,6 +2405,8 @@ type Resource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
+	// Etag - READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
@@ -2286,23 +2441,23 @@ type ServerCertificateCommonNames struct {
 // ServiceCorrelationDescription creates a particular correlation between services.
 type ServiceCorrelationDescription struct {
 	// Scheme - The ServiceCorrelationScheme which describes the relationship between this service and the service specified via ServiceName. Possible values include: 'ServiceCorrelationSchemeInvalid', 'ServiceCorrelationSchemeAffinity', 'ServiceCorrelationSchemeAlignedAffinity', 'ServiceCorrelationSchemeNonAlignedAffinity'
-	Scheme ServiceCorrelationScheme `json:"Scheme,omitempty"`
+	Scheme ServiceCorrelationScheme `json:"scheme,omitempty"`
 	// ServiceName - The name of the service that the correlation relationship is established with.
-	ServiceName *string `json:"ServiceName,omitempty"`
+	ServiceName *string `json:"serviceName,omitempty"`
 }
 
 // ServiceLoadMetricDescription specifies a metric to load balance a service during runtime.
 type ServiceLoadMetricDescription struct {
 	// Name - The name of the metric. If the service chooses to report load during runtime, the load metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive.
-	Name *string `json:"Name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// Weight - The service load metric relative weight, compared to other metrics configured for this service, as a number. Possible values include: 'ServiceLoadMetricWeightZero', 'ServiceLoadMetricWeightLow', 'ServiceLoadMetricWeightMedium', 'ServiceLoadMetricWeightHigh'
-	Weight ServiceLoadMetricWeight `json:"Weight,omitempty"`
+	Weight ServiceLoadMetricWeight `json:"weight,omitempty"`
 	// PrimaryDefaultLoad - Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when it is a Primary replica.
-	PrimaryDefaultLoad *int32 `json:"PrimaryDefaultLoad,omitempty"`
+	PrimaryDefaultLoad *int32 `json:"primaryDefaultLoad,omitempty"`
 	// SecondaryDefaultLoad - Used only for Stateful services. The default amount of load, as a number, that this service creates for this metric when it is a Secondary replica.
-	SecondaryDefaultLoad *int32 `json:"SecondaryDefaultLoad,omitempty"`
+	SecondaryDefaultLoad *int32 `json:"secondaryDefaultLoad,omitempty"`
 	// DefaultLoad - Used only for Stateless services. The default amount of load, as a number, that this service creates for this metric.
-	DefaultLoad *int32 `json:"DefaultLoad,omitempty"`
+	DefaultLoad *int32 `json:"defaultLoad,omitempty"`
 }
 
 // BasicServicePlacementPolicyDescription describes the policy to be used for placement of a Service Fabric service.
@@ -2382,6 +2537,10 @@ type ServiceResource struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Etag - READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServiceResource.
@@ -2390,6 +2549,9 @@ func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap["properties"] = sr.BasicServiceResourceProperties
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
+	}
+	if sr.Tags != nil {
+		objectMap["tags"] = sr.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -2447,6 +2609,24 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 				}
 				sr.Location = &location
 			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sr.Tags = tags
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				sr.Etag = &etag
+			}
 		}
 	}
 
@@ -2457,6 +2637,8 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 type ServiceResourceList struct {
 	autorest.Response `json:"-"`
 	Value             *[]ServiceResource `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next set of service list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // BasicServiceResourceProperties the service resource properties.
@@ -2474,6 +2656,8 @@ type ServiceResourceProperties struct {
 	ServiceTypeName *string `json:"serviceTypeName,omitempty"`
 	// PartitionDescription - Describes how the service is partitioned.
 	PartitionDescription BasicPartitionSchemeDescription `json:"partitionDescription,omitempty"`
+	// ServicePackageActivationMode - The activation Mode of the service package. Possible values include: 'SharedProcess', 'ExclusiveProcess'
+	ServicePackageActivationMode ArmServicePackageActivationMode `json:"servicePackageActivationMode,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindServiceResourceProperties', 'ServiceKindStateful1', 'ServiceKindStateless1'
 	ServiceKind ServiceKindBasicServiceResourceProperties `json:"serviceKind,omitempty"`
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
@@ -2537,6 +2721,9 @@ func (srp ServiceResourceProperties) MarshalJSON() ([]byte, error) {
 		objectMap["serviceTypeName"] = srp.ServiceTypeName
 	}
 	objectMap["partitionDescription"] = srp.PartitionDescription
+	if srp.ServicePackageActivationMode != "" {
+		objectMap["servicePackageActivationMode"] = srp.ServicePackageActivationMode
+	}
 	if srp.ServiceKind != "" {
 		objectMap["serviceKind"] = srp.ServiceKind
 	}
@@ -2612,6 +2799,15 @@ func (srp *ServiceResourceProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				srp.PartitionDescription = partitionDescription
+			}
+		case "servicePackageActivationMode":
+			if v != nil {
+				var servicePackageActivationMode ArmServicePackageActivationMode
+				err = json.Unmarshal(*v, &servicePackageActivationMode)
+				if err != nil {
+					return err
+				}
+				srp.ServicePackageActivationMode = servicePackageActivationMode
 			}
 		case "serviceKind":
 			if v != nil {
@@ -2757,6 +2953,10 @@ type ServiceResourceUpdate struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Etag - READ-ONLY; Azure resource etag.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServiceResourceUpdate.
@@ -2765,6 +2965,9 @@ func (sru ServiceResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap["properties"] = sru.BasicServiceResourceUpdateProperties
 	if sru.Location != nil {
 		objectMap["location"] = sru.Location
+	}
+	if sru.Tags != nil {
+		objectMap["tags"] = sru.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -2821,6 +3024,24 @@ func (sru *ServiceResourceUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sru.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sru.Tags = tags
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				sru.Etag = &etag
 			}
 		}
 	}
@@ -3122,7 +3343,7 @@ type SettingsSectionDescription struct {
 // non-partitioned service.
 type SingletonPartitionSchemeDescription struct {
 	// PartitionScheme - Possible values include: 'PartitionSchemePartitionSchemeDescription', 'PartitionSchemeNamed', 'PartitionSchemeSingleton', 'PartitionSchemeUniformInt64Range'
-	PartitionScheme PartitionSchemeBasicPartitionSchemeDescription `json:"PartitionScheme,omitempty"`
+	PartitionScheme PartitionSchemeBasicPartitionSchemeDescription `json:"partitionScheme,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SingletonPartitionSchemeDescription.
@@ -3130,7 +3351,7 @@ func (spsd SingletonPartitionSchemeDescription) MarshalJSON() ([]byte, error) {
 	spsd.PartitionScheme = PartitionSchemeSingleton
 	objectMap := make(map[string]interface{})
 	if spsd.PartitionScheme != "" {
-		objectMap["PartitionScheme"] = spsd.PartitionScheme
+		objectMap["partitionScheme"] = spsd.PartitionScheme
 	}
 	return json.Marshal(objectMap)
 }
@@ -3180,6 +3401,8 @@ type StatefulServiceProperties struct {
 	ServiceTypeName *string `json:"serviceTypeName,omitempty"`
 	// PartitionDescription - Describes how the service is partitioned.
 	PartitionDescription BasicPartitionSchemeDescription `json:"partitionDescription,omitempty"`
+	// ServicePackageActivationMode - The activation Mode of the service package. Possible values include: 'SharedProcess', 'ExclusiveProcess'
+	ServicePackageActivationMode ArmServicePackageActivationMode `json:"servicePackageActivationMode,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindServiceResourceProperties', 'ServiceKindStateful1', 'ServiceKindStateless1'
 	ServiceKind ServiceKindBasicServiceResourceProperties `json:"serviceKind,omitempty"`
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
@@ -3220,6 +3443,9 @@ func (ssp StatefulServiceProperties) MarshalJSON() ([]byte, error) {
 		objectMap["serviceTypeName"] = ssp.ServiceTypeName
 	}
 	objectMap["partitionDescription"] = ssp.PartitionDescription
+	if ssp.ServicePackageActivationMode != "" {
+		objectMap["servicePackageActivationMode"] = ssp.ServicePackageActivationMode
+	}
 	if ssp.ServiceKind != "" {
 		objectMap["serviceKind"] = ssp.ServiceKind
 	}
@@ -3349,6 +3575,15 @@ func (ssp *StatefulServiceProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ssp.PartitionDescription = partitionDescription
+			}
+		case "servicePackageActivationMode":
+			if v != nil {
+				var servicePackageActivationMode ArmServicePackageActivationMode
+				err = json.Unmarshal(*v, &servicePackageActivationMode)
+				if err != nil {
+					return err
+				}
+				ssp.ServicePackageActivationMode = servicePackageActivationMode
 			}
 		case "serviceKind":
 			if v != nil {
@@ -3618,6 +3853,8 @@ type StatelessServiceProperties struct {
 	ServiceTypeName *string `json:"serviceTypeName,omitempty"`
 	// PartitionDescription - Describes how the service is partitioned.
 	PartitionDescription BasicPartitionSchemeDescription `json:"partitionDescription,omitempty"`
+	// ServicePackageActivationMode - The activation Mode of the service package. Possible values include: 'SharedProcess', 'ExclusiveProcess'
+	ServicePackageActivationMode ArmServicePackageActivationMode `json:"servicePackageActivationMode,omitempty"`
 	// ServiceKind - Possible values include: 'ServiceKindServiceResourceProperties', 'ServiceKindStateful1', 'ServiceKindStateless1'
 	ServiceKind ServiceKindBasicServiceResourceProperties `json:"serviceKind,omitempty"`
 	// PlacementConstraints - The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow for restricting a service to particular nodes based on the service requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor == blue)".
@@ -3643,6 +3880,9 @@ func (ssp StatelessServiceProperties) MarshalJSON() ([]byte, error) {
 		objectMap["serviceTypeName"] = ssp.ServiceTypeName
 	}
 	objectMap["partitionDescription"] = ssp.PartitionDescription
+	if ssp.ServicePackageActivationMode != "" {
+		objectMap["servicePackageActivationMode"] = ssp.ServicePackageActivationMode
+	}
 	if ssp.ServiceKind != "" {
 		objectMap["serviceKind"] = ssp.ServiceKind
 	}
@@ -3727,6 +3967,15 @@ func (ssp *StatelessServiceProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ssp.PartitionDescription = partitionDescription
+			}
+		case "servicePackageActivationMode":
+			if v != nil {
+				var servicePackageActivationMode ArmServicePackageActivationMode
+				err = json.Unmarshal(*v, &servicePackageActivationMode)
+				if err != nil {
+					return err
+				}
+				ssp.ServicePackageActivationMode = servicePackageActivationMode
 			}
 		case "serviceKind":
 			if v != nil {
@@ -3942,7 +4191,7 @@ type UniformInt64RangePartitionSchemeDescription struct {
 	// should be split between the partition ‘Count’
 	HighKey *string `json:"HighKey,omitempty"`
 	// PartitionScheme - Possible values include: 'PartitionSchemePartitionSchemeDescription', 'PartitionSchemeNamed', 'PartitionSchemeSingleton', 'PartitionSchemeUniformInt64Range'
-	PartitionScheme PartitionSchemeBasicPartitionSchemeDescription `json:"PartitionScheme,omitempty"`
+	PartitionScheme PartitionSchemeBasicPartitionSchemeDescription `json:"partitionScheme,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for UniformInt64RangePartitionSchemeDescription.
@@ -3959,7 +4208,7 @@ func (ui6rpsd UniformInt64RangePartitionSchemeDescription) MarshalJSON() ([]byte
 		objectMap["HighKey"] = ui6rpsd.HighKey
 	}
 	if ui6rpsd.PartitionScheme != "" {
-		objectMap["PartitionScheme"] = ui6rpsd.PartitionScheme
+		objectMap["partitionScheme"] = ui6rpsd.PartitionScheme
 	}
 	return json.Marshal(objectMap)
 }

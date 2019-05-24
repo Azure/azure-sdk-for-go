@@ -3026,8 +3026,8 @@ type RetentionPolicy struct {
 	Days *float64 `json:"days,omitempty"`
 	// LastUpdatedTime - READ-ONLY; The timestamp when the the policy was last updated.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
-	// Status - The value that indicates whether the policy is enabled or not.
-	Status *string `json:"status,omitempty"`
+	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	Status PolicyStatus `json:"status,omitempty"`
 }
 
 // Run run resource properties

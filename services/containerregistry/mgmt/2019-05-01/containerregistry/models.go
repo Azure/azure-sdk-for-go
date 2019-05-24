@@ -3023,7 +3023,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 // RetentionPolicy the retention policy for a container registry.
 type RetentionPolicy struct {
 	// Days - The number of days to retain manifest before it expires.
-	Days *float64 `json:"days,omitempty"`
+	Days *int32 `json:"days,omitempty"`
 	// LastUpdatedTime - READ-ONLY; The timestamp when the the policy was last updated.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'

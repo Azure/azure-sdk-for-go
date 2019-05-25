@@ -485,8 +485,41 @@ func (future *AccountsUpdateFuture) Result(client AccountsClient) (a Account, er
 
 // AccountUpdateProperties the properties of the billing account that can be updated.
 type AccountUpdateProperties struct {
-	// Address - The address associated with billing account.
-	Address *Address `json:"address,omitempty"`
+	// AccountProperties - A billing property.
+	*AccountProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountUpdateProperties.
+func (aup AccountUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aup.AccountProperties != nil {
+		objectMap["properties"] = aup.AccountProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AccountUpdateProperties struct.
+func (aup *AccountUpdateProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var accountProperties AccountProperties
+				err = json.Unmarshal(*v, &accountProperties)
+				if err != nil {
+					return err
+				}
+				aup.AccountProperties = &accountProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // Address address details.

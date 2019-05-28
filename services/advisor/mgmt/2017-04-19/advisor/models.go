@@ -84,6 +84,19 @@ func PossibleRiskValues() []Risk {
 	return []Risk{Error, None, Warning}
 }
 
+// Scenario enumerates the values for scenario.
+type Scenario string
+
+const (
+	// Alerts ...
+	Alerts Scenario = "Alerts"
+)
+
+// PossibleScenarioValues returns an array of possible values for the Scenario const type.
+func PossibleScenarioValues() []Scenario {
+	return []Scenario{Alerts}
+}
+
 // ARMErrorResponseBody ARM error response body.
 type ARMErrorResponseBody struct {
 	autorest.Response `json:"-"`
@@ -319,6 +332,253 @@ func (page ConfigurationListResultPage) Values() []ConfigData {
 // Creates a new instance of the ConfigurationListResultPage type.
 func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
 	return ConfigurationListResultPage{fn: getNextPage}
+}
+
+// MetadataEntity the metadata entity contract.
+type MetadataEntity struct {
+	// ID - The resource Id of the metadata entity.
+	ID *string `json:"id,omitempty"`
+	// Type - The type of the metadata entity.
+	Type *string `json:"type,omitempty"`
+	// Name - The name of the metadata entity.
+	Name *string `json:"name,omitempty"`
+	// MetadataEntityProperties - The metadata entity properties.
+	*MetadataEntityProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetadataEntity.
+func (me MetadataEntity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if me.ID != nil {
+		objectMap["id"] = me.ID
+	}
+	if me.Type != nil {
+		objectMap["type"] = me.Type
+	}
+	if me.Name != nil {
+		objectMap["name"] = me.Name
+	}
+	if me.MetadataEntityProperties != nil {
+		objectMap["properties"] = me.MetadataEntityProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MetadataEntity struct.
+func (me *MetadataEntity) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				me.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				me.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				me.Name = &name
+			}
+		case "properties":
+			if v != nil {
+				var metadataEntityProperties MetadataEntityProperties
+				err = json.Unmarshal(*v, &metadataEntityProperties)
+				if err != nil {
+					return err
+				}
+				me.MetadataEntityProperties = &metadataEntityProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// MetadataEntityListResult the list of metadata entities
+type MetadataEntityListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of metadata entities.
+	Value *[]MetadataEntity `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of metadata.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MetadataEntityListResultIterator provides access to a complete listing of MetadataEntity values.
+type MetadataEntityListResultIterator struct {
+	i    int
+	page MetadataEntityListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *MetadataEntityListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MetadataEntityListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *MetadataEntityListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter MetadataEntityListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter MetadataEntityListResultIterator) Response() MetadataEntityListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter MetadataEntityListResultIterator) Value() MetadataEntity {
+	if !iter.page.NotDone() {
+		return MetadataEntity{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the MetadataEntityListResultIterator type.
+func NewMetadataEntityListResultIterator(page MetadataEntityListResultPage) MetadataEntityListResultIterator {
+	return MetadataEntityListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (melr MetadataEntityListResult) IsEmpty() bool {
+	return melr.Value == nil || len(*melr.Value) == 0
+}
+
+// metadataEntityListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (melr MetadataEntityListResult) metadataEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if melr.NextLink == nil || len(to.String(melr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(melr.NextLink)))
+}
+
+// MetadataEntityListResultPage contains a page of MetadataEntity values.
+type MetadataEntityListResultPage struct {
+	fn   func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)
+	melr MetadataEntityListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *MetadataEntityListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MetadataEntityListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.melr)
+	if err != nil {
+		return err
+	}
+	page.melr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *MetadataEntityListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page MetadataEntityListResultPage) NotDone() bool {
+	return !page.melr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page MetadataEntityListResultPage) Response() MetadataEntityListResult {
+	return page.melr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page MetadataEntityListResultPage) Values() []MetadataEntity {
+	if page.melr.IsEmpty() {
+		return nil
+	}
+	return *page.melr.Value
+}
+
+// Creates a new instance of the MetadataEntityListResultPage type.
+func NewMetadataEntityListResultPage(getNextPage func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)) MetadataEntityListResultPage {
+	return MetadataEntityListResultPage{fn: getNextPage}
+}
+
+// MetadataEntityProperties the metadata entity properties
+type MetadataEntityProperties struct {
+	// DisplayName - The display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// DependsOn - The list of keys on which this entity depends on.
+	DependsOn *[]string `json:"dependsOn,omitempty"`
+	// ApplicableScenarios - The list of scenarios applicable to this metadata entity.
+	ApplicableScenarios *[]Scenario `json:"applicableScenarios,omitempty"`
+	// SupportedValues - The list of supported values.
+	SupportedValues *[]MetadataSupportedValueDetail `json:"supportedValues,omitempty"`
+}
+
+// MetadataSupportedValueDetail the metadata supported value detail.
+type MetadataSupportedValueDetail struct {
+	// ID - The id.
+	ID *string `json:"id,omitempty"`
+	// DisplayName - The display name.
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // OperationDisplayInfo the operation supported by Advisor.
@@ -780,6 +1040,12 @@ func (page ResourceRecommendationBaseListResultPage) Values() []ResourceRecommen
 // Creates a new instance of the ResourceRecommendationBaseListResultPage type.
 func NewResourceRecommendationBaseListResultPage(getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
 	return ResourceRecommendationBaseListResultPage{fn: getNextPage}
+}
+
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
 }
 
 // ShortDescription a summary of the recommendation.

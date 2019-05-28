@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -40,6 +41,95 @@ func NewDataConnectionsClient(subscriptionID string) DataConnectionsClient {
 // NewDataConnectionsClientWithBaseURI creates an instance of the DataConnectionsClient client.
 func NewDataConnectionsClientWithBaseURI(baseURI string, subscriptionID string) DataConnectionsClient {
 	return DataConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+}
+
+// CheckNameAvailability checks that the data connection name is valid and is not already in use.
+// Parameters:
+// resourceGroupName - the name of the resource group containing the Kusto cluster.
+// clusterName - the name of the Kusto cluster.
+// databaseName - the name of the database in the Kusto cluster.
+// dataConnectionName - the name of the data connection.
+func (client DataConnectionsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest) (result CheckNameResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectionsClient.CheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: dataConnectionName,
+			Constraints: []validation.Constraint{{Target: "dataConnectionName.Name", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dataConnectionName.Type", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("kusto.DataConnectionsClient", "CheckNameAvailability", err.Error())
+	}
+
+	req, err := client.CheckNameAvailabilityPreparer(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckNameAvailabilitySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckNameAvailabilityResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "CheckNameAvailability", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
+func (client DataConnectionsClient) CheckNameAvailabilityPreparer(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-01-21"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkNameAvailability", pathParameters),
+		autorest.WithJSON(dataConnectionName),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
+// http.Response Body if it receives an error.
+func (client DataConnectionsClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
+// closes the http.Response Body.
+func (client DataConnectionsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }
 
 // CreateOrUpdate creates or updates a data connection.

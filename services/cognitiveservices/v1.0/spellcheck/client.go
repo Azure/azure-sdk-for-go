@@ -178,7 +178,7 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 // checked for grammar or spelling errors. The combined length of the text string, preContextText string, and
 // postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string
 // of a GET request or in the body of a POST request.
-func (client BaseClient) SpellCheckerMethod(ctx context.Context, textParameter string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, actionType ActionType, appName string, countryCode string, clientMachineName string, docID string, market string, sessionID string, setLang string, userID string, mode string, preContextText string, postContextText string) (result SpellCheck, err error) {
+func (client BaseClient) SpellCheckerMethod(ctx context.Context, textParameter string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, actionType ActionType, appName string, countryCode string, clientMachineName string, docID string, market string, sessionID string, setLang string, userID string, mode Mode, preContextText string, postContextText string) (result SpellCheck, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.SpellCheckerMethod")
 		defer func() {
@@ -211,7 +211,7 @@ func (client BaseClient) SpellCheckerMethod(ctx context.Context, textParameter s
 }
 
 // SpellCheckerMethodPreparer prepares the SpellCheckerMethod request.
-func (client BaseClient) SpellCheckerMethodPreparer(ctx context.Context, textParameter string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, actionType ActionType, appName string, countryCode string, clientMachineName string, docID string, market string, sessionID string, setLang string, userID string, mode string, preContextText string, postContextText string) (*http.Request, error) {
+func (client BaseClient) SpellCheckerMethodPreparer(ctx context.Context, textParameter string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, actionType ActionType, appName string, countryCode string, clientMachineName string, docID string, market string, sessionID string, setLang string, userID string, mode Mode, preContextText string, postContextText string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}

@@ -219,7 +219,7 @@ func (client ListManagementImageClient) AddImageFileInputResponder(resp *http.Re
 // imageURL - the image url.
 // tag - tag for the image.
 // label - the image label.
-func (client ListManagementImageClient) AddImageURLInput(ctx context.Context, listID string, contentType string, imageURL BodyModel, tag *int32, label string) (result Image, err error) {
+func (client ListManagementImageClient) AddImageURLInput(ctx context.Context, listID string, contentType string, imageURL ImageURL, tag *int32, label string) (result Image, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListManagementImageClient.AddImageURLInput")
 		defer func() {
@@ -252,7 +252,7 @@ func (client ListManagementImageClient) AddImageURLInput(ctx context.Context, li
 }
 
 // AddImageURLInputPreparer prepares the AddImageURLInput request.
-func (client ListManagementImageClient) AddImageURLInputPreparer(ctx context.Context, listID string, contentType string, imageURL BodyModel, tag *int32, label string) (*http.Request, error) {
+func (client ListManagementImageClient) AddImageURLInputPreparer(ctx context.Context, listID string, contentType string, imageURL ImageURL, tag *int32, label string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}

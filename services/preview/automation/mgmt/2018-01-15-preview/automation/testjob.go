@@ -32,13 +32,13 @@ type TestJobClient struct {
 }
 
 // NewTestJobClient creates an instance of the TestJobClient client.
-func NewTestJobClient(subscriptionID string, countType1 CountType) TestJobClient {
-	return NewTestJobClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewTestJobClient(subscriptionID string) TestJobClient {
+	return NewTestJobClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewTestJobClientWithBaseURI creates an instance of the TestJobClient client.
-func NewTestJobClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) TestJobClient {
-	return TestJobClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewTestJobClientWithBaseURI(baseURI string, subscriptionID string) TestJobClient {
+	return TestJobClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create create a test job of the runbook.

@@ -34,6 +34,7 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 	"sync"
 	"time"
@@ -55,7 +56,14 @@ const (
 var packageName = regexp.MustCompile(`services[/\\](?P<provider>[\w\-\.\d_\\/]+)[/\\](?:(?P<arm>` + armPathModifier + `)[/\\])?(?P<version>v?\d{4}-\d{2}-\d{2}[\w\d\.\-]*|v?\d+[\.\d+\.\d\w\-]*)[/\\](?P<group>[/\\\w\d\-\._]+)`)
 
 // BuildProfile takes a list of packages and creates a profile
-func BuildProfile(packageList ListDefinition, name, outputLocation string, outputLog, errLog *log.Logger) {
+func BuildProfile(packageList ListDefinition, name, outputLocation string, outputLog, errLog *log.Logger, recursive bool) {
+	// limit the number of concurrent calls to parser.ParseDir()
+	semLimit := 32
+	if runtime.GOOS == "darwin" {
+		// set a lower limit for darwin as it runs out of file handles
+		semLimit = 16
+	}
+	sem := make(chan struct{}, semLimit)
 	wg := &sync.WaitGroup{}
 	wg.Add(len(packageList.Include))
 	for _, pkgDir := range packageList.Include {
@@ -67,62 +75,74 @@ func BuildProfile(packageList ListDefinition, name, outputLocation string, outpu
 			pkgDir = abs
 		}
 		go func(pd string) {
-			fs := token.NewFileSet()
-			packages, err := parser.ParseDir(fs, pd, func(f os.FileInfo) bool {
-				// exclude test files
-				return !strings.HasSuffix(f.Name(), "_test.go")
-			}, 0)
-			if err != nil {
-				errLog.Fatalf("failed to parse '%s': %v", pd, err)
-			}
-			if len(packages) < 1 {
-				errLog.Fatalf("didn't find any packages in '%s'", pd)
-			}
-			if len(packages) > 1 {
-				errLog.Fatalf("found more than one package in '%s'", pd)
-			}
-			for pn := range packages {
-				p := packages[pn]
-				// trim any non-exported nodes
-				if exp := ast.PackageExports(p); !exp {
-					errLog.Fatalf("package '%s' doesn't contain any exports", pn)
+			filepath.Walk(pd, func(path string, info os.FileInfo, err error) error {
+				if !info.IsDir() {
+					return nil
 				}
-				// construct the import path from the outputLocation
-				// e.g. D:\work\src\github.com\Azure\azure-sdk-for-go\profiles\2017-03-09\compute\mgmt\compute
-				// becomes github.com/Azure/azure-sdk-for-go/profiles/2017-03-09/compute/mgmt/compute
-				i := strings.Index(pd, "github.com")
-				if i == -1 {
-					errLog.Fatalf("didn't find 'github.com' in '%s'", pd)
-				}
-				importPath := strings.Replace(pd[i:], "\\", "/", -1)
-				ap, err := NewAliasPackage(p, importPath)
+				fs := token.NewFileSet()
+				sem <- struct{}{}
+				packages, err := parser.ParseDir(fs, path, func(f os.FileInfo) bool {
+					// exclude test files
+					return !strings.HasSuffix(f.Name(), "_test.go")
+				}, 0)
+				<-sem
 				if err != nil {
-					errLog.Fatalf("failed to create alias package: %v", err)
+					errLog.Fatalf("failed to parse '%s': %v", path, err)
 				}
-				updateAliasPackageUserAgent(ap, name)
-				// build the profile output directory, if there's an override path use that
-				var aliasPath string
-				var ok bool
-				if aliasPath, ok = packageList.PathOverride[importPath]; !ok {
-					var err error
-					aliasPath, err = getAliasPath(pd)
-					if err != nil {
-						errLog.Fatalf("failed to calculate alias directory: %v", err)
+				if len(packages) < 1 {
+					errLog.Fatalf("didn't find any packages in '%s'", path)
+				}
+				if len(packages) > 1 {
+					errLog.Fatalf("found more than one package in '%s'", path)
+				}
+				for pn := range packages {
+					p := packages[pn]
+					// trim any non-exported nodes
+					if exp := ast.PackageExports(p); !exp {
+						errLog.Fatalf("package '%s' doesn't contain any exports", pn)
 					}
-				}
-				aliasPath = filepath.Join(outputLocation, aliasPath)
-				if _, err := os.Stat(aliasPath); os.IsNotExist(err) {
-					err = os.MkdirAll(aliasPath, os.ModeDir|0755)
-					if err != nil {
-						errLog.Fatalf("failed to create alias directory: %v", err)
+					// construct the import path from the outputLocation
+					// e.g. D:\work\src\github.com\Azure\azure-sdk-for-go\profiles\2017-03-09\compute\mgmt\compute
+					// becomes github.com/Azure/azure-sdk-for-go/profiles/2017-03-09/compute/mgmt/compute
+					i := strings.Index(path, "github.com")
+					if i == -1 {
+						errLog.Fatalf("didn't find 'github.com' in '%s'", path)
 					}
+					importPath := strings.Replace(path[i:], "\\", "/", -1)
+					ap, err := NewAliasPackage(p, importPath)
+					if err != nil {
+						errLog.Fatalf("failed to create alias package: %v", err)
+					}
+					updateAliasPackageUserAgent(ap, name)
+					// build the profile output directory, if there's an override path use that
+					var aliasPath string
+					var ok bool
+					if aliasPath, ok = packageList.PathOverride[importPath]; !ok {
+						var err error
+						aliasPath, err = getAliasPath(path)
+						if err != nil {
+							errLog.Fatalf("failed to calculate alias directory: %v", err)
+						}
+					}
+					aliasPath = filepath.Join(outputLocation, aliasPath)
+					if _, err := os.Stat(aliasPath); os.IsNotExist(err) {
+						err = os.MkdirAll(aliasPath, os.ModeDir|0755)
+						if err != nil {
+							errLog.Fatalf("failed to create alias directory: %v", err)
+						}
+					}
+					writeAliasPackage(ap, aliasPath, outputLog, errLog)
 				}
-				writeAliasPackage(ap, aliasPath, outputLog, errLog)
-			}
+				if !recursive {
+					return filepath.SkipDir
+				}
+				return nil
+			})
 			wg.Done()
 		}(pkgDir)
 	}
 	wg.Wait()
+	close(sem)
 	outputLog.Print(len(packageList.Include), " packages generated.")
 }
 

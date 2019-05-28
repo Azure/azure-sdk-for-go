@@ -360,7 +360,7 @@ var _ DscNodeConfigurationClientAPI = (*automation.DscNodeConfigurationClient)(n
 
 // NodeCountInformationClientAPI contains the set of methods on the NodeCountInformationClient type.
 type NodeCountInformationClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, automationAccountName string) (result automation.NodeCounts, err error)
+	Get(ctx context.Context, resourceGroupName string, automationAccountName string, countType automation.CountType) (result automation.NodeCounts, err error)
 }
 
 var _ NodeCountInformationClientAPI = (*automation.NodeCountInformationClient)(nil)

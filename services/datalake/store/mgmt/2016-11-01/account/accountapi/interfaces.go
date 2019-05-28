@@ -80,6 +80,7 @@ var _ OperationsClientAPI = (*account.OperationsClient)(nil)
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
 	GetCapability(ctx context.Context, location string) (result account.CapabilityInformation, err error)
+	GetUsage(ctx context.Context, location string) (result account.UsageListResult, err error)
 }
 
 var _ LocationsClientAPI = (*account.LocationsClient)(nil)

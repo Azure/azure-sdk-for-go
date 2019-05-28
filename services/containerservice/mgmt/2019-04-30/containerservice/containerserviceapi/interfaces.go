@@ -73,10 +73,10 @@ var _ ManagedClustersClientAPI = (*containerservice.ManagedClustersClient)(nil)
 
 // AgentPoolsClientAPI contains the set of methods on the AgentPoolsClient type.
 type AgentPoolsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedClusterName string, agentPoolName string, parameters containerservice.AgentPool) (result containerservice.AgentPoolsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, managedClusterName string, agentPoolName string) (result containerservice.AgentPoolsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, managedClusterName string, agentPoolName string) (result containerservice.AgentPool, err error)
-	List(ctx context.Context, resourceGroupName string, managedClusterName string) (result containerservice.AgentPoolListResultPage, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters containerservice.AgentPool) (result containerservice.AgentPoolsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string) (result containerservice.AgentPoolsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string) (result containerservice.AgentPool, err error)
+	List(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.AgentPoolListResultPage, err error)
 }
 
 var _ AgentPoolsClientAPI = (*containerservice.AgentPoolsClient)(nil)

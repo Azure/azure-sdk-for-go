@@ -111,6 +111,21 @@ func PossibleErrorTypeValues() []ErrorType {
 	return []ErrorType{RepeatedToken, UnknownToken}
 }
 
+// Mode enumerates the values for mode.
+type Mode string
+
+const (
+	// Proof ...
+	Proof Mode = "proof"
+	// Spell ...
+	Spell Mode = "spell"
+)
+
+// PossibleModeValues returns an array of possible values for the Mode const type.
+func PossibleModeValues() []Mode {
+	return []Mode{Proof, Spell}
+}
+
 // Type enumerates the values for type.
 type Type string
 

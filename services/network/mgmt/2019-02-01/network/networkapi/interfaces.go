@@ -629,6 +629,20 @@ type SubnetsClientAPI interface {
 
 var _ SubnetsClientAPI = (*network.SubnetsClient)(nil)
 
+// ResourceNavigationLinksClientAPI contains the set of methods on the ResourceNavigationLinksClient type.
+type ResourceNavigationLinksClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (result network.ResourceNavigationLinksListResult, err error)
+}
+
+var _ ResourceNavigationLinksClientAPI = (*network.ResourceNavigationLinksClient)(nil)
+
+// ServiceAssociationLinksClientAPI contains the set of methods on the ServiceAssociationLinksClient type.
+type ServiceAssociationLinksClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (result network.ServiceAssociationLinksListResult, err error)
+}
+
+var _ ServiceAssociationLinksClientAPI = (*network.ServiceAssociationLinksClient)(nil)
+
 // VirtualNetworkPeeringsClientAPI contains the set of methods on the VirtualNetworkPeeringsClient type.
 type VirtualNetworkPeeringsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters network.VirtualNetworkPeering) (result network.VirtualNetworkPeeringsCreateOrUpdateFuture, err error)

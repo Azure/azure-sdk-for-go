@@ -66,6 +66,13 @@ const (
 	UnknownToken  ErrorType = original.UnknownToken
 )
 
+type Mode = original.Mode
+
+const (
+	Proof Mode = original.Proof
+	Spell Mode = original.Spell
+)
+
 type Type = original.Type
 
 const (
@@ -109,6 +116,9 @@ func PossibleErrorSubCodeValues() []ErrorSubCode {
 }
 func PossibleErrorTypeValues() []ErrorType {
 	return original.PossibleErrorTypeValues()
+}
+func PossibleModeValues() []Mode {
+	return original.PossibleModeValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

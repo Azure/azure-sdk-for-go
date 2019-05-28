@@ -19,10 +19,21 @@
 
 package servicefabric
 
-import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2018-02-01/servicefabric"
+import (
+	"context"
+
+	original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2019-03-01/servicefabric"
+)
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ArmServicePackageActivationMode = original.ArmServicePackageActivationMode
+
+const (
+	ExclusiveProcess ArmServicePackageActivationMode = original.ExclusiveProcess
+	SharedProcess    ArmServicePackageActivationMode = original.SharedProcess
 )
 
 type ClusterState = original.ClusterState
@@ -234,6 +245,7 @@ type ApplicationsClient = original.ApplicationsClient
 type ApplicationsCreateFuture = original.ApplicationsCreateFuture
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
 type ApplicationsUpdateFuture = original.ApplicationsUpdateFuture
+type ArmApplicationHealthPolicy = original.ArmApplicationHealthPolicy
 type AvailableOperationDisplay = original.AvailableOperationDisplay
 type AzureActiveDirectory = original.AzureActiveDirectory
 type BaseClient = original.BaseClient
@@ -333,6 +345,12 @@ func NewClustersClient(subscriptionID string) ClustersClient {
 func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
 	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return original.NewOperationListResultIterator(page)
+}
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(getNextPage)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -347,6 +365,9 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleArmServicePackageActivationModeValues() []ArmServicePackageActivationMode {
+	return original.PossibleArmServicePackageActivationModeValues()
 }
 func PossibleClusterStateValues() []ClusterState {
 	return original.PossibleClusterStateValues()

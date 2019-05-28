@@ -651,14 +651,14 @@ type WebhookUpdateParameters = original.WebhookUpdateParameters
 type WebhookUpdateProperties = original.WebhookUpdateProperties
 type WindowsProperties = original.WindowsProperties
 
-func New(subscriptionID string, countType1 CountType) BaseClient {
-	return original.New(subscriptionID, countType1)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
-func NewAccountClient(subscriptionID string, countType1 CountType) AccountClient {
-	return original.NewAccountClient(subscriptionID, countType1)
+func NewAccountClient(subscriptionID string) AccountClient {
+	return original.NewAccountClient(subscriptionID)
 }
-func NewAccountClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) AccountClient {
-	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountClient {
+	return original.NewAccountClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
 	return original.NewAccountListResultIterator(page)
@@ -666,11 +666,11 @@ func NewAccountListResultIterator(page AccountListResultPage) AccountListResultI
 func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
 	return original.NewAccountListResultPage(getNextPage)
 }
-func NewActivityClient(subscriptionID string, countType1 CountType) ActivityClient {
-	return original.NewActivityClient(subscriptionID, countType1)
+func NewActivityClient(subscriptionID string) ActivityClient {
+	return original.NewActivityClient(subscriptionID)
 }
-func NewActivityClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ActivityClient {
-	return original.NewActivityClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewActivityClientWithBaseURI(baseURI string, subscriptionID string) ActivityClient {
+	return original.NewActivityClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewActivityListResultIterator(page ActivityListResultPage) ActivityListResultIterator {
 	return original.NewActivityListResultIterator(page)
@@ -678,17 +678,17 @@ func NewActivityListResultIterator(page ActivityListResultPage) ActivityListResu
 func NewActivityListResultPage(getNextPage func(context.Context, ActivityListResult) (ActivityListResult, error)) ActivityListResultPage {
 	return original.NewActivityListResultPage(getNextPage)
 }
-func NewAgentRegistrationInformationClient(subscriptionID string, countType1 CountType) AgentRegistrationInformationClient {
-	return original.NewAgentRegistrationInformationClient(subscriptionID, countType1)
+func NewAgentRegistrationInformationClient(subscriptionID string) AgentRegistrationInformationClient {
+	return original.NewAgentRegistrationInformationClient(subscriptionID)
 }
-func NewAgentRegistrationInformationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) AgentRegistrationInformationClient {
-	return original.NewAgentRegistrationInformationClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewAgentRegistrationInformationClientWithBaseURI(baseURI string, subscriptionID string) AgentRegistrationInformationClient {
+	return original.NewAgentRegistrationInformationClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewCertificateClient(subscriptionID string, countType1 CountType) CertificateClient {
-	return original.NewCertificateClient(subscriptionID, countType1)
+func NewCertificateClient(subscriptionID string) CertificateClient {
+	return original.NewCertificateClient(subscriptionID)
 }
-func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) CertificateClient {
-	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) CertificateClient {
+	return original.NewCertificateClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCertificateListResultIterator(page CertificateListResultPage) CertificateListResultIterator {
 	return original.NewCertificateListResultIterator(page)
@@ -696,11 +696,11 @@ func NewCertificateListResultIterator(page CertificateListResultPage) Certificat
 func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
 	return original.NewCertificateListResultPage(getNextPage)
 }
-func NewConnectionClient(subscriptionID string, countType1 CountType) ConnectionClient {
-	return original.NewConnectionClient(subscriptionID, countType1)
+func NewConnectionClient(subscriptionID string) ConnectionClient {
+	return original.NewConnectionClient(subscriptionID)
 }
-func NewConnectionClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ConnectionClient {
-	return original.NewConnectionClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewConnectionClientWithBaseURI(baseURI string, subscriptionID string) ConnectionClient {
+	return original.NewConnectionClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewConnectionListResultIterator(page ConnectionListResultPage) ConnectionListResultIterator {
 	return original.NewConnectionListResultIterator(page)
@@ -708,11 +708,11 @@ func NewConnectionListResultIterator(page ConnectionListResultPage) ConnectionLi
 func NewConnectionListResultPage(getNextPage func(context.Context, ConnectionListResult) (ConnectionListResult, error)) ConnectionListResultPage {
 	return original.NewConnectionListResultPage(getNextPage)
 }
-func NewConnectionTypeClient(subscriptionID string, countType1 CountType) ConnectionTypeClient {
-	return original.NewConnectionTypeClient(subscriptionID, countType1)
+func NewConnectionTypeClient(subscriptionID string) ConnectionTypeClient {
+	return original.NewConnectionTypeClient(subscriptionID)
 }
-func NewConnectionTypeClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ConnectionTypeClient {
-	return original.NewConnectionTypeClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewConnectionTypeClientWithBaseURI(baseURI string, subscriptionID string) ConnectionTypeClient {
+	return original.NewConnectionTypeClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewConnectionTypeListResultIterator(page ConnectionTypeListResultPage) ConnectionTypeListResultIterator {
 	return original.NewConnectionTypeListResultIterator(page)
@@ -720,11 +720,11 @@ func NewConnectionTypeListResultIterator(page ConnectionTypeListResultPage) Conn
 func NewConnectionTypeListResultPage(getNextPage func(context.Context, ConnectionTypeListResult) (ConnectionTypeListResult, error)) ConnectionTypeListResultPage {
 	return original.NewConnectionTypeListResultPage(getNextPage)
 }
-func NewCredentialClient(subscriptionID string, countType1 CountType) CredentialClient {
-	return original.NewCredentialClient(subscriptionID, countType1)
+func NewCredentialClient(subscriptionID string) CredentialClient {
+	return original.NewCredentialClient(subscriptionID)
 }
-func NewCredentialClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) CredentialClient {
-	return original.NewCredentialClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewCredentialClientWithBaseURI(baseURI string, subscriptionID string) CredentialClient {
+	return original.NewCredentialClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCredentialListResultIterator(page CredentialListResultPage) CredentialListResultIterator {
 	return original.NewCredentialListResultIterator(page)
@@ -732,11 +732,11 @@ func NewCredentialListResultIterator(page CredentialListResultPage) CredentialLi
 func NewCredentialListResultPage(getNextPage func(context.Context, CredentialListResult) (CredentialListResult, error)) CredentialListResultPage {
 	return original.NewCredentialListResultPage(getNextPage)
 }
-func NewDscCompilationJobClient(subscriptionID string, countType1 CountType) DscCompilationJobClient {
-	return original.NewDscCompilationJobClient(subscriptionID, countType1)
+func NewDscCompilationJobClient(subscriptionID string) DscCompilationJobClient {
+	return original.NewDscCompilationJobClient(subscriptionID)
 }
-func NewDscCompilationJobClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscCompilationJobClient {
-	return original.NewDscCompilationJobClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewDscCompilationJobClientWithBaseURI(baseURI string, subscriptionID string) DscCompilationJobClient {
+	return original.NewDscCompilationJobClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDscCompilationJobListResultIterator(page DscCompilationJobListResultPage) DscCompilationJobListResultIterator {
 	return original.NewDscCompilationJobListResultIterator(page)
@@ -744,17 +744,17 @@ func NewDscCompilationJobListResultIterator(page DscCompilationJobListResultPage
 func NewDscCompilationJobListResultPage(getNextPage func(context.Context, DscCompilationJobListResult) (DscCompilationJobListResult, error)) DscCompilationJobListResultPage {
 	return original.NewDscCompilationJobListResultPage(getNextPage)
 }
-func NewDscCompilationJobStreamClient(subscriptionID string, countType1 CountType) DscCompilationJobStreamClient {
-	return original.NewDscCompilationJobStreamClient(subscriptionID, countType1)
+func NewDscCompilationJobStreamClient(subscriptionID string) DscCompilationJobStreamClient {
+	return original.NewDscCompilationJobStreamClient(subscriptionID)
 }
-func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscCompilationJobStreamClient {
-	return original.NewDscCompilationJobStreamClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewDscCompilationJobStreamClientWithBaseURI(baseURI string, subscriptionID string) DscCompilationJobStreamClient {
+	return original.NewDscCompilationJobStreamClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDscConfigurationClient(subscriptionID string, countType1 CountType) DscConfigurationClient {
-	return original.NewDscConfigurationClient(subscriptionID, countType1)
+func NewDscConfigurationClient(subscriptionID string) DscConfigurationClient {
+	return original.NewDscConfigurationClient(subscriptionID)
 }
-func NewDscConfigurationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscConfigurationClient {
-	return original.NewDscConfigurationClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewDscConfigurationClientWithBaseURI(baseURI string, subscriptionID string) DscConfigurationClient {
+	return original.NewDscConfigurationClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDscConfigurationListResultIterator(page DscConfigurationListResultPage) DscConfigurationListResultIterator {
 	return original.NewDscConfigurationListResultIterator(page)
@@ -762,17 +762,17 @@ func NewDscConfigurationListResultIterator(page DscConfigurationListResultPage) 
 func NewDscConfigurationListResultPage(getNextPage func(context.Context, DscConfigurationListResult) (DscConfigurationListResult, error)) DscConfigurationListResultPage {
 	return original.NewDscConfigurationListResultPage(getNextPage)
 }
-func NewDscNodeClient(subscriptionID string, countType1 CountType) DscNodeClient {
-	return original.NewDscNodeClient(subscriptionID, countType1)
+func NewDscNodeClient(subscriptionID string) DscNodeClient {
+	return original.NewDscNodeClient(subscriptionID)
 }
-func NewDscNodeClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscNodeClient {
-	return original.NewDscNodeClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewDscNodeClientWithBaseURI(baseURI string, subscriptionID string) DscNodeClient {
+	return original.NewDscNodeClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewDscNodeConfigurationClient(subscriptionID string, countType1 CountType) DscNodeConfigurationClient {
-	return original.NewDscNodeConfigurationClient(subscriptionID, countType1)
+func NewDscNodeConfigurationClient(subscriptionID string) DscNodeConfigurationClient {
+	return original.NewDscNodeConfigurationClient(subscriptionID)
 }
-func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) DscNodeConfigurationClient {
-	return original.NewDscNodeConfigurationClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewDscNodeConfigurationClientWithBaseURI(baseURI string, subscriptionID string) DscNodeConfigurationClient {
+	return original.NewDscNodeConfigurationClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDscNodeConfigurationListResultIterator(page DscNodeConfigurationListResultPage) DscNodeConfigurationListResultIterator {
 	return original.NewDscNodeConfigurationListResultIterator(page)
@@ -792,17 +792,17 @@ func NewDscNodeReportListResultIterator(page DscNodeReportListResultPage) DscNod
 func NewDscNodeReportListResultPage(getNextPage func(context.Context, DscNodeReportListResult) (DscNodeReportListResult, error)) DscNodeReportListResultPage {
 	return original.NewDscNodeReportListResultPage(getNextPage)
 }
-func NewFieldsClient(subscriptionID string, countType1 CountType) FieldsClient {
-	return original.NewFieldsClient(subscriptionID, countType1)
+func NewFieldsClient(subscriptionID string) FieldsClient {
+	return original.NewFieldsClient(subscriptionID)
 }
-func NewFieldsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) FieldsClient {
-	return original.NewFieldsClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewFieldsClientWithBaseURI(baseURI string, subscriptionID string) FieldsClient {
+	return original.NewFieldsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewHybridRunbookWorkerGroupClient(subscriptionID string, countType1 CountType) HybridRunbookWorkerGroupClient {
-	return original.NewHybridRunbookWorkerGroupClient(subscriptionID, countType1)
+func NewHybridRunbookWorkerGroupClient(subscriptionID string) HybridRunbookWorkerGroupClient {
+	return original.NewHybridRunbookWorkerGroupClient(subscriptionID)
 }
-func NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) HybridRunbookWorkerGroupClient {
-	return original.NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI string, subscriptionID string) HybridRunbookWorkerGroupClient {
+	return original.NewHybridRunbookWorkerGroupClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewHybridRunbookWorkerGroupsListResultIterator(page HybridRunbookWorkerGroupsListResultPage) HybridRunbookWorkerGroupsListResultIterator {
 	return original.NewHybridRunbookWorkerGroupsListResultIterator(page)
@@ -810,11 +810,11 @@ func NewHybridRunbookWorkerGroupsListResultIterator(page HybridRunbookWorkerGrou
 func NewHybridRunbookWorkerGroupsListResultPage(getNextPage func(context.Context, HybridRunbookWorkerGroupsListResult) (HybridRunbookWorkerGroupsListResult, error)) HybridRunbookWorkerGroupsListResultPage {
 	return original.NewHybridRunbookWorkerGroupsListResultPage(getNextPage)
 }
-func NewJobClient(subscriptionID string, countType1 CountType) JobClient {
-	return original.NewJobClient(subscriptionID, countType1)
+func NewJobClient(subscriptionID string) JobClient {
+	return original.NewJobClient(subscriptionID)
 }
-func NewJobClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) JobClient {
-	return original.NewJobClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewJobClientWithBaseURI(baseURI string, subscriptionID string) JobClient {
+	return original.NewJobClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewJobListResultV2Iterator(page JobListResultV2Page) JobListResultV2Iterator {
 	return original.NewJobListResultV2Iterator(page)
@@ -822,11 +822,11 @@ func NewJobListResultV2Iterator(page JobListResultV2Page) JobListResultV2Iterato
 func NewJobListResultV2Page(getNextPage func(context.Context, JobListResultV2) (JobListResultV2, error)) JobListResultV2Page {
 	return original.NewJobListResultV2Page(getNextPage)
 }
-func NewJobScheduleClient(subscriptionID string, countType1 CountType) JobScheduleClient {
-	return original.NewJobScheduleClient(subscriptionID, countType1)
+func NewJobScheduleClient(subscriptionID string) JobScheduleClient {
+	return original.NewJobScheduleClient(subscriptionID)
 }
-func NewJobScheduleClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) JobScheduleClient {
-	return original.NewJobScheduleClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewJobScheduleClientWithBaseURI(baseURI string, subscriptionID string) JobScheduleClient {
+	return original.NewJobScheduleClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewJobScheduleListResultIterator(page JobScheduleListResultPage) JobScheduleListResultIterator {
 	return original.NewJobScheduleListResultIterator(page)
@@ -834,11 +834,11 @@ func NewJobScheduleListResultIterator(page JobScheduleListResultPage) JobSchedul
 func NewJobScheduleListResultPage(getNextPage func(context.Context, JobScheduleListResult) (JobScheduleListResult, error)) JobScheduleListResultPage {
 	return original.NewJobScheduleListResultPage(getNextPage)
 }
-func NewJobStreamClient(subscriptionID string, countType1 CountType) JobStreamClient {
-	return original.NewJobStreamClient(subscriptionID, countType1)
+func NewJobStreamClient(subscriptionID string) JobStreamClient {
+	return original.NewJobStreamClient(subscriptionID)
 }
-func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) JobStreamClient {
-	return original.NewJobStreamClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewJobStreamClientWithBaseURI(baseURI string, subscriptionID string) JobStreamClient {
+	return original.NewJobStreamClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewJobStreamListResultIterator(page JobStreamListResultPage) JobStreamListResultIterator {
 	return original.NewJobStreamListResultIterator(page)
@@ -846,23 +846,23 @@ func NewJobStreamListResultIterator(page JobStreamListResultPage) JobStreamListR
 func NewJobStreamListResultPage(getNextPage func(context.Context, JobStreamListResult) (JobStreamListResult, error)) JobStreamListResultPage {
 	return original.NewJobStreamListResultPage(getNextPage)
 }
-func NewKeysClient(subscriptionID string, countType1 CountType) KeysClient {
-	return original.NewKeysClient(subscriptionID, countType1)
+func NewKeysClient(subscriptionID string) KeysClient {
+	return original.NewKeysClient(subscriptionID)
 }
-func NewKeysClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) KeysClient {
-	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
+	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewLinkedWorkspaceClient(subscriptionID string, countType1 CountType) LinkedWorkspaceClient {
-	return original.NewLinkedWorkspaceClient(subscriptionID, countType1)
+func NewLinkedWorkspaceClient(subscriptionID string) LinkedWorkspaceClient {
+	return original.NewLinkedWorkspaceClient(subscriptionID)
 }
-func NewLinkedWorkspaceClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) LinkedWorkspaceClient {
-	return original.NewLinkedWorkspaceClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewLinkedWorkspaceClientWithBaseURI(baseURI string, subscriptionID string) LinkedWorkspaceClient {
+	return original.NewLinkedWorkspaceClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewModuleClient(subscriptionID string, countType1 CountType) ModuleClient {
-	return original.NewModuleClient(subscriptionID, countType1)
+func NewModuleClient(subscriptionID string) ModuleClient {
+	return original.NewModuleClient(subscriptionID)
 }
-func NewModuleClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ModuleClient {
-	return original.NewModuleClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewModuleClientWithBaseURI(baseURI string, subscriptionID string) ModuleClient {
+	return original.NewModuleClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewModuleListResultIterator(page ModuleListResultPage) ModuleListResultIterator {
 	return original.NewModuleListResultIterator(page)
@@ -870,47 +870,47 @@ func NewModuleListResultIterator(page ModuleListResultPage) ModuleListResultIter
 func NewModuleListResultPage(getNextPage func(context.Context, ModuleListResult) (ModuleListResult, error)) ModuleListResultPage {
 	return original.NewModuleListResultPage(getNextPage)
 }
-func NewNodeCountInformationClient(subscriptionID string, countType1 CountType) NodeCountInformationClient {
-	return original.NewNodeCountInformationClient(subscriptionID, countType1)
+func NewNodeCountInformationClient(subscriptionID string) NodeCountInformationClient {
+	return original.NewNodeCountInformationClient(subscriptionID)
 }
-func NewNodeCountInformationClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) NodeCountInformationClient {
-	return original.NewNodeCountInformationClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewNodeCountInformationClientWithBaseURI(baseURI string, subscriptionID string) NodeCountInformationClient {
+	return original.NewNodeCountInformationClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewNodeReportsClient(subscriptionID string, countType1 CountType) NodeReportsClient {
-	return original.NewNodeReportsClient(subscriptionID, countType1)
+func NewNodeReportsClient(subscriptionID string) NodeReportsClient {
+	return original.NewNodeReportsClient(subscriptionID)
 }
-func NewNodeReportsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) NodeReportsClient {
-	return original.NewNodeReportsClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewNodeReportsClientWithBaseURI(baseURI string, subscriptionID string) NodeReportsClient {
+	return original.NewNodeReportsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewObjectDataTypesClient(subscriptionID string, countType1 CountType) ObjectDataTypesClient {
-	return original.NewObjectDataTypesClient(subscriptionID, countType1)
+func NewObjectDataTypesClient(subscriptionID string) ObjectDataTypesClient {
+	return original.NewObjectDataTypesClient(subscriptionID)
 }
-func NewObjectDataTypesClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ObjectDataTypesClient {
-	return original.NewObjectDataTypesClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewObjectDataTypesClientWithBaseURI(baseURI string, subscriptionID string) ObjectDataTypesClient {
+	return original.NewObjectDataTypesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient(subscriptionID string, countType1 CountType) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, countType1)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPython2PackageClient(subscriptionID string, countType1 CountType) Python2PackageClient {
-	return original.NewPython2PackageClient(subscriptionID, countType1)
+func NewPython2PackageClient(subscriptionID string) Python2PackageClient {
+	return original.NewPython2PackageClient(subscriptionID)
 }
-func NewPython2PackageClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) Python2PackageClient {
-	return original.NewPython2PackageClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewPython2PackageClientWithBaseURI(baseURI string, subscriptionID string) Python2PackageClient {
+	return original.NewPython2PackageClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRunbookClient(subscriptionID string, countType1 CountType) RunbookClient {
-	return original.NewRunbookClient(subscriptionID, countType1)
+func NewRunbookClient(subscriptionID string) RunbookClient {
+	return original.NewRunbookClient(subscriptionID)
 }
-func NewRunbookClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) RunbookClient {
-	return original.NewRunbookClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewRunbookClientWithBaseURI(baseURI string, subscriptionID string) RunbookClient {
+	return original.NewRunbookClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRunbookDraftClient(subscriptionID string, countType1 CountType) RunbookDraftClient {
-	return original.NewRunbookDraftClient(subscriptionID, countType1)
+func NewRunbookDraftClient(subscriptionID string) RunbookDraftClient {
+	return original.NewRunbookDraftClient(subscriptionID)
 }
-func NewRunbookDraftClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) RunbookDraftClient {
-	return original.NewRunbookDraftClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewRunbookDraftClientWithBaseURI(baseURI string, subscriptionID string) RunbookDraftClient {
+	return original.NewRunbookDraftClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRunbookListResultIterator(page RunbookListResultPage) RunbookListResultIterator {
 	return original.NewRunbookListResultIterator(page)
@@ -918,11 +918,11 @@ func NewRunbookListResultIterator(page RunbookListResultPage) RunbookListResultI
 func NewRunbookListResultPage(getNextPage func(context.Context, RunbookListResult) (RunbookListResult, error)) RunbookListResultPage {
 	return original.NewRunbookListResultPage(getNextPage)
 }
-func NewScheduleClient(subscriptionID string, countType1 CountType) ScheduleClient {
-	return original.NewScheduleClient(subscriptionID, countType1)
+func NewScheduleClient(subscriptionID string) ScheduleClient {
+	return original.NewScheduleClient(subscriptionID)
 }
-func NewScheduleClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ScheduleClient {
-	return original.NewScheduleClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewScheduleClientWithBaseURI(baseURI string, subscriptionID string) ScheduleClient {
+	return original.NewScheduleClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewScheduleListResultIterator(page ScheduleListResultPage) ScheduleListResultIterator {
 	return original.NewScheduleListResultIterator(page)
@@ -930,29 +930,29 @@ func NewScheduleListResultIterator(page ScheduleListResultPage) ScheduleListResu
 func NewScheduleListResultPage(getNextPage func(context.Context, ScheduleListResult) (ScheduleListResult, error)) ScheduleListResultPage {
 	return original.NewScheduleListResultPage(getNextPage)
 }
-func NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID string, countType1 CountType) SoftwareUpdateConfigurationMachineRunsClient {
-	return original.NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID, countType1)
+func NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID string) SoftwareUpdateConfigurationMachineRunsClient {
+	return original.NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID)
 }
-func NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SoftwareUpdateConfigurationMachineRunsClient {
-	return original.NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationMachineRunsClient {
+	return original.NewSoftwareUpdateConfigurationMachineRunsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSoftwareUpdateConfigurationRunsClient(subscriptionID string, countType1 CountType) SoftwareUpdateConfigurationRunsClient {
-	return original.NewSoftwareUpdateConfigurationRunsClient(subscriptionID, countType1)
+func NewSoftwareUpdateConfigurationRunsClient(subscriptionID string) SoftwareUpdateConfigurationRunsClient {
+	return original.NewSoftwareUpdateConfigurationRunsClient(subscriptionID)
 }
-func NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SoftwareUpdateConfigurationRunsClient {
-	return original.NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationRunsClient {
+	return original.NewSoftwareUpdateConfigurationRunsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSoftwareUpdateConfigurationsClient(subscriptionID string, countType1 CountType) SoftwareUpdateConfigurationsClient {
-	return original.NewSoftwareUpdateConfigurationsClient(subscriptionID, countType1)
+func NewSoftwareUpdateConfigurationsClient(subscriptionID string) SoftwareUpdateConfigurationsClient {
+	return original.NewSoftwareUpdateConfigurationsClient(subscriptionID)
 }
-func NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SoftwareUpdateConfigurationsClient {
-	return original.NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) SoftwareUpdateConfigurationsClient {
+	return original.NewSoftwareUpdateConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSourceControlClient(subscriptionID string, countType1 CountType) SourceControlClient {
-	return original.NewSourceControlClient(subscriptionID, countType1)
+func NewSourceControlClient(subscriptionID string) SourceControlClient {
+	return original.NewSourceControlClient(subscriptionID)
 }
-func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SourceControlClient {
-	return original.NewSourceControlClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewSourceControlClientWithBaseURI(baseURI string, subscriptionID string) SourceControlClient {
+	return original.NewSourceControlClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSourceControlListResultIterator(page SourceControlListResultPage) SourceControlListResultIterator {
 	return original.NewSourceControlListResultIterator(page)
@@ -960,11 +960,11 @@ func NewSourceControlListResultIterator(page SourceControlListResultPage) Source
 func NewSourceControlListResultPage(getNextPage func(context.Context, SourceControlListResult) (SourceControlListResult, error)) SourceControlListResultPage {
 	return original.NewSourceControlListResultPage(getNextPage)
 }
-func NewSourceControlSyncJobClient(subscriptionID string, countType1 CountType) SourceControlSyncJobClient {
-	return original.NewSourceControlSyncJobClient(subscriptionID, countType1)
+func NewSourceControlSyncJobClient(subscriptionID string) SourceControlSyncJobClient {
+	return original.NewSourceControlSyncJobClient(subscriptionID)
 }
-func NewSourceControlSyncJobClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SourceControlSyncJobClient {
-	return original.NewSourceControlSyncJobClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewSourceControlSyncJobClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobClient {
+	return original.NewSourceControlSyncJobClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSourceControlSyncJobListResultIterator(page SourceControlSyncJobListResultPage) SourceControlSyncJobListResultIterator {
 	return original.NewSourceControlSyncJobListResultIterator(page)
@@ -972,11 +972,11 @@ func NewSourceControlSyncJobListResultIterator(page SourceControlSyncJobListResu
 func NewSourceControlSyncJobListResultPage(getNextPage func(context.Context, SourceControlSyncJobListResult) (SourceControlSyncJobListResult, error)) SourceControlSyncJobListResultPage {
 	return original.NewSourceControlSyncJobListResultPage(getNextPage)
 }
-func NewSourceControlSyncJobStreamsClient(subscriptionID string, countType1 CountType) SourceControlSyncJobStreamsClient {
-	return original.NewSourceControlSyncJobStreamsClient(subscriptionID, countType1)
+func NewSourceControlSyncJobStreamsClient(subscriptionID string) SourceControlSyncJobStreamsClient {
+	return original.NewSourceControlSyncJobStreamsClient(subscriptionID)
 }
-func NewSourceControlSyncJobStreamsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) SourceControlSyncJobStreamsClient {
-	return original.NewSourceControlSyncJobStreamsClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewSourceControlSyncJobStreamsClientWithBaseURI(baseURI string, subscriptionID string) SourceControlSyncJobStreamsClient {
+	return original.NewSourceControlSyncJobStreamsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSourceControlSyncJobStreamsListBySyncJobIterator(page SourceControlSyncJobStreamsListBySyncJobPage) SourceControlSyncJobStreamsListBySyncJobIterator {
 	return original.NewSourceControlSyncJobStreamsListBySyncJobIterator(page)
@@ -984,35 +984,35 @@ func NewSourceControlSyncJobStreamsListBySyncJobIterator(page SourceControlSyncJ
 func NewSourceControlSyncJobStreamsListBySyncJobPage(getNextPage func(context.Context, SourceControlSyncJobStreamsListBySyncJob) (SourceControlSyncJobStreamsListBySyncJob, error)) SourceControlSyncJobStreamsListBySyncJobPage {
 	return original.NewSourceControlSyncJobStreamsListBySyncJobPage(getNextPage)
 }
-func NewStatisticsClient(subscriptionID string, countType1 CountType) StatisticsClient {
-	return original.NewStatisticsClient(subscriptionID, countType1)
+func NewStatisticsClient(subscriptionID string) StatisticsClient {
+	return original.NewStatisticsClient(subscriptionID)
 }
-func NewStatisticsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) StatisticsClient {
-	return original.NewStatisticsClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewStatisticsClientWithBaseURI(baseURI string, subscriptionID string) StatisticsClient {
+	return original.NewStatisticsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTestJobClient(subscriptionID string, countType1 CountType) TestJobClient {
-	return original.NewTestJobClient(subscriptionID, countType1)
+func NewTestJobClient(subscriptionID string) TestJobClient {
+	return original.NewTestJobClient(subscriptionID)
 }
-func NewTestJobClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) TestJobClient {
-	return original.NewTestJobClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewTestJobClientWithBaseURI(baseURI string, subscriptionID string) TestJobClient {
+	return original.NewTestJobClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTestJobStreamsClient(subscriptionID string, countType1 CountType) TestJobStreamsClient {
-	return original.NewTestJobStreamsClient(subscriptionID, countType1)
+func NewTestJobStreamsClient(subscriptionID string) TestJobStreamsClient {
+	return original.NewTestJobStreamsClient(subscriptionID)
 }
-func NewTestJobStreamsClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) TestJobStreamsClient {
-	return original.NewTestJobStreamsClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewTestJobStreamsClientWithBaseURI(baseURI string, subscriptionID string) TestJobStreamsClient {
+	return original.NewTestJobStreamsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewUsagesClient(subscriptionID string, countType1 CountType) UsagesClient {
-	return original.NewUsagesClient(subscriptionID, countType1)
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID)
 }
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) UsagesClient {
-	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewVariableClient(subscriptionID string, countType1 CountType) VariableClient {
-	return original.NewVariableClient(subscriptionID, countType1)
+func NewVariableClient(subscriptionID string) VariableClient {
+	return original.NewVariableClient(subscriptionID)
 }
-func NewVariableClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) VariableClient {
-	return original.NewVariableClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewVariableClientWithBaseURI(baseURI string, subscriptionID string) VariableClient {
+	return original.NewVariableClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVariableListResultIterator(page VariableListResultPage) VariableListResultIterator {
 	return original.NewVariableListResultIterator(page)
@@ -1020,11 +1020,11 @@ func NewVariableListResultIterator(page VariableListResultPage) VariableListResu
 func NewVariableListResultPage(getNextPage func(context.Context, VariableListResult) (VariableListResult, error)) VariableListResultPage {
 	return original.NewVariableListResultPage(getNextPage)
 }
-func NewWatcherClient(subscriptionID string, countType1 CountType) WatcherClient {
-	return original.NewWatcherClient(subscriptionID, countType1)
+func NewWatcherClient(subscriptionID string) WatcherClient {
+	return original.NewWatcherClient(subscriptionID)
 }
-func NewWatcherClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) WatcherClient {
-	return original.NewWatcherClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewWatcherClientWithBaseURI(baseURI string, subscriptionID string) WatcherClient {
+	return original.NewWatcherClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWatcherListResultIterator(page WatcherListResultPage) WatcherListResultIterator {
 	return original.NewWatcherListResultIterator(page)
@@ -1032,11 +1032,11 @@ func NewWatcherListResultIterator(page WatcherListResultPage) WatcherListResultI
 func NewWatcherListResultPage(getNextPage func(context.Context, WatcherListResult) (WatcherListResult, error)) WatcherListResultPage {
 	return original.NewWatcherListResultPage(getNextPage)
 }
-func NewWebhookClient(subscriptionID string, countType1 CountType) WebhookClient {
-	return original.NewWebhookClient(subscriptionID, countType1)
+func NewWebhookClient(subscriptionID string) WebhookClient {
+	return original.NewWebhookClient(subscriptionID)
 }
-func NewWebhookClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) WebhookClient {
-	return original.NewWebhookClientWithBaseURI(baseURI, subscriptionID, countType1)
+func NewWebhookClientWithBaseURI(baseURI string, subscriptionID string) WebhookClient {
+	return original.NewWebhookClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
 	return original.NewWebhookListResultIterator(page)
@@ -1044,8 +1044,8 @@ func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultI
 func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
 	return original.NewWebhookListResultPage(getNextPage)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, countType1)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccountStateValues() []AccountState {
 	return original.PossibleAccountStateValues()

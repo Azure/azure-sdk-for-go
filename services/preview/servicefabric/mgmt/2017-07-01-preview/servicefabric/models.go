@@ -20,17 +20,16 @@ package servicefabric
 import (
 	"context"
 	"encoding/json"
-	"net/http"
-
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go//services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric"
 
 // ClusterState enumerates the values for cluster state.
 type ClusterState string
@@ -333,29 +332,6 @@ func PossibleX509StoreNameValues() []X509StoreName {
 	return []X509StoreName{AddressBook, AuthRoot, CertificateAuthority, Disallowed, My, Root, TrustedPeople, TrustedPublisher}
 }
 
-// ApplicationDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ApplicationDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationDeleteFuture) Result(client ApplicationClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of
 // its children entities.
 type ApplicationHealthPolicy struct {
@@ -402,38 +378,9 @@ type ApplicationParameter struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// ApplicationPatchFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ApplicationPatchFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationPatchFuture) Result(client ApplicationClient) (aru ApplicationResourceUpdate, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPatchFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationPatchFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if aru.Response.Response, err = future.GetResult(sender); err == nil && aru.Response.Response.StatusCode != http.StatusNoContent {
-		aru, err = client.PatchResponder(aru.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPatchFuture", "Result", aru.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // ApplicationProperties the application resource properties.
 type ApplicationProperties struct {
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string                   `json:"provisioningState,omitempty"`
 	TypeName          *string                   `json:"typeName,omitempty"`
 	TypeVersion       *string                   `json:"typeVersion,omitempty"`
@@ -448,44 +395,14 @@ type ApplicationProperties struct {
 	Metrics                   *[]ApplicationMetricDescription `json:"metrics,omitempty"`
 }
 
-// ApplicationPutFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ApplicationPutFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationPutFuture) Result(client ApplicationClient) (ar ApplicationResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPutFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationPutFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ar.Response.Response, err = future.GetResult(sender); err == nil && ar.Response.Response.StatusCode != http.StatusNoContent {
-		ar, err = client.PutResponder(ar.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ApplicationPutFuture", "Result", ar.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // ApplicationResource the application resource.
 type ApplicationResource struct {
-	autorest.Response      `json:"-"`
 	*ApplicationProperties `json:"properties,omitempty"`
-	// ID - Azure resource ID.
+	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -496,15 +413,6 @@ func (ar ApplicationResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ar.ApplicationProperties != nil {
 		objectMap["properties"] = ar.ApplicationProperties
-	}
-	if ar.ID != nil {
-		objectMap["id"] = ar.ID
-	}
-	if ar.Name != nil {
-		objectMap["name"] = ar.Name
-	}
-	if ar.Type != nil {
-		objectMap["type"] = ar.Type
 	}
 	if ar.Location != nil {
 		objectMap["location"] = ar.Location
@@ -574,19 +482,17 @@ func (ar *ApplicationResource) UnmarshalJSON(body []byte) error {
 
 // ApplicationResourceList the list of application resources.
 type ApplicationResourceList struct {
-	autorest.Response `json:"-"`
-	Value             *[]ApplicationResource `json:"value,omitempty"`
+	Value *[]ApplicationResource `json:"value,omitempty"`
 }
 
 // ApplicationResourceUpdate the application resource for patch operations.
 type ApplicationResourceUpdate struct {
-	autorest.Response            `json:"-"`
 	*ApplicationUpdateProperties `json:"properties,omitempty"`
-	// ID - Azure resource ID.
+	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -597,15 +503,6 @@ func (aru ApplicationResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if aru.ApplicationUpdateProperties != nil {
 		objectMap["properties"] = aru.ApplicationUpdateProperties
-	}
-	if aru.ID != nil {
-		objectMap["id"] = aru.ID
-	}
-	if aru.Name != nil {
-		objectMap["name"] = aru.Name
-	}
-	if aru.Type != nil {
-		objectMap["type"] = aru.Type
 	}
 	if aru.Location != nil {
 		objectMap["location"] = aru.Location
@@ -673,44 +570,20 @@ func (aru *ApplicationResourceUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ApplicationTypeDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ApplicationTypeDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationTypeDeleteFuture) Result(client ApplicationTypeClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationTypeDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // ApplicationTypeProperties the application type name properties
 type ApplicationTypeProperties struct {
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response.
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
 // ApplicationTypeResource the application type name resource
 type ApplicationTypeResource struct {
-	autorest.Response          `json:"-"`
 	*ApplicationTypeProperties `json:"properties,omitempty"`
-	// ID - Azure resource ID.
+	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -721,15 +594,6 @@ func (atr ApplicationTypeResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if atr.ApplicationTypeProperties != nil {
 		objectMap["properties"] = atr.ApplicationTypeProperties
-	}
-	if atr.ID != nil {
-		objectMap["id"] = atr.ID
-	}
-	if atr.Name != nil {
-		objectMap["name"] = atr.Name
-	}
-	if atr.Type != nil {
-		objectMap["type"] = atr.Type
 	}
 	if atr.Location != nil {
 		objectMap["location"] = atr.Location
@@ -799,8 +663,7 @@ func (atr *ApplicationTypeResource) UnmarshalJSON(body []byte) error {
 
 // ApplicationTypeResourceList the list of application type names.
 type ApplicationTypeResourceList struct {
-	autorest.Response `json:"-"`
-	Value             *[]ApplicationTypeResource `json:"value,omitempty"`
+	Value *[]ApplicationTypeResource `json:"value,omitempty"`
 }
 
 // ApplicationUpdateProperties the application resource properties for patch operations.
@@ -880,11 +743,11 @@ type Cluster struct {
 	autorest.Response `json:"-"`
 	// ClusterProperties - The cluster resource properties
 	*ClusterProperties `json:"properties,omitempty"`
-	// ID - Azure resource ID.
+	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -897,15 +760,6 @@ func (c Cluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if c.ClusterProperties != nil {
 		objectMap["properties"] = c.ClusterProperties
-	}
-	if c.ID != nil {
-		objectMap["id"] = c.ID
-	}
-	if c.Name != nil {
-		objectMap["name"] = c.Name
-	}
-	if c.Type != nil {
-		objectMap["type"] = c.Type
 	}
 	if c.Location != nil {
 		objectMap["location"] = c.Location
@@ -1094,11 +948,11 @@ type ClusterListResult struct {
 type ClusterProperties struct {
 	// AvailableClusterVersions - The Service Fabric runtime versions available for this cluster.
 	AvailableClusterVersions *[]ClusterVersionDetails `json:"availableClusterVersions,omitempty"`
-	// ClusterID - A service generated unique identifier for the cluster resource.
+	// ClusterID - READ-ONLY; A service generated unique identifier for the cluster resource.
 	ClusterID *string `json:"clusterId,omitempty"`
 	// ClusterState - Possible values include: 'WaitingForNodes', 'Deploying', 'BaselineUpgrade', 'UpdatingUserConfiguration', 'UpdatingUserCertificate', 'UpdatingInfrastructure', 'EnforcingClusterVersion', 'UpgradeServiceUnreachable', 'AutoScale', 'Ready'
 	ClusterState ClusterState `json:"clusterState,omitempty"`
-	// ClusterEndpoint - The Azure Resource Provider endpoint. A system service in the cluster connects to this  endpoint.
+	// ClusterEndpoint - READ-ONLY; The Azure Resource Provider endpoint. A system service in the cluster connects to this  endpoint.
 	ClusterEndpoint *string `json:"clusterEndpoint,omitempty"`
 	// ClusterCodeVersion - The Service Fabric runtime version of the cluster. This property can only by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new clusters use [ClusterVersion API](./ClusterVersion.md). To get the list of available version for existing clusters use **availableClusterVersions**.
 	ClusterCodeVersion *string `json:"clusterCodeVersion,omitempty"`
@@ -1122,7 +976,7 @@ type ClusterProperties struct {
 	NodeTypes *[]NodeTypeDescription `json:"nodeTypes,omitempty"`
 	// AzureActiveDirectory - The AAD authentication settings of the cluster.
 	AzureActiveDirectory *AzureActiveDirectory `json:"azureActiveDirectory,omitempty"`
-	// ProvisioningState - The provisioning state of the cluster resource. Possible values include: 'Updating', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of the cluster resource. Possible values include: 'Updating', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VMImage - The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used.
 	VMImage *string `json:"vmImage,omitempty"`
@@ -1466,7 +1320,7 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Service Fabric operations supported by the Microsoft.ServiceFabric resource provider.
 	Value *[]OperationResult `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
+	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -1526,6 +1380,11 @@ func (iter OperationListResultIterator) Value() OperationResult {
 		return OperationResult{}
 	}
 	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the OperationListResultIterator type.
+func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
+	return OperationListResultIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
@@ -1595,6 +1454,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 		return nil
 	}
 	return *page.olr.Value
+}
+
+// Creates a new instance of the OperationListResultPage type.
+func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{fn: getNextPage}
 }
 
 // OperationResult available operation list result
@@ -1705,11 +1569,11 @@ func (psd PartitionSchemeDescription) AsBasicPartitionSchemeDescription() (Basic
 
 // ProxyResource the resource model definition for proxy-only resource.
 type ProxyResource struct {
-	// ID - Azure resource ID.
+	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -1717,11 +1581,11 @@ type ProxyResource struct {
 
 // Resource the resource model definition.
 type Resource struct {
-	// ID - Azure resource ID.
+	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -1732,15 +1596,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
@@ -1766,29 +1621,6 @@ type ServiceCorrelationDescription struct {
 	ServiceName *string `json:"ServiceName,omitempty"`
 }
 
-// ServiceDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type ServiceDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServiceDeleteFuture) Result(client ServiceClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServiceDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ServiceDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // ServiceLoadMetricDescription specifies a metric to load balance a service during runtime.
 type ServiceLoadMetricDescription struct {
 	// Name - The name of the metric. If the service chooses to report load during runtime, the load metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive.
@@ -1801,34 +1633,6 @@ type ServiceLoadMetricDescription struct {
 	SecondaryDefaultLoad *int32 `json:"SecondaryDefaultLoad,omitempty"`
 	// DefaultLoad - Used only for Stateless services. The default amount of load, as a number, that this service creates for this metric.
 	DefaultLoad *int32 `json:"DefaultLoad,omitempty"`
-}
-
-// ServicePatchFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ServicePatchFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServicePatchFuture) Result(client ServiceClient) (sru ServiceResourceUpdate, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicePatchFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ServicePatchFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sru.Response.Response, err = future.GetResult(sender); err == nil && sru.Response.Response.StatusCode != http.StatusNoContent {
-		sru, err = client.PatchResponder(sru.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ServicePatchFuture", "Result", sru.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // BasicServicePlacementPolicyDescription describes the policy to be used for placement of a Service Fabric service.
@@ -1904,7 +1708,7 @@ type BasicServiceProperties interface {
 
 // ServiceProperties the service resource properties.
 type ServiceProperties struct {
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ServiceTypeName - The name of the service type
 	ServiceTypeName      *string                         `json:"serviceTypeName,omitempty"`
@@ -1965,9 +1769,6 @@ func unmarshalBasicServicePropertiesArray(body []byte) ([]BasicServiceProperties
 func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 	sp.ServiceKind = ServiceKindServiceProperties
 	objectMap := make(map[string]interface{})
-	if sp.ProvisioningState != nil {
-		objectMap["provisioningState"] = sp.ProvisioningState
-	}
 	if sp.ServiceTypeName != nil {
 		objectMap["serviceTypeName"] = sp.ServiceTypeName
 	}
@@ -2177,43 +1978,14 @@ func (spb *ServicePropertiesBase) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicePutFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type ServicePutFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServicePutFuture) Result(client ServiceClient) (sr ServiceResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicePutFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ServicePutFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
-		sr, err = client.PutResponder(sr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ServicePutFuture", "Result", sr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // ServiceResource the service resource.
 type ServiceResource struct {
-	autorest.Response      `json:"-"`
 	BasicServiceProperties `json:"properties,omitempty"`
-	// ID - Azure resource ID.
+	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -2223,15 +1995,6 @@ type ServiceResource struct {
 func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = sr.BasicServiceProperties
-	if sr.ID != nil {
-		objectMap["id"] = sr.ID
-	}
-	if sr.Name != nil {
-		objectMap["name"] = sr.Name
-	}
-	if sr.Type != nil {
-		objectMap["type"] = sr.Type
-	}
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
 	}
@@ -2299,19 +2062,17 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 
 // ServiceResourceList the list of service resources.
 type ServiceResourceList struct {
-	autorest.Response `json:"-"`
-	Value             *[]ServiceResource `json:"value,omitempty"`
+	Value *[]ServiceResource `json:"value,omitempty"`
 }
 
 // ServiceResourceUpdate the service resource for patch operations.
 type ServiceResourceUpdate struct {
-	autorest.Response            `json:"-"`
 	BasicServiceUpdateProperties `json:"properties,omitempty"`
-	// ID - Azure resource ID.
+	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -2321,15 +2082,6 @@ type ServiceResourceUpdate struct {
 func (sru ServiceResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = sru.BasicServiceUpdateProperties
-	if sru.ID != nil {
-		objectMap["id"] = sru.ID
-	}
-	if sru.Name != nil {
-		objectMap["name"] = sru.Name
-	}
-	if sru.Type != nil {
-		objectMap["type"] = sru.Type
-	}
 	if sru.Location != nil {
 		objectMap["location"] = sru.Location
 	}
@@ -2677,7 +2429,7 @@ type StatefulServiceProperties struct {
 	QuorumLossWaitDuration *date.Time `json:"quorumLossWaitDuration,omitempty"`
 	// StandByReplicaKeepDuration - The definition on how long StandBy replicas should be maintained before being removed, represented in ISO 8601 format (hh:mm:ss.s).
 	StandByReplicaKeepDuration *date.Time `json:"standByReplicaKeepDuration,omitempty"`
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ServiceTypeName - The name of the service type
 	ServiceTypeName      *string                         `json:"serviceTypeName,omitempty"`
@@ -2714,9 +2466,6 @@ func (ssp StatefulServiceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ssp.StandByReplicaKeepDuration != nil {
 		objectMap["standByReplicaKeepDuration"] = ssp.StandByReplicaKeepDuration
-	}
-	if ssp.ProvisioningState != nil {
-		objectMap["provisioningState"] = ssp.ProvisioningState
 	}
 	if ssp.ServiceTypeName != nil {
 		objectMap["serviceTypeName"] = ssp.ServiceTypeName
@@ -3111,7 +2860,7 @@ func (ssup *StatefulServiceUpdateProperties) UnmarshalJSON(body []byte) error {
 type StatelessServiceProperties struct {
 	// InstanceCount - The instance count.
 	InstanceCount *int32 `json:"instanceCount,omitempty"`
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ServiceTypeName - The name of the service type
 	ServiceTypeName      *string                         `json:"serviceTypeName,omitempty"`
@@ -3133,9 +2882,6 @@ func (ssp StatelessServiceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ssp.InstanceCount != nil {
 		objectMap["instanceCount"] = ssp.InstanceCount
-	}
-	if ssp.ProvisioningState != nil {
-		objectMap["provisioningState"] = ssp.ProvisioningState
 	}
 	if ssp.ServiceTypeName != nil {
 		objectMap["serviceTypeName"] = ssp.ServiceTypeName
@@ -3484,75 +3230,24 @@ func (ui6rpsd UniformInt64RangePartitionSchemeDescription) AsBasicPartitionSchem
 	return &ui6rpsd, true
 }
 
-// VersionDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VersionDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VersionDeleteFuture) Result(client VersionClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.VersionDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.VersionDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // VersionProperties the properties of the version resource.
 type VersionProperties struct {
-	// ProvisioningState - The current deployment or provisioning state, which only appears in the response
+	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AppPackageURL - The URL to the application package
-	AppPackageURL        *string                 `json:"appPackageUrl,omitempty"`
+	AppPackageURL *string `json:"appPackageUrl,omitempty"`
+	// DefaultParameterList - READ-ONLY
 	DefaultParameterList *[]ApplicationParameter `json:"defaultParameterList,omitempty"`
-}
-
-// VersionPutFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type VersionPutFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VersionPutFuture) Result(client VersionClient) (vr VersionResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.VersionPutFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.VersionPutFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vr.Response.Response, err = future.GetResult(sender); err == nil && vr.Response.Response.StatusCode != http.StatusNoContent {
-		vr, err = client.PutResponder(vr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.VersionPutFuture", "Result", vr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // VersionResource a version resource for the specified application type name.
 type VersionResource struct {
-	autorest.Response  `json:"-"`
 	*VersionProperties `json:"properties,omitempty"`
-	// ID - Azure resource ID.
+	// ID - READ-ONLY; Azure resource ID.
 	ID *string `json:"id,omitempty"`
-	// Name - Azure resource name.
+	// Name - READ-ONLY; Azure resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - Azure resource type.
+	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
@@ -3563,15 +3258,6 @@ func (vr VersionResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vr.VersionProperties != nil {
 		objectMap["properties"] = vr.VersionProperties
-	}
-	if vr.ID != nil {
-		objectMap["id"] = vr.ID
-	}
-	if vr.Name != nil {
-		objectMap["name"] = vr.Name
-	}
-	if vr.Type != nil {
-		objectMap["type"] = vr.Type
 	}
 	if vr.Location != nil {
 		objectMap["location"] = vr.Location
@@ -3641,6 +3327,5 @@ func (vr *VersionResource) UnmarshalJSON(body []byte) error {
 
 // VersionResourceList the list of version resources for the specified application type name.
 type VersionResourceList struct {
-	autorest.Response `json:"-"`
-	Value             *[]VersionResource `json:"value,omitempty"`
+	Value *[]VersionResource `json:"value,omitempty"`
 }

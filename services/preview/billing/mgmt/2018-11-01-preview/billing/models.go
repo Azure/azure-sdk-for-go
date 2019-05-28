@@ -47,6 +47,21 @@ func PossibleAccountTypeValues() []AccountType {
 	return []AccountType{AccountTypeEnrollment, AccountTypeOrganization}
 }
 
+// AddressValidationStatus enumerates the values for address validation status.
+type AddressValidationStatus string
+
+const (
+	// Invalid ...
+	Invalid AddressValidationStatus = "Invalid"
+	// Valid ...
+	Valid AddressValidationStatus = "Valid"
+)
+
+// PossibleAddressValidationStatusValues returns an array of possible values for the AddressValidationStatus const type.
+func PossibleAddressValidationStatusValues() []AddressValidationStatus {
+	return []AddressValidationStatus{Invalid, Valid}
+}
+
 // EligibleProductType enumerates the values for eligible product type.
 type EligibleProductType string
 
@@ -3657,4 +3672,15 @@ type UpdateAutoRenewOperationSummaryProperties struct {
 type UpdateAutoRenewRequest struct {
 	// AutoRenew - Request parameters to update auto renew policy a product. Possible values include: 'True', 'False'
 	AutoRenew UpdateAutoRenew `json:"autoRenew,omitempty"`
+}
+
+// ValidateAddressResponse result of the address validation
+type ValidateAddressResponse struct {
+	autorest.Response `json:"-"`
+	// Status - status of the address validation. Possible values include: 'Valid', 'Invalid'
+	Status AddressValidationStatus `json:"status,omitempty"`
+	// SuggestedAddresses - list of suggested addresses.
+	SuggestedAddresses *[]Address `json:"suggestedAddresses,omitempty"`
+	// ValidationMessage - Validation error message.
+	ValidationMessage *string `json:"validationMessage,omitempty"`
 }

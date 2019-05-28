@@ -23,3 +23,4 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/managementpa
 
 type OperationClientAPI = original.OperationClientAPI
 type PartnerClientAPI = original.PartnerClientAPI
+type PartnersClientAPI = original.PartnersClientAPI

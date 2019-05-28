@@ -32,13 +32,13 @@ type ScheduleClient struct {
 }
 
 // NewScheduleClient creates an instance of the ScheduleClient client.
-func NewScheduleClient(subscriptionID string, countType1 CountType) ScheduleClient {
-	return NewScheduleClientWithBaseURI(DefaultBaseURI, subscriptionID, countType1)
+func NewScheduleClient(subscriptionID string) ScheduleClient {
+	return NewScheduleClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewScheduleClientWithBaseURI creates an instance of the ScheduleClient client.
-func NewScheduleClientWithBaseURI(baseURI string, subscriptionID string, countType1 CountType) ScheduleClient {
-	return ScheduleClient{NewWithBaseURI(baseURI, subscriptionID, countType1)}
+func NewScheduleClientWithBaseURI(baseURI string, subscriptionID string) ScheduleClient {
+	return ScheduleClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create a schedule.

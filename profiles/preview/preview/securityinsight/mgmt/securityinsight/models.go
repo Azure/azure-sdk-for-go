@@ -227,7 +227,6 @@ type CasesClient = original.CasesClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type DataConnector = original.DataConnector
-type DataConnectorAwsRoleArn = original.DataConnectorAwsRoleArn
 type DataConnectorDataTypeCommon = original.DataConnectorDataTypeCommon
 type DataConnectorKind1 = original.DataConnectorKind1
 type DataConnectorList = original.DataConnectorList

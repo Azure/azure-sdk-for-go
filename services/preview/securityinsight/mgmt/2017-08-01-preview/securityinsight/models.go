@@ -1565,10 +1565,10 @@ type AwsCloudTrailDataConnectorDataTypesLogs struct {
 
 // AwsCloudTrailDataConnectorProperties amazon Web Services CloudTrail data connector properties.
 type AwsCloudTrailDataConnectorProperties struct {
-	// DataTypes - The available data types for the connector.
-	DataTypes *AwsCloudTrailDataConnectorDataTypes `json:"dataTypes,omitempty"`
 	// AwsRoleArn - The Aws Role Arn (with CloudTrailReadOnly policy) that is used to access the Aws account.
 	AwsRoleArn *string `json:"AwsRoleArn,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *AwsCloudTrailDataConnectorDataTypes `json:"dataTypes,omitempty"`
 }
 
 // Bookmark represents a bookmark in Azure Security Insights.
@@ -2264,12 +2264,6 @@ func (dc DataConnector) AsDataConnector() (*DataConnector, bool) {
 // AsBasicDataConnector is the BasicDataConnector implementation for DataConnector.
 func (dc DataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
 	return &dc, true
-}
-
-// DataConnectorAwsRoleArn the Aws Role Arn that is used to access the Aws account.
-type DataConnectorAwsRoleArn struct {
-	// AwsRoleArn - The Aws Role Arn (with CloudTrailReadOnly policy) that is used to access the Aws account.
-	AwsRoleArn *string `json:"AwsRoleArn,omitempty"`
 }
 
 // DataConnectorDataTypeCommon common field for data type in data connectors.

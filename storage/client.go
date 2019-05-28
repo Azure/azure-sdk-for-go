@@ -367,15 +367,13 @@ func newSASClient(accountName, baseURL string, sasToken url.Values) Client {
 		accountName:     accountName,
 		baseURL:         baseURL,
 		accountSASToken: sasToken,
+		useHTTPS:        defaultUseHTTPS,
 	}
 	c.userAgent = c.getDefaultUserAgent()
 	// Get API version and protocol from token
 	c.apiVersion = sasToken.Get("sv")
-	if sasToken.Get("spr") != "" {
-		c.useHTTPS = sasToken.Get("spr") == "https"
-	} else {
-		// SAS token generated from Storage Explorer won't carry a spr in the query, but it needs https only
-		c.useHTTPS = true
+	if spr := sasToken.Get("spr"); spr != "" {
+		c.useHTTPS = spr == "https"
 	}
 	return c
 }

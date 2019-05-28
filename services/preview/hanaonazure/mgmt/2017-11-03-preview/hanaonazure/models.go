@@ -125,6 +125,31 @@ func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
 	return []HanaInstanceSizeNamesEnum{S144, S144m, S192, S192m, S192xm, S224m, S224o, S224om, S224oxm, S224oxxm, S384, S384m, S384xm, S384xxm, S576m, S576xm, S72, S72m, S768, S768m, S768xm, S96, S960m}
 }
 
+// HanaProvisioningStatesEnum enumerates the values for hana provisioning states enum.
+type HanaProvisioningStatesEnum string
+
+const (
+	// Accepted ...
+	Accepted HanaProvisioningStatesEnum = "Accepted"
+	// Creating ...
+	Creating HanaProvisioningStatesEnum = "Creating"
+	// Deleting ...
+	Deleting HanaProvisioningStatesEnum = "Deleting"
+	// Failed ...
+	Failed HanaProvisioningStatesEnum = "Failed"
+	// Migrating ...
+	Migrating HanaProvisioningStatesEnum = "Migrating"
+	// Succeeded ...
+	Succeeded HanaProvisioningStatesEnum = "Succeeded"
+	// Updating ...
+	Updating HanaProvisioningStatesEnum = "Updating"
+)
+
+// PossibleHanaProvisioningStatesEnumValues returns an array of possible values for the HanaProvisioningStatesEnum const type.
+func PossibleHanaProvisioningStatesEnumValues() []HanaProvisioningStatesEnum {
+	return []HanaProvisioningStatesEnum{Accepted, Creating, Deleting, Failed, Migrating, Succeeded, Updating}
+}
+
 // Disk specifies the disk information fo the HANA instance
 type Disk struct {
 	// Name - The disk name.
@@ -270,6 +295,39 @@ type HanaInstanceProperties struct {
 	ProximityPlacementGroup *string `json:"proximityPlacementGroup,omitempty"`
 	// HwRevision - READ-ONLY; Hardware revision of a HANA instance
 	HwRevision *string `json:"hwRevision,omitempty"`
+	// PartnerNodeID - READ-ONLY; ARM ID of another HanaInstance that will share a network with this HanaInstance
+	PartnerNodeID *string `json:"partnerNodeId,omitempty"`
+	// ProvisioningState - READ-ONLY; State of provisioning of the HanaInstance. Possible values include: 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting', 'Migrating'
+	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
+}
+
+// HanaInstancesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type HanaInstancesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HanaInstancesCreateFuture) Result(client HanaInstancesClient) (hi HanaInstance, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if hi.Response.Response, err = future.GetResult(sender); err == nil && hi.Response.Response.StatusCode != http.StatusNoContent {
+		hi, err = client.CreateResponder(hi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesCreateFuture", "Result", hi.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // HanaInstancesEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a
@@ -525,6 +583,8 @@ type OSProfile struct {
 	OsType *string `json:"osType,omitempty"`
 	// Version - READ-ONLY; Specifies version of operating system.
 	Version *string `json:"version,omitempty"`
+	// SSHPublicKey - READ-ONLY; Specifies the SSH public key used to access the operating system.
+	SSHPublicKey *string `json:"sshPublicKey,omitempty"`
 }
 
 // Resource the resource model definition.

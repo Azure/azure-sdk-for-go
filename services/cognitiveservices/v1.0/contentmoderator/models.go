@@ -95,12 +95,6 @@ func (b Body) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BodyModel ...
-type BodyModel struct {
-	DataRepresentation *string `json:"DataRepresentation,omitempty"`
-	Value              *string `json:"Value,omitempty"`
-}
-
 // Candidate OCR candidate text.
 type Candidate struct {
 	// Text - The text found.
@@ -405,6 +399,12 @@ func (il ImageList) MarshalJSON() ([]byte, error) {
 		objectMap["Metadata"] = il.Metadata
 	}
 	return json.Marshal(objectMap)
+}
+
+// ImageURL ...
+type ImageURL struct {
+	DataRepresentation *string `json:"DataRepresentation,omitempty"`
+	Value              *string `json:"Value,omitempty"`
 }
 
 // IPA IP Address details.

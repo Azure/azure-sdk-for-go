@@ -75,6 +75,18 @@ const (
 	S960m    HanaInstanceSizeNamesEnum = original.S960m
 )
 
+type HanaProvisioningStatesEnum = original.HanaProvisioningStatesEnum
+
+const (
+	Accepted  HanaProvisioningStatesEnum = original.Accepted
+	Creating  HanaProvisioningStatesEnum = original.Creating
+	Deleting  HanaProvisioningStatesEnum = original.Deleting
+	Failed    HanaProvisioningStatesEnum = original.Failed
+	Migrating HanaProvisioningStatesEnum = original.Migrating
+	Succeeded HanaProvisioningStatesEnum = original.Succeeded
+	Updating  HanaProvisioningStatesEnum = original.Updating
+)
+
 type BaseClient = original.BaseClient
 type Disk = original.Disk
 type Display = original.Display
@@ -82,6 +94,7 @@ type ErrorResponse = original.ErrorResponse
 type HanaInstance = original.HanaInstance
 type HanaInstanceProperties = original.HanaInstanceProperties
 type HanaInstancesClient = original.HanaInstancesClient
+type HanaInstancesCreateFuture = original.HanaInstancesCreateFuture
 type HanaInstancesEnableMonitoringFuture = original.HanaInstancesEnableMonitoringFuture
 type HanaInstancesListResult = original.HanaInstancesListResult
 type HanaInstancesListResultIterator = original.HanaInstancesListResultIterator
@@ -131,6 +144,9 @@ func PossibleHanaInstancePowerStateEnumValues() []HanaInstancePowerStateEnum {
 }
 func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
 	return original.PossibleHanaInstanceSizeNamesEnumValues()
+}
+func PossibleHanaProvisioningStatesEnumValues() []HanaProvisioningStatesEnum {
+	return original.PossibleHanaProvisioningStatesEnumValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

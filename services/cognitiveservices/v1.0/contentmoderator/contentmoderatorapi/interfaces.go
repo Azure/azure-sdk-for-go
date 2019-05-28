@@ -28,16 +28,16 @@ import (
 type ImageModerationClientAPI interface {
 	EvaluateFileInput(ctx context.Context, imageStream io.ReadCloser, cacheImage *bool) (result contentmoderator.Evaluate, err error)
 	EvaluateMethod(ctx context.Context, cacheImage *bool) (result contentmoderator.Evaluate, err error)
-	EvaluateURLInput(ctx context.Context, contentType string, imageURL contentmoderator.BodyModel, cacheImage *bool) (result contentmoderator.Evaluate, err error)
+	EvaluateURLInput(ctx context.Context, contentType string, imageURL contentmoderator.ImageURL, cacheImage *bool) (result contentmoderator.Evaluate, err error)
 	FindFaces(ctx context.Context, cacheImage *bool) (result contentmoderator.FoundFaces, err error)
 	FindFacesFileInput(ctx context.Context, imageStream io.ReadCloser, cacheImage *bool) (result contentmoderator.FoundFaces, err error)
-	FindFacesURLInput(ctx context.Context, contentType string, imageURL contentmoderator.BodyModel, cacheImage *bool) (result contentmoderator.FoundFaces, err error)
+	FindFacesURLInput(ctx context.Context, contentType string, imageURL contentmoderator.ImageURL, cacheImage *bool) (result contentmoderator.FoundFaces, err error)
 	MatchFileInput(ctx context.Context, imageStream io.ReadCloser, listID string, cacheImage *bool) (result contentmoderator.MatchResponse, err error)
 	MatchMethod(ctx context.Context, listID string, cacheImage *bool) (result contentmoderator.MatchResponse, err error)
-	MatchURLInput(ctx context.Context, contentType string, imageURL contentmoderator.BodyModel, listID string, cacheImage *bool) (result contentmoderator.MatchResponse, err error)
+	MatchURLInput(ctx context.Context, contentType string, imageURL contentmoderator.ImageURL, listID string, cacheImage *bool) (result contentmoderator.MatchResponse, err error)
 	OCRFileInput(ctx context.Context, language string, imageStream io.ReadCloser, cacheImage *bool, enhanced *bool) (result contentmoderator.OCR, err error)
 	OCRMethod(ctx context.Context, language string, cacheImage *bool, enhanced *bool) (result contentmoderator.OCR, err error)
-	OCRURLInput(ctx context.Context, language string, contentType string, imageURL contentmoderator.BodyModel, cacheImage *bool, enhanced *bool) (result contentmoderator.OCR, err error)
+	OCRURLInput(ctx context.Context, language string, contentType string, imageURL contentmoderator.ImageURL, cacheImage *bool, enhanced *bool) (result contentmoderator.OCR, err error)
 }
 
 var _ ImageModerationClientAPI = (*contentmoderator.ImageModerationClient)(nil)
@@ -78,7 +78,7 @@ var _ ListManagementTermListsClientAPI = (*contentmoderator.ListManagementTermLi
 type ListManagementImageClientAPI interface {
 	AddImage(ctx context.Context, listID string, tag *int32, label string) (result contentmoderator.Image, err error)
 	AddImageFileInput(ctx context.Context, listID string, imageStream io.ReadCloser, tag *int32, label string) (result contentmoderator.Image, err error)
-	AddImageURLInput(ctx context.Context, listID string, contentType string, imageURL contentmoderator.BodyModel, tag *int32, label string) (result contentmoderator.Image, err error)
+	AddImageURLInput(ctx context.Context, listID string, contentType string, imageURL contentmoderator.ImageURL, tag *int32, label string) (result contentmoderator.Image, err error)
 	DeleteAllImages(ctx context.Context, listID string) (result contentmoderator.String, err error)
 	DeleteImage(ctx context.Context, listID string, imageID string) (result contentmoderator.String, err error)
 	GetAllImageIds(ctx context.Context, listID string) (result contentmoderator.ImageIds, err error)

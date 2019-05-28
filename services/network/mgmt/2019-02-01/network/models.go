@@ -21567,6 +21567,15 @@ type ResourceNavigationLinkFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// ResourceNavigationLinksListResult response for ResourceNavigationLinks_Get operation.
+type ResourceNavigationLinksListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The resource navigation links in a subnet.
+	Value *[]ResourceNavigationLink `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // RetentionPolicyParameters parameters that define the retention policy for flow log.
 type RetentionPolicyParameters struct {
 	// Days - Number of days to retain flow log records.
@@ -23728,6 +23737,15 @@ type ServiceAssociationLinkPropertiesFormat struct {
 	Link *string `json:"link,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the ServiceAssociationLink resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// ServiceAssociationLinksListResult response for ServiceAssociationLinks_Get operation.
+type ServiceAssociationLinksListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The service association links in a subnet.
+	Value *[]ServiceAssociationLink `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // ServiceDelegationPropertiesFormat properties of a service delegation.

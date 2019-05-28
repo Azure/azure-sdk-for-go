@@ -1532,6 +1532,8 @@ type ReferencedPublicIPAddress = original.ReferencedPublicIPAddress
 type Resource = original.Resource
 type ResourceNavigationLink = original.ResourceNavigationLink
 type ResourceNavigationLinkFormat = original.ResourceNavigationLinkFormat
+type ResourceNavigationLinksClient = original.ResourceNavigationLinksClient
+type ResourceNavigationLinksListResult = original.ResourceNavigationLinksListResult
 type RetentionPolicyParameters = original.RetentionPolicyParameters
 type Route = original.Route
 type RouteFilter = original.RouteFilter
@@ -1593,6 +1595,8 @@ type SecurityRulesDeleteFuture = original.SecurityRulesDeleteFuture
 type SecurityRulesEvaluationResult = original.SecurityRulesEvaluationResult
 type ServiceAssociationLink = original.ServiceAssociationLink
 type ServiceAssociationLinkPropertiesFormat = original.ServiceAssociationLinkPropertiesFormat
+type ServiceAssociationLinksClient = original.ServiceAssociationLinksClient
+type ServiceAssociationLinksListResult = original.ServiceAssociationLinksListResult
 type ServiceDelegationPropertiesFormat = original.ServiceDelegationPropertiesFormat
 type ServiceEndpointPoliciesClient = original.ServiceEndpointPoliciesClient
 type ServiceEndpointPoliciesCreateOrUpdateFuture = original.ServiceEndpointPoliciesCreateOrUpdateFuture
@@ -2352,6 +2356,12 @@ func NewPublicIPPrefixesClient(subscriptionID string) PublicIPPrefixesClient {
 func NewPublicIPPrefixesClientWithBaseURI(baseURI string, subscriptionID string) PublicIPPrefixesClient {
 	return original.NewPublicIPPrefixesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceNavigationLinksClient(subscriptionID string) ResourceNavigationLinksClient {
+	return original.NewResourceNavigationLinksClient(subscriptionID)
+}
+func NewResourceNavigationLinksClientWithBaseURI(baseURI string, subscriptionID string) ResourceNavigationLinksClient {
+	return original.NewResourceNavigationLinksClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewRouteFilterListResultIterator(page RouteFilterListResultPage) RouteFilterListResultIterator {
 	return original.NewRouteFilterListResultIterator(page)
 }
@@ -2423,6 +2433,12 @@ func NewSecurityRulesClient(subscriptionID string) SecurityRulesClient {
 }
 func NewSecurityRulesClientWithBaseURI(baseURI string, subscriptionID string) SecurityRulesClient {
 	return original.NewSecurityRulesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceAssociationLinksClient(subscriptionID string) ServiceAssociationLinksClient {
+	return original.NewServiceAssociationLinksClient(subscriptionID)
+}
+func NewServiceAssociationLinksClientWithBaseURI(baseURI string, subscriptionID string) ServiceAssociationLinksClient {
+	return original.NewServiceAssociationLinksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServiceEndpointPoliciesClient(subscriptionID string) ServiceEndpointPoliciesClient {
 	return original.NewServiceEndpointPoliciesClient(subscriptionID)

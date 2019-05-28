@@ -199,7 +199,7 @@ func (client ImageModerationClient) EvaluateMethodResponder(resp *http.Response)
 // contentType - the content type.
 // imageURL - the image url.
 // cacheImage - whether to retain the submitted image for future use; defaults to false if omitted.
-func (client ImageModerationClient) EvaluateURLInput(ctx context.Context, contentType string, imageURL BodyModel, cacheImage *bool) (result Evaluate, err error) {
+func (client ImageModerationClient) EvaluateURLInput(ctx context.Context, contentType string, imageURL ImageURL, cacheImage *bool) (result Evaluate, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageModerationClient.EvaluateURLInput")
 		defer func() {
@@ -232,7 +232,7 @@ func (client ImageModerationClient) EvaluateURLInput(ctx context.Context, conten
 }
 
 // EvaluateURLInputPreparer prepares the EvaluateURLInput request.
-func (client ImageModerationClient) EvaluateURLInputPreparer(ctx context.Context, contentType string, imageURL BodyModel, cacheImage *bool) (*http.Request, error) {
+func (client ImageModerationClient) EvaluateURLInputPreparer(ctx context.Context, contentType string, imageURL ImageURL, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -429,7 +429,7 @@ func (client ImageModerationClient) FindFacesFileInputResponder(resp *http.Respo
 // contentType - the content type.
 // imageURL - the image url.
 // cacheImage - whether to retain the submitted image for future use; defaults to false if omitted.
-func (client ImageModerationClient) FindFacesURLInput(ctx context.Context, contentType string, imageURL BodyModel, cacheImage *bool) (result FoundFaces, err error) {
+func (client ImageModerationClient) FindFacesURLInput(ctx context.Context, contentType string, imageURL ImageURL, cacheImage *bool) (result FoundFaces, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageModerationClient.FindFacesURLInput")
 		defer func() {
@@ -462,7 +462,7 @@ func (client ImageModerationClient) FindFacesURLInput(ctx context.Context, conte
 }
 
 // FindFacesURLInputPreparer prepares the FindFacesURLInput request.
-func (client ImageModerationClient) FindFacesURLInputPreparer(ctx context.Context, contentType string, imageURL BodyModel, cacheImage *bool) (*http.Request, error) {
+func (client ImageModerationClient) FindFacesURLInputPreparer(ctx context.Context, contentType string, imageURL ImageURL, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -689,7 +689,7 @@ func (client ImageModerationClient) MatchMethodResponder(resp *http.Response) (r
 // imageURL - the image url.
 // listID - the list Id.
 // cacheImage - whether to retain the submitted image for future use; defaults to false if omitted.
-func (client ImageModerationClient) MatchURLInput(ctx context.Context, contentType string, imageURL BodyModel, listID string, cacheImage *bool) (result MatchResponse, err error) {
+func (client ImageModerationClient) MatchURLInput(ctx context.Context, contentType string, imageURL ImageURL, listID string, cacheImage *bool) (result MatchResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageModerationClient.MatchURLInput")
 		defer func() {
@@ -722,7 +722,7 @@ func (client ImageModerationClient) MatchURLInput(ctx context.Context, contentTy
 }
 
 // MatchURLInputPreparer prepares the MatchURLInput request.
-func (client ImageModerationClient) MatchURLInputPreparer(ctx context.Context, contentType string, imageURL BodyModel, listID string, cacheImage *bool) (*http.Request, error) {
+func (client ImageModerationClient) MatchURLInputPreparer(ctx context.Context, contentType string, imageURL ImageURL, listID string, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -960,7 +960,7 @@ func (client ImageModerationClient) OCRMethodResponder(resp *http.Response) (res
 // image/tiff is not supported when enhanced is set to true
 //
 // Note: This impacts the response time.
-func (client ImageModerationClient) OCRURLInput(ctx context.Context, language string, contentType string, imageURL BodyModel, cacheImage *bool, enhanced *bool) (result OCR, err error) {
+func (client ImageModerationClient) OCRURLInput(ctx context.Context, language string, contentType string, imageURL ImageURL, cacheImage *bool, enhanced *bool) (result OCR, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ImageModerationClient.OCRURLInput")
 		defer func() {
@@ -993,7 +993,7 @@ func (client ImageModerationClient) OCRURLInput(ctx context.Context, language st
 }
 
 // OCRURLInputPreparer prepares the OCRURLInput request.
-func (client ImageModerationClient) OCRURLInputPreparer(ctx context.Context, language string, contentType string, imageURL BodyModel, cacheImage *bool, enhanced *bool) (*http.Request, error) {
+func (client ImageModerationClient) OCRURLInputPreparer(ctx context.Context, language string, contentType string, imageURL ImageURL, cacheImage *bool, enhanced *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}

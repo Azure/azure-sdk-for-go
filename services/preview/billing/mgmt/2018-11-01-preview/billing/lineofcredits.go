@@ -154,7 +154,7 @@ func (client LineOfCreditsClient) IncreasePreparer(ctx context.Context, paramete
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
+		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingAccounts/default/lineOfCredit/default/increase", pathParameters),
 		autorest.WithJSON(parameters),

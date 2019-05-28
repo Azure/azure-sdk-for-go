@@ -243,7 +243,7 @@ func (client ProfilesClient) UpdatePreparer(ctx context.Context, billingAccountN
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
+		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}", pathParameters),
 		autorest.WithJSON(parameters),

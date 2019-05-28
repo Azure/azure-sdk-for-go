@@ -23,26 +23,39 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// PlaybookConfigurationsClientAPI contains the set of methods on the PlaybookConfigurationsClient type.
+type PlaybookConfigurationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfiguration, err error)
+	Delete(ctx context.Context, resourceGroupName string, playbookConfigurationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, playbookConfigurationName string) (result security.PlaybookConfiguration, err error)
+	List(ctx context.Context) (result security.PlaybookConfigurationListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.PlaybookConfigurationListPage, err error)
+	Patch(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfiguration, err error)
+	Validate(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfigurationValidationStatus, err error)
+}
+
+var _ PlaybookConfigurationsClientAPI = (*security.PlaybookConfigurationsClient)(nil)
+
 // RegulatoryComplianceStandardsClientAPI contains the set of methods on the RegulatoryComplianceStandardsClient type.
 type RegulatoryComplianceStandardsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string) (result security.RegulatoryComplianceStandard, err error)
-	List(ctx context.Context, resourceGroupName string, filter string) (result security.RegulatoryComplianceStandardListPage, err error)
+	Get(ctx context.Context, regulatoryComplianceStandardName string) (result security.RegulatoryComplianceStandard, err error)
+	List(ctx context.Context, filter string) (result security.RegulatoryComplianceStandardListPage, err error)
 }
 
 var _ RegulatoryComplianceStandardsClientAPI = (*security.RegulatoryComplianceStandardsClient)(nil)
 
 // RegulatoryComplianceControlsClientAPI contains the set of methods on the RegulatoryComplianceControlsClient type.
 type RegulatoryComplianceControlsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string, regulatoryComplianceControlName string) (result security.RegulatoryComplianceControl, err error)
-	List(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string, filter string) (result security.RegulatoryComplianceControlListPage, err error)
+	Get(ctx context.Context, regulatoryComplianceStandardName string, regulatoryComplianceControlName string) (result security.RegulatoryComplianceControl, err error)
+	List(ctx context.Context, regulatoryComplianceStandardName string, filter string) (result security.RegulatoryComplianceControlListPage, err error)
 }
 
 var _ RegulatoryComplianceControlsClientAPI = (*security.RegulatoryComplianceControlsClient)(nil)
 
 // RegulatoryComplianceAssessmentsClientAPI contains the set of methods on the RegulatoryComplianceAssessmentsClient type.
 type RegulatoryComplianceAssessmentsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, regulatoryComplianceAssessmentName string) (result security.RegulatoryComplianceAssessment, err error)
-	List(ctx context.Context, resourceGroupName string, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, filter string) (result security.RegulatoryComplianceAssessmentListPage, err error)
+	Get(ctx context.Context, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, regulatoryComplianceAssessmentName string) (result security.RegulatoryComplianceAssessment, err error)
+	List(ctx context.Context, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, filter string) (result security.RegulatoryComplianceAssessmentListPage, err error)
 }
 
 var _ RegulatoryComplianceAssessmentsClientAPI = (*security.RegulatoryComplianceAssessmentsClient)(nil)

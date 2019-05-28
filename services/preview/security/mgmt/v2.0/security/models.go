@@ -49,6 +49,21 @@ func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return []AadConnectivityState{Connected, Discovered, NotLicensed}
 }
 
+// ActionType enumerates the values for action type.
+type ActionType string
+
+const (
+	// ActionTypeLogicApp ...
+	ActionTypeLogicApp ActionType = "LogicApp"
+	// ActionTypePlaybookConfigurationAction ...
+	ActionTypePlaybookConfigurationAction ActionType = "PlaybookConfigurationAction"
+)
+
+// PossibleActionTypeValues returns an array of possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{ActionTypeLogicApp, ActionTypePlaybookConfigurationAction}
+}
+
 // AlertNotifications enumerates the values for alert notifications.
 type AlertNotifications string
 
@@ -179,6 +194,39 @@ func PossibleKindEnumValues() []KindEnum {
 	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
+// Operator enumerates the values for operator.
+type Operator string
+
+const (
+	// Contains ...
+	Contains Operator = "Contains"
+	// EndsWith ...
+	EndsWith Operator = "EndsWith"
+	// Equals ...
+	Equals Operator = "Equals"
+	// EqualsIgnoreCase ...
+	EqualsIgnoreCase Operator = "EqualsIgnoreCase"
+	// GreaterThan ...
+	GreaterThan Operator = "GreaterThan"
+	// GreaterThanOrEqualTo ...
+	GreaterThanOrEqualTo Operator = "GreaterThanOrEqualTo"
+	// LesserThan ...
+	LesserThan Operator = "LesserThan"
+	// LesserThanOrEqualTo ...
+	LesserThanOrEqualTo Operator = "LesserThanOrEqualTo"
+	// NotEquals ...
+	NotEquals Operator = "NotEquals"
+	// NotEqualsIgnoreCase ...
+	NotEqualsIgnoreCase Operator = "NotEqualsIgnoreCase"
+	// StartsWith ...
+	StartsWith Operator = "StartsWith"
+)
+
+// PossibleOperatorValues returns an array of possible values for the Operator const type.
+func PossibleOperatorValues() []Operator {
+	return []Operator{Contains, EndsWith, Equals, EqualsIgnoreCase, GreaterThan, GreaterThanOrEqualTo, LesserThan, LesserThanOrEqualTo, NotEquals, NotEqualsIgnoreCase, StartsWith}
+}
+
 // PricingTier enumerates the values for pricing tier.
 type PricingTier string
 
@@ -192,6 +240,25 @@ const (
 // PossiblePricingTierValues returns an array of possible values for the PricingTier const type.
 func PossiblePricingTierValues() []PricingTier {
 	return []PricingTier{Free, Standard}
+}
+
+// PropertyType enumerates the values for property type.
+type PropertyType string
+
+const (
+	// Boolean ...
+	Boolean PropertyType = "boolean"
+	// Integer ...
+	Integer PropertyType = "integer"
+	// Number ...
+	Number PropertyType = "number"
+	// String ...
+	String PropertyType = "string"
+)
+
+// PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
+func PossiblePropertyTypeValues() []PropertyType {
+	return []PropertyType{Boolean, Integer, Number, String}
 }
 
 // Protocol enumerates the values for protocol.
@@ -315,15 +382,15 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 type ValueType string
 
 const (
-	// IPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
-	IPCidr ValueType = "IpCidr"
-	// String Any string value.
-	String ValueType = "String"
+	// ValueTypeIPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
+	ValueTypeIPCidr ValueType = "IpCidr"
+	// ValueTypeString Any string value.
+	ValueTypeString ValueType = "String"
 )
 
 // PossibleValueTypeValues returns an array of possible values for the ValueType const type.
 func PossibleValueTypeValues() []ValueType {
-	return []ValueType{IPCidr, String}
+	return []ValueType{ValueTypeIPCidr, ValueTypeString}
 }
 
 // AadConnectivityState1 describes an Azure resource with kind
@@ -1319,7 +1386,7 @@ type AllowedConnectionsResourceProperties struct {
 type AllowlistCustomAlertRule struct {
 	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
 	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -2687,7 +2754,7 @@ type DataExportSettingProperties struct {
 type DenylistCustomAlertRule struct {
 	// DenylistValues - The values to deny. The format of the values depends on the rule type.
 	DenylistValues *[]string `json:"denylistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -3177,6 +3244,14 @@ type EffectiveNetworkSecurityGroups struct {
 	NetworkInterface *string `json:"networkInterface,omitempty"`
 	// NetworkSecurityGroups - The Network Security Groups effective on the network interface
 	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
+}
+
+// ETag entity tag is used for comparing two or more entities from the same requested resource. ETags may
+// be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency
+// control.
+type ETag struct {
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // BasicExternalSecuritySolution represents a security solution external to Azure Security Center which sends
@@ -4173,7 +4248,7 @@ type Kind struct {
 
 // ListCustomAlertRule a List custom alert rule
 type ListCustomAlertRule struct {
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -4356,6 +4431,534 @@ func (page OperationListPage) Values() []Operation {
 // Creates a new instance of the OperationListPage type.
 func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
 	return OperationListPage{fn: getNextPage}
+}
+
+// PlaybookConfiguration the playbook configuration resource.
+type PlaybookConfiguration struct {
+	autorest.Response `json:"-"`
+	// PlaybookConfigurationProperties - Playbook configuration data
+	*PlaybookConfigurationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - READ-ONLY; Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfiguration.
+func (pc PlaybookConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pc.PlaybookConfigurationProperties != nil {
+		objectMap["properties"] = pc.PlaybookConfigurationProperties
+	}
+	if pc.Kind != nil {
+		objectMap["kind"] = pc.Kind
+	}
+	if pc.Etag != nil {
+		objectMap["etag"] = pc.Etag
+	}
+	if pc.Tags != nil {
+		objectMap["tags"] = pc.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PlaybookConfiguration struct.
+func (pc *PlaybookConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var playbookConfigurationProperties PlaybookConfigurationProperties
+				err = json.Unmarshal(*v, &playbookConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				pc.PlaybookConfigurationProperties = &playbookConfigurationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pc.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				pc.Location = &location
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				pc.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				pc.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				pc.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicPlaybookConfigurationAction the action that should be triggered.
+type BasicPlaybookConfigurationAction interface {
+	AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool)
+	AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool)
+}
+
+// PlaybookConfigurationAction the action that should be triggered.
+type PlaybookConfigurationAction struct {
+	// ActionType - Possible values include: 'ActionTypePlaybookConfigurationAction', 'ActionTypeLogicApp'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+func unmarshalBasicPlaybookConfigurationAction(body []byte) (BasicPlaybookConfigurationAction, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["actionType"] {
+	case string(ActionTypeLogicApp):
+		var pcala PlaybookConfigurationActionLogicApp
+		err := json.Unmarshal(body, &pcala)
+		return pcala, err
+	default:
+		var pca PlaybookConfigurationAction
+		err := json.Unmarshal(body, &pca)
+		return pca, err
+	}
+}
+func unmarshalBasicPlaybookConfigurationActionArray(body []byte) ([]BasicPlaybookConfigurationAction, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	pcaArray := make([]BasicPlaybookConfigurationAction, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		pca, err := unmarshalBasicPlaybookConfigurationAction(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		pcaArray[index] = pca
+	}
+	return pcaArray, nil
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) MarshalJSON() ([]byte, error) {
+	pca.ActionType = ActionTypePlaybookConfigurationAction
+	objectMap := make(map[string]interface{})
+	if pca.ActionType != "" {
+		objectMap["actionType"] = pca.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsPlaybookConfigurationActionLogicApp is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool) {
+	return nil, false
+}
+
+// AsPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool) {
+	return &pca, true
+}
+
+// AsBasicPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsBasicPlaybookConfigurationAction() (BasicPlaybookConfigurationAction, bool) {
+	return &pca, true
+}
+
+// PlaybookConfigurationActionLogicApp the logic app action that should be triggered.
+type PlaybookConfigurationActionLogicApp struct {
+	// LogicAppResourceID - The triggered resource id.
+	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
+	// URI - The uri that should be triggered by an Http GET request.
+	URI *string `json:"uri,omitempty"`
+	// ActionType - Possible values include: 'ActionTypePlaybookConfigurationAction', 'ActionTypeLogicApp'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) MarshalJSON() ([]byte, error) {
+	pcala.ActionType = ActionTypeLogicApp
+	objectMap := make(map[string]interface{})
+	if pcala.LogicAppResourceID != nil {
+		objectMap["logicAppResourceId"] = pcala.LogicAppResourceID
+	}
+	if pcala.URI != nil {
+		objectMap["uri"] = pcala.URI
+	}
+	if pcala.ActionType != "" {
+		objectMap["actionType"] = pcala.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsPlaybookConfigurationActionLogicApp is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool) {
+	return &pcala, true
+}
+
+// AsPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool) {
+	return nil, false
+}
+
+// AsBasicPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsBasicPlaybookConfigurationAction() (BasicPlaybookConfigurationAction, bool) {
+	return &pcala, true
+}
+
+// PlaybookConfigurationList list of playbook configurations response.
+type PlaybookConfigurationList struct {
+	autorest.Response `json:"-"`
+	// Value - The list of playbook configurations under the given scope.
+	Value *[]PlaybookConfiguration `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PlaybookConfigurationListIterator provides access to a complete listing of PlaybookConfiguration values.
+type PlaybookConfigurationListIterator struct {
+	i    int
+	page PlaybookConfigurationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PlaybookConfigurationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PlaybookConfigurationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PlaybookConfigurationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PlaybookConfigurationListIterator) Response() PlaybookConfigurationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PlaybookConfigurationListIterator) Value() PlaybookConfiguration {
+	if !iter.page.NotDone() {
+		return PlaybookConfiguration{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PlaybookConfigurationListIterator type.
+func NewPlaybookConfigurationListIterator(page PlaybookConfigurationListPage) PlaybookConfigurationListIterator {
+	return PlaybookConfigurationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (pcl PlaybookConfigurationList) IsEmpty() bool {
+	return pcl.Value == nil || len(*pcl.Value) == 0
+}
+
+// playbookConfigurationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pcl PlaybookConfigurationList) playbookConfigurationListPreparer(ctx context.Context) (*http.Request, error) {
+	if pcl.NextLink == nil || len(to.String(pcl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pcl.NextLink)))
+}
+
+// PlaybookConfigurationListPage contains a page of PlaybookConfiguration values.
+type PlaybookConfigurationListPage struct {
+	fn  func(context.Context, PlaybookConfigurationList) (PlaybookConfigurationList, error)
+	pcl PlaybookConfigurationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PlaybookConfigurationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pcl)
+	if err != nil {
+		return err
+	}
+	page.pcl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PlaybookConfigurationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PlaybookConfigurationListPage) NotDone() bool {
+	return !page.pcl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PlaybookConfigurationListPage) Response() PlaybookConfigurationList {
+	return page.pcl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PlaybookConfigurationListPage) Values() []PlaybookConfiguration {
+	if page.pcl.IsEmpty() {
+		return nil
+	}
+	return *page.pcl.Value
+}
+
+// Creates a new instance of the PlaybookConfigurationListPage type.
+func NewPlaybookConfigurationListPage(getNextPage func(context.Context, PlaybookConfigurationList) (PlaybookConfigurationList, error)) PlaybookConfigurationListPage {
+	return PlaybookConfigurationListPage{fn: getNextPage}
+}
+
+// PlaybookConfigurationMetadata the metadata of the playbook configuration resource.
+type PlaybookConfigurationMetadata struct {
+	// CreatedDateTimeUtc - READ-ONLY; The playbook configuration creation date.
+	CreatedDateTimeUtc *date.Time `json:"createdDateTimeUtc,omitempty"`
+	// CreatedBy - READ-ONLY; The AAD object ID of the entity that created the playbook configuration.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// LastUpdatedDateTimeUtc - READ-ONLY; The playbook configuration last updated date.
+	LastUpdatedDateTimeUtc *date.Time `json:"lastUpdatedDateTimeUtc,omitempty"`
+	// LastUpdatedBy - READ-ONLY; The AAD object ID of the entity that last updated the playbook configuration.
+	LastUpdatedBy *string `json:"lastUpdatedBy,omitempty"`
+}
+
+// PlaybookConfigurationProperties the playbook configuration data.
+type PlaybookConfigurationProperties struct {
+	// Description - The playbook configuration description.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Indicates whether the playbook configuration is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// Metadata - The metadata of the playbook configuration resource.
+	Metadata *PlaybookConfigurationMetadata `json:"metadata,omitempty"`
+	// Scopes - A collection of the subscription's resources  scopes on which the playbook configurations logic is applied.
+	Scopes *[]PlaybookConfigurationScope `json:"scopes,omitempty"`
+	// Sources - A collection of the source event types which evaluate the playbook configuration set of rules.
+	Sources *[]PlaybookConfigurationSource `json:"sources,omitempty"`
+	// Actions - A collection of the actions which are triggered if all the configured rule set evaluation is true.
+	Actions *[]BasicPlaybookConfigurationAction `json:"actions,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PlaybookConfigurationProperties struct.
+func (pcp *PlaybookConfigurationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				pcp.Description = &description
+			}
+		case "isEnabled":
+			if v != nil {
+				var isEnabled bool
+				err = json.Unmarshal(*v, &isEnabled)
+				if err != nil {
+					return err
+				}
+				pcp.IsEnabled = &isEnabled
+			}
+		case "metadata":
+			if v != nil {
+				var metadata PlaybookConfigurationMetadata
+				err = json.Unmarshal(*v, &metadata)
+				if err != nil {
+					return err
+				}
+				pcp.Metadata = &metadata
+			}
+		case "scopes":
+			if v != nil {
+				var scopes []PlaybookConfigurationScope
+				err = json.Unmarshal(*v, &scopes)
+				if err != nil {
+					return err
+				}
+				pcp.Scopes = &scopes
+			}
+		case "sources":
+			if v != nil {
+				var sources []PlaybookConfigurationSource
+				err = json.Unmarshal(*v, &sources)
+				if err != nil {
+					return err
+				}
+				pcp.Sources = &sources
+			}
+		case "actions":
+			if v != nil {
+				actions, err := unmarshalBasicPlaybookConfigurationActionArray(*v)
+				if err != nil {
+					return err
+				}
+				pcp.Actions = &actions
+			}
+		}
+	}
+
+	return nil
+}
+
+// PlaybookConfigurationRuleSet a rule set which evaluates all its rules upon an event interception.
+type PlaybookConfigurationRuleSet struct {
+	Rules *[]PlaybookConfigurationTriggeringRule `json:"rules,omitempty"`
+}
+
+// PlaybookConfigurationScope the subscription's resources scope
+type PlaybookConfigurationScope struct {
+	// Description - The resources scope description.
+	Description *string `json:"description,omitempty"`
+	// ScopePath - The resources scope path.
+	ScopePath *string `json:"scopePath,omitempty"`
+}
+
+// PlaybookConfigurationSource the source event types which evaluate the playbook configuration set of
+// rules. For example - security alerts and recommended tasks.
+type PlaybookConfigurationSource struct {
+	// EventSource - A valid event source type.
+	EventSource *string `json:"eventSource,omitempty"`
+	// RuleSets - A set of rules which evaluate upon event interception.
+	RuleSets *[]PlaybookConfigurationRuleSet `json:"ruleSets,omitempty"`
+}
+
+// PlaybookConfigurationTriggeringRule a logic rule which evaluates upon event interception. The rule is
+// configured by comparing the specified expected value, in an expected property within the event model, by
+// the specified operator.
+type PlaybookConfigurationTriggeringRule struct {
+	// PropertyJPath - The JPath of the entity model property that should be checked.
+	PropertyJPath *string `json:"propertyJPath,omitempty"`
+	// PropertyType - The data type of the compared operands. Possible values include: 'String', 'Integer', 'Number', 'Boolean'
+	PropertyType PropertyType `json:"propertyType,omitempty"`
+	// ExpectedValue - The expected value.
+	ExpectedValue *string `json:"expectedValue,omitempty"`
+	// Operator - A valid comparer operator to use. Possible values include: 'Equals', 'EqualsIgnoreCase', 'GreaterThan', 'GreaterThanOrEqualTo', 'LesserThan', 'LesserThanOrEqualTo', 'NotEquals', 'NotEqualsIgnoreCase', 'Contains', 'StartsWith', 'EndsWith'
+	Operator Operator `json:"operator,omitempty"`
+}
+
+// PlaybookConfigurationValidationStatus the playbook configuration model state property bag.
+type PlaybookConfigurationValidationStatus struct {
+	autorest.Response `json:"-"`
+	// IsValid - Indicates whether the model is valid or not.
+	IsValid *bool `json:"isValid,omitempty"`
+	// Message - The validation message.
+	Message *string `json:"message,omitempty"`
 }
 
 // Pricing pricing tier will be applied for the scope based on the resource ID
@@ -5358,6 +5961,21 @@ func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (Settin
 	return SettingsListPage{fn: getNextPage}
 }
 
+// Tags a list of key value pairs that describe the resource.
+type Tags struct {
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Tags.
+func (t Tags) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.Tags != nil {
+		objectMap["tags"] = t.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // Task security task that we recommend to do in order to strengthen security
 type Task struct {
 	autorest.Response `json:"-"`
@@ -5944,6 +6562,39 @@ type TopologySingleResourceChild struct {
 type TopologySingleResourceParent struct {
 	// ResourceID - READ-ONLY; Azure resource id which serves as parent resource in topology view
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// TrackedResource describes an Azure tracked resource.
+type TrackedResource struct {
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - READ-ONLY; Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Kind != nil {
+		objectMap["kind"] = tr.Kind
+	}
+	if tr.Etag != nil {
+		objectMap["etag"] = tr.Etag
+	}
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkspaceSetting configures where to store the OMS agent data for workspaces under a scope

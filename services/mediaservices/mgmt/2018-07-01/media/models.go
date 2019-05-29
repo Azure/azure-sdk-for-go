@@ -235,7 +235,7 @@ func PossibleDeinterlaceParityValues() []DeinterlaceParity {
 type EncoderNamedPreset string
 
 const (
-	// AACGoodQualityAudio Produces a single MP4 file containing only stereo audio encoded at 192 kbps.
+	// AACGoodQualityAudio Produces a single MP4 file containing only stereo audio encoded at 192 Kbps.
 	AACGoodQualityAudio EncoderNamedPreset = "AACGoodQualityAudio"
 	// AdaptiveStreaming Produces a set of GOP aligned MP4 files with H.264 video and stereo AAC audio.
 	// Auto-generates a bitrate ladder based on the input resolution and bitrate. The auto-generated preset
@@ -248,23 +248,23 @@ const (
 	// bitrate and resolution settings for delivery by adaptive streaming. The underlying algorithms will
 	// continue to evolve over time. The output will contain MP4 files with video and audio interleaved.
 	ContentAwareEncodingExperimental EncoderNamedPreset = "ContentAwareEncodingExperimental"
-	// H264MultipleBitrate1080p Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 kbps to 400 kbps,
+	// H264MultipleBitrate1080p Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 Kbps to 400 Kbps,
 	// and stereo AAC audio. Resolution starts at 1080p and goes down to 360p.
 	H264MultipleBitrate1080p EncoderNamedPreset = "H264MultipleBitrate1080p"
-	// H264MultipleBitrate720p Produces a set of 6 GOP-aligned MP4 files, ranging from 3400 kbps to 400 kbps,
+	// H264MultipleBitrate720p Produces a set of 6 GOP-aligned MP4 files, ranging from 3400 Kbps to 400 Kbps,
 	// and stereo AAC audio. Resolution starts at 720p and goes down to 360p.
 	H264MultipleBitrate720p EncoderNamedPreset = "H264MultipleBitrate720p"
-	// H264MultipleBitrateSD Produces a set of 5 GOP-aligned MP4 files, ranging from 1600kbps to 400 kbps, and
+	// H264MultipleBitrateSD Produces a set of 5 GOP-aligned MP4 files, ranging from 1600Kbps to 400 Kbps, and
 	// stereo AAC audio. Resolution starts at 480p and goes down to 360p.
 	H264MultipleBitrateSD EncoderNamedPreset = "H264MultipleBitrateSD"
-	// H264SingleBitrate1080p Produces an MP4 file where the video is encoded with H.264 codec at 6750 kbps and
-	// a picture height of 1080 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps.
+	// H264SingleBitrate1080p Produces an MP4 file where the video is encoded with H.264 codec at 6750 Kbps and
+	// a picture height of 1080 pixels, and the stereo audio is encoded with AAC-LC codec at 64 Kbps.
 	H264SingleBitrate1080p EncoderNamedPreset = "H264SingleBitrate1080p"
-	// H264SingleBitrate720p Produces an MP4 file where the video is encoded with H.264 codec at 4500 kbps and
-	// a picture height of 720 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps.
+	// H264SingleBitrate720p Produces an MP4 file where the video is encoded with H.264 codec at 4500 Kbps and
+	// a picture height of 720 pixels, and the stereo audio is encoded with AAC-LC codec at 64 Kbps.
 	H264SingleBitrate720p EncoderNamedPreset = "H264SingleBitrate720p"
-	// H264SingleBitrateSD Produces an MP4 file where the video is encoded with H.264 codec at 2200 kbps and a
-	// picture height of 480 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps.
+	// H264SingleBitrateSD Produces an MP4 file where the video is encoded with H.264 codec at 2200 Kbps and a
+	// picture height of 480 pixels, and the stereo audio is encoded with AAC-LC codec at 64 Kbps.
 	H264SingleBitrateSD EncoderNamedPreset = "H264SingleBitrateSD"
 )
 
@@ -1178,7 +1178,7 @@ func (aa AacAudio) AsBasicCodec() (BasicCodec, bool) {
 // time can point to a different position depending on whether the media file starts from a timestamp of
 // zero or not.
 type AbsoluteClipTime struct {
-	// Time - The time position on the timeline of the input media. It is usually speicified as an ISO8601 period. e.g PT30S for 30 seconds.
+	// Time - The time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S for 30 seconds.
 	Time *string `json:"time,omitempty"`
 	// OdataType - Possible values include: 'OdataTypeClipTime', 'OdataTypeMicrosoftMediaAbsoluteClipTime'
 	OdataType OdataTypeBasicClipTime `json:"@odata.type,omitempty"`
@@ -4640,7 +4640,7 @@ func (f *Filters) UnmarshalJSON(body []byte) error {
 type FilterTrackPropertyCondition struct {
 	// Property - The track property type. Possible values include: 'FilterTrackPropertyTypeUnknown', 'FilterTrackPropertyTypeType', 'FilterTrackPropertyTypeName', 'FilterTrackPropertyTypeLanguage', 'FilterTrackPropertyTypeFourCC', 'FilterTrackPropertyTypeBitrate'
 	Property FilterTrackPropertyType `json:"property,omitempty"`
-	// Value - The track proprty value.
+	// Value - The track property value.
 	Value *string `json:"value,omitempty"`
 	// Operation - The track property condition operation. Possible values include: 'Equal', 'NotEqual'
 	Operation FilterTrackPropertyCompareOperation `json:"operation,omitempty"`
@@ -8517,7 +8517,7 @@ type PresentationTimeRange struct {
 	LiveBackoffDuration *int64 `json:"liveBackoffDuration,omitempty"`
 	// Timescale - The time scale of time stamps.
 	Timescale *int64 `json:"timescale,omitempty"`
-	// ForceEndTimestamp - The indicator of forcing exsiting of end time stamp.
+	// ForceEndTimestamp - The indicator of forcing existing of end time stamp.
 	ForceEndTimestamp *bool `json:"forceEndTimestamp,omitempty"`
 }
 

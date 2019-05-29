@@ -523,7 +523,7 @@ func NewAvailabilityGroupListenerListResultPage(getNextPage func(context.Context
 
 // AvailabilityGroupListenerProperties the properties of an availability group listener.
 type AvailabilityGroupListenerProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state to track the async operation status.
+	// ProvisioningState - READ-ONLY; Provisioning state to track the aysnc operation status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AvailabilityGroupName - Name of the availability group.
 	AvailabilityGroupName *string `json:"availabilityGroupName,omitempty"`
@@ -836,7 +836,7 @@ func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (
 
 // GroupProperties the properties of a SQL virtual machine group.
 type GroupProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state to track the async operation status.
+	// ProvisioningState - READ-ONLY; Provisioning state to track the aysnc operation status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SQLImageOffer - SQL image offer. Examples may include SQL2016-WS2016, SQL2017-WS2016.
 	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
@@ -1309,13 +1309,13 @@ type PrivateIPAddress struct {
 type Properties struct {
 	// VirtualMachineResourceID - ARM Resource id of underlying virtual machine created from SQL marketplace image.
 	VirtualMachineResourceID *string `json:"virtualMachineResourceId,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state to track the async operation status.
+	// ProvisioningState - READ-ONLY; Provisioning state to track the aysnc operation status.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SQLImageOffer - READ-ONLY; SQL image offer. Examples include SQL2016-WS2016, SQL2017-WS2016.
 	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
 	// SQLServerLicenseType - SQL Server license type. Possible values include: 'PAYG', 'AHUB'
 	SQLServerLicenseType SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
-	// SQLImageSku - READ-ONLY; SQL image sku. Possible values include: 'Developer', 'Express', 'Standard', 'Enterprise', 'Web'
+	// SQLImageSku - SQL Server edition type. Possible values include: 'Developer', 'Express', 'Standard', 'Enterprise', 'Web'
 	SQLImageSku SQLImageSku `json:"sqlImageSku,omitempty"`
 	// SQLVirtualMachineGroupResourceID - ARM resource id of the SQL virtual machine group this SQL virtual machine is or will be part of.
 	SQLVirtualMachineGroupResourceID *string `json:"sqlVirtualMachineGroupResourceId,omitempty"`
@@ -1389,10 +1389,10 @@ type SQLConnectivityUpdateSettings struct {
 type SQLStorageUpdateSettings struct {
 	// DiskCount - Virtual machine disk count.
 	DiskCount *int32 `json:"diskCount,omitempty"`
-	// DiskConfigurationType - Disk configuration to apply to SQL Server. Possible values include: 'NEW', 'EXTEND', 'ADD'
-	DiskConfigurationType DiskConfigurationType `json:"diskConfigurationType,omitempty"`
 	// StartingDeviceID - Device id of the first disk to be updated.
 	StartingDeviceID *int32 `json:"startingDeviceId,omitempty"`
+	// DiskConfigurationType - Disk configuration to apply to SQL Server. Possible values include: 'NEW', 'EXTEND', 'ADD'
+	DiskConfigurationType DiskConfigurationType `json:"diskConfigurationType,omitempty"`
 }
 
 // SQLVirtualMachine a SQL virtual machine.

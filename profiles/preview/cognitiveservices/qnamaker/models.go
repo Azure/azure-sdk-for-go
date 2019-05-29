@@ -63,6 +63,7 @@ const (
 	Succeeded  OperationStateType = original.Succeeded
 )
 
+type ActiveLearningSettingsDTO = original.ActiveLearningSettingsDTO
 type AlterationsClient = original.AlterationsClient
 type AlterationsDTO = original.AlterationsDTO
 type BaseClient = original.BaseClient
@@ -72,6 +73,9 @@ type CreateKbInputDTO = original.CreateKbInputDTO
 type DeleteKbContentsDTO = original.DeleteKbContentsDTO
 type EndpointKeysClient = original.EndpointKeysClient
 type EndpointKeysDTO = original.EndpointKeysDTO
+type EndpointSettingsClient = original.EndpointSettingsClient
+type EndpointSettingsDTO = original.EndpointSettingsDTO
+type EndpointSettingsDTOActiveLearning = original.EndpointSettingsDTOActiveLearning
 type Error = original.Error
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseError = original.ErrorResponseError
@@ -111,6 +115,9 @@ func NewAlterationsClient(endpoint string) AlterationsClient {
 }
 func NewEndpointKeysClient(endpoint string) EndpointKeysClient {
 	return original.NewEndpointKeysClient(endpoint)
+}
+func NewEndpointSettingsClient(endpoint string) EndpointSettingsClient {
+	return original.NewEndpointSettingsClient(endpoint)
 }
 func NewKnowledgebaseClient(endpoint string) KnowledgebaseClient {
 	return original.NewKnowledgebaseClient(endpoint)

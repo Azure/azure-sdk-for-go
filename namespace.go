@@ -24,6 +24,7 @@ package servicebus
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"runtime"
 	"strings"
@@ -47,7 +48,7 @@ const (
 	//`
 
 	// Version is the semantic version number
-	Version = "0.5.1"
+	Version = "0.6.0"
 
 	rootUserAgent = "/golang-service-bus"
 )
@@ -60,6 +61,7 @@ type (
 		Suffix        string
 		TokenProvider auth.TokenProvider
 		Environment   azure.Environment
+		tlsConfig     *tls.Config
 		userAgent     string
 		useWebSocket  bool
 	}
@@ -90,6 +92,14 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 		}
 
 		ns.TokenProvider = provider
+		return nil
+	}
+}
+
+// NamespaceWithTLSConfig appends to the TLS config.
+func NamespaceWithTLSConfig(tlsConfig *tls.Config) NamespaceOption {
+	return func(ns *Namespace) error {
+		ns.tlsConfig = tlsConfig
 		return nil
 	}
 }
@@ -135,6 +145,14 @@ func (ns *Namespace) newConnection() (*amqp.Client, error) {
 		amqp.ConnProperty("platform", runtime.GOOS),
 		amqp.ConnProperty("framework", runtime.Version()),
 		amqp.ConnProperty("user-agent", ns.getUserAgent()),
+	}
+
+	if ns.tlsConfig != nil {
+		defaultConnOptions = append(
+			defaultConnOptions,
+			amqp.ConnTLS(true),
+			amqp.ConnTLSConfig(ns.tlsConfig),
+		)
 	}
 
 	if ns.useWebSocket {

@@ -238,10 +238,9 @@ const (
 type LiveEventEncodingType = original.LiveEventEncodingType
 
 const (
-	LiveEventEncodingTypeBasic        LiveEventEncodingType = original.LiveEventEncodingTypeBasic
-	LiveEventEncodingTypeNone         LiveEventEncodingType = original.LiveEventEncodingTypeNone
-	LiveEventEncodingTypePremium1080p LiveEventEncodingType = original.LiveEventEncodingTypePremium1080p
-	LiveEventEncodingTypeStandard     LiveEventEncodingType = original.LiveEventEncodingTypeStandard
+	LiveEventEncodingTypeBasic    LiveEventEncodingType = original.LiveEventEncodingTypeBasic
+	LiveEventEncodingTypeNone     LiveEventEncodingType = original.LiveEventEncodingTypeNone
+	LiveEventEncodingTypeStandard LiveEventEncodingType = original.LiveEventEncodingTypeStandard
 )
 
 type LiveEventInputProtocol = original.LiveEventInputProtocol
@@ -291,13 +290,6 @@ const (
 	OdataTypeContentKeyPolicyPlayReadyContentKeyLocation                                  OdataType = original.OdataTypeContentKeyPolicyPlayReadyContentKeyLocation
 	OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader        OdataType = original.OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader
 	OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier OdataType = original.OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier
-)
-
-type OdataTypeBasicClipTime = original.OdataTypeBasicClipTime
-
-const (
-	OdataTypeClipTime                       OdataTypeBasicClipTime = original.OdataTypeClipTime
-	OdataTypeMicrosoftMediaAbsoluteClipTime OdataTypeBasicClipTime = original.OdataTypeMicrosoftMediaAbsoluteClipTime
 )
 
 type OdataTypeBasicCodec = original.OdataTypeBasicCodec
@@ -494,7 +486,6 @@ const (
 
 type APIError = original.APIError
 type AacAudio = original.AacAudio
-type AbsoluteClipTime = original.AbsoluteClipTime
 type AccountFilter = original.AccountFilter
 type AccountFilterCollection = original.AccountFilterCollection
 type AccountFilterCollectionIterator = original.AccountFilterCollectionIterator
@@ -522,7 +513,6 @@ type AudioOverlay = original.AudioOverlay
 type BaseClient = original.BaseClient
 type BasicAudio = original.BasicAudio
 type BasicAudioAnalyzerPreset = original.BasicAudioAnalyzerPreset
-type BasicClipTime = original.BasicClipTime
 type BasicCodec = original.BasicCodec
 type BasicContentKeyPolicyConfiguration = original.BasicContentKeyPolicyConfiguration
 type BasicContentKeyPolicyPlayReadyContentKeyLocation = original.BasicContentKeyPolicyPlayReadyContentKeyLocation
@@ -544,7 +534,6 @@ type BuiltInStandardEncoderPreset = original.BuiltInStandardEncoderPreset
 type CbcsDrmConfiguration = original.CbcsDrmConfiguration
 type CencDrmConfiguration = original.CencDrmConfiguration
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
-type ClipTime = original.ClipTime
 type Codec = original.Codec
 type CommonEncryptionCbcs = original.CommonEncryptionCbcs
 type CommonEncryptionCenc = original.CommonEncryptionCenc
@@ -998,9 +987,6 @@ func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 }
 func PossibleMetricUnitValues() []MetricUnit {
 	return original.PossibleMetricUnitValues()
-}
-func PossibleOdataTypeBasicClipTimeValues() []OdataTypeBasicClipTime {
-	return original.PossibleOdataTypeBasicClipTimeValues()
 }
 func PossibleOdataTypeBasicCodecValues() []OdataTypeBasicCodec {
 	return original.PossibleOdataTypeBasicCodecValues()

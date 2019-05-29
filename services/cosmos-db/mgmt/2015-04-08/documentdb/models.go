@@ -2214,6 +2214,8 @@ type Location struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// FailoverPriority - The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
 	FailoverPriority *int32 `json:"failoverPriority,omitempty"`
+	// IsZoneRedundant - Flag to indicate whether or not this region is an AvailabilityZone region
+	IsZoneRedundant *bool `json:"isZoneRedundant,omitempty"`
 }
 
 // Metric metric data

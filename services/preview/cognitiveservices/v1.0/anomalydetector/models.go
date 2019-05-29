@@ -54,7 +54,7 @@ type LabelType string
 
 const (
 	// Anomaly ...
-	Anomaly LabelType = "Anomaly"
+	Anomaly LabelType = "anomaly"
 	// ChangePoint ...
 	ChangePoint LabelType = "changePoint"
 )

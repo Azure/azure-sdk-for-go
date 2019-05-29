@@ -1566,7 +1566,7 @@ type AwsCloudTrailDataConnectorDataTypesLogs struct {
 // AwsCloudTrailDataConnectorProperties amazon Web Services CloudTrail data connector properties.
 type AwsCloudTrailDataConnectorProperties struct {
 	// AwsRoleArn - The Aws Role Arn (with CloudTrailReadOnly policy) that is used to access the Aws account.
-	AwsRoleArn *string `json:"AwsRoleArn,omitempty"`
+	AwsRoleArn *string `json:"awsRoleArn,omitempty"`
 	// DataTypes - The available data types for the connector.
 	DataTypes *AwsCloudTrailDataConnectorDataTypes `json:"dataTypes,omitempty"`
 }

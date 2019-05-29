@@ -32,21 +32,85 @@ const (
 	Yearly   Granularity = original.Yearly
 )
 
+type LabelType = original.LabelType
+
+const (
+	Anomaly     LabelType = original.Anomaly
+	ChangePoint LabelType = original.ChangePoint
+)
+
+type LabelValue = original.LabelValue
+
+const (
+	False LabelValue = original.False
+	True  LabelValue = original.True
+)
+
+type TimeSeriesField = original.TimeSeriesField
+
+const (
+	ExpectedValue     TimeSeriesField = original.ExpectedValue
+	IsAnomaly         TimeSeriesField = original.IsAnomaly
+	IsChangePoint     TimeSeriesField = original.IsChangePoint
+	IsNegativeAnomaly TimeSeriesField = original.IsNegativeAnomaly
+	IsPositiveAnomaly TimeSeriesField = original.IsPositiveAnomaly
+	LowerMargin       TimeSeriesField = original.LowerMargin
+	Period            TimeSeriesField = original.Period
+	UpperMargin       TimeSeriesField = original.UpperMargin
+	Value             TimeSeriesField = original.Value
+)
+
 type APIError = original.APIError
+type AnomalyDetectInTimeRangeReponse = original.AnomalyDetectInTimeRangeReponse
+type AnomalyDetectInTimeRangeRequest = original.AnomalyDetectInTimeRangeRequest
 type BaseClient = original.BaseClient
+type ChangePointDetectInTimeRangeRequest = original.ChangePointDetectInTimeRangeRequest
+type ChangePointDetectInTimeRangeResponse = original.ChangePointDetectInTimeRangeResponse
+type ChangePointDetectRequest = original.ChangePointDetectRequest
+type ChangePointDetectResponse = original.ChangePointDetectResponse
 type EntireDetectResponse = original.EntireDetectResponse
+type Inconsistency = original.Inconsistency
+type InconsistencyDetectRequest = original.InconsistencyDetectRequest
+type InconsistencyQueryRequest = original.InconsistencyQueryRequest
+type LabelRequest = original.LabelRequest
 type LastDetectResponse = original.LastDetectResponse
+type ListInconsistency = original.ListInconsistency
 type Point = original.Point
 type Request = original.Request
+type TimeSeries = original.TimeSeries
+type TimeSeriesClient = original.TimeSeriesClient
+type TimeSeriesCreateRequest = original.TimeSeriesCreateRequest
+type TimeSeriesGroup = original.TimeSeriesGroup
+type TimeSeriesGroupClient = original.TimeSeriesGroupClient
+type TimeSeriesGroupCreateRequest = original.TimeSeriesGroupCreateRequest
+type TimeSeriesGroupList = original.TimeSeriesGroupList
+type TimeSeriesList = original.TimeSeriesList
+type TimeSeriesQueryRequest = original.TimeSeriesQueryRequest
+type TimeSeriesQueryResponse = original.TimeSeriesQueryResponse
 
 func New(endpoint string) BaseClient {
 	return original.New(endpoint)
+}
+func NewTimeSeriesClient(endpoint string) TimeSeriesClient {
+	return original.NewTimeSeriesClient(endpoint)
+}
+func NewTimeSeriesGroupClient(endpoint string) TimeSeriesGroupClient {
+	return original.NewTimeSeriesGroupClient(endpoint)
 }
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)
 }
 func PossibleGranularityValues() []Granularity {
 	return original.PossibleGranularityValues()
+}
+func PossibleLabelTypeValues() []LabelType {
+	return original.PossibleLabelTypeValues()
+}
+func PossibleLabelValueValues() []LabelValue {
+	return original.PossibleLabelValueValues()
+}
+func PossibleTimeSeriesFieldValues() []TimeSeriesField {
+	return original.PossibleTimeSeriesFieldValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

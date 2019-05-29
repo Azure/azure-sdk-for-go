@@ -2,6 +2,9 @@
 
 ## `head`
 
+## `v0.7.0`
+- [add batch disposition errors](https://github.com/Azure/azure-service-bus-go/pull/129)
+
 ## `v0.6.0`
 - add namespace TLS configuration option
 - update to Azure SDK v28 and AutoRest 12

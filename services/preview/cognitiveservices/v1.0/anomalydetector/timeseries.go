@@ -31,9 +31,9 @@ import (
 // functionalities. Entire Detect is for detecting the whole series with model trained by the time series, Last Detect
 // is detecting last point with model trained by points before. ChangePoint Detect is for detecting trend changes in
 // time series. In stateful mode, user can store time series, the stored time series will be used for detection
-// anomalies. Under this mode, user can still use the aboving three functionalities by only giving a time range without
+// anomalies. Under this mode, user can still use the above three functionalities by only giving a time range without
 // preparing time series in client side. Besides the above three functionalities, stateful model also provide group
-// based detection and labeling service. By leveraing labeling service user can provide labels for each detection
+// based detection and labeling service. By leveraging labeling service user can provide labels for each detection
 // result, these labels will be used for retuning or regenerating detection models. Inconsistency detection is a kind
 // of group based detection, this detection will find inconsistency ones in a set of time series. By using anomaly
 // detector service, business customers can discover incidents and establish a logic flow for root cause analysis.
@@ -297,7 +297,7 @@ func (client TimeSeriesClient) DeleteResponder(resp *http.Response) (result auto
 // timeSeriesID - unique id for time series.
 // body - begin and end is required in the request. Advanced model parameters (period, sensitivity,
 // maxAnomalyRatio) can also be set in the request.
-func (client TimeSeriesClient) EntireDetectInTimeRange(ctx context.Context, timeSeriesID string, body AnomalyDetectInTimeRangeRequest) (result AnomalyDetectInTimeRangeReponse, err error) {
+func (client TimeSeriesClient) EntireDetectInTimeRange(ctx context.Context, timeSeriesID string, body AnomalyDetectInTimeRangeRequest) (result AnomalyDetectInTimeRangeResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.EntireDetectInTimeRange")
 		defer func() {
@@ -367,7 +367,7 @@ func (client TimeSeriesClient) EntireDetectInTimeRangeSender(req *http.Request) 
 
 // EntireDetectInTimeRangeResponder handles the response to the EntireDetectInTimeRange request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) EntireDetectInTimeRangeResponder(resp *http.Response) (result AnomalyDetectInTimeRangeReponse, err error) {
+func (client TimeSeriesClient) EntireDetectInTimeRangeResponder(resp *http.Response) (result AnomalyDetectInTimeRangeResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -549,7 +549,7 @@ func (client TimeSeriesClient) LabelResponder(resp *http.Response) (result autor
 // timeSeriesID - unique id for time series.
 // body - begin and end is required in the request. Advanced model parameters (period, sensitivity,
 // maxAnomalyRatio) can also be set in the request.
-func (client TimeSeriesClient) LastDetectInTimeRange(ctx context.Context, timeSeriesID string, body AnomalyDetectInTimeRangeRequest) (result AnomalyDetectInTimeRangeReponse, err error) {
+func (client TimeSeriesClient) LastDetectInTimeRange(ctx context.Context, timeSeriesID string, body AnomalyDetectInTimeRangeRequest) (result AnomalyDetectInTimeRangeResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.LastDetectInTimeRange")
 		defer func() {
@@ -619,7 +619,7 @@ func (client TimeSeriesClient) LastDetectInTimeRangeSender(req *http.Request) (*
 
 // LastDetectInTimeRangeResponder handles the response to the LastDetectInTimeRange request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) LastDetectInTimeRangeResponder(resp *http.Response) (result AnomalyDetectInTimeRangeReponse, err error) {
+func (client TimeSeriesClient) LastDetectInTimeRangeResponder(resp *http.Response) (result AnomalyDetectInTimeRangeResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -705,7 +705,7 @@ func (client TimeSeriesClient) ListResponder(resp *http.Response) (result TimeSe
 }
 
 // ListGroups list TimeSeriesGroups that a TimeSeries belongs to. One TimeSeries could belong to multiple
-// TimeSereiesGroups.
+// TimeSeriesGroups.
 // Parameters:
 // timeSeriesID - unique id for time series.
 // next - use "next" as query parameter to get next page data.

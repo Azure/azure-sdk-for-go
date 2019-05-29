@@ -108,8 +108,22 @@ func PossibleTimeSeriesFieldValues() []TimeSeriesField {
 	return []TimeSeriesField{ExpectedValue, IsAnomaly, IsChangePoint, IsNegativeAnomaly, IsPositiveAnomaly, LowerMargin, Period, UpperMargin, Value}
 }
 
-// AnomalyDetectInTimeRangeReponse ...
-type AnomalyDetectInTimeRangeReponse struct {
+// AnomalyDetectInTimeRangeRequest ...
+type AnomalyDetectInTimeRangeRequest struct {
+	// Begin - begin of a detection time range
+	Begin *date.Time `json:"begin,omitempty"`
+	// End - end of a detection time range
+	End *date.Time `json:"end,omitempty"`
+	// Period - Optional argument, periodic value of a time series. If the value is null or does not present, the API will determine the period automatically.
+	Period *int32 `json:"period,omitempty"`
+	// MaxAnomalyRatio - Optional argument, advanced model parameter, max anomaly ratio in a time series.
+	MaxAnomalyRatio *float64 `json:"maxAnomalyRatio,omitempty"`
+	// Sensitivity - Optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted.
+	Sensitivity *int32 `json:"sensitivity,omitempty"`
+}
+
+// AnomalyDetectInTimeRangeResponse ...
+type AnomalyDetectInTimeRangeResponse struct {
 	autorest.Response `json:"-"`
 	// Period - Frequency extracted from the series, zero means no recurrent pattern has been found.
 	Period *int32 `json:"period,omitempty"`
@@ -129,20 +143,6 @@ type AnomalyDetectInTimeRangeReponse struct {
 	IsNegativeAnomaly *[]bool `json:"isNegativeAnomaly,omitempty"`
 	// IsPositiveAnomaly - IsPositiveAnomaly contain anomaly status in positive direction in the range. True means a positive anomaly has been detected. A positive anomaly means the point is detected as an anomaly and its real value is larger than the expected one. The index of the array is consistent with timestamps.
 	IsPositiveAnomaly *[]bool `json:"isPositiveAnomaly,omitempty"`
-}
-
-// AnomalyDetectInTimeRangeRequest ...
-type AnomalyDetectInTimeRangeRequest struct {
-	// Begin - begin of a detection time range
-	Begin *date.Time `json:"begin,omitempty"`
-	// End - end of a detection time range
-	End *date.Time `json:"end,omitempty"`
-	// Period - Optional argument, periodic value of a time series. If the value is null or does not present, the API will determine the period automatically.
-	Period *int32 `json:"period,omitempty"`
-	// MaxAnomalyRatio - Optional argument, advanced model parameter, max anomaly ratio in a time series.
-	MaxAnomalyRatio *float64 `json:"maxAnomalyRatio,omitempty"`
-	// Sensitivity - Optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted.
-	Sensitivity *int32 `json:"sensitivity,omitempty"`
 }
 
 // APIError error information returned by the API.

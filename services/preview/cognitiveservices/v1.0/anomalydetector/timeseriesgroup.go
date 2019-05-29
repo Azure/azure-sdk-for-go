@@ -31,9 +31,9 @@ import (
 // three functionalities. Entire Detect is for detecting the whole series with model trained by the time series, Last
 // Detect is detecting last point with model trained by points before. ChangePoint Detect is for detecting trend
 // changes in time series. In stateful mode, user can store time series, the stored time series will be used for
-// detection anomalies. Under this mode, user can still use the aboving three functionalities by only giving a time
-// range without preparing time series in client side. Besides the above three functionalities, stateful model also
-// provide group based detection and labeling service. By leveraing labeling service user can provide labels for each
+// detection anomalies. Under this mode, user can still use the above three functionalities by only giving a time range
+// without preparing time series in client side. Besides the above three functionalities, stateful model also provide
+// group based detection and labeling service. By leveraging labeling service user can provide labels for each
 // detection result, these labels will be used for retuning or regenerating detection models. Inconsistency detection
 // is a kind of group based detection, this detection will find inconsistency ones in a set of time series. By using
 // anomaly detector service, business customers can discover incidents and establish a logic flow for root cause
@@ -372,7 +372,7 @@ func (client TimeSeriesGroupClient) DeleteTimeSeriesResponder(resp *http.Respons
 	return
 }
 
-// Get this operation fetches detailed infomation about the specified time series group.
+// Get this operation fetches detailed information about the specified time series group.
 // Parameters:
 // timeSeriesGroupID - unique id for time series group.
 func (client TimeSeriesGroupClient) Get(ctx context.Context, timeSeriesGroupID string) (result TimeSeriesGroup, err error) {
@@ -451,7 +451,7 @@ func (client TimeSeriesGroupClient) GetResponder(resp *http.Response) (result Ti
 	return
 }
 
-// InconsistencyDetect this operation helps detect the inconsistent series among a group series with similiar trend.
+// InconsistencyDetect this operation helps detect the inconsistent series among a group series with similar trend.
 // Parameters:
 // timeSeriesGroupID - unique id for time series group.
 // body - start time and end time is necessary, and a parameter called epsilon is needed to tune the result.
@@ -538,7 +538,7 @@ func (client TimeSeriesGroupClient) InconsistencyDetectResponder(resp *http.Resp
 }
 
 // InconsistencyQuery this operation helps query properties of one group, for example the inconsistent series among a
-// group series with similiar trend.
+// group series with similar trend.
 // Parameters:
 // timeSeriesGroupID - unique id for time series group.
 // body - start time and end time is necessary.

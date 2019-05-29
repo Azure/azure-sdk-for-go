@@ -61,8 +61,8 @@ const (
 )
 
 type APIError = original.APIError
-type AnomalyDetectInTimeRangeReponse = original.AnomalyDetectInTimeRangeReponse
 type AnomalyDetectInTimeRangeRequest = original.AnomalyDetectInTimeRangeRequest
+type AnomalyDetectInTimeRangeResponse = original.AnomalyDetectInTimeRangeResponse
 type BaseClient = original.BaseClient
 type ChangePointDetectInTimeRangeRequest = original.ChangePointDetectInTimeRangeRequest
 type ChangePointDetectInTimeRangeResponse = original.ChangePointDetectInTimeRangeResponse

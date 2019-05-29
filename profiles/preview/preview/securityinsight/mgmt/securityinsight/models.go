@@ -237,6 +237,11 @@ type EntityList = original.EntityList
 type EntityListIterator = original.EntityListIterator
 type EntityListPage = original.EntityListPage
 type EntityModel = original.EntityModel
+type EntityQueriesClient = original.EntityQueriesClient
+type EntityQuery = original.EntityQuery
+type EntityQueryList = original.EntityQueryList
+type EntityQueryListIterator = original.EntityQueryListIterator
+type EntityQueryListPage = original.EntityQueryListPage
 type FileEntity = original.FileEntity
 type FileEntityProperties = original.FileEntityProperties
 type HostEntity = original.HostEntity
@@ -357,6 +362,18 @@ func NewEntityListIterator(page EntityListPage) EntityListIterator {
 }
 func NewEntityListPage(getNextPage func(context.Context, EntityList) (EntityList, error)) EntityListPage {
 	return original.NewEntityListPage(getNextPage)
+}
+func NewEntityQueriesClient(subscriptionID string) EntityQueriesClient {
+	return original.NewEntityQueriesClient(subscriptionID)
+}
+func NewEntityQueriesClientWithBaseURI(baseURI string, subscriptionID string) EntityQueriesClient {
+	return original.NewEntityQueriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewEntityQueryListIterator(page EntityQueryListPage) EntityQueryListIterator {
+	return original.NewEntityQueryListIterator(page)
+}
+func NewEntityQueryListPage(getNextPage func(context.Context, EntityQueryList) (EntityQueryList, error)) EntityQueryListPage {
+	return original.NewEntityQueryListPage(getNextPage)
 }
 func NewOfficeConsentListIterator(page OfficeConsentListPage) OfficeConsentListIterator {
 	return original.NewOfficeConsentListIterator(page)

@@ -2601,6 +2601,163 @@ func (em *EntityModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// EntityQuery specific entity query.
+type EntityQuery struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+}
+
+// EntityQueryList list of all the entity queries.
+type EntityQueryList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of entity queries.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of entity queries.
+	Value *[]EntityQuery `json:"value,omitempty"`
+}
+
+// EntityQueryListIterator provides access to a complete listing of EntityQuery values.
+type EntityQueryListIterator struct {
+	i    int
+	page EntityQueryListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *EntityQueryListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EntityQueryListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *EntityQueryListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter EntityQueryListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter EntityQueryListIterator) Response() EntityQueryList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter EntityQueryListIterator) Value() EntityQuery {
+	if !iter.page.NotDone() {
+		return EntityQuery{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the EntityQueryListIterator type.
+func NewEntityQueryListIterator(page EntityQueryListPage) EntityQueryListIterator {
+	return EntityQueryListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (eql EntityQueryList) IsEmpty() bool {
+	return eql.Value == nil || len(*eql.Value) == 0
+}
+
+// entityQueryListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (eql EntityQueryList) entityQueryListPreparer(ctx context.Context) (*http.Request, error) {
+	if eql.NextLink == nil || len(to.String(eql.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(eql.NextLink)))
+}
+
+// EntityQueryListPage contains a page of EntityQuery values.
+type EntityQueryListPage struct {
+	fn  func(context.Context, EntityQueryList) (EntityQueryList, error)
+	eql EntityQueryList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *EntityQueryListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EntityQueryListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.eql)
+	if err != nil {
+		return err
+	}
+	page.eql = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *EntityQueryListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page EntityQueryListPage) NotDone() bool {
+	return !page.eql.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page EntityQueryListPage) Response() EntityQueryList {
+	return page.eql
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page EntityQueryListPage) Values() []EntityQuery {
+	if page.eql.IsEmpty() {
+		return nil
+	}
+	return *page.eql.Value
+}
+
+// Creates a new instance of the EntityQueryListPage type.
+func NewEntityQueryListPage(getNextPage func(context.Context, EntityQueryList) (EntityQueryList, error)) EntityQueryListPage {
+	return EntityQueryListPage{fn: getNextPage}
+}
+
 // FileEntity represents a file entity.
 type FileEntity struct {
 	// FileEntityProperties - File entity properties

@@ -29,12 +29,15 @@ import (
 	"runtime"
 	"strings"
 
+	// use OpenCensus tracing by default; to use opentracing add the following import to your application
+	// `_ "github.com/devigned/tab/opentracing"`
+	_ "github.com/devigned/tab/opencensus"
+
 	"github.com/Azure/azure-amqp-common-go/auth"
 	"github.com/Azure/azure-amqp-common-go/cbs"
 	"github.com/Azure/azure-amqp-common-go/conn"
 	"github.com/Azure/azure-amqp-common-go/sas"
 	"github.com/Azure/go-autorest/autorest/azure"
-	_ "github.com/devigned/tab/opencensus" // use OpenCensus tracing by default
 	"golang.org/x/net/websocket"
 	"pack.ag/amqp"
 )

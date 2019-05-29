@@ -735,7 +735,9 @@ func testReceiveOneFromDeadLetter(ctx context.Context, t *testing.T, q *Queue) {
 		}))
 		require.NoError(t, err)
 	}
+	assert.NoError(t, q.Close(ctx))
 
+	fmt.Println("got here!!")
 	dl := q.NewDeadLetter()
 	called := false
 	err = dl.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {
@@ -743,6 +745,7 @@ func testReceiveOneFromDeadLetter(ctx context.Context, t *testing.T, q *Queue) {
 		called = true
 		return msg.Complete(ctx)
 	}))
+	assert.NoError(t, dl.Close(ctx))
 	assert.True(t, called)
 	assert.NoError(t, err)
 }

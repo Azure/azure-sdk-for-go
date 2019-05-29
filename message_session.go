@@ -58,7 +58,7 @@ func (ms *MessageSession) RenewLock(ctx context.Context) error {
 	ms.mu.Lock()
 	defer ms.mu.Unlock()
 
-	link, err := rpc.NewLinkWithSession(ms.Receiver.connection, ms.Receiver.session.Session, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.Receiver.session.Session, ms.entity.ManagementPath())
 	if err != nil {
 		return err
 	}
@@ -126,7 +126,7 @@ func (ms *MessageSession) ListSessions(ctx context.Context) ([]byte, error) {
 
 // SetState updates the current State associated with this Session.
 func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
-	link, err := rpc.NewLinkWithSession(ms.Receiver.connection, ms.Receiver.session.Session, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.Receiver.session.Session, ms.entity.ManagementPath())
 	if err != nil {
 		return err
 	}
@@ -160,7 +160,7 @@ func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 func (ms *MessageSession) State(ctx context.Context) ([]byte, error) {
 	const sessionStateField = "session-state"
 
-	link, err := rpc.NewLinkWithSession(ms.Receiver.connection, ms.Receiver.session.Session, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.Receiver.session.Session, ms.entity.ManagementPath())
 	if err != nil {
 		return []byte{}, err
 	}

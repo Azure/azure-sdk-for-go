@@ -351,12 +351,14 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 		return err
 	}
 
+	fmt.Println("sending...")
 	// no error, then it was successful
 	_, err = link.RetryableRPC(ctx, 5, 5*time.Second, msg)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
+	fmt.Println("sent!")
 
 	return nil
 }

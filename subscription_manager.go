@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/devigned/tab"
 
 	"github.com/Azure/azure-service-bus-go/atom"
 )
@@ -557,7 +557,8 @@ func closeRes(ctx context.Context, res *http.Response) {
 	if res == nil {
 		return
 	}
+
 	if err := res.Body.Close(); err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 	}
 }

@@ -35,7 +35,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/auth"
-	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/devigned/tab"
 )
 
 const (
@@ -206,7 +206,7 @@ func (em *entityManager) Execute(ctx context.Context, method string, entityPath 
 
 	req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 

@@ -27,7 +27,6 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/azure-amqp-common-go/uuid"
 	"github.com/devigned/tab"
 	"pack.ag/amqp"
@@ -70,14 +69,14 @@ func (ns *Namespace) NewSender(ctx context.Context, entityPath string, opts ...S
 
 	for _, opt := range opts {
 		if err := opt(s); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return nil, err
 		}
 	}
 
 	err := s.newSessionAndLink(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 	}
 	return s, err
 }
@@ -134,7 +133,7 @@ func (s *Sender) Send(ctx context.Context, msg *Message, opts ...SendOption) err
 	if msg.ID == "" {
 		id, err := uuid.NewV4()
 		if err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 		msg.ID = id.String()
@@ -143,7 +142,7 @@ func (s *Sender) Send(ctx context.Context, msg *Message, opts ...SendOption) err
 	for _, opt := range opts {
 		err := opt(msg)
 		if err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return err
 		}
 	}
@@ -157,13 +156,13 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 
 	err := sp.Inject(evt)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	msg, err := evt.toMsg()
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -175,7 +174,7 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 		select {
 		case <-ctx.Done():
 			if ctx.Err() != nil {
-				log.For(ctx).Error(err)
+				tab.For(ctx).Error(err)
 			}
 			return ctx.Err()
 		default:
@@ -188,16 +187,16 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 
 			switch err.(type) {
 			case *amqp.Error, *amqp.DetachError:
-				log.For(ctx).Debug("amqp error, delaying 4 seconds: " + err.Error())
+				tab.For(ctx).Debug("amqp error, delaying 4 seconds: " + err.Error())
 				skew := time.Duration(rand.Intn(1000)-500) * time.Millisecond
 				time.Sleep(4*time.Second + skew)
 				err := s.Recover(ctx)
 				if err != nil {
-					log.For(ctx).Debug("failed to recover connection")
+					tab.For(ctx).Debug("failed to recover connection")
 				}
-				log.For(ctx).Debug("recovered connection")
+				tab.For(ctx).Debug("recovered connection")
 			default:
-				log.For(ctx).Error(err)
+				tab.For(ctx).Error(err)
 				return err
 			}
 		}
@@ -223,20 +222,20 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 
 	connection, err := s.namespace.newConnection()
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 	s.connection = connection
 
 	err = s.namespace.negotiateClaim(ctx, connection, s.getAddress())
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	amqpSession, err := connection.NewSession()
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -244,13 +243,13 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 		amqp.LinkSenderSettle(amqp.ModeUnsettled),
 		amqp.LinkTargetAddress(s.getAddress()))
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	s.session, err = newSession(amqpSession)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 	if s.sessionID != nil {

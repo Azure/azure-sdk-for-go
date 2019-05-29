@@ -2604,12 +2604,74 @@ func (em *EntityModel) UnmarshalJSON(body []byte) error {
 // EntityQuery specific entity query.
 type EntityQuery struct {
 	autorest.Response `json:"-"`
+	// EntityQueryProperties - Entity query properties
+	*EntityQueryProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EntityQuery.
+func (eq EntityQuery) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if eq.EntityQueryProperties != nil {
+		objectMap["properties"] = eq.EntityQueryProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for EntityQuery struct.
+func (eq *EntityQuery) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var entityQueryProperties EntityQueryProperties
+				err = json.Unmarshal(*v, &entityQueryProperties)
+				if err != nil {
+					return err
+				}
+				eq.EntityQueryProperties = &entityQueryProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				eq.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				eq.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				eq.Name = &name
+			}
+		}
+	}
+
+	return nil
 }
 
 // EntityQueryList list of all the entity queries.
@@ -2756,6 +2818,22 @@ func (page EntityQueryListPage) Values() []EntityQuery {
 // Creates a new instance of the EntityQueryListPage type.
 func NewEntityQueryListPage(getNextPage func(context.Context, EntityQueryList) (EntityQueryList, error)) EntityQueryListPage {
 	return EntityQueryListPage{fn: getNextPage}
+}
+
+// EntityQueryProperties describes entity query properties
+type EntityQueryProperties struct {
+	// QueryTemplate - The template query string to be parsed and formatted
+	QueryTemplate *string `json:"queryTemplate,omitempty"`
+	// InputEntityType - The type of the query's source entity
+	InputEntityType *string `json:"inputEntityType,omitempty"`
+	// InputFields - List of the fields of the source entity that are required to run the query
+	InputFields *[]string `json:"inputFields,omitempty"`
+	// OutputEntityTypes - List of the desired output types to be constructed from the result
+	OutputEntityTypes *[]string `json:"outputEntityTypes,omitempty"`
+	// DataSources - List of the data sources that are required to run the query
+	DataSources *[]string `json:"dataSources,omitempty"`
+	// DisplayName - The query display name
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // FileEntity represents a file entity.

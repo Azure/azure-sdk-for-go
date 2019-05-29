@@ -242,6 +242,7 @@ type EntityQuery = original.EntityQuery
 type EntityQueryList = original.EntityQueryList
 type EntityQueryListIterator = original.EntityQueryListIterator
 type EntityQueryListPage = original.EntityQueryListPage
+type EntityQueryProperties = original.EntityQueryProperties
 type FileEntity = original.FileEntity
 type FileEntityProperties = original.FileEntityProperties
 type HostEntity = original.HostEntity

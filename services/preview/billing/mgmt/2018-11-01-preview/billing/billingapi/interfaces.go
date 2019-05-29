@@ -114,6 +114,7 @@ type SubscriptionsClientAPI interface {
 	ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.SubscriptionsListResult, err error)
 	ListByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string) (result billing.SubscriptionsListResult, err error)
 	Transfer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters billing.TransferBillingSubscriptionRequestProperties) (result billing.SubscriptionsTransferFuture, err error)
+	ValidateTransfer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters billing.TransferBillingSubscriptionRequestProperties) (result billing.ValidateSubscriptionTransferEligibilityResult, err error)
 }
 
 var _ SubscriptionsClientAPI = (*billing.SubscriptionsClient)(nil)
@@ -126,6 +127,7 @@ type ProductsClientAPI interface {
 	Transfer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters billing.TransferProductRequestProperties) (result billing.ProductSummary, err error)
 	UpdateAutoRenewByBillingAccountName(ctx context.Context, billingAccountName string, productName string, body billing.UpdateAutoRenewRequest) (result billing.UpdateAutoRenewOperationSummary, err error)
 	UpdateAutoRenewByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, body billing.UpdateAutoRenewRequest) (result billing.UpdateAutoRenewOperationSummary, err error)
+	ValidateTransfer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters billing.TransferProductRequestProperties) (result billing.ValidateProductTransferEligibilityResult, err error)
 }
 
 var _ ProductsClientAPI = (*billing.ProductsClient)(nil)

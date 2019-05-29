@@ -284,10 +284,10 @@ const (
 	SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed SubscriptionTransferValidationErrorCode = "CrossBillingAccountNotAllowed"
 	// SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue ...
 	SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue SubscriptionTransferValidationErrorCode = "DestinationBillingProfilePastDue"
-	// SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination ...
-	SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination SubscriptionTransferValidationErrorCode = "InsufficienctPermissionOnDestination"
-	// SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource ...
-	SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource SubscriptionTransferValidationErrorCode = "InsufficienctPermissionOnSource"
+	// SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination ...
+	SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination SubscriptionTransferValidationErrorCode = "InsufficientPermissionOnDestination"
+	// SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource ...
+	SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource SubscriptionTransferValidationErrorCode = "InsufficientPermissionOnSource"
 	// SubscriptionTransferValidationErrorCodeInvalidSource ...
 	SubscriptionTransferValidationErrorCodeInvalidSource SubscriptionTransferValidationErrorCode = "InvalidSource"
 	// SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket ...
@@ -300,7 +300,7 @@ const (
 
 // PossibleSubscriptionTransferValidationErrorCodeValues returns an array of possible values for the SubscriptionTransferValidationErrorCode const type.
 func PossibleSubscriptionTransferValidationErrorCodeValues() []SubscriptionTransferValidationErrorCode {
-	return []SubscriptionTransferValidationErrorCode{SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed, SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue, SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination, SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource, SubscriptionTransferValidationErrorCodeInvalidSource, SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket, SubscriptionTransferValidationErrorCodeSubscriptionNotActive, SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported}
+	return []SubscriptionTransferValidationErrorCode{SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed, SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue, SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination, SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource, SubscriptionTransferValidationErrorCodeInvalidSource, SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket, SubscriptionTransferValidationErrorCodeSubscriptionNotActive, SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported}
 }
 
 // TransactionTypeKind enumerates the values for transaction type kind.
@@ -3758,6 +3758,7 @@ type ValidateProductTransferEligibilityError struct {
 
 // ValidateProductTransferEligibilityResult result of the product transfer eligibility validation.
 type ValidateProductTransferEligibilityResult struct {
+	autorest.Response `json:"-"`
 	// IsTransferEligible - READ-ONLY; Specifies whether the transfer is eligible or not.
 	IsTransferEligible *bool `json:"isTransferEligible,omitempty"`
 	// ErrorDetails - Validation error details.
@@ -3766,7 +3767,7 @@ type ValidateProductTransferEligibilityResult struct {
 
 // ValidateSubscriptionTransferEligibilityError error details of the transfer eligibility validation
 type ValidateSubscriptionTransferEligibilityError struct {
-	// Code - Error code for the product transfer validation. Possible values include: 'SubscriptionTransferValidationErrorCodeInvalidSource', 'SubscriptionTransferValidationErrorCodeSubscriptionNotActive', 'SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnSource', 'SubscriptionTransferValidationErrorCodeInsufficienctPermissionOnDestination', 'SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue', 'SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported', 'SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed', 'SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket'
+	// Code - Error code for the product transfer validation. Possible values include: 'SubscriptionTransferValidationErrorCodeInvalidSource', 'SubscriptionTransferValidationErrorCodeSubscriptionNotActive', 'SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource', 'SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination', 'SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue', 'SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported', 'SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed', 'SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket'
 	Code SubscriptionTransferValidationErrorCode `json:"code,omitempty"`
 	// Message - The error message.
 	Message *string `json:"message,omitempty"`
@@ -3776,6 +3777,7 @@ type ValidateSubscriptionTransferEligibilityError struct {
 
 // ValidateSubscriptionTransferEligibilityResult result of the transfer eligibility validation.
 type ValidateSubscriptionTransferEligibilityResult struct {
+	autorest.Response `json:"-"`
 	// IsTransferEligible - READ-ONLY; Specifies whether the transfer is eligible or not.
 	IsTransferEligible *bool `json:"isTransferEligible,omitempty"`
 	// ErrorDetails - Validation error details.

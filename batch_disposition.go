@@ -16,6 +16,15 @@ type (
 		Status       MessageStatus
 		cursor       int
 	}
+	// BatchDispositionError is an error which returns a collection of DispositionError.
+	BatchDispositionError struct {
+		Errors []DispositionError
+	}
+	// DispositionError is an error associated with a LockTokenID.
+	DispositionError struct {
+		LockTokenID *uuid.UUID
+		err         error
+	}
 )
 
 const (
@@ -24,6 +33,23 @@ const (
 	// Abort exposes abandonedDisposition
 	Abort MessageStatus = MessageStatus(abandonedDisposition)
 )
+
+func (bde BatchDispositionError) Error() string {
+	msg := ""
+	if len(bde.Errors) != 0 {
+		msg = fmt.Sprintf("Operation failed, %d error(s) reported.", len(bde.Errors))
+	}
+	return msg
+}
+
+func (de DispositionError) Error() string {
+	return de.err.Error()
+}
+
+// UnWrap will return the private error.
+func (de DispositionError) UnWrap() error {
+	return de.err
+}
 
 // Done communicates whether there are more messages remaining to be iterated over.
 func (bdi *BatchDispositionIterator) Done() bool {
@@ -39,7 +65,8 @@ func (bdi *BatchDispositionIterator) Next() (uuid *uuid.UUID) {
 	return uuid
 }
 
-func (bdi *BatchDispositionIterator) doUpdate(ctx context.Context, ec entityConnector) error {
+func (bdi *BatchDispositionIterator) doUpdate(ctx context.Context, ec entityConnector) BatchDispositionError {
+	batchError := BatchDispositionError{}
 	for !bdi.Done() {
 		if uuid := bdi.Next(); uuid != nil {
 			m := &Message{
@@ -48,21 +75,24 @@ func (bdi *BatchDispositionIterator) doUpdate(ctx context.Context, ec entityConn
 			m.ec = ec
 			err := m.sendDisposition(ctx, bdi.Status)
 			if err != nil {
-				return err
+				batchError.Errors = append(batchError.Errors, DispositionError{
+					LockTokenID: uuid,
+					err:         err,
+				})
 			}
 		}
 	}
-	return nil
+	return batchError
 }
 
-// SendBatchDisposition updates the LockToken id to the desired status.
+// SendBatchDisposition updates the LockTokenIDs to the disposition status.
 func (q *Queue) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) error {
 	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.SendBatchDisposition")
 	defer span.Finish()
 	return iterator.doUpdate(ctx, q)
 }
 
-// SendBatchDisposition updates the LockToken id to the desired status.
+// SendBatchDisposition updates the LockTokenIDs to the desired disposition status.
 func (s *Subscription) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) error {
 	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.SendBatchDisposition")
 	defer span.Finish()

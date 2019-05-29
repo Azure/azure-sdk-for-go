@@ -2,6 +2,7 @@ package servicebus
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-amqp-common-go/uuid"
@@ -36,12 +37,19 @@ func TestBatchDispositionUnsupportedStatus(t *testing.T) {
 	id := uuid.UUID{}
 	bdi := BatchDispositionIterator{
 		LockTokenIDs: []*uuid.UUID{
-			&id,
+			&id, &id, &id,
 		},
 		Status: status,
 	}
 
 	subscription := Subscription{}
 	err := subscription.SendBatchDisposition(context.Background(), bdi)
-	assert.EqualErrorf(t, err, "unsupported bulk disposition status \"suspended\"", err.Error())
+	be := err.(BatchDispositionError)
+	assert.NotNil(t, be, fmt.Sprintf("Wrong error type %T", err))
+	assert.EqualErrorf(t, err, fmt.Sprintf("Operation failed, %d error(s) reported.", len(be.Errors)), err.Error())
+
+	for _, innerErr := range be.Errors {
+		assert.NotNil(t, innerErr.UnWrap(), "Unwrapped error is nil")
+		assert.EqualErrorf(t, innerErr, "unsupported bulk disposition status \"suspended\"", innerErr.Error())
+	}
 }

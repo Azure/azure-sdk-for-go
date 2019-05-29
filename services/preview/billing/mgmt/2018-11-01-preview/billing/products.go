@@ -563,9 +563,9 @@ func (client ProductsClient) UpdateAutoRenewByInvoiceSectionNameResponder(resp *
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-// billingSubscriptionName - billing Subscription Id.
+// productName - invoice Id.
 // parameters - parameters supplied to the Transfer Products operation.
-func (client ProductsClient) ValidateTransfer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters TransferProductRequestProperties) (result ValidateProductTransferEligibilityResult, err error) {
+func (client ProductsClient) ValidateTransfer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters TransferProductRequestProperties) (result ValidateProductTransferEligibilityResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.ValidateTransfer")
 		defer func() {
@@ -576,7 +576,7 @@ func (client ProductsClient) ValidateTransfer(ctx context.Context, billingAccoun
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ValidateTransferPreparer(ctx, billingAccountName, invoiceSectionName, billingSubscriptionName, parameters)
+	req, err := client.ValidateTransferPreparer(ctx, billingAccountName, invoiceSectionName, productName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ValidateTransfer", nil, "Failure preparing request")
 		return
@@ -598,11 +598,11 @@ func (client ProductsClient) ValidateTransfer(ctx context.Context, billingAccoun
 }
 
 // ValidateTransferPreparer prepares the ValidateTransfer request.
-func (client ProductsClient) ValidateTransferPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters TransferProductRequestProperties) (*http.Request, error) {
+func (client ProductsClient) ValidateTransferPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters TransferProductRequestProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"billingAccountName":      autorest.Encode("path", billingAccountName),
-		"billingSubscriptionName": autorest.Encode("path", billingSubscriptionName),
-		"invoiceSectionName":      autorest.Encode("path", invoiceSectionName),
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"invoiceSectionName": autorest.Encode("path", invoiceSectionName),
+		"productName":        autorest.Encode("path", productName),
 	}
 
 	preparer := autorest.CreatePreparer(

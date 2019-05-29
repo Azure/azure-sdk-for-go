@@ -127,7 +127,7 @@ type ProductsClientAPI interface {
 	Transfer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters billing.TransferProductRequestProperties) (result billing.ProductSummary, err error)
 	UpdateAutoRenewByBillingAccountName(ctx context.Context, billingAccountName string, productName string, body billing.UpdateAutoRenewRequest) (result billing.UpdateAutoRenewOperationSummary, err error)
 	UpdateAutoRenewByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, body billing.UpdateAutoRenewRequest) (result billing.UpdateAutoRenewOperationSummary, err error)
-	ValidateTransfer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters billing.TransferProductRequestProperties) (result billing.ValidateProductTransferEligibilityResult, err error)
+	ValidateTransfer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters billing.TransferProductRequestProperties) (result billing.ValidateProductTransferEligibilityResult, err error)
 }
 
 var _ ProductsClientAPI = (*billing.ProductsClient)(nil)

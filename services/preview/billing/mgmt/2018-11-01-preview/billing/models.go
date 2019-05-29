@@ -184,10 +184,10 @@ const (
 	CrossBillingAccountNotAllowed ProductTransferValidationErrorCode = "CrossBillingAccountNotAllowed"
 	// DestinationBillingProfilePastDue ...
 	DestinationBillingProfilePastDue ProductTransferValidationErrorCode = "DestinationBillingProfilePastDue"
-	// InsufficienctPermissionOnDestination ...
-	InsufficienctPermissionOnDestination ProductTransferValidationErrorCode = "InsufficienctPermissionOnDestination"
-	// InsufficienctPermissionOnSource ...
-	InsufficienctPermissionOnSource ProductTransferValidationErrorCode = "InsufficienctPermissionOnSource"
+	// InsufficientPermissionOnDestination ...
+	InsufficientPermissionOnDestination ProductTransferValidationErrorCode = "InsufficientPermissionOnDestination"
+	// InsufficientPermissionOnSource ...
+	InsufficientPermissionOnSource ProductTransferValidationErrorCode = "InsufficientPermissionOnSource"
 	// InvalidSource ...
 	InvalidSource ProductTransferValidationErrorCode = "InvalidSource"
 	// NotAvailableForDestinationMarket ...
@@ -202,7 +202,7 @@ const (
 
 // PossibleProductTransferValidationErrorCodeValues returns an array of possible values for the ProductTransferValidationErrorCode const type.
 func PossibleProductTransferValidationErrorCodeValues() []ProductTransferValidationErrorCode {
-	return []ProductTransferValidationErrorCode{CrossBillingAccountNotAllowed, DestinationBillingProfilePastDue, InsufficienctPermissionOnDestination, InsufficienctPermissionOnSource, InvalidSource, NotAvailableForDestinationMarket, OneTimePurchaseProductTransferNotAllowed, ProductNotActive, ProductTypeNotSupported}
+	return []ProductTransferValidationErrorCode{CrossBillingAccountNotAllowed, DestinationBillingProfilePastDue, InsufficientPermissionOnDestination, InsufficientPermissionOnSource, InvalidSource, NotAvailableForDestinationMarket, OneTimePurchaseProductTransferNotAllowed, ProductNotActive, ProductTypeNotSupported}
 }
 
 // ProductType enumerates the values for product type.
@@ -3748,7 +3748,7 @@ type ValidateAddressResponse struct {
 
 // ValidateProductTransferEligibilityError error details of the product transfer eligibility validation.
 type ValidateProductTransferEligibilityError struct {
-	// Code - Error code for the product transfer validation. Possible values include: 'InvalidSource', 'ProductNotActive', 'InsufficienctPermissionOnSource', 'InsufficienctPermissionOnDestination', 'DestinationBillingProfilePastDue', 'ProductTypeNotSupported', 'CrossBillingAccountNotAllowed', 'NotAvailableForDestinationMarket', 'OneTimePurchaseProductTransferNotAllowed'
+	// Code - Error code for the product transfer validation. Possible values include: 'InvalidSource', 'ProductNotActive', 'InsufficientPermissionOnSource', 'InsufficientPermissionOnDestination', 'DestinationBillingProfilePastDue', 'ProductTypeNotSupported', 'CrossBillingAccountNotAllowed', 'NotAvailableForDestinationMarket', 'OneTimePurchaseProductTransferNotAllowed'
 	Code ProductTransferValidationErrorCode `json:"code,omitempty"`
 	// Message - The error message.
 	Message *string `json:"message,omitempty"`

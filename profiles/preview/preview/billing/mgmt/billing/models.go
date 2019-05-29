@@ -102,8 +102,8 @@ type ProductTransferValidationErrorCode = original.ProductTransferValidationErro
 const (
 	CrossBillingAccountNotAllowed            ProductTransferValidationErrorCode = original.CrossBillingAccountNotAllowed
 	DestinationBillingProfilePastDue         ProductTransferValidationErrorCode = original.DestinationBillingProfilePastDue
-	InsufficienctPermissionOnDestination     ProductTransferValidationErrorCode = original.InsufficienctPermissionOnDestination
-	InsufficienctPermissionOnSource          ProductTransferValidationErrorCode = original.InsufficienctPermissionOnSource
+	InsufficientPermissionOnDestination      ProductTransferValidationErrorCode = original.InsufficientPermissionOnDestination
+	InsufficientPermissionOnSource           ProductTransferValidationErrorCode = original.InsufficientPermissionOnSource
 	InvalidSource                            ProductTransferValidationErrorCode = original.InvalidSource
 	NotAvailableForDestinationMarket         ProductTransferValidationErrorCode = original.NotAvailableForDestinationMarket
 	OneTimePurchaseProductTransferNotAllowed ProductTransferValidationErrorCode = original.OneTimePurchaseProductTransferNotAllowed

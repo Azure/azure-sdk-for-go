@@ -102,7 +102,9 @@ func (client EndpointSettingsClient) GetSettingsResponder(resp *http.Response) (
 }
 
 // UpdateSettings sends the update settings request.
-func (client EndpointSettingsClient) UpdateSettings(ctx context.Context) (result autorest.Response, err error) {
+// Parameters:
+// endpointSettingsPayload - post body of the request.
+func (client EndpointSettingsClient) UpdateSettings(ctx context.Context, endpointSettingsPayload EndpointSettingsDTO) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointSettingsClient.UpdateSettings")
 		defer func() {
@@ -113,7 +115,7 @@ func (client EndpointSettingsClient) UpdateSettings(ctx context.Context) (result
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateSettingsPreparer(ctx)
+	req, err := client.UpdateSettingsPreparer(ctx, endpointSettingsPayload)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "qnamaker.EndpointSettingsClient", "UpdateSettings", nil, "Failure preparing request")
 		return
@@ -135,15 +137,17 @@ func (client EndpointSettingsClient) UpdateSettings(ctx context.Context) (result
 }
 
 // UpdateSettingsPreparer prepares the UpdateSettings request.
-func (client EndpointSettingsClient) UpdateSettingsPreparer(ctx context.Context) (*http.Request, error) {
+func (client EndpointSettingsClient) UpdateSettingsPreparer(ctx context.Context, endpointSettingsPayload EndpointSettingsDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithCustomBaseURL("{Endpoint}/qnamaker/v4.0", urlParameters),
-		autorest.WithPath("/endpointsettings"))
+		autorest.WithPath("/endpointsettings"),
+		autorest.WithJSON(endpointSettingsPayload))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

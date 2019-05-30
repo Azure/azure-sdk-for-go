@@ -65,6 +65,18 @@ const (
 	Internal ConnectionType = original.Internal
 )
 
+type DataSource = original.DataSource
+
+const (
+	TwinData DataSource = original.TwinData
+)
+
+type ExportData = original.ExportData
+
+const (
+	RawEvents ExportData = original.RawEvents
+)
+
 type ExternalSecuritySolutionKind = original.ExternalSecuritySolutionKind
 
 const (
@@ -129,6 +141,13 @@ type SettingKind = original.SettingKind
 const (
 	SettingKindAlertSuppressionSetting SettingKind = original.SettingKindAlertSuppressionSetting
 	SettingKindDataExportSetting       SettingKind = original.SettingKindDataExportSetting
+)
+
+type SolutionStatus = original.SolutionStatus
+
+const (
+	Disabled SolutionStatus = original.Disabled
+	Enabled  SolutionStatus = original.Enabled
 )
 
 type State = original.State
@@ -239,6 +258,14 @@ type InformationProtectionPolicyListIterator = original.InformationProtectionPol
 type InformationProtectionPolicyListPage = original.InformationProtectionPolicyListPage
 type InformationProtectionPolicyProperties = original.InformationProtectionPolicyProperties
 type InformationType = original.InformationType
+type IoTSecuritySolutionModel = original.IoTSecuritySolutionModel
+type IoTSecuritySolutionProperties = original.IoTSecuritySolutionProperties
+type IoTSecuritySolutionsClient = original.IoTSecuritySolutionsClient
+type IoTSecuritySolutionsList = original.IoTSecuritySolutionsList
+type IoTSecuritySolutionsListIterator = original.IoTSecuritySolutionsListIterator
+type IoTSecuritySolutionsListPage = original.IoTSecuritySolutionsListPage
+type IoTSecuritySolutionsResourceGroupClient = original.IoTSecuritySolutionsResourceGroupClient
+type IotSecuritySolutionClient = original.IotSecuritySolutionClient
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
 type JitNetworkAccessPoliciesList = original.JitNetworkAccessPoliciesList
 type JitNetworkAccessPoliciesListIterator = original.JitNetworkAccessPoliciesListIterator
@@ -292,6 +319,7 @@ type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
 type SettingsListPage = original.SettingsListPage
+type TagsResource = original.TagsResource
 type Task = original.Task
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
@@ -438,6 +466,30 @@ func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicy
 func NewInformationProtectionPolicyListPage(getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
 	return original.NewInformationProtectionPolicyListPage(getNextPage)
 }
+func NewIoTSecuritySolutionsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
+	return original.NewIoTSecuritySolutionsClient(subscriptionID, ascLocation)
+}
+func NewIoTSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
+	return original.NewIoTSecuritySolutionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTSecuritySolutionsListIterator {
+	return original.NewIoTSecuritySolutionsListIterator(page)
+}
+func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
+	return original.NewIoTSecuritySolutionsListPage(getNextPage)
+}
+func NewIoTSecuritySolutionsResourceGroupClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
+	return original.NewIoTSecuritySolutionsResourceGroupClient(subscriptionID, ascLocation)
+}
+func NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
+	return original.NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewIotSecuritySolutionClient(subscriptionID string, ascLocation string) IotSecuritySolutionClient {
+	return original.NewIotSecuritySolutionClient(subscriptionID, ascLocation)
+}
+func NewIotSecuritySolutionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionClient {
+	return original.NewIotSecuritySolutionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string) JitNetworkAccessPoliciesClient {
 	return original.NewJitNetworkAccessPoliciesClient(subscriptionID, ascLocation)
 }
@@ -576,6 +628,12 @@ func PossibleAutoProvisionValues() []AutoProvision {
 func PossibleConnectionTypeValues() []ConnectionType {
 	return original.PossibleConnectionTypeValues()
 }
+func PossibleDataSourceValues() []DataSource {
+	return original.PossibleDataSourceValues()
+}
+func PossibleExportDataValues() []ExportData {
+	return original.PossibleExportDataValues()
+}
 func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind {
 	return original.PossibleExternalSecuritySolutionKindValues()
 }
@@ -599,6 +657,9 @@ func PossibleResourceStatusValues() []ResourceStatus {
 }
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()
+}
+func PossibleSolutionStatusValues() []SolutionStatus {
+	return original.PossibleSolutionStatusValues()
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()

@@ -198,7 +198,6 @@ type EnrollmentPolicies = original.EnrollmentPolicies
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
-type IncreaseLineOfCreditRequestProperties = original.IncreaseLineOfCreditRequestProperties
 type InitiateTransferProperties = original.InitiateTransferProperties
 type InitiateTransferRequest = original.InitiateTransferRequest
 type InvoiceListResult = original.InvoiceListResult

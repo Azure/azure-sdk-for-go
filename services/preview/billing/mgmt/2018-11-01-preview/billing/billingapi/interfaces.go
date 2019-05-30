@@ -231,7 +231,7 @@ var _ AgreementsClientAPI = (*billing.AgreementsClient)(nil)
 // LineOfCreditsClientAPI contains the set of methods on the LineOfCreditsClient type.
 type LineOfCreditsClientAPI interface {
 	Get(ctx context.Context) (result billing.LineOfCredit, err error)
-	Increase(ctx context.Context, parameters billing.IncreaseLineOfCreditRequestProperties) (result billing.LineOfCreditsIncreaseFuture, err error)
+	Increase(ctx context.Context, parameters billing.LineOfCredit) (result billing.LineOfCreditsIncreaseFuture, err error)
 }
 
 var _ LineOfCreditsClientAPI = (*billing.LineOfCreditsClient)(nil)

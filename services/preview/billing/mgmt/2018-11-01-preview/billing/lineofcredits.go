@@ -115,7 +115,7 @@ func (client LineOfCreditsClient) GetResponder(resp *http.Response) (result Line
 // Increase increase the current line of credit.
 // Parameters:
 // parameters - parameters supplied to the increase line of credit operation.
-func (client LineOfCreditsClient) Increase(ctx context.Context, parameters IncreaseLineOfCreditRequestProperties) (result LineOfCreditsIncreaseFuture, err error) {
+func (client LineOfCreditsClient) Increase(ctx context.Context, parameters LineOfCredit) (result LineOfCreditsIncreaseFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LineOfCreditsClient.Increase")
 		defer func() {
@@ -142,7 +142,7 @@ func (client LineOfCreditsClient) Increase(ctx context.Context, parameters Incre
 }
 
 // IncreasePreparer prepares the Increase request.
-func (client LineOfCreditsClient) IncreasePreparer(ctx context.Context, parameters IncreaseLineOfCreditRequestProperties) (*http.Request, error) {
+func (client LineOfCreditsClient) IncreasePreparer(ctx context.Context, parameters LineOfCredit) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -154,9 +154,9 @@ func (client LineOfCreditsClient) IncreasePreparer(ctx context.Context, paramete
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
+		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingAccounts/default/lineOfCredit/default/increase", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Billing/billingAccounts/default/lineOfCredit/default", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

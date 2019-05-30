@@ -977,12 +977,6 @@ type ErrorResponse struct {
 	Error *ErrorDetails `json:"error,omitempty"`
 }
 
-// IncreaseLineOfCreditRequestProperties request parameters to increase line of credit.
-type IncreaseLineOfCreditRequestProperties struct {
-	// DesiredCreditLimit - The desired credit limit.
-	DesiredCreditLimit *float64 `json:"desiredCreditLimit,omitempty"`
-}
-
 // InitiateTransferProperties request parameters to initiate transfer.
 type InitiateTransferProperties struct {
 	// BillingProfileID - Target Usage context for devTest subscriptions.
@@ -1363,7 +1357,7 @@ func (loc *LineOfCredit) UnmarshalJSON(body []byte) error {
 
 // LineOfCreditProperties the properties of the line of credit.
 type LineOfCreditProperties struct {
-	// CreditLimit - READ-ONLY; The current credit limit.
+	// CreditLimit - The current credit limit.
 	CreditLimit *Amount `json:"creditLimit,omitempty"`
 	// Reason - READ-ONLY; The reason for the line of credit status when not approved.
 	Reason *string `json:"reason,omitempty"`

@@ -47,6 +47,21 @@ func PossibleAccountTypeValues() []AccountType {
 	return []AccountType{AccountTypeEnrollment, AccountTypeOrganization}
 }
 
+// AddressValidationStatus enumerates the values for address validation status.
+type AddressValidationStatus string
+
+const (
+	// Invalid ...
+	Invalid AddressValidationStatus = "Invalid"
+	// Valid ...
+	Valid AddressValidationStatus = "Valid"
+)
+
+// PossibleAddressValidationStatusValues returns an array of possible values for the AddressValidationStatus const type.
+func PossibleAddressValidationStatusValues() []AddressValidationStatus {
+	return []AddressValidationStatus{Invalid, Valid}
+}
+
 // EligibleProductType enumerates the values for eligible product type.
 type EligibleProductType string
 
@@ -195,19 +210,34 @@ func PossibleReservationTypeValues() []ReservationType {
 type Status string
 
 const (
-	// StatusDue ...
-	StatusDue Status = "Due"
-	// StatusPaid ...
-	StatusPaid Status = "Paid"
-	// StatusPastDue ...
-	StatusPastDue Status = "PastDue"
-	// StatusVoid ...
-	StatusVoid Status = "Void"
+	// Approved ...
+	Approved Status = "Approved"
+	// Rejected ...
+	Rejected Status = "Rejected"
 )
 
 // PossibleStatusValues returns an array of possible values for the Status const type.
 func PossibleStatusValues() []Status {
-	return []Status{StatusDue, StatusPaid, StatusPastDue, StatusVoid}
+	return []Status{Approved, Rejected}
+}
+
+// Status1 enumerates the values for status 1.
+type Status1 string
+
+const (
+	// Status1Due ...
+	Status1Due Status1 = "Due"
+	// Status1Paid ...
+	Status1Paid Status1 = "Paid"
+	// Status1PastDue ...
+	Status1PastDue Status1 = "PastDue"
+	// Status1Void ...
+	Status1Void Status1 = "Void"
+)
+
+// PossibleStatus1Values returns an array of possible values for the Status1 const type.
+func PossibleStatus1Values() []Status1 {
+	return []Status1{Status1Due, Status1Paid, Status1PastDue, Status1Void}
 }
 
 // SubscriptionStatusType enumerates the values for subscription status type.
@@ -563,7 +593,7 @@ type AgreementProperties struct {
 type Amount struct {
 	// Currency - READ-ONLY; The currency for the amount value.
 	Currency *string `json:"currency,omitempty"`
-	// Value - READ-ONLY; Amount value.
+	// Value - Amount value.
 	Value *float64 `json:"value,omitempty"`
 }
 
@@ -1076,6 +1106,14 @@ func (is *InvoiceSection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// InvoiceSectionCreationRequest the properties of an InvoiceSection.
+type InvoiceSectionCreationRequest struct {
+	// DisplayName - The name of the InvoiceSection.
+	DisplayName *string `json:"displayName,omitempty"`
+	// BillingProfileID - The billing profile id.
+	BillingProfileID *string `json:"billingProfileId,omitempty"`
+}
+
 // InvoiceSectionListResult result of listing invoice sections.
 type InvoiceSectionListResult struct {
 	autorest.Response `json:"-"`
@@ -1230,8 +1268,8 @@ type InvoiceSummaryProperties struct {
 	DueDate *date.Time `json:"dueDate,omitempty"`
 	// InvoiceDate - READ-ONLY; The date when invoice was created.
 	InvoiceDate *date.Time `json:"invoiceDate,omitempty"`
-	// Status - READ-ONLY; Invoice status. Possible values include: 'StatusPastDue', 'StatusDue', 'StatusPaid', 'StatusVoid'
-	Status Status `json:"status,omitempty"`
+	// Status - READ-ONLY; Invoice status. Possible values include: 'Status1PastDue', 'Status1Due', 'Status1Paid', 'Status1Void'
+	Status Status1 `json:"status,omitempty"`
 	// AmountDue - READ-ONLY; Amount due.
 	AmountDue *Amount `json:"amountDue,omitempty"`
 	// BilledAmount - READ-ONLY; Amount billed.
@@ -1250,6 +1288,120 @@ type InvoiceSummaryProperties struct {
 	DocumentUrls *[]DownloadProperties `json:"documentUrls,omitempty"`
 	// Payments - READ-ONLY; List of payments.
 	Payments *[]PaymentProperties `json:"payments,omitempty"`
+}
+
+// LineOfCredit line of credit resource.
+type LineOfCredit struct {
+	autorest.Response `json:"-"`
+	// LineOfCreditProperties - A line of credit.
+	*LineOfCreditProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LineOfCredit.
+func (loc LineOfCredit) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if loc.LineOfCreditProperties != nil {
+		objectMap["properties"] = loc.LineOfCreditProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LineOfCredit struct.
+func (loc *LineOfCredit) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var lineOfCreditProperties LineOfCreditProperties
+				err = json.Unmarshal(*v, &lineOfCreditProperties)
+				if err != nil {
+					return err
+				}
+				loc.LineOfCreditProperties = &lineOfCreditProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				loc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				loc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				loc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// LineOfCreditProperties the properties of the line of credit.
+type LineOfCreditProperties struct {
+	// CreditLimit - The current credit limit.
+	CreditLimit *Amount `json:"creditLimit,omitempty"`
+	// Reason - READ-ONLY; The reason for the line of credit status when not approved.
+	Reason *string `json:"reason,omitempty"`
+	// RemainingBalance - READ-ONLY; Remaining balance.
+	RemainingBalance *Amount `json:"remainingBalance,omitempty"`
+	// Status - The line of credit status. Possible values include: 'Approved', 'Rejected'
+	Status Status `json:"status,omitempty"`
+}
+
+// LineOfCreditsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type LineOfCreditsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *LineOfCreditsUpdateFuture) Result(client LineOfCreditsClient) (loc LineOfCredit, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.LineOfCreditsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if loc.Response.Response, err = future.GetResult(sender); err == nil && loc.Response.Response.StatusCode != http.StatusNoContent {
+		loc, err = client.UpdateResponder(loc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.LineOfCreditsUpdateFuture", "Result", loc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // Operation a Billing REST API operation.
@@ -2605,10 +2757,10 @@ type RoleAssignmentListResult struct {
 
 // RoleAssignmentPayload the payload use to update role assignment on a scope
 type RoleAssignmentPayload struct {
-	// PrincipalID - READ-ONLY; The user's principal id that the role gets assigned to
+	// PrincipalID - The user's principal id that the role gets assigned to
 	PrincipalID *string `json:"principalId,omitempty"`
-	// BillingRoleDefinitionName - READ-ONLY; The role definition id
-	BillingRoleDefinitionName *string `json:"billingRoleDefinitionName,omitempty"`
+	// BillingRoleDefinitionID - The role definition id
+	BillingRoleDefinitionID *string `json:"billingRoleDefinitionId,omitempty"`
 }
 
 // RoleAssignmentProperties the properties of the a role assignment.
@@ -3657,4 +3809,15 @@ type UpdateAutoRenewOperationSummaryProperties struct {
 type UpdateAutoRenewRequest struct {
 	// AutoRenew - Request parameters to update auto renew policy a product. Possible values include: 'True', 'False'
 	AutoRenew UpdateAutoRenew `json:"autoRenew,omitempty"`
+}
+
+// ValidateAddressResponse result of the address validation
+type ValidateAddressResponse struct {
+	autorest.Response `json:"-"`
+	// Status - status of the address validation. Possible values include: 'Valid', 'Invalid'
+	Status AddressValidationStatus `json:"status,omitempty"`
+	// SuggestedAddresses - list of suggested addresses.
+	SuggestedAddresses *[]Address `json:"suggestedAddresses,omitempty"`
+	// ValidationMessage - Validation error message.
+	ValidationMessage *string `json:"validationMessage,omitempty"`
 }

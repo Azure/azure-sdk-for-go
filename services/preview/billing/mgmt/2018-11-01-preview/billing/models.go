@@ -593,7 +593,7 @@ type AgreementProperties struct {
 type Amount struct {
 	// Currency - READ-ONLY; The currency for the amount value.
 	Currency *string `json:"currency,omitempty"`
-	// Value - READ-ONLY; Amount value.
+	// Value - Amount value.
 	Value *float64 `json:"value,omitempty"`
 }
 

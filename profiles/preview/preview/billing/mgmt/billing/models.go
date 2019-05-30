@@ -202,6 +202,7 @@ type InitiateTransferProperties = original.InitiateTransferProperties
 type InitiateTransferRequest = original.InitiateTransferRequest
 type InvoiceListResult = original.InvoiceListResult
 type InvoiceSection = original.InvoiceSection
+type InvoiceSectionCreationRequest = original.InvoiceSectionCreationRequest
 type InvoiceSectionListResult = original.InvoiceSectionListResult
 type InvoiceSectionProperties = original.InvoiceSectionProperties
 type InvoiceSectionsClient = original.InvoiceSectionsClient

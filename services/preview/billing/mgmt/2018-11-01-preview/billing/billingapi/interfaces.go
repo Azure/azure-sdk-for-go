@@ -64,7 +64,7 @@ var _ ProfilesClientAPI = (*billing.ProfilesClient)(nil)
 
 // InvoiceSectionsClientAPI contains the set of methods on the InvoiceSectionsClient type.
 type InvoiceSectionsClientAPI interface {
-	Create(ctx context.Context, billingAccountName string, parameters billing.InvoiceSectionProperties) (result billing.InvoiceSectionsCreateFuture, err error)
+	Create(ctx context.Context, billingAccountName string, parameters billing.InvoiceSectionCreationRequest) (result billing.InvoiceSectionsCreateFuture, err error)
 	ElevateToBillingProfile(ctx context.Context, billingAccountName string, invoiceSectionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, billingAccountName string, invoiceSectionName string, expand string) (result billing.InvoiceSection, err error)
 	ListByBillingAccountName(ctx context.Context, billingAccountName string, expand string) (result billing.InvoiceSectionListResult, err error)

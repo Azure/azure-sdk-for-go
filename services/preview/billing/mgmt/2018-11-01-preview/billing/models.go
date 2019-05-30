@@ -1106,6 +1106,14 @@ func (is *InvoiceSection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// InvoiceSectionCreationRequest the properties of an InvoiceSection.
+type InvoiceSectionCreationRequest struct {
+	// DisplayName - The name of the InvoiceSection.
+	DisplayName *string `json:"displayName,omitempty"`
+	// BillingProfileID - The billing profile id.
+	BillingProfileID *string `json:"billingProfileId,omitempty"`
+}
+
 // InvoiceSectionListResult result of listing invoice sections.
 type InvoiceSectionListResult struct {
 	autorest.Response `json:"-"`

@@ -2757,10 +2757,10 @@ type RoleAssignmentListResult struct {
 
 // RoleAssignmentPayload the payload use to update role assignment on a scope
 type RoleAssignmentPayload struct {
-	// PrincipalID - READ-ONLY; The user's principal id that the role gets assigned to
+	// PrincipalID - The user's principal id that the role gets assigned to
 	PrincipalID *string `json:"principalId,omitempty"`
-	// BillingRoleDefinitionName - READ-ONLY; The role definition id
-	BillingRoleDefinitionName *string `json:"billingRoleDefinitionName,omitempty"`
+	// BillingRoleDefinitionID - The role definition id
+	BillingRoleDefinitionID *string `json:"billingRoleDefinitionId,omitempty"`
 }
 
 // RoleAssignmentProperties the properties of the a role assignment.

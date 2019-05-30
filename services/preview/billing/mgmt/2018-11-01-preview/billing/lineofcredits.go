@@ -112,12 +112,12 @@ func (client LineOfCreditsClient) GetResponder(resp *http.Response) (result Line
 	return
 }
 
-// Increase increase the current line of credit.
+// Update increase the current line of credit.
 // Parameters:
 // parameters - parameters supplied to the increase line of credit operation.
-func (client LineOfCreditsClient) Increase(ctx context.Context, parameters LineOfCredit) (result LineOfCreditsIncreaseFuture, err error) {
+func (client LineOfCreditsClient) Update(ctx context.Context, parameters LineOfCredit) (result LineOfCreditsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/LineOfCreditsClient.Increase")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LineOfCreditsClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -126,23 +126,23 @@ func (client LineOfCreditsClient) Increase(ctx context.Context, parameters LineO
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.IncreasePreparer(ctx, parameters)
+	req, err := client.UpdatePreparer(ctx, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsClient", "Increase", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.IncreaseSender(req)
+	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsClient", "Increase", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// IncreasePreparer prepares the Increase request.
-func (client LineOfCreditsClient) IncreasePreparer(ctx context.Context, parameters LineOfCredit) (*http.Request, error) {
+// UpdatePreparer prepares the Update request.
+func (client LineOfCreditsClient) UpdatePreparer(ctx context.Context, parameters LineOfCredit) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -162,9 +162,9 @@ func (client LineOfCreditsClient) IncreasePreparer(ctx context.Context, paramete
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// IncreaseSender sends the Increase request. The method will close the
+// UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client LineOfCreditsClient) IncreaseSender(req *http.Request) (future LineOfCreditsIncreaseFuture, err error) {
+func (client LineOfCreditsClient) UpdateSender(req *http.Request) (future LineOfCreditsUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
@@ -175,9 +175,9 @@ func (client LineOfCreditsClient) IncreaseSender(req *http.Request) (future Line
 	return
 }
 
-// IncreaseResponder handles the response to the Increase request. The method always
+// UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client LineOfCreditsClient) IncreaseResponder(resp *http.Response) (result LineOfCredit, err error) {
+func (client LineOfCreditsClient) UpdateResponder(resp *http.Response) (result LineOfCredit, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

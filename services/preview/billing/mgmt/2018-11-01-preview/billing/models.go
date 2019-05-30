@@ -1367,30 +1367,30 @@ type LineOfCreditProperties struct {
 	Status Status `json:"status,omitempty"`
 }
 
-// LineOfCreditsIncreaseFuture an abstraction for monitoring and retrieving the results of a long-running
+// LineOfCreditsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type LineOfCreditsIncreaseFuture struct {
+type LineOfCreditsUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *LineOfCreditsIncreaseFuture) Result(client LineOfCreditsClient) (loc LineOfCredit, err error) {
+func (future *LineOfCreditsUpdateFuture) Result(client LineOfCreditsClient) (loc LineOfCredit, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsIncreaseFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("billing.LineOfCreditsIncreaseFuture")
+		err = azure.NewAsyncOpIncompleteError("billing.LineOfCreditsUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if loc.Response.Response, err = future.GetResult(sender); err == nil && loc.Response.Response.StatusCode != http.StatusNoContent {
-		loc, err = client.IncreaseResponder(loc.Response.Response)
+		loc, err = client.UpdateResponder(loc.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "billing.LineOfCreditsIncreaseFuture", "Result", loc.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "billing.LineOfCreditsUpdateFuture", "Result", loc.Response.Response, "Failure responding to request")
 		}
 	}
 	return

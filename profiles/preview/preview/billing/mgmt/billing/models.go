@@ -114,10 +114,17 @@ const (
 type Status = original.Status
 
 const (
-	StatusDue     Status = original.StatusDue
-	StatusPaid    Status = original.StatusPaid
-	StatusPastDue Status = original.StatusPastDue
-	StatusVoid    Status = original.StatusVoid
+	Approved Status = original.Approved
+	Rejected Status = original.Rejected
+)
+
+type Status1 = original.Status1
+
+const (
+	Status1Due     Status1 = original.Status1Due
+	Status1Paid    Status1 = original.Status1Paid
+	Status1PastDue Status1 = original.Status1PastDue
+	Status1Void    Status1 = original.Status1Void
 )
 
 type SubscriptionStatusType = original.SubscriptionStatusType
@@ -162,8 +169,8 @@ type Account = original.Account
 type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
-type AccountsValidateAddressClient = original.AccountsValidateAddressClient
 type Address = original.Address
+type AddressesClient = original.AddressesClient
 type Agreement = original.Agreement
 type AgreementListResult = original.AgreementListResult
 type AgreementProperties = original.AgreementProperties
@@ -195,6 +202,7 @@ type InitiateTransferProperties = original.InitiateTransferProperties
 type InitiateTransferRequest = original.InitiateTransferRequest
 type InvoiceListResult = original.InvoiceListResult
 type InvoiceSection = original.InvoiceSection
+type InvoiceSectionCreationRequest = original.InvoiceSectionCreationRequest
 type InvoiceSectionListResult = original.InvoiceSectionListResult
 type InvoiceSectionProperties = original.InvoiceSectionProperties
 type InvoiceSectionsClient = original.InvoiceSectionsClient
@@ -203,6 +211,10 @@ type InvoiceSectionsUpdateFuture = original.InvoiceSectionsUpdateFuture
 type InvoiceSummary = original.InvoiceSummary
 type InvoiceSummaryProperties = original.InvoiceSummaryProperties
 type InvoicesClient = original.InvoicesClient
+type LineOfCredit = original.LineOfCredit
+type LineOfCreditProperties = original.LineOfCreditProperties
+type LineOfCreditsClient = original.LineOfCreditsClient
+type LineOfCreditsUpdateFuture = original.LineOfCreditsUpdateFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -295,11 +307,11 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAccountsValidateAddressClient(subscriptionID string) AccountsValidateAddressClient {
-	return original.NewAccountsValidateAddressClient(subscriptionID)
+func NewAddressesClient(subscriptionID string) AddressesClient {
+	return original.NewAddressesClient(subscriptionID)
 }
-func NewAccountsValidateAddressClientWithBaseURI(baseURI string, subscriptionID string) AccountsValidateAddressClient {
-	return original.NewAccountsValidateAddressClientWithBaseURI(baseURI, subscriptionID)
+func NewAddressesClientWithBaseURI(baseURI string, subscriptionID string) AddressesClient {
+	return original.NewAddressesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAgreementsClient(subscriptionID string) AgreementsClient {
 	return original.NewAgreementsClient(subscriptionID)
@@ -336,6 +348,12 @@ func NewInvoicesClient(subscriptionID string) InvoicesClient {
 }
 func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
 	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLineOfCreditsClient(subscriptionID string) LineOfCreditsClient {
+	return original.NewLineOfCreditsClient(subscriptionID)
+}
+func NewLineOfCreditsClientWithBaseURI(baseURI string, subscriptionID string) LineOfCreditsClient {
+	return original.NewLineOfCreditsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -495,6 +513,9 @@ func PossibleProductTypeValues() []ProductType {
 }
 func PossibleReservationTypeValues() []ReservationType {
 	return original.PossibleReservationTypeValues()
+}
+func PossibleStatus1Values() []Status1 {
+	return original.PossibleStatus1Values()
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()

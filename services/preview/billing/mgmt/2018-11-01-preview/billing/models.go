@@ -469,6 +469,74 @@ type AccountProperties struct {
 	HasReadAccess *bool `json:"hasReadAccess,omitempty"`
 }
 
+// AccountsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AccountsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AccountsUpdateFuture) Result(client AccountsClient) (a Account, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.AccountsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.AccountsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a, err = client.UpdateResponder(a.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.AccountsUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AccountUpdateProperties the properties of the billing account that can be updated.
+type AccountUpdateProperties struct {
+	// AccountProperties - A billing property.
+	*AccountProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountUpdateProperties.
+func (aup AccountUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aup.AccountProperties != nil {
+		objectMap["properties"] = aup.AccountProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AccountUpdateProperties struct.
+func (aup *AccountUpdateProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var accountProperties AccountProperties
+				err = json.Unmarshal(*v, &accountProperties)
+				if err != nil {
+					return err
+				}
+				aup.AccountProperties = &accountProperties
+			}
+		}
+	}
+
+	return nil
+}
+
 // Address address details.
 type Address struct {
 	// FirstName - First Name.

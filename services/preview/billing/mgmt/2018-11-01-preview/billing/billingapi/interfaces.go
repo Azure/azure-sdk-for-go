@@ -27,6 +27,7 @@ import (
 type AccountsClientAPI interface {
 	Get(ctx context.Context, billingAccountName string, expand string) (result billing.Account, err error)
 	List(ctx context.Context, expand string) (result billing.AccountListResult, err error)
+	Update(ctx context.Context, billingAccountName string, parameters billing.AccountUpdateProperties) (result billing.AccountsUpdateFuture, err error)
 }
 
 var _ AccountsClientAPI = (*billing.AccountsClient)(nil)

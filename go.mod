@@ -1,5 +1,7 @@
 module github.com/Azure/azure-service-bus-go
 
+go 1.12
+
 require (
 	github.com/Azure/azure-amqp-common-go v1.1.5-0.20190529212351-f3083d80d0bb
 	github.com/Azure/azure-sdk-for-go v30.0.0+incompatible

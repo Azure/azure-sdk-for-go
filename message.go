@@ -298,7 +298,7 @@ func (m *Message) ScheduleAt(t time.Time) {
 	m.SystemProperties.ScheduledEnqueueTime = &utcTime
 }
 
-// Set implements trace.Carrier
+// Set implements tab.Carrier
 func (m *Message) Set(key string, value interface{}) {
 	if m.UserProperties == nil {
 		m.UserProperties = make(map[string]interface{})
@@ -306,7 +306,7 @@ func (m *Message) Set(key string, value interface{}) {
 	m.UserProperties[key] = value
 }
 
-// GetKeyValues implements trace.Carrier
+// GetKeyValues implements tab.Carrier
 func (m *Message) GetKeyValues() map[string]interface{} {
 	return m.UserProperties
 }

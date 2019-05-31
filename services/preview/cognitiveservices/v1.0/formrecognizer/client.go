@@ -51,8 +51,9 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 	}
 }
 
-// AnalyzeWithCustomModel extract key-value pairs from a given document. The input document must be of one of the
-// supported content types - 'application/pdf', 'image/jpeg' or 'image/png'. A success response is returned in JSON.
+// AnalyzeWithCustomModel the document to analyze must be of a supported content type - 'application/pdf', 'image/jpeg'
+// or 'image/png'. The response contains not just the extracted information of the analyzed form but also information
+// about content that was not extracted along with a reason.
 // Parameters:
 // ID - model Identifier to analyze the document with.
 // formStream - a pdf document or image (jpg,png) file to analyze.
@@ -280,7 +281,7 @@ func (client BaseClient) GetCustomModelResponder(resp *http.Response) (result Mo
 	return
 }
 
-// GetCustomModels get information about all trained custom models
+// GetCustomModels get information about all trained models
 func (client BaseClient) GetCustomModels(ctx context.Context) (result ModelsResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetCustomModels")
@@ -346,8 +347,8 @@ func (client BaseClient) GetCustomModelsResponder(resp *http.Response) (result M
 	return
 }
 
-// GetExtractedKeys retrieve the keys that were
-// extracted during the training of the specified model.
+// GetExtractedKeys use the API to retrieve the keys that were
+// extracted by the specified model.
 // Parameters:
 // ID - model identifier.
 func (client BaseClient) GetExtractedKeys(ctx context.Context, ID uuid.UUID) (result KeysResult, err error) {
@@ -419,15 +420,14 @@ func (client BaseClient) GetExtractedKeysResponder(resp *http.Response) (result 
 	return
 }
 
-// TrainCustomModel create and train a custom model. The train request must include a source parameter that is either
-// an externally accessible Azure Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path
-// to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path
-// format and be an absolute path rooted to the input mount configuration
+// TrainCustomModel the train request must include a source parameter that is either an externally accessible Azure
+// Storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally
+// mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path
+// rooted to the input mount configuration
 // setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be
-// '/input/contosodataset'. All data to be trained is expected to be directly under the source folder. Subfolders are
-// not supported. Models are trained using documents that are of the following content type - 'application/pdf',
-// 'image/jpeg' and 'image/png'."
-// Other type of content is ignored.
+// '/input/contosodataset'. All data to be trained are expected to be under the source. Models are trained using
+// documents that are of the following content type - 'application/pdf', 'image/jpeg' and 'image/png'."
+// Other content is ignored when training a model.
 // Parameters:
 // trainRequest - request object for training.
 func (client BaseClient) TrainCustomModel(ctx context.Context, trainRequest TrainRequest) (result TrainResult, err error) {

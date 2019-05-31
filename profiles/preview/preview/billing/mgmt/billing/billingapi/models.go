@@ -29,6 +29,7 @@ type DepartmentsClientAPI = original.DepartmentsClientAPI
 type EnrollmentAccountsClientAPI = original.EnrollmentAccountsClientAPI
 type InvoiceSectionsClientAPI = original.InvoiceSectionsClientAPI
 type InvoicesClientAPI = original.InvoicesClientAPI
+type LineOfCreditsClientAPI = original.LineOfCreditsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PaymentMethodsClientAPI = original.PaymentMethodsClientAPI
 type PermissionsClientAPI = original.PermissionsClientAPI

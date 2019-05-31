@@ -330,6 +330,29 @@ func (future *HanaInstancesCreateFuture) Result(client HanaInstancesClient) (hi 
 	return
 }
 
+// HanaInstancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type HanaInstancesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HanaInstancesDeleteFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // HanaInstancesEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type HanaInstancesEnableMonitoringFuture struct {

@@ -27,6 +27,7 @@ import (
 type AccountsClientAPI interface {
 	Get(ctx context.Context, billingAccountName string, expand string) (result billing.Account, err error)
 	List(ctx context.Context, expand string) (result billing.AccountListResult, err error)
+	Update(ctx context.Context, billingAccountName string, parameters billing.AccountUpdateProperties) (result billing.AccountsUpdateFuture, err error)
 }
 
 var _ AccountsClientAPI = (*billing.AccountsClient)(nil)
@@ -64,7 +65,7 @@ var _ ProfilesClientAPI = (*billing.ProfilesClient)(nil)
 
 // InvoiceSectionsClientAPI contains the set of methods on the InvoiceSectionsClient type.
 type InvoiceSectionsClientAPI interface {
-	Create(ctx context.Context, billingAccountName string, parameters billing.InvoiceSectionProperties) (result billing.InvoiceSectionsCreateFuture, err error)
+	Create(ctx context.Context, billingAccountName string, parameters billing.InvoiceSectionCreationRequest) (result billing.InvoiceSectionsCreateFuture, err error)
 	ElevateToBillingProfile(ctx context.Context, billingAccountName string, invoiceSectionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, billingAccountName string, invoiceSectionName string, expand string) (result billing.InvoiceSection, err error)
 	ListByBillingAccountName(ctx context.Context, billingAccountName string, expand string) (result billing.InvoiceSectionListResult, err error)
@@ -227,3 +228,11 @@ type AgreementsClientAPI interface {
 }
 
 var _ AgreementsClientAPI = (*billing.AgreementsClient)(nil)
+
+// LineOfCreditsClientAPI contains the set of methods on the LineOfCreditsClient type.
+type LineOfCreditsClientAPI interface {
+	Get(ctx context.Context) (result billing.LineOfCredit, err error)
+	Update(ctx context.Context, parameters billing.LineOfCredit) (result billing.LineOfCreditsUpdateFuture, err error)
+}
+
+var _ LineOfCreditsClientAPI = (*billing.LineOfCreditsClient)(nil)

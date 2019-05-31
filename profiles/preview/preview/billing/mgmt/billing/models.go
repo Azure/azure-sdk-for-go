@@ -114,10 +114,17 @@ const (
 type Status = original.Status
 
 const (
-	StatusDue     Status = original.StatusDue
-	StatusPaid    Status = original.StatusPaid
-	StatusPastDue Status = original.StatusPastDue
-	StatusVoid    Status = original.StatusVoid
+	Approved Status = original.Approved
+	Rejected Status = original.Rejected
+)
+
+type Status1 = original.Status1
+
+const (
+	Status1Due     Status1 = original.Status1Due
+	Status1Paid    Status1 = original.Status1Paid
+	Status1PastDue Status1 = original.Status1PastDue
+	Status1Void    Status1 = original.Status1Void
 )
 
 type SubscriptionStatusType = original.SubscriptionStatusType
@@ -161,7 +168,9 @@ type AcceptTransferRequest = original.AcceptTransferRequest
 type Account = original.Account
 type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
+type AccountUpdateProperties = original.AccountUpdateProperties
 type AccountsClient = original.AccountsClient
+type AccountsUpdateFuture = original.AccountsUpdateFuture
 type AccountsValidateAddressClient = original.AccountsValidateAddressClient
 type Address = original.Address
 type Agreement = original.Agreement
@@ -195,6 +204,7 @@ type InitiateTransferProperties = original.InitiateTransferProperties
 type InitiateTransferRequest = original.InitiateTransferRequest
 type InvoiceListResult = original.InvoiceListResult
 type InvoiceSection = original.InvoiceSection
+type InvoiceSectionCreationRequest = original.InvoiceSectionCreationRequest
 type InvoiceSectionListResult = original.InvoiceSectionListResult
 type InvoiceSectionProperties = original.InvoiceSectionProperties
 type InvoiceSectionsClient = original.InvoiceSectionsClient
@@ -203,6 +213,10 @@ type InvoiceSectionsUpdateFuture = original.InvoiceSectionsUpdateFuture
 type InvoiceSummary = original.InvoiceSummary
 type InvoiceSummaryProperties = original.InvoiceSummaryProperties
 type InvoicesClient = original.InvoicesClient
+type LineOfCredit = original.LineOfCredit
+type LineOfCreditProperties = original.LineOfCreditProperties
+type LineOfCreditsClient = original.LineOfCreditsClient
+type LineOfCreditsUpdateFuture = original.LineOfCreditsUpdateFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -336,6 +350,12 @@ func NewInvoicesClient(subscriptionID string) InvoicesClient {
 }
 func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
 	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLineOfCreditsClient(subscriptionID string) LineOfCreditsClient {
+	return original.NewLineOfCreditsClient(subscriptionID)
+}
+func NewLineOfCreditsClientWithBaseURI(baseURI string, subscriptionID string) LineOfCreditsClient {
+	return original.NewLineOfCreditsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -495,6 +515,9 @@ func PossibleProductTypeValues() []ProductType {
 }
 func PossibleReservationTypeValues() []ReservationType {
 	return original.PossibleReservationTypeValues()
+}
+func PossibleStatus1Values() []Status1 {
+	return original.PossibleStatus1Values()
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()

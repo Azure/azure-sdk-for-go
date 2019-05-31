@@ -646,6 +646,7 @@ const (
 	TypeSapCloudForCustomerSource      TypeBasicCopySource = original.TypeSapCloudForCustomerSource
 	TypeSapEccSource                   TypeBasicCopySource = original.TypeSapEccSource
 	TypeSapOpenHubSource               TypeBasicCopySource = original.TypeSapOpenHubSource
+	TypeSapTableSource                 TypeBasicCopySource = original.TypeSapTableSource
 	TypeServiceNowSource               TypeBasicCopySource = original.TypeServiceNowSource
 	TypeShopifySource                  TypeBasicCopySource = original.TypeShopifySource
 	TypeSparkSource                    TypeBasicCopySource = original.TypeSparkSource
@@ -859,6 +860,7 @@ const (
 	TypeSapEcc                   TypeBasicLinkedService = original.TypeSapEcc
 	TypeSapHana                  TypeBasicLinkedService = original.TypeSapHana
 	TypeSapOpenHub               TypeBasicLinkedService = original.TypeSapOpenHub
+	TypeSapOpenHub1              TypeBasicLinkedService = original.TypeSapOpenHub1
 	TypeServiceNow               TypeBasicLinkedService = original.TypeServiceNow
 	TypeSftp                     TypeBasicLinkedService = original.TypeSftp
 	TypeShopify                  TypeBasicLinkedService = original.TypeShopify
@@ -1484,6 +1486,9 @@ type SapOpenHubLinkedServiceTypeProperties = original.SapOpenHubLinkedServiceTyp
 type SapOpenHubSource = original.SapOpenHubSource
 type SapOpenHubTableDataset = original.SapOpenHubTableDataset
 type SapOpenHubTableDatasetTypeProperties = original.SapOpenHubTableDatasetTypeProperties
+type SapTableLinkedService = original.SapTableLinkedService
+type SapTablePartitionSettings = original.SapTablePartitionSettings
+type SapTableSource = original.SapTableSource
 type ScheduleTrigger = original.ScheduleTrigger
 type ScheduleTriggerRecurrence = original.ScheduleTriggerRecurrence
 type ScheduleTriggerTypeProperties = original.ScheduleTriggerTypeProperties

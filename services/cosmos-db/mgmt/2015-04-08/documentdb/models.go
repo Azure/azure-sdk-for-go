@@ -2446,6 +2446,8 @@ type Location struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// FailoverPriority - The failover priority of the region. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
 	FailoverPriority *int32 `json:"failoverPriority,omitempty"`
+	// IsZoneRedundant - Flag to indicate whether or not this region is an AvailabilityZone region
+	IsZoneRedundant *bool `json:"isZoneRedundant,omitempty"`
 }
 
 // Metric metric data
@@ -3150,9 +3152,9 @@ type PartitionUsage struct {
 	// QuotaPeriod - READ-ONLY; The quota period used to summarize the usage values.
 	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
 	// Limit - READ-ONLY; Maximum value for this metric
-	Limit *int32 `json:"limit,omitempty"`
+	Limit *int64 `json:"limit,omitempty"`
 	// CurrentValue - READ-ONLY; Current value for this metric
-	CurrentValue *int32 `json:"currentValue,omitempty"`
+	CurrentValue *int64 `json:"currentValue,omitempty"`
 }
 
 // PartitionUsagesResult the response to a list partition level usage request.
@@ -3996,9 +3998,9 @@ type Usage struct {
 	// QuotaPeriod - READ-ONLY; The quota period used to summarize the usage values.
 	QuotaPeriod *string `json:"quotaPeriod,omitempty"`
 	// Limit - READ-ONLY; Maximum value for this metric
-	Limit *int32 `json:"limit,omitempty"`
+	Limit *int64 `json:"limit,omitempty"`
 	// CurrentValue - READ-ONLY; Current value for this metric
-	CurrentValue *int32 `json:"currentValue,omitempty"`
+	CurrentValue *int64 `json:"currentValue,omitempty"`
 }
 
 // UsagesResult the response to a list usage request.

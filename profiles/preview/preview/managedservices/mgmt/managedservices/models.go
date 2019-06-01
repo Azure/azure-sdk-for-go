@@ -53,7 +53,6 @@ type ErrorResponseError = original.ErrorResponseError
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
-type OperationStatus = original.OperationStatus
 type OperationsClient = original.OperationsClient
 type Plan = original.Plan
 type RegistrationAssignment = original.RegistrationAssignment

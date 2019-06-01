@@ -95,7 +95,7 @@ func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.C
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -176,7 +176,7 @@ func (client RegistrationAssignmentsClient) DeletePreparer(ctx context.Context, 
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -259,7 +259,7 @@ func (client RegistrationAssignmentsClient) GetPreparer(ctx context.Context, sco
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -339,7 +339,7 @@ func (client RegistrationAssignmentsClient) ListPreparer(ctx context.Context, sc
 		"scope": scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

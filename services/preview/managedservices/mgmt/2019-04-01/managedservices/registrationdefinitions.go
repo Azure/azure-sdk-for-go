@@ -94,7 +94,7 @@ func (client RegistrationDefinitionsClient) CreateOrUpdatePreparer(ctx context.C
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -181,7 +181,7 @@ func (client RegistrationDefinitionsClient) DeletePreparer(ctx context.Context, 
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -256,7 +256,7 @@ func (client RegistrationDefinitionsClient) GetPreparer(ctx context.Context, sco
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -331,7 +331,7 @@ func (client RegistrationDefinitionsClient) ListPreparer(ctx context.Context, sc
 		"scope": scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

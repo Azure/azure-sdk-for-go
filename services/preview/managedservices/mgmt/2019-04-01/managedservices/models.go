@@ -115,12 +115,6 @@ type OperationList struct {
 	Value *[]Operation `json:"value,omitempty"`
 }
 
-// OperationStatus operation status.
-type OperationStatus struct {
-	// Status - READ-ONLY; The status of the operation.
-	Status *string `json:"status,omitempty"`
-}
-
 // Plan plan details for the managed services.
 type Plan struct {
 	// Name - The plan name.

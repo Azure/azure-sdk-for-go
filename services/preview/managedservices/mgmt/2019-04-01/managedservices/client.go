@@ -1,4 +1,4 @@
-// Package managedservices implements the Azure ARM Managedservices service API version 2018-06-01-preview.
+// Package managedservices implements the Azure ARM Managedservices service API version 2019-04-01-preview.
 //
 // Specification for ManagedServices.
 package managedservices

@@ -273,6 +273,21 @@ func PossibleKindBasicSettingsValues() []KindBasicSettings {
 	return []KindBasicSettings{KindSettings, KindToggleSettings, KindUebaSettings}
 }
 
+// LicenseStatus enumerates the values for license status.
+type LicenseStatus string
+
+const (
+	// LicenseStatusDisabled ...
+	LicenseStatusDisabled LicenseStatus = "Disabled"
+	// LicenseStatusEnabled ...
+	LicenseStatusEnabled LicenseStatus = "Enabled"
+)
+
+// PossibleLicenseStatusValues returns an array of possible values for the LicenseStatus const type.
+func PossibleLicenseStatusValues() []LicenseStatus {
+	return []LicenseStatus{LicenseStatusDisabled, LicenseStatusEnabled}
+}
+
 // OSFamily enumerates the values for os family.
 type OSFamily string
 
@@ -3961,6 +3976,8 @@ type Settings struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindUebaSettings', 'KindToggleSettings'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
@@ -4010,6 +4027,9 @@ func unmarshalBasicSettingsArray(body []byte) ([]BasicSettings, error) {
 func (s Settings) MarshalJSON() ([]byte, error) {
 	s.Kind = KindSettings
 	objectMap := make(map[string]interface{})
+	if s.Etag != nil {
+		objectMap["etag"] = s.Etag
+	}
 	if s.Kind != "" {
 		objectMap["kind"] = s.Kind
 	}
@@ -4225,6 +4245,8 @@ type ToggleSettings struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindUebaSettings', 'KindToggleSettings'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
@@ -4235,6 +4257,9 @@ func (ts ToggleSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ts.ToggleSettingsProperties != nil {
 		objectMap["properties"] = ts.ToggleSettingsProperties
+	}
+	if ts.Etag != nil {
+		objectMap["etag"] = ts.Etag
 	}
 	if ts.Kind != "" {
 		objectMap["kind"] = ts.Kind
@@ -4307,6 +4332,15 @@ func (ts *ToggleSettings) UnmarshalJSON(body []byte) error {
 				}
 				ts.Name = &name
 			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ts.Etag = &etag
+			}
 		case "kind":
 			if v != nil {
 				var kind KindBasicSettings
@@ -4338,6 +4372,8 @@ type UebaSettings struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindUebaSettings', 'KindToggleSettings'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
@@ -4348,6 +4384,9 @@ func (us UebaSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if us.UebaSettingsProperties != nil {
 		objectMap["properties"] = us.UebaSettingsProperties
+	}
+	if us.Etag != nil {
+		objectMap["etag"] = us.Etag
 	}
 	if us.Kind != "" {
 		objectMap["kind"] = us.Kind
@@ -4420,6 +4459,15 @@ func (us *UebaSettings) UnmarshalJSON(body []byte) error {
 				}
 				us.Name = &name
 			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				us.Etag = &etag
+			}
 		case "kind":
 			if v != nil {
 				var kind KindBasicSettings
@@ -4441,8 +4489,8 @@ type UebaSettingsProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// StatusInMcas - READ-ONLY; Determines whether User and Entity Behavior Analytics is enabled from MCAS (Microsoft Cloud App Security). Possible values include: 'StatusInMcasEnabled', 'StatusInMcasDisabled'
 	StatusInMcas StatusInMcas `json:"statusInMcas,omitempty"`
-	// AtpLicenseStatus - READ-ONLY; Determines whether the tenant has ATP (Advanced Threat Protection) license.
-	AtpLicenseStatus *bool `json:"atpLicenseStatus,omitempty"`
+	// AtpLicenseStatus - READ-ONLY; Determines whether the tenant has ATP (Advanced Threat Protection) license. Possible values include: 'LicenseStatusEnabled', 'LicenseStatusDisabled'
+	AtpLicenseStatus LicenseStatus `json:"atpLicenseStatus,omitempty"`
 }
 
 // UserInfo user information that made some action

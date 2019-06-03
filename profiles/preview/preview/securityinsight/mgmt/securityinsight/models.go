@@ -143,6 +143,13 @@ const (
 	KindUebaSettings   KindBasicSettings = original.KindUebaSettings
 )
 
+type LicenseStatus = original.LicenseStatus
+
+const (
+	LicenseStatusDisabled LicenseStatus = original.LicenseStatusDisabled
+	LicenseStatusEnabled  LicenseStatus = original.LicenseStatusEnabled
+)
+
 type OSFamily = original.OSFamily
 
 const (
@@ -450,6 +457,9 @@ func PossibleKindBasicSettingsValues() []KindBasicSettings {
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleLicenseStatusValues() []LicenseStatus {
+	return original.PossibleLicenseStatusValues()
 }
 func PossibleOSFamilyValues() []OSFamily {
 	return original.PossibleOSFamilyValues()

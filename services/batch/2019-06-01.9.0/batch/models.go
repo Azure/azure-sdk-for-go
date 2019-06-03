@@ -1927,8 +1927,7 @@ type CloudPool struct {
 	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail.
 	ApplicationLicenses *[]string `json:"applicationLicenses,omitempty"`
 	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
-	MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
-	// TaskSchedulingPolicy - If not specified, the default is spread.
+	MaxTasksPerNode      *int32                `json:"maxTasksPerNode,omitempty"`
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	UserAccounts         *[]UserAccount        `json:"userAccounts,omitempty"`
 	Metadata             *[]MetadataItem       `json:"metadata,omitempty"`
@@ -3396,8 +3395,7 @@ type PoolAddParameter struct {
 	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail.
 	ApplicationLicenses *[]string `json:"applicationLicenses,omitempty"`
 	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
-	MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
-	// TaskSchedulingPolicy - If not specified, the default is spread.
+	MaxTasksPerNode      *int32                `json:"maxTasksPerNode,omitempty"`
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	UserAccounts         *[]UserAccount        `json:"userAccounts,omitempty"`
 	// Metadata - The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
@@ -3761,8 +3759,7 @@ type PoolSpecification struct {
 	// VirtualMachineConfiguration - This property must be specified if the pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
 	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
-	MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
-	// TaskSchedulingPolicy - If not specified, the default is spread.
+	MaxTasksPerNode      *int32                `json:"maxTasksPerNode,omitempty"`
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	// ResizeTimeout - This timeout applies only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	ResizeTimeout *string `json:"resizeTimeout,omitempty"`
@@ -4121,7 +4118,7 @@ type TaskInformation struct {
 
 // TaskSchedulingPolicy ...
 type TaskSchedulingPolicy struct {
-	// NodeFillType - Possible values include: 'Spread', 'Pack'
+	// NodeFillType - If not specified, the default is spread. Possible values include: 'Spread', 'Pack'
 	NodeFillType ComputeNodeFillType `json:"nodeFillType,omitempty"`
 }
 

@@ -19,7 +19,6 @@ package alertsmanagement
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
@@ -346,8 +345,6 @@ type AlertProperties struct {
 // AlertsList list the alerts.
 type AlertsList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of alerts.
-	NextLink *string `json:"nextLink,omitempty"`
 	// Value - List of alerts
 	Value *[]Alert `json:"value,omitempty"`
 }
@@ -603,8 +600,6 @@ type OperationDisplay struct {
 // OperationsList lists the operations available in the AlertsManagement RP.
 type OperationsList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of alerts.
-	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of operations
 	Value *[]Operation `json:"value,omitempty"`
 }
@@ -758,74 +753,14 @@ type Resource struct {
 
 // SmartGroup set of related alerts grouped together smartly by AMS.
 type SmartGroup struct {
-	autorest.Response     `json:"-"`
-	*SmartGroupProperties `json:"properties,omitempty"`
+	autorest.Response `json:"-"`
+	Properties        *SmartGroupProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SmartGroup.
-func (sg SmartGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sg.SmartGroupProperties != nil {
-		objectMap["properties"] = sg.SmartGroupProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for SmartGroup struct.
-func (sg *SmartGroup) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var smartGroupProperties SmartGroupProperties
-				err = json.Unmarshal(*v, &smartGroupProperties)
-				if err != nil {
-					return err
-				}
-				sg.SmartGroupProperties = &smartGroupProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				sg.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				sg.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				sg.Name = &name
-			}
-		}
-	}
-
-	return nil
 }
 
 // SmartGroupAggregatedProperty aggregated property of each type
@@ -908,11 +843,146 @@ type SmartGroupProperties struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SmartGroupsList list the alerts.
+// SmartGroupsList list the smart groups.
 type SmartGroupsList struct {
 	autorest.Response `json:"-"`
-	// NextLink - URL to fetch the next set of alerts.
-	NextLink *string `json:"nextLink,omitempty"`
-	// Value - List of alerts
+	// Value - List of smart groups
 	Value *[]SmartGroup `json:"value,omitempty"`
+}
+
+// SmartGroupsListIterator provides access to a complete listing of SmartGroup values.
+type SmartGroupsListIterator struct {
+	i    int
+	page SmartGroupsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SmartGroupsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SmartGroupsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SmartGroupsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SmartGroupsListIterator) Response() SmartGroupsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SmartGroupsListIterator) Value() SmartGroup {
+	if !iter.page.NotDone() {
+		return SmartGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SmartGroupsListIterator type.
+func NewSmartGroupsListIterator(page SmartGroupsListPage) SmartGroupsListIterator {
+	return SmartGroupsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sgl SmartGroupsList) IsEmpty() bool {
+	return sgl.Value == nil || len(*sgl.Value) == 0
+}
+
+// smartGroupsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sgl SmartGroupsList) smartGroupsListPreparer(ctx context.Context) (*http.Request, error) {
+	if sgl.NextLink == nil || len(to.String(sgl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sgl.NextLink)))
+}
+
+// SmartGroupsListPage contains a page of SmartGroup values.
+type SmartGroupsListPage struct {
+	fn  func(context.Context, SmartGroupsList) (SmartGroupsList, error)
+	sgl SmartGroupsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SmartGroupsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.sgl)
+	if err != nil {
+		return err
+	}
+	page.sgl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SmartGroupsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SmartGroupsListPage) NotDone() bool {
+	return !page.sgl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SmartGroupsListPage) Response() SmartGroupsList {
+	return page.sgl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SmartGroupsListPage) Values() []SmartGroup {
+	if page.sgl.IsEmpty() {
+		return nil
+	}
+	return *page.sgl.Value
+}
+
+// Creates a new instance of the SmartGroupsListPage type.
+func NewSmartGroupsListPage(getNextPage func(context.Context, SmartGroupsList) (SmartGroupsList, error)) SmartGroupsListPage {
+	return SmartGroupsListPage{fn: getNextPage}
 }

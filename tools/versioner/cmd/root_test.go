@@ -22,6 +22,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -29,6 +30,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/versioner/internal/modinfo"
 )
 
+var newline = "\n"
+
+func init() {
+	if runtime.GOOS == "windows" {
+		newline = "\r\n"
+	}
+
+}
 func Test_getTags(t *testing.T) {
 	if os.Getenv("TRAVIS") == "true" {
 		// travis does a shallow clone so tag count is not consistent
@@ -85,7 +94,7 @@ func Test_sortModuleTagsBySemver(t *testing.T) {
 }
 
 func Test_getTagPrefix(t *testing.T) {
-	p, err := getTagPrefix("/work/src/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis")
+	p, err := getTagPrefix(filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "redis", "mgmt", "2018-03-01", "redis"))
 	if err != nil {
 		t.Fatal("failed to get tag prefix")
 	}
@@ -135,7 +144,7 @@ func (mock mockModInfo) GenerateReport() report.Package {
 
 func Test_calculateModuleTagMajorV1(t *testing.T) {
 	pkg := mockModInfo{
-		dir: "/work/src/github.com/Azure/azure-sdk-for-go/services/foo",
+		dir: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
 	}
 	tag, err := calculateModuleTag([]string{}, pkg)
 	if err != nil {
@@ -152,7 +161,7 @@ func Test_calculateModuleTagMajorV2(t *testing.T) {
 		"services/foo/v1.1.0",
 	}
 	pkg := mockModInfo{
-		dir:    "/work/src/github.com/Azure/azure-sdk-for-go/services/foo/v2",
+		dir:    filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo", "v2"),
 		breaks: true,
 	}
 	tag, err := calculateModuleTag(tags, pkg)
@@ -170,7 +179,7 @@ func Test_calculateModuleTagMajorV2Invalid(t *testing.T) {
 		"services/foo/v1.1.0",
 	}
 	pkg := mockModInfo{
-		dir:    "/work/src/github.com/Azure/azure-sdk-for-go/services/foo", // missing /v2 suffix
+		dir:    filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"), // missing /v2 suffix
 		breaks: true,
 	}
 	tag, err := calculateModuleTag(tags, pkg)
@@ -188,7 +197,7 @@ func Test_calculateModuleTagMinorV1(t *testing.T) {
 		"services/foo/v1.0.1",
 	}
 	pkg := mockModInfo{
-		dir:     "/work/src/github.com/Azure/azure-sdk-for-go/services/foo",
+		dir:     filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo"),
 		exports: true,
 	}
 	tag, err := calculateModuleTag(tags, pkg)
@@ -207,7 +216,7 @@ func Test_calculateModuleTagMinorV2(t *testing.T) {
 		"services/foo/v2.0.0",
 	}
 	pkg := mockModInfo{
-		dir: "/work/src/github.com/Azure/azure-sdk-for-go/services/foo/v2",
+		dir: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo", "v2"),
 	}
 	tag, err := calculateModuleTag(tags, pkg)
 	if err != nil {
@@ -223,21 +232,21 @@ func Test_findLatestMajorVersion(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to find LMV: %v", err)
 	}
-	if ver != "../testdata/scenarioa/foo" {
+	if ver != filepath.Join("..", "testdata", "scenarioa", "foo") {
 		t.Fatalf("bad LMV %s", ver)
 	}
 	ver, err = findLatestMajorVersion("../testdata/scenariod/foo/stage")
 	if err != nil {
 		t.Fatalf("failed to find LMV: %v", err)
 	}
-	if ver != "../testdata/scenariod/foo/v2" {
+	if ver != filepath.Join("..", "testdata", "scenariod", "foo", "v2") {
 		t.Fatalf("bad LMV %s", ver)
 	}
 	ver, err = findLatestMajorVersion("../testdata/scenariof/foo/stage")
 	if err != nil {
 		t.Fatalf("failed to find LMV: %v", err)
 	}
-	if ver != "../testdata/scenariof/foo" {
+	if ver != filepath.Join("..", "testdata", "scenariof", "foo") {
 		t.Fatalf("bad LMV %s", ver)
 	}
 }
@@ -264,10 +273,7 @@ func (b byteBufferSeeker) Seek(offset int64, whence int) (int64, error) {
 
 func Test_updateGoModVerA(t *testing.T) {
 	// updates from v1 to v2
-	const before = `module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo
-
-go 1.12
-`
+	const before = "module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo\n\ngo 1.12\n"
 	buf := byteBufferSeeker{
 		buf: bytes.NewBuffer([]byte(before)),
 	}
@@ -275,10 +281,7 @@ go 1.12
 	if err != nil {
 		t.Fatalf("updateGoModVerA failed: %v", err)
 	}
-	const after = `module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2
-
-go 1.12
-`
+	const after = "module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2\n\ngo 1.12\n"
 	if !strings.EqualFold(buf.buf.String(), after) {
 		t.Fatalf("bad go.mod update, epected %s got %s", after, buf.buf.String())
 	}
@@ -286,10 +289,7 @@ go 1.12
 
 func Test_updateGoModVerB(t *testing.T) {
 	// updates from v2 to v3
-	const before = `module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2
-
-go 1.12
-`
+	const before = "module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2\n\ngo 1.12\n"
 	buf := byteBufferSeeker{
 		buf: bytes.NewBuffer([]byte(before)),
 	}
@@ -297,10 +297,7 @@ go 1.12
 	if err != nil {
 		t.Fatalf("updateGoModVerA failed: %v", err)
 	}
-	const after = `module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v3
-
-go 1.12
-`
+	const after = "module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v3\n\ngo 1.12\n"
 	if !strings.EqualFold(buf.buf.String(), after) {
 		t.Fatalf("bad go.mod update, epected %s got %s", after, buf.buf.String())
 	}
@@ -358,10 +355,7 @@ func Test_theCommandImplMajor(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to read go.mod file: %v", err)
 	}
-	const after = `module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenariob/foo/v2
-
-go 1.12
-`
+	const after = "module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenariob/foo/v2\n\ngo 1.12\n"
 	if !strings.EqualFold(string(b), after) {
 		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
 	}
@@ -398,10 +392,7 @@ func Test_theCommandImplMinor(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to read go.mod file: %v", err)
 	}
-	const after = `module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenarioa/foo
-
-go 1.12
-`
+	after := "module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenarioa/foo" + newline + newline + "go 1.12" + newline
 	if !strings.EqualFold(string(b), after) {
 		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
 	}
@@ -438,10 +429,7 @@ func Test_theCommandImplPatch(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to read go.mod file: %v", err)
 	}
-	const after = `module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenarioc/foo
-
-go 1.12
-`
+	after := "module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenarioc/foo" + newline + newline + "go 1.12" + newline
 	if !strings.EqualFold(string(b), after) {
 		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
 	}
@@ -476,10 +464,7 @@ func Test_theCommandImplNewMod(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to read go.mod file: %v", err)
 	}
-	const after = `module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenariof/foo
-
-go 1.12
-`
+	after := "module github.com/Azure/azure-sdk-for-go/tools/versioner/testdata/scenariof/foo" + newline + newline + "go 1.12" + newline
 	if !strings.EqualFold(string(b), after) {
 		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
 	}

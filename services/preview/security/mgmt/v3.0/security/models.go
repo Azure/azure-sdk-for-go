@@ -3528,6 +3528,405 @@ type InformationType struct {
 	Keywords *[]InformationProtectionKeyword `json:"keywords,omitempty"`
 }
 
+// IoTSecurityAggregatedAlert security Solution
+type IoTSecurityAggregatedAlert struct {
+	autorest.Response `json:"-"`
+	// AlertType - READ-ONLY; Name of the alert type
+	AlertType *string `json:"alertType,omitempty"`
+	// AlertDisplayName - READ-ONLY; Display name of the alert type
+	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
+	// AggregatedDateUtc - READ-ONLY; The date the incidents were detected by the vendor
+	AggregatedDateUtc *date.Date `json:"AggregatedDateUtc,omitempty"`
+	// VendorName - READ-ONLY; Name of the vendor that discovered the incident
+	VendorName *string `json:"vendorName,omitempty"`
+	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
+	// RemediationSteps - READ-ONLY; Recommended steps for remediation
+	RemediationSteps *string `json:"remediationSteps,omitempty"`
+	// Description - READ-ONLY; Description of the incident and what it means
+	Description *string `json:"description,omitempty"`
+	// Count - READ-ONLY; Occurrence number of the alert within the aggregated date
+	Count *int32 `json:"count,omitempty"`
+	// EffectedResourceType - READ-ONLY; Azure resource ID of the resource that got the alerts
+	EffectedResourceType *string `json:"effectedResourceType,omitempty"`
+	// SystemSource - READ-ONLY; The type of the alerted resource (Azure, Non-Azure)
+	SystemSource *string `json:"systemSource,omitempty"`
+	// ActionTaken - READ-ONLY; The action that was taken as a response to the alert (Active, Blocked etc.)
+	ActionTaken *string `json:"actionTaken,omitempty"`
+	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
+	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// IoTSecurityAggregatedAlertList list of IoT aggregated security alerts
+type IoTSecurityAggregatedAlertList struct {
+	autorest.Response `json:"-"`
+	// Value - List of aggregated alerts data
+	Value *[]IoTSecurityAggregatedAlert `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IoTSecurityAggregatedAlertListIterator provides access to a complete listing of
+// IoTSecurityAggregatedAlert values.
+type IoTSecurityAggregatedAlertListIterator struct {
+	i    int
+	page IoTSecurityAggregatedAlertListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IoTSecurityAggregatedAlertListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecurityAggregatedAlertListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IoTSecurityAggregatedAlertListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IoTSecurityAggregatedAlertListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IoTSecurityAggregatedAlertListIterator) Response() IoTSecurityAggregatedAlertList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IoTSecurityAggregatedAlertListIterator) Value() IoTSecurityAggregatedAlert {
+	if !iter.page.NotDone() {
+		return IoTSecurityAggregatedAlert{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IoTSecurityAggregatedAlertListIterator type.
+func NewIoTSecurityAggregatedAlertListIterator(page IoTSecurityAggregatedAlertListPage) IoTSecurityAggregatedAlertListIterator {
+	return IoTSecurityAggregatedAlertListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (itsaal IoTSecurityAggregatedAlertList) IsEmpty() bool {
+	return itsaal.Value == nil || len(*itsaal.Value) == 0
+}
+
+// ioTSecurityAggregatedAlertListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (itsaal IoTSecurityAggregatedAlertList) ioTSecurityAggregatedAlertListPreparer(ctx context.Context) (*http.Request, error) {
+	if itsaal.NextLink == nil || len(to.String(itsaal.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(itsaal.NextLink)))
+}
+
+// IoTSecurityAggregatedAlertListPage contains a page of IoTSecurityAggregatedAlert values.
+type IoTSecurityAggregatedAlertListPage struct {
+	fn     func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error)
+	itsaal IoTSecurityAggregatedAlertList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IoTSecurityAggregatedAlertListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecurityAggregatedAlertListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.itsaal)
+	if err != nil {
+		return err
+	}
+	page.itsaal = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IoTSecurityAggregatedAlertListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IoTSecurityAggregatedAlertListPage) NotDone() bool {
+	return !page.itsaal.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IoTSecurityAggregatedAlertListPage) Response() IoTSecurityAggregatedAlertList {
+	return page.itsaal
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IoTSecurityAggregatedAlertListPage) Values() []IoTSecurityAggregatedAlert {
+	if page.itsaal.IsEmpty() {
+		return nil
+	}
+	return *page.itsaal.Value
+}
+
+// Creates a new instance of the IoTSecurityAggregatedAlertListPage type.
+func NewIoTSecurityAggregatedAlertListPage(getNextPage func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error)) IoTSecurityAggregatedAlertListPage {
+	return IoTSecurityAggregatedAlertListPage{fn: getNextPage}
+}
+
+// IoTSecurityAggregatedRecommendation security Solution
+type IoTSecurityAggregatedRecommendation struct {
+	autorest.Response `json:"-"`
+	// RecommendationName - READ-ONLY; Name of the alert type
+	RecommendationName *string `json:"recommendationName,omitempty"`
+	// RecommendationDisplayName - READ-ONLY; Display name of the alert type
+	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
+	// Description - READ-ONLY; Description of the incident and what it means
+	Description *string `json:"description,omitempty"`
+	// RecommendationTypeID - The recommendation-type GUID.
+	RecommendationTypeID *string `json:"recommendationTypeId,omitempty"`
+	// DetectedBy - READ-ONLY; Name of the vendor that discovered the incident
+	DetectedBy *string `json:"detectedBy,omitempty"`
+	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
+	// HealthyDevices - READ-ONLY; the number of the healthy devices within the solution
+	HealthyDevices *int32 `json:"healthyDevices,omitempty"`
+	// UnhealthyDevices - READ-ONLY; the number of the unhealthy devices within the solution
+	UnhealthyDevices *int32 `json:"unhealthyDevices,omitempty"`
+	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
+	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// IoTSecurityAggregatedRecommendationList list of IoT aggregated security recommendations
+type IoTSecurityAggregatedRecommendationList struct {
+	autorest.Response `json:"-"`
+	// Value - List of aggregated alerts data
+	Value *[]IoTSecurityAggregatedRecommendation `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IoTSecurityAggregatedRecommendationListIterator provides access to a complete listing of
+// IoTSecurityAggregatedRecommendation values.
+type IoTSecurityAggregatedRecommendationListIterator struct {
+	i    int
+	page IoTSecurityAggregatedRecommendationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IoTSecurityAggregatedRecommendationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecurityAggregatedRecommendationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IoTSecurityAggregatedRecommendationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IoTSecurityAggregatedRecommendationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IoTSecurityAggregatedRecommendationListIterator) Response() IoTSecurityAggregatedRecommendationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IoTSecurityAggregatedRecommendationListIterator) Value() IoTSecurityAggregatedRecommendation {
+	if !iter.page.NotDone() {
+		return IoTSecurityAggregatedRecommendation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IoTSecurityAggregatedRecommendationListIterator type.
+func NewIoTSecurityAggregatedRecommendationListIterator(page IoTSecurityAggregatedRecommendationListPage) IoTSecurityAggregatedRecommendationListIterator {
+	return IoTSecurityAggregatedRecommendationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (itsarl IoTSecurityAggregatedRecommendationList) IsEmpty() bool {
+	return itsarl.Value == nil || len(*itsarl.Value) == 0
+}
+
+// ioTSecurityAggregatedRecommendationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (itsarl IoTSecurityAggregatedRecommendationList) ioTSecurityAggregatedRecommendationListPreparer(ctx context.Context) (*http.Request, error) {
+	if itsarl.NextLink == nil || len(to.String(itsarl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(itsarl.NextLink)))
+}
+
+// IoTSecurityAggregatedRecommendationListPage contains a page of IoTSecurityAggregatedRecommendation
+// values.
+type IoTSecurityAggregatedRecommendationListPage struct {
+	fn     func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error)
+	itsarl IoTSecurityAggregatedRecommendationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IoTSecurityAggregatedRecommendationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecurityAggregatedRecommendationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.itsarl)
+	if err != nil {
+		return err
+	}
+	page.itsarl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IoTSecurityAggregatedRecommendationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IoTSecurityAggregatedRecommendationListPage) NotDone() bool {
+	return !page.itsarl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IoTSecurityAggregatedRecommendationListPage) Response() IoTSecurityAggregatedRecommendationList {
+	return page.itsarl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IoTSecurityAggregatedRecommendationListPage) Values() []IoTSecurityAggregatedRecommendation {
+	if page.itsarl.IsEmpty() {
+		return nil
+	}
+	return *page.itsarl.Value
+}
+
+// Creates a new instance of the IoTSecurityAggregatedRecommendationListPage type.
+func NewIoTSecurityAggregatedRecommendationListPage(getNextPage func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error)) IoTSecurityAggregatedRecommendationListPage {
+	return IoTSecurityAggregatedRecommendationListPage{fn: getNextPage}
+}
+
+// IoTSecurityDeviceAlerts statistic information about the number of alerts per device during the last
+// period
+type IoTSecurityDeviceAlerts struct {
+	// DeviceID - READ-ONLY; Name of the alert type
+	DeviceID *string `json:"deviceId,omitempty"`
+	// AlertsCount - READ-ONLY; the number of alerts raised for this device
+	AlertsCount *int32 `json:"alertsCount,omitempty"`
+}
+
+// IoTSecurityDeviceAlertsList list of devices with the count of raised alerts
+type IoTSecurityDeviceAlertsList struct {
+	// Value - List of aggregated alerts data
+	Value *[]IoTSecurityDeviceAlerts `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IoTSecuritySolutionAnalyticsModel security Analytics of a security solution
+type IoTSecuritySolutionAnalyticsModel struct {
+	autorest.Response `json:"-"`
+	// Metrics - READ-ONLY; Security Analytics of a security solution
+	Metrics *IoTSeverityMetrics `json:"metrics,omitempty"`
+	// UnhealthyDevices - READ-ONLY; number of unhealthy devices
+	UnhealthyDevices *int32 `json:"unhealthyDevices,omitempty"`
+	// DevicesMetrics - The list of devices metrics by the aggregated date.
+	DevicesMetrics *[]IoTSecuritySolutionAnalyticsModelDevicesMetricsItem `json:"devicesMetrics,omitempty"`
+	// TopAlertedDevices - The list of devices with the most attacked.
+	TopAlertedDevices *[]IoTSecurityDeviceAlerts `json:"topAlertedDevices,omitempty"`
+	// MostPrevalentDevices - The list of most prevalent devices.
+	MostPrevalentDevices *[]IoTSecurityDeviceAlerts `json:"mostPrevalentDevices,omitempty"`
+}
+
+// IoTSecuritySolutionAnalyticsModelDevicesMetricsItem ...
+type IoTSecuritySolutionAnalyticsModelDevicesMetricsItem struct {
+	// Date - the date of the metrics
+	Date *date.Time `json:"date,omitempty"`
+	// DevicesMetrics - devices alerts count by severity.
+	DevicesMetrics *IoTSeverityMetrics `json:"devicesMetrics,omitempty"`
+}
+
 // IoTSecuritySolutionModel security Solution
 type IoTSecuritySolutionModel struct {
 	autorest.Response `json:"-"`
@@ -3790,6 +4189,16 @@ func (page IoTSecuritySolutionsListPage) Values() []IoTSecuritySolutionModel {
 // Creates a new instance of the IoTSecuritySolutionsListPage type.
 func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
 	return IoTSecuritySolutionsListPage{fn: getNextPage}
+}
+
+// IoTSeverityMetrics severity metrics
+type IoTSeverityMetrics struct {
+	// High - count of high severity items
+	High *int32 `json:"high,omitempty"`
+	// Medium - count of medium severity items
+	Medium *int32 `json:"medium,omitempty"`
+	// Low - count of low severity items
+	Low *int32 `json:"low,omitempty"`
 }
 
 // JitNetworkAccessPoliciesList ...

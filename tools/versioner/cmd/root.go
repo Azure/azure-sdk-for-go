@@ -26,7 +26,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/versioner/internal/modinfo"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 )
@@ -111,8 +111,11 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 	}
 	ver := modinfo.FindVersionSuffix(mod.DestDir())
 	if err = updateGoModVer(file, ver); err != nil {
+		file.Close()
 		return "", fmt.Errorf("failed to update go.mod file: %v", err)
 	}
+	// must close file before renaming directory
+	file.Close()
 	// move staging to new LMV directory
 	if err = os.Rename(stage, mod.DestDir()); err != nil {
 		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
@@ -286,12 +289,12 @@ func sortModuleTagsBySemver(tags []string) {
 func getTagPrefix(pkgDir string) (string, error) {
 	// e.g. /work/src/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis/v2
 	// would return services/redis/mgmt/2018-03-01/redis/v2.0.0
-	const repoRoot = "github.com/Azure/azure-sdk-for-go/"
+	repoRoot := filepath.Join("github.com", "Azure", "azure-sdk-for-go")
 	i := strings.Index(pkgDir, repoRoot)
 	if i < 0 {
 		return "", fmt.Errorf("didn't find '%s' in '%s'", repoRoot, pkgDir)
 	}
-	return pkgDir[i+len(repoRoot):], nil
+	return strings.Replace(pkgDir[i+len(repoRoot)+1:], "\\", "/", -1), nil
 }
 
 // returns the appropriate module tag based on the package version info

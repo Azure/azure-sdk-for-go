@@ -27,6 +27,7 @@ import (
 type AccountsClientAPI interface {
 	Get(ctx context.Context, billingAccountName string, expand string) (result billing.Account, err error)
 	List(ctx context.Context, expand string) (result billing.AccountListResult, err error)
+	Update(ctx context.Context, billingAccountName string, parameters billing.AccountUpdateProperties) (result billing.AccountsUpdateFuture, err error)
 }
 
 var _ AccountsClientAPI = (*billing.AccountsClient)(nil)
@@ -39,12 +40,12 @@ type PaymentMethodsClientAPI interface {
 
 var _ PaymentMethodsClientAPI = (*billing.PaymentMethodsClient)(nil)
 
-// AccountsValidateAddressClientAPI contains the set of methods on the AccountsValidateAddressClient type.
-type AccountsValidateAddressClientAPI interface {
-	Post(ctx context.Context, billingAccountName string, address billing.Address) (result billing.ValidateAddressResponse, err error)
+// AddressesClientAPI contains the set of methods on the AddressesClient type.
+type AddressesClientAPI interface {
+	Validate(ctx context.Context, address billing.Address) (result billing.ValidateAddressResponse, err error)
 }
 
-var _ AccountsValidateAddressClientAPI = (*billing.AccountsValidateAddressClient)(nil)
+var _ AddressesClientAPI = (*billing.AddressesClient)(nil)
 
 // AvailableBalancesClientAPI contains the set of methods on the AvailableBalancesClient type.
 type AvailableBalancesClientAPI interface {

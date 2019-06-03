@@ -195,9 +195,11 @@ type AcceptTransferRequest = original.AcceptTransferRequest
 type Account = original.Account
 type AccountListResult = original.AccountListResult
 type AccountProperties = original.AccountProperties
+type AccountUpdateProperties = original.AccountUpdateProperties
 type AccountsClient = original.AccountsClient
-type AccountsValidateAddressClient = original.AccountsValidateAddressClient
+type AccountsUpdateFuture = original.AccountsUpdateFuture
 type Address = original.Address
+type AddressesClient = original.AddressesClient
 type Agreement = original.Agreement
 type AgreementListResult = original.AgreementListResult
 type AgreementProperties = original.AgreementProperties
@@ -338,11 +340,11 @@ func NewAccountsClient(subscriptionID string) AccountsClient {
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewAccountsValidateAddressClient(subscriptionID string) AccountsValidateAddressClient {
-	return original.NewAccountsValidateAddressClient(subscriptionID)
+func NewAddressesClient(subscriptionID string) AddressesClient {
+	return original.NewAddressesClient(subscriptionID)
 }
-func NewAccountsValidateAddressClientWithBaseURI(baseURI string, subscriptionID string) AccountsValidateAddressClient {
-	return original.NewAccountsValidateAddressClientWithBaseURI(baseURI, subscriptionID)
+func NewAddressesClientWithBaseURI(baseURI string, subscriptionID string) AddressesClient {
+	return original.NewAddressesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAgreementsClient(subscriptionID string) AgreementsClient {
 	return original.NewAgreementsClient(subscriptionID)

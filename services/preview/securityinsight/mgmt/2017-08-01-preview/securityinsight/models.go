@@ -35,13 +35,13 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight
 type AggregationsKind string
 
 const (
-	// CasesAggregation ...
-	CasesAggregation AggregationsKind = "CasesAggregation"
+	// AggregationsKindCasesAggregation ...
+	AggregationsKindCasesAggregation AggregationsKind = "CasesAggregation"
 )
 
 // PossibleAggregationsKindValues returns an array of possible values for the AggregationsKind const type.
 func PossibleAggregationsKindValues() []AggregationsKind {
-	return []AggregationsKind{CasesAggregation}
+	return []AggregationsKind{AggregationsKindCasesAggregation}
 }
 
 // AlertRuleKind enumerates the values for alert rule kind.
@@ -101,19 +101,19 @@ func PossibleCaseSeverityValues() []CaseSeverity {
 type CaseStatus string
 
 const (
-	// Closed A non active case
-	Closed CaseStatus = "Closed"
-	// Draft Case that wasn't promoted yet to active
-	Draft CaseStatus = "Draft"
-	// InProgress An active case which is handled
-	InProgress CaseStatus = "InProgress"
-	// Open An active case which isn't handled currently
-	Open CaseStatus = "Open"
+	// CaseStatusClosed A non active case
+	CaseStatusClosed CaseStatus = "Closed"
+	// CaseStatusDraft Case that wasn't promoted yet to active
+	CaseStatusDraft CaseStatus = "Draft"
+	// CaseStatusInProgress An active case which is handled
+	CaseStatusInProgress CaseStatus = "InProgress"
+	// CaseStatusNew An active case which isn't handled currently
+	CaseStatusNew CaseStatus = "New"
 )
 
 // PossibleCaseStatusValues returns an array of possible values for the CaseStatus const type.
 func PossibleCaseStatusValues() []CaseStatus {
-	return []CaseStatus{Closed, Draft, InProgress, Open}
+	return []CaseStatus{CaseStatusClosed, CaseStatusDraft, CaseStatusInProgress, CaseStatusNew}
 }
 
 // CloseReason enumerates the values for close reason.
@@ -207,11 +207,13 @@ type KindBasicAggregations string
 const (
 	// KindAggregations ...
 	KindAggregations KindBasicAggregations = "Aggregations"
+	// KindCasesAggregation ...
+	KindCasesAggregation KindBasicAggregations = "CasesAggregation"
 )
 
 // PossibleKindBasicAggregationsValues returns an array of possible values for the KindBasicAggregations const type.
 func PossibleKindBasicAggregationsValues() []KindBasicAggregations {
-	return []KindBasicAggregations{KindAggregations}
+	return []KindBasicAggregations{KindAggregations, KindCasesAggregation}
 }
 
 // KindBasicDataConnector enumerates the values for kind basic data connector.
@@ -875,6 +877,7 @@ func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsL
 
 // BasicAggregations the aggregation.
 type BasicAggregations interface {
+	AsCasesAggregation() (*CasesAggregation, bool)
 	AsAggregations() (*Aggregations, bool)
 }
 
@@ -887,7 +890,7 @@ type Aggregations struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindAggregations'
+	// Kind - Possible values include: 'KindAggregations', 'KindCasesAggregation'
 	Kind KindBasicAggregations `json:"kind,omitempty"`
 }
 
@@ -899,6 +902,10 @@ func unmarshalBasicAggregations(body []byte) (BasicAggregations, error) {
 	}
 
 	switch m["kind"] {
+	case string(KindCasesAggregation):
+		var ca CasesAggregation
+		err := json.Unmarshal(body, &ca)
+		return ca, err
 	default:
 		var a Aggregations
 		err := json.Unmarshal(body, &a)
@@ -934,6 +941,11 @@ func (a Aggregations) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsCasesAggregation is the BasicAggregations implementation for Aggregations.
+func (a Aggregations) AsCasesAggregation() (*CasesAggregation, bool) {
+	return nil, false
+}
+
 // AsAggregations is the BasicAggregations implementation for Aggregations.
 func (a Aggregations) AsAggregations() (*Aggregations, bool) {
 	return &a, true
@@ -946,7 +958,7 @@ func (a Aggregations) AsBasicAggregations() (BasicAggregations, bool) {
 
 // AggregationsKind1 describes an Azure resource with kind.
 type AggregationsKind1 struct {
-	// Kind - The kind of the setting. Possible values include: 'CasesAggregation'
+	// Kind - The kind of the setting. Possible values include: 'AggregationsKindCasesAggregation'
 	Kind AggregationsKind `json:"kind,omitempty"`
 }
 
@@ -1916,10 +1928,146 @@ type CaseProperties struct {
 	AssignedTo *UserInfo `json:"assignedTo,omitempty"`
 	// Severity - The severity of the case. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
 	Severity CaseSeverity `json:"severity,omitempty"`
-	// Status - The status of the case. Possible values include: 'Draft', 'Open', 'InProgress', 'Closed'
+	// Status - The status of the case. Possible values include: 'CaseStatusDraft', 'CaseStatusNew', 'CaseStatusInProgress', 'CaseStatusClosed'
 	Status CaseStatus `json:"status,omitempty"`
 	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
 	CloseReason CloseReason `json:"closeReason,omitempty"`
+}
+
+// CasesAggregation represents aggregations results for cases.
+type CasesAggregation struct {
+	// CasesAggregationProperties - Properties of aggregations results of cases.
+	*CasesAggregationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Kind - Possible values include: 'KindAggregations', 'KindCasesAggregation'
+	Kind KindBasicAggregations `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CasesAggregation.
+func (ca CasesAggregation) MarshalJSON() ([]byte, error) {
+	ca.Kind = KindCasesAggregation
+	objectMap := make(map[string]interface{})
+	if ca.CasesAggregationProperties != nil {
+		objectMap["properties"] = ca.CasesAggregationProperties
+	}
+	if ca.Kind != "" {
+		objectMap["kind"] = ca.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsCasesAggregation is the BasicAggregations implementation for CasesAggregation.
+func (ca CasesAggregation) AsCasesAggregation() (*CasesAggregation, bool) {
+	return &ca, true
+}
+
+// AsAggregations is the BasicAggregations implementation for CasesAggregation.
+func (ca CasesAggregation) AsAggregations() (*Aggregations, bool) {
+	return nil, false
+}
+
+// AsBasicAggregations is the BasicAggregations implementation for CasesAggregation.
+func (ca CasesAggregation) AsBasicAggregations() (BasicAggregations, bool) {
+	return &ca, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for CasesAggregation struct.
+func (ca *CasesAggregation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var casesAggregationProperties CasesAggregationProperties
+				err = json.Unmarshal(*v, &casesAggregationProperties)
+				if err != nil {
+					return err
+				}
+				ca.CasesAggregationProperties = &casesAggregationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ca.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ca.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ca.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAggregations
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ca.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// CasesAggregationBySeverityProperties aggregative results of cases by severity property bag.
+type CasesAggregationBySeverityProperties struct {
+	// TotalCriticalSeverity - READ-ONLY; Total amount of open cases with severity Critical
+	TotalCriticalSeverity *int32 `json:"totalCriticalSeverity,omitempty"`
+	// TotalHighSeverity - READ-ONLY; Total amount of open cases with severity High
+	TotalHighSeverity *int32 `json:"totalHighSeverity,omitempty"`
+	// TotalMediumSeverity - READ-ONLY; Total amount of open cases with severity medium
+	TotalMediumSeverity *int32 `json:"totalMediumSeverity,omitempty"`
+	// TotalLowSeverity - READ-ONLY; Total amount of open cases with severity Low
+	TotalLowSeverity *int32 `json:"totalLowSeverity,omitempty"`
+	// TotalInformationalSeverity - READ-ONLY; Total amount of open cases with severity Informational
+	TotalInformationalSeverity *int32 `json:"totalInformationalSeverity,omitempty"`
+}
+
+// CasesAggregationByStatusProperties aggregative results of cases by status property bag.
+type CasesAggregationByStatusProperties struct {
+	// TotalNewStatus - READ-ONLY; Total amount of open cases with status New
+	TotalNewStatus *int32 `json:"totalNewStatus,omitempty"`
+	// TotalInProgressStatus - READ-ONLY; Total amount of open cases with status InProgress
+	TotalInProgressStatus *int32 `json:"totalInProgressStatus,omitempty"`
+	// TotalResolvedStatus - READ-ONLY; Total amount of open cases with status Resolved
+	TotalResolvedStatus *int32 `json:"totalResolvedStatus,omitempty"`
+	// TotalDismissedStatus - READ-ONLY; Total amount of open cases with status Dismissed
+	TotalDismissedStatus *int32 `json:"totalDismissedStatus,omitempty"`
+}
+
+// CasesAggregationProperties aggregative results of cases property bag.
+type CasesAggregationProperties struct {
+	// AggregationBySeverity - Aggregations results by case severity.
+	AggregationBySeverity *CasesAggregationBySeverityProperties `json:"aggregationBySeverity,omitempty"`
+	// AggregationByStatus - Aggregations results by case status.
+	AggregationByStatus *CasesAggregationByStatusProperties `json:"aggregationByStatus,omitempty"`
 }
 
 // CloudError error response structure.

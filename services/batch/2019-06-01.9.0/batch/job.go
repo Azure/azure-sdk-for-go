@@ -38,14 +38,14 @@ func NewJobClient(batchURL string) JobClient {
 	return JobClient{New(batchURL)}
 }
 
-// Add the Batch service supports two ways to control the work done as part of a job. In the first approach, the user
-// specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job
-// Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the
-// user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming
-// jobs, avoid including sensitive information such as user names or secret project names. This information may appear
+// Add the Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
+// specifies a Job Manager Task. The Batch service launches this Task when it is ready to start the Job. The Job
+// Manager Task controls all other Tasks that run under this Job, by using the Task APIs. In the second approach, the
+// user directly controls the execution of Tasks under an active Job, by using the Task APIs. Also note: when naming
+// Jobs, avoid including sensitive information such as user names or secret project names. This information may appear
 // in telemetry logs accessible to Microsoft Support engineers.
 // Parameters:
-// job - the job to be added.
+// job - the Job to be added.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -213,14 +213,14 @@ func (client JobClient) AddResponder(resp *http.Response) (result autorest.Respo
 	return
 }
 
-// Delete deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides
-// the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes,
-// the Batch services deletes those tasks' working directories and all their contents.  When a Delete Job request is
-// received, the Batch service sets the job to the deleting state. All update operations on a job that is in deleting
-// state will fail with status code 409 (Conflict), with additional information indicating that the job is being
+// Delete deleting a Job also deletes all Tasks that are part of that Job, and all Job statistics. This also overrides
+// the retention period for Task data; that is, if the Job contains Tasks which are still retained on Compute Nodes,
+// the Batch services deletes those Tasks' working directories and all their contents.  When a Delete Job request is
+// received, the Batch service sets the Job to the deleting state. All update operations on a Job that is in deleting
+// state will fail with status code 409 (Conflict), with additional information indicating that the Job is being
 // deleted.
 // Parameters:
-// jobID - the ID of the job to delete.
+// jobID - the ID of the Job to delete.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -349,14 +349,14 @@ func (client JobClient) DeleteResponder(resp *http.Response) (result autorest.Re
 	return
 }
 
-// Disable the Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks
-// parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling
-// state until the disable operation is completed and all tasks have been dealt with according to the disableTasks
-// option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to
-// active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the
+// Disable the Batch Service immediately moves the Job to the disabling state. Batch then uses the disableTasks
+// parameter to determine what to do with the currently running Tasks of the Job. The Job remains in the disabling
+// state until the disable operation is completed and all Tasks have been dealt with according to the disableTasks
+// option; the Job then moves to the disabled state. No new Tasks are started under the Job until it moves back to
+// active state. If you try to disable a Job that is in any state other than active, disabling, or disabled, the
 // request fails with status code 409.
 // Parameters:
-// jobID - the ID of the job to disable.
+// jobID - the ID of the Job to disable.
 // jobDisableParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -488,12 +488,12 @@ func (client JobClient) DisableResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// Enable when you call this API, the Batch service sets a disabled job to the enabling state. After the this operation
-// is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch
-// service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job
-// containing active tasks which were added more than 180 days ago, those tasks will not run.
+// Enable when you call this API, the Batch service sets a disabled Job to the enabling state. After the this operation
+// is completed, the Job moves to the active state, and scheduling of new Tasks under the Job resumes. The Batch
+// service does not allow a Task to remain in the active state for more than 180 days. Therefore, if you enable a Job
+// containing active Tasks which were added more than 180 days ago, those Tasks will not run.
 // Parameters:
-// jobID - the ID of the job to enable.
+// jobID - the ID of the Job to enable.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -624,7 +624,7 @@ func (client JobClient) EnableResponder(resp *http.Response) (result autorest.Re
 
 // Get sends the get request.
 // Parameters:
-// jobID - the ID of the job.
+// jobID - the ID of the Job.
 // selectParameter - an OData $select clause.
 // expand - an OData $expand clause.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
@@ -762,8 +762,8 @@ func (client JobClient) GetResponder(resp *http.Response) (result CloudJob, err 
 	return
 }
 
-// GetAllLifetimeStatistics statistics are aggregated across all jobs that have ever existed in the account, from
-// account creation to the last update time of the statistics. The statistics may not be immediately available. The
+// GetAllLifetimeStatistics statistics are aggregated across all Jobs that have ever existed in the Account, from
+// Account creation to the last update time of the statistics. The statistics may not be immediately available. The
 // Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
 // Parameters:
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
@@ -864,10 +864,10 @@ func (client JobClient) GetAllLifetimeStatisticsResponder(resp *http.Response) (
 	return
 }
 
-// GetTaskCounts task counts provide a count of the tasks by active, running or completed task state, and a count of
-// tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+// GetTaskCounts task counts provide a count of the Tasks by active, running or completed Task state, and a count of
+// Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
 // Parameters:
-// jobID - the ID of the job.
+// jobID - the ID of the Job.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -976,7 +976,7 @@ func (client JobClient) GetTaskCountsResponder(resp *http.Response) (result Task
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs.
 // selectParameter - an OData $select clause.
 // expand - an OData $expand clause.
-// maxResults - the maximum number of items to return in the response. A maximum of 1000 jobs can be returned.
+// maxResults - the maximum number of items to return in the response. A maximum of 1000 Jobs can be returned.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -1138,12 +1138,12 @@ func (client JobClient) ListComplete(ctx context.Context, filter string, selectP
 
 // ListFromJobSchedule sends the list from job schedule request.
 // Parameters:
-// jobScheduleID - the ID of the job schedule from which you want to get a list of jobs.
+// jobScheduleID - the ID of the Job Schedule from which you want to get a list of Jobs.
 // filter - an OData $filter clause. For more information on constructing this filter, see
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-jobs-in-a-job-schedule.
 // selectParameter - an OData $select clause.
 // expand - an OData $expand clause.
-// maxResults - the maximum number of items to return in the response. A maximum of 1000 jobs can be returned.
+// maxResults - the maximum number of items to return in the response. A maximum of 1000 Jobs can be returned.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -1307,16 +1307,16 @@ func (client JobClient) ListFromJobScheduleComplete(ctx context.Context, jobSche
 	return
 }
 
-// ListPreparationAndReleaseTaskStatus this API returns the Job Preparation and Job Release task status on all compute
-// nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from
-// the pool. If this API is invoked on a job which has no Job Preparation or Job Release task, the Batch service
-// returns HTTP status code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
+// ListPreparationAndReleaseTaskStatus this API returns the Job Preparation and Job Release Task status on all Compute
+// Nodes that have run the Job Preparation or Job Release Task. This includes Compute Nodes which have since been
+// removed from the Pool. If this API is invoked on a Job which has no Job Preparation or Job Release Task, the Batch
+// service returns HTTP status code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
 // Parameters:
-// jobID - the ID of the job.
+// jobID - the ID of the Job.
 // filter - an OData $filter clause. For more information on constructing this filter, see
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-preparation-and-release-status.
 // selectParameter - an OData $select clause.
-// maxResults - the maximum number of items to return in the response. A maximum of 1000 tasks can be returned.
+// maxResults - the maximum number of items to return in the response. A maximum of 1000 Tasks can be returned.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -1477,10 +1477,10 @@ func (client JobClient) ListPreparationAndReleaseTaskStatusComplete(ctx context.
 	return
 }
 
-// Patch this replaces only the job properties specified in the request. For example, if the job has constraints, and a
-// request does not specify the constraints element, then the job keeps the existing constraints.
+// Patch this replaces only the Job properties specified in the request. For example, if the Job has constraints, and a
+// request does not specify the constraints element, then the Job keeps the existing constraints.
 // Parameters:
-// jobID - the ID of the job whose properties you want to update.
+// jobID - the ID of the Job whose properties you want to update.
 // jobPatchParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1612,13 +1612,13 @@ func (client JobClient) PatchResponder(resp *http.Response) (result autorest.Res
 	return
 }
 
-// Terminate when a Terminate Job request is received, the Batch service sets the job to the terminating state. The
-// Batch service then terminates any running tasks associated with the job and runs any required job release tasks.
-// Then the job moves into the completed state. If there are any tasks in the job in the active state, they will remain
-// in the active state. Once a job is terminated, new tasks cannot be added and any remaining active tasks will not be
+// Terminate when a Terminate Job request is received, the Batch service sets the Job to the terminating state. The
+// Batch service then terminates any running Tasks associated with the Job and runs any required Job release Tasks.
+// Then the Job moves into the completed state. If there are any Tasks in the Job in the active state, they will remain
+// in the active state. Once a Job is terminated, new Tasks cannot be added and any remaining active Tasks will not be
 // scheduled.
 // Parameters:
-// jobID - the ID of the job to terminate.
+// jobID - the ID of the Job to terminate.
 // jobTerminateParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1753,11 +1753,11 @@ func (client JobClient) TerminateResponder(resp *http.Response) (result autorest
 	return
 }
 
-// Update this fully replaces all the updatable properties of the job. For example, if the job has constraints
+// Update this fully replaces all the updatable properties of the Job. For example, if the Job has constraints
 // associated with it and if constraints is not specified with this request, then the Batch service will remove the
 // existing constraints.
 // Parameters:
-// jobID - the ID of the job whose properties you want to update.
+// jobID - the ID of the Job whose properties you want to update.
 // jobUpdateParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.

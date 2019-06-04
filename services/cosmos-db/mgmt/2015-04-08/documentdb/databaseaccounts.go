@@ -2296,8 +2296,8 @@ func (client DatabaseAccountsClient) GetCassandraKeyspaceResponder(resp *http.Re
 	return
 }
 
-// GetCassandraKeyspaceThroughput gets the Cassandra Keyspace throughput under an existing Azure Cosmos DB database
-// account with the provided name.
+// GetCassandraKeyspaceThroughput gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB
+// database account with the provided name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
@@ -2479,6 +2479,99 @@ func (client DatabaseAccountsClient) GetCassandraTableResponder(resp *http.Respo
 	return
 }
 
+// GetCassandraTableThroughput gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB
+// database account with the provided name.
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// keyspaceName - cosmos DB keyspace name.
+// tableName - cosmos DB table name.
+func (client DatabaseAccountsClient) GetCassandraTableThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string) (result Throughput, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetCassandraTableThroughput")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "GetCassandraTableThroughput", err.Error())
+	}
+
+	req, err := client.GetCassandraTableThroughputPreparer(ctx, resourceGroupName, accountName, keyspaceName, tableName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetCassandraTableThroughput", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetCassandraTableThroughputSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetCassandraTableThroughput", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetCassandraTableThroughputResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetCassandraTableThroughput", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetCassandraTableThroughputPreparer prepares the GetCassandraTableThroughput request.
+func (client DatabaseAccountsClient) GetCassandraTableThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"keyspaceName":      autorest.Encode("path", keyspaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"tableName":         autorest.Encode("path", tableName),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceName}/tables/{tableName}/settings/throughput", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetCassandraTableThroughputSender sends the GetCassandraTableThroughput request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) GetCassandraTableThroughputSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetCassandraTableThroughputResponder handles the response to the GetCassandraTableThroughput request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) GetCassandraTableThroughputResponder(resp *http.Response) (result Throughput, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetGremlinDatabase gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided
 // name.
 // Parameters:
@@ -2570,8 +2663,8 @@ func (client DatabaseAccountsClient) GetGremlinDatabaseResponder(resp *http.Resp
 	return
 }
 
-// GetGremlinDatabaseThroughput gets the Gremlin database throughput under an existing Azure Cosmos DB database account
-// with the provided name.
+// GetGremlinDatabaseThroughput gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB
+// database account with the provided name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
@@ -2938,8 +3031,8 @@ func (client DatabaseAccountsClient) GetMongoDBCollectionResponder(resp *http.Re
 	return
 }
 
-// GetMongoDBCollectionThroughput gets the MongoDB collection throughput under an existing Azure Cosmos DB database
-// account with the provided name.
+// GetMongoDBCollectionThroughput gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB
+// database account with the provided name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
@@ -3122,8 +3215,8 @@ func (client DatabaseAccountsClient) GetMongoDBDatabaseResponder(resp *http.Resp
 	return
 }
 
-// GetMongoDBDatabaseThroughput gets the MongoDB database throughput under an existing Azure Cosmos DB database account
-// with the provided name.
+// GetMongoDBDatabaseThroughput gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB
+// database account with the provided name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
@@ -3393,7 +3486,8 @@ func (client DatabaseAccountsClient) GetSQLContainerResponder(resp *http.Respons
 	return
 }
 
-// GetSQLContainerThroughput gets the SQL container throughput under an existing Azure Cosmos DB database account.
+// GetSQLContainerThroughput gets the RUs per second of the SQL container under an existing Azure Cosmos DB database
+// account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
@@ -3575,8 +3669,8 @@ func (client DatabaseAccountsClient) GetSQLDatabaseResponder(resp *http.Response
 	return
 }
 
-// GetSQLDatabaseThroughput gets the SQL database throughput under an existing Azure Cosmos DB database account with
-// the provided name.
+// GetSQLDatabaseThroughput gets the RUs per second of the SQL database under an existing Azure Cosmos DB database
+// account with the provided name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
@@ -3756,8 +3850,8 @@ func (client DatabaseAccountsClient) GetTableResponder(resp *http.Response) (res
 	return
 }
 
-// GetTableThroughput gets the Table throughput under an existing Azure Cosmos DB database account with the provided
-// name.
+// GetTableThroughput gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the
+// provided name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
@@ -5704,12 +5798,13 @@ func (client DatabaseAccountsClient) RegenerateKeyResponder(resp *http.Response)
 	return
 }
 
-// UpdateCassandraKeyspaceThroughput update an Azure Cosmos DB Cassandra Keyspace throughput
+// UpdateCassandraKeyspaceThroughput update RUs per second of an Azure Cosmos DB Cassandra Keyspace
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // keyspaceName - cosmos DB keyspace name.
-// updateThroughputParameters - the parameters to provide for the current Cassandra Keyspace throughput.
+// updateThroughputParameters - the RUs per second of the parameters to provide for the current Cassandra
+// Keyspace.
 func (client DatabaseAccountsClient) UpdateCassandraKeyspaceThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateCassandraKeyspaceThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateCassandraKeyspaceThroughput")
@@ -5802,12 +5897,114 @@ func (client DatabaseAccountsClient) UpdateCassandraKeyspaceThroughputResponder(
 	return
 }
 
-// UpdateGremlinDatabaseThroughput update an Azure Cosmos DB Gremlin database throughput
+// UpdateCassandraTableThroughput update RUs per second of an Azure Cosmos DB Cassandra table
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// keyspaceName - cosmos DB keyspace name.
+// tableName - cosmos DB table name.
+// updateThroughputParameters - the RUs per second of the parameters to provide for the current Cassandra
+// table.
+func (client DatabaseAccountsClient) UpdateCassandraTableThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateCassandraTableThroughputFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateCassandraTableThroughput")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
+		{TargetValue: updateThroughputParameters,
+			Constraints: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputUpdateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputUpdateProperties.Resource", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputUpdateProperties.Resource.Throughput", Name: validation.Null, Rule: true, Chain: nil}}},
+				}}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "UpdateCassandraTableThroughput", err.Error())
+	}
+
+	req, err := client.UpdateCassandraTableThroughputPreparer(ctx, resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateCassandraTableThroughput", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.UpdateCassandraTableThroughputSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "UpdateCassandraTableThroughput", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// UpdateCassandraTableThroughputPreparer prepares the UpdateCassandraTableThroughput request.
+func (client DatabaseAccountsClient) UpdateCassandraTableThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, updateThroughputParameters ThroughputUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"keyspaceName":      autorest.Encode("path", keyspaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"tableName":         autorest.Encode("path", tableName),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/cassandra/keyspaces/{keyspaceName}/tables/{tableName}/settings/throughput", pathParameters),
+		autorest.WithJSON(updateThroughputParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateCassandraTableThroughputSender sends the UpdateCassandraTableThroughput request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) UpdateCassandraTableThroughputSender(req *http.Request) (future DatabaseAccountsUpdateCassandraTableThroughputFuture, err error) {
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req,
+		azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// UpdateCassandraTableThroughputResponder handles the response to the UpdateCassandraTableThroughput request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) UpdateCassandraTableThroughputResponder(resp *http.Response) (result Throughput, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateGremlinDatabaseThroughput update RUs per second of an Azure Cosmos DB Gremlin database
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// updateThroughputParameters - the parameters to provide for the current Gremlin database throughput.
+// updateThroughputParameters - the RUs per second of the parameters to provide for the current Gremlin
+// database.
 func (client DatabaseAccountsClient) UpdateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateGremlinDatabaseThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateGremlinDatabaseThroughput")
@@ -5900,13 +6097,13 @@ func (client DatabaseAccountsClient) UpdateGremlinDatabaseThroughputResponder(re
 	return
 }
 
-// UpdateGremlinGraphThroughput update an Azure Cosmos DB Gremlin graph throughput
+// UpdateGremlinGraphThroughput update RUs per second of an Azure Cosmos DB Gremlin graph
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // graphName - cosmos DB graph name.
-// updateThroughputParameters - the parameters to provide for the current Gremlin graph throughput.
+// updateThroughputParameters - the RUs per second of the parameters to provide for the current Gremlin graph.
 func (client DatabaseAccountsClient) UpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateGremlinGraphThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateGremlinGraphThroughput")
@@ -6000,13 +6197,14 @@ func (client DatabaseAccountsClient) UpdateGremlinGraphThroughputResponder(resp 
 	return
 }
 
-// UpdateMongoDBCollectionThroughput update an Azure Cosmos DB MongoDB collection throughput
+// UpdateMongoDBCollectionThroughput update the RUs per second of an Azure Cosmos DB MongoDB collection
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // collectionName - cosmos DB collection name.
-// updateThroughputParameters - the parameters to provide for the current MongoDB collection throughput.
+// updateThroughputParameters - the RUs per second of the parameters to provide for the current MongoDB
+// collection.
 func (client DatabaseAccountsClient) UpdateMongoDBCollectionThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateMongoDBCollectionThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateMongoDBCollectionThroughput")
@@ -6100,12 +6298,13 @@ func (client DatabaseAccountsClient) UpdateMongoDBCollectionThroughputResponder(
 	return
 }
 
-// UpdateMongoDBDatabaseThroughput update an Azure Cosmos DB MongoDB database throughput
+// UpdateMongoDBDatabaseThroughput update RUs per second of the an Azure Cosmos DB MongoDB database
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// updateThroughputParameters - the parameters to provide for the current MongoDB database throughput.
+// updateThroughputParameters - the RUs per second of the parameters to provide for the current MongoDB
+// database.
 func (client DatabaseAccountsClient) UpdateMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateMongoDBDatabaseThroughput")
@@ -6198,13 +6397,13 @@ func (client DatabaseAccountsClient) UpdateMongoDBDatabaseThroughputResponder(re
 	return
 }
 
-// UpdateSQLContainerThroughput update an Azure Cosmos DB SQL container throughput
+// UpdateSQLContainerThroughput update RUs per second of an Azure Cosmos DB SQL container
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
 // containerName - cosmos DB container name.
-// updateThroughputParameters - the parameters to provide for the current SQL container throughput.
+// updateThroughputParameters - the parameters to provide for the RUs per second of the current SQL container.
 func (client DatabaseAccountsClient) UpdateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateSQLContainerThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateSQLContainerThroughput")
@@ -6298,12 +6497,12 @@ func (client DatabaseAccountsClient) UpdateSQLContainerThroughputResponder(resp 
 	return
 }
 
-// UpdateSQLDatabaseThroughput update an Azure Cosmos DB SQL database throughput
+// UpdateSQLDatabaseThroughput update RUs per second of an Azure Cosmos DB SQL database
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// updateThroughputParameters - the parameters to provide for the current SQL database throughput.
+// updateThroughputParameters - the parameters to provide for the RUs per second of the current SQL database.
 func (client DatabaseAccountsClient) UpdateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateSQLDatabaseThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateSQLDatabaseThroughput")
@@ -6396,12 +6595,12 @@ func (client DatabaseAccountsClient) UpdateSQLDatabaseThroughputResponder(resp *
 	return
 }
 
-// UpdateTableThroughput update an Azure Cosmos DB Table throughput
+// UpdateTableThroughput update RUs per second of an Azure Cosmos DB Table
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // tableName - cosmos DB table name.
-// updateThroughputParameters - the parameters to provide for the current Table throughput.
+// updateThroughputParameters - the parameters to provide for the RUs per second of the current Table.
 func (client DatabaseAccountsClient) UpdateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputUpdateParameters) (result DatabaseAccountsUpdateTableThroughputFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateTableThroughput")

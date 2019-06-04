@@ -50,13 +50,13 @@ func NewIoTSecuritySolutionsAnalyticsAggregatedAlertDismissClientWithBaseURI(bas
 // insensitive.
 // solutionName - the solution manager name
 // aggregatedAlertName - identifier of the aggregated alert
-func (client IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient) Put(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result autorest.Response, err error) {
+func (client IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient) Put(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient.Put")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -79,7 +79,7 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient) Put(ctx 
 
 	resp, err := client.PutSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient", "Put", resp, "Failure sending request")
 		return
 	}
@@ -123,12 +123,13 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient) PutSende
 
 // PutResponder handles the response to the Put request. The method always
 // closes the http.Response Body.
-func (client IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient) PutResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient) PutResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

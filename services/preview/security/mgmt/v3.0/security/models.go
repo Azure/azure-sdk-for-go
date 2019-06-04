@@ -3536,7 +3536,7 @@ type IoTSecurityAggregatedAlert struct {
 	// AlertDisplayName - READ-ONLY; Display name of the alert type
 	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
 	// AggregatedDateUtc - READ-ONLY; The date the incidents were detected by the vendor
-	AggregatedDateUtc *date.Date `json:"AggregatedDateUtc,omitempty"`
+	AggregatedDateUtc *date.Date `json:"aggregatedDateUtc,omitempty"`
 	// VendorName - READ-ONLY; Name of the vendor that discovered the incident
 	VendorName *string `json:"vendorName,omitempty"`
 	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
@@ -5521,6 +5521,12 @@ type SensitivityLabel struct {
 	Order *float64 `json:"order,omitempty"`
 	// Enabled - Indicates whether the label is enabled or not.
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
 }
 
 // Setting represents a security setting in Azure Security Center.

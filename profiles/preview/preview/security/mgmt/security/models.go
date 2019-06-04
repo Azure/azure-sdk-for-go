@@ -332,6 +332,7 @@ type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStand
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
 type SensitivityLabel = original.SensitivityLabel
+type SetObject = original.SetObject
 type Setting = original.Setting
 type SettingResource = original.SettingResource
 type SettingsClient = original.SettingsClient

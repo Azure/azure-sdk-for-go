@@ -244,7 +244,7 @@ var _ IoTSecuritySolutionsAnalyticsAggregatedAlertClientAPI = (*security.IoTSecu
 
 // IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClientAPI contains the set of methods on the IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient type.
 type IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClientAPI interface {
-	Put(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result autorest.Response, err error)
+	Put(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result security.SetObject, err error)
 }
 
 var _ IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClientAPI = (*security.IoTSecuritySolutionsAnalyticsAggregatedAlertDismissClient)(nil)

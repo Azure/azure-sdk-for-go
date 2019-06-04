@@ -48,8 +48,10 @@ func NewLargeFaceListClient(endpoint string) LargeFaceListClient {
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-// detectionModel - the 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
-// values include "detection_01" or "detection_02"
+// detectionModel - name of detection model. Detection model' is used to detect faces in the submitted image. A
+// detection model name can be provided when performing Face - Detect or (Large)FaceList - Create or
+// (Large)PersonGroup - Create. The default value is 'detection_01', if another model is needed, please
+// explicitly specify it.
 func (client LargeFaceListClient) AddFaceFromStream(ctx context.Context, largeFaceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32, detectionModel DetectionModel) (result PersistedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.AddFaceFromStream")
@@ -187,8 +189,10 @@ func (client LargeFaceListClient) AddFaceFromStreamResponder(resp *http.Response
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-// detectionModel - the 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
-// values include "detection_01" or "detection_02"
+// detectionModel - name of detection model. Detection model' is used to detect faces in the submitted image. A
+// detection model name can be provided when performing Face - Detect or (Large)FaceList - Create or
+// (Large)PersonGroup - Create. The default value is 'detection_01', if another model is needed, please
+// explicitly specify it.
 func (client LargeFaceListClient) AddFaceFromURL(ctx context.Context, largeFaceListID string, imageURL ImageURL, userData string, targetFace []int32, detectionModel DetectionModel) (result PersistedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.AddFaceFromURL")

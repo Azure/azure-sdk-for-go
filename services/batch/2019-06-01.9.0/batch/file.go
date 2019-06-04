@@ -40,8 +40,8 @@ func NewFileClient(batchURL string) FileClient {
 
 // DeleteFromComputeNode sends the delete from compute node request.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node from which you want to delete the file.
+// poolID - the ID of the Pool that contains the Compute Node.
+// nodeID - the ID of the Compute Node from which you want to delete the file.
 // filePath - the path to the file or directory that you want to delete.
 // recursive - whether to delete children of a directory. If the filePath parameter represents a directory
 // instead of a file, you can set recursive to true to delete the directory and all of the files and
@@ -154,9 +154,9 @@ func (client FileClient) DeleteFromComputeNodeResponder(resp *http.Response) (re
 
 // DeleteFromTask sends the delete from task request.
 // Parameters:
-// jobID - the ID of the job that contains the task.
-// taskID - the ID of the task whose file you want to delete.
-// filePath - the path to the task file or directory that you want to delete.
+// jobID - the ID of the Job that contains the Task.
+// taskID - the ID of the Task whose file you want to delete.
+// filePath - the path to the Task file or directory that you want to delete.
 // recursive - whether to delete children of a directory. If the filePath parameter represents a directory
 // instead of a file, you can set recursive to true to delete the directory and all of the files and
 // subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
@@ -266,11 +266,11 @@ func (client FileClient) DeleteFromTaskResponder(resp *http.Response) (result au
 	return
 }
 
-// GetFromComputeNode returns the content of the specified compute node file.
+// GetFromComputeNode returns the content of the specified Compute Node file.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node that contains the file.
-// filePath - the path to the compute node file that you want to get the content of.
+// poolID - the ID of the Pool that contains the Compute Node.
+// nodeID - the ID of the Compute Node that contains the file.
+// filePath - the path to the Compute Node file that you want to get the content of.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -393,11 +393,11 @@ func (client FileClient) GetFromComputeNodeResponder(resp *http.Response) (resul
 	return
 }
 
-// GetFromTask returns the content of the specified task file.
+// GetFromTask returns the content of the specified Task file.
 // Parameters:
-// jobID - the ID of the job that contains the task.
-// taskID - the ID of the task whose file you want to retrieve.
-// filePath - the path to the task file that you want to get the content of.
+// jobID - the ID of the Job that contains the Task.
+// taskID - the ID of the Task whose file you want to retrieve.
+// filePath - the path to the Task file that you want to get the content of.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -520,11 +520,11 @@ func (client FileClient) GetFromTaskResponder(resp *http.Response) (result ReadC
 	return
 }
 
-// GetPropertiesFromComputeNode gets the properties of the specified compute node file.
+// GetPropertiesFromComputeNode gets the properties of the specified Compute Node file.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node that contains the file.
-// filePath - the path to the compute node file that you want to get the properties of.
+// poolID - the ID of the Pool that contains the Compute Node.
+// nodeID - the ID of the Compute Node that contains the file.
+// filePath - the path to the Compute Node file that you want to get the properties of.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -641,11 +641,11 @@ func (client FileClient) GetPropertiesFromComputeNodeResponder(resp *http.Respon
 	return
 }
 
-// GetPropertiesFromTask gets the properties of the specified task file.
+// GetPropertiesFromTask gets the properties of the specified Task file.
 // Parameters:
-// jobID - the ID of the job that contains the task.
-// taskID - the ID of the task whose file you want to get the properties of.
-// filePath - the path to the task file that you want to get the properties of.
+// jobID - the ID of the Job that contains the Task.
+// taskID - the ID of the Task whose file you want to get the properties of.
+// filePath - the path to the Task file that you want to get the properties of.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -764,8 +764,8 @@ func (client FileClient) GetPropertiesFromTaskResponder(resp *http.Response) (re
 
 // ListFromComputeNode sends the list from compute node request.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node whose files you want to list.
+// poolID - the ID of the Pool that contains the Compute Node.
+// nodeID - the ID of the Compute Node whose files you want to list.
 // filter - an OData $filter clause. For more information on constructing this filter, see
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
 // recursive - whether to list children of a directory.
@@ -933,11 +933,11 @@ func (client FileClient) ListFromComputeNodeComplete(ctx context.Context, poolID
 
 // ListFromTask sends the list from task request.
 // Parameters:
-// jobID - the ID of the job that contains the task.
-// taskID - the ID of the task whose files you want to list.
+// jobID - the ID of the Job that contains the Task.
+// taskID - the ID of the Task whose files you want to list.
 // filter - an OData $filter clause. For more information on constructing this filter, see
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
-// recursive - whether to list children of the task directory. This parameter can be used in combination with
+// recursive - whether to list children of the Task directory. This parameter can be used in combination with
 // the filter parameter to list specific type of files.
 // maxResults - the maximum number of items to return in the response. A maximum of 1000 files can be returned.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30

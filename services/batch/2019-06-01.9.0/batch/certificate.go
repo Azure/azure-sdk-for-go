@@ -40,7 +40,7 @@ func NewCertificateClient(batchURL string) CertificateClient {
 
 // Add sends the add request.
 // Parameters:
-// certificate - the certificate to be added.
+// certificate - the Certificate to be added.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -148,14 +148,14 @@ func (client CertificateClient) AddResponder(resp *http.Response) (result autore
 	return
 }
 
-// CancelDeletion if you try to delete a certificate that is being used by a pool or compute node, the status of the
-// certificate changes to deleteFailed. If you decide that you want to continue using the certificate, you can use this
-// operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not
-// need to run this operation after the deletion failed. You must make sure that the certificate is not being used by
-// any resources, and then you can try again to delete the certificate.
+// CancelDeletion if you try to delete a Certificate that is being used by a Pool or Compute Node, the status of the
+// Certificate changes to deleteFailed. If you decide that you want to continue using the Certificate, you can use this
+// operation to set the status of the Certificate back to active. If you intend to delete the Certificate, you do not
+// need to run this operation after the deletion failed. You must make sure that the Certificate is not being used by
+// any resources, and then you can try again to delete the Certificate.
 // Parameters:
 // thumbprintAlgorithm - the algorithm used to derive the thumbprint parameter. This must be sha1.
-// thumbprint - the thumbprint of the certificate being deleted.
+// thumbprint - the thumbprint of the Certificate being deleted.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -258,16 +258,16 @@ func (client CertificateClient) CancelDeletionResponder(resp *http.Response) (re
 	return
 }
 
-// Delete you cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a
-// certificate, you must therefore make sure that the certificate is not associated with any existing pools, the
-// certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed
-// from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you
-// try to delete a certificate that is in use, the deletion fails. The certificate status changes to deleteFailed. You
-// can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the
-// certificate.
+// Delete you cannot delete a Certificate if a resource (Pool or Compute Node) is using it. Before you can delete a
+// Certificate, you must therefore make sure that the Certificate is not associated with any existing Pools, the
+// Certificate is not installed on any Nodes (even if you remove a Certificate from a Pool, it is not removed from
+// existing Compute Nodes in that Pool until they restart), and no running Tasks depend on the Certificate. If you try
+// to delete a Certificate that is in use, the deletion fails. The Certificate status changes to deleteFailed. You can
+// use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the
+// Certificate.
 // Parameters:
 // thumbprintAlgorithm - the algorithm used to derive the thumbprint parameter. This must be sha1.
-// thumbprint - the thumbprint of the certificate to be deleted.
+// thumbprint - the thumbprint of the Certificate to be deleted.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -370,10 +370,10 @@ func (client CertificateClient) DeleteResponder(resp *http.Response) (result aut
 	return
 }
 
-// Get gets information about the specified certificate.
+// Get gets information about the specified Certificate.
 // Parameters:
 // thumbprintAlgorithm - the algorithm used to derive the thumbprint parameter. This must be sha1.
-// thumbprint - the thumbprint of the certificate to get.
+// thumbprint - the thumbprint of the Certificate to get.
 // selectParameter - an OData $select clause.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -486,7 +486,7 @@ func (client CertificateClient) GetResponder(resp *http.Response) (result Certif
 // filter - an OData $filter clause. For more information on constructing this filter, see
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.
 // selectParameter - an OData $select clause.
-// maxResults - the maximum number of items to return in the response. A maximum of 1000 certificates can be
+// maxResults - the maximum number of items to return in the response. A maximum of 1000 Certificates can be
 // returned.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.

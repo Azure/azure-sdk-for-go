@@ -38,11 +38,11 @@ func NewTaskClient(batchURL string) TaskClient {
 	return TaskClient{New(batchURL)}
 }
 
-// Add the maximum lifetime of a task from addition to completion is 180 days. If a task has not completed within 180
+// Add the maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
 // days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
 // Parameters:
-// jobID - the ID of the job to which the task is to be added.
-// task - the task to be added.
+// jobID - the ID of the Job to which the Task is to be added.
+// task - the Task to be added.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -164,19 +164,19 @@ func (client TaskClient) AddResponder(resp *http.Response) (result autorest.Resp
 	return
 }
 
-// AddCollection note that each task must have a unique ID. The Batch service may not return the results for each task
-// in the same order the tasks were submitted in this request. If the server times out or the connection is closed
+// AddCollection note that each Task must have a unique ID. The Batch service may not return the results for each Task
+// in the same order the Tasks were submitted in this request. If the server times out or the connection is closed
 // during the request, the request may have been partially or fully processed, or not at all. In such cases, the user
 // should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request.
-// For example, you should use the same task IDs during a retry so that if the prior operation succeeded, the retry
-// will not create extra tasks unexpectedly. If the response contains any tasks which failed to add, a client can retry
-// the request. In a retry, it is most efficient to resubmit only tasks that failed to add, and to omit tasks that were
-// successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 180 days. If
-// a task has not completed within 180 days of being added it will be terminated by the Batch service and left in
+// For example, you should use the same Task IDs during a retry so that if the prior operation succeeded, the retry
+// will not create extra Tasks unexpectedly. If the response contains any Tasks which failed to add, a client can retry
+// the request. In a retry, it is most efficient to resubmit only Tasks that failed to add, and to omit Tasks that were
+// successfully added on the first attempt. The maximum lifetime of a Task from addition to completion is 180 days. If
+// a Task has not completed within 180 days of being added it will be terminated by the Batch service and left in
 // whatever state it was in at that time.
 // Parameters:
-// jobID - the ID of the job to which the task collection is to be added.
-// taskCollection - the tasks to be added.
+// jobID - the ID of the Job to which the Task collection is to be added.
+// taskCollection - the Tasks to be added.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -288,12 +288,12 @@ func (client TaskClient) AddCollectionResponder(resp *http.Response) (result Tas
 	return
 }
 
-// Delete when a task is deleted, all of the files in its directory on the compute node where it ran are also deleted
-// (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the
+// Delete when a Task is deleted, all of the files in its directory on the Compute Node where it ran are also deleted
+// (regardless of the retention time). For multi-instance Tasks, the delete Task operation applies synchronously to the
 // primary task; subtasks and their files are then deleted asynchronously in the background.
 // Parameters:
-// jobID - the ID of the job from which to delete the task.
-// taskID - the ID of the task to delete.
+// jobID - the ID of the Job from which to delete the Task.
+// taskID - the ID of the Task to delete.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -423,11 +423,11 @@ func (client TaskClient) DeleteResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// Get for multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task.
+// Get for multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary Task.
 // Use the list subtasks API to retrieve information about subtasks.
 // Parameters:
-// jobID - the ID of the job that contains the task.
-// taskID - the ID of the task to get information about.
+// jobID - the ID of the Job that contains the Task.
+// taskID - the ID of the Task to get information about.
 // selectParameter - an OData $select clause.
 // expand - an OData $expand clause.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
@@ -566,15 +566,15 @@ func (client TaskClient) GetResponder(resp *http.Response) (result CloudTask, er
 	return
 }
 
-// List for multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task.
+// List for multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary Task.
 // Use the list subtasks API to retrieve information about subtasks.
 // Parameters:
-// jobID - the ID of the job.
+// jobID - the ID of the Job.
 // filter - an OData $filter clause. For more information on constructing this filter, see
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
 // selectParameter - an OData $select clause.
 // expand - an OData $expand clause.
-// maxResults - the maximum number of items to return in the response. A maximum of 1000 tasks can be returned.
+// maxResults - the maximum number of items to return in the response. A maximum of 1000 Tasks can be returned.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -738,10 +738,10 @@ func (client TaskClient) ListComplete(ctx context.Context, jobID string, filter 
 	return
 }
 
-// ListSubtasks if the task is not a multi-instance task then this returns an empty collection.
+// ListSubtasks if the Task is not a multi-instance Task then this returns an empty collection.
 // Parameters:
-// jobID - the ID of the job.
-// taskID - the ID of the task.
+// jobID - the ID of the Job.
+// taskID - the ID of the Task.
 // selectParameter - an OData $select clause.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -849,14 +849,14 @@ func (client TaskClient) ListSubtasksResponder(resp *http.Response) (result Clou
 	return
 }
 
-// Reactivate reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is
-// changed to active. As the task is no longer in the completed state, any previous exit code or failure information is
-// no longer available after reactivation. Each time a task is reactivated, its retry count is reset to 0. Reactivation
-// will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0).
-// Additionally, it will fail if the job has completed (or is terminating or deleting).
+// Reactivate reactivation makes a Task eligible to be retried again up to its maximum retry count. The Task's state is
+// changed to active. As the Task is no longer in the completed state, any previous exit code or failure information is
+// no longer available after reactivation. Each time a Task is reactivated, its retry count is reset to 0. Reactivation
+// will fail for Tasks that are not completed or that previously completed successfully (with an exit code of 0).
+// Additionally, it will fail if the Job has completed (or is terminating or deleting).
 // Parameters:
-// jobID - the ID of the job containing the task.
-// taskID - the ID of the task to reactivate.
+// jobID - the ID of the Job containing the Task.
+// taskID - the ID of the Task to reactivate.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -986,12 +986,12 @@ func (client TaskClient) ReactivateResponder(resp *http.Response) (result autore
 	return
 }
 
-// Terminate when the task has been terminated, it moves to the completed state. For multi-instance tasks, the
-// terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in
+// Terminate when the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the
+// terminate Task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in
 // the background.
 // Parameters:
-// jobID - the ID of the job containing the task.
-// taskID - the ID of the task to terminate.
+// jobID - the ID of the Job containing the Task.
+// taskID - the ID of the Task to terminate.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -1121,10 +1121,10 @@ func (client TaskClient) TerminateResponder(resp *http.Response) (result autores
 	return
 }
 
-// Update updates the properties of the specified task.
+// Update updates the properties of the specified Task.
 // Parameters:
-// jobID - the ID of the job containing the task.
-// taskID - the ID of the task to update.
+// jobID - the ID of the Job containing the Task.
+// taskID - the ID of the Task to update.
 // taskUpdateParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.

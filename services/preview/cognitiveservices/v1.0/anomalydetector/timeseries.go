@@ -64,7 +64,9 @@ func (client TimeSeriesClient) ChangePointDetectOnTimestamp(ctx context.Context,
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: timeSeriesID,
 			Constraints: []validation.Constraint{{Target: "timeSeriesID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "timeSeriesID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+				{Target: "timeSeriesID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
+		{TargetValue: body,
+			Constraints: []validation.Constraint{{Target: "body.Timestamp", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("anomalydetector.TimeSeriesClient", "ChangePointDetectOnTimestamp", err.Error())
 	}
 

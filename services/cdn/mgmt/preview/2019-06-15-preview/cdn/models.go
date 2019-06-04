@@ -28,7 +28,26 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2019-04-15/cdn"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/preview/2019-06-15-preview/cdn"
+
+// Action enumerates the values for action.
+type Action string
+
+const (
+	// Allow ...
+	Allow Action = "Allow"
+	// Block ...
+	Block Action = "Block"
+	// Log ...
+	Log Action = "Log"
+	// Redirect ...
+	Redirect Action = "Redirect"
+)
+
+// PossibleActionValues returns an array of possible values for the Action const type.
+func PossibleActionValues() []Action {
+	return []Action{Allow, Block, Log, Redirect}
+}
 
 // CacheBehavior enumerates the values for cache behavior.
 type CacheBehavior string
@@ -148,6 +167,21 @@ func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSu
 	return []CustomHTTPSProvisioningSubstate{CertificateDeleted, CertificateDeployed, DeletingCertificate, DeployingCertificate, DomainControlValidationRequestApproved, DomainControlValidationRequestRejected, DomainControlValidationRequestTimedOut, IssuingCertificate, PendingDomainControlValidationREquestApproval, SubmittingDomainControlValidationRequest}
 }
 
+// CustomRuleEnabledState enumerates the values for custom rule enabled state.
+type CustomRuleEnabledState string
+
+const (
+	// CustomRuleEnabledStateDisabled ...
+	CustomRuleEnabledStateDisabled CustomRuleEnabledState = "Disabled"
+	// CustomRuleEnabledStateEnabled ...
+	CustomRuleEnabledStateEnabled CustomRuleEnabledState = "Enabled"
+)
+
+// PossibleCustomRuleEnabledStateValues returns an array of possible values for the CustomRuleEnabledState const type.
+func PossibleCustomRuleEnabledStateValues() []CustomRuleEnabledState {
+	return []CustomRuleEnabledState{CustomRuleEnabledStateDisabled, CustomRuleEnabledStateEnabled}
+}
+
 // DestinationProtocol enumerates the values for destination protocol.
 type DestinationProtocol string
 
@@ -192,15 +226,15 @@ func PossibleEndpointResourceStateValues() []EndpointResourceState {
 type GeoFilterActions string
 
 const (
-	// Allow ...
-	Allow GeoFilterActions = "Allow"
-	// Block ...
-	Block GeoFilterActions = "Block"
+	// GeoFilterActionsAllow ...
+	GeoFilterActionsAllow GeoFilterActions = "Allow"
+	// GeoFilterActionsBlock ...
+	GeoFilterActionsBlock GeoFilterActions = "Block"
 )
 
 // PossibleGeoFilterActionsValues returns an array of possible values for the GeoFilterActions const type.
 func PossibleGeoFilterActionsValues() []GeoFilterActions {
-	return []GeoFilterActions{Allow, Block}
+	return []GeoFilterActions{GeoFilterActionsAllow, GeoFilterActionsBlock}
 }
 
 // HeaderAction enumerates the values for header action.
@@ -218,6 +252,50 @@ const (
 // PossibleHeaderActionValues returns an array of possible values for the HeaderAction const type.
 func PossibleHeaderActionValues() []HeaderAction {
 	return []HeaderAction{Append, Delete, Overwrite}
+}
+
+// ManagedRuleEnabledState enumerates the values for managed rule enabled state.
+type ManagedRuleEnabledState string
+
+const (
+	// ManagedRuleEnabledStateDisabled ...
+	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = "Disabled"
+	// ManagedRuleEnabledStateEnabled ...
+	ManagedRuleEnabledStateEnabled ManagedRuleEnabledState = "Enabled"
+)
+
+// PossibleManagedRuleEnabledStateValues returns an array of possible values for the ManagedRuleEnabledState const type.
+func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
+	return []ManagedRuleEnabledState{ManagedRuleEnabledStateDisabled, ManagedRuleEnabledStateEnabled}
+}
+
+// MatchVariable enumerates the values for match variable.
+type MatchVariable string
+
+const (
+	// Cookies ...
+	Cookies MatchVariable = "Cookies"
+	// Country ...
+	Country MatchVariable = "Country"
+	// PostArgs ...
+	PostArgs MatchVariable = "PostArgs"
+	// QueryString ...
+	QueryString MatchVariable = "QueryString"
+	// RemoteAddr ...
+	RemoteAddr MatchVariable = "RemoteAddr"
+	// RequestBody ...
+	RequestBody MatchVariable = "RequestBody"
+	// RequestHeader ...
+	RequestHeader MatchVariable = "RequestHeader"
+	// RequestMethod ...
+	RequestMethod MatchVariable = "RequestMethod"
+	// RequestURI ...
+	RequestURI MatchVariable = "RequestUri"
+)
+
+// PossibleMatchVariableValues returns an array of possible values for the MatchVariable const type.
+func PossibleMatchVariableValues() []MatchVariable {
+	return []MatchVariable{Cookies, Country, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, RequestURI}
 }
 
 // Name enumerates the values for name.
@@ -278,6 +356,41 @@ func PossibleNameBasicDeliveryRuleActionValues() []NameBasicDeliveryRuleAction {
 	return []NameBasicDeliveryRuleAction{NameCacheExpiration, NameDeliveryRuleAction, NameModifyRequestHeader, NameModifyResponseHeader, NameURLRedirect}
 }
 
+// Operator enumerates the values for operator.
+type Operator string
+
+const (
+	// Any ...
+	Any Operator = "Any"
+	// BeginsWith ...
+	BeginsWith Operator = "BeginsWith"
+	// Contains ...
+	Contains Operator = "Contains"
+	// EndsWith ...
+	EndsWith Operator = "EndsWith"
+	// Equal ...
+	Equal Operator = "Equal"
+	// GeoMatch ...
+	GeoMatch Operator = "GeoMatch"
+	// GreaterThan ...
+	GreaterThan Operator = "GreaterThan"
+	// GreaterThanOrEqual ...
+	GreaterThanOrEqual Operator = "GreaterThanOrEqual"
+	// IPMatch ...
+	IPMatch Operator = "IPMatch"
+	// LessThan ...
+	LessThan Operator = "LessThan"
+	// LessThanOrEqual ...
+	LessThanOrEqual Operator = "LessThanOrEqual"
+	// RegEx ...
+	RegEx Operator = "RegEx"
+)
+
+// PossibleOperatorValues returns an array of possible values for the Operator const type.
+func PossibleOperatorValues() []Operator {
+	return []Operator{Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual, RegEx}
+}
+
 // OptimizationType enumerates the values for optimization type.
 type OptimizationType string
 
@@ -316,33 +429,86 @@ func PossibleOriginResourceStateValues() []OriginResourceState {
 	return []OriginResourceState{OriginResourceStateActive, OriginResourceStateCreating, OriginResourceStateDeleting}
 }
 
+// PolicyEnabledState enumerates the values for policy enabled state.
+type PolicyEnabledState string
+
+const (
+	// PolicyEnabledStateDisabled ...
+	PolicyEnabledStateDisabled PolicyEnabledState = "Disabled"
+	// PolicyEnabledStateEnabled ...
+	PolicyEnabledStateEnabled PolicyEnabledState = "Enabled"
+)
+
+// PossiblePolicyEnabledStateValues returns an array of possible values for the PolicyEnabledState const type.
+func PossiblePolicyEnabledStateValues() []PolicyEnabledState {
+	return []PolicyEnabledState{PolicyEnabledStateDisabled, PolicyEnabledStateEnabled}
+}
+
+// PolicyMode enumerates the values for policy mode.
+type PolicyMode string
+
+const (
+	// Detection ...
+	Detection PolicyMode = "Detection"
+	// Prevention ...
+	Prevention PolicyMode = "Prevention"
+)
+
+// PossiblePolicyModeValues returns an array of possible values for the PolicyMode const type.
+func PossiblePolicyModeValues() []PolicyMode {
+	return []PolicyMode{Detection, Prevention}
+}
+
+// PolicyResourceState enumerates the values for policy resource state.
+type PolicyResourceState string
+
+const (
+	// PolicyResourceStateCreating ...
+	PolicyResourceStateCreating PolicyResourceState = "Creating"
+	// PolicyResourceStateDeleting ...
+	PolicyResourceStateDeleting PolicyResourceState = "Deleting"
+	// PolicyResourceStateDisabled ...
+	PolicyResourceStateDisabled PolicyResourceState = "Disabled"
+	// PolicyResourceStateDisabling ...
+	PolicyResourceStateDisabling PolicyResourceState = "Disabling"
+	// PolicyResourceStateEnabled ...
+	PolicyResourceStateEnabled PolicyResourceState = "Enabled"
+	// PolicyResourceStateEnabling ...
+	PolicyResourceStateEnabling PolicyResourceState = "Enabling"
+)
+
+// PossiblePolicyResourceStateValues returns an array of possible values for the PolicyResourceState const type.
+func PossiblePolicyResourceStateValues() []PolicyResourceState {
+	return []PolicyResourceState{PolicyResourceStateCreating, PolicyResourceStateDeleting, PolicyResourceStateDisabled, PolicyResourceStateDisabling, PolicyResourceStateEnabled, PolicyResourceStateEnabling}
+}
+
 // PostArgsOperator enumerates the values for post args operator.
 type PostArgsOperator string
 
 const (
-	// Any ...
-	Any PostArgsOperator = "Any"
-	// BeginsWith ...
-	BeginsWith PostArgsOperator = "BeginsWith"
-	// Contains ...
-	Contains PostArgsOperator = "Contains"
-	// EndsWith ...
-	EndsWith PostArgsOperator = "EndsWith"
-	// Equal ...
-	Equal PostArgsOperator = "Equal"
-	// GreaterThan ...
-	GreaterThan PostArgsOperator = "GreaterThan"
-	// GreaterThanOrEqual ...
-	GreaterThanOrEqual PostArgsOperator = "GreaterThanOrEqual"
-	// LessThan ...
-	LessThan PostArgsOperator = "LessThan"
-	// LessThanOrEqual ...
-	LessThanOrEqual PostArgsOperator = "LessThanOrEqual"
+	// PostArgsOperatorAny ...
+	PostArgsOperatorAny PostArgsOperator = "Any"
+	// PostArgsOperatorBeginsWith ...
+	PostArgsOperatorBeginsWith PostArgsOperator = "BeginsWith"
+	// PostArgsOperatorContains ...
+	PostArgsOperatorContains PostArgsOperator = "Contains"
+	// PostArgsOperatorEndsWith ...
+	PostArgsOperatorEndsWith PostArgsOperator = "EndsWith"
+	// PostArgsOperatorEqual ...
+	PostArgsOperatorEqual PostArgsOperator = "Equal"
+	// PostArgsOperatorGreaterThan ...
+	PostArgsOperatorGreaterThan PostArgsOperator = "GreaterThan"
+	// PostArgsOperatorGreaterThanOrEqual ...
+	PostArgsOperatorGreaterThanOrEqual PostArgsOperator = "GreaterThanOrEqual"
+	// PostArgsOperatorLessThan ...
+	PostArgsOperatorLessThan PostArgsOperator = "LessThan"
+	// PostArgsOperatorLessThanOrEqual ...
+	PostArgsOperatorLessThanOrEqual PostArgsOperator = "LessThanOrEqual"
 )
 
 // PossiblePostArgsOperatorValues returns an array of possible values for the PostArgsOperator const type.
 func PossiblePostArgsOperatorValues() []PostArgsOperator {
-	return []PostArgsOperator{Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual}
+	return []PostArgsOperator{PostArgsOperatorAny, PostArgsOperatorBeginsWith, PostArgsOperatorContains, PostArgsOperatorEndsWith, PostArgsOperatorEqual, PostArgsOperatorGreaterThan, PostArgsOperatorGreaterThanOrEqual, PostArgsOperatorLessThan, PostArgsOperatorLessThanOrEqual}
 }
 
 // ProfileResourceState enumerates the values for profile resource state.
@@ -377,6 +543,23 @@ const (
 // PossibleProtocolTypeValues returns an array of possible values for the ProtocolType const type.
 func PossibleProtocolTypeValues() []ProtocolType {
 	return []ProtocolType{IPBased, ServerNameIndication}
+}
+
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// ProvisioningStateCreating ...
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{ProvisioningStateCreating, ProvisioningStateFailed, ProvisioningStateSucceeded}
 }
 
 // QueryStringCachingBehavior enumerates the values for query string caching behavior.
@@ -569,8 +752,6 @@ type SkuName string
 const (
 	// CustomVerizon ...
 	CustomVerizon SkuName = "Custom_Verizon"
-	// PremiumChinaCdn ...
-	PremiumChinaCdn SkuName = "Premium_ChinaCdn"
 	// PremiumVerizon ...
 	PremiumVerizon SkuName = "Premium_Verizon"
 	// StandardAkamai ...
@@ -585,7 +766,7 @@ const (
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
-	return []SkuName{CustomVerizon, PremiumChinaCdn, PremiumVerizon, StandardAkamai, StandardChinaCdn, StandardMicrosoft, StandardVerizon}
+	return []SkuName{CustomVerizon, PremiumVerizon, StandardAkamai, StandardChinaCdn, StandardMicrosoft, StandardVerizon}
 }
 
 // Transform enumerates the values for transform.
@@ -690,6 +871,18 @@ const (
 // PossibleURLPathOperatorValues returns an array of possible values for the URLPathOperator const type.
 func PossibleURLPathOperatorValues() []URLPathOperator {
 	return []URLPathOperator{URLPathOperatorAny, URLPathOperatorBeginsWith, URLPathOperatorContains, URLPathOperatorEndsWith, URLPathOperatorEqual, URLPathOperatorGreaterThan, URLPathOperatorGreaterThanOrEqual, URLPathOperatorLessThan, URLPathOperatorLessThanOrEqual, URLPathOperatorWildcard}
+}
+
+// ActionType defines the action to take on rule match.
+type ActionType struct {
+	// ActionType - Describes type of action. Possible values include: 'Allow', 'Block', 'Log', 'Redirect'
+	ActionType Action `json:"actionType,omitempty"`
+	// RedirectURL - If action type is redirect, this field represents URL to be re-directed.
+	RedirectURL *string `json:"redirectUrl,omitempty"`
+	// CustomBlockResponseStatusCode - If the action type is block, customer can override the response status code.
+	CustomBlockResponseStatusCode *int32 `json:"customBlockResponseStatusCode,omitempty"`
+	// CustomBlockResponseBody - If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
+	CustomBlockResponseBody *string `json:"customBlockResponseBody,omitempty"`
 }
 
 // CacheExpirationActionParameters defines the parameters for the cache expiration action.
@@ -1164,6 +1357,26 @@ func (future *CustomDomainsDeleteFuture) Result(client CustomDomainsClient) (cd 
 		}
 	}
 	return
+}
+
+// CustomRule defines the common attributes for a custom rule that can be included in a waf policy
+type CustomRule struct {
+	// Name - Defines the name of the custom rule
+	Name *string `json:"name,omitempty"`
+	// EnabledState - Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified. Possible values include: 'CustomRuleEnabledStateDisabled', 'CustomRuleEnabledStateEnabled'
+	EnabledState CustomRuleEnabledState `json:"enabledState,omitempty"`
+	// Priority - Defines in what order this rule be evaluated in the overall list of custom rules
+	Priority *int32 `json:"priority,omitempty"`
+	// MatchConditions - List of match conditions.
+	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
+	// Action - Describes what action to be applied when rule matches
+	Action *ActionType `json:"action,omitempty"`
+}
+
+// CustomRuleList defines contents of custom rules
+type CustomRuleList struct {
+	// Rules - List of rules
+	Rules *[]CustomRule `json:"rules,omitempty"`
 }
 
 // DeepCreatedOrigin the main origin of CDN content which is added when creating a CDN endpoint.
@@ -3327,6 +3540,8 @@ type EndpointProperties struct {
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 	// DeliveryPolicy - A policy that specifies the delivery rules to be used for an endpoint.
 	DeliveryPolicy *EndpointPropertiesUpdateParametersDeliveryPolicy `json:"deliveryPolicy,omitempty"`
+	// WebApplicationFirewallPolicyLink - Defines the Web Application Firewall policy for the endpoint (if applicable)
+	WebApplicationFirewallPolicyLink *EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
 }
 
 // EndpointPropertiesUpdateParameters the JSON object containing endpoint update parameters.
@@ -3353,6 +3568,8 @@ type EndpointPropertiesUpdateParameters struct {
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 	// DeliveryPolicy - A policy that specifies the delivery rules to be used for an endpoint.
 	DeliveryPolicy *EndpointPropertiesUpdateParametersDeliveryPolicy `json:"deliveryPolicy,omitempty"`
+	// WebApplicationFirewallPolicyLink - Defines the Web Application Firewall policy for the endpoint (if applicable)
+	WebApplicationFirewallPolicyLink *EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
 }
 
 // EndpointPropertiesUpdateParametersDeliveryPolicy a policy that specifies the delivery rules to be used
@@ -3362,6 +3579,13 @@ type EndpointPropertiesUpdateParametersDeliveryPolicy struct {
 	Description *string `json:"description,omitempty"`
 	// Rules - A list of the delivery rules.
 	Rules *[]DeliveryRule `json:"rules,omitempty"`
+}
+
+// EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink defines the Web Application Firewall
+// policy for the endpoint (if applicable)
+type EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink struct {
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
 }
 
 // EndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -3549,6 +3773,12 @@ func (future *EndpointsUpdateFuture) Result(client EndpointsClient) (e Endpoint,
 	return
 }
 
+// EndpointType defines the ARM Resource ID for the linked endpoints
+type EndpointType struct {
+	// ID - ARM Resource ID string.
+	ID *string `json:"id,omitempty"`
+}
+
 // EndpointUpdateParameters properties required to create or update an endpoint.
 type EndpointUpdateParameters struct {
 	// Tags - Endpoint tags.
@@ -3614,7 +3844,7 @@ type ErrorResponse struct {
 type GeoFilter struct {
 	// RelativePath - Relative path applicable to geo filter. (e.g. '/mypictures', '/mypicture/kitty.jpg', and etc.)
 	RelativePath *string `json:"relativePath,omitempty"`
-	// Action - Action of the geo filter, i.e. allow or block access. Possible values include: 'Block', 'Allow'
+	// Action - Action of the geo filter, i.e. allow or block access. Possible values include: 'GeoFilterActionsBlock', 'GeoFilterActionsAllow'
 	Action GeoFilterActions `json:"action,omitempty"`
 	// CountryCodes - Two letter country codes defining user country access in a geo filter, e.g. AU, MX, US.
 	CountryCodes *[]string `json:"countryCodes,omitempty"`
@@ -3725,6 +3955,319 @@ func (mhp ManagedHTTPSParameters) AsCustomDomainHTTPSParameters() (*CustomDomain
 // AsBasicCustomDomainHTTPSParameters is the BasicCustomDomainHTTPSParameters implementation for ManagedHTTPSParameters.
 func (mhp ManagedHTTPSParameters) AsBasicCustomDomainHTTPSParameters() (BasicCustomDomainHTTPSParameters, bool) {
 	return &mhp, true
+}
+
+// ManagedRuleDefinition describes a managed rule definition.
+type ManagedRuleDefinition struct {
+	// RuleID - READ-ONLY; Identifier for the managed rule.
+	RuleID *string `json:"ruleId,omitempty"`
+	// Description - READ-ONLY; Describes the functionality of the managed rule.
+	Description *string `json:"description,omitempty"`
+}
+
+// ManagedRuleGroupDefinition describes a managed rule group.
+type ManagedRuleGroupDefinition struct {
+	// RuleGroupName - READ-ONLY; Name of the managed rule group.
+	RuleGroupName *string `json:"ruleGroupName,omitempty"`
+	// Description - READ-ONLY; Description of the managed rule group.
+	Description *string `json:"description,omitempty"`
+	// Rules - READ-ONLY; List of rules within the managed rule group.
+	Rules *[]ManagedRuleDefinition `json:"rules,omitempty"`
+}
+
+// ManagedRuleGroupOverride defines a managed rule group override setting.
+type ManagedRuleGroupOverride struct {
+	// RuleGroupName - Describes the managed rule group within the rule set to override
+	RuleGroupName *string `json:"ruleGroupName,omitempty"`
+	// Rules - List of rules that will be disabled. If none specified, all rules in the group will be disabled.
+	Rules *[]ManagedRuleOverride `json:"rules,omitempty"`
+}
+
+// ManagedRuleOverride defines a managed rule group override setting.
+type ManagedRuleOverride struct {
+	// RuleID - Identifier for the managed rule.
+	RuleID *string `json:"ruleId,omitempty"`
+	// EnabledState - Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified. Possible values include: 'ManagedRuleEnabledStateDisabled', 'ManagedRuleEnabledStateEnabled'
+	EnabledState ManagedRuleEnabledState `json:"enabledState,omitempty"`
+	// Action - Describes the override action to be applied when rule matches.
+	Action *ActionType `json:"action,omitempty"`
+}
+
+// ManagedRuleSet defines a managed rule set.
+type ManagedRuleSet struct {
+	// RuleSetType - Defines the rule set type to use.
+	RuleSetType *string `json:"ruleSetType,omitempty"`
+	// RuleSetVersion - Defines the version of the rule set to use.
+	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
+	// AnomalyScore - Verizon only : If the rule set supports anomaly detection mode, this describes the threshold for blocking requests.
+	AnomalyScore *int32 `json:"anomalyScore,omitempty"`
+	// RuleGroupOverrides - Defines the rule overrides to apply to the rule set.
+	RuleGroupOverrides *[]ManagedRuleGroupOverride `json:"ruleGroupOverrides,omitempty"`
+}
+
+// ManagedRuleSetDefinition describes a managed rule set definition.
+type ManagedRuleSetDefinition struct {
+	// ManagedRuleSetDefinitionProperties - Describes managed rule set definition properties.
+	*ManagedRuleSetDefinitionProperties `json:"properties,omitempty"`
+	// Sku - The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
+	Sku *Sku `json:"sku,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedRuleSetDefinition.
+func (mrsd ManagedRuleSetDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mrsd.ManagedRuleSetDefinitionProperties != nil {
+		objectMap["properties"] = mrsd.ManagedRuleSetDefinitionProperties
+	}
+	if mrsd.Sku != nil {
+		objectMap["sku"] = mrsd.Sku
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedRuleSetDefinition struct.
+func (mrsd *ManagedRuleSetDefinition) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedRuleSetDefinitionProperties ManagedRuleSetDefinitionProperties
+				err = json.Unmarshal(*v, &managedRuleSetDefinitionProperties)
+				if err != nil {
+					return err
+				}
+				mrsd.ManagedRuleSetDefinitionProperties = &managedRuleSetDefinitionProperties
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				mrsd.Sku = &sku
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mrsd.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mrsd.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mrsd.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedRuleSetDefinitionList list of managed rule set definitions available for use in a policy.
+type ManagedRuleSetDefinitionList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of managed rule set definitions.
+	Value *[]ManagedRuleSetDefinition `json:"value,omitempty"`
+	// NextLink - URL to retrieve next set of managed rule set definitions.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedRuleSetDefinitionListIterator provides access to a complete listing of ManagedRuleSetDefinition
+// values.
+type ManagedRuleSetDefinitionListIterator struct {
+	i    int
+	page ManagedRuleSetDefinitionListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedRuleSetDefinitionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedRuleSetDefinitionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ManagedRuleSetDefinitionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedRuleSetDefinitionListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedRuleSetDefinitionListIterator) Response() ManagedRuleSetDefinitionList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedRuleSetDefinitionListIterator) Value() ManagedRuleSetDefinition {
+	if !iter.page.NotDone() {
+		return ManagedRuleSetDefinition{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ManagedRuleSetDefinitionListIterator type.
+func NewManagedRuleSetDefinitionListIterator(page ManagedRuleSetDefinitionListPage) ManagedRuleSetDefinitionListIterator {
+	return ManagedRuleSetDefinitionListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mrsdl ManagedRuleSetDefinitionList) IsEmpty() bool {
+	return mrsdl.Value == nil || len(*mrsdl.Value) == 0
+}
+
+// managedRuleSetDefinitionListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mrsdl ManagedRuleSetDefinitionList) managedRuleSetDefinitionListPreparer(ctx context.Context) (*http.Request, error) {
+	if mrsdl.NextLink == nil || len(to.String(mrsdl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mrsdl.NextLink)))
+}
+
+// ManagedRuleSetDefinitionListPage contains a page of ManagedRuleSetDefinition values.
+type ManagedRuleSetDefinitionListPage struct {
+	fn    func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)
+	mrsdl ManagedRuleSetDefinitionList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedRuleSetDefinitionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedRuleSetDefinitionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.mrsdl)
+	if err != nil {
+		return err
+	}
+	page.mrsdl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ManagedRuleSetDefinitionListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedRuleSetDefinitionListPage) NotDone() bool {
+	return !page.mrsdl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedRuleSetDefinitionListPage) Response() ManagedRuleSetDefinitionList {
+	return page.mrsdl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedRuleSetDefinitionListPage) Values() []ManagedRuleSetDefinition {
+	if page.mrsdl.IsEmpty() {
+		return nil
+	}
+	return *page.mrsdl.Value
+}
+
+// Creates a new instance of the ManagedRuleSetDefinitionListPage type.
+func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
+	return ManagedRuleSetDefinitionListPage{fn: getNextPage}
+}
+
+// ManagedRuleSetDefinitionProperties properties for a managed rule set definition.
+type ManagedRuleSetDefinitionProperties struct {
+	// ProvisioningState - READ-ONLY; Provisioning state of the managed rule set.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// RuleSetType - READ-ONLY; Type of the managed rule set.
+	RuleSetType *string `json:"ruleSetType,omitempty"`
+	// RuleSetVersion - READ-ONLY; Version of the managed rule set type.
+	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
+	// RuleGroups - READ-ONLY; Rule groups of the managed rule set.
+	RuleGroups *[]ManagedRuleGroupDefinition `json:"ruleGroups,omitempty"`
+}
+
+// ManagedRuleSetList defines the list of managed rule sets for the policy.
+type ManagedRuleSetList struct {
+	// ManagedRuleSets - List of rule sets.
+	ManagedRuleSets *[]ManagedRuleSet `json:"managedRuleSets,omitempty"`
+}
+
+// MatchCondition define match conditions
+type MatchCondition struct {
+	// MatchVariable - Match variable to compare against. Possible values include: 'RemoteAddr', 'Country', 'RequestMethod', 'RequestHeader', 'RequestURI', 'QueryString', 'RequestBody', 'Cookies', 'PostArgs'
+	MatchVariable MatchVariable `json:"matchVariable,omitempty"`
+	// Selector - Selector can used to match a specific key for QueryString, RequestUri, RequestHeaders or RequestBody.
+	Selector *string `json:"selector,omitempty"`
+	// Operator - Describes operator to be matched. Possible values include: 'Any', 'IPMatch', 'GeoMatch', 'Equal', 'Contains', 'LessThan', 'GreaterThan', 'LessThanOrEqual', 'GreaterThanOrEqual', 'BeginsWith', 'EndsWith', 'RegEx'
+	Operator Operator `json:"operator,omitempty"`
+	// NegateCondition - Describes if the result of this condition should be negated.
+	NegateCondition *bool `json:"negateCondition,omitempty"`
+	// MatchValue - List of possible match values.
+	MatchValue *[]string `json:"matchValue,omitempty"`
 }
 
 // Operation CDN REST API operation
@@ -4232,12 +4775,84 @@ func (oup *OriginUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// PoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type PoliciesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PoliciesCreateOrUpdateFuture) Result(client PoliciesClient) (wafp WebApplicationFirewallPolicy, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cdn.PoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("cdn.PoliciesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if wafp.Response.Response, err = future.GetResult(sender); err == nil && wafp.Response.Response.StatusCode != http.StatusNoContent {
+		wafp, err = client.CreateOrUpdateResponder(wafp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.PoliciesCreateOrUpdateFuture", "Result", wafp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// PoliciesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type PoliciesUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PoliciesUpdateFuture) Result(client PoliciesClient) (wafp WebApplicationFirewallPolicy, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "cdn.PoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("cdn.PoliciesUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if wafp.Response.Response, err = future.GetResult(sender); err == nil && wafp.Response.Response.StatusCode != http.StatusNoContent {
+		wafp, err = client.UpdateResponder(wafp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "cdn.PoliciesUpdateFuture", "Result", wafp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// PolicySettings defines contents of a web application firewall global configuration
+type PolicySettings struct {
+	// EnabledState - describes if the policy is in enabled state or disabled state. Possible values include: 'PolicyEnabledStateDisabled', 'PolicyEnabledStateEnabled'
+	EnabledState PolicyEnabledState `json:"enabledState,omitempty"`
+	// Mode - Describes if it is in detection mode or prevention mode at policy level. Possible values include: 'Prevention', 'Detection'
+	Mode PolicyMode `json:"mode,omitempty"`
+	// DefaultRedirectURL - If action type is redirect, this field represents the default redirect URL for the client.
+	DefaultRedirectURL *string `json:"defaultRedirectUrl,omitempty"`
+	// DefaultCustomBlockResponseStatusCode - If the action type is block, this field defines the default customer overridable http response status code.
+	DefaultCustomBlockResponseStatusCode *int32 `json:"defaultCustomBlockResponseStatusCode,omitempty"`
+	// DefaultCustomBlockResponseBody - If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
+	DefaultCustomBlockResponseBody *string `json:"defaultCustomBlockResponseBody,omitempty"`
+}
+
 // PostArgsMatchConditionParameters defines the parameters for PostArgs match conditions
 type PostArgsMatchConditionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
 	// Selector - Name of PostArg to be matched
 	Selector *string `json:"selector,omitempty"`
-	// Operator - Describes operator to be matched. Possible values include: 'Any', 'Equal', 'Contains', 'BeginsWith', 'EndsWith', 'LessThan', 'LessThanOrEqual', 'GreaterThan', 'GreaterThanOrEqual'
+	// Operator - Describes operator to be matched. Possible values include: 'PostArgsOperatorAny', 'PostArgsOperatorEqual', 'PostArgsOperatorContains', 'PostArgsOperatorBeginsWith', 'PostArgsOperatorEndsWith', 'PostArgsOperatorLessThan', 'PostArgsOperatorLessThanOrEqual', 'PostArgsOperatorGreaterThan', 'PostArgsOperatorGreaterThanOrEqual'
 	Operator PostArgsOperator `json:"operator,omitempty"`
 	// NegateCondition - Describes if this is negate condition or not
 	NegateCondition *bool `json:"negateCondition,omitempty"`
@@ -4643,6 +5258,30 @@ type QueryStringMatchConditionParameters struct {
 	Transforms *[]Transform `json:"transforms,omitempty"`
 }
 
+// RateLimitRule defines a rate limiting rule that can be included in a waf policy
+type RateLimitRule struct {
+	// RateLimitThreshold - Defines rate limit threshold.
+	RateLimitThreshold *int32 `json:"rateLimitThreshold,omitempty"`
+	// RateLimitDurationInMinutes - Defines rate limit duration. Default is 1 minute.
+	RateLimitDurationInMinutes *int32 `json:"rateLimitDurationInMinutes,omitempty"`
+	// Name - Defines the name of the custom rule
+	Name *string `json:"name,omitempty"`
+	// EnabledState - Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified. Possible values include: 'CustomRuleEnabledStateDisabled', 'CustomRuleEnabledStateEnabled'
+	EnabledState CustomRuleEnabledState `json:"enabledState,omitempty"`
+	// Priority - Defines in what order this rule be evaluated in the overall list of custom rules
+	Priority *int32 `json:"priority,omitempty"`
+	// MatchConditions - List of match conditions.
+	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
+	// Action - Describes what action to be applied when rule matches
+	Action *ActionType `json:"action,omitempty"`
+}
+
+// RateLimitRuleList defines contents of rate limit rules
+type RateLimitRuleList struct {
+	// Rules - List of rules
+	Rules *[]RateLimitRule `json:"rules,omitempty"`
+}
+
 // RemoteAddressMatchConditionParameters defines the parameters for RemoteAddress match conditions
 type RemoteAddressMatchConditionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
@@ -4889,7 +5528,7 @@ func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUs
 
 // Sku the pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
 type Sku struct {
-	// Name - Name of the pricing tier. Possible values include: 'StandardVerizon', 'PremiumVerizon', 'CustomVerizon', 'StandardAkamai', 'StandardChinaCdn', 'StandardMicrosoft', 'PremiumChinaCdn'
+	// Name - Name of the pricing tier. Possible values include: 'StandardVerizon', 'PremiumVerizon', 'CustomVerizon', 'StandardAkamai', 'StandardChinaCdn', 'StandardMicrosoft'
 	Name SkuName `json:"name,omitempty"`
 }
 
@@ -5032,7 +5671,7 @@ type URLRedirectActionParameters struct {
 	DestinationProtocol DestinationProtocol `json:"destinationProtocol,omitempty"`
 	// CustomPath - The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as destination path.
 	CustomPath *string `json:"customPath,omitempty"`
-	// CustomHostname - Host to redirect. Leave empty to use the incoming host as the destination host.
+	// CustomHostname - Host to redirect. Leave empty to use use the incoming host as the destination host.
 	CustomHostname *string `json:"customHostname,omitempty"`
 	// CustomQueryString - The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query string; leave empty to preserve the incoming query string. Query string must be in <key>=<value> format. ? and & will be added automatically so do not include them.
 	CustomQueryString *string `json:"customQueryString,omitempty"`
@@ -5119,4 +5758,315 @@ type ValidateProbeOutput struct {
 	ErrorCode *string `json:"errorCode,omitempty"`
 	// Message - READ-ONLY; The detailed error message describing why the probe URL is not accepted.
 	Message *string `json:"message,omitempty"`
+}
+
+// WebApplicationFirewallPolicy defines web application firewall policy for Azure CDN.
+type WebApplicationFirewallPolicy struct {
+	autorest.Response `json:"-"`
+	// WebApplicationFirewallPolicyProperties - Properties of the web application firewall policy.
+	*WebApplicationFirewallPolicyProperties `json:"properties,omitempty"`
+	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// Sku - The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
+	Sku *Sku `json:"sku,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicy.
+func (wafp WebApplicationFirewallPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafp.WebApplicationFirewallPolicyProperties != nil {
+		objectMap["properties"] = wafp.WebApplicationFirewallPolicyProperties
+	}
+	if wafp.Etag != nil {
+		objectMap["etag"] = wafp.Etag
+	}
+	if wafp.Sku != nil {
+		objectMap["sku"] = wafp.Sku
+	}
+	if wafp.Location != nil {
+		objectMap["location"] = wafp.Location
+	}
+	if wafp.Tags != nil {
+		objectMap["tags"] = wafp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebApplicationFirewallPolicy struct.
+func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var webApplicationFirewallPolicyProperties WebApplicationFirewallPolicyProperties
+				err = json.Unmarshal(*v, &webApplicationFirewallPolicyProperties)
+				if err != nil {
+					return err
+				}
+				wafp.WebApplicationFirewallPolicyProperties = &webApplicationFirewallPolicyProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				wafp.Etag = &etag
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				wafp.Sku = &sku
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				wafp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				wafp.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				wafp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wafp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				wafp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// WebApplicationFirewallPolicyList defines a list of WebApplicationFirewallPolicies for Azure CDN. It
+// contains a list of WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
+type WebApplicationFirewallPolicyList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of Azure CDN WebApplicationFirewallPolicies within a resource group.
+	Value *[]WebApplicationFirewallPolicy `json:"value,omitempty"`
+	// NextLink - URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// WebApplicationFirewallPolicyListIterator provides access to a complete listing of
+// WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListIterator struct {
+	i    int
+	page WebApplicationFirewallPolicyListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WebApplicationFirewallPolicyListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WebApplicationFirewallPolicyListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WebApplicationFirewallPolicyListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WebApplicationFirewallPolicyListIterator) Response() WebApplicationFirewallPolicyList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WebApplicationFirewallPolicyListIterator) Value() WebApplicationFirewallPolicy {
+	if !iter.page.NotDone() {
+		return WebApplicationFirewallPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the WebApplicationFirewallPolicyListIterator type.
+func NewWebApplicationFirewallPolicyListIterator(page WebApplicationFirewallPolicyListPage) WebApplicationFirewallPolicyListIterator {
+	return WebApplicationFirewallPolicyListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wafpl WebApplicationFirewallPolicyList) IsEmpty() bool {
+	return wafpl.Value == nil || len(*wafpl.Value) == 0
+}
+
+// webApplicationFirewallPolicyListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wafpl WebApplicationFirewallPolicyList) webApplicationFirewallPolicyListPreparer(ctx context.Context) (*http.Request, error) {
+	if wafpl.NextLink == nil || len(to.String(wafpl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wafpl.NextLink)))
+}
+
+// WebApplicationFirewallPolicyListPage contains a page of WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListPage struct {
+	fn    func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)
+	wafpl WebApplicationFirewallPolicyList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WebApplicationFirewallPolicyListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.wafpl)
+	if err != nil {
+		return err
+	}
+	page.wafpl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WebApplicationFirewallPolicyListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WebApplicationFirewallPolicyListPage) NotDone() bool {
+	return !page.wafpl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WebApplicationFirewallPolicyListPage) Response() WebApplicationFirewallPolicyList {
+	return page.wafpl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WebApplicationFirewallPolicyListPage) Values() []WebApplicationFirewallPolicy {
+	if page.wafpl.IsEmpty() {
+		return nil
+	}
+	return *page.wafpl.Value
+}
+
+// Creates a new instance of the WebApplicationFirewallPolicyListPage type.
+func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
+	return WebApplicationFirewallPolicyListPage{fn: getNextPage}
+}
+
+// WebApplicationFirewallPolicyPatchParameters properties required to update a
+// CdnWebApplicationFirewallPolicy.
+type WebApplicationFirewallPolicyPatchParameters struct {
+	// Tags - CdnWebApplicationFirewallPolicy tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicyPatchParameters.
+func (wafppp WebApplicationFirewallPolicyPatchParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafppp.Tags != nil {
+		objectMap["tags"] = wafppp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// WebApplicationFirewallPolicyProperties defines CDN web application firewall policy properties.
+type WebApplicationFirewallPolicyProperties struct {
+	// PolicySettings - Describes  policySettings for policy
+	PolicySettings *PolicySettings `json:"policySettings,omitempty"`
+	// RateLimitRules - Describes rate limit rules inside the policy.
+	RateLimitRules *RateLimitRuleList `json:"rateLimitRules,omitempty"`
+	// CustomRules - Describes custom rules inside the policy.
+	CustomRules *CustomRuleList `json:"customRules,omitempty"`
+	// ManagedRules - Describes managed rules inside the policy.
+	ManagedRules *ManagedRuleSetList `json:"managedRules,omitempty"`
+	// CdnEndpointLinks - READ-ONLY; Describes Azure CDN endpoints associated with this Web Application Firewall policy.
+	CdnEndpointLinks *[]EndpointType `json:"cdnEndpointLinks,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the WebApplicationFirewallPolicy. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// ResourceState - READ-ONLY; Possible values include: 'PolicyResourceStateCreating', 'PolicyResourceStateEnabling', 'PolicyResourceStateEnabled', 'PolicyResourceStateDisabling', 'PolicyResourceStateDisabled', 'PolicyResourceStateDeleting'
+	ResourceState PolicyResourceState `json:"resourceState,omitempty"`
 }

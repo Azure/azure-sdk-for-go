@@ -108,12 +108,10 @@ func PossibleTimeSeriesFieldValues() []TimeSeriesField {
 	return []TimeSeriesField{ExpectedValue, IsAnomaly, IsChangePoint, IsNegativeAnomaly, IsPositiveAnomaly, LowerMargin, Period, UpperMargin, Value}
 }
 
-// AnomalyDetectInTimeRangeRequest ...
-type AnomalyDetectInTimeRangeRequest struct {
-	// Begin - begin of a detection time range
-	Begin *date.Time `json:"begin,omitempty"`
-	// End - end of a detection time range
-	End *date.Time `json:"end,omitempty"`
+// AnomalyDetectOnTimestampRequest ...
+type AnomalyDetectOnTimestampRequest struct {
+	// Timestamp - Timestamp of a data point
+	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Period - Optional argument, periodic value of a time series. If the value is null or does not present, the API will determine the period automatically.
 	Period *int32 `json:"period,omitempty"`
 	// MaxAnomalyRatio - Optional argument, advanced model parameter, max anomaly ratio in a time series.
@@ -122,27 +120,27 @@ type AnomalyDetectInTimeRangeRequest struct {
 	Sensitivity *int32 `json:"sensitivity,omitempty"`
 }
 
-// AnomalyDetectInTimeRangeResponse ...
-type AnomalyDetectInTimeRangeResponse struct {
+// AnomalyDetectOnTimestampResponse ...
+type AnomalyDetectOnTimestampResponse struct {
 	autorest.Response `json:"-"`
 	// Period - Frequency extracted from the series, zero means no recurrent pattern has been found.
 	Period *int32 `json:"period,omitempty"`
-	// Timestamps - timestamps contain timestamp for each point in the range.
-	Timestamps *[]date.Time `json:"timestamps,omitempty"`
-	// Values - values contain value for each point in the range. The index of the array is consistent with timestamps array.
-	Values *[]float64 `json:"values,omitempty"`
-	// ExpectedValues - ExpectedValues contain expected value for each point in the range. The index of the array is consistent with timestamps array.
-	ExpectedValues *[]float64 `json:"expectedValues,omitempty"`
-	// UpperMargins - UpperMargins contain upper margin of each point in the range. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - marginScale)*upperMargin. Anomalies in response can be filtered by upperBoundary and lowerBoundary. By adjusting marginScale value, less significant anomalies can be filtered in client side. The index of the array is consistent with timestamps.
-	UpperMargins *[]float64 `json:"upperMargins,omitempty"`
-	// LowerMargins - LowerMargins contain lower margin of each point in the range. LowerMargin is used to calculate lowerBoundary, which equals to expectedValue - (100 - marginScale)*lowerMargin. Points between the boundary can be marked as normal ones in client side. The index of the array is consistent with timestamps.
-	LowerMargins *[]float64 `json:"lowerMargins,omitempty"`
-	// IsAnomaly - IsAnomaly contain anomaly properties each point in the range. True means an anomaly either negative or positive has been detected. The index of the array is consistent with timestamps.
-	IsAnomaly *[]bool `json:"isAnomaly,omitempty"`
-	// IsNegativeAnomaly - IsNegativeAnomaly contain anomaly status in negative direction in the range. True means a negative anomaly has been detected. A negative anomaly means the point is detected as an anomaly and its real value is smaller than the expected one. The index of the array is consistent with timestamps.
-	IsNegativeAnomaly *[]bool `json:"isNegativeAnomaly,omitempty"`
-	// IsPositiveAnomaly - IsPositiveAnomaly contain anomaly status in positive direction in the range. True means a positive anomaly has been detected. A positive anomaly means the point is detected as an anomaly and its real value is larger than the expected one. The index of the array is consistent with timestamps.
-	IsPositiveAnomaly *[]bool `json:"isPositiveAnomaly,omitempty"`
+	// Timestamp - Timestamp of a point.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// Value - Value of a point.
+	Value *float64 `json:"value,omitempty"`
+	// ExpectedValue - ExpectedValue of a point on the timestamp.
+	ExpectedValue *float64 `json:"expectedValue,omitempty"`
+	// UpperMargin - UpperMargin of a point on the timestamp. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - marginScale)*upperMargin. Anomalies in response can be filtered by upperBoundary and lowerBoundary. By adjusting marginScale value, less significant anomalies can be filtered in client side.
+	UpperMargin *float64 `json:"upperMargin,omitempty"`
+	// LowerMargin - LowerMargin of a point on the timestamp. LowerMargin is used to calculate lowerBoundary, which equals to expectedValue - (100 - marginScale)*lowerMargin. Points between the boundary can be marked as normal ones in client side.
+	LowerMargin *float64 `json:"lowerMargin,omitempty"`
+	// IsAnomaly - Anomaly property of a point on the timestamp. True means an anomaly either negative or positive has been detected.
+	IsAnomaly *bool `json:"isAnomaly,omitempty"`
+	// IsNegativeAnomaly - Anomaly status in negative direction on the timestamp. True means a negative anomaly has been detected. A negative anomaly means the point is detected as an anomaly and its real value is smaller than the expected one.
+	IsNegativeAnomaly *bool `json:"isNegativeAnomaly,omitempty"`
+	// IsPositiveAnomaly - Anomaly status in positive direction on the timestamp. True means a positive anomaly has been detected. A positive anomaly means the point is detected as an anomaly and its real value is larger than the expected one.
+	IsPositiveAnomaly *bool `json:"isPositiveAnomaly,omitempty"`
 }
 
 // APIError error information returned by the API.
@@ -153,12 +151,10 @@ type APIError struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ChangePointDetectInTimeRangeRequest ...
-type ChangePointDetectInTimeRangeRequest struct {
-	// Begin - The begin timestamp of you want to detect.
-	Begin *date.Time `json:"begin,omitempty"`
-	// End - The end timestamp of you want to detect.
-	End *date.Time `json:"end,omitempty"`
+// ChangePointDetectOnTimestampRequest ...
+type ChangePointDetectOnTimestampRequest struct {
+	// Timestamp - The timestamp of a data point.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Period - Optional argument, periodic value of a time series. If the value is null or does not present, the API will determine the period automatically.
 	Period *int32 `json:"period,omitempty"`
 	// StableTrendWindow - Optional argument, advanced model parameter, a default stableTrendWindow will be used in detection.
@@ -167,17 +163,17 @@ type ChangePointDetectInTimeRangeRequest struct {
 	Threshold *float64 `json:"threshold,omitempty"`
 }
 
-// ChangePointDetectInTimeRangeResponse ...
-type ChangePointDetectInTimeRangeResponse struct {
+// ChangePointDetectOnTimestampResponse ...
+type ChangePointDetectOnTimestampResponse struct {
 	autorest.Response `json:"-"`
 	// Period - Frequency extracted from the series, zero means no recurrent pattern has been found.
 	Period *int32 `json:"period,omitempty"`
-	// IsChangePoint - ChangePoints contains change point properties for each input point. True means an anomaly either negative or positive has been detected. The index of the array is consistent with the input series.
-	IsChangePoint *[]bool `json:"isChangePoint,omitempty"`
-	// ConfidenceScores - the change point confidence of each point
-	ConfidenceScores *[]float64 `json:"confidenceScores,omitempty"`
-	// Timestamps - All timestamps in range
-	Timestamps *[]date.Time `json:"timestamps,omitempty"`
+	// IsChangePoint - Change point property. True means a change point has been detected.
+	IsChangePoint *bool `json:"isChangePoint,omitempty"`
+	// ConfidenceScore - The change point confidence score.
+	ConfidenceScore *float64 `json:"confidenceScore,omitempty"`
+	// Timestamp - Timestamp of a data point (ISO8601 format).
+	Timestamp *date.Time `json:"timestamp,omitempty"`
 }
 
 // ChangePointDetectRequest ...
@@ -233,20 +229,16 @@ type Inconsistency struct {
 	InconsistentSeriesIds *[]string `json:"inconsistentSeriesIds,omitempty"`
 	// ConfidenceScores - Scores of inconsistent series in the time series group.
 	ConfidenceScores *[]float64 `json:"confidenceScores,omitempty"`
-	// Begin - Start time of the time series group.
-	Begin *date.Time `json:"begin,omitempty"`
-	// End - End time of the time series group.
-	End *date.Time `json:"end,omitempty"`
+	// Timestamp - Inconsistency detect timestamp.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Epsilon - Parameter to be tuned to get inconsistency.
 	Epsilon *float64 `json:"epsilon,omitempty"`
 }
 
 // InconsistencyDetectRequest ...
 type InconsistencyDetectRequest struct {
-	// Begin - Start time of the time series group.
-	Begin *date.Time `json:"begin,omitempty"`
-	// End - End time of the time series group.
-	End *date.Time `json:"end,omitempty"`
+	// Timestamp - Inconsistency detect timestamp.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Epsilon - Parameter to be tuned to get inconsistency.
 	Epsilon *float64 `json:"epsilon,omitempty"`
 }

@@ -46,14 +46,13 @@ func NewTimeSeriesClient(endpoint string) TimeSeriesClient {
 	return TimeSeriesClient{New(endpoint)}
 }
 
-// ChangePointDetectInTimeRange evaluate change point score of every series point between start and end.
+// ChangePointDetectOnTimestamp evaluate change point score of every series point between start and end.
 // Parameters:
 // timeSeriesID - unique id for time series.
-// body - timeSeriesId, begin and end is needed. Advanced model parameters can also be set in the request if
-// needed.
-func (client TimeSeriesClient) ChangePointDetectInTimeRange(ctx context.Context, timeSeriesID string, body ChangePointDetectInTimeRangeRequest) (result ChangePointDetectInTimeRangeResponse, err error) {
+// body - timestamp is needed. Advanced model parameters can also be set in the request if needed.
+func (client TimeSeriesClient) ChangePointDetectOnTimestamp(ctx context.Context, timeSeriesID string, body ChangePointDetectOnTimestampRequest) (result ChangePointDetectOnTimestampResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.ChangePointDetectInTimeRange")
+		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.ChangePointDetectOnTimestamp")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -65,36 +64,33 @@ func (client TimeSeriesClient) ChangePointDetectInTimeRange(ctx context.Context,
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: timeSeriesID,
 			Constraints: []validation.Constraint{{Target: "timeSeriesID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "timeSeriesID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
-		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Begin", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.End", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("anomalydetector.TimeSeriesClient", "ChangePointDetectInTimeRange", err.Error())
+				{Target: "timeSeriesID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("anomalydetector.TimeSeriesClient", "ChangePointDetectOnTimestamp", err.Error())
 	}
 
-	req, err := client.ChangePointDetectInTimeRangePreparer(ctx, timeSeriesID, body)
+	req, err := client.ChangePointDetectOnTimestampPreparer(ctx, timeSeriesID, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "ChangePointDetectInTimeRange", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "ChangePointDetectOnTimestamp", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ChangePointDetectInTimeRangeSender(req)
+	resp, err := client.ChangePointDetectOnTimestampSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "ChangePointDetectInTimeRange", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "ChangePointDetectOnTimestamp", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ChangePointDetectInTimeRangeResponder(resp)
+	result, err = client.ChangePointDetectOnTimestampResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "ChangePointDetectInTimeRange", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "ChangePointDetectOnTimestamp", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ChangePointDetectInTimeRangePreparer prepares the ChangePointDetectInTimeRange request.
-func (client TimeSeriesClient) ChangePointDetectInTimeRangePreparer(ctx context.Context, timeSeriesID string, body ChangePointDetectInTimeRangeRequest) (*http.Request, error) {
+// ChangePointDetectOnTimestampPreparer prepares the ChangePointDetectOnTimestamp request.
+func (client TimeSeriesClient) ChangePointDetectOnTimestampPreparer(ctx context.Context, timeSeriesID string, body ChangePointDetectOnTimestampRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -112,16 +108,16 @@ func (client TimeSeriesClient) ChangePointDetectInTimeRangePreparer(ctx context.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ChangePointDetectInTimeRangeSender sends the ChangePointDetectInTimeRange request. The method will close the
+// ChangePointDetectOnTimestampSender sends the ChangePointDetectOnTimestamp request. The method will close the
 // http.Response Body if it receives an error.
-func (client TimeSeriesClient) ChangePointDetectInTimeRangeSender(req *http.Request) (*http.Response, error) {
+func (client TimeSeriesClient) ChangePointDetectOnTimestampSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// ChangePointDetectInTimeRangeResponder handles the response to the ChangePointDetectInTimeRange request. The method always
+// ChangePointDetectOnTimestampResponder handles the response to the ChangePointDetectOnTimestamp request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) ChangePointDetectInTimeRangeResponder(resp *http.Response) (result ChangePointDetectInTimeRangeResponse, err error) {
+func (client TimeSeriesClient) ChangePointDetectOnTimestampResponder(resp *http.Response) (result ChangePointDetectOnTimestampResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -291,15 +287,16 @@ func (client TimeSeriesClient) DeleteResponder(resp *http.Response) (result auto
 	return
 }
 
-// EntireDetectInTimeRange this operation will detect anomalies between begin and end time range, points between begin
-// and end will be detected together with the same model
+// DetectOnTimestamp this operation can be used in streaming monitoring scenario, when user would like to monitor a
+// time series, the user only need to provide a time range, last detect API will check where last detection ends and
+// will return detection results between last detection and the end time
 // Parameters:
 // timeSeriesID - unique id for time series.
-// body - begin and end is required in the request. Advanced model parameters (period, sensitivity,
+// body - timestamp is required in the request. Advanced model parameters (period, sensitivity,
 // maxAnomalyRatio) can also be set in the request.
-func (client TimeSeriesClient) EntireDetectInTimeRange(ctx context.Context, timeSeriesID string, body AnomalyDetectInTimeRangeRequest) (result AnomalyDetectInTimeRangeResponse, err error) {
+func (client TimeSeriesClient) DetectOnTimestamp(ctx context.Context, timeSeriesID string, body AnomalyDetectOnTimestampRequest) (result AnomalyDetectOnTimestampResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.EntireDetectInTimeRange")
+		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.DetectOnTimestamp")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -313,34 +310,33 @@ func (client TimeSeriesClient) EntireDetectInTimeRange(ctx context.Context, time
 			Constraints: []validation.Constraint{{Target: "timeSeriesID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "timeSeriesID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Begin", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.End", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("anomalydetector.TimeSeriesClient", "EntireDetectInTimeRange", err.Error())
+			Constraints: []validation.Constraint{{Target: "body.Timestamp", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("anomalydetector.TimeSeriesClient", "DetectOnTimestamp", err.Error())
 	}
 
-	req, err := client.EntireDetectInTimeRangePreparer(ctx, timeSeriesID, body)
+	req, err := client.DetectOnTimestampPreparer(ctx, timeSeriesID, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "EntireDetectInTimeRange", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "DetectOnTimestamp", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.EntireDetectInTimeRangeSender(req)
+	resp, err := client.DetectOnTimestampSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "EntireDetectInTimeRange", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "DetectOnTimestamp", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.EntireDetectInTimeRangeResponder(resp)
+	result, err = client.DetectOnTimestampResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "EntireDetectInTimeRange", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "DetectOnTimestamp", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// EntireDetectInTimeRangePreparer prepares the EntireDetectInTimeRange request.
-func (client TimeSeriesClient) EntireDetectInTimeRangePreparer(ctx context.Context, timeSeriesID string, body AnomalyDetectInTimeRangeRequest) (*http.Request, error) {
+// DetectOnTimestampPreparer prepares the DetectOnTimestamp request.
+func (client TimeSeriesClient) DetectOnTimestampPreparer(ctx context.Context, timeSeriesID string, body AnomalyDetectOnTimestampRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -353,21 +349,21 @@ func (client TimeSeriesClient) EntireDetectInTimeRangePreparer(ctx context.Conte
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
-		autorest.WithPathParameters("/timeseries/{timeSeriesId}/entire/detect", pathParameters),
+		autorest.WithPathParameters("/timeseries/{timeSeriesId}/detect", pathParameters),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// EntireDetectInTimeRangeSender sends the EntireDetectInTimeRange request. The method will close the
+// DetectOnTimestampSender sends the DetectOnTimestamp request. The method will close the
 // http.Response Body if it receives an error.
-func (client TimeSeriesClient) EntireDetectInTimeRangeSender(req *http.Request) (*http.Response, error) {
+func (client TimeSeriesClient) DetectOnTimestampSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// EntireDetectInTimeRangeResponder handles the response to the EntireDetectInTimeRange request. The method always
+// DetectOnTimestampResponder handles the response to the DetectOnTimestamp request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) EntireDetectInTimeRangeResponder(resp *http.Response) (result AnomalyDetectInTimeRangeResponse, err error) {
+func (client TimeSeriesClient) DetectOnTimestampResponder(resp *http.Response) (result AnomalyDetectOnTimestampResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -539,94 +535,6 @@ func (client TimeSeriesClient) LabelResponder(resp *http.Response) (result autor
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
-	return
-}
-
-// LastDetectInTimeRange this operation can be used in streaming monitoring scenario, when user would like to monitor a
-// time series, the user only need to provide a time range, last detect API will check where last detection ends and
-// will return detection results between last detection and the end time
-// Parameters:
-// timeSeriesID - unique id for time series.
-// body - begin and end is required in the request. Advanced model parameters (period, sensitivity,
-// maxAnomalyRatio) can also be set in the request.
-func (client TimeSeriesClient) LastDetectInTimeRange(ctx context.Context, timeSeriesID string, body AnomalyDetectInTimeRangeRequest) (result AnomalyDetectInTimeRangeResponse, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.LastDetectInTimeRange")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: timeSeriesID,
-			Constraints: []validation.Constraint{{Target: "timeSeriesID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "timeSeriesID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
-		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Begin", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.End", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("anomalydetector.TimeSeriesClient", "LastDetectInTimeRange", err.Error())
-	}
-
-	req, err := client.LastDetectInTimeRangePreparer(ctx, timeSeriesID, body)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "LastDetectInTimeRange", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.LastDetectInTimeRangeSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "LastDetectInTimeRange", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.LastDetectInTimeRangeResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "LastDetectInTimeRange", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// LastDetectInTimeRangePreparer prepares the LastDetectInTimeRange request.
-func (client TimeSeriesClient) LastDetectInTimeRangePreparer(ctx context.Context, timeSeriesID string, body AnomalyDetectInTimeRangeRequest) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	pathParameters := map[string]interface{}{
-		"timeSeriesId": autorest.Encode("path", timeSeriesID),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
-		autorest.WithPathParameters("/timeseries/{timeSeriesId}/last/detect", pathParameters),
-		autorest.WithJSON(body))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// LastDetectInTimeRangeSender sends the LastDetectInTimeRange request. The method will close the
-// http.Response Body if it receives an error.
-func (client TimeSeriesClient) LastDetectInTimeRangeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// LastDetectInTimeRangeResponder handles the response to the LastDetectInTimeRange request. The method always
-// closes the http.Response Body.
-func (client TimeSeriesClient) LastDetectInTimeRangeResponder(resp *http.Response) (result AnomalyDetectInTimeRangeResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
 	return
 }
 

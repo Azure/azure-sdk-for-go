@@ -34,13 +34,12 @@ var _ BaseClientAPI = (*anomalydetector.BaseClient)(nil)
 
 // TimeSeriesClientAPI contains the set of methods on the TimeSeriesClient type.
 type TimeSeriesClientAPI interface {
-	ChangePointDetectInTimeRange(ctx context.Context, timeSeriesID string, body anomalydetector.ChangePointDetectInTimeRangeRequest) (result anomalydetector.ChangePointDetectInTimeRangeResponse, err error)
+	ChangePointDetectOnTimestamp(ctx context.Context, timeSeriesID string, body anomalydetector.ChangePointDetectOnTimestampRequest) (result anomalydetector.ChangePointDetectOnTimestampResponse, err error)
 	Create(ctx context.Context, timeSeriesID string, body anomalydetector.TimeSeriesCreateRequest) (result autorest.Response, err error)
 	Delete(ctx context.Context, timeSeriesID string) (result autorest.Response, err error)
-	EntireDetectInTimeRange(ctx context.Context, timeSeriesID string, body anomalydetector.AnomalyDetectInTimeRangeRequest) (result anomalydetector.AnomalyDetectInTimeRangeResponse, err error)
+	DetectOnTimestamp(ctx context.Context, timeSeriesID string, body anomalydetector.AnomalyDetectOnTimestampRequest) (result anomalydetector.AnomalyDetectOnTimestampResponse, err error)
 	Get(ctx context.Context, timeSeriesID string) (result anomalydetector.TimeSeries, err error)
 	Label(ctx context.Context, timeSeriesID string, body anomalydetector.LabelRequest) (result autorest.Response, err error)
-	LastDetectInTimeRange(ctx context.Context, timeSeriesID string, body anomalydetector.AnomalyDetectInTimeRangeRequest) (result anomalydetector.AnomalyDetectInTimeRangeResponse, err error)
 	List(ctx context.Context, next string) (result anomalydetector.TimeSeriesList, err error)
 	ListGroups(ctx context.Context, timeSeriesID string, next string) (result anomalydetector.TimeSeriesGroupList, err error)
 	Query(ctx context.Context, timeSeriesID string, body anomalydetector.TimeSeriesQueryRequest) (result anomalydetector.TimeSeriesQueryResponse, err error)

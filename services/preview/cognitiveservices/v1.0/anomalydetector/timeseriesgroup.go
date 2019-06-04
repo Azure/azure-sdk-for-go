@@ -454,8 +454,8 @@ func (client TimeSeriesGroupClient) GetResponder(resp *http.Response) (result Ti
 // InconsistencyDetect this operation helps detect the inconsistent series among a group series with similar trend.
 // Parameters:
 // timeSeriesGroupID - unique id for time series group.
-// body - start time and end time is necessary, and a parameter called epsilon is needed to tune the result.
-// Epsilon should be within 0 and 1.
+// body - timestamp is necessary, and a parameter called epsilon is needed to tune the result. Epsilon should
+// be within 0 and 1.
 func (client TimeSeriesGroupClient) InconsistencyDetect(ctx context.Context, timeSeriesGroupID string, body InconsistencyDetectRequest) (result Inconsistency, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesGroupClient.InconsistencyDetect")
@@ -472,8 +472,7 @@ func (client TimeSeriesGroupClient) InconsistencyDetect(ctx context.Context, tim
 			Constraints: []validation.Constraint{{Target: "timeSeriesGroupID", Name: validation.MaxLength, Rule: 64, Chain: nil},
 				{Target: "timeSeriesGroupID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}},
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Begin", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "body.End", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "body.Timestamp", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("anomalydetector.TimeSeriesGroupClient", "InconsistencyDetect", err.Error())
 	}
 

@@ -3531,7 +3531,7 @@ type InformationType struct {
 // IoTSecurityAggregatedAlert security Solution
 type IoTSecurityAggregatedAlert struct {
 	autorest.Response `json:"-"`
-	// AlertType - READ-ONLY; Name of the alert type
+	// AlertType - Name of the alert type
 	AlertType *string `json:"alertType,omitempty"`
 	// AlertDisplayName - READ-ONLY; Display name of the alert type
 	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
@@ -3710,10 +3710,10 @@ func NewIoTSecurityAggregatedAlertListPage(getNextPage func(context.Context, IoT
 	return IoTSecurityAggregatedAlertListPage{fn: getNextPage}
 }
 
-// IoTSecurityAggregatedRecommendation security Solution
+// IoTSecurityAggregatedRecommendation security Solution Recommendation Information
 type IoTSecurityAggregatedRecommendation struct {
 	autorest.Response `json:"-"`
-	// RecommendationName - READ-ONLY; Name of the alert type
+	// RecommendationName - Name of the alert type
 	RecommendationName *string `json:"recommendationName,omitempty"`
 	// RecommendationDisplayName - READ-ONLY; Display name of the alert type
 	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`

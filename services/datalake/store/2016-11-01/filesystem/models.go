@@ -1182,14 +1182,14 @@ type FileOperationResult struct {
 // FileStatuses data Lake Store file status list information.
 type FileStatuses struct {
 	// FileStatus - READ-ONLY; the object containing the list of properties of the files.
-	FileStatus *[]FileStatusProperties `json:"fileStatus,omitempty"`
+	FileStatus *[]FileStatusProperties `json:"FileStatus,omitempty"`
 }
 
 // FileStatusesResult data Lake Store filesystem file status list information response.
 type FileStatusesResult struct {
 	autorest.Response `json:"-"`
 	// FileStatuses - READ-ONLY; the object representing the list of file statuses.
-	FileStatuses *FileStatuses `json:"fileStatuses,omitempty"`
+	FileStatuses *FileStatuses `json:"FileStatuses,omitempty"`
 }
 
 // FileStatusProperties data Lake Store file or directory information.
@@ -1222,7 +1222,7 @@ type FileStatusProperties struct {
 type FileStatusResult struct {
 	autorest.Response `json:"-"`
 	// FileStatus - READ-ONLY; the file status object associated with the specified path.
-	FileStatus *FileStatusProperties `json:"fileStatus,omitempty"`
+	FileStatus *FileStatusProperties `json:"FileStatus,omitempty"`
 }
 
 // ReadCloser ...

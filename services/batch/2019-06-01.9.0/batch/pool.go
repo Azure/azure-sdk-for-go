@@ -172,9 +172,9 @@ func (client PoolClient) AddResponder(resp *http.Response) (result autorest.Resp
 
 // Delete when you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any
 // ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any
-// tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with
-// the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the
-// user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool.
+// Tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with
+// the default requeue option); finally, the pool is removed from the system. Because running Tasks are requeued, the
+// user can rerun these Tasks by updating their Job to target a different pool. The Tasks can then run on the new pool.
 // If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero
 // size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will
 // fail with HTTP status code 409 with error code PoolBeingDeleted.
@@ -935,8 +935,8 @@ func (client PoolClient) GetResponder(resp *http.Response) (result CloudPool, er
 	return
 }
 
-// GetAllLifetimeStatistics statistics are aggregated across all pools that have ever existed in the account, from
-// account creation to the last update time of the statistics. The statistics may not be immediately available. The
+// GetAllLifetimeStatistics statistics are aggregated across all pools that have ever existed in the Account, from
+// Account creation to the last update time of the statistics. The statistics may not be immediately available. The
 // Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
 // Parameters:
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
@@ -1204,7 +1204,7 @@ func (client PoolClient) ListComplete(ctx context.Context, filter string, select
 }
 
 // ListUsageMetrics if you do not specify a $filter clause including a poolId, the response includes all pools that
-// existed in the account in the time range of the returned aggregation intervals. If you do not specify a $filter
+// existed in the Account in the time range of the returned aggregation intervals. If you do not specify a $filter
 // clause including a startTime or endTime these filters default to the start and end times of the last aggregation
 // interval currently available; that is, only the last aggregation interval is returned.
 // Parameters:
@@ -1376,9 +1376,9 @@ func (client PoolClient) ListUsageMetricsComplete(ctx context.Context, startTime
 	return
 }
 
-// Patch this only replaces the pool properties specified in the request. For example, if the pool has a start task
-// associated with it, and a request does not specify a start task element, then the pool keeps the existing start
-// task.
+// Patch this only replaces the pool properties specified in the request. For example, if the pool has a start Task
+// associated with it, and a request does not specify a start Task element, then the pool keeps the existing start
+// Task.
 // Parameters:
 // poolID - the ID of the pool to update.
 // poolPatchParameter - the parameters for the request.
@@ -1928,8 +1928,8 @@ func (client PoolClient) StopResizeResponder(resp *http.Response) (result autore
 }
 
 // UpdateProperties this fully replaces all the updatable properties of the pool. For example, if the pool has a start
-// task associated with it and if start task is not specified with this request, then the Batch service will remove the
-// existing start task.
+// Task associated with it and if start Task is not specified with this request, then the Batch service will remove the
+// existing start Task.
 // Parameters:
 // poolID - the ID of the pool to update.
 // poolUpdatePropertiesParameter - the parameters for the request.

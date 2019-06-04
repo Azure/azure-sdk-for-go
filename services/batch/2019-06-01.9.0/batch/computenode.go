@@ -38,11 +38,11 @@ func NewComputeNodeClient(batchURL string) ComputeNodeClient {
 	return ComputeNodeClient{New(batchURL)}
 }
 
-// AddUser you can add a user account to a node only when it is in the idle or running state.
+// AddUser you can add a user Account to a node only when it is in the idle or running state.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the machine on which you want to create a user account.
-// userParameter - the user account to be created.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the machine on which you want to create a user Account.
+// userParameter - the user Account to be created.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -153,11 +153,11 @@ func (client ComputeNodeClient) AddUserResponder(resp *http.Response) (result au
 	return
 }
 
-// DeleteUser you can delete a user account to a node only when it is in the idle or running state.
+// DeleteUser you can delete a user Account to a node only when it is in the idle or running state.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the machine on which you want to delete a user account.
-// userName - the name of the user account to delete.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the machine on which you want to delete a user Account.
+// userName - the name of the user Account to delete.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -261,10 +261,10 @@ func (client ComputeNodeClient) DeleteUserResponder(resp *http.Response) (result
 	return
 }
 
-// DisableScheduling you can disable task scheduling on a node only if its current scheduling state is enabled.
+// DisableScheduling you can disable Task scheduling on a node only if its current scheduling state is enabled.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node on which you want to disable task scheduling.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the Node on which you want to disable Task scheduling.
 // nodeDisableSchedulingParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -373,10 +373,10 @@ func (client ComputeNodeClient) DisableSchedulingResponder(resp *http.Response) 
 	return
 }
 
-// EnableScheduling you can enable task scheduling on a node only if its current scheduling state is disabled
+// EnableScheduling you can enable Task scheduling on a node only if its current scheduling state is disabled
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node on which you want to enable task scheduling.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the Node on which you want to enable Task scheduling.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -481,8 +481,8 @@ func (client ComputeNodeClient) EnableSchedulingResponder(resp *http.Response) (
 
 // Get sends the get request.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node that you want to get information about.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the Node that you want to get information about.
 // selectParameter - an OData $select clause.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -590,12 +590,12 @@ func (client ComputeNodeClient) GetResponder(resp *http.Response) (result Comput
 	return
 }
 
-// GetRemoteDesktop before you can access a node by using the RDP file, you must create a user account on the node.
+// GetRemoteDesktop before you can access a node by using the RDP file, you must create a user Account on the node.
 // This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual
 // machine configuration, see the GetRemoteLoginSettings API.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node for which you want to get the Remote Desktop Protocol file.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the Node for which you want to get the Remote Desktop Protocol file.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -699,11 +699,11 @@ func (client ComputeNodeClient) GetRemoteDesktopResponder(resp *http.Response) (
 }
 
 // GetRemoteLoginSettings before you can remotely login to a node using the remote login settings, you must create a
-// user account on the node. This API can be invoked only on pools created with the virtual machine configuration
+// user Account on the node. This API can be invoked only on pools created with the virtual machine configuration
 // property. For pools created with a cloud service configuration, see the GetRemoteDesktop API.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node for which to obtain the remote login settings.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the Node for which to obtain the remote login settings.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -976,8 +976,8 @@ func (client ComputeNodeClient) ListComplete(ctx context.Context, poolID string,
 
 // Reboot you can restart a node only if it is in an idle or running state.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node that you want to restart.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the Node that you want to restart.
 // nodeRebootParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1089,8 +1089,8 @@ func (client ComputeNodeClient) RebootResponder(resp *http.Response) (result aut
 // Reimage you can reinstall the operating system on a node only if it is in an idle or running state. This API can be
 // invoked only on pools created with the cloud service configuration property.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node that you want to restart.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the Node that you want to restart.
 // nodeReimageParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1199,13 +1199,13 @@ func (client ComputeNodeClient) ReimageResponder(resp *http.Response) (result au
 	return
 }
 
-// UpdateUser this operation replaces of all the updatable properties of the account. For example, if the expiryTime
+// UpdateUser this operation replaces of all the updatable properties of the Account. For example, if the expiryTime
 // element is not specified, the current value is replaced with the default value, not left unmodified. You can update
-// a user account on a node only when it is in the idle or running state.
+// a user Account on a node only when it is in the idle or running state.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the machine on which you want to update a user account.
-// userName - the name of the user account to update.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the machine on which you want to update a user Account.
+// userName - the name of the user Account to update.
 // nodeUpdateUserParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1316,8 +1316,8 @@ func (client ComputeNodeClient) UpdateUserResponder(resp *http.Response) (result
 // are experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared
 // with Azure support to aid in debugging issues with the Batch service.
 // Parameters:
-// poolID - the ID of the pool that contains the compute node.
-// nodeID - the ID of the compute node from which you want to upload the Azure Batch service log files.
+// poolID - the ID of the pool that contains the Node.
+// nodeID - the ID of the Node from which you want to upload the Azure Batch service log files.
 // uploadBatchServiceLogsConfiguration - the Azure Batch service log files upload configuration.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.

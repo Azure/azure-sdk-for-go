@@ -38,10 +38,10 @@ func NewPoolClient(batchURL string) PoolClient {
 	return PoolClient{New(batchURL)}
 }
 
-// Add when naming pools, avoid including sensitive information such as user names or secret project names. This
+// Add when naming Pools, avoid including sensitive information such as user names or secret project names. This
 // information may appear in telemetry logs accessible to Microsoft Support engineers.
 // Parameters:
-// pool - the pool to be added.
+// pool - the Pool to be added.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -170,16 +170,16 @@ func (client PoolClient) AddResponder(resp *http.Response) (result autorest.Resp
 	return
 }
 
-// Delete when you request that a pool be deleted, the following actions occur: the pool state is set to deleting; any
-// ongoing resize operation on the pool are stopped; the Batch service starts resizing the pool to zero nodes; any
-// tasks running on existing nodes are terminated and requeued (as if a resize pool operation had been requested with
-// the default requeue option); finally, the pool is removed from the system. Because running tasks are requeued, the
-// user can rerun these tasks by updating their job to target a different pool. The tasks can then run on the new pool.
-// If you want to override the requeue behavior, then you should call resize pool explicitly to shrink the pool to zero
-// size before deleting the pool. If you call an Update, Patch or Delete API on a pool in the deleting state, it will
-// fail with HTTP status code 409 with error code PoolBeingDeleted.
+// Delete when you request that a Pool be deleted, the following actions occur: the Pool state is set to deleting; any
+// ongoing resize operation on the Pool are stopped; the Batch service starts resizing the Pool to zero Compute Nodes;
+// any Tasks running on existing Compute Nodes are terminated and requeued (as if a resize Pool operation had been
+// requested with the default requeue option); finally, the Pool is removed from the system. Because running Tasks are
+// requeued, the user can rerun these Tasks by updating their Job to target a different Pool. The Tasks can then run on
+// the new Pool. If you want to override the requeue behavior, then you should call resize Pool explicitly to shrink
+// the Pool to zero size before deleting the Pool. If you call an Update, Patch or Delete API on a Pool in the deleting
+// state, it will fail with HTTP status code 409 with error code PoolBeingDeleted.
 // Parameters:
-// poolID - the ID of the pool to delete.
+// poolID - the ID of the Pool to delete.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -310,7 +310,7 @@ func (client PoolClient) DeleteResponder(resp *http.Response) (result autorest.R
 
 // DisableAutoScale sends the disable auto scale request.
 // Parameters:
-// poolID - the ID of the pool on which to disable automatic scaling.
+// poolID - the ID of the Pool on which to disable automatic scaling.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -412,12 +412,12 @@ func (client PoolClient) DisableAutoScaleResponder(resp *http.Response) (result 
 	return
 }
 
-// EnableAutoScale you cannot enable automatic scaling on a pool if a resize operation is in progress on the pool. If
-// automatic scaling of the pool is currently disabled, you must specify a valid autoscale formula as part of the
-// request. If automatic scaling of the pool is already enabled, you may specify a new autoscale formula and/or a new
-// evaluation interval. You cannot call this API for the same pool more than once every 30 seconds.
+// EnableAutoScale you cannot enable automatic scaling on a Pool if a resize operation is in progress on the Pool. If
+// automatic scaling of the Pool is currently disabled, you must specify a valid autoscale formula as part of the
+// request. If automatic scaling of the Pool is already enabled, you may specify a new autoscale formula and/or a new
+// evaluation interval. You cannot call this API for the same Pool more than once every 30 seconds.
 // Parameters:
-// poolID - the ID of the pool on which to enable automatic scaling.
+// poolID - the ID of the Pool on which to enable automatic scaling.
 // poolEnableAutoScaleParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -550,9 +550,9 @@ func (client PoolClient) EnableAutoScaleResponder(resp *http.Response) (result a
 }
 
 // EvaluateAutoScale this API is primarily for validating an autoscale formula, as it simply returns the result without
-// applying the formula to the pool. The pool must have auto scaling enabled in order to evaluate a formula.
+// applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
 // Parameters:
-// poolID - the ID of the pool on which to evaluate the automatic scaling formula.
+// poolID - the ID of the Pool on which to evaluate the automatic scaling formula.
 // poolEvaluateAutoScaleParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -664,9 +664,9 @@ func (client PoolClient) EvaluateAutoScaleResponder(resp *http.Response) (result
 	return
 }
 
-// Exists gets basic properties of a pool.
+// Exists gets basic properties of a Pool.
 // Parameters:
-// poolID - the ID of the pool to get.
+// poolID - the ID of the Pool to get.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -795,9 +795,9 @@ func (client PoolClient) ExistsResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// Get gets information about the specified pool.
+// Get gets information about the specified Pool.
 // Parameters:
-// poolID - the ID of the pool to get.
+// poolID - the ID of the Pool to get.
 // selectParameter - an OData $select clause.
 // expand - an OData $expand clause.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
@@ -935,8 +935,8 @@ func (client PoolClient) GetResponder(resp *http.Response) (result CloudPool, er
 	return
 }
 
-// GetAllLifetimeStatistics statistics are aggregated across all pools that have ever existed in the account, from
-// account creation to the last update time of the statistics. The statistics may not be immediately available. The
+// GetAllLifetimeStatistics statistics are aggregated across all Pools that have ever existed in the Account, from
+// Account creation to the last update time of the statistics. The statistics may not be immediately available. The
 // Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
 // Parameters:
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
@@ -1043,7 +1043,7 @@ func (client PoolClient) GetAllLifetimeStatisticsResponder(resp *http.Response) 
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-pools.
 // selectParameter - an OData $select clause.
 // expand - an OData $expand clause.
-// maxResults - the maximum number of items to return in the response. A maximum of 1000 pools can be returned.
+// maxResults - the maximum number of items to return in the response. A maximum of 1000 Pools can be returned.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -1203,8 +1203,8 @@ func (client PoolClient) ListComplete(ctx context.Context, filter string, select
 	return
 }
 
-// ListUsageMetrics if you do not specify a $filter clause including a poolId, the response includes all pools that
-// existed in the account in the time range of the returned aggregation intervals. If you do not specify a $filter
+// ListUsageMetrics if you do not specify a $filter clause including a poolId, the response includes all Pools that
+// existed in the Account in the time range of the returned aggregation intervals. If you do not specify a $filter
 // clause including a startTime or endTime these filters default to the start and end times of the last aggregation
 // interval currently available; that is, only the last aggregation interval is returned.
 // Parameters:
@@ -1376,11 +1376,11 @@ func (client PoolClient) ListUsageMetricsComplete(ctx context.Context, startTime
 	return
 }
 
-// Patch this only replaces the pool properties specified in the request. For example, if the pool has a start task
-// associated with it, and a request does not specify a start task element, then the pool keeps the existing start
-// task.
+// Patch this only replaces the Pool properties specified in the request. For example, if the Pool has a start Task
+// associated with it, and a request does not specify a start Task element, then the Pool keeps the existing start
+// Task.
 // Parameters:
-// poolID - the ID of the pool to update.
+// poolID - the ID of the Pool to update.
 // poolPatchParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1512,10 +1512,10 @@ func (client PoolClient) PatchResponder(resp *http.Response) (result autorest.Re
 	return
 }
 
-// RemoveNodes this operation can only run when the allocation state of the pool is steady. When this operation runs,
+// RemoveNodes this operation can only run when the allocation state of the Pool is steady. When this operation runs,
 // the allocation state changes from steady to resizing.
 // Parameters:
-// poolID - the ID of the pool from which you want to remove nodes.
+// poolID - the ID of the Pool from which you want to remove Compute Nodes.
 // nodeRemoveParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1654,13 +1654,13 @@ func (client PoolClient) RemoveNodesResponder(resp *http.Response) (result autor
 	return
 }
 
-// Resize you can only resize a pool when its allocation state is steady. If the pool is already resizing, the request
-// fails with status code 409. When you resize a pool, the pool's allocation state changes from steady to resizing. You
-// cannot resize pools which are configured for automatic scaling. If you try to do this, the Batch service returns an
-// error 409. If you resize a pool downwards, the Batch service chooses which nodes to remove. To remove specific
-// nodes, use the pool remove nodes API instead.
+// Resize you can only resize a Pool when its allocation state is steady. If the Pool is already resizing, the request
+// fails with status code 409. When you resize a Pool, the Pool's allocation state changes from steady to resizing. You
+// cannot resize Pools which are configured for automatic scaling. If you try to do this, the Batch service returns an
+// error 409. If you resize a Pool downwards, the Batch service chooses which Compute Nodes to remove. To remove
+// specific Compute Nodes, use the Pool remove Compute Nodes API instead.
 // Parameters:
-// poolID - the ID of the pool to resize.
+// poolID - the ID of the Pool to resize.
 // poolResizeParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1792,13 +1792,13 @@ func (client PoolClient) ResizeResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// StopResize this does not restore the pool to its previous state before the resize operation: it only stops any
-// further changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the
-// number of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state
-// changes first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this
-// API can also be used to halt the initial sizing of the pool when it is created.
+// StopResize this does not restore the Pool to its previous state before the resize operation: it only stops any
+// further changes being made, and the Pool maintains its current state. After stopping, the Pool stabilizes at the
+// number of Compute Nodes it was at when the stop operation was done. During the stop operation, the Pool allocation
+// state changes first to stopping and then to steady. A resize operation need not be an explicit resize Pool request;
+// this API can also be used to halt the initial sizing of the Pool when it is created.
 // Parameters:
-// poolID - the ID of the pool whose resizing you want to stop.
+// poolID - the ID of the Pool whose resizing you want to stop.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -1927,11 +1927,11 @@ func (client PoolClient) StopResizeResponder(resp *http.Response) (result autore
 	return
 }
 
-// UpdateProperties this fully replaces all the updatable properties of the pool. For example, if the pool has a start
-// task associated with it and if start task is not specified with this request, then the Batch service will remove the
-// existing start task.
+// UpdateProperties this fully replaces all the updatable properties of the Pool. For example, if the Pool has a start
+// Task associated with it and if start Task is not specified with this request, then the Batch service will remove the
+// existing start Task.
 // Parameters:
-// poolID - the ID of the pool to update.
+// poolID - the ID of the Pool to update.
 // poolUpdatePropertiesParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.

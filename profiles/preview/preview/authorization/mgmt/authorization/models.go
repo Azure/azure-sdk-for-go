@@ -59,6 +59,7 @@ type DenyAssignmentListResultPage = original.DenyAssignmentListResultPage
 type DenyAssignmentPermission = original.DenyAssignmentPermission
 type DenyAssignmentProperties = original.DenyAssignmentProperties
 type DenyAssignmentsClient = original.DenyAssignmentsClient
+type ElevateAccessClient = original.ElevateAccessClient
 type Permission = original.Permission
 type PermissionGetResult = original.PermissionGetResult
 type PermissionGetResultIterator = original.PermissionGetResultIterator
@@ -115,6 +116,12 @@ func NewDenyAssignmentsClient(subscriptionID string) DenyAssignmentsClient {
 }
 func NewDenyAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) DenyAssignmentsClient {
 	return original.NewDenyAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewElevateAccessClient(subscriptionID string) ElevateAccessClient {
+	return original.NewElevateAccessClient(subscriptionID)
+}
+func NewElevateAccessClientWithBaseURI(baseURI string, subscriptionID string) ElevateAccessClient {
+	return original.NewElevateAccessClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewPermissionGetResultIterator(page PermissionGetResultPage) PermissionGetResultIterator {
 	return original.NewPermissionGetResultIterator(page)

@@ -40,7 +40,7 @@ func NewJobScheduleClient(batchURL string) JobScheduleClient {
 
 // Add sends the add request.
 // Parameters:
-// cloudJobSchedule - the job schedule to be added.
+// cloudJobSchedule - the Job Schedule to be added.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -211,12 +211,12 @@ func (client JobScheduleClient) AddResponder(resp *http.Response) (result autore
 	return
 }
 
-// Delete when you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are
-// deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is
-// ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are
-// still counted towards account lifetime statistics.
+// Delete when you delete a Job Schedule, this also deletes all Jobs and Tasks under that schedule. When Tasks are
+// deleted, all the files in their working directories on the Compute Nodes are also deleted (the retention period is
+// ignored). The Job Schedule statistics are no longer accessible once the Job Schedule is deleted, though they are
+// still counted towards Account lifetime statistics.
 // Parameters:
-// jobScheduleID - the ID of the job schedule to delete.
+// jobScheduleID - the ID of the Job Schedule to delete.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -345,9 +345,9 @@ func (client JobScheduleClient) DeleteResponder(resp *http.Response) (result aut
 	return
 }
 
-// Disable no new jobs will be created until the job schedule is enabled again.
+// Disable no new Jobs will be created until the Job Schedule is enabled again.
 // Parameters:
-// jobScheduleID - the ID of the job schedule to disable.
+// jobScheduleID - the ID of the Job Schedule to disable.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -478,7 +478,7 @@ func (client JobScheduleClient) DisableResponder(resp *http.Response) (result au
 
 // Enable sends the enable request.
 // Parameters:
-// jobScheduleID - the ID of the job schedule to enable.
+// jobScheduleID - the ID of the Job Schedule to enable.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -609,7 +609,7 @@ func (client JobScheduleClient) EnableResponder(resp *http.Response) (result aut
 
 // Exists sends the exists request.
 // Parameters:
-// jobScheduleID - the ID of the job schedule which you want to check.
+// jobScheduleID - the ID of the Job Schedule which you want to check.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -738,9 +738,9 @@ func (client JobScheduleClient) ExistsResponder(resp *http.Response) (result aut
 	return
 }
 
-// Get gets information about the specified job schedule.
+// Get gets information about the specified Job Schedule.
 // Parameters:
-// jobScheduleID - the ID of the job schedule to get.
+// jobScheduleID - the ID of the Job Schedule to get.
 // selectParameter - an OData $select clause.
 // expand - an OData $expand clause.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
@@ -884,7 +884,7 @@ func (client JobScheduleClient) GetResponder(resp *http.Response) (result CloudJ
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
 // selectParameter - an OData $select clause.
 // expand - an OData $expand clause.
-// maxResults - the maximum number of items to return in the response. A maximum of 1000 job schedules can be
+// maxResults - the maximum number of items to return in the response. A maximum of 1000 Job Schedules can be
 // returned.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1045,12 +1045,12 @@ func (client JobScheduleClient) ListComplete(ctx context.Context, filter string,
 	return
 }
 
-// Patch this replaces only the job schedule properties specified in the request. For example, if the schedule property
-// is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job
-// schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are
+// Patch this replaces only the Job Schedule properties specified in the request. For example, if the schedule property
+// is not specified with this request, then the Batch service will keep the existing schedule. Changes to a Job
+// Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
 // unaffected.
 // Parameters:
-// jobScheduleID - the ID of the job schedule to update.
+// jobScheduleID - the ID of the Job Schedule to update.
 // jobSchedulePatchParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
@@ -1184,7 +1184,7 @@ func (client JobScheduleClient) PatchResponder(resp *http.Response) (result auto
 
 // Terminate sends the terminate request.
 // Parameters:
-// jobScheduleID - the ID of the job schedule to terminates.
+// jobScheduleID - the ID of the Job Schedule to terminates.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.
 // clientRequestID - the caller-generated request identity, in the form of a GUID with no decoration such as
@@ -1313,12 +1313,12 @@ func (client JobScheduleClient) TerminateResponder(resp *http.Response) (result 
 	return
 }
 
-// Update this fully replaces all the updatable properties of the job schedule. For example, if the schedule property
-// is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job
-// schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are
+// Update this fully replaces all the updatable properties of the Job Schedule. For example, if the schedule property
+// is not specified with this request, then the Batch service will remove the existing schedule. Changes to a Job
+// Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
 // unaffected.
 // Parameters:
-// jobScheduleID - the ID of the job schedule to update.
+// jobScheduleID - the ID of the Job Schedule to update.
 // jobScheduleUpdateParameter - the parameters for the request.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30
 // seconds.

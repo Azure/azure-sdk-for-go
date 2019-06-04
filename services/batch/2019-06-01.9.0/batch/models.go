@@ -34,7 +34,7 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/batch/2019-06-01.9.0/ba
 type AccessScope string
 
 const (
-	// Job Grants access to perform all operations on the job containing the task.
+	// Job Grants access to perform all operations on the Job containing the Task.
 	Job AccessScope = "job"
 )
 
@@ -47,13 +47,13 @@ func PossibleAccessScopeValues() []AccessScope {
 type AllocationState string
 
 const (
-	// Resizing The pool is resizing; that is, compute nodes are being added to or removed from the pool.
+	// Resizing The Pool is resizing; that is, Compute Nodes are being added to or removed from the Pool.
 	Resizing AllocationState = "resizing"
-	// Steady The pool is not resizing. There are no changes to the number of nodes in the pool in progress. A
-	// pool enters this state when it is created and when no operations are being performed on the pool to
-	// change the number of nodes.
+	// Steady The Pool is not resizing. There are no changes to the number of Compute Nodes in the Pool in
+	// progress. A Pool enters this state when it is created and when no operations are being performed on the
+	// Pool to change the number of Compute Nodes.
 	Steady AllocationState = "steady"
-	// Stopping The pool was resizing, but the user has requested that the resize be stopped, but the stop
+	// Stopping The Pool was resizing, but the user has requested that the resize be stopped, but the stop
 	// request has not yet been completed.
 	Stopping AllocationState = "stopping"
 )
@@ -67,10 +67,10 @@ func PossibleAllocationStateValues() []AllocationState {
 type AutoUserScope string
 
 const (
-	// Pool Specifies that the task runs as the common auto user account which is created on every node in a
-	// pool.
+	// Pool Specifies that the Task runs as the common auto user Account which is created on every Compute Node
+	// in a Pool.
 	Pool AutoUserScope = "pool"
-	// Task Specifies that the service should create a new user for the task.
+	// Task Specifies that the service should create a new user for the Task.
 	Task AutoUserScope = "task"
 )
 
@@ -100,9 +100,9 @@ func PossibleCachingTypeValues() []CachingType {
 type CertificateFormat string
 
 const (
-	// Cer The certificate is a base64-encoded X.509 certificate.
+	// Cer The Certificate is a base64-encoded X.509 Certificate.
 	Cer CertificateFormat = "cer"
-	// Pfx The certificate is a PFX (PKCS#12) formatted certificate or certificate chain.
+	// Pfx The Certificate is a PFX (PKCS#12) formatted Certificate or Certificate chain.
 	Pfx CertificateFormat = "pfx"
 )
 
@@ -115,16 +115,16 @@ func PossibleCertificateFormatValues() []CertificateFormat {
 type CertificateState string
 
 const (
-	// Active The certificate is available for use in pools.
+	// Active The Certificate is available for use in Pools.
 	Active CertificateState = "active"
-	// DeleteFailed The user requested that the certificate be deleted, but there are pools that still have
-	// references to the certificate, or it is still installed on one or more compute nodes. (The latter can
-	// occur if the certificate has been removed from the pool, but the node has not yet restarted. Nodes
-	// refresh their certificates only when they restart.) You may use the cancel certificate delete operation
-	// to cancel the delete, or the delete certificate operation to retry the delete.
+	// DeleteFailed The user requested that the Certificate be deleted, but there are Pools that still have
+	// references to the Certificate, or it is still installed on one or more Nodes. (The latter can occur if
+	// the Certificate has been removed from the Pool, but the Compute Node has not yet restarted. Compute
+	// Nodes refresh their Certificates only when they restart.) You may use the cancel Certificate delete
+	// operation to cancel the delete, or the delete Certificate operation to retry the delete.
 	DeleteFailed CertificateState = "deletefailed"
-	// Deleting The user has requested that the certificate be deleted, but the delete operation has not yet
-	// completed. You may not reference the certificate when creating or updating pools.
+	// Deleting The user has requested that the Certificate be deleted, but the delete operation has not yet
+	// completed. You may not reference the Certificate when creating or updating Pools.
 	Deleting CertificateState = "deleting"
 )
 
@@ -137,9 +137,9 @@ func PossibleCertificateStateValues() []CertificateState {
 type CertificateStoreLocation string
 
 const (
-	// CurrentUser Certificates should be installed to the CurrentUser certificate store.
+	// CurrentUser Certificates should be installed to the CurrentUser Certificate store.
 	CurrentUser CertificateStoreLocation = "currentuser"
-	// LocalMachine Certificates should be installed to the LocalMachine certificate store.
+	// LocalMachine Certificates should be installed to the LocalMachine Certificate store.
 	LocalMachine CertificateStoreLocation = "localmachine"
 )
 
@@ -152,13 +152,13 @@ func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
 type CertificateVisibility string
 
 const (
-	// CertificateVisibilityRemoteUser The certificate should be visible to the user accounts under which users
-	// remotely access the node.
+	// CertificateVisibilityRemoteUser The Certificate should be visible to the user Accounts under which users
+	// remotely access the Compute Node.
 	CertificateVisibilityRemoteUser CertificateVisibility = "remoteuser"
-	// CertificateVisibilityStartTask The certificate should be visible to the user account under which the
-	// start task is run.
+	// CertificateVisibilityStartTask The Certificate should be visible to the user Account under which the
+	// start Task is run.
 	CertificateVisibilityStartTask CertificateVisibility = "starttask"
-	// CertificateVisibilityTask The certificate should be visible to the user accounts under which job tasks
+	// CertificateVisibilityTask The Certificate should be visible to the user Accounts under which Job Tasks
 	// are run.
 	CertificateVisibilityTask CertificateVisibility = "task"
 )
@@ -172,17 +172,18 @@ func PossibleCertificateVisibilityValues() []CertificateVisibility {
 type ComputeNodeDeallocationOption string
 
 const (
-	// Requeue Terminate running task processes and requeue the tasks. The tasks will run again when a node is
-	// available. Remove nodes as soon as tasks have been terminated.
+	// Requeue Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute
+	// Node is available. Remove Compute Nodes as soon as Tasks have been terminated.
 	Requeue ComputeNodeDeallocationOption = "requeue"
-	// RetainedData Allow currently running tasks to complete, then wait for all task data retention periods to
-	// expire. Schedule no new tasks while waiting. Remove nodes when all task retention periods have expired.
+	// RetainedData Allow currently running Tasks to complete, then wait for all Task data retention periods to
+	// expire. Schedule no new Tasks while waiting. Remove Compute Nodes when all Task retention periods have
+	// expired.
 	RetainedData ComputeNodeDeallocationOption = "retaineddata"
-	// TaskCompletion Allow currently running tasks to complete. Schedule no new tasks while waiting. Remove
-	// nodes when all tasks have completed.
+	// TaskCompletion Allow currently running Tasks to complete. Schedule no new Tasks while waiting. Remove
+	// Compute Nodes when all Tasks have completed.
 	TaskCompletion ComputeNodeDeallocationOption = "taskcompletion"
-	// Terminate Terminate running tasks. The tasks will be completed with failureInfo indicating that they
-	// were terminated, and will not run again. Remove nodes as soon as tasks have been terminated.
+	// Terminate Terminate running Tasks. The Tasks will be completed with failureInfo indicating that they
+	// were terminated, and will not run again. Remove Compute Nodes as soon as Tasks have been terminated.
 	Terminate ComputeNodeDeallocationOption = "terminate"
 )
 
@@ -195,10 +196,10 @@ func PossibleComputeNodeDeallocationOptionValues() []ComputeNodeDeallocationOpti
 type ComputeNodeFillType string
 
 const (
-	// Pack As many tasks as possible (maxTasksPerNode) should be assigned to each node in the pool before any
-	// tasks are assigned to the next node in the pool.
+	// Pack As many Tasks as possible (maxTasksPerNode) should be assigned to each Compute Node in the Pool
+	// before any Tasks are assigned to the next Compute Node in the Pool.
 	Pack ComputeNodeFillType = "pack"
-	// Spread Tasks should be assigned evenly across all nodes in the pool.
+	// Spread Tasks should be assigned evenly across all Compute Nodes in the Pool.
 	Spread ComputeNodeFillType = "spread"
 )
 
@@ -211,19 +212,20 @@ func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
 type ComputeNodeRebootOption string
 
 const (
-	// ComputeNodeRebootOptionRequeue Terminate running task processes and requeue the tasks. The tasks will
-	// run again when a node is available. Restart the node as soon as tasks have been terminated.
+	// ComputeNodeRebootOptionRequeue Terminate running Task processes and requeue the Tasks. The Tasks will
+	// run again when a Compute Node is available. Restart the Compute Node as soon as Tasks have been
+	// terminated.
 	ComputeNodeRebootOptionRequeue ComputeNodeRebootOption = "requeue"
-	// ComputeNodeRebootOptionRetainedData Allow currently running tasks to complete, then wait for all task
-	// data retention periods to expire. Schedule no new tasks while waiting. Restart the node when all task
-	// retention periods have expired.
+	// ComputeNodeRebootOptionRetainedData Allow currently running Tasks to complete, then wait for all Task
+	// data retention periods to expire. Schedule no new Tasks while waiting. Restart the Compute Node when all
+	// Task retention periods have expired.
 	ComputeNodeRebootOptionRetainedData ComputeNodeRebootOption = "retaineddata"
-	// ComputeNodeRebootOptionTaskCompletion Allow currently running tasks to complete. Schedule no new tasks
-	// while waiting. Restart the node when all tasks have completed.
+	// ComputeNodeRebootOptionTaskCompletion Allow currently running Tasks to complete. Schedule no new Tasks
+	// while waiting. Restart the Compute Node when all Tasks have completed.
 	ComputeNodeRebootOptionTaskCompletion ComputeNodeRebootOption = "taskcompletion"
-	// ComputeNodeRebootOptionTerminate Terminate running tasks. The tasks will be completed with failureInfo
-	// indicating that they were terminated, and will not run again. Restart the node as soon as tasks have
-	// been terminated.
+	// ComputeNodeRebootOptionTerminate Terminate running Tasks. The Tasks will be completed with failureInfo
+	// indicating that they were terminated, and will not run again. Restart the Compute Node as soon as Tasks
+	// have been terminated.
 	ComputeNodeRebootOptionTerminate ComputeNodeRebootOption = "terminate"
 )
 
@@ -236,19 +238,20 @@ func PossibleComputeNodeRebootOptionValues() []ComputeNodeRebootOption {
 type ComputeNodeReimageOption string
 
 const (
-	// ComputeNodeReimageOptionRequeue Terminate running task processes and requeue the tasks. The tasks will
-	// run again when a node is available. Reimage the node as soon as tasks have been terminated.
+	// ComputeNodeReimageOptionRequeue Terminate running Task processes and requeue the Tasks. The Tasks will
+	// run again when a Compute Node is available. Reimage the Compute Node as soon as Tasks have been
+	// terminated.
 	ComputeNodeReimageOptionRequeue ComputeNodeReimageOption = "requeue"
-	// ComputeNodeReimageOptionRetainedData Allow currently running tasks to complete, then wait for all task
-	// data retention periods to expire. Schedule no new tasks while waiting. Reimage the node when all task
-	// retention periods have expired.
+	// ComputeNodeReimageOptionRetainedData Allow currently running Tasks to complete, then wait for all Task
+	// data retention periods to expire. Schedule no new Tasks while waiting. Reimage the Compute Node when all
+	// Task retention periods have expired.
 	ComputeNodeReimageOptionRetainedData ComputeNodeReimageOption = "retaineddata"
-	// ComputeNodeReimageOptionTaskCompletion Allow currently running tasks to complete. Schedule no new tasks
-	// while waiting. Reimage the node when all tasks have completed.
+	// ComputeNodeReimageOptionTaskCompletion Allow currently running Tasks to complete. Schedule no new Tasks
+	// while waiting. Reimage the Compute Node when all Tasks have completed.
 	ComputeNodeReimageOptionTaskCompletion ComputeNodeReimageOption = "taskcompletion"
-	// ComputeNodeReimageOptionTerminate Terminate running tasks. The tasks will be completed with failureInfo
-	// indicating that they were terminated, and will not run again. Reimage the node as soon as tasks have
-	// been terminated.
+	// ComputeNodeReimageOptionTerminate Terminate running Tasks. The Tasks will be completed with failureInfo
+	// indicating that they were terminated, and will not run again. Reimage the Compute Node as soon as Tasks
+	// have been terminated.
 	ComputeNodeReimageOptionTerminate ComputeNodeReimageOption = "terminate"
 )
 
@@ -262,35 +265,36 @@ type ComputeNodeState string
 
 const (
 	// Creating The Batch service has obtained the underlying virtual machine from Azure Compute, but it has
-	// not yet started to join the pool.
+	// not yet started to join the Pool.
 	Creating ComputeNodeState = "creating"
-	// Idle The node is not currently running a task.
+	// Idle The Compute Node is not currently running a Task.
 	Idle ComputeNodeState = "idle"
-	// LeavingPool The node is leaving the pool, either because the user explicitly removed it or because the
-	// pool is resizing or autoscaling down.
+	// LeavingPool The Compute Node is leaving the Pool, either because the user explicitly removed it or
+	// because the Pool is resizing or autoscaling down.
 	LeavingPool ComputeNodeState = "leavingpool"
-	// Offline The node is not currently running a task, and scheduling of new tasks to the node is disabled.
+	// Offline The Compute Node is not currently running a Task, and scheduling of new Tasks to the Compute
+	// Node is disabled.
 	Offline ComputeNodeState = "offline"
-	// Preempted The low-priority node has been preempted. Tasks which were running on the node when it was
-	// preempted will be rescheduled when another node becomes available.
+	// Preempted The low-priority Compute Node has been preempted. Tasks which were running on the Compute Node
+	// when it was preempted will be rescheduled when another Compute Node becomes available.
 	Preempted ComputeNodeState = "preempted"
-	// Rebooting The node is rebooting.
+	// Rebooting The Compute Node is rebooting.
 	Rebooting ComputeNodeState = "rebooting"
-	// Reimaging The node is reimaging.
+	// Reimaging The Compute Node is reimaging.
 	Reimaging ComputeNodeState = "reimaging"
-	// Running The node is running one or more tasks (other than a start task).
+	// Running The Compute Node is running one or more Tasks (other than a start task).
 	Running ComputeNodeState = "running"
 	// Starting The Batch service is starting on the underlying virtual machine.
 	Starting ComputeNodeState = "starting"
-	// StartTaskFailed The start task has failed on the compute node (and exhausted all retries), and
-	// waitForSuccess is set. The node is not usable for running tasks.
+	// StartTaskFailed The start Task has failed on the Compute Node (and exhausted all retries), and
+	// waitForSuccess is set. The Compute Node is not usable for running Tasks.
 	StartTaskFailed ComputeNodeState = "starttaskfailed"
-	// Unknown The Batch service has lost contact with the node, and does not know its true state.
+	// Unknown The Batch service has lost contact with the Compute Node, and does not know its true state.
 	Unknown ComputeNodeState = "unknown"
-	// Unusable The node cannot be used for task execution due to errors.
+	// Unusable The Compute Node cannot be used for Task execution due to errors.
 	Unusable ComputeNodeState = "unusable"
-	// WaitingForStartTask The start task has started running on the compute node, but waitForSuccess is set
-	// and the start task has not yet completed.
+	// WaitingForStartTask The start Task has started running on the Compute Node, but waitForSuccess is set
+	// and the start Task has not yet completed.
 	WaitingForStartTask ComputeNodeState = "waitingforstarttask"
 )
 
@@ -303,10 +307,10 @@ func PossibleComputeNodeStateValues() []ComputeNodeState {
 type ContainerWorkingDirectory string
 
 const (
-	// ContainerImageDefault Use the working directory defined in the container image. Beware that this
+	// ContainerImageDefault Use the working directory defined in the container Image. Beware that this
 	// directory will not contain the Resource Files downloaded by Batch.
 	ContainerImageDefault ContainerWorkingDirectory = "containerImageDefault"
-	// TaskWorkingDirectory Use the standard Batch service task working directory, which will contain the Task
+	// TaskWorkingDirectory Use the standard Batch service Task working directory, which will contain the Task
 	// Resource Files populated by Batch.
 	TaskWorkingDirectory ContainerWorkingDirectory = "taskWorkingDirectory"
 )
@@ -320,9 +324,9 @@ func PossibleContainerWorkingDirectoryValues() []ContainerWorkingDirectory {
 type DependencyAction string
 
 const (
-	// Block Block the task's dependencies.
+	// Block Block the Task's dependencies.
 	Block DependencyAction = "block"
-	// Satisfy Satisfy the task's dependencies.
+	// Satisfy Satisfy the Task's dependencies.
 	Satisfy DependencyAction = "satisfy"
 )
 
@@ -335,16 +339,16 @@ func PossibleDependencyActionValues() []DependencyAction {
 type DisableComputeNodeSchedulingOption string
 
 const (
-	// DisableComputeNodeSchedulingOptionRequeue Terminate running task processes and requeue the tasks. The
-	// tasks may run again on other compute nodes, or when task scheduling is re-enabled on this node. Enter
-	// offline state as soon as tasks have been terminated.
+	// DisableComputeNodeSchedulingOptionRequeue Terminate running Task processes and requeue the Tasks. The
+	// Tasks may run again on other Compute Nodes, or when Task scheduling is re-enabled on this Compute Node.
+	// Enter offline state as soon as Tasks have been terminated.
 	DisableComputeNodeSchedulingOptionRequeue DisableComputeNodeSchedulingOption = "requeue"
-	// DisableComputeNodeSchedulingOptionTaskCompletion Allow currently running tasks to complete. Schedule no
-	// new tasks while waiting. Enter offline state when all tasks have completed.
+	// DisableComputeNodeSchedulingOptionTaskCompletion Allow currently running Tasks to complete. Schedule no
+	// new Tasks while waiting. Enter offline state when all Tasks have completed.
 	DisableComputeNodeSchedulingOptionTaskCompletion DisableComputeNodeSchedulingOption = "taskcompletion"
-	// DisableComputeNodeSchedulingOptionTerminate Terminate running tasks. The tasks will be completed with
+	// DisableComputeNodeSchedulingOptionTerminate Terminate running Tasks. The Tasks will be completed with
 	// failureInfo indicating that they were terminated, and will not run again. Enter offline state as soon as
-	// tasks have been terminated.
+	// Tasks have been terminated.
 	DisableComputeNodeSchedulingOptionTerminate DisableComputeNodeSchedulingOption = "terminate"
 )
 
@@ -357,13 +361,13 @@ func PossibleDisableComputeNodeSchedulingOptionValues() []DisableComputeNodeSche
 type DisableJobOption string
 
 const (
-	// DisableJobOptionRequeue Terminate running tasks and requeue them. The tasks will run again when the job
+	// DisableJobOptionRequeue Terminate running Tasks and requeue them. The Tasks will run again when the Job
 	// is enabled.
 	DisableJobOptionRequeue DisableJobOption = "requeue"
-	// DisableJobOptionTerminate Terminate running tasks. The tasks will be completed with failureInfo
+	// DisableJobOptionTerminate Terminate running Tasks. The Tasks will be completed with failureInfo
 	// indicating that they were terminated, and will not run again.
 	DisableJobOptionTerminate DisableJobOption = "terminate"
-	// DisableJobOptionWait Allow currently running tasks to complete.
+	// DisableJobOptionWait Allow currently running Tasks to complete.
 	DisableJobOptionWait DisableJobOption = "wait"
 )
 
@@ -436,12 +440,12 @@ func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
 type JobAction string
 
 const (
-	// JobActionDisable Disable the job. This is equivalent to calling the disable job API, with a disableTasks
+	// JobActionDisable Disable the Job. This is equivalent to calling the disable Job API, with a disableTasks
 	// value of requeue.
 	JobActionDisable JobAction = "disable"
 	// JobActionNone Take no action.
 	JobActionNone JobAction = "none"
-	// JobActionTerminate Terminate the job. The terminateReason in the job's executionInfo is set to
+	// JobActionTerminate Terminate the Job. The terminateReason in the Job's executionInfo is set to
 	// "TaskFailed".
 	JobActionTerminate JobAction = "terminate"
 )
@@ -455,11 +459,11 @@ func PossibleJobActionValues() []JobAction {
 type JobPreparationTaskState string
 
 const (
-	// JobPreparationTaskStateCompleted The task has exited with exit code 0, or the task has exhausted its
-	// retry limit, or the Batch service was unable to start the task due to task preparation errors (such as
+	// JobPreparationTaskStateCompleted The Task has exited with exit code 0, or the Task has exhausted its
+	// retry limit, or the Batch service was unable to start the Task due to Task preparation errors (such as
 	// resource file download failures).
 	JobPreparationTaskStateCompleted JobPreparationTaskState = "completed"
-	// JobPreparationTaskStateRunning The task is currently running (including retrying).
+	// JobPreparationTaskStateRunning The Task is currently running (including retrying).
 	JobPreparationTaskStateRunning JobPreparationTaskState = "running"
 )
 
@@ -472,11 +476,11 @@ func PossibleJobPreparationTaskStateValues() []JobPreparationTaskState {
 type JobReleaseTaskState string
 
 const (
-	// JobReleaseTaskStateCompleted The task has exited with exit code 0, or the task has exhausted its retry
-	// limit, or the Batch service was unable to start the task due to task preparation errors (such as
+	// JobReleaseTaskStateCompleted The Task has exited with exit code 0, or the Task has exhausted its retry
+	// limit, or the Batch service was unable to start the Task due to Task preparation errors (such as
 	// resource file download failures).
 	JobReleaseTaskStateCompleted JobReleaseTaskState = "completed"
-	// JobReleaseTaskStateRunning The task is currently running (including retrying).
+	// JobReleaseTaskStateRunning The Task is currently running (including retrying).
 	JobReleaseTaskStateRunning JobReleaseTaskState = "running"
 )
 
@@ -489,22 +493,22 @@ func PossibleJobReleaseTaskStateValues() []JobReleaseTaskState {
 type JobScheduleState string
 
 const (
-	// JobScheduleStateActive The job schedule is active and will create jobs as per its schedule.
+	// JobScheduleStateActive The Job Schedule is active and will create Jobs as per its schedule.
 	JobScheduleStateActive JobScheduleState = "active"
-	// JobScheduleStateCompleted The schedule has terminated, either by reaching its end time or by the user
-	// terminating it explicitly.
+	// JobScheduleStateCompleted The Job Schedule has terminated, either by reaching its end time or by the
+	// user terminating it explicitly.
 	JobScheduleStateCompleted JobScheduleState = "completed"
-	// JobScheduleStateDeleting The user has requested that the schedule be deleted, but the delete operation
-	// is still in progress. The scheduler will not initiate any new jobs for this schedule, and will delete
-	// any existing jobs and tasks under the schedule, including any active job. The schedule will be deleted
-	// when all jobs and tasks under the schedule have been deleted.
+	// JobScheduleStateDeleting The user has requested that the Job Schedule be deleted, but the delete
+	// operation is still in progress. The scheduler will not initiate any new Jobs for this Job Schedule, and
+	// will delete any existing Jobs and Tasks under the Job Schedule, including any active Job. The Job
+	// Schedule will be deleted when all Jobs and Tasks under the Job Schedule have been deleted.
 	JobScheduleStateDeleting JobScheduleState = "deleting"
-	// JobScheduleStateDisabled The user has disabled the schedule. The scheduler will not initiate any new
-	// jobs will on this schedule, but any existing active job will continue to run.
+	// JobScheduleStateDisabled The user has disabled the Job Schedule. The scheduler will not initiate any new
+	// Jobs will on this schedule, but any existing active Job will continue to run.
 	JobScheduleStateDisabled JobScheduleState = "disabled"
-	// JobScheduleStateTerminating The schedule has no more work to do, or has been explicitly terminated by
-	// the user, but the termination operation is still in progress. The scheduler will not initiate any new
-	// jobs for this schedule, nor is any existing job active.
+	// JobScheduleStateTerminating The Job Schedule has no more work to do, or has been explicitly terminated
+	// by the user, but the termination operation is still in progress. The scheduler will not initiate any new
+	// Jobs for this Job Schedule, nor is any existing Job active.
 	JobScheduleStateTerminating JobScheduleState = "terminating"
 )
 
@@ -517,25 +521,25 @@ func PossibleJobScheduleStateValues() []JobScheduleState {
 type JobState string
 
 const (
-	// JobStateActive The job is available to have tasks scheduled.
+	// JobStateActive The Job is available to have Tasks scheduled.
 	JobStateActive JobState = "active"
-	// JobStateCompleted All tasks have terminated, and the system will not accept any more tasks or any
-	// further changes to the job.
+	// JobStateCompleted All Tasks have terminated, and the system will not accept any more Tasks or any
+	// further changes to the Job.
 	JobStateCompleted JobState = "completed"
-	// JobStateDeleting A user has requested that the job be deleted, but the delete operation is still in
-	// progress (for example, because the system is still terminating running tasks).
+	// JobStateDeleting A user has requested that the Job be deleted, but the delete operation is still in
+	// progress (for example, because the system is still terminating running Tasks).
 	JobStateDeleting JobState = "deleting"
-	// JobStateDisabled A user has disabled the job. No tasks are running, and no new tasks will be scheduled.
+	// JobStateDisabled A user has disabled the Job. No Tasks are running, and no new Tasks will be scheduled.
 	JobStateDisabled JobState = "disabled"
-	// JobStateDisabling A user has requested that the job be disabled, but the disable operation is still in
-	// progress (for example, waiting for tasks to terminate).
+	// JobStateDisabling A user has requested that the Job be disabled, but the disable operation is still in
+	// progress (for example, waiting for Tasks to terminate).
 	JobStateDisabling JobState = "disabling"
-	// JobStateEnabling A user has requested that the job be enabled, but the enable operation is still in
+	// JobStateEnabling A user has requested that the Job be enabled, but the enable operation is still in
 	// progress.
 	JobStateEnabling JobState = "enabling"
-	// JobStateTerminating The job is about to complete, either because a Job Manager task has completed or
-	// because the user has terminated the job, but the terminate operation is still in progress (for example,
-	// because Job Release tasks are running).
+	// JobStateTerminating The Job is about to complete, either because a Job Manager Task has completed or
+	// because the user has terminated the Job, but the terminate operation is still in progress (for example,
+	// because Job Release Tasks are running).
 	JobStateTerminating JobState = "terminating"
 )
 
@@ -552,9 +556,9 @@ const (
 	// parallel processes.
 	Batch LoginMode = "batch"
 	// Interactive The LOGON32_LOGON_INTERACTIVE Win32 login mode. UAC is enabled on Windows
-	// VirtualMachineConfiguration pools. If this option is used with an elevated user identity in a Windows
-	// VirtualMachineConfiguration pool, the user session will not be elevated unless the application executed
-	// by the task command line is configured to always require administrative privilege or to always require
+	// VirtualMachineConfiguration Pools. If this option is used with an elevated user identity in a Windows
+	// VirtualMachineConfiguration Pool, the user session will not be elevated unless the application executed
+	// by the Task command line is configured to always require administrative privilege or to always require
 	// maximum privilege.
 	Interactive LoginMode = "interactive"
 )
@@ -583,9 +587,9 @@ func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAc
 type OnAllTasksComplete string
 
 const (
-	// NoAction Do nothing. The job remains active unless terminated or disabled by some other means.
+	// NoAction Do nothing. The Job remains active unless terminated or disabled by some other means.
 	NoAction OnAllTasksComplete = "noaction"
-	// TerminateJob Terminate the job. The job's terminateReason is set to 'AllTasksComplete'.
+	// TerminateJob Terminate the Job. The Job's terminateReason is set to 'AllTasksComplete'.
 	TerminateJob OnAllTasksComplete = "terminatejob"
 )
 
@@ -598,12 +602,12 @@ func PossibleOnAllTasksCompleteValues() []OnAllTasksComplete {
 type OnTaskFailure string
 
 const (
-	// OnTaskFailureNoAction Do nothing. The job remains active unless terminated or disabled by some other
+	// OnTaskFailureNoAction Do nothing. The Job remains active unless terminated or disabled by some other
 	// means.
 	OnTaskFailureNoAction OnTaskFailure = "noaction"
-	// OnTaskFailurePerformExitOptionsJobAction Take the action associated with the task exit condition in the
-	// task's exitConditions collection. (This may still result in no action being taken, if that is what the
-	// task specifies.)
+	// OnTaskFailurePerformExitOptionsJobAction Take the action associated with the Task exit condition in the
+	// Task's exitConditions collection. (This may still result in no action being taken, if that is what the
+	// Task specifies.)
 	OnTaskFailurePerformExitOptionsJobAction OnTaskFailure = "performexitoptionsjobaction"
 )
 
@@ -631,13 +635,13 @@ func PossibleOSTypeValues() []OSType {
 type OutputFileUploadCondition string
 
 const (
-	// OutputFileUploadConditionTaskCompletion Upload the file(s) after the task process exits, no matter what
+	// OutputFileUploadConditionTaskCompletion Upload the file(s) after the Task process exits, no matter what
 	// the exit code was.
 	OutputFileUploadConditionTaskCompletion OutputFileUploadCondition = "taskcompletion"
-	// OutputFileUploadConditionTaskFailure Upload the file(s) only after the task process exits with a nonzero
+	// OutputFileUploadConditionTaskFailure Upload the file(s) only after the Task process exits with a nonzero
 	// exit code.
 	OutputFileUploadConditionTaskFailure OutputFileUploadCondition = "taskfailure"
-	// OutputFileUploadConditionTaskSuccess Upload the file(s) only after the task process exits with an exit
+	// OutputFileUploadConditionTaskSuccess Upload the file(s) only after the Task process exits with an exit
 	// code of 0.
 	OutputFileUploadConditionTaskSuccess OutputFileUploadCondition = "tasksuccess"
 )
@@ -651,13 +655,13 @@ func PossibleOutputFileUploadConditionValues() []OutputFileUploadCondition {
 type PoolLifetimeOption string
 
 const (
-	// PoolLifetimeOptionJob The pool exists for the lifetime of the job to which it is dedicated. The Batch
-	// service creates the pool when it creates the job. If the 'job' option is applied to a job schedule, the
-	// Batch service creates a new auto pool for every job created on the schedule.
+	// PoolLifetimeOptionJob The Pool exists for the lifetime of the Job to which it is dedicated. The Batch
+	// service creates the Pool when it creates the Job. If the 'job' option is applied to a Job Schedule, the
+	// Batch service creates a new auto Pool for every Job created on the schedule.
 	PoolLifetimeOptionJob PoolLifetimeOption = "job"
-	// PoolLifetimeOptionJobSchedule The pool exists for the lifetime of the job schedule. The Batch Service
-	// creates the pool when it creates the first job on the schedule. You may apply this option only to job
-	// schedules, not to jobs.
+	// PoolLifetimeOptionJobSchedule The Pool exists for the lifetime of the Job Schedule. The Batch Service
+	// creates the Pool when it creates the first Job on the schedule. You may apply this option only to Job
+	// Schedules, not to Jobs.
 	PoolLifetimeOptionJobSchedule PoolLifetimeOption = "jobschedule"
 )
 
@@ -670,9 +674,9 @@ func PossiblePoolLifetimeOptionValues() []PoolLifetimeOption {
 type PoolState string
 
 const (
-	// PoolStateActive The pool is available to run tasks subject to the availability of compute nodes.
+	// PoolStateActive The Pool is available to run Tasks subject to the availability of Compute Nodes.
 	PoolStateActive PoolState = "active"
-	// PoolStateDeleting The user has requested that the pool be deleted, but the delete operation has not yet
+	// PoolStateDeleting The user has requested that the Pool be deleted, but the delete operation has not yet
 	// completed.
 	PoolStateDeleting PoolState = "deleting"
 )
@@ -686,10 +690,10 @@ func PossiblePoolStateValues() []PoolState {
 type SchedulingState string
 
 const (
-	// Disabled No new tasks will be scheduled on the node. Tasks already running on the node may still run to
-	// completion. All nodes start with scheduling enabled.
+	// Disabled No new Tasks will be scheduled on the Compute Node. Tasks already running on the Compute Node
+	// may still run to completion. All Compute Nodes start with scheduling enabled.
 	Disabled SchedulingState = "disabled"
-	// Enabled Tasks can be scheduled on the node.
+	// Enabled Tasks can be scheduled on the Compute Node.
 	Enabled SchedulingState = "enabled"
 )
 
@@ -702,11 +706,11 @@ func PossibleSchedulingStateValues() []SchedulingState {
 type StartTaskState string
 
 const (
-	// StartTaskStateCompleted The start task has exited with exit code 0, or the start task has failed and the
-	// retry limit has reached, or the start task process did not run due to task preparation errors (such as
+	// StartTaskStateCompleted The start Task has exited with exit code 0, or the start Task has failed and the
+	// retry limit has reached, or the start Task process did not run due to Task preparation errors (such as
 	// resource file download failures).
 	StartTaskStateCompleted StartTaskState = "completed"
-	// StartTaskStateRunning The start task is currently running.
+	// StartTaskStateRunning The start Task is currently running.
 	StartTaskStateRunning StartTaskState = "running"
 )
 
@@ -734,18 +738,18 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 type SubtaskState string
 
 const (
-	// SubtaskStateCompleted The task is no longer eligible to run, usually because the task has finished
-	// successfully, or the task has finished unsuccessfully and has exhausted its retry limit. A task is also
-	// marked as completed if an error occurred launching the task, or when the task has been terminated.
+	// SubtaskStateCompleted The Task is no longer eligible to run, usually because the Task has finished
+	// successfully, or the Task has finished unsuccessfully and has exhausted its retry limit. A Task is also
+	// marked as completed if an error occurred launching the Task, or when the Task has been terminated.
 	SubtaskStateCompleted SubtaskState = "completed"
-	// SubtaskStatePreparing The task has been assigned to a compute node, but is waiting for a required Job
-	// Preparation task to complete on the node. If the Job Preparation task succeeds, the task will move to
-	// running. If the Job Preparation task fails, the task will return to active and will be eligible to be
-	// assigned to a different node.
+	// SubtaskStatePreparing The Task has been assigned to a Compute Node, but is waiting for a required Job
+	// Preparation Task to complete on the Compute Node. If the Job Preparation Task succeeds, the Task will
+	// move to running. If the Job Preparation Task fails, the Task will return to active and will be eligible
+	// to be assigned to a different Compute Node.
 	SubtaskStatePreparing SubtaskState = "preparing"
-	// SubtaskStateRunning The task is running on a compute node. This includes task-level preparation such as
-	// downloading resource files or deploying application packages specified on the task - it does not
-	// necessarily mean that the task command line has started executing.
+	// SubtaskStateRunning The Task is running on a Compute Node. This includes task-level preparation such as
+	// downloading resource files or deploying Packages specified on the Task - it does not necessarily mean
+	// that the Task command line has started executing.
 	SubtaskStateRunning SubtaskState = "running"
 )
 
@@ -758,13 +762,13 @@ func PossibleSubtaskStateValues() []SubtaskState {
 type TaskAddStatus string
 
 const (
-	// TaskAddStatusClientError The task failed to add due to a client error and should not be retried without
+	// TaskAddStatusClientError The Task failed to add due to a client error and should not be retried without
 	// modifying the request as appropriate.
 	TaskAddStatusClientError TaskAddStatus = "clienterror"
 	// TaskAddStatusServerError Task failed to add due to a server error and can be retried without
 	// modification.
 	TaskAddStatusServerError TaskAddStatus = "servererror"
-	// TaskAddStatusSuccess The task was added successfully.
+	// TaskAddStatusSuccess The Task was added successfully.
 	TaskAddStatusSuccess TaskAddStatus = "success"
 )
 
@@ -777,10 +781,10 @@ func PossibleTaskAddStatusValues() []TaskAddStatus {
 type TaskExecutionResult string
 
 const (
-	// Failure There was an error during processing of the task. The failure may have occurred before the task
-	// process was launched, while the task process was executing, or after the task process exited.
+	// Failure There was an error during processing of the Task. The failure may have occurred before the Task
+	// process was launched, while the Task process was executing, or after the Task process exited.
 	Failure TaskExecutionResult = "failure"
-	// Success The task ran successfully.
+	// Success The Task ran successfully.
 	Success TaskExecutionResult = "success"
 )
 
@@ -793,22 +797,22 @@ func PossibleTaskExecutionResultValues() []TaskExecutionResult {
 type TaskState string
 
 const (
-	// TaskStateActive The task is queued and able to run, but is not currently assigned to a compute node. A
-	// task enters this state when it is created, when it is enabled after being disabled, or when it is
+	// TaskStateActive The Task is queued and able to run, but is not currently assigned to a Compute Node. A
+	// Task enters this state when it is created, when it is enabled after being disabled, or when it is
 	// awaiting a retry after a failed run.
 	TaskStateActive TaskState = "active"
-	// TaskStateCompleted The task is no longer eligible to run, usually because the task has finished
-	// successfully, or the task has finished unsuccessfully and has exhausted its retry limit. A task is also
-	// marked as completed if an error occurred launching the task, or when the task has been terminated.
+	// TaskStateCompleted The Task is no longer eligible to run, usually because the Task has finished
+	// successfully, or the Task has finished unsuccessfully and has exhausted its retry limit. A Task is also
+	// marked as completed if an error occurred launching the Task, or when the Task has been terminated.
 	TaskStateCompleted TaskState = "completed"
-	// TaskStatePreparing The task has been assigned to a compute node, but is waiting for a required Job
-	// Preparation task to complete on the node. If the Job Preparation task succeeds, the task will move to
-	// running. If the Job Preparation task fails, the task will return to active and will be eligible to be
-	// assigned to a different node.
+	// TaskStatePreparing The Task has been assigned to a Compute Node, but is waiting for a required Job
+	// Preparation Task to complete on the Compute Node. If the Job Preparation Task succeeds, the Task will
+	// move to running. If the Job Preparation Task fails, the Task will return to active and will be eligible
+	// to be assigned to a different Compute Node.
 	TaskStatePreparing TaskState = "preparing"
-	// TaskStateRunning The task is running on a compute node. This includes task-level preparation such as
-	// downloading resource files or deploying application packages specified on the task - it does not
-	// necessarily mean that the task command line has started executing.
+	// TaskStateRunning The Task is running on a Compute Node. This includes task-level preparation such as
+	// downloading resource files or deploying Packages specified on the Task - it does not necessarily mean
+	// that the Task command line has started executing.
 	TaskStateRunning TaskState = "running"
 )
 
@@ -821,11 +825,11 @@ func PossibleTaskStateValues() []TaskState {
 type VerificationType string
 
 const (
-	// Unverified The associated node agent SKU should have binary compatibility with the Image, but specific
-	// functionality has not been verified.
+	// Unverified The associated Compute Node agent SKU should have binary compatibility with the Image, but
+	// specific functionality has not been verified.
 	Unverified VerificationType = "unverified"
-	// Verified The Image is guaranteed to be compatible with the associated node agent SKU and all Batch
-	// features have been confirmed to work as expected.
+	// Verified The Image is guaranteed to be compatible with the associated Compute Node agent SKU and all
+	// Batch features have been confirmed to work as expected.
 	Verified VerificationType = "verified"
 )
 
@@ -981,7 +985,7 @@ func NewAccountListSupportedImagesResultPage(getNextPage func(context.Context, A
 
 // AffinityInformation ...
 type AffinityInformation struct {
-	// AffinityID - You can pass the affinityId of a compute node to indicate that this task needs to run on that compute node. Note that this is just a soft affinity. If the target node is busy or unavailable at the time the task is scheduled, then the task will be scheduled elsewhere.
+	// AffinityID - You can pass the affinityId of a Node to indicate that this Task needs to run on that Compute Node. Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled, then the Task will be scheduled elsewhere.
 	AffinityID *string `json:"affinityId,omitempty"`
 }
 
@@ -1132,7 +1136,7 @@ func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationL
 // ApplicationPackageReference ...
 type ApplicationPackageReference struct {
 	ApplicationID *string `json:"applicationId,omitempty"`
-	// Version - If this is omitted on a pool, and no default version is specified for this application, the request fails with the error code InvalidApplicationPackageReferences and HTTP status code 409. If this is omitted on a task, and no default version is specified for this application, the task fails with a pre-processing error.
+	// Version - If this is omitted on a Pool, and no default version is specified for this application, the request fails with the error code InvalidApplicationPackageReferences and HTTP status code 409. If this is omitted on a Task, and no default version is specified for this application, the Task fails with a pre-processing error.
 	Version *string `json:"version,omitempty"`
 }
 
@@ -1146,17 +1150,17 @@ type ApplicationSummary struct {
 
 // AuthenticationTokenSettings ...
 type AuthenticationTokenSettings struct {
-	// Access - The authentication token grants access to a limited set of Batch service operations. Currently the only supported value for the access property is 'job', which grants access to all operations related to the job which contains the task.
+	// Access - The authentication token grants access to a limited set of Batch service operations. Currently the only supported value for the access property is 'job', which grants access to all operations related to the Job which contains the Task.
 	Access *[]AccessScope `json:"access,omitempty"`
 }
 
 // AutoPoolSpecification ...
 type AutoPoolSpecification struct {
-	// AutoPoolIDPrefix - The Batch service assigns each auto pool a unique identifier on creation. To distinguish between pools created for different purposes, you can specify this element to add a prefix to the ID that is assigned. The prefix can be up to 20 characters long.
+	// AutoPoolIDPrefix - The Batch service assigns each auto Pool a unique identifier on creation. To distinguish between Pools created for different purposes, you can specify this element to add a prefix to the ID that is assigned. The prefix can be up to 20 characters long.
 	AutoPoolIDPrefix *string `json:"autoPoolIdPrefix,omitempty"`
 	// PoolLifetimeOption - Possible values include: 'PoolLifetimeOptionJobSchedule', 'PoolLifetimeOptionJob'
 	PoolLifetimeOption PoolLifetimeOption `json:"poolLifetimeOption,omitempty"`
-	// KeepAlive - If false, the Batch service deletes the pool once its lifetime (as determined by the poolLifetimeOption setting) expires; that is, when the job or job schedule completes. If true, the Batch service does not delete the pool automatically. It is up to the user to delete auto pools created with this option.
+	// KeepAlive - If false, the Batch service deletes the Pool once its lifetime (as determined by the poolLifetimeOption setting) expires; that is, when the Job or Job Schedule completes. If true, the Batch service does not delete the Pool automatically. It is up to the user to delete auto Pools created with this option.
 	KeepAlive *bool              `json:"keepAlive,omitempty"`
 	Pool      *PoolSpecification `json:"pool,omitempty"`
 }
@@ -1179,13 +1183,13 @@ type AutoScaleRunError struct {
 
 // AutoUserSpecification ...
 type AutoUserSpecification struct {
-	// Scope - The default value is task. Possible values include: 'Task', 'Pool'
+	// Scope - The default value is Task. Possible values include: 'Task', 'Pool'
 	Scope AutoUserScope `json:"scope,omitempty"`
 	// ElevationLevel - The default value is nonAdmin. Possible values include: 'NonAdmin', 'Admin'
 	ElevationLevel ElevationLevel `json:"elevationLevel,omitempty"`
 }
 
-// Certificate a certificate that can be installed on compute nodes and can be used to authenticate
+// Certificate a Certificate that can be installed on Compute Nodes and can be used to authenticate
 // operations on the machine.
 type Certificate struct {
 	autorest.Response   `json:"-"`
@@ -1195,12 +1199,12 @@ type Certificate struct {
 	// State - Possible values include: 'Active', 'Deleting', 'DeleteFailed'
 	State               CertificateState `json:"state,omitempty"`
 	StateTransitionTime *date.Time       `json:"stateTransitionTime,omitempty"`
-	// PreviousState - This property is not set if the certificate is in its initial active state. Possible values include: 'Active', 'Deleting', 'DeleteFailed'
+	// PreviousState - This property is not set if the Certificate is in its initial active state. Possible values include: 'Active', 'Deleting', 'DeleteFailed'
 	PreviousState CertificateState `json:"previousState,omitempty"`
-	// PreviousStateTransitionTime - This property is not set if the certificate is in its initial Active state.
+	// PreviousStateTransitionTime - This property is not set if the Certificate is in its initial Active state.
 	PreviousStateTransitionTime *date.Time `json:"previousStateTransitionTime,omitempty"`
 	PublicData                  *string    `json:"publicData,omitempty"`
-	// DeleteCertificateError - This property is set only if the certificate is in the DeleteFailed state.
+	// DeleteCertificateError - This property is set only if the Certificate is in the DeleteFailed state.
 	DeleteCertificateError *DeleteCertificateError `json:"deleteCertificateError,omitempty"`
 }
 
@@ -1211,7 +1215,7 @@ type CertificateAddParameter struct {
 	Data                *string `json:"data,omitempty"`
 	// CertificateFormat - Possible values include: 'Pfx', 'Cer'
 	CertificateFormat CertificateFormat `json:"certificateFormat,omitempty"`
-	// Password - This is required if the certificate format is pfx. It should be omitted if the certificate format is cer.
+	// Password - This is required if the Certificate format is pfx. It should be omitted if the Certificate format is cer.
 	Password *string `json:"password,omitempty"`
 }
 
@@ -1363,48 +1367,48 @@ func NewCertificateListResultPage(getNextPage func(context.Context, CertificateL
 type CertificateReference struct {
 	Thumbprint          *string `json:"thumbprint,omitempty"`
 	ThumbprintAlgorithm *string `json:"thumbprintAlgorithm,omitempty"`
-	// StoreLocation - The default value is currentuser. This property is applicable only for pools configured with Windows nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows image reference). For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory. Possible values include: 'CurrentUser', 'LocalMachine'
+	// StoreLocation - The default value is currentuser. This property is applicable only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows Image reference). For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. Possible values include: 'CurrentUser', 'LocalMachine'
 	StoreLocation CertificateStoreLocation `json:"storeLocation,omitempty"`
-	// StoreName - This property is applicable only for pools configured with Windows nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows image reference). Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any custom store name can also be used. The default value is My.
+	// StoreName - This property is applicable only for Pools configured with Windows Compute Nodes (that is, created with cloudServiceConfiguration, or with virtualMachineConfiguration using a Windows Image reference). Common store names include: My, Root, CA, Trust, Disallowed, TrustedPeople, TrustedPublisher, AuthRoot, AddressBook, but any custom store name can also be used. The default value is My.
 	StoreName *string `json:"storeName,omitempty"`
-	// Visibility - You can specify more than one visibility in this collection. The default is all accounts.
+	// Visibility - You can specify more than one visibility in this collection. The default is all Accounts.
 	Visibility *[]CertificateVisibility `json:"visibility,omitempty"`
 }
 
 // CloudJob ...
 type CloudJob struct {
 	autorest.Response `json:"-"`
-	// ID - The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an account that differ only by case).
+	// ID - The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
 	ID                   *string `json:"id,omitempty"`
 	DisplayName          *string `json:"displayName,omitempty"`
 	UsesTaskDependencies *bool   `json:"usesTaskDependencies,omitempty"`
 	URL                  *string `json:"url,omitempty"`
-	// ETag - This is an opaque string. You can use it to detect whether the job has changed between requests. In particular, you can be pass the ETag when updating a job to specify that your changes should take effect only if nobody else has modified the job in the meantime.
+	// ETag - This is an opaque string. You can use it to detect whether the Job has changed between requests. In particular, you can be pass the ETag when updating a Job to specify that your changes should take effect only if nobody else has modified the Job in the meantime.
 	ETag *string `json:"eTag,omitempty"`
-	// LastModified - This is the last time at which the job level data, such as the job state or priority, changed. It does not factor in task-level changes such as adding new tasks or tasks changing state.
+	// LastModified - This is the last time at which the Job level data, such as the Job state or priority, changed. It does not factor in task-level changes such as adding new Tasks or Tasks changing state.
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// State - Possible values include: 'JobStateActive', 'JobStateDisabling', 'JobStateDisabled', 'JobStateEnabling', 'JobStateTerminating', 'JobStateCompleted', 'JobStateDeleting'
 	State               JobState   `json:"state,omitempty"`
 	StateTransitionTime *date.Time `json:"stateTransitionTime,omitempty"`
-	// PreviousState - This property is not set if the job is in its initial Active state. Possible values include: 'JobStateActive', 'JobStateDisabling', 'JobStateDisabled', 'JobStateEnabling', 'JobStateTerminating', 'JobStateCompleted', 'JobStateDeleting'
+	// PreviousState - This property is not set if the Job is in its initial Active state. Possible values include: 'JobStateActive', 'JobStateDisabling', 'JobStateDisabled', 'JobStateEnabling', 'JobStateTerminating', 'JobStateCompleted', 'JobStateDeleting'
 	PreviousState JobState `json:"previousState,omitempty"`
-	// PreviousStateTransitionTime - This property is not set if the job is in its initial Active state.
+	// PreviousStateTransitionTime - This property is not set if the Job is in its initial Active state.
 	PreviousStateTransitionTime *date.Time `json:"previousStateTransitionTime,omitempty"`
 	// Priority - Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
 	Priority       *int32          `json:"priority,omitempty"`
 	Constraints    *JobConstraints `json:"constraints,omitempty"`
 	JobManagerTask *JobManagerTask `json:"jobManagerTask,omitempty"`
-	// JobPreparationTask - The Job Preparation task is a special task run on each node before any other task of the job.
+	// JobPreparationTask - The Job Preparation Task is a special Task run on each Compute Node before any other Task of the Job.
 	JobPreparationTask *JobPreparationTask `json:"jobPreparationTask,omitempty"`
-	// JobReleaseTask - The Job Release task is a special task run at the end of the job on each node that has run any other task of the job.
+	// JobReleaseTask - The Job Release Task is a special Task run at the end of the Job on each Compute Node that has run any other Task of the Job.
 	JobReleaseTask *JobReleaseTask `json:"jobReleaseTask,omitempty"`
-	// CommonEnvironmentSettings - Individual tasks can override an environment setting specified here by specifying the same setting name with a different value.
+	// CommonEnvironmentSettings - Individual Tasks can override an environment setting specified here by specifying the same setting name with a different value.
 	CommonEnvironmentSettings *[]EnvironmentSetting `json:"commonEnvironmentSettings,omitempty"`
 	PoolInfo                  *PoolInformation      `json:"poolInfo,omitempty"`
 	// OnAllTasksComplete - The default is noaction. Possible values include: 'NoAction', 'TerminateJob'
 	OnAllTasksComplete OnAllTasksComplete `json:"onAllTasksComplete,omitempty"`
-	// OnTaskFailure - A task is considered to have failed if has a failureInfo. A failureInfo is set if the task completes with a non-zero exit code after exhausting its retry count, or if there was an error starting the task, for example due to a resource file download error. The default is noaction. Possible values include: 'OnTaskFailureNoAction', 'OnTaskFailurePerformExitOptionsJobAction'
+	// OnTaskFailure - A Task is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a resource file download error. The default is noaction. Possible values include: 'OnTaskFailureNoAction', 'OnTaskFailurePerformExitOptionsJobAction'
 	OnTaskFailure        OnTaskFailure            `json:"onTaskFailure,omitempty"`
 	NetworkConfiguration *JobNetworkConfiguration `json:"networkConfiguration,omitempty"`
 	// Metadata - The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
@@ -1710,17 +1714,17 @@ type CloudJobSchedule struct {
 	ID                *string `json:"id,omitempty"`
 	DisplayName       *string `json:"displayName,omitempty"`
 	URL               *string `json:"url,omitempty"`
-	// ETag - This is an opaque string. You can use it to detect whether the job schedule has changed between requests. In particular, you can be pass the ETag with an Update Job Schedule request to specify that your changes should take effect only if nobody else has modified the schedule in the meantime.
+	// ETag - This is an opaque string. You can use it to detect whether the Job Schedule has changed between requests. In particular, you can be pass the ETag with an Update Job Schedule request to specify that your changes should take effect only if nobody else has modified the schedule in the meantime.
 	ETag *string `json:"eTag,omitempty"`
-	// LastModified - This is the last time at which the schedule level data, such as the job specification or recurrence information, changed. It does not factor in job-level changes such as new jobs being created or jobs changing state.
+	// LastModified - This is the last time at which the schedule level data, such as the Job specification or recurrence information, changed. It does not factor in job-level changes such as new Jobs being created or Jobs changing state.
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// State - Possible values include: 'JobScheduleStateActive', 'JobScheduleStateCompleted', 'JobScheduleStateDisabled', 'JobScheduleStateTerminating', 'JobScheduleStateDeleting'
 	State               JobScheduleState `json:"state,omitempty"`
 	StateTransitionTime *date.Time       `json:"stateTransitionTime,omitempty"`
-	// PreviousState - This property is not present if the job schedule is in its initial active state. Possible values include: 'JobScheduleStateActive', 'JobScheduleStateCompleted', 'JobScheduleStateDisabled', 'JobScheduleStateTerminating', 'JobScheduleStateDeleting'
+	// PreviousState - This property is not present if the Job Schedule is in its initial active state. Possible values include: 'JobScheduleStateActive', 'JobScheduleStateCompleted', 'JobScheduleStateDisabled', 'JobScheduleStateTerminating', 'JobScheduleStateDeleting'
 	PreviousState JobScheduleState `json:"previousState,omitempty"`
-	// PreviousStateTransitionTime - This property is not present if the job schedule is in its initial active state.
+	// PreviousStateTransitionTime - This property is not present if the Job Schedule is in its initial active state.
 	PreviousStateTransitionTime *date.Time                       `json:"previousStateTransitionTime,omitempty"`
 	Schedule                    *Schedule                        `json:"schedule,omitempty"`
 	JobSpecification            *JobSpecification                `json:"jobSpecification,omitempty"`
@@ -1877,14 +1881,14 @@ func NewCloudJobScheduleListResultPage(getNextPage func(context.Context, CloudJo
 // CloudPool ...
 type CloudPool struct {
 	autorest.Response `json:"-"`
-	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an account that differ only by case).
+	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
 	ID *string `json:"id,omitempty"`
 	// DisplayName - The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
 	URL         *string `json:"url,omitempty"`
-	// ETag - This is an opaque string. You can use it to detect whether the pool has changed between requests. In particular, you can be pass the ETag when updating a pool to specify that your changes should take effect only if nobody else has modified the pool in the meantime.
+	// ETag - This is an opaque string. You can use it to detect whether the Pool has changed between requests. In particular, you can be pass the ETag when updating a Pool to specify that your changes should take effect only if nobody else has modified the Pool in the meantime.
 	ETag *string `json:"eTag,omitempty"`
-	// LastModified - This is the last time at which the pool level data, such as the targetDedicatedNodes or enableAutoscale settings, changed. It does not factor in node-level changes such as a compute node changing state.
+	// LastModified - This is the last time at which the Pool level data, such as the targetDedicatedNodes or enableAutoscale settings, changed. It does not factor in node-level changes such as a Compute Node changing state.
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// State - Possible values include: 'PoolStateActive', 'PoolStateDeleting'
@@ -1893,41 +1897,42 @@ type CloudPool struct {
 	// AllocationState - Possible values include: 'Steady', 'Resizing', 'Stopping'
 	AllocationState               AllocationState `json:"allocationState,omitempty"`
 	AllocationStateTransitionTime *date.Time      `json:"allocationStateTransitionTime,omitempty"`
-	// VMSize - For information about available sizes of virtual machines in pools, see Choose a VM size for compute nodes in an Azure Batch pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+	// VMSize - For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
 	VMSize *string `json:"vmSize,omitempty"`
-	// CloudServiceConfiguration - This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property cannot be specified if the Batch account was created with its poolAllocationMode property set to 'UserSubscription'.
+	// CloudServiceConfiguration - This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property cannot be specified if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
 	CloudServiceConfiguration *CloudServiceConfiguration `json:"cloudServiceConfiguration,omitempty"`
 	// VirtualMachineConfiguration - This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
 	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
-	// ResizeTimeout - This is the timeout for the most recent resize operation. (The initial sizing when the pool is created counts as a resize.) The default value is 15 minutes.
+	// ResizeTimeout - This is the timeout for the most recent resize operation. (The initial sizing when the Pool is created counts as a resize.) The default value is 15 minutes.
 	ResizeTimeout *string `json:"resizeTimeout,omitempty"`
-	// ResizeErrors - This property is set only if one or more errors occurred during the last pool resize, and only when the pool allocationState is Steady.
+	// ResizeErrors - This property is set only if one or more errors occurred during the last Pool resize, and only when the Pool allocationState is Steady.
 	ResizeErrors          *[]ResizeError `json:"resizeErrors,omitempty"`
 	CurrentDedicatedNodes *int32         `json:"currentDedicatedNodes,omitempty"`
-	// CurrentLowPriorityNodes - Low-priority compute nodes which have been preempted are included in this count.
+	// CurrentLowPriorityNodes - Low-priority Compute Nodes which have been preempted are included in this count.
 	CurrentLowPriorityNodes *int32 `json:"currentLowPriorityNodes,omitempty"`
 	TargetDedicatedNodes    *int32 `json:"targetDedicatedNodes,omitempty"`
 	TargetLowPriorityNodes  *int32 `json:"targetLowPriorityNodes,omitempty"`
-	// EnableAutoScale - If false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the pool automatically resizes according to the formula. The default value is false.
+	// EnableAutoScale - If false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically resizes according to the formula. The default value is false.
 	EnableAutoScale *bool `json:"enableAutoScale,omitempty"`
-	// AutoScaleFormula - This property is set only if the pool automatically scales, i.e. enableAutoScale is true.
+	// AutoScaleFormula - This property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
 	AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
-	// AutoScaleEvaluationInterval - This property is set only if the pool automatically scales, i.e. enableAutoScale is true.
+	// AutoScaleEvaluationInterval - This property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
 	AutoScaleEvaluationInterval *string `json:"autoScaleEvaluationInterval,omitempty"`
-	// AutoScaleRun - This property is set only if the pool automatically scales, i.e. enableAutoScale is true.
+	// AutoScaleRun - This property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
 	AutoScaleRun *AutoScaleRun `json:"autoScaleRun,omitempty"`
-	// EnableInterNodeCommunication - This imposes restrictions on which nodes can be assigned to the pool. Specifying this value can reduce the chance of the requested number of nodes to be allocated in the pool.
+	// EnableInterNodeCommunication - This imposes restrictions on which Compute Nodes can be assigned to the Pool. Specifying this value can reduce the chance of the requested number of Compute Nodes to be allocated in the Pool.
 	EnableInterNodeCommunication *bool                 `json:"enableInterNodeCommunication,omitempty"`
 	NetworkConfiguration         *NetworkConfiguration `json:"networkConfiguration,omitempty"`
 	StartTask                    *StartTask            `json:"startTask,omitempty"`
-	// CertificateReferences - For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+	// CertificateReferences - For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
 	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-	// ApplicationPackageReferences - Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool.
+	// ApplicationPackageReferences - Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail.
+	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail.
 	ApplicationLicenses *[]string `json:"applicationLicenses,omitempty"`
-	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
-	MaxTasksPerNode      *int32                `json:"maxTasksPerNode,omitempty"`
+	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the Pool or 256.
+	MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
+	// TaskSchedulingPolicy - If not specified, the default is spread.
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	UserAccounts         *[]UserAccount        `json:"userAccounts,omitempty"`
 	Metadata             *[]MetadataItem       `json:"metadata,omitempty"`
@@ -2092,13 +2097,13 @@ type CloudServiceConfiguration struct {
 	OsVersion *string `json:"osVersion,omitempty"`
 }
 
-// CloudTask batch will retry tasks when a recovery operation is triggered on a compute node. Examples of
-// recovery operations include (but are not limited to) when an unhealthy compute node is rebooted or a
-// compute node disappeared due to host failure. Retries due to recovery operations are independent of and
-// are not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due
-// to a recovery operation may occur. Because of this, all tasks should be idempotent. This means tasks
-// need to tolerate being interrupted and restarted without causing any corruption or duplicate data. The
-// best practice for long running tasks is to use some form of checkpointing.
+// CloudTask batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery
+// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
+// disappeared due to host failure. Retries due to recovery operations are independent of and are not
+// counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a
+// recovery operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to
+// tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
+// practice for long running Tasks is to use some form of checkpointing.
 type CloudTask struct {
 	autorest.Response `json:"-"`
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters.
@@ -2106,41 +2111,41 @@ type CloudTask struct {
 	// DisplayName - The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
 	URL         *string `json:"url,omitempty"`
-	// ETag - This is an opaque string. You can use it to detect whether the task has changed between requests. In particular, you can be pass the ETag when updating a task to specify that your changes should take effect only if nobody else has modified the task in the meantime.
+	// ETag - This is an opaque string. You can use it to detect whether the Task has changed between requests. In particular, you can be pass the ETag when updating a Task to specify that your changes should take effect only if nobody else has modified the Task in the meantime.
 	ETag         *string    `json:"eTag,omitempty"`
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	CreationTime *date.Time `json:"creationTime,omitempty"`
-	// ExitConditions - How the Batch service should respond when the task completes.
+	// ExitConditions - How the Batch service should respond when the Task completes.
 	ExitConditions *ExitConditions `json:"exitConditions,omitempty"`
 	// State - Possible values include: 'TaskStateActive', 'TaskStatePreparing', 'TaskStateRunning', 'TaskStateCompleted'
 	State               TaskState  `json:"state,omitempty"`
 	StateTransitionTime *date.Time `json:"stateTransitionTime,omitempty"`
-	// PreviousState - This property is not set if the task is in its initial Active state. Possible values include: 'TaskStateActive', 'TaskStatePreparing', 'TaskStateRunning', 'TaskStateCompleted'
+	// PreviousState - This property is not set if the Task is in its initial Active state. Possible values include: 'TaskStateActive', 'TaskStatePreparing', 'TaskStateRunning', 'TaskStateCompleted'
 	PreviousState TaskState `json:"previousState,omitempty"`
-	// PreviousStateTransitionTime - This property is not set if the task is in its initial Active state.
+	// PreviousStateTransitionTime - This property is not set if the Task is in its initial Active state.
 	PreviousStateTransitionTime *date.Time `json:"previousStateTransitionTime,omitempty"`
-	// CommandLine - For multi-instance tasks, the command line is executed as the primary task, after the primary task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
+	// CommandLine - For multi-instance Tasks, the command line is executed as the primary Task, after the primary Task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
 	CommandLine *string `json:"commandLine,omitempty"`
-	// ContainerSettings - If the pool that will run this task has containerConfiguration set, this must be set as well. If the pool that will run this task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
+	// ContainerSettings - If the Pool that will run this Task has containerConfiguration set, this must be set as well. If the Pool that will run this Task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
-	// ResourceFiles - For multi-instance tasks, the resource files will only be downloaded to the compute node on which the primary task is executed. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
+	// ResourceFiles - For multi-instance Tasks, the resource files will only be downloaded to the Compute Node on which the primary Task is executed. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
 	ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
-	// OutputFiles - For multi-instance tasks, the files will only be uploaded from the compute node on which the primary task is executed.
+	// OutputFiles - For multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
 	OutputFiles         *[]OutputFile         `json:"outputFiles,omitempty"`
 	EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
 	AffinityInfo        *AffinityInformation  `json:"affinityInfo,omitempty"`
 	Constraints         *TaskConstraints      `json:"constraints,omitempty"`
-	// UserIdentity - If omitted, the task runs as a non-administrative user unique to the task.
+	// UserIdentity - If omitted, the Task runs as a non-administrative user unique to the Task.
 	UserIdentity          *UserIdentity             `json:"userIdentity,omitempty"`
 	ExecutionInfo         *TaskExecutionInformation `json:"executionInfo,omitempty"`
 	NodeInfo              *ComputeNodeInformation   `json:"nodeInfo,omitempty"`
 	MultiInstanceSettings *MultiInstanceSettings    `json:"multiInstanceSettings,omitempty"`
 	Stats                 *TaskStatistics           `json:"stats,omitempty"`
-	// DependsOn - This task will not be scheduled until all tasks that it depends on have completed successfully. If any of those tasks fail and exhaust their retry counts, this task will never be scheduled.
+	// DependsOn - This Task will not be scheduled until all Tasks that it depends on have completed successfully. If any of those Tasks fail and exhaust their retry counts, this Task will never be scheduled.
 	DependsOn *TaskDependencies `json:"dependsOn,omitempty"`
-	// ApplicationPackageReferences - Application packages are downloaded and deployed to a shared directory, not the task working directory. Therefore, if a referenced package is already on the compute node, and is up to date, then it is not re-downloaded; the existing copy on the compute node is used. If a referenced application package cannot be installed, for example because the package has been deleted or because download failed, the task fails.
+	// ApplicationPackageReferences - Application packages are downloaded and deployed to a shared directory, not the Task working directory. Therefore, if a referenced package is already on the Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If a referenced Package cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-	// AuthenticationTokenSettings - If this property is set, the Batch service provides the task with an authentication token which can be used to authenticate Batch service operations without requiring an account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the task can carry out using the token depend on the settings. For example, a task can request job permissions in order to add other tasks to the job, or check the status of the job or of other tasks under the job.
+	// AuthenticationTokenSettings - If this property is set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
 	AuthenticationTokenSettings *AuthenticationTokenSettings `json:"authenticationTokenSettings,omitempty"`
 }
 
@@ -2297,32 +2302,32 @@ type CloudTaskListSubtasksResult struct {
 // ComputeNode ...
 type ComputeNode struct {
 	autorest.Response `json:"-"`
-	// ID - Every node that is added to a pool is assigned a unique ID. Whenever a node is removed from a pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new nodes.
+	// ID - Every Compute Node that is added to a Pool is assigned a unique ID. Whenever a Compute Node is removed from a Pool, all of its local files are deleted, and the ID is reclaimed and could be reused for new Compute Nodes.
 	ID  *string `json:"id,omitempty"`
 	URL *string `json:"url,omitempty"`
-	// State - The low-priority node has been preempted. Tasks which were running on the node when it was preempted will be rescheduled when another node becomes available. Possible values include: 'Idle', 'Rebooting', 'Reimaging', 'Running', 'Unusable', 'Creating', 'Starting', 'WaitingForStartTask', 'StartTaskFailed', 'Unknown', 'LeavingPool', 'Offline', 'Preempted'
+	// State - The low-priority Compute Node has been preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes available. Possible values include: 'Idle', 'Rebooting', 'Reimaging', 'Running', 'Unusable', 'Creating', 'Starting', 'WaitingForStartTask', 'StartTaskFailed', 'Unknown', 'LeavingPool', 'Offline', 'Preempted'
 	State ComputeNodeState `json:"state,omitempty"`
 	// SchedulingState - Possible values include: 'Enabled', 'Disabled'
 	SchedulingState     SchedulingState `json:"schedulingState,omitempty"`
 	StateTransitionTime *date.Time      `json:"stateTransitionTime,omitempty"`
-	// LastBootTime - This property may not be present if the node state is unusable.
+	// LastBootTime - This property may not be present if the Compute Node state is unusable.
 	LastBootTime *date.Time `json:"lastBootTime,omitempty"`
-	// AllocationTime - This is the time when the node was initially allocated and doesn't change once set. It is not updated when the node is service healed or preempted.
+	// AllocationTime - This is the time when the Compute Node was initially allocated and doesn't change once set. It is not updated when the Compute Node is service healed or preempted.
 	AllocationTime *date.Time `json:"allocationTime,omitempty"`
-	// IPAddress - Every node that is added to a pool is assigned a unique IP address. Whenever a node is removed from a pool, all of its local files are deleted, and the IP address is reclaimed and could be reused for new nodes.
+	// IPAddress - Every Compute Node that is added to a Pool is assigned a unique IP address. Whenever a Compute Node is removed from a Pool, all of its local files are deleted, and the IP address is reclaimed and could be reused for new Compute Nodes.
 	IPAddress *string `json:"ipAddress,omitempty"`
-	// AffinityID - Note that this is just a soft affinity. If the target node is busy or unavailable at the time the task is scheduled, then the task will be scheduled elsewhere.
+	// AffinityID - Note that this is just a soft affinity. If the target Compute Node is busy or unavailable at the time the Task is scheduled, then the Task will be scheduled elsewhere.
 	AffinityID *string `json:"affinityId,omitempty"`
-	// VMSize - For information about available sizes of virtual machines in pools, see Choose a VM size for compute nodes in an Azure Batch pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+	// VMSize - For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
 	VMSize              *string `json:"vmSize,omitempty"`
 	TotalTasksRun       *int32  `json:"totalTasksRun,omitempty"`
 	RunningTasksCount   *int32  `json:"runningTasksCount,omitempty"`
 	TotalTasksSucceeded *int32  `json:"totalTasksSucceeded,omitempty"`
-	// RecentTasks - This property is present only if at least one task has run on this node since it was assigned to the pool.
+	// RecentTasks - This property is present only if at least one Task has run on this Compute Node since it was assigned to the Pool.
 	RecentTasks   *[]TaskInformation    `json:"recentTasks,omitempty"`
 	StartTask     *StartTask            `json:"startTask,omitempty"`
 	StartTaskInfo *StartTaskInformation `json:"startTaskInfo,omitempty"`
-	// CertificateReferences - For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+	// CertificateReferences - For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
 	CertificateReferences *[]CertificateReference           `json:"certificateReferences,omitempty"`
 	Errors                *[]ComputeNodeError               `json:"errors,omitempty"`
 	IsDedicated           *bool                             `json:"isDedicated,omitempty"`
@@ -2508,20 +2513,20 @@ type ComputeNodeUser struct {
 	Name *string `json:"name,omitempty"`
 	// IsAdmin - The default value is false.
 	IsAdmin *bool `json:"isAdmin,omitempty"`
-	// ExpiryTime - If omitted, the default is 1 day from the current time. For Linux compute nodes, the expiryTime has a precision up to a day.
+	// ExpiryTime - If omitted, the default is 1 day from the current time. For Linux Compute Nodes, the expiryTime has a precision up to a day.
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-	// Password - The password is required for Windows nodes (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows image reference). For Linux compute nodes, the password can optionally be specified along with the sshPublicKey property.
+	// Password - The password is required for Windows Compute Nodes (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property.
 	Password *string `json:"password,omitempty"`
-	// SSHPublicKey - The public key should be compatible with OpenSSH encoding and should be base 64 encoded. This property can be specified only for Linux nodes. If this is specified for a Windows node, then the Batch service rejects the request; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+	// SSHPublicKey - The public key should be compatible with OpenSSH encoding and should be base 64 encoded. This property can be specified only for Linux Compute Nodes. If this is specified for a Windows Compute Node, then the Batch service rejects the request; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	SSHPublicKey *string `json:"sshPublicKey,omitempty"`
 }
 
 // ContainerConfiguration ...
 type ContainerConfiguration struct {
 	Type *string `json:"type,omitempty"`
-	// ContainerImageNames - This is the full image reference, as would be specified to "docker pull". An image will be sourced from the default Docker registry unless the image is fully qualified with an alternative registry.
+	// ContainerImageNames - This is the full Image reference, as would be specified to "docker pull". An Image will be sourced from the default Docker registry unless the Image is fully qualified with an alternative registry.
 	ContainerImageNames *[]string `json:"containerImageNames,omitempty"`
-	// ContainerRegistries - If any images must be downloaded from a private registry which requires credentials, then those credentials must be provided here.
+	// ContainerRegistries - If any Images must be downloaded from a private registry which requires credentials, then those credentials must be provided here.
 	ContainerRegistries *[]ContainerRegistry `json:"containerRegistries,omitempty"`
 }
 
@@ -2548,7 +2553,7 @@ type DataDisk struct {
 type DeleteCertificateError struct {
 	Code    *string `json:"code,omitempty"`
 	Message *string `json:"message,omitempty"`
-	// Values - This list includes details such as the active pools and nodes referencing this certificate. However, if a large number of resources reference the certificate, the list contains only about the first hundred.
+	// Values - This list includes details such as the active Pools and Compute Nodes referencing this Certificate. However, if a large number of resources reference the Certificate, the list contains only about the first hundred.
 	Values *[]NameValuePair `json:"values,omitempty"`
 }
 
@@ -2595,28 +2600,28 @@ type ExitConditions struct {
 	ExitCodes          *[]ExitCodeMapping      `json:"exitCodes,omitempty"`
 	ExitCodeRanges     *[]ExitCodeRangeMapping `json:"exitCodeRanges,omitempty"`
 	PreProcessingError *ExitOptions            `json:"preProcessingError,omitempty"`
-	// FileUploadError - If the task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload error, then the action specified by the exit code takes precedence.
+	// FileUploadError - If the Task exited with an exit code that was specified via exitCodes or exitCodeRanges, and then encountered a file upload error, then the action specified by the exit code takes precedence.
 	FileUploadError *ExitOptions `json:"fileUploadError,omitempty"`
-	// Default - This value is used if the task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behavior on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
+	// Default - This value is used if the Task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behavior on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
 	Default *ExitOptions `json:"default,omitempty"`
 }
 
 // ExitOptions ...
 type ExitOptions struct {
-	// JobAction - The default is none for exit code 0 and terminate for all other exit conditions. If the job's onTaskFailed property is noaction, then specifying this property returns an error and the add task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). Possible values include: 'JobActionNone', 'JobActionDisable', 'JobActionTerminate'
+	// JobAction - The default is none for exit code 0 and terminate for all other exit conditions. If the Job's onTaskFailed property is noaction, then specifying this property returns an error and the add Task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). Possible values include: 'JobActionNone', 'JobActionDisable', 'JobActionTerminate'
 	JobAction JobAction `json:"jobAction,omitempty"`
-	// DependencyAction - The default is 'satisfy' for exit code 0, and 'block' for all other exit conditions. If the job's usesTaskDependencies property is set to false, then specifying the dependencyAction property returns an error and the add task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400  (Bad Request). Possible values include: 'Satisfy', 'Block'
+	// DependencyAction - The default is 'satisfy' for exit code 0, and 'block' for all other exit conditions. If the Job's usesTaskDependencies property is set to false, then specifying the dependencyAction property returns an error and the add Task request fails with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400  (Bad Request). Possible values include: 'Satisfy', 'Block'
 	DependencyAction DependencyAction `json:"dependencyAction,omitempty"`
 }
 
 // FileProperties ...
 type FileProperties struct {
-	// CreationTime - The creation time is not returned for files on Linux compute nodes.
+	// CreationTime - The creation time is not returned for files on Linux Compute Nodes.
 	CreationTime  *date.Time `json:"creationTime,omitempty"`
 	LastModified  *date.Time `json:"lastModified,omitempty"`
 	ContentLength *int64     `json:"contentLength,omitempty"`
 	ContentType   *string    `json:"contentType,omitempty"`
-	// FileMode - The file mode is returned only for files on Linux compute nodes.
+	// FileMode - The file mode is returned only for files on Linux Compute Nodes.
 	FileMode *string `json:"fileMode,omitempty"`
 }
 
@@ -2643,7 +2648,7 @@ type ImageReference struct {
 	Sku *string `json:"sku,omitempty"`
 	// Version - A value of 'latest' can be specified to select the latest version of an Image. If omitted, the default is 'latest'.
 	Version *string `json:"version,omitempty"`
-	// VirtualMachineImageID - This property is mutually exclusive with other ImageReference properties. The Virtual Machine Image must be in the same region and subscription as the Azure Batch account. For information about the firewall settings for the Batch node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+	// VirtualMachineImageID - This property is mutually exclusive with other ImageReference properties. The Virtual Machine Image must be in the same region and subscription as the Azure Batch Account. For information about the firewall settings for the Batch Compute Node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
 	VirtualMachineImageID *string `json:"virtualMachineImageId,omitempty"`
 }
 
@@ -2660,42 +2665,42 @@ type InboundEndpoint struct {
 
 // InboundNATPool ...
 type InboundNATPool struct {
-	// Name - The name must be unique within a Batch pool, can contain letters, numbers, underscores, periods, and hyphens. Names must start with a letter or number, must end with a letter, number, or underscore, and cannot exceed 77 characters.  If any invalid values are provided the request fails with HTTP status code 400.
+	// Name - The name must be unique within a Batch Pool, can contain letters, numbers, underscores, periods, and hyphens. Names must start with a letter or number, must end with a letter, number, or underscore, and cannot exceed 77 characters.  If any invalid values are provided the request fails with HTTP status code 400.
 	Name *string `json:"name,omitempty"`
 	// Protocol - Possible values include: 'TCP', 'UDP'
 	Protocol InboundEndpointProtocol `json:"protocol,omitempty"`
-	// BackendPort - This must be unique within a Batch pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876 and 29877 as these are reserved. If any reserved values are provided the request fails with HTTP status code 400.
+	// BackendPort - This must be unique within a Batch Pool. Acceptable values are between 1 and 65535 except for 22, 3389, 29876 and 29877 as these are reserved. If any reserved values are provided the request fails with HTTP status code 400.
 	BackendPort *int32 `json:"backendPort,omitempty"`
-	// FrontendPortRangeStart - Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges within a pool must be distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values are provided the request fails with HTTP status code 400.
+	// FrontendPortRangeStart - Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved. All ranges within a Pool must be distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values are provided the request fails with HTTP status code 400.
 	FrontendPortRangeStart *int32 `json:"frontendPortRangeStart,omitempty"`
-	// FrontendPortRangeEnd - Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch service. All ranges within a pool must be distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values are provided the request fails with HTTP status code 400.
+	// FrontendPortRangeEnd - Acceptable values range between 1 and 65534 except ports from 50000 to 55000 which are reserved by the Batch service. All ranges within a Pool must be distinct and cannot overlap. Each range must contain at least 40 ports. If any reserved or overlapping values are provided the request fails with HTTP status code 400.
 	FrontendPortRangeEnd *int32 `json:"frontendPortRangeEnd,omitempty"`
-	// NetworkSecurityGroupRules - The maximum number of rules that can be specified across all the endpoints on a Batch pool is 25. If no network security group rules are specified, a default rule will be created to allow inbound access to the specified backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP status code 400.
+	// NetworkSecurityGroupRules - The maximum number of rules that can be specified across all the endpoints on a Batch Pool is 25. If no network security group rules are specified, a default rule will be created to allow inbound access to the specified backendPort. If the maximum number of network security group rules is exceeded the request fails with HTTP status code 400.
 	NetworkSecurityGroupRules *[]NetworkSecurityGroupRule `json:"networkSecurityGroupRules,omitempty"`
 }
 
 // JobAddParameter ...
 type JobAddParameter struct {
-	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an account that differ only by case).
+	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
 	ID *string `json:"id,omitempty"`
 	// DisplayName - The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Priority - Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
 	Priority *int32 `json:"priority,omitempty"`
-	// Constraints - The execution constraints for the job.
+	// Constraints - The execution constraints for the Job.
 	Constraints *JobConstraints `json:"constraints,omitempty"`
-	// JobManagerTask - If the job does not specify a Job Manager task, the user must explicitly add tasks to the job. If the job does specify a Job Manager task, the Batch service creates the Job Manager task when the job is created, and will try to schedule the Job Manager task before scheduling other tasks in the job. The Job Manager task's typical purpose is to control and/or monitor job execution, for example by deciding what additional tasks to run, determining when the work is complete, etc. (However, a Job Manager task is not restricted to these activities - it is a fully-fledged task in the system and perform whatever actions are required for the job.) For example, a Job Manager task might download a file specified as a parameter, analyze the contents of that file and submit additional tasks based on those contents.
+	// JobManagerTask - If the Job does not specify a Job Manager Task, the user must explicitly add Tasks to the Job. If the Job does specify a Job Manager Task, the Batch service creates the Job Manager Task when the Job is created, and will try to schedule the Job Manager Task before scheduling other Tasks in the Job. The Job Manager Task's typical purpose is to control and/or monitor Job execution, for example by deciding what additional Tasks to run, determining when the work is complete, etc. (However, a Job Manager Task is not restricted to these activities - it is a fully-fledged Task in the system and perform whatever actions are required for the Job.) For example, a Job Manager Task might download a file specified as a parameter, analyze the contents of that file and submit additional Tasks based on those contents.
 	JobManagerTask *JobManagerTask `json:"jobManagerTask,omitempty"`
-	// JobPreparationTask - If a job has a Job Preparation task, the Batch service will run the Job Preparation task on a compute node before starting any tasks of that job on that compute node.
+	// JobPreparationTask - If a Job has a Job Preparation Task, the Batch service will run the Job Preparation Task on a Node before starting any Tasks of that Job on that Compute Node.
 	JobPreparationTask *JobPreparationTask `json:"jobPreparationTask,omitempty"`
-	// JobReleaseTask - A Job Release task cannot be specified without also specifying a Job Preparation task for the job. The Batch service runs the Job Release task on the compute nodes that have run the Job Preparation task. The primary purpose of the Job Release task is to undo changes to compute nodes made by the Job Preparation task. Example activities include deleting local files, or shutting down services that were started as part of job preparation.
+	// JobReleaseTask - A Job Release Task cannot be specified without also specifying a Job Preparation Task for the Job. The Batch service runs the Job Release Task on the Nodes that have run the Job Preparation Task. The primary purpose of the Job Release Task is to undo changes to Compute Nodes made by the Job Preparation Task. Example activities include deleting local files, or shutting down services that were started as part of Job preparation.
 	JobReleaseTask *JobReleaseTask `json:"jobReleaseTask,omitempty"`
-	// CommonEnvironmentSettings - Individual tasks can override an environment setting specified here by specifying the same setting name with a different value.
+	// CommonEnvironmentSettings - Individual Tasks can override an environment setting specified here by specifying the same setting name with a different value.
 	CommonEnvironmentSettings *[]EnvironmentSetting `json:"commonEnvironmentSettings,omitempty"`
 	PoolInfo                  *PoolInformation      `json:"poolInfo,omitempty"`
-	// OnAllTasksComplete - Note that if a job contains no tasks, then all tasks are considered complete. This option is therefore most commonly used with a Job Manager task; if you want to use automatic job termination without a Job Manager, you should initially set onAllTasksComplete to noaction and update the job properties to set onAllTasksComplete to terminatejob once you have finished adding tasks. The default is noaction. Possible values include: 'NoAction', 'TerminateJob'
+	// OnAllTasksComplete - Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a Job Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set onAllTasksComplete to terminatejob once you have finished adding Tasks. The default is noaction. Possible values include: 'NoAction', 'TerminateJob'
 	OnAllTasksComplete OnAllTasksComplete `json:"onAllTasksComplete,omitempty"`
-	// OnTaskFailure - A task is considered to have failed if has a failureInfo. A failureInfo is set if the task completes with a non-zero exit code after exhausting its retry count, or if there was an error starting the task, for example due to a resource file download error. The default is noaction. Possible values include: 'OnTaskFailureNoAction', 'OnTaskFailurePerformExitOptionsJobAction'
+	// OnTaskFailure - A Task is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a resource file download error. The default is noaction. Possible values include: 'OnTaskFailureNoAction', 'OnTaskFailurePerformExitOptionsJobAction'
 	OnTaskFailure OnTaskFailure `json:"onTaskFailure,omitempty"`
 	// Metadata - The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
 	Metadata             *[]MetadataItem          `json:"metadata,omitempty"`
@@ -2705,9 +2710,9 @@ type JobAddParameter struct {
 
 // JobConstraints ...
 type JobConstraints struct {
-	// MaxWallClockTime - If the job does not complete within the time limit, the Batch service terminates it and any tasks that are still running. In this case, the termination reason will be MaxWallClockTimeExpiry. If this property is not specified, there is no time limit on how long the job may run.
+	// MaxWallClockTime - If the Job does not complete within the time limit, the Batch service terminates it and any Tasks that are still running. In this case, the termination reason will be MaxWallClockTimeExpiry. If this property is not specified, there is no time limit on how long the Job may run.
 	MaxWallClockTime *string `json:"maxWallClockTime,omitempty"`
-	// MaxTaskRetryCount - Note that this value specifically controls the number of retries. The Batch service will try each task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries a task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry tasks. If the maximum retry count is -1, the Batch service retries tasks without limit. The default value is 0 (no retries).
+	// MaxTaskRetryCount - Note that this value specifically controls the number of retries. The Batch service will try each Task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries a Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry Tasks. If the maximum retry count is -1, the Batch service retries Tasks without limit. The default value is 0 (no retries).
 	MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
 }
 
@@ -2719,59 +2724,59 @@ type JobDisableParameter struct {
 
 // JobExecutionInformation ...
 type JobExecutionInformation struct {
-	// StartTime - This is the time at which the job was created.
+	// StartTime - This is the time at which the Job was created.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - This property is set only if the job is in the completed state.
+	// EndTime - This property is set only if the Job is in the completed state.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// PoolID - This element contains the actual pool where the job is assigned. When you get job details from the service, they also contain a poolInfo element, which contains the pool configuration data from when the job was added or updated. That poolInfo element may also contain a poolId element. If it does, the two IDs are the same. If it does not, it means the job ran on an auto pool, and this property contains the ID of that auto pool.
+	// PoolID - This element contains the actual Pool where the Job is assigned. When you get Job details from the service, they also contain a poolInfo element, which contains the Pool configuration data from when the Job was added or updated. That poolInfo element may also contain a poolId element. If it does, the two IDs are the same. If it does not, it means the Job ran on an auto Pool, and this property contains the ID of that auto Pool.
 	PoolID *string `json:"poolId,omitempty"`
-	// SchedulingError - This property is not set if there was no error starting the job.
+	// SchedulingError - This property is not set if there was no error starting the Job.
 	SchedulingError *JobSchedulingError `json:"schedulingError,omitempty"`
-	// TerminateReason - This property is set only if the job is in the completed state. If the Batch service terminates the job, it sets the reason as follows: JMComplete - the Job Manager task completed, and killJobOnCompletion was set to true. MaxWallClockTimeExpiry - the job reached its maxWallClockTime constraint. TerminateJobSchedule - the job ran as part of a schedule, and the schedule terminated. AllTasksComplete - the job's onAllTasksComplete attribute is set to terminatejob, and all tasks in the job are complete. TaskFailed - the job's onTaskFailure attribute is set to performExitOptionsJobAction, and a task in the job failed with an exit condition that specified a jobAction of terminatejob. Any other string is a user-defined reason specified in a call to the 'Terminate a job' operation.
+	// TerminateReason - This property is set only if the Job is in the completed state. If the Batch service terminates the Job, it sets the reason as follows: JMComplete - the Job Manager Task completed, and killJobOnCompletion was set to true. MaxWallClockTimeExpiry - the Job reached its maxWallClockTime constraint. TerminateJobSchedule - the Job ran as part of a schedule, and the schedule terminated. AllTasksComplete - the Job's onAllTasksComplete attribute is set to terminatejob, and all Tasks in the Job are complete. TaskFailed - the Job's onTaskFailure attribute is set to performExitOptionsJobAction, and a Task in the Job failed with an exit condition that specified a jobAction of terminatejob. Any other string is a user-defined reason specified in a call to the 'Terminate a Job' operation.
 	TerminateReason *string `json:"terminateReason,omitempty"`
 }
 
-// JobManagerTask the Job Manager task is automatically started when the job is created. The Batch service
-// tries to schedule the Job Manager task before any other tasks in the job. When shrinking a pool, the
-// Batch service tries to preserve compute nodes where Job Manager tasks are running for as long as
-// possible (that is, nodes running 'normal' tasks are removed before nodes running Job Manager tasks).
-// When a Job Manager task fails and needs to be restarted, the system tries to schedule it at the highest
-// priority. If there are no idle nodes available, the system may terminate one of the running tasks in the
-// pool and return it to the queue in order to make room for the Job Manager task to restart. Note that a
-// Job Manager task in one job does not have priority over tasks in other jobs. Across jobs, only job level
-// priorities are observed. For example, if a Job Manager in a priority 0 job needs to be restarted, it
-// will not displace tasks of a priority 1 job. Batch will retry tasks when a recovery operation is
-// triggered on a compute node. Examples of recovery operations include (but are not limited to) when an
-// unhealthy compute node is rebooted or a compute node disappeared due to host failure. Retries due to
-// recovery operations are independent of and are not counted against the maxTaskRetryCount. Even if the
+// JobManagerTask the Job Manager Task is automatically started when the Job is created. The Batch service
+// tries to schedule the Job Manager Task before any other Tasks in the Job. When shrinking a Pool, the
+// Batch service tries to preserve Nodes where Job Manager Tasks are running for as long as possible (that
+// is, Compute Nodes running 'normal' Tasks are removed before Compute Nodes running Job Manager Tasks).
+// When a Job Manager Task fails and needs to be restarted, the system tries to schedule it at the highest
+// priority. If there are no idle Compute Nodes available, the system may terminate one of the running
+// Tasks in the Pool and return it to the queue in order to make room for the Job Manager Task to restart.
+// Note that a Job Manager Task in one Job does not have priority over Tasks in other Jobs. Across Jobs,
+// only Job level priorities are observed. For example, if a Job Manager in a priority 0 Job needs to be
+// restarted, it will not displace Tasks of a priority 1 Job. Batch will retry Tasks when a recovery
+// operation is triggered on a Node. Examples of recovery operations include (but are not limited to) when
+// an unhealthy Node is rebooted or a Compute Node disappeared due to host failure. Retries due to recovery
+// operations are independent of and are not counted against the maxTaskRetryCount. Even if the
 // maxTaskRetryCount is 0, an internal retry due to a recovery operation may occur. Because of this, all
-// tasks should be idempotent. This means tasks need to tolerate being interrupted and restarted without
-// causing any corruption or duplicate data. The best practice for long running tasks is to use some form
+// Tasks should be idempotent. This means Tasks need to tolerate being interrupted and restarted without
+// causing any corruption or duplicate data. The best practice for long running Tasks is to use some form
 // of checkpointing.
 type JobManagerTask struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters.
 	ID *string `json:"id,omitempty"`
 	// DisplayName - It need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
-	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
+	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
 	CommandLine *string `json:"commandLine,omitempty"`
-	// ContainerSettings - If the pool that will run this task has containerConfiguration set, this must be set as well. If the pool that will run this task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
+	// ContainerSettings - If the Pool that will run this Task has containerConfiguration set, this must be set as well. If the Pool that will run this Task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
-	// ResourceFiles - Files listed under this element are located in the task's working directory. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
+	// ResourceFiles - Files listed under this element are located in the Task's working directory. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
 	ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
-	// OutputFiles - For multi-instance tasks, the files will only be uploaded from the compute node on which the primary task is executed.
+	// OutputFiles - For multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
 	OutputFiles         *[]OutputFile         `json:"outputFiles,omitempty"`
 	EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
 	Constraints         *TaskConstraints      `json:"constraints,omitempty"`
-	// KillJobOnCompletion - If true, when the Job Manager task completes, the Batch service marks the job as complete. If any tasks are still running at this time (other than Job Release), those tasks are terminated. If false, the completion of the Job Manager task does not affect the job status. In this case, you should either use the onAllTasksComplete attribute to terminate the job, or have a client or user terminate the job explicitly. An example of this is if the Job Manager creates a set of tasks but then takes no further role in their execution. The default value is true. If you are using the onAllTasksComplete and onTaskFailure attributes to control job lifetime, and using the Job Manager task only to create the tasks for the job (not to monitor progress), then it is important to set killJobOnCompletion to false.
+	// KillJobOnCompletion - If true, when the Job Manager Task completes, the Batch service marks the Job as complete. If any Tasks are still running at this time (other than Job Release), those Tasks are terminated. If false, the completion of the Job Manager Task does not affect the Job status. In this case, you should either use the onAllTasksComplete attribute to terminate the Job, or have a client or user terminate the Job explicitly. An example of this is if the Job Manager creates a set of Tasks but then takes no further role in their execution. The default value is true. If you are using the onAllTasksComplete and onTaskFailure attributes to control Job lifetime, and using the Job Manager Task only to create the Tasks for the Job (not to monitor progress), then it is important to set killJobOnCompletion to false.
 	KillJobOnCompletion *bool `json:"killJobOnCompletion,omitempty"`
-	// UserIdentity - If omitted, the task runs as a non-administrative user unique to the task.
+	// UserIdentity - If omitted, the Task runs as a non-administrative user unique to the Task.
 	UserIdentity *UserIdentity `json:"userIdentity,omitempty"`
-	// RunExclusive - If true, no other tasks will run on the same compute node for as long as the Job Manager is running. If false, other tasks can run simultaneously with the Job Manager on a compute node. The Job Manager task counts normally against the node's concurrent task limit, so this is only relevant if the node allows multiple concurrent tasks. The default value is true.
+	// RunExclusive - If true, no other Tasks will run on the same Node for as long as the Job Manager is running. If false, other Tasks can run simultaneously with the Job Manager on a Compute Node. The Job Manager Task counts normally against the Compute Node's concurrent Task limit, so this is only relevant if the Compute Node allows multiple concurrent Tasks. The default value is true.
 	RunExclusive *bool `json:"runExclusive,omitempty"`
-	// ApplicationPackageReferences - Application packages are downloaded and deployed to a shared directory, not the task working directory. Therefore, if a referenced package is already on the compute node, and is up to date, then it is not re-downloaded; the existing copy on the compute node is used. If a referenced application package cannot be installed, for example because the package has been deleted or because download failed, the task fails.
+	// ApplicationPackageReferences - Application Packages are downloaded and deployed to a shared directory, not the Task working directory. Therefore, if a referenced Application Package is already on the Compute Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Compute Node is used. If a referenced Application Package cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-	// AuthenticationTokenSettings - If this property is set, the Batch service provides the task with an authentication token which can be used to authenticate Batch service operations without requiring an account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the task can carry out using the token depend on the settings. For example, a task can request job permissions in order to add other tasks to the job, or check the status of the job or of other tasks under the job.
+	// AuthenticationTokenSettings - If this property is set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
 	AuthenticationTokenSettings *AuthenticationTokenSettings `json:"authenticationTokenSettings,omitempty"`
 	// AllowLowPriorityNode - The default value is true.
 	AllowLowPriorityNode *bool `json:"allowLowPriorityNode,omitempty"`
@@ -2779,21 +2784,21 @@ type JobManagerTask struct {
 
 // JobNetworkConfiguration ...
 type JobNetworkConfiguration struct {
-	// SubnetID - The virtual network must be in the same region and subscription as the Azure Batch account. The specified subnet should have enough free IP addresses to accommodate the number of nodes which will run tasks from the job. This can be up to the number of nodes in the pool. The 'MicrosoftAzureBatch' service principal must have the 'Classic Virtual Machine Contributor' Role-Based Access Control (RBAC) role for the specified VNet so that Azure Batch service can schedule tasks on the compute nodes. This can be verified by checking if the specified VNet has any associated Network Security Groups (NSG). If communication to the compute nodes in the specified subnet is denied by an NSG, then the Batch service will set the state of the compute nodes to unusable. This is of the form /subscriptions/{subscription}/resourceGroups/{group}/providers/{provider}/virtualNetworks/{network}/subnets/{subnet}. If the specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be enabled for inbound communication from the Azure Batch service. For pools created with a Virtual Machine configuration, enable ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. Port 443 is also required to be open for outbound connections for communications to Azure Storage. For more details see: https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration
+	// SubnetID - The virtual network must be in the same region and subscription as the Azure Batch Account. The specified subnet should have enough free IP addresses to accommodate the number of Compute Nodes which will run Tasks from the Job. This can be up to the number of Compute Nodes in the Pool. The 'MicrosoftAzureBatch' service principal must have the 'Classic Virtual Machine Contributor' Role-Based Access Control (RBAC) role for the specified VNet so that Azure Batch service can schedule Tasks on the Nodes. This can be verified by checking if the specified VNet has any associated Network Security Groups (NSG). If communication to the Nodes in the specified subnet is denied by an NSG, then the Batch service will set the state of the Compute Nodes to unusable. This is of the form /subscriptions/{subscription}/resourceGroups/{group}/providers/{provider}/virtualNetworks/{network}/subnets/{subnet}. If the specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be enabled for inbound communication from the Azure Batch service. For Pools created with a Virtual Machine configuration, enable ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. Port 443 is also required to be open for outbound connections for communications to Azure Storage. For more details see: https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration
 	SubnetID *string `json:"subnetId,omitempty"`
 }
 
 // JobPatchParameter ...
 type JobPatchParameter struct {
-	// Priority - Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If omitted, the priority of the job is left unchanged.
+	// Priority - Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If omitted, the priority of the Job is left unchanged.
 	Priority *int32 `json:"priority,omitempty"`
-	// OnAllTasksComplete - If omitted, the completion behavior is left unchanged. You may not change the value from terminatejob to noaction - that is, once you have engaged automatic job termination, you cannot turn it off again. If you try to do this, the request fails with an 'invalid property value' error response; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). Possible values include: 'NoAction', 'TerminateJob'
+	// OnAllTasksComplete - If omitted, the completion behavior is left unchanged. You may not change the value from terminatejob to noaction - that is, once you have engaged automatic Job termination, you cannot turn it off again. If you try to do this, the request fails with an 'invalid property value' error response; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). Possible values include: 'NoAction', 'TerminateJob'
 	OnAllTasksComplete OnAllTasksComplete `json:"onAllTasksComplete,omitempty"`
 	// Constraints - If omitted, the existing execution constraints are left unchanged.
 	Constraints *JobConstraints `json:"constraints,omitempty"`
-	// PoolInfo - You may change the pool for a job only when the job is disabled. The Patch Job call will fail if you include the poolInfo element and the job is not disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job. If omitted, the job continues to run on its current pool.
+	// PoolInfo - You may change the Pool for a Job only when the Job is disabled. The Patch Job call will fail if you include the poolInfo element and the Job is not disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto Pool has a poolLifetimeOption of Job. If omitted, the Job continues to run on its current Pool.
 	PoolInfo *PoolInformation `json:"poolInfo,omitempty"`
-	// Metadata - If omitted, the existing job metadata is left unchanged.
+	// Metadata - If omitted, the existing Job metadata is left unchanged.
 	Metadata *[]MetadataItem `json:"metadata,omitempty"`
 }
 
@@ -2803,117 +2808,115 @@ type JobPreparationAndReleaseTaskExecutionInformation struct {
 	NodeID                          *string                                 `json:"nodeId,omitempty"`
 	NodeURL                         *string                                 `json:"nodeUrl,omitempty"`
 	JobPreparationTaskExecutionInfo *JobPreparationTaskExecutionInformation `json:"jobPreparationTaskExecutionInfo,omitempty"`
-	// JobReleaseTaskExecutionInfo - This property is set only if the Job Release task has run on the node.
+	// JobReleaseTaskExecutionInfo - This property is set only if the Job Release Task has run on the Compute Node.
 	JobReleaseTaskExecutionInfo *JobReleaseTaskExecutionInformation `json:"jobReleaseTaskExecutionInfo,omitempty"`
 }
 
-// JobPreparationTask you can use Job Preparation to prepare a compute node to run tasks for the job.
-// Activities commonly performed in Job Preparation include: Downloading common resource files used by all
-// the tasks in the job. The Job Preparation task can download these common resource files to the shared
-// location on the compute node. (AZ_BATCH_NODE_ROOT_DIR\shared), or starting a local service on the
-// compute node so that all tasks of that job can communicate with it. If the Job Preparation task fails
-// (that is, exhausts its retry count before exiting with exit code 0), Batch will not run tasks of this
-// job on the compute node. The node remains ineligible to run tasks of this job until it is reimaged. The
-// node remains active and can be used for other jobs. The Job Preparation task can run multiple times on
-// the same compute node. Therefore, you should write the Job Preparation task to handle re-execution. If
-// the compute node is rebooted, the Job Preparation task is run again on the node before scheduling any
-// other task of the job, if rerunOnNodeRebootAfterSuccess is true or if the Job Preparation task did not
-// previously complete. If the compute node is reimaged, the Job Preparation task is run again before
-// scheduling any task of the job. Batch will retry tasks when a recovery operation is triggered on a
-// compute node. Examples of recovery operations include (but are not limited to) when an unhealthy compute
-// node is rebooted or a compute node disappeared due to host failure. Retries due to recovery operations
-// are independent of and are not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is
-// 0, an internal retry due to a recovery operation may occur. Because of this, all tasks should be
-// idempotent. This means tasks need to tolerate being interrupted and restarted without causing any
-// corruption or duplicate data. The best practice for long running tasks is to use some form of
-// checkpointing.
+// JobPreparationTask you can use Job Preparation to prepare a Node to run Tasks for the Job. Activities
+// commonly performed in Job Preparation include: Downloading common resource files used by all the Tasks
+// in the Job. The Job Preparation Task can download these common resource files to the shared location on
+// the Node. (AZ_BATCH_NODE_ROOT_DIR\shared), or starting a local service on the Node so that all Tasks of
+// that Job can communicate with it. If the Job Preparation Task fails (that is, exhausts its retry count
+// before exiting with exit code 0), Batch will not run Tasks of this Job on the Node. The Compute Node
+// remains ineligible to run Tasks of this Job until it is reimaged. The Compute Node remains active and
+// can be used for other Jobs. The Job Preparation Task can run multiple times on the same Node. Therefore,
+// you should write the Job Preparation Task to handle re-execution. If the Node is rebooted, the Job
+// Preparation Task is run again on the Compute Node before scheduling any other Task of the Job, if
+// rerunOnNodeRebootAfterSuccess is true or if the Job Preparation Task did not previously complete. If the
+// Node is reimaged, the Job Preparation Task is run again before scheduling any Task of the Job. Batch
+// will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
+// include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to
+// host failure. Retries due to recovery operations are independent of and are not counted against the
+// maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation may
+// occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate being
+// interrupted and restarted without causing any corruption or duplicate data. The best practice for long
+// running Tasks is to use some form of checkpointing.
 type JobPreparationTask struct {
-	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value of 'jobpreparation'. No other task in the job can have the same ID as the Job Preparation task. If you try to submit a task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobPreparationTask; if you are calling the REST API directly, the HTTP status code is 409 (Conflict).
+	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value of 'jobpreparation'. No other Task in the Job can have the same ID as the Job Preparation Task. If you try to submit a Task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobPreparationTask; if you are calling the REST API directly, the HTTP status code is 409 (Conflict).
 	ID *string `json:"id,omitempty"`
-	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
+	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
 	CommandLine *string `json:"commandLine,omitempty"`
-	// ContainerSettings - When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
+	// ContainerSettings - When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
-	// ResourceFiles - Files listed under this element are located in the task's working directory.  There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
+	// ResourceFiles - Files listed under this element are located in the Task's working directory.  There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
 	ResourceFiles       *[]ResourceFile       `json:"resourceFiles,omitempty"`
 	EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
 	Constraints         *TaskConstraints      `json:"constraints,omitempty"`
-	// WaitForSuccess - If true and the Job Preparation task fails on a compute node, the Batch service retries the Job Preparation task up to its maximum retry count (as specified in the constraints element). If the task has still not completed successfully after all retries, then the Batch service will not schedule tasks of the job to the compute node. The compute node remains active and eligible to run tasks of other jobs. If false, the Batch service will not wait for the Job Preparation task to complete. In this case, other tasks of the job can start executing on the compute node while the Job Preparation task is still running; and even if the Job Preparation task fails, new tasks will continue to be scheduled on the node. The default value is true.
+	// WaitForSuccess - If true and the Job Preparation Task fails on a Node, the Batch service retries the Job Preparation Task up to its maximum retry count (as specified in the constraints element). If the Task has still not completed successfully after all retries, then the Batch service will not schedule Tasks of the Job to the Node. The Node remains active and eligible to run Tasks of other Jobs. If false, the Batch service will not wait for the Job Preparation Task to complete. In this case, other Tasks of the Job can start executing on the Compute Node while the Job Preparation Task is still running; and even if the Job Preparation Task fails, new Tasks will continue to be scheduled on the Compute Node. The default value is true.
 	WaitForSuccess *bool `json:"waitForSuccess,omitempty"`
-	// UserIdentity - If omitted, the task runs as a non-administrative user unique to the task on Windows nodes, or a non-administrative user unique to the pool on Linux nodes.
+	// UserIdentity - If omitted, the Task runs as a non-administrative user unique to the Task on Windows Compute Nodes, or a non-administrative user unique to the Pool on Linux Compute Nodes.
 	UserIdentity *UserIdentity `json:"userIdentity,omitempty"`
-	// RerunOnNodeRebootAfterSuccess - The Job Preparation task is always rerun if a compute node is reimaged, or if the Job Preparation task did not complete (e.g. because the reboot occurred while the task was running). Therefore, you should always write a Job Preparation task to be idempotent and to behave correctly if run multiple times. The default value is true.
+	// RerunOnNodeRebootAfterSuccess - The Job Preparation Task is always rerun if a Compute Node is reimaged, or if the Job Preparation Task did not complete (e.g. because the reboot occurred while the Task was running). Therefore, you should always write a Job Preparation Task to be idempotent and to behave correctly if run multiple times. The default value is true.
 	RerunOnNodeRebootAfterSuccess *bool `json:"rerunOnNodeRebootAfterSuccess,omitempty"`
 }
 
 // JobPreparationTaskExecutionInformation ...
 type JobPreparationTaskExecutionInformation struct {
-	// StartTime - If the task has been restarted or retried, this is the most recent time at which the task started running.
+	// StartTime - If the Task has been restarted or retried, this is the most recent time at which the Task started running.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - This property is set only if the task is in the Completed state.
+	// EndTime - This property is set only if the Task is in the Completed state.
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// State - Possible values include: 'JobPreparationTaskStateRunning', 'JobPreparationTaskStateCompleted'
 	State                JobPreparationTaskState `json:"state,omitempty"`
 	TaskRootDirectory    *string                 `json:"taskRootDirectory,omitempty"`
 	TaskRootDirectoryURL *string                 `json:"taskRootDirectoryUrl,omitempty"`
-	// ExitCode - This parameter is returned only if the task is in the completed state. The exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. Note that the exit code may also be generated by the compute node operating system, such as when a process is forcibly terminated.
+	// ExitCode - This parameter is returned only if the Task is in the completed state. The exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. Note that the exit code may also be generated by the Compute Node operating system, such as when a process is forcibly terminated.
 	ExitCode *int32 `json:"exitCode,omitempty"`
-	// ContainerInfo - This property is set only if the task runs in a container context.
+	// ContainerInfo - This property is set only if the Task runs in a container context.
 	ContainerInfo *TaskContainerExecutionInformation `json:"containerInfo,omitempty"`
-	// FailureInfo - This property is set only if the task is in the completed state and encountered a failure.
+	// FailureInfo - This property is set only if the Task is in the completed state and encountered a failure.
 	FailureInfo *TaskFailureInformation `json:"failureInfo,omitempty"`
-	// RetryCount - Task application failures (non-zero exit code) are retried, pre-processing errors (the task could not be run) and file upload errors are not retried. The Batch service will retry the task up to the limit specified by the constraints.
+	// RetryCount - Task application failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and file upload errors are not retried. The Batch service will retry the Task up to the limit specified by the constraints.
 	RetryCount *int32 `json:"retryCount,omitempty"`
-	// LastRetryTime - This property is set only if the task was retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different if the task has been restarted for reasons other than retry; for example, if the compute node was rebooted during a retry, then the startTime is updated but the lastRetryTime is not.
+	// LastRetryTime - This property is set only if the Task was retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different if the Task has been restarted for reasons other than retry; for example, if the Compute Node was rebooted during a retry, then the startTime is updated but the lastRetryTime is not.
 	LastRetryTime *date.Time `json:"lastRetryTime,omitempty"`
 	// Result - If the value is 'failed', then the details of the failure can be found in the failureInfo property. Possible values include: 'Success', 'Failure'
 	Result TaskExecutionResult `json:"result,omitempty"`
 }
 
-// JobReleaseTask the Job Release task runs when the job ends, because of one of the following: The user
-// calls the Terminate Job API, or the Delete Job API while the job is still active, the job's maximum wall
-// clock time constraint is reached, and the job is still active, or the job's Job Manager task completed,
-// and the job is configured to terminate when the Job Manager completes. The Job Release task runs on each
-// compute node where tasks of the job have run and the Job Preparation task ran and completed. If you
-// reimage a compute node after it has run the Job Preparation task, and the job ends without any further
-// tasks of the job running on that compute node (and hence the Job Preparation task does not re-run), then
-// the Job Release task does not run on that node. If a compute node reboots while the Job Release task is
-// still running, the Job Release task runs again when the compute node starts up. The job is not marked as
-// complete until all Job Release tasks have completed. The Job Release task runs in the background. It
-// does not occupy a scheduling slot; that is, it does not count towards the maxTasksPerNode limit
-// specified on the pool.
+// JobReleaseTask the Job Release Task runs when the Job ends, because of one of the following: The user
+// calls the Terminate Job API, or the Delete Job API while the Job is still active, the Job's maximum wall
+// clock time constraint is reached, and the Job is still active, or the Job's Job Manager Task completed,
+// and the Job is configured to terminate when the Job Manager completes. The Job Release Task runs on each
+// Node where Tasks of the Job have run and the Job Preparation Task ran and completed. If you reimage a
+// Node after it has run the Job Preparation Task, and the Job ends without any further Tasks of the Job
+// running on that Node (and hence the Job Preparation Task does not re-run), then the Job Release Task
+// does not run on that Compute Node. If a Node reboots while the Job Release Task is still running, the
+// Job Release Task runs again when the Compute Node starts up. The Job is not marked as complete until all
+// Job Release Tasks have completed. The Job Release Task runs in the background. It does not occupy a
+// scheduling slot; that is, it does not count towards the maxTasksPerNode limit specified on the Pool.
 type JobReleaseTask struct {
-	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value of 'jobrelease'. No other task in the job can have the same ID as the Job Release task. If you try to submit a task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobReleaseTask; if you are calling the REST API directly, the HTTP status code is 409 (Conflict).
+	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value of 'jobrelease'. No other Task in the Job can have the same ID as the Job Release Task. If you try to submit a Task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobReleaseTask; if you are calling the REST API directly, the HTTP status code is 409 (Conflict).
 	ID *string `json:"id,omitempty"`
-	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
+	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
 	CommandLine *string `json:"commandLine,omitempty"`
-	// ContainerSettings - When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
+	// ContainerSettings - When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
-	// ResourceFiles - Files listed under this element are located in the task's working directory.
+	// ResourceFiles - Files listed under this element are located in the Task's working directory.
 	ResourceFiles       *[]ResourceFile       `json:"resourceFiles,omitempty"`
 	EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
 	MaxWallClockTime    *string               `json:"maxWallClockTime,omitempty"`
-	// RetentionTime - The default is 7 days, i.e. the task directory will be retained for 7 days unless the compute node is removed or the job is deleted.
+	// RetentionTime - The default is 7 days, i.e. the Task directory will be retained for 7 days unless the Compute Node is removed or the Job is deleted.
 	RetentionTime *string `json:"retentionTime,omitempty"`
-	// UserIdentity - If omitted, the task runs as a non-administrative user unique to the task.
+	// UserIdentity - If omitted, the Task runs as a non-administrative user unique to the Task.
 	UserIdentity *UserIdentity `json:"userIdentity,omitempty"`
 }
 
 // JobReleaseTaskExecutionInformation ...
 type JobReleaseTaskExecutionInformation struct {
-	// StartTime - If the task has been restarted or retried, this is the most recent time at which the task started running.
+	// StartTime - If the Task has been restarted or retried, this is the most recent time at which the Task started running.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - This property is set only if the task is in the Completed state.
+	// EndTime - This property is set only if the Task is in the Completed state.
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// State - Possible values include: 'JobReleaseTaskStateRunning', 'JobReleaseTaskStateCompleted'
 	State                JobReleaseTaskState `json:"state,omitempty"`
 	TaskRootDirectory    *string             `json:"taskRootDirectory,omitempty"`
 	TaskRootDirectoryURL *string             `json:"taskRootDirectoryUrl,omitempty"`
-	// ExitCode - This parameter is returned only if the task is in the completed state. The exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. Note that the exit code may also be generated by the compute node operating system, such as when a process is forcibly terminated.
+	// ExitCode - This parameter is returned only if the Task is in the completed state. The exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. Note that the exit code may also be generated by the Compute Node operating system, such as when a process is forcibly terminated.
 	ExitCode *int32 `json:"exitCode,omitempty"`
-	// ContainerInfo - This property is set only if the task runs in a container context.
+	// ContainerInfo - This property is set only if the Task runs in a container context.
 	ContainerInfo *TaskContainerExecutionInformation `json:"containerInfo,omitempty"`
-	// FailureInfo - This property is set only if the task is in the completed state and encountered a failure.
+	// FailureInfo - This property is set only if the Task is in the completed state and encountered a failure.
 	FailureInfo *TaskFailureInformation `json:"failureInfo,omitempty"`
 	// Result - If the value is 'failed', then the details of the failure can be found in the failureInfo property. Possible values include: 'Success', 'Failure'
 	Result TaskExecutionResult `json:"result,omitempty"`
@@ -2921,7 +2924,7 @@ type JobReleaseTaskExecutionInformation struct {
 
 // JobScheduleAddParameter ...
 type JobScheduleAddParameter struct {
-	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an account that differ only by case).
+	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
 	ID *string `json:"id,omitempty"`
 	// DisplayName - The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName      *string           `json:"displayName,omitempty"`
@@ -2933,11 +2936,11 @@ type JobScheduleAddParameter struct {
 
 // JobScheduleExecutionInformation ...
 type JobScheduleExecutionInformation struct {
-	// NextRunTime - This property is meaningful only if the schedule is in the active state when the time comes around. For example, if the schedule is disabled, no job will be created at nextRunTime unless the job is enabled before then.
+	// NextRunTime - This property is meaningful only if the schedule is in the active state when the time comes around. For example, if the schedule is disabled, no Job will be created at nextRunTime unless the Job is enabled before then.
 	NextRunTime *date.Time `json:"nextRunTime,omitempty"`
-	// RecentJob - This property is present only if the at least one job has run under the schedule.
+	// RecentJob - This property is present only if the at least one Job has run under the schedule.
 	RecentJob *RecentJob `json:"recentJob,omitempty"`
-	// EndTime - This property is set only if the job schedule is in the completed state.
+	// EndTime - This property is set only if the Job Schedule is in the completed state.
 	EndTime *date.Time `json:"endTime,omitempty"`
 }
 
@@ -2945,7 +2948,7 @@ type JobScheduleExecutionInformation struct {
 type JobSchedulePatchParameter struct {
 	// Schedule - If you do not specify this element, the existing schedule is left unchanged.
 	Schedule *Schedule `json:"schedule,omitempty"`
-	// JobSpecification - Updates affect only jobs that are started after the update has taken place. Any currently active job continues with the older specification.
+	// JobSpecification - Updates affect only Jobs that are started after the update has taken place. Any currently active Job continues with the older specification.
 	JobSpecification *JobSpecification `json:"jobSpecification,omitempty"`
 	// Metadata - If you do not specify this element, existing metadata is left unchanged.
 	Metadata *[]MetadataItem `json:"metadata,omitempty"`
@@ -2958,7 +2961,7 @@ type JobScheduleStatistics struct {
 	LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
 	UserCPUTime    *string    `json:"userCPUTime,omitempty"`
 	KernelCPUTime  *string    `json:"kernelCPUTime,omitempty"`
-	// WallClockTime - The wall clock time is the elapsed time from when the task started running on a compute node to when it finished (or to the last time the statistics were updated, if the task had not finished by then). If a task was retried, this includes the wall clock time of all the task retries.
+	// WallClockTime - The wall clock time is the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
 	WallClockTime     *string  `json:"wallClockTime,omitempty"`
 	ReadIOps          *int64   `json:"readIOps,omitempty"`
 	WriteIOps         *int64   `json:"writeIOps,omitempty"`
@@ -2967,15 +2970,15 @@ type JobScheduleStatistics struct {
 	NumSucceededTasks *int64   `json:"numSucceededTasks,omitempty"`
 	NumFailedTasks    *int64   `json:"numFailedTasks,omitempty"`
 	NumTaskRetries    *int64   `json:"numTaskRetries,omitempty"`
-	// WaitTime - This value is only reported in the account lifetime statistics; it is not included in the job statistics.
+	// WaitTime - This value is only reported in the Account lifetime statistics; it is not included in the Job statistics.
 	WaitTime *string `json:"waitTime,omitempty"`
 }
 
 // JobScheduleUpdateParameter ...
 type JobScheduleUpdateParameter struct {
-	// Schedule - If you do not specify this element, it is equivalent to passing the default schedule: that is, a single job scheduled to run immediately.
+	// Schedule - If you do not specify this element, it is equivalent to passing the default schedule: that is, a single Job scheduled to run immediately.
 	Schedule *Schedule `json:"schedule,omitempty"`
-	// JobSpecification - Updates affect only jobs that are started after the update has taken place. Any currently active job continues with the older specification.
+	// JobSpecification - Updates affect only Jobs that are started after the update has taken place. Any currently active Job continues with the older specification.
 	JobSpecification *JobSpecification `json:"jobSpecification,omitempty"`
 	// Metadata - If you do not specify this element, it takes the default value of an empty list; in effect, any existing metadata is deleted.
 	Metadata *[]MetadataItem `json:"metadata,omitempty"`
@@ -2992,24 +2995,24 @@ type JobSchedulingError struct {
 
 // JobSpecification ...
 type JobSpecification struct {
-	// Priority - Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0. This priority is used as the default for all jobs under the job schedule. You can update a job's priority after it has been created using by using the update job API.
+	// Priority - Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0. This priority is used as the default for all Jobs under the Job Schedule. You can update a Job's priority after it has been created using by using the update Job API.
 	Priority *int32 `json:"priority,omitempty"`
 	// DisplayName - The name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName          *string `json:"displayName,omitempty"`
 	UsesTaskDependencies *bool   `json:"usesTaskDependencies,omitempty"`
-	// OnAllTasksComplete - Note that if a job contains no tasks, then all tasks are considered complete. This option is therefore most commonly used with a Job Manager task; if you want to use automatic job termination without a Job Manager, you should initially set onAllTasksComplete to noaction and update the job properties to set onAllTasksComplete to terminatejob once you have finished adding tasks. The default is noaction. Possible values include: 'NoAction', 'TerminateJob'
+	// OnAllTasksComplete - Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a Job Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set onAllTasksComplete to terminatejob once you have finished adding Tasks. The default is noaction. Possible values include: 'NoAction', 'TerminateJob'
 	OnAllTasksComplete OnAllTasksComplete `json:"onAllTasksComplete,omitempty"`
 	// OnTaskFailure - The default is noaction. Possible values include: 'OnTaskFailureNoAction', 'OnTaskFailurePerformExitOptionsJobAction'
 	OnTaskFailure        OnTaskFailure            `json:"onTaskFailure,omitempty"`
 	NetworkConfiguration *JobNetworkConfiguration `json:"networkConfiguration,omitempty"`
 	Constraints          *JobConstraints          `json:"constraints,omitempty"`
-	// JobManagerTask - If the job does not specify a Job Manager task, the user must explicitly add tasks to the job using the Task API. If the job does specify a Job Manager task, the Batch service creates the Job Manager task when the job is created, and will try to schedule the Job Manager task before scheduling other tasks in the job.
+	// JobManagerTask - If the Job does not specify a Job Manager Task, the user must explicitly add Tasks to the Job using the Task API. If the Job does specify a Job Manager Task, the Batch service creates the Job Manager Task when the Job is created, and will try to schedule the Job Manager Task before scheduling other Tasks in the Job.
 	JobManagerTask *JobManagerTask `json:"jobManagerTask,omitempty"`
-	// JobPreparationTask - If a job has a Job Preparation task, the Batch service will run the Job Preparation task on a compute node before starting any tasks of that job on that compute node.
+	// JobPreparationTask - If a Job has a Job Preparation Task, the Batch service will run the Job Preparation Task on a Node before starting any Tasks of that Job on that Compute Node.
 	JobPreparationTask *JobPreparationTask `json:"jobPreparationTask,omitempty"`
-	// JobReleaseTask - The primary purpose of the Job Release task is to undo changes to compute nodes made by the Job Preparation task. Example activities include deleting local files, or shutting down services that were started as part of job preparation. A Job Release task cannot be specified without also specifying a Job Preparation task for the job. The Batch service runs the Job Release task on the compute nodes that have run the Job Preparation task.
+	// JobReleaseTask - The primary purpose of the Job Release Task is to undo changes to Nodes made by the Job Preparation Task. Example activities include deleting local files, or shutting down services that were started as part of Job preparation. A Job Release Task cannot be specified without also specifying a Job Preparation Task for the Job. The Batch service runs the Job Release Task on the Compute Nodes that have run the Job Preparation Task.
 	JobReleaseTask *JobReleaseTask `json:"jobReleaseTask,omitempty"`
-	// CommonEnvironmentSettings - Individual tasks can override an environment setting specified here by specifying the same setting name with a different value.
+	// CommonEnvironmentSettings - Individual Tasks can override an environment setting specified here by specifying the same setting name with a different value.
 	CommonEnvironmentSettings *[]EnvironmentSetting `json:"commonEnvironmentSettings,omitempty"`
 	PoolInfo                  *PoolInformation      `json:"poolInfo,omitempty"`
 	// Metadata - The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
@@ -3024,18 +3027,18 @@ type JobStatistics struct {
 	LastUpdateTime    *date.Time `json:"lastUpdateTime,omitempty"`
 	UserCPUTime       *string    `json:"userCPUTime,omitempty"`
 	KernelCPUTime     *string    `json:"kernelCPUTime,omitempty"`
-	// WallClockTime -  The wall clock time is the elapsed time from when the task started running on a compute node to when it finished (or to the last time the statistics were updated, if the task had not finished by then). If a task was retried, this includes the wall clock time of all the task retries.
+	// WallClockTime -  The wall clock time is the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
 	WallClockTime *string  `json:"wallClockTime,omitempty"`
 	ReadIOps      *int64   `json:"readIOps,omitempty"`
 	WriteIOps     *int64   `json:"writeIOps,omitempty"`
 	ReadIOGiB     *float64 `json:"readIOGiB,omitempty"`
 	WriteIOGiB    *float64 `json:"writeIOGiB,omitempty"`
-	// NumSucceededTasks - A task completes successfully if it returns exit code 0.
+	// NumSucceededTasks - A Task completes successfully if it returns exit code 0.
 	NumSucceededTasks *int64 `json:"numSucceededTasks,omitempty"`
-	// NumFailedTasks - A task fails if it exhausts its maximum retry count without returning exit code 0.
+	// NumFailedTasks - A Task fails if it exhausts its maximum retry count without returning exit code 0.
 	NumFailedTasks *int64 `json:"numFailedTasks,omitempty"`
 	NumTaskRetries *int64 `json:"numTaskRetries,omitempty"`
-	// WaitTime - The wait time for a task is defined as the elapsed time between the creation of the task and the start of task execution. (If the task is retried due to failures, the wait time is the time to the most recent task execution.) This value is only reported in the account lifetime statistics; it is not included in the job statistics.
+	// WaitTime - The wait time for a Task is defined as the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to the most recent Task execution.) This value is only reported in the Account lifetime statistics; it is not included in the Job statistics.
 	WaitTime *string `json:"waitTime,omitempty"`
 }
 
@@ -3050,11 +3053,11 @@ type JobUpdateParameter struct {
 	Priority *int32 `json:"priority,omitempty"`
 	// Constraints - If omitted, the constraints are cleared.
 	Constraints *JobConstraints `json:"constraints,omitempty"`
-	// PoolInfo - You may change the pool for a job only when the job is disabled. The Update Job call will fail if you include the poolInfo element and the job is not disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job.
+	// PoolInfo - You may change the Pool for a Job only when the Job is disabled. The Update Job call will fail if you include the poolInfo element and the Job is not disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto Pool has a poolLifetimeOption of Job.
 	PoolInfo *PoolInformation `json:"poolInfo,omitempty"`
 	// Metadata - If omitted, it takes the default value of an empty list; in effect, any existing metadata is deleted.
 	Metadata *[]MetadataItem `json:"metadata,omitempty"`
-	// OnAllTasksComplete - If omitted, the completion behavior is set to noaction. If the current value is terminatejob, this is an error because a job's completion behavior may not be changed from terminatejob to noaction. You may not change the value from terminatejob to noaction - that is, once you have engaged automatic job termination, you cannot turn it off again. If you try to do this, the request fails and Batch returns status code 400 (Bad Request) and an 'invalid property value' error response. If you do not specify this element in a PUT request, it is equivalent to passing noaction. This is an error if the current value is terminatejob. Possible values include: 'NoAction', 'TerminateJob'
+	// OnAllTasksComplete - If omitted, the completion behavior is set to noaction. If the current value is terminatejob, this is an error because a Job's completion behavior may not be changed from terminatejob to noaction. You may not change the value from terminatejob to noaction - that is, once you have engaged automatic Job termination, you cannot turn it off again. If you try to do this, the request fails and Batch returns status code 400 (Bad Request) and an 'invalid property value' error response. If you do not specify this element in a PUT request, it is equivalent to passing noaction. This is an error if the current value is terminatejob. Possible values include: 'NoAction', 'TerminateJob'
 	OnAllTasksComplete OnAllTasksComplete `json:"onAllTasksComplete,omitempty"`
 }
 
@@ -3064,7 +3067,7 @@ type LinuxUserConfiguration struct {
 	UID *int32 `json:"uid,omitempty"`
 	// Gid - The uid and gid properties must be specified together or not at all. If not specified the underlying operating system picks the gid.
 	Gid *int32 `json:"gid,omitempty"`
-	// SSHPrivateKey - The private key must not be password protected. The private key is used to automatically configure asymmetric-key based authentication for SSH between nodes in a Linux pool when the pool's enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does this by placing the key pair into the user's .ssh directory. If not specified, password-less SSH is not configured between nodes (no modification of the user's .ssh directory is done).
+	// SSHPrivateKey - The private key must not be password protected. The private key is used to automatically configure asymmetric-key based authentication for SSH between Compute Nodes in a Linux Pool when the Pool's enableInterNodeCommunication property is true (it is ignored if enableInterNodeCommunication is false). It does this by placing the key pair into the user's .ssh directory. If not specified, password-less SSH is not configured between Compute Nodes (no modification of the user's .ssh directory is done).
 	SSHPrivateKey *string `json:"sshPrivateKey,omitempty"`
 }
 
@@ -3075,16 +3078,16 @@ type MetadataItem struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// MultiInstanceSettings multi-instance tasks are commonly used to support MPI tasks. In the MPI case, if
+// MultiInstanceSettings multi-instance Tasks are commonly used to support MPI Tasks. In the MPI case, if
 // any of the subtasks fail (for example due to exiting with a non-zero exit code) the entire
-// multi-instance task fails. The multi-instance task is then terminated and retried, up to its retry
+// multi-instance Task fails. The multi-instance Task is then terminated and retried, up to its retry
 // limit.
 type MultiInstanceSettings struct {
 	// NumberOfInstances - If omitted, the default is 1.
 	NumberOfInstances *int32 `json:"numberOfInstances,omitempty"`
 	// CoordinationCommandLine - A typical coordination command line launches a background service and verifies that the service is ready to process inter-node messages.
 	CoordinationCommandLine *string `json:"coordinationCommandLine,omitempty"`
-	// CommonResourceFiles - The difference between common resource files and task resource files is that common resource files are downloaded for all subtasks including the primary, whereas task resource files are downloaded only for the primary. Also note that these resource files are not downloaded to the task working directory, but instead are downloaded to the task root directory (one directory above the working directory).  There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
+	// CommonResourceFiles - The difference between common resource files and Task resource files is that common resource files are downloaded for all subtasks including the primary, whereas Task resource files are downloaded only for the primary. Also note that these resource files are not downloaded to the Task working directory, but instead are downloaded to the Task root directory (one directory above the working directory).  There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
 	CommonResourceFiles *[]ResourceFile `json:"commonResourceFiles,omitempty"`
 }
 
@@ -3094,19 +3097,19 @@ type NameValuePair struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// NetworkConfiguration the network configuration for a pool.
+// NetworkConfiguration the network configuration for a Pool.
 type NetworkConfiguration struct {
-	// SubnetID - The virtual network must be in the same region and subscription as the Azure Batch account. The specified subnet should have enough free IP addresses to accommodate the number of nodes in the pool. If the subnet doesn't have enough free IP addresses, the pool will partially allocate compute nodes, and a resize error will occur. The 'MicrosoftAzureBatch' service principal must have the 'Classic Virtual Machine Contributor' Role-Based Access Control (RBAC) role for the specified VNet. The specified subnet must allow communication from the Azure Batch service to be able to schedule tasks on the compute nodes. This can be verified by checking if the specified VNet has any associated Network Security Groups (NSG). If communication to the compute nodes in the specified subnet is denied by an NSG, then the Batch service will set the state of the compute nodes to unusable. For pools created with virtualMachineConfiguration only ARM virtual networks ('Microsoft.Network/virtualNetworks') are supported, but for pools created with cloudServiceConfiguration both ARM and classic virtual networks are supported. If the specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be enabled for inbound communication. For pools created with a virtual machine configuration, enable ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. For pools created with a cloud service configuration, enable ports 10100, 20100, and 30100. Also enable outbound connections to Azure Storage on port 443. For more details see: https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration
+	// SubnetID - The virtual network must be in the same region and subscription as the Azure Batch Account. The specified subnet should have enough free IP addresses to accommodate the number of Compute Nodes in the Pool. If the subnet doesn't have enough free IP addresses, the Pool will partially allocate Nodes, and a resize error will occur. The 'MicrosoftAzureBatch' service principal must have the 'Classic Virtual Machine Contributor' Role-Based Access Control (RBAC) role for the specified VNet. The specified subnet must allow communication from the Azure Batch service to be able to schedule Tasks on the Nodes. This can be verified by checking if the specified VNet has any associated Network Security Groups (NSG). If communication to the Nodes in the specified subnet is denied by an NSG, then the Batch service will set the state of the Compute Nodes to unusable. For Pools created with virtualMachineConfiguration only ARM virtual networks ('Microsoft.Network/virtualNetworks') are supported, but for Pools created with cloudServiceConfiguration both ARM and classic virtual networks are supported. If the specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be enabled for inbound communication. For Pools created with a virtual machine configuration, enable ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. For Pools created with a cloud service configuration, enable ports 10100, 20100, and 30100. Also enable outbound connections to Azure Storage on port 443. For more details see: https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration
 	SubnetID *string `json:"subnetId,omitempty"`
 	// DynamicVNetAssignmentScope - Possible values include: 'DynamicVNetAssignmentScopeNone', 'DynamicVNetAssignmentScopeJob'
 	DynamicVNetAssignmentScope DynamicVNetAssignmentScope `json:"dynamicVNetAssignmentScope,omitempty"`
-	// EndpointConfiguration - Pool endpoint configuration is only supported on pools with the virtualMachineConfiguration property.
+	// EndpointConfiguration - Pool endpoint configuration is only supported on Pools with the virtualMachineConfiguration property.
 	EndpointConfiguration *PoolEndpointConfiguration `json:"endpointConfiguration,omitempty"`
 }
 
 // NetworkSecurityGroupRule ...
 type NetworkSecurityGroupRule struct {
-	// Priority - Priorities within a pool must be unique and are evaluated in order of priority. The lower the number the higher the priority. For example, rules could be specified with order numbers of 150, 250, and 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed priorities are 150 to 3500. If any reserved or duplicate values are provided the request fails with HTTP status code 400.
+	// Priority - Priorities within a Pool must be unique and are evaluated in order of priority. The lower the number the higher the priority. For example, rules could be specified with order numbers of 150, 250, and 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed priorities are 150 to 3500. If any reserved or duplicate values are provided the request fails with HTTP status code 400.
 	Priority *int32 `json:"priority,omitempty"`
 	// Access - Possible values include: 'Allow', 'Deny'
 	Access NetworkSecurityGroupRuleAccess `json:"access,omitempty"`
@@ -3116,12 +3119,12 @@ type NetworkSecurityGroupRule struct {
 	SourcePortRanges *[]string `json:"sourcePortRanges,omitempty"`
 }
 
-// NodeAgentInformation the Batch node agent is a program that runs on each node in the pool and provides
-// Batch capability on the compute node.
+// NodeAgentInformation the Batch Compute Node agent is a program that runs on each Compute Node in the
+// Pool and provides Batch capability on the Compute Node.
 type NodeAgentInformation struct {
-	// Version - This version number can be checked against the node agent release notes located at https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md.
+	// Version - This version number can be checked against the Compute Node agent release notes located at https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md.
 	Version *string `json:"version,omitempty"`
-	// LastUpdateTime - This is the most recent time that the node agent was updated to a new version.
+	// LastUpdateTime - This is the most recent time that the Compute Node agent was updated to a new version.
 	LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
 }
 
@@ -3324,17 +3327,17 @@ type NodeRemoveParameter struct {
 
 // NodeUpdateUserParameter ...
 type NodeUpdateUserParameter struct {
-	// Password - The password is required for Windows nodes (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows image reference). For Linux compute nodes, the password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
+	// Password - The password is required for Windows Compute Nodes (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
 	Password *string `json:"password,omitempty"`
-	// ExpiryTime - If omitted, the default is 1 day from the current time. For Linux compute nodes, the expiryTime has a precision up to a day.
+	// ExpiryTime - If omitted, the default is 1 day from the current time. For Linux Compute Nodes, the expiryTime has a precision up to a day.
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
-	// SSHPublicKey - The public key should be compatible with OpenSSH encoding and should be base 64 encoded. This property can be specified only for Linux nodes. If this is specified for a Windows node, then the Batch service rejects the request; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). If omitted, any existing SSH public key is removed.
+	// SSHPublicKey - The public key should be compatible with OpenSSH encoding and should be base 64 encoded. This property can be specified only for Linux Compute Nodes. If this is specified for a Windows Compute Node, then the Batch service rejects the request; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). If omitted, any existing SSH public key is removed.
 	SSHPublicKey *string `json:"sshPublicKey,omitempty"`
 }
 
 // OutputFile ...
 type OutputFile struct {
-	// FilePattern - Both relative and absolute paths are supported. Relative paths are relative to the task working directory. The following wildcards are supported: * matches 0 or more characters (for example pattern abc* would match abc or abcdef), ** matches any directory, ? matches any single character, [abc] matches one character in the brackets, and [a-c] matches one character in the range. Brackets can include a negation to match any character not specified (for example [!abc] matches any character but a, b, or c). If a file name starts with "." it is ignored by default but may be matched by specifying it explicitly (for example *.gif will not match .a.gif, but .*.gif will). A simple example: **\*.txt matches any file that does not start in '.' and ends with .txt in the task working directory or any subdirectory. If the filename contains a wildcard character it can be escaped using brackets (for example abc[*] would match a file named abc*). Note that both \ and / are treated as directory separators on Windows, but only / is on Linux. Environment variables (%var% on Windows or $var on Linux) are expanded prior to the pattern being applied.
+	// FilePattern - Both relative and absolute paths are supported. Relative paths are relative to the Task working directory. The following wildcards are supported: * matches 0 or more characters (for example pattern abc* would match abc or abcdef), ** matches any directory, ? matches any single character, [abc] matches one character in the brackets, and [a-c] matches one character in the range. Brackets can include a negation to match any character not specified (for example [!abc] matches any character but a, b, or c). If a file name starts with "." it is ignored by default but may be matched by specifying it explicitly (for example *.gif will not match .a.gif, but .*.gif will). A simple example: **\*.txt matches any file that does not start in '.' and ends with .txt in the Task working directory or any subdirectory. If the filename contains a wildcard character it can be escaped using brackets (for example abc[*] would match a file named abc*). Note that both \ and / are treated as directory separators on Windows, but only / is on Linux. Environment variables (%var% on Windows or $var on Linux) are expanded prior to the pattern being applied.
 	FilePattern   *string                  `json:"filePattern,omitempty"`
 	Destination   *OutputFileDestination   `json:"destination,omitempty"`
 	UploadOptions *OutputFileUploadOptions `json:"uploadOptions,omitempty"`
@@ -3361,13 +3364,13 @@ type OutputFileUploadOptions struct {
 
 // PoolAddParameter ...
 type PoolAddParameter struct {
-	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two pool IDs within an account that differ only by case).
+	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two Pool IDs within an Account that differ only by case).
 	ID *string `json:"id,omitempty"`
 	// DisplayName - The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
-	// VMSize - For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and A2V2. For information about available VM sizes for pools using images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
+	// VMSize - For information about available sizes of virtual machines for Cloud Services Pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and A2V2. For information about available VM sizes for Pools using Images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
 	VMSize *string `json:"vmSize,omitempty"`
-	// CloudServiceConfiguration - This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property cannot be specified if the Batch account was created with its poolAllocationMode property set to 'UserSubscription'.
+	// CloudServiceConfiguration - This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property cannot be specified if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
 	CloudServiceConfiguration *CloudServiceConfiguration `json:"cloudServiceConfiguration,omitempty"`
 	// VirtualMachineConfiguration - This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
 	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
@@ -3377,25 +3380,26 @@ type PoolAddParameter struct {
 	TargetDedicatedNodes *int32 `json:"targetDedicatedNodes,omitempty"`
 	// TargetLowPriorityNodes - This property must not be specified if enableAutoScale is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes, targetLowPriorityNodes, or both.
 	TargetLowPriorityNodes *int32 `json:"targetLowPriorityNodes,omitempty"`
-	// EnableAutoScale - If false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the pool automatically resizes according to the formula. The default value is false.
+	// EnableAutoScale - If false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically resizes according to the formula. The default value is false.
 	EnableAutoScale *bool `json:"enableAutoScale,omitempty"`
-	// AutoScaleFormula - This property must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for validity before the pool is created. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see 'Automatically scale compute nodes in an Azure Batch pool' (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
+	// AutoScaleFormula - This property must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see 'Automatically scale Compute Nodes in an Azure Batch Pool' (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
 	AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
 	// AutoScaleEvaluationInterval - The default value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	AutoScaleEvaluationInterval *string `json:"autoScaleEvaluationInterval,omitempty"`
-	// EnableInterNodeCommunication - Enabling inter-node communication limits the maximum size of the pool due to deployment restrictions on the nodes of the pool. This may result in the pool not reaching its desired size. The default value is false.
+	// EnableInterNodeCommunication - Enabling inter-node communication limits the maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the Pool not reaching its desired size. The default value is false.
 	EnableInterNodeCommunication *bool                 `json:"enableInterNodeCommunication,omitempty"`
 	NetworkConfiguration         *NetworkConfiguration `json:"networkConfiguration,omitempty"`
-	// StartTask - The task runs when the node is added to the pool or when the node is restarted.
+	// StartTask - The Task runs when the Compute Node is added to the Pool or when the Compute Node is restarted.
 	StartTask *StartTask `json:"startTask,omitempty"`
-	// CertificateReferences - For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+	// CertificateReferences - For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
 	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-	// ApplicationPackageReferences - Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool.
+	// ApplicationPackageReferences - Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail.
+	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail.
 	ApplicationLicenses *[]string `json:"applicationLicenses,omitempty"`
-	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
-	MaxTasksPerNode      *int32                `json:"maxTasksPerNode,omitempty"`
+	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the Pool or 256.
+	MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
+	// TaskSchedulingPolicy - If not specified, the default is spread.
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	UserAccounts         *[]UserAccount        `json:"userAccounts,omitempty"`
 	// Metadata - The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
@@ -3404,7 +3408,7 @@ type PoolAddParameter struct {
 
 // PoolEnableAutoScaleParameter ...
 type PoolEnableAutoScaleParameter struct {
-	// AutoScaleFormula - The formula is checked for validity before it is applied to the pool. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+	// AutoScaleFormula - The formula is checked for validity before it is applied to the Pool. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
 	AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
 	// AutoScaleEvaluationInterval - The default value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch service rejects the request with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). If you specify a new interval, then the existing autoscale evaluation schedule will be stopped and a new autoscale evaluation schedule will be started, with its starting time being the time when this request was issued.
 	AutoScaleEvaluationInterval *string `json:"autoScaleEvaluationInterval,omitempty"`
@@ -3412,21 +3416,21 @@ type PoolEnableAutoScaleParameter struct {
 
 // PoolEndpointConfiguration ...
 type PoolEndpointConfiguration struct {
-	// InboundNATPools - The maximum number of inbound NAT pools per Batch pool is 5. If the maximum number of inbound NAT pools is exceeded the request fails with HTTP status code 400.
+	// InboundNATPools - The maximum number of inbound NAT Pools per Batch Pool is 5. If the maximum number of inbound NAT Pools is exceeded the request fails with HTTP status code 400.
 	InboundNATPools *[]InboundNATPool `json:"inboundNATPools,omitempty"`
 }
 
 // PoolEvaluateAutoScaleParameter ...
 type PoolEvaluateAutoScaleParameter struct {
-	// AutoScaleFormula - The formula is validated and its results calculated, but it is not applied to the pool. To apply the formula to the pool, 'Enable automatic scaling on a pool'. For more information about specifying this formula, see Automatically scale compute nodes in an Azure Batch pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+	// AutoScaleFormula - The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
 	AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
 }
 
 // PoolInformation ...
 type PoolInformation struct {
-	// PoolID - You must ensure that the pool referenced by this property exists. If the pool does not exist at the time the Batch service tries to schedule a job, no tasks for the job will run until you create a pool with that id. Note that the Batch service will not reject the job request; it will simply not run tasks until the pool exists. You must specify either the pool ID or the auto pool specification, but not both.
+	// PoolID - You must ensure that the Pool referenced by this property exists. If the Pool does not exist at the time the Batch service tries to schedule a Job, no Tasks for the Job will run until you create a Pool with that id. Note that the Batch service will not reject the Job request; it will simply not run Tasks until the Pool exists. You must specify either the Pool ID or the auto Pool specification, but not both.
 	PoolID *string `json:"poolId,omitempty"`
-	// AutoPoolSpecification - If auto pool creation fails, the Batch service moves the job to a completed state, and the pool creation error is set in the job's scheduling error property. The Batch service manages the lifetime (both creation and, unless keepAlive is specified, deletion) of the auto pool. Any user actions that affect the lifetime of the auto pool while the job is active will result in unexpected behavior. You must specify either the pool ID or the auto pool specification, but not both.
+	// AutoPoolSpecification - If auto Pool creation fails, the Batch service moves the Job to a completed state, and the Pool creation error is set in the Job's scheduling error property. The Batch service manages the lifetime (both creation and, unless keepAlive is specified, deletion) of the auto Pool. Any user actions that affect the lifetime of the auto Pool while the Job is active will result in unexpected behavior. You must specify either the Pool ID or the auto Pool specification, but not both.
 	AutoPoolSpecification *AutoPoolSpecification `json:"autoPoolSpecification,omitempty"`
 }
 
@@ -3584,7 +3588,7 @@ type PoolNodeCounts struct {
 // PoolNodeCountsListResult ...
 type PoolNodeCountsListResult struct {
 	autorest.Response `json:"-"`
-	// Value - A list of node counts by pool.
+	// Value - A list of Compute Node counts by Pool.
 	Value         *[]PoolNodeCounts `json:"value,omitempty"`
 	OdataNextLink *string           `json:"odata.nextLink,omitempty"`
 }
@@ -3728,13 +3732,13 @@ func NewPoolNodeCountsListResultPage(getNextPage func(context.Context, PoolNodeC
 
 // PoolPatchParameter ...
 type PoolPatchParameter struct {
-	// StartTask - If this element is present, it overwrites any existing start task. If omitted, any existing start task is left unchanged.
+	// StartTask - If this element is present, it overwrites any existing start Task. If omitted, any existing start Task is left unchanged.
 	StartTask *StartTask `json:"startTask,omitempty"`
-	// CertificateReferences - If this element is present, it replaces any existing certificate references configured on the pool. If omitted, any existing certificate references are left unchanged. For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+	// CertificateReferences - If this element is present, it replaces any existing Certificate references configured on the Pool. If omitted, any existing Certificate references are left unchanged. For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
 	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-	// ApplicationPackageReferences - Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. If this element is present, it replaces any existing application package references. If you specify an empty collection, then all application package references are removed from the pool. If omitted, any existing application package references are left unchanged.
+	// ApplicationPackageReferences - Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing Package references. If you specify an empty collection, then all Package references are removed from the Pool. If omitted, any existing Package references are left unchanged.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-	// Metadata - If this element is present, it replaces any existing metadata configured on the pool. If you specify an empty collection, any metadata is removed from the pool. If omitted, any existing metadata is left unchanged.
+	// Metadata - If this element is present, it replaces any existing metadata configured on the Pool. If you specify an empty collection, any metadata is removed from the Pool. If omitted, any existing metadata is left unchanged.
 	Metadata *[]MetadataItem `json:"metadata,omitempty"`
 }
 
@@ -3752,14 +3756,15 @@ type PoolResizeParameter struct {
 type PoolSpecification struct {
 	// DisplayName - The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
-	// VMSize - For information about available sizes of virtual machines in pools, see Choose a VM size for compute nodes in an Azure Batch pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+	// VMSize - For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
 	VMSize *string `json:"vmSize,omitempty"`
-	// CloudServiceConfiguration - This property must be specified if the pool needs to be created with Azure PaaS VMs. This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). This property cannot be specified if the Batch account was created with its poolAllocationMode property set to 'UserSubscription'.
+	// CloudServiceConfiguration - This property must be specified if the Pool needs to be created with Azure PaaS VMs. This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). This property cannot be specified if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
 	CloudServiceConfiguration *CloudServiceConfiguration `json:"cloudServiceConfiguration,omitempty"`
-	// VirtualMachineConfiguration - This property must be specified if the pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+	// VirtualMachineConfiguration - This property must be specified if the Pool needs to be created with Azure IaaS VMs. This property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified. If neither is specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	VirtualMachineConfiguration *VirtualMachineConfiguration `json:"virtualMachineConfiguration,omitempty"`
-	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
-	MaxTasksPerNode      *int32                `json:"maxTasksPerNode,omitempty"`
+	// MaxTasksPerNode - The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the Pool or 256.
+	MaxTasksPerNode *int32 `json:"maxTasksPerNode,omitempty"`
+	// TaskSchedulingPolicy - If not specified, the default is spread.
 	TaskSchedulingPolicy *TaskSchedulingPolicy `json:"taskSchedulingPolicy,omitempty"`
 	// ResizeTimeout - This timeout applies only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	ResizeTimeout *string `json:"resizeTimeout,omitempty"`
@@ -3767,21 +3772,21 @@ type PoolSpecification struct {
 	TargetDedicatedNodes *int32 `json:"targetDedicatedNodes,omitempty"`
 	// TargetLowPriorityNodes - This property must not be specified if enableAutoScale is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes, targetLowPriorityNodes, or both.
 	TargetLowPriorityNodes *int32 `json:"targetLowPriorityNodes,omitempty"`
-	// EnableAutoScale - If false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula element is required. The pool automatically resizes according to the formula. The default value is false.
+	// EnableAutoScale - If false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula element is required. The Pool automatically resizes according to the formula. The default value is false.
 	EnableAutoScale *bool `json:"enableAutoScale,omitempty"`
-	// AutoScaleFormula - This property must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for validity before the pool is created. If the formula is not valid, the Batch service rejects the request with detailed error information.
+	// AutoScaleFormula - This property must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service rejects the request with detailed error information.
 	AutoScaleFormula *string `json:"autoScaleFormula,omitempty"`
 	// AutoScaleEvaluationInterval - The default value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch service rejects the request with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	AutoScaleEvaluationInterval *string `json:"autoScaleEvaluationInterval,omitempty"`
-	// EnableInterNodeCommunication - Enabling inter-node communication limits the maximum size of the pool due to deployment restrictions on the nodes of the pool. This may result in the pool not reaching its desired size. The default value is false.
+	// EnableInterNodeCommunication - Enabling inter-node communication limits the maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the Pool not reaching its desired size. The default value is false.
 	EnableInterNodeCommunication *bool                 `json:"enableInterNodeCommunication,omitempty"`
 	NetworkConfiguration         *NetworkConfiguration `json:"networkConfiguration,omitempty"`
 	StartTask                    *StartTask            `json:"startTask,omitempty"`
-	// CertificateReferences - For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+	// CertificateReferences - For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
 	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-	// ApplicationPackageReferences - Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool.
+	// ApplicationPackageReferences - Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail. The permitted licenses available on the pool are 'maya', 'vray', '3dsmax', 'arnold'. An additional charge applies for each application license added to the pool.
+	// ApplicationLicenses - The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail. The permitted licenses available on the Pool are 'maya', 'vray', '3dsmax', 'arnold'. An additional charge applies for each application license added to the Pool.
 	ApplicationLicenses *[]string      `json:"applicationLicenses,omitempty"`
 	UserAccounts        *[]UserAccount `json:"userAccounts,omitempty"`
 	// Metadata - The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
@@ -3800,13 +3805,13 @@ type PoolStatistics struct {
 
 // PoolUpdatePropertiesParameter ...
 type PoolUpdatePropertiesParameter struct {
-	// StartTask - If this element is present, it overwrites any existing start task. If omitted, any existing start task is removed from the pool.
+	// StartTask - If this element is present, it overwrites any existing start Task. If omitted, any existing start Task is removed from the Pool.
 	StartTask *StartTask `json:"startTask,omitempty"`
-	// CertificateReferences - This list replaces any existing certificate references configured on the pool. If you specify an empty collection, any existing certificate references are removed from the pool. For Windows compute nodes, the Batch service installs the certificates to the specified certificate store and location. For Linux compute nodes, the certificates are stored in a directory inside the task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this location. For certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and certificates are placed in that directory.
+	// CertificateReferences - This list replaces any existing Certificate references configured on the Pool. If you specify an empty collection, any existing Certificate references are removed from the Pool. For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
 	CertificateReferences *[]CertificateReference `json:"certificateReferences,omitempty"`
-	// ApplicationPackageReferences - The list replaces any existing application package references on the pool. Changes to application package references affect all new compute nodes joining the pool, but do not affect compute nodes that are already in the pool until they are rebooted or reimaged. There is a maximum of 10 application package references on any given pool. If omitted, or if you specify an empty collection, any existing application packages references are removed from the pool. A maximum of 10 references may be specified on a given pool.
+	// ApplicationPackageReferences - The list replaces any existing Application Package references on the Pool. Changes to Application Package references affect all new Compute Nodes joining the Pool, but do not affect Compute Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Application Package references on any given Pool. If omitted, or if you specify an empty collection, any existing Application Packages references are removed from the Pool. A maximum of 10 references may be specified on a given Pool.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-	// Metadata - This list replaces any existing metadata configured on the pool. If omitted, or if you specify an empty collection, any existing metadata is removed from the pool.
+	// Metadata - This list replaces any existing metadata configured on the Pool. If omitted, or if you specify an empty collection, any existing metadata is removed from the Pool.
 	Metadata *[]MetadataItem `json:"metadata,omitempty"`
 }
 
@@ -3815,7 +3820,7 @@ type PoolUsageMetrics struct {
 	PoolID    *string    `json:"poolId,omitempty"`
 	StartTime *date.Time `json:"startTime,omitempty"`
 	EndTime   *date.Time `json:"endTime,omitempty"`
-	// VMSize - For information about available sizes of virtual machines in pools, see Choose a VM size for compute nodes in an Azure Batch pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+	// VMSize - For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
 	VMSize         *string  `json:"vmSize,omitempty"`
 	TotalCoreHours *float64 `json:"totalCoreHours,omitempty"`
 }
@@ -3849,9 +3854,9 @@ type ResourceFile struct {
 	HTTPURL *string `json:"httpUrl,omitempty"`
 	// BlobPrefix - The property is valid only when autoStorageContainerName or storageContainerUrl is used. This prefix can be a partial filename or a subdirectory. If a prefix is not specified, all the files in the container will be downloaded.
 	BlobPrefix *string `json:"blobPrefix,omitempty"`
-	// FilePath - If the httpUrl property is specified, the filePath is required and describes the path which the file will be downloaded to, including the filename. Otherwise, if the autoStorageContainerName or storageContainerUrl property is specified, filePath is optional and is the directory to download the files to. In the case where filePath is used as a directory, any directory structure already associated with the input data will be retained in full and appended to the specified filePath directory. The specified relative path cannot break out of the task's working directory (for example by using '..').
+	// FilePath - If the httpUrl property is specified, the filePath is required and describes the path which the file will be downloaded to, including the filename. Otherwise, if the autoStorageContainerName or storageContainerUrl property is specified, filePath is optional and is the directory to download the files to. In the case where filePath is used as a directory, any directory structure already associated with the input data will be retained in full and appended to the specified filePath directory. The specified relative path cannot break out of the Task's working directory (for example by using '..').
 	FilePath *string `json:"filePath,omitempty"`
-	// FileMode - This property applies only to files being downloaded to Linux compute nodes. It will be ignored if it is specified for a resourceFile which will be downloaded to a Windows node. If this property is not specified for a Linux node, then a default value of 0770 is applied to the file.
+	// FileMode - This property applies only to files being downloaded to Linux Compute Nodes. It will be ignored if it is specified for a resourceFile which will be downloaded to a Windows Compute Node. If this property is not specified for a Linux Compute Node, then a default value of 0770 is applied to the file.
 	FileMode *string `json:"fileMode,omitempty"`
 }
 
@@ -3874,39 +3879,39 @@ type ResourceStatistics struct {
 
 // Schedule ...
 type Schedule struct {
-	// DoNotRunUntil - If you do not specify a doNotRunUntil time, the schedule becomes ready to create jobs immediately.
+	// DoNotRunUntil - If you do not specify a doNotRunUntil time, the schedule becomes ready to create Jobs immediately.
 	DoNotRunUntil *date.Time `json:"doNotRunUntil,omitempty"`
-	// DoNotRunAfter - If you do not specify a doNotRunAfter time, and you are creating a recurring job schedule, the job schedule will remain active until you explicitly terminate it.
+	// DoNotRunAfter - If you do not specify a doNotRunAfter time, and you are creating a recurring Job Schedule, the Job Schedule will remain active until you explicitly terminate it.
 	DoNotRunAfter *date.Time `json:"doNotRunAfter,omitempty"`
-	// StartWindow - If a job is not created within the startWindow interval, then the 'opportunity' is lost; no job will be created until the next recurrence of the schedule. If the schedule is recurring, and the startWindow is longer than the recurrence interval, then this is equivalent to an infinite startWindow, because the job that is 'due' in one recurrenceInterval is not carried forward into the next recurrence interval. The default is infinite. The minimum value is 1 minute. If you specify a lower value, the Batch service rejects the schedule with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+	// StartWindow - If a Job is not created within the startWindow interval, then the 'opportunity' is lost; no Job will be created until the next recurrence of the schedule. If the schedule is recurring, and the startWindow is longer than the recurrence interval, then this is equivalent to an infinite startWindow, because the Job that is 'due' in one recurrenceInterval is not carried forward into the next recurrence interval. The default is infinite. The minimum value is 1 minute. If you specify a lower value, the Batch service rejects the schedule with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	StartWindow *string `json:"startWindow,omitempty"`
-	// RecurrenceInterval - Because a job schedule can have at most one active job under it at any given time, if it is time to create a new job under a job schedule, but the previous job is still running, the Batch service will not create the new job until the previous job finishes. If the previous job does not finish within the startWindow period of the new recurrenceInterval, then no new job will be scheduled for that interval. For recurring jobs, you should normally specify a jobManagerTask in the jobSpecification. If you do not use jobManagerTask, you will need an external process to monitor when jobs are created, add tasks to the jobs and terminate the jobs ready for the next recurrence. The default is that the schedule does not recur: one job is created, within the startWindow after the doNotRunUntil time, and the schedule is complete as soon as that job finishes. The minimum value is 1 minute. If you specify a lower value, the Batch service rejects the schedule with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+	// RecurrenceInterval - Because a Job Schedule can have at most one active Job under it at any given time, if it is time to create a new Job under a Job Schedule, but the previous Job is still running, the Batch service will not create the new Job until the previous Job finishes. If the previous Job does not finish within the startWindow period of the new recurrenceInterval, then no new Job will be scheduled for that interval. For recurring Jobs, you should normally specify a jobManagerTask in the jobSpecification. If you do not use jobManagerTask, you will need an external process to monitor when Jobs are created, add Tasks to the Jobs and terminate the Jobs ready for the next recurrence. The default is that the schedule does not recur: one Job is created, within the startWindow after the doNotRunUntil time, and the schedule is complete as soon as that Job finishes. The minimum value is 1 minute. If you specify a lower value, the Batch service rejects the schedule with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	RecurrenceInterval *string `json:"recurrenceInterval,omitempty"`
 }
 
-// StartTask batch will retry tasks when a recovery operation is triggered on a compute node. Examples of
-// recovery operations include (but are not limited to) when an unhealthy compute node is rebooted or a
-// compute node disappeared due to host failure. Retries due to recovery operations are independent of and
-// are not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due
-// to a recovery operation may occur. Because of this, all tasks should be idempotent. This means tasks
-// need to tolerate being interrupted and restarted without causing any corruption or duplicate data. The
-// best practice for long running tasks is to use some form of checkpointing. In some cases the start task
-// may be re-run even though the node was not rebooted. Special care should be taken to avoid start tasks
-// which create breakaway process or install/launch services from the start task working directory, as this
-// will block Batch from being able to re-run the start task.
+// StartTask batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery
+// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
+// disappeared due to host failure. Retries due to recovery operations are independent of and are not
+// counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a
+// recovery operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to
+// tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
+// practice for long running Tasks is to use some form of checkpointing. In some cases the start Task may
+// be re-run even though the Compute Node was not rebooted. Special care should be taken to avoid start
+// Tasks which create breakaway process or install/launch services from the start Task working directory,
+// as this will block Batch from being able to re-run the start Task.
 type StartTask struct {
-	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
+	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
 	CommandLine *string `json:"commandLine,omitempty"`
-	// ContainerSettings - When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
+	// ContainerSettings - When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
-	// ResourceFiles - Files listed under this element are located in the task's working directory.
+	// ResourceFiles - Files listed under this element are located in the Task's working directory.
 	ResourceFiles       *[]ResourceFile       `json:"resourceFiles,omitempty"`
 	EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
-	// UserIdentity - If omitted, the task runs as a non-administrative user unique to the task.
+	// UserIdentity - If omitted, the Task runs as a non-administrative user unique to the Task.
 	UserIdentity *UserIdentity `json:"userIdentity,omitempty"`
-	// MaxTaskRetryCount - The Batch service retries a task if its exit code is nonzero. Note that this value specifically controls the number of retries. The Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task. If the maximum retry count is -1, the Batch service retries the task without limit.
+	// MaxTaskRetryCount - The Batch service retries a Task if its exit code is nonzero. Note that this value specifically controls the number of retries. The Batch service will try the Task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the Task. If the maximum retry count is -1, the Batch service retries the Task without limit.
 	MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
-	// WaitForSuccess - If true and the start task fails on a compute node, the Batch service retries the start task up to its maximum retry count (maxTaskRetryCount). If the task has still not completed successfully after all retries, then the Batch service marks the compute node unusable, and will not schedule tasks to it. This condition can be detected via the node state and failure info details. If false, the Batch service will not wait for the start task to complete. In this case, other tasks can start executing on the compute node while the start task is still running; and even if the start task fails, new tasks will continue to be scheduled on the node. The default is false.
+	// WaitForSuccess - If true and the start Task fails on a Node, the Batch service retries the start Task up to its maximum retry count (maxTaskRetryCount). If the Task has still not completed successfully after all retries, then the Batch service marks the Node unusable, and will not schedule Tasks to it. This condition can be detected via the Compute Node state and failure info details. If false, the Batch service will not wait for the start Task to complete. In this case, other Tasks can start executing on the Compute Node while the start Task is still running; and even if the start Task fails, new Tasks will continue to be scheduled on the Compute Node. The default is false.
 	WaitForSuccess *bool `json:"waitForSuccess,omitempty"`
 }
 
@@ -3914,19 +3919,19 @@ type StartTask struct {
 type StartTaskInformation struct {
 	// State - Possible values include: 'StartTaskStateRunning', 'StartTaskStateCompleted'
 	State StartTaskState `json:"state,omitempty"`
-	// StartTime - This value is reset every time the task is restarted or retried (that is, this is the most recent time at which the start task started running).
+	// StartTime - This value is reset every time the Task is restarted or retried (that is, this is the most recent time at which the start Task started running).
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - This is the end time of the most recent run of the start task, if that run has completed (even if that run failed and a retry is pending). This element is not present if the start task is currently running.
+	// EndTime - This is the end time of the most recent run of the start Task, if that run has completed (even if that run failed and a retry is pending). This element is not present if the start Task is currently running.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// ExitCode - This property is set only if the start task is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the start task (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
+	// ExitCode - This property is set only if the start Task is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the start Task (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
 	ExitCode *int32 `json:"exitCode,omitempty"`
-	// ContainerInfo - This property is set only if the task runs in a container context.
+	// ContainerInfo - This property is set only if the Task runs in a container context.
 	ContainerInfo *TaskContainerExecutionInformation `json:"containerInfo,omitempty"`
-	// FailureInfo - This property is set only if the task is in the completed state and encountered a failure.
+	// FailureInfo - This property is set only if the Task is in the completed state and encountered a failure.
 	FailureInfo *TaskFailureInformation `json:"failureInfo,omitempty"`
-	// RetryCount - Task application failures (non-zero exit code) are retried, pre-processing errors (the task could not be run) and file upload errors are not retried. The Batch service will retry the task up to the limit specified by the constraints.
+	// RetryCount - Task application failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and file upload errors are not retried. The Batch service will retry the Task up to the limit specified by the constraints.
 	RetryCount *int32 `json:"retryCount,omitempty"`
-	// LastRetryTime - This element is present only if the task was retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different if the task has been restarted for reasons other than retry; for example, if the compute node was rebooted during a retry, then the startTime is updated but the lastRetryTime is not.
+	// LastRetryTime - This element is present only if the Task was retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different if the Task has been restarted for reasons other than retry; for example, if the Compute Node was rebooted during a retry, then the startTime is updated but the lastRetryTime is not.
 	LastRetryTime *date.Time `json:"lastRetryTime,omitempty"`
 	// Result - If the value is 'failed', then the details of the failure can be found in the failureInfo property. Possible values include: 'Success', 'Failure'
 	Result TaskExecutionResult `json:"result,omitempty"`
@@ -3941,9 +3946,9 @@ type SubtaskInformation struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// ExitCode - This property is set only if the subtask is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the subtask (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
 	ExitCode *int32 `json:"exitCode,omitempty"`
-	// ContainerInfo - This property is set only if the task runs in a container context.
+	// ContainerInfo - This property is set only if the Task runs in a container context.
 	ContainerInfo *TaskContainerExecutionInformation `json:"containerInfo,omitempty"`
-	// FailureInfo - This property is set only if the task is in the completed state and encountered a failure.
+	// FailureInfo - This property is set only if the Task is in the completed state and encountered a failure.
 	FailureInfo *TaskFailureInformation `json:"failureInfo,omitempty"`
 	// State - Possible values include: 'SubtaskStatePreparing', 'SubtaskStateRunning', 'SubtaskStateCompleted'
 	State               SubtaskState `json:"state,omitempty"`
@@ -3958,7 +3963,7 @@ type SubtaskInformation struct {
 
 // TaskAddCollectionParameter ...
 type TaskAddCollectionParameter struct {
-	// Value - The total serialized size of this collection must be less than 1MB. If it is greater than 1MB (for example if each task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer tasks.
+	// Value - The total serialized size of this collection must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer Tasks.
 	Value *[]TaskAddParameter `json:"value,omitempty"`
 }
 
@@ -3968,40 +3973,40 @@ type TaskAddCollectionResult struct {
 	Value             *[]TaskAddResult `json:"value,omitempty"`
 }
 
-// TaskAddParameter batch will retry tasks when a recovery operation is triggered on a compute node.
-// Examples of recovery operations include (but are not limited to) when an unhealthy compute node is
-// rebooted or a compute node disappeared due to host failure. Retries due to recovery operations are
-// independent of and are not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an
-// internal retry due to a recovery operation may occur. Because of this, all tasks should be idempotent.
-// This means tasks need to tolerate being interrupted and restarted without causing any corruption or
-// duplicate data. The best practice for long running tasks is to use some form of checkpointing.
+// TaskAddParameter batch will retry Tasks when a recovery operation is triggered on a Node. Examples of
+// recovery operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute
+// Node disappeared due to host failure. Retries due to recovery operations are independent of and are not
+// counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a
+// recovery operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to
+// tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
+// practice for long running Tasks is to use some form of checkpointing.
 type TaskAddParameter struct {
-	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within a job that differ only by case).
+	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within a Job that differ only by case).
 	ID *string `json:"id,omitempty"`
 	// DisplayName - The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
 	DisplayName *string `json:"displayName,omitempty"`
-	// CommandLine - For multi-instance tasks, the command line is executed as the primary task, after the primary task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
+	// CommandLine - For multi-instance Tasks, the command line is executed as the primary Task, after the primary Task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
 	CommandLine *string `json:"commandLine,omitempty"`
-	// ContainerSettings - If the pool that will run this task has containerConfiguration set, this must be set as well. If the pool that will run this task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all task environment variables are mapped into the container, and the task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
+	// ContainerSettings - If the Pool that will run this Task has containerConfiguration set, this must be set as well. If the Pool that will run this Task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
 	ContainerSettings *TaskContainerSettings `json:"containerSettings,omitempty"`
-	// ExitConditions - How the Batch service should respond when the task completes.
+	// ExitConditions - How the Batch service should respond when the Task completes.
 	ExitConditions *ExitConditions `json:"exitConditions,omitempty"`
-	// ResourceFiles - For multi-instance tasks, the resource files will only be downloaded to the compute node on which the primary task is executed. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
+	// ResourceFiles - For multi-instance Tasks, the resource files will only be downloaded to the Compute Node on which the primary Task is executed. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
 	ResourceFiles *[]ResourceFile `json:"resourceFiles,omitempty"`
-	// OutputFiles - For multi-instance tasks, the files will only be uploaded from the compute node on which the primary task is executed.
+	// OutputFiles - For multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
 	OutputFiles         *[]OutputFile         `json:"outputFiles,omitempty"`
 	EnvironmentSettings *[]EnvironmentSetting `json:"environmentSettings,omitempty"`
 	AffinityInfo        *AffinityInformation  `json:"affinityInfo,omitempty"`
-	// Constraints - If you do not specify constraints, the maxTaskRetryCount is the maxTaskRetryCount specified for the job, the maxWallClockTime is infinite, and the retentionTime is 7 days.
+	// Constraints - If you do not specify constraints, the maxTaskRetryCount is the maxTaskRetryCount specified for the Job, the maxWallClockTime is infinite, and the retentionTime is 7 days.
 	Constraints *TaskConstraints `json:"constraints,omitempty"`
-	// UserIdentity - If omitted, the task runs as a non-administrative user unique to the task.
+	// UserIdentity - If omitted, the Task runs as a non-administrative user unique to the Task.
 	UserIdentity          *UserIdentity          `json:"userIdentity,omitempty"`
 	MultiInstanceSettings *MultiInstanceSettings `json:"multiInstanceSettings,omitempty"`
-	// DependsOn - This task will not be scheduled until all tasks that it depends on have completed successfully. If any of those tasks fail and exhaust their retry counts, this task will never be scheduled. If the job does not have usesTaskDependencies set to true, and this element is present, the request fails with error code TaskDependenciesNotSpecifiedOnJob.
+	// DependsOn - This Task will not be scheduled until all Tasks that it depends on have completed successfully. If any of those Tasks fail and exhaust their retry counts, this Task will never be scheduled. If the Job does not have usesTaskDependencies set to true, and this element is present, the request fails with error code TaskDependenciesNotSpecifiedOnJob.
 	DependsOn *TaskDependencies `json:"dependsOn,omitempty"`
-	// ApplicationPackageReferences - Application packages are downloaded and deployed to a shared directory, not the task working directory. Therefore, if a referenced package is already on the compute node, and is up to date, then it is not re-downloaded; the existing copy on the compute node is used. If a referenced application package cannot be installed, for example because the package has been deleted or because download failed, the task fails.
+	// ApplicationPackageReferences - Application packages are downloaded and deployed to a shared directory, not the Task working directory. Therefore, if a referenced package is already on the Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If a referenced Package cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
 	ApplicationPackageReferences *[]ApplicationPackageReference `json:"applicationPackageReferences,omitempty"`
-	// AuthenticationTokenSettings - If this property is set, the Batch service provides the task with an authentication token which can be used to authenticate Batch service operations without requiring an account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the task can carry out using the token depend on the settings. For example, a task can request job permissions in order to add other tasks to the job, or check the status of the job or of other tasks under the job.
+	// AuthenticationTokenSettings - If this property is set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
 	AuthenticationTokenSettings *AuthenticationTokenSettings `json:"authenticationTokenSettings,omitempty"`
 }
 
@@ -4010,7 +4015,7 @@ type TaskAddResult struct {
 	// Status - Possible values include: 'TaskAddStatusSuccess', 'TaskAddStatusClientError', 'TaskAddStatusServerError'
 	Status TaskAddStatus `json:"status,omitempty"`
 	TaskID *string       `json:"taskId,omitempty"`
-	// ETag - You can use this to detect whether the task has changed between requests. In particular, you can be pass the ETag with an Update Task request to specify that your changes should take effect only if nobody else has modified the job in the meantime.
+	// ETag - You can use this to detect whether the Task has changed between requests. In particular, you can be pass the ETag with an Update Task request to specify that your changes should take effect only if nobody else has modified the Job in the meantime.
 	ETag         *string    `json:"eTag,omitempty"`
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	Location     *string    `json:"location,omitempty"`
@@ -4019,11 +4024,11 @@ type TaskAddResult struct {
 
 // TaskConstraints ...
 type TaskConstraints struct {
-	// MaxWallClockTime - If this is not specified, there is no time limit on how long the task may run.
+	// MaxWallClockTime - If this is not specified, there is no time limit on how long the Task may run.
 	MaxWallClockTime *string `json:"maxWallClockTime,omitempty"`
-	// RetentionTime - The default is 7 days, i.e. the task directory will be retained for 7 days unless the compute node is removed or the job is deleted.
+	// RetentionTime - The default is 7 days, i.e. the Task directory will be retained for 7 days unless the Compute Node is removed or the Job is deleted.
 	RetentionTime *string `json:"retentionTime,omitempty"`
-	// MaxTaskRetryCount - Note that this value specifically controls the number of retries for the task executable due to a nonzero exit code. The Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task after the first attempt. If the maximum retry count is -1, the Batch service retries the task without limit.
+	// MaxTaskRetryCount - Note that this value specifically controls the number of retries for the Task executable due to a nonzero exit code. The Batch service will try the Task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the Task after the first attempt. If the maximum retry count is -1, the Batch service retries the Task without limit.
 	MaxTaskRetryCount *int32 `json:"maxTaskRetryCount,omitempty"`
 }
 
@@ -4040,9 +4045,9 @@ type TaskContainerExecutionInformation struct {
 type TaskContainerSettings struct {
 	// ContainerRunOptions - These additional options are supplied as arguments to the "docker create" command, in addition to those controlled by the Batch Service.
 	ContainerRunOptions *string `json:"containerRunOptions,omitempty"`
-	// ImageName - This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the image name, the tag ":latest" is used as a default.
+	// ImageName - This is the full Image reference, as would be specified to "docker pull". If no tag is provided as part of the Image name, the tag ":latest" is used as a default.
 	ImageName *string `json:"imageName,omitempty"`
-	// Registry - This setting can be omitted if was already provided at pool creation.
+	// Registry - This setting can be omitted if was already provided at Pool creation.
 	Registry *ContainerRegistry `json:"registry,omitempty"`
 	// WorkingDirectory - The default is 'taskWorkingDirectory'. Possible values include: 'TaskWorkingDirectory', 'ContainerImageDefault'
 	WorkingDirectory ContainerWorkingDirectory `json:"workingDirectory,omitempty"`
@@ -4060,28 +4065,28 @@ type TaskCounts struct {
 
 // TaskDependencies ...
 type TaskDependencies struct {
-	// TaskIds - The taskIds collection is limited to 64000 characters total (i.e. the combined length of all task IDs). If the taskIds collection exceeds the maximum length, the Add Task request fails with error code TaskDependencyListTooLong. In this case consider using task ID ranges instead.
+	// TaskIds - The taskIds collection is limited to 64000 characters total (i.e. the combined length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
 	TaskIds      *[]string      `json:"taskIds,omitempty"`
 	TaskIDRanges *[]TaskIDRange `json:"taskIdRanges,omitempty"`
 }
 
 // TaskExecutionInformation ...
 type TaskExecutionInformation struct {
-	// StartTime - 'Running' corresponds to the running state, so if the task specifies resource files or application packages, then the start time reflects the time at which the task started downloading or deploying these. If the task has been restarted or retried, this is the most recent time at which the task started running. This property is present only for tasks that are in the running or completed state.
+	// StartTime - 'Running' corresponds to the running state, so if the Task specifies resource files or Packages, then the start time reflects the time at which the Task started downloading or deploying these. If the Task has been restarted or retried, this is the most recent time at which the Task started running. This property is present only for Tasks that are in the running or completed state.
 	StartTime *date.Time `json:"startTime,omitempty"`
-	// EndTime - This property is set only if the task is in the Completed state.
+	// EndTime - This property is set only if the Task is in the Completed state.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// ExitCode - This property is set only if the task is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the task (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
+	// ExitCode - This property is set only if the Task is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the Task (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
 	ExitCode *int32 `json:"exitCode,omitempty"`
-	// ContainerInfo - This property is set only if the task runs in a container context.
+	// ContainerInfo - This property is set only if the Task runs in a container context.
 	ContainerInfo *TaskContainerExecutionInformation `json:"containerInfo,omitempty"`
-	// FailureInfo - This property is set only if the task is in the completed state and encountered a failure.
+	// FailureInfo - This property is set only if the Task is in the completed state and encountered a failure.
 	FailureInfo *TaskFailureInformation `json:"failureInfo,omitempty"`
-	// RetryCount - Task application failures (non-zero exit code) are retried, pre-processing errors (the task could not be run) and file upload errors are not retried. The Batch service will retry the task up to the limit specified by the constraints.
+	// RetryCount - Task application failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and file upload errors are not retried. The Batch service will retry the Task up to the limit specified by the constraints.
 	RetryCount *int32 `json:"retryCount,omitempty"`
-	// LastRetryTime - This element is present only if the task was retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different if the task has been restarted for reasons other than retry; for example, if the compute node was rebooted during a retry, then the startTime is updated but the lastRetryTime is not.
+	// LastRetryTime - This element is present only if the Task was retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different if the Task has been restarted for reasons other than retry; for example, if the Compute Node was rebooted during a retry, then the startTime is updated but the lastRetryTime is not.
 	LastRetryTime *date.Time `json:"lastRetryTime,omitempty"`
-	// RequeueCount - When the user removes nodes from a pool (by resizing/shrinking the pool) or when the job is being disabled, the user can specify that running tasks on the nodes be requeued for execution. This count tracks how many times the task has been requeued for these reasons.
+	// RequeueCount - When the user removes Compute Nodes from a Pool (by resizing/shrinking the pool) or when the Job is being disabled, the user can specify that running Tasks on the Compute Nodes be requeued for execution. This count tracks how many times the Task has been requeued for these reasons.
 	RequeueCount *int32 `json:"requeueCount,omitempty"`
 	// LastRequeueTime - This property is set only if the requeueCount is nonzero.
 	LastRequeueTime *date.Time `json:"lastRequeueTime,omitempty"`
@@ -4099,7 +4104,7 @@ type TaskFailureInformation struct {
 }
 
 // TaskIDRange the start and end of the range are inclusive. For example, if a range has start 9 and end
-// 12, then it represents tasks '9', '10', '11' and '12'.
+// 12, then it represents Tasks '9', '10', '11' and '12'.
 type TaskIDRange struct {
 	Start *int32 `json:"start,omitempty"`
 	End   *int32 `json:"end,omitempty"`
@@ -4129,7 +4134,7 @@ type TaskStatistics struct {
 	LastUpdateTime *date.Time `json:"lastUpdateTime,omitempty"`
 	UserCPUTime    *string    `json:"userCPUTime,omitempty"`
 	KernelCPUTime  *string    `json:"kernelCPUTime,omitempty"`
-	// WallClockTime - The wall clock time is the elapsed time from when the task started running on a compute node to when it finished (or to the last time the statistics were updated, if the task had not finished by then). If the task was retried, this includes the wall clock time of all the task retries.
+	// WallClockTime - The wall clock time is the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not finished by then). If the Task was retried, this includes the wall clock time of all the Task retries.
 	WallClockTime *string  `json:"wallClockTime,omitempty"`
 	ReadIOps      *int64   `json:"readIOps,omitempty"`
 	WriteIOps     *int64   `json:"writeIOps,omitempty"`
@@ -4140,7 +4145,7 @@ type TaskStatistics struct {
 
 // TaskUpdateParameter ...
 type TaskUpdateParameter struct {
-	// Constraints - If omitted, the task is given the default constraints. For multi-instance tasks, updating the retention time applies only to the primary task and not subtasks.
+	// Constraints - If omitted, the Task is given the default constraints. For multi-instance Tasks, updating the retention time applies only to the primary Task and not subtasks.
 	Constraints *TaskConstraints `json:"constraints,omitempty"`
 }
 
@@ -4175,9 +4180,9 @@ type UserAccount struct {
 	Password *string `json:"password,omitempty"`
 	// ElevationLevel - The default value is nonAdmin. Possible values include: 'NonAdmin', 'Admin'
 	ElevationLevel ElevationLevel `json:"elevationLevel,omitempty"`
-	// LinuxUserConfiguration - This property is ignored if specified on a Windows pool. If not specified, the user is created with the default options.
+	// LinuxUserConfiguration - This property is ignored if specified on a Windows Pool. If not specified, the user is created with the default options.
 	LinuxUserConfiguration *LinuxUserConfiguration `json:"linuxUserConfiguration,omitempty"`
-	// WindowsUserConfiguration - This property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool, the user is created with the default options.
+	// WindowsUserConfiguration - This property can only be specified if the user is on a Windows Pool. If not specified and on a Windows Pool, the user is created with the default options.
 	WindowsUserConfiguration *WindowsUserConfiguration `json:"windowsUserConfiguration,omitempty"`
 }
 
@@ -4192,17 +4197,17 @@ type UserIdentity struct {
 // VirtualMachineConfiguration ...
 type VirtualMachineConfiguration struct {
 	ImageReference *ImageReference `json:"imageReference,omitempty"`
-	// NodeAgentSKUID - The Batch node agent is a program that runs on each node in the pool, and provides the command-and-control interface between the node and the Batch service. There are different implementations of the node agent, known as SKUs, for different operating systems. You must specify a node agent SKU which matches the selected image reference. To get the list of supported node agent SKUs along with their list of verified image references, see the 'List supported node agent SKUs' operation.
+	// NodeAgentSKUID - The Batch Compute Node agent is a program that runs on each Compute Node in the Pool, and provides the command-and-control interface between the Compute Node and the Batch service. There are different implementations of the Compute Node agent, known as SKUs, for different operating systems. You must specify a Compute Node agent SKU which matches the selected Image reference. To get the list of supported Compute Node agent SKUs along with their list of verified Image references, see the 'List supported Compute Node agent SKUs' operation.
 	NodeAgentSKUID *string `json:"nodeAgentSKUId,omitempty"`
-	// WindowsConfiguration - This property must not be specified if the imageReference property specifies a Linux OS image.
+	// WindowsConfiguration - This property must not be specified if the imageReference property specifies a Linux OS Image.
 	WindowsConfiguration *WindowsConfiguration `json:"windowsConfiguration,omitempty"`
-	// DataDisks - This property must be specified if the compute nodes in the pool need to have empty data disks attached to them. This cannot be updated. Each node gets its own disk (the disk is not a file share). Existing disks cannot be attached, each attached disk is empty. When the node is removed from the pool, the disk and all data associated with it is also deleted. The disk is not formatted after being attached, it must be formatted before use - for more information see https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux and https://docs.microsoft.com/en-us/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-machine.
+	// DataDisks - This property must be specified if the Compute Nodes in the Pool need to have empty data disks attached to them. This cannot be updated. Each Compute Node gets its own disk (the disk is not a file share). Existing disks cannot be attached, each attached disk is empty. When the Compute Node is removed from the Pool, the disk and all data associated with it is also deleted. The disk is not formatted after being attached, it must be formatted before use - for more information see https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux and https://docs.microsoft.com/en-us/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-machine.
 	DataDisks *[]DataDisk `json:"dataDisks,omitempty"`
-	// LicenseType - This only applies to images that contain the Windows operating system, and should only be used when you hold valid on-premises licenses for the nodes which will be deployed. If omitted, no on-premises licensing discount is applied. Values are:
+	// LicenseType - This only applies to Images that contain the Windows operating system, and should only be used when you hold valid on-premises licenses for the Compute Nodes which will be deployed. If omitted, no on-premises licensing discount is applied. Values are:
 	//  Windows_Server - The on-premises license is for Windows Server.
 	//  Windows_Client - The on-premises license is for Windows Client.
 	LicenseType *string `json:"licenseType,omitempty"`
-	// ContainerConfiguration - If specified, setup is performed on each node in the pool to allow tasks to run in containers. All regular tasks and job manager tasks run on this pool must specify the containerSettings property, and all other tasks may specify it.
+	// ContainerConfiguration - If specified, setup is performed on each Compute Node in the Pool to allow Tasks to run in containers. All regular Tasks and Job manager Tasks run on this Pool must specify the containerSettings property, and all other Tasks may specify it.
 	ContainerConfiguration *ContainerConfiguration `json:"containerConfiguration,omitempty"`
 }
 
@@ -4214,6 +4219,6 @@ type WindowsConfiguration struct {
 
 // WindowsUserConfiguration ...
 type WindowsUserConfiguration struct {
-	// LoginMode - The default value for VirtualMachineConfiguration pools is 'batch' and for CloudServiceConfiguration pools is 'interactive'. Possible values include: 'Batch', 'Interactive'
+	// LoginMode - The default value for VirtualMachineConfiguration Pools is 'batch' and for CloudServiceConfiguration Pools is 'interactive'. Possible values include: 'Batch', 'Interactive'
 	LoginMode LoginMode `json:"loginMode,omitempty"`
 }

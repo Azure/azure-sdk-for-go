@@ -38,7 +38,7 @@ func NewAccountClient(batchURL string) AccountClient {
 	return AccountClient{New(batchURL)}
 }
 
-// ListPoolNodeCounts gets the number of nodes in each state, grouped by pool.
+// ListPoolNodeCounts gets the number of Compute Nodes in each state, grouped by Pool.
 // Parameters:
 // filter - an OData $filter clause. For more information on constructing this filter, see
 // https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch.

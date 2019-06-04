@@ -179,25 +179,9 @@ func findLatestMajorVersion(stage string) (string, error) {
 	// returns:
 	// ~/work/src/github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis/v2
 	parent := filepath.Dir(stage)
-	f, err := os.Open(parent)
+	dirs, err := modinfo.GetModuleSubdirs(parent)
 	if err != nil {
-		return "", fmt.Errorf("failed to open '%s': %v", parent, err)
-	}
-	defer f.Close()
-	names, err := f.Readdirnames(0)
-	if err != nil {
-		return "", fmt.Errorf("failed to read dir contents: %v", err)
-	}
-	dirs := []string{}
-	for _, name := range names {
-		fi, err := os.Lstat(filepath.Join(parent, name))
-		if err != nil {
-			return "", fmt.Errorf("failed to get file info: %v", err)
-		}
-		// only include major version subdirs, v2, v3, etc...
-		if fi.IsDir() && fi.Name()[0] == 'v' {
-			dirs = append(dirs, filepath.Join(parent, fi.Name()))
-		}
+		return "", fmt.Errorf("failed to get module subdirs '%s': %v", parent, err)
 	}
 	// no dirs means this is a v1 package
 	if len(dirs) == 0 {
@@ -205,7 +189,7 @@ func findLatestMajorVersion(stage string) (string, error) {
 	}
 	sort.Strings(dirs)
 	// last one in the slice is the largest
-	return dirs[len(dirs)-1], nil
+	return filepath.Join(parent, dirs[len(dirs)-1]), nil
 }
 
 // updates the module version inside the go.mod file
@@ -260,28 +244,6 @@ func getTags(repoPath, tagPrefix string) ([]string, error) {
 		return nil, err
 	}
 	return wt.ListTags(tagPrefix + "*")
-}
-
-// sorts module tags based on their semantic versions.
-// this is necessary because lexically sorted is not sufficient
-// due to v10.0.0 appearing before v2.0.0
-func sortModuleTagsBySemver(tags []string) {
-	sort.SliceStable(tags, func(i, j int) bool {
-		l := semverRegex.FindString(tags[i])
-		r := semverRegex.FindString(tags[j])
-		if l == "" || r == "" {
-			panic("semver missing in module tag!")
-		}
-		lv, err := semver.NewVersion(l)
-		if err != nil {
-			panic(err)
-		}
-		rv, err := semver.NewVersion(r)
-		if err != nil {
-			panic(err)
-		}
-		return lv.LessThan(rv)
-	})
 }
 
 // returns the tag prefix for the specified package.

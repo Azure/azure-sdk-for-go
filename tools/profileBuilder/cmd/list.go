@@ -18,11 +18,15 @@ package cmd
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/internal/dirs"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"github.com/Azure/azure-sdk-for-go/tools/profileBuilder/model"
 	"github.com/spf13/cobra"
 )
@@ -63,7 +67,6 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 			}
 			outputRootDir = abs
 		}
-		outputLog.Printf("Output-Location set to: %s", outputRootDir)
 
 		inputFile, err := cmd.Flags().GetString(inputLongName)
 		if err != nil {
@@ -81,13 +84,43 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 			errLog.Fatalf("failed to unmarshal JSON: %v", err)
 		}
 
+		if modulesFlag {
+			modver, err := getLatestModVer(outputRootDir)
+			if err != nil {
+				errLog.Fatalf("failed to get module dir: %v", err)
+			}
+			updated, err := updateModuleVersions(&listDef)
+			if err != nil {
+				errLog.Fatalf("failed to update module versions: %v", err)
+			}
+			if updated {
+				data, err = json.MarshalIndent(listDef, "", "  ")
+				if err != nil {
+					errLog.Fatalf("failed to marshal updated list: %v", err)
+				}
+				data = append(data, '\n')
+				err = ioutil.WriteFile(inputFile, data, 0666)
+				if err != nil {
+					errLog.Fatalf("failed to write updated list: %v", err)
+				}
+				modver = modinfo.IncrementModuleVersion(modver)
+				outputRootDir = filepath.Join(outputRootDir, modver)
+				err = generateGoMod(outputRootDir)
+				if err != nil {
+					errLog.Fatalf("failed to generate go.mod: %v", err)
+				}
+			} else if modver != "" {
+				outputRootDir = filepath.Join(outputRootDir, modver)
+			}
+		}
+		outputLog.Printf("Output-Location set to: %s", outputRootDir)
 		if clearOutputFlag {
-			if err := model.DeleteChildDirs(outputRootDir); err != nil {
+			if err := dirs.DeleteChildDirs(outputRootDir); err != nil {
 				errLog.Fatalf("Unable to clear output-folder: %v", err)
 			}
 		}
 		// use recursive build to include the *api packages
-		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, true)
+		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, true, modulesFlag)
 	},
 }
 
@@ -95,4 +128,62 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 	listCmd.Flags().StringP(inputLongName, inputShortName, "", inputDescription)
 	listCmd.MarkFlagRequired(inputLongName)
+}
+
+func updateModuleVersions(listDef *model.ListDefinition) (bool, error) {
+	dirty := false
+	for i, entry := range listDef.Include {
+		// "../../services/storage/mgmt/2016-01-01/storage"
+		// "../../services/network/mgmt/2015-06-15/network/v2"
+		target := entry
+		if modinfo.HasVersionSuffix(target) {
+			target = filepath.Dir(target)
+			target = strings.Replace(target, "\\", "/", -1)
+		}
+		modDirs, err := modinfo.GetModuleSubdirs(target)
+		if err != nil {
+			return false, err
+		}
+		if len(modDirs) == 0 {
+			continue
+		}
+		latest := target + "/" + modDirs[len(modDirs)-1]
+		if latest == entry {
+			// already using latest major version
+			continue
+		}
+		listDef.Include[i] = latest
+		dirty = true
+	}
+	return dirty, nil
+}
+
+func getLatestModVer(profileDir string) (string, error) {
+	subdirs, err := modinfo.GetModuleSubdirs(profileDir)
+	if err != nil {
+		return "", err
+	}
+	modDir := ""
+	if len(subdirs) > 0 {
+		modDir = subdirs[len(subdirs)-1]
+	}
+	return modDir, nil
+}
+
+func generateGoMod(modDir string) error {
+	err := os.Mkdir(modDir, os.ModeDir|0644)
+	if err != nil {
+		return err
+	}
+	gomod, err := os.Create(filepath.Join(modDir, "go.mod"))
+	if err != nil {
+		return err
+	}
+	defer gomod.Close()
+	mod, err := modinfo.CreateModuleNameFromPath(modDir)
+	if err != nil {
+		return err
+	}
+	_, err = fmt.Fprintf(gomod, "module %s\n\ngo 1.12\n", mod)
+	return err
 }

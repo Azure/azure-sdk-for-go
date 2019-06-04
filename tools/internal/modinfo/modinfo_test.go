@@ -1,10 +1,3 @@
-package modinfo
-
-import (
-	"regexp"
-	"testing"
-)
-
 // Copyright 2018 Microsoft Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +11,15 @@ import (
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+package modinfo
+
+import (
+	"path/filepath"
+	"reflect"
+	"regexp"
+	"testing"
+)
 
 func Test_ScenarioA(t *testing.T) {
 	// scenario A has no breaking changes, additive only
@@ -145,5 +147,68 @@ func Test_ScenarioF(t *testing.T) {
 	regex := regexp.MustCompile(`testdata/scenariof/foo$`)
 	if !regex.MatchString(mod.DestDir()) {
 		t.Fatalf("bad destination dir: %s", mod.DestDir())
+	}
+}
+
+func Test_sortModuleTagsBySemver(t *testing.T) {
+	before := []string{
+		"v1.0.0",
+		"v1.0.1",
+		"v1.1.0",
+		"v10.0.0",
+		"v11.1.1",
+		"v2.0.0",
+		"v20.2.3",
+		"v3.1.0",
+	}
+	sortModuleTagsBySemver(before)
+	after := []string{
+		"v1.0.0",
+		"v1.0.1",
+		"v1.1.0",
+		"v2.0.0",
+		"v3.1.0",
+		"v10.0.0",
+		"v11.1.1",
+		"v20.2.3",
+	}
+	if !reflect.DeepEqual(before, after) {
+		t.Fatalf("sort order doesn't match, expected '%v' got '%v'", after, before)
+	}
+}
+
+func TestIncrementModuleVersion(t *testing.T) {
+	v := IncrementModuleVersion("")
+	if v != "v2" {
+		t.Fatalf("expected v2 got %s", v)
+	}
+	v = IncrementModuleVersion("v2")
+	if v != "v3" {
+		t.Fatalf("expected v3 got %s", v)
+	}
+	v = IncrementModuleVersion("v10")
+	if v != "v11" {
+		t.Fatalf("expected v11 got %s", v)
+	}
+}
+
+func TestCreateModuleNameFromPath(t *testing.T) {
+	n, err := CreateModuleNameFromPath(filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "foo", "apiver", "foo"))
+	if err != nil {
+		t.Fatalf("expected nil error, got: %v", err)
+	}
+	const expected = "github.com/Azure/azure-sdk-for-go/services/foo/apiver/foo"
+	if n != expected {
+		t.Fatalf("expected '%s' got '%s'", expected, n)
+	}
+}
+
+func TestCreateModuleNameFromPathFail(t *testing.T) {
+	n, err := CreateModuleNameFromPath(filepath.Join("work", "src", "github.com", "other", "project", "foo", "bar"))
+	if err == nil {
+		t.Fatal("expected non-nil error")
+	}
+	if n != "" {
+		t.Fatalf("expected empty module name, got %s", n)
 	}
 }

@@ -49,7 +49,9 @@ func NewPersonGroupPersonClient(endpoint string) PersonGroupPersonClient {
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-func (client PersonGroupPersonClient) AddFaceFromStream(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFace, err error) {
+// detectionModel - the 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+// values include "detection_01" or "detection_02"
+func (client PersonGroupPersonClient) AddFaceFromStream(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32, detectionModel DetectionModel) (result PersistedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PersonGroupPersonClient.AddFaceFromStream")
 		defer func() {
@@ -69,7 +71,7 @@ func (client PersonGroupPersonClient) AddFaceFromStream(ctx context.Context, per
 		return result, validation.NewError("face.PersonGroupPersonClient", "AddFaceFromStream", err.Error())
 	}
 
-	req, err := client.AddFaceFromStreamPreparer(ctx, personGroupID, personID, imageParameter, userData, targetFace)
+	req, err := client.AddFaceFromStreamPreparer(ctx, personGroupID, personID, imageParameter, userData, targetFace, detectionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromStream", nil, "Failure preparing request")
 		return
@@ -91,7 +93,7 @@ func (client PersonGroupPersonClient) AddFaceFromStream(ctx context.Context, per
 }
 
 // AddFaceFromStreamPreparer prepares the AddFaceFromStream request.
-func (client PersonGroupPersonClient) AddFaceFromStreamPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32) (*http.Request, error) {
+func (client PersonGroupPersonClient) AddFaceFromStreamPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageParameter io.ReadCloser, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -107,6 +109,11 @@ func (client PersonGroupPersonClient) AddFaceFromStreamPreparer(ctx context.Cont
 	}
 	if targetFace != nil && len(targetFace) > 0 {
 		queryParameters["targetFace"] = autorest.Encode("query", targetFace, ",")
+	}
+	if len(string(detectionModel)) > 0 {
+		queryParameters["detectionModel"] = autorest.Encode("query", detectionModel)
+	} else {
+		queryParameters["detectionModel"] = autorest.Encode("query", "detection_01")
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -160,6 +167,19 @@ func (client PersonGroupPersonClient) AddFaceFromStreamResponder(resp *http.Resp
 // failures.
 // *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from
 // different persons are processed in parallel.
+// * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+// dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+// * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to
+// [How to specify a detection
+// model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+// | Model | Recommended use-case(s) |
+// | ---------- | -------- |
+// | 'detection_01': | The default detection model for [PersonGroup Person - Add
+// Face](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523b). Recommend for near frontal face
+// detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image
+// orientation, the faces in such cases may not be detected. |
+// | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry
+// faces. |
 // Parameters:
 // personGroupID - id referencing a particular person group.
 // personID - id referencing a particular person.
@@ -169,7 +189,9 @@ func (client PersonGroupPersonClient) AddFaceFromStreamResponder(resp *http.Resp
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-func (client PersonGroupPersonClient) AddFaceFromURL(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
+// detectionModel - the 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+// values include "detection_01" or "detection_02"
+func (client PersonGroupPersonClient) AddFaceFromURL(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32, detectionModel DetectionModel) (result PersistedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PersonGroupPersonClient.AddFaceFromURL")
 		defer func() {
@@ -191,7 +213,7 @@ func (client PersonGroupPersonClient) AddFaceFromURL(ctx context.Context, person
 		return result, validation.NewError("face.PersonGroupPersonClient", "AddFaceFromURL", err.Error())
 	}
 
-	req, err := client.AddFaceFromURLPreparer(ctx, personGroupID, personID, imageURL, userData, targetFace)
+	req, err := client.AddFaceFromURLPreparer(ctx, personGroupID, personID, imageURL, userData, targetFace, detectionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.PersonGroupPersonClient", "AddFaceFromURL", nil, "Failure preparing request")
 		return
@@ -213,7 +235,7 @@ func (client PersonGroupPersonClient) AddFaceFromURL(ctx context.Context, person
 }
 
 // AddFaceFromURLPreparer prepares the AddFaceFromURL request.
-func (client PersonGroupPersonClient) AddFaceFromURLPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32) (*http.Request, error) {
+func (client PersonGroupPersonClient) AddFaceFromURLPreparer(ctx context.Context, personGroupID string, personID uuid.UUID, imageURL ImageURL, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -229,6 +251,11 @@ func (client PersonGroupPersonClient) AddFaceFromURLPreparer(ctx context.Context
 	}
 	if targetFace != nil && len(targetFace) > 0 {
 		queryParameters["targetFace"] = autorest.Encode("query", targetFace, ",")
+	}
+	if len(string(detectionModel)) > 0 {
+		queryParameters["detectionModel"] = autorest.Encode("query", detectionModel)
+	} else {
+		queryParameters["detectionModel"] = autorest.Encode("query", "detection_01")
 	}
 
 	preparer := autorest.CreatePreparer(

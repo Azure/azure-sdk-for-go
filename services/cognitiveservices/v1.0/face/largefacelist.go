@@ -48,7 +48,9 @@ func NewLargeFaceListClient(endpoint string) LargeFaceListClient {
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-func (client LargeFaceListClient) AddFaceFromStream(ctx context.Context, largeFaceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32) (result PersistedFace, err error) {
+// detectionModel - the 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+// values include "detection_01" or "detection_02"
+func (client LargeFaceListClient) AddFaceFromStream(ctx context.Context, largeFaceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32, detectionModel DetectionModel) (result PersistedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.AddFaceFromStream")
 		defer func() {
@@ -68,7 +70,7 @@ func (client LargeFaceListClient) AddFaceFromStream(ctx context.Context, largeFa
 		return result, validation.NewError("face.LargeFaceListClient", "AddFaceFromStream", err.Error())
 	}
 
-	req, err := client.AddFaceFromStreamPreparer(ctx, largeFaceListID, imageParameter, userData, targetFace)
+	req, err := client.AddFaceFromStreamPreparer(ctx, largeFaceListID, imageParameter, userData, targetFace, detectionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "AddFaceFromStream", nil, "Failure preparing request")
 		return
@@ -90,7 +92,7 @@ func (client LargeFaceListClient) AddFaceFromStream(ctx context.Context, largeFa
 }
 
 // AddFaceFromStreamPreparer prepares the AddFaceFromStream request.
-func (client LargeFaceListClient) AddFaceFromStreamPreparer(ctx context.Context, largeFaceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32) (*http.Request, error) {
+func (client LargeFaceListClient) AddFaceFromStreamPreparer(ctx context.Context, largeFaceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -105,6 +107,11 @@ func (client LargeFaceListClient) AddFaceFromStreamPreparer(ctx context.Context,
 	}
 	if targetFace != nil && len(targetFace) > 0 {
 		queryParameters["targetFace"] = autorest.Encode("query", targetFace, ",")
+	}
+	if len(string(detectionModel)) > 0 {
+		queryParameters["detectionModel"] = autorest.Encode("query", detectionModel)
+	} else {
+		queryParameters["detectionModel"] = autorest.Encode("query", "detection_01")
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -155,6 +162,19 @@ func (client LargeFaceListClient) AddFaceFromStreamResponder(resp *http.Response
 // * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
 // * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in
 // parallel.
+// * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+// dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+// * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to
+// [How to specify a detection
+// model](https://docs.microsoft.com/en-us/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+// | Model | Recommended use-case(s) |
+// | ---------- | -------- |
+// | 'detection_01': | The default detection model for [LargeFaceList - Add
+// Face](/docs/services/563879b61984550e40cbbe8d/operations/5a158c10d2de3616c086f2d3). Recommend for near frontal face
+// detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image
+// orientation, the faces in such cases may not be detected. |
+// | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry
+// faces. |
 //
 // Quota:
 // * Free-tier subscription quota: 1,000 faces per large face list.
@@ -167,7 +187,9 @@ func (client LargeFaceListClient) AddFaceFromStreamResponder(resp *http.Response
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-func (client LargeFaceListClient) AddFaceFromURL(ctx context.Context, largeFaceListID string, imageURL ImageURL, userData string, targetFace []int32) (result PersistedFace, err error) {
+// detectionModel - the 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+// values include "detection_01" or "detection_02"
+func (client LargeFaceListClient) AddFaceFromURL(ctx context.Context, largeFaceListID string, imageURL ImageURL, userData string, targetFace []int32, detectionModel DetectionModel) (result PersistedFace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.AddFaceFromURL")
 		defer func() {
@@ -189,7 +211,7 @@ func (client LargeFaceListClient) AddFaceFromURL(ctx context.Context, largeFaceL
 		return result, validation.NewError("face.LargeFaceListClient", "AddFaceFromURL", err.Error())
 	}
 
-	req, err := client.AddFaceFromURLPreparer(ctx, largeFaceListID, imageURL, userData, targetFace)
+	req, err := client.AddFaceFromURLPreparer(ctx, largeFaceListID, imageURL, userData, targetFace, detectionModel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "face.LargeFaceListClient", "AddFaceFromURL", nil, "Failure preparing request")
 		return
@@ -211,7 +233,7 @@ func (client LargeFaceListClient) AddFaceFromURL(ctx context.Context, largeFaceL
 }
 
 // AddFaceFromURLPreparer prepares the AddFaceFromURL request.
-func (client LargeFaceListClient) AddFaceFromURLPreparer(ctx context.Context, largeFaceListID string, imageURL ImageURL, userData string, targetFace []int32) (*http.Request, error) {
+func (client LargeFaceListClient) AddFaceFromURLPreparer(ctx context.Context, largeFaceListID string, imageURL ImageURL, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -226,6 +248,11 @@ func (client LargeFaceListClient) AddFaceFromURLPreparer(ctx context.Context, la
 	}
 	if targetFace != nil && len(targetFace) > 0 {
 		queryParameters["targetFace"] = autorest.Encode("query", targetFace, ",")
+	}
+	if len(string(detectionModel)) > 0 {
+		queryParameters["detectionModel"] = autorest.Encode("query", detectionModel)
+	} else {
+		queryParameters["detectionModel"] = autorest.Encode("query", "detection_01")
 	}
 
 	preparer := autorest.CreatePreparer(

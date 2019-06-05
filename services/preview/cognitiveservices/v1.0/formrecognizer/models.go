@@ -569,7 +569,7 @@ type TrainSourceFilter struct {
 	// under the source location. For e.g., when using a Azure Blob
 	// Uri use the prefix to restrict subfolders for content.
 	Prefix *string `json:"prefix,omitempty"`
-	// IncludeSubFolders - A flag to indicate of sub folders within the set of
+	// IncludeSubFolders - A flag to indicate if sub folders within the set of
 	// prefix folders will also need to included when searching
 	// for content to be preprocessed.
 	IncludeSubFolders *bool `json:"includeSubFolders,omitempty"`

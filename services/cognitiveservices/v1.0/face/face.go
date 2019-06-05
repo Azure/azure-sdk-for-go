@@ -97,9 +97,9 @@ func NewClient(endpoint string) Client {
 // default value is 'recognition_01', if latest model needed, please explicitly specify the model you need.
 // returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
 // response.
-// detectionModel - name of detection model. Detection model' is used to detect faces in the submitted image. A
-// detection model name can be provided when performing Face - Detect or (Large)FaceList - Create or
-// (Large)PersonGroup - Create. The default value is 'detection_01', if another model is needed, please
+// detectionModel - name of detection model. Detection model is used to detect faces in the submitted image. A
+// detection model name can be provided when performing Face - Detect or (Large)FaceList - Add Face or
+// (Large)PersonGroup - Add Face. The default value is 'detection_01', if another model is needed, please
 // explicitly specify it.
 func (client Client) DetectWithStream(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool, detectionModel DetectionModel) (result ListDetectedFace, err error) {
 	if tracing.IsEnabled() {
@@ -259,9 +259,9 @@ func (client Client) DetectWithStreamResponder(resp *http.Response) (result List
 // default value is 'recognition_01', if latest model needed, please explicitly specify the model you need.
 // returnRecognitionModel - a value indicating whether the operation should return 'recognitionModel' in
 // response.
-// detectionModel - name of detection model. Detection model' is used to detect faces in the submitted image. A
-// detection model name can be provided when performing Face - Detect or (Large)FaceList - Create or
-// (Large)PersonGroup - Create. The default value is 'detection_01', if another model is needed, please
+// detectionModel - name of detection model. Detection model is used to detect faces in the submitted image. A
+// detection model name can be provided when performing Face - Detect or (Large)FaceList - Add Face or
+// (Large)PersonGroup - Add Face. The default value is 'detection_01', if another model is needed, please
 // explicitly specify it.
 func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool, detectionModel DetectionModel) (result ListDetectedFace, err error) {
 	if tracing.IsEnabled() {

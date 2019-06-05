@@ -48,9 +48,9 @@ func NewListClient(endpoint string) ListClient {
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-// detectionModel - name of detection model. Detection model' is used to detect faces in the submitted image. A
-// detection model name can be provided when performing Face - Detect or (Large)FaceList - Create or
-// (Large)PersonGroup - Create. The default value is 'detection_01', if another model is needed, please
+// detectionModel - name of detection model. Detection model is used to detect faces in the submitted image. A
+// detection model name can be provided when performing Face - Detect or (Large)FaceList - Add Face or
+// (Large)PersonGroup - Add Face. The default value is 'detection_01', if another model is needed, please
 // explicitly specify it.
 func (client ListClient) AddFaceFromStream(ctx context.Context, faceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32, detectionModel DetectionModel) (result PersistedFace, err error) {
 	if tracing.IsEnabled() {
@@ -185,9 +185,9 @@ func (client ListClient) AddFaceFromStreamResponder(resp *http.Response) (result
 // "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the
 // image, targetFace is required to specify which face to add. No targetFace means there is only one face
 // detected in the entire image.
-// detectionModel - name of detection model. Detection model' is used to detect faces in the submitted image. A
-// detection model name can be provided when performing Face - Detect or (Large)FaceList - Create or
-// (Large)PersonGroup - Create. The default value is 'detection_01', if another model is needed, please
+// detectionModel - name of detection model. Detection model is used to detect faces in the submitted image. A
+// detection model name can be provided when performing Face - Detect or (Large)FaceList - Add Face or
+// (Large)PersonGroup - Add Face. The default value is 'detection_01', if another model is needed, please
 // explicitly specify it.
 func (client ListClient) AddFaceFromURL(ctx context.Context, faceListID string, imageURL ImageURL, userData string, targetFace []int32, detectionModel DetectionModel) (result PersistedFace, err error) {
 	if tracing.IsEnabled() {

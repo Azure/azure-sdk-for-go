@@ -52,13 +52,15 @@ const (
 	Amd64 Architecture = "amd64"
 	// Arm ...
 	Arm Architecture = "arm"
+	// Arm64 ...
+	Arm64 Architecture = "arm64"
 	// X86 ...
 	X86 Architecture = "x86"
 )
 
 // PossibleArchitectureValues returns an array of possible values for the Architecture const type.
 func PossibleArchitectureValues() []Architecture {
-	return []Architecture{Amd64, Arm, X86}
+	return []Architecture{Amd64, Arm, Arm64, X86}
 }
 
 // BaseImageDependencyType enumerates the values for base image dependency type.
@@ -2034,7 +2036,7 @@ type OperationServiceSpecificationDefinition struct {
 type PlatformProperties struct {
 	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
 	Os OS `json:"os,omitempty"`
-	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm'
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm', 'Arm64'
 	Architecture Architecture `json:"architecture,omitempty"`
 	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
 	Variant Variant `json:"variant,omitempty"`
@@ -2044,7 +2046,7 @@ type PlatformProperties struct {
 type PlatformUpdateParameters struct {
 	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
 	Os OS `json:"os,omitempty"`
-	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm'
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm', 'Arm64'
 	Architecture Architecture `json:"architecture,omitempty"`
 	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
 	Variant Variant `json:"variant,omitempty"`
@@ -3317,6 +3319,8 @@ type RunProperties struct {
 	ImageUpdateTrigger *ImageUpdateTrigger `json:"imageUpdateTrigger,omitempty"`
 	// SourceTrigger - The source trigger that caused the run.
 	SourceTrigger *SourceTriggerDescriptor `json:"sourceTrigger,omitempty"`
+	// TimerTrigger - The timer trigger that caused the run.
+	TimerTrigger *TimerTriggerDescriptor `json:"timerTrigger,omitempty"`
 	// Platform - The platform properties against which the run will happen.
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
@@ -3327,6 +3331,8 @@ type RunProperties struct {
 	CustomRegistries *[]string `json:"customRegistries,omitempty"`
 	// RunErrorMessage - READ-ONLY; The error message received from backend systems after the run is scheduled.
 	RunErrorMessage *string `json:"runErrorMessage,omitempty"`
+	// UpdateTriggerToken - The update trigger token passed for the Run.
+	UpdateTriggerToken *string `json:"updateTriggerToken,omitempty"`
 	// ProvisioningState - The provisioning state of a run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
@@ -4558,6 +4564,14 @@ type TimerTrigger struct {
 	Status TriggerStatus `json:"status,omitempty"`
 	// Name - The name of the trigger.
 	Name *string `json:"name,omitempty"`
+}
+
+// TimerTriggerDescriptor ...
+type TimerTriggerDescriptor struct {
+	// TimerTriggerName - The timer trigger name that caused the run.
+	TimerTriggerName *string `json:"timerTriggerName,omitempty"`
+	// ScheduleOccurrence - The occurrence that triggered the run.
+	ScheduleOccurrence *string `json:"scheduleOccurrence,omitempty"`
 }
 
 // TimerTriggerUpdateParameters the properties for updating a timer trigger.

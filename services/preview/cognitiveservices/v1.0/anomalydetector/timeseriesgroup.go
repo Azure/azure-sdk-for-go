@@ -105,7 +105,7 @@ func (client TimeSeriesGroupClient) AddTimeSeriesPreparer(ctx context.Context, t
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPut(),
+		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
 		autorest.WithPathParameters("/timeseriesgroups/{timeSeriesGroupId}/timeseries/{timeSeriesId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -185,7 +185,7 @@ func (client TimeSeriesGroupClient) CreatePreparer(ctx context.Context, timeSeri
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
+		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
 		autorest.WithPathParameters("/timeseriesgroups/{timeSeriesGroupId}", pathParameters),
 		autorest.WithJSON(body))

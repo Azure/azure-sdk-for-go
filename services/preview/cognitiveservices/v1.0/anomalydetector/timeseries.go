@@ -185,7 +185,7 @@ func (client TimeSeriesClient) CreatePreparer(ctx context.Context, timeSeriesID 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
+		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
 		autorest.WithPathParameters("/timeseries/{timeSeriesId}", pathParameters),
 		autorest.WithJSON(body))

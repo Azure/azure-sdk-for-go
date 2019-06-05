@@ -85,6 +85,10 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 		}
 
 		if modulesFlag {
+			// when generating in module-aware mode a few extra things need to happen
+			// 1. update the list of includes package to their latest module versions
+			// 2. find the latest module version for the profile we're working on
+			// 3. if any includes were updated generate a new major version for this profile
 			modver, err := getLatestModVer(outputRootDir)
 			if err != nil {
 				errLog.Fatalf("failed to get module dir: %v", err)
@@ -94,6 +98,7 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 				errLog.Fatalf("failed to update module versions: %v", err)
 			}
 			if updated {
+				// at least one include was updated, write out updated list definition
 				data, err = json.MarshalIndent(listDef, "", "  ")
 				if err != nil {
 					errLog.Fatalf("failed to marshal updated list: %v", err)
@@ -103,6 +108,7 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 				if err != nil {
 					errLog.Fatalf("failed to write updated list: %v", err)
 				}
+				// increment profile module major version and generate new go.mod file
 				modver = modinfo.IncrementModuleVersion(modver)
 				outputRootDir = filepath.Join(outputRootDir, modver)
 				err = generateGoMod(outputRootDir)
@@ -130,6 +136,8 @@ func init() {
 	listCmd.MarkFlagRequired(inputLongName)
 }
 
+// for each included package check if there is a newer module major version then the one specified,
+// and if there is update the include accordinly.  returns true if any packages were updated.
 func updateModuleVersions(listDef *model.ListDefinition) (bool, error) {
 	dirty := false
 	for i, entry := range listDef.Include {
@@ -158,6 +166,8 @@ func updateModuleVersions(listDef *model.ListDefinition) (bool, error) {
 	return dirty, nil
 }
 
+// returns the last major module version for the specified profile directory (e.g. "v2" etc).
+// if there are no major versions the return value is the empty string.
 func getLatestModVer(profileDir string) (string, error) {
 	subdirs, err := modinfo.GetModuleSubdirs(profileDir)
 	if err != nil {
@@ -170,6 +180,8 @@ func getLatestModVer(profileDir string) (string, error) {
 	return modDir, nil
 }
 
+// generate a go.mod file in the specified module major version directory (e.g. "profiles/foo/v2")
+// the provided module directory is used to calculate the module name.
 func generateGoMod(modDir string) error {
 	err := os.Mkdir(modDir, os.ModeDir|0644)
 	if err != nil {

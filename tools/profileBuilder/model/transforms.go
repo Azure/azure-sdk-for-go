@@ -119,6 +119,7 @@ func BuildProfile(packageList ListDefinition, name, outputLocation string, outpu
 					if aliasPath, ok = packageList.PathOverride[importPath]; !ok {
 						var err error
 						if modules && modinfo.HasVersionSuffix(path) {
+							// strip off the major version dir so it's not included in the alias path
 							path = filepath.Dir(path)
 						}
 						aliasPath, err = getAliasPath(path)

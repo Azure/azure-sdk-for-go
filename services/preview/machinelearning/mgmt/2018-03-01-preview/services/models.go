@@ -134,15 +134,32 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type Status string
 
 const (
-	// Disabled ...
-	Disabled Status = "Disabled"
-	// Enabled ...
-	Enabled Status = "Enabled"
+	// Failure ...
+	Failure Status = "Failure"
+	// Success ...
+	Success Status = "Success"
+	// Undefined ...
+	Undefined Status = "Undefined"
 )
 
 // PossibleStatusValues returns an array of possible values for the Status const type.
 func PossibleStatusValues() []Status {
-	return []Status{Disabled, Enabled}
+	return []Status{Failure, Success, Undefined}
+}
+
+// Status1 enumerates the values for status 1.
+type Status1 string
+
+const (
+	// Disabled ...
+	Disabled Status1 = "Disabled"
+	// Enabled ...
+	Enabled Status1 = "Enabled"
+)
+
+// PossibleStatus1Values returns an array of possible values for the Status1 const type.
+func PossibleStatus1Values() []Status1 {
+	return []Status1{Disabled, Enabled}
 }
 
 // AKS a Machine Learning compute based on AKS.
@@ -929,8 +946,8 @@ type ListWorkspaceKeysResult struct {
 	ContainerRegistryCredentials *RegistryListCredentialsResult `json:"containerRegistryCredentials,omitempty"`
 }
 
-// ListWorkspaceQuotasByVMFamily the List WorkspaceQuotasByVMFamily operation response.
-type ListWorkspaceQuotasByVMFamily struct {
+// ListWorkspaceQuotas the List WorkspaceQuotasByVMFamily operation response.
+type ListWorkspaceQuotas struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of Workspace Quotas by VM Family
 	Value *[]ResourceQuota `json:"value,omitempty"`
@@ -938,17 +955,17 @@ type ListWorkspaceQuotasByVMFamily struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ListWorkspaceQuotasByVMFamilyIterator provides access to a complete listing of ResourceQuota values.
-type ListWorkspaceQuotasByVMFamilyIterator struct {
+// ListWorkspaceQuotasIterator provides access to a complete listing of ResourceQuota values.
+type ListWorkspaceQuotasIterator struct {
 	i    int
-	page ListWorkspaceQuotasByVMFamilyPage
+	page ListWorkspaceQuotasPage
 }
 
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *ListWorkspaceQuotasByVMFamilyIterator) NextWithContext(ctx context.Context) (err error) {
+func (iter *ListWorkspaceQuotasIterator) NextWithContext(ctx context.Context) (err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ListWorkspaceQuotasByVMFamilyIterator.NextWithContext")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListWorkspaceQuotasIterator.NextWithContext")
 		defer func() {
 			sc := -1
 			if iter.Response().Response.Response != nil {
@@ -973,62 +990,62 @@ func (iter *ListWorkspaceQuotasByVMFamilyIterator) NextWithContext(ctx context.C
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
-func (iter *ListWorkspaceQuotasByVMFamilyIterator) Next() error {
+func (iter *ListWorkspaceQuotasIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter ListWorkspaceQuotasByVMFamilyIterator) NotDone() bool {
+func (iter ListWorkspaceQuotasIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
 // Response returns the raw server response from the last page request.
-func (iter ListWorkspaceQuotasByVMFamilyIterator) Response() ListWorkspaceQuotasByVMFamily {
+func (iter ListWorkspaceQuotasIterator) Response() ListWorkspaceQuotas {
 	return iter.page.Response()
 }
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ListWorkspaceQuotasByVMFamilyIterator) Value() ResourceQuota {
+func (iter ListWorkspaceQuotasIterator) Value() ResourceQuota {
 	if !iter.page.NotDone() {
 		return ResourceQuota{}
 	}
 	return iter.page.Values()[iter.i]
 }
 
-// Creates a new instance of the ListWorkspaceQuotasByVMFamilyIterator type.
-func NewListWorkspaceQuotasByVMFamilyIterator(page ListWorkspaceQuotasByVMFamilyPage) ListWorkspaceQuotasByVMFamilyIterator {
-	return ListWorkspaceQuotasByVMFamilyIterator{page: page}
+// Creates a new instance of the ListWorkspaceQuotasIterator type.
+func NewListWorkspaceQuotasIterator(page ListWorkspaceQuotasPage) ListWorkspaceQuotasIterator {
+	return ListWorkspaceQuotasIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
-func (lwqbvf ListWorkspaceQuotasByVMFamily) IsEmpty() bool {
-	return lwqbvf.Value == nil || len(*lwqbvf.Value) == 0
+func (lwq ListWorkspaceQuotas) IsEmpty() bool {
+	return lwq.Value == nil || len(*lwq.Value) == 0
 }
 
-// listWorkspaceQuotasByVMFamilyPreparer prepares a request to retrieve the next set of results.
+// listWorkspaceQuotasPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (lwqbvf ListWorkspaceQuotasByVMFamily) listWorkspaceQuotasByVMFamilyPreparer(ctx context.Context) (*http.Request, error) {
-	if lwqbvf.NextLink == nil || len(to.String(lwqbvf.NextLink)) < 1 {
+func (lwq ListWorkspaceQuotas) listWorkspaceQuotasPreparer(ctx context.Context) (*http.Request, error) {
+	if lwq.NextLink == nil || len(to.String(lwq.NextLink)) < 1 {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(lwqbvf.NextLink)))
+		autorest.WithBaseURL(to.String(lwq.NextLink)))
 }
 
-// ListWorkspaceQuotasByVMFamilyPage contains a page of ResourceQuota values.
-type ListWorkspaceQuotasByVMFamilyPage struct {
-	fn     func(context.Context, ListWorkspaceQuotasByVMFamily) (ListWorkspaceQuotasByVMFamily, error)
-	lwqbvf ListWorkspaceQuotasByVMFamily
+// ListWorkspaceQuotasPage contains a page of ResourceQuota values.
+type ListWorkspaceQuotasPage struct {
+	fn  func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)
+	lwq ListWorkspaceQuotas
 }
 
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *ListWorkspaceQuotasByVMFamilyPage) NextWithContext(ctx context.Context) (err error) {
+func (page *ListWorkspaceQuotasPage) NextWithContext(ctx context.Context) (err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ListWorkspaceQuotasByVMFamilyPage.NextWithContext")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListWorkspaceQuotasPage.NextWithContext")
 		defer func() {
 			sc := -1
 			if page.Response().Response.Response != nil {
@@ -1037,42 +1054,42 @@ func (page *ListWorkspaceQuotasByVMFamilyPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lwqbvf)
+	next, err := page.fn(ctx, page.lwq)
 	if err != nil {
 		return err
 	}
-	page.lwqbvf = next
+	page.lwq = next
 	return nil
 }
 
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
-func (page *ListWorkspaceQuotasByVMFamilyPage) Next() error {
+func (page *ListWorkspaceQuotasPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page ListWorkspaceQuotasByVMFamilyPage) NotDone() bool {
-	return !page.lwqbvf.IsEmpty()
+func (page ListWorkspaceQuotasPage) NotDone() bool {
+	return !page.lwq.IsEmpty()
 }
 
 // Response returns the raw server response from the last page request.
-func (page ListWorkspaceQuotasByVMFamilyPage) Response() ListWorkspaceQuotasByVMFamily {
-	return page.lwqbvf
+func (page ListWorkspaceQuotasPage) Response() ListWorkspaceQuotas {
+	return page.lwq
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ListWorkspaceQuotasByVMFamilyPage) Values() []ResourceQuota {
-	if page.lwqbvf.IsEmpty() {
+func (page ListWorkspaceQuotasPage) Values() []ResourceQuota {
+	if page.lwq.IsEmpty() {
 		return nil
 	}
-	return *page.lwqbvf.Value
+	return *page.lwq.Value
 }
 
-// Creates a new instance of the ListWorkspaceQuotasByVMFamilyPage type.
-func NewListWorkspaceQuotasByVMFamilyPage(getNextPage func(context.Context, ListWorkspaceQuotasByVMFamily) (ListWorkspaceQuotasByVMFamily, error)) ListWorkspaceQuotasByVMFamilyPage {
-	return ListWorkspaceQuotasByVMFamilyPage{fn: getNextPage}
+// Creates a new instance of the ListWorkspaceQuotasPage type.
+func NewListWorkspaceQuotasPage(getNextPage func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)) ListWorkspaceQuotasPage {
+	return ListWorkspaceQuotasPage{fn: getNextPage}
 }
 
 // MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1363,7 +1380,7 @@ type QuotasUpdateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *QuotasUpdateFuture) Result(client QuotasClient) (ar autorest.Response, err error) {
+func (future *QuotasUpdateFuture) Result(client QuotasClient) (uwq UpdateWorkspaceQuotas, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -1374,7 +1391,13 @@ func (future *QuotasUpdateFuture) Result(client QuotasClient) (ar autorest.Respo
 		err = azure.NewAsyncOpIncompleteError("services.QuotasUpdateFuture")
 		return
 	}
-	ar.Response = future.Response()
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if uwq.Response.Response, err = future.GetResult(sender); err == nil && uwq.Response.Response.StatusCode != http.StatusNoContent {
+		uwq, err = client.UpdateResponder(uwq.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "services.QuotasUpdateFuture", "Result", uwq.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 
@@ -1431,14 +1454,16 @@ type ResourceName struct {
 
 // ResourceQuota the quota assigned to a resource.
 type ResourceQuota struct {
-	// ResourceName - READ-ONLY; Name of the resource.
-	ResourceName *ResourceName `json:"resourceName,omitempty"`
+	// ID - READ-ONLY; Specifies the resource ID.
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Specifies the resource type.
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Name of the resource.
+	Name *ResourceName `json:"name,omitempty"`
 	// Quota - READ-ONLY; Quota assigned to the resource.
 	Quota *int32 `json:"quota,omitempty"`
 	// Unit - READ-ONLY; The units used to represent the quota.
 	Unit *string `json:"unit,omitempty"`
-	// QuotaDistribution - READ-ONLY; The quota distribution among resources.
-	QuotaDistribution *[]ResourceQuota `json:"quotaDistribution,omitempty"`
 }
 
 // ScaleSettings scale settings for BatchAI Compute
@@ -1454,7 +1479,7 @@ type ScaleSettings struct {
 // SslConfiguration the SSL configuration for scoring
 type SslConfiguration struct {
 	// Status - Enable or disable SSL for scoring. Possible values include: 'Disabled', 'Enabled'
-	Status Status `json:"status,omitempty"`
+	Status Status1 `json:"status,omitempty"`
 	// Cert - Cert data
 	Cert *string `json:"cert,omitempty"`
 	// Key - Key data
@@ -1471,6 +1496,19 @@ type SystemService struct {
 	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 	// Version - READ-ONLY; The version for this type.
 	Version *string `json:"version,omitempty"`
+}
+
+// UpdateWorkspaceQuotas the properties for update Quota response.
+type UpdateWorkspaceQuotas struct {
+	autorest.Response `json:"-"`
+	// VMFamily - The family name of the virtual machine size.
+	VMFamily *string `json:"vmFamily,omitempty"`
+	// WorkspaceID - Fully qualified resource identifier of the workspace.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// Quota - Quota.
+	Quota *int32 `json:"quota,omitempty"`
+	// Status - Status of update workspace quota. Possible values include: 'Undefined', 'Success', 'Failure'
+	Status Status `json:"status,omitempty"`
 }
 
 // VirtualMachine a Machine Learning compute based on Azure Virtual Machines.

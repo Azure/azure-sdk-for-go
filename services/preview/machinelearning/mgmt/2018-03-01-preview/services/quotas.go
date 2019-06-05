@@ -41,16 +41,16 @@ func NewQuotasClientWithBaseURI(baseURI string, subscriptionID string) QuotasCli
 	return QuotasClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByVMFamily gets the currently assigned Workspace Quotas based on VMFamily.
+// List gets the currently assigned Workspace Quotas based on VMFamily.
 // Parameters:
 // location - the location for which resource usage is queried.
-func (client QuotasClient) ListByVMFamily(ctx context.Context, location string) (result ListWorkspaceQuotasByVMFamilyPage, err error) {
+func (client QuotasClient) List(ctx context.Context, location string) (result ListWorkspaceQuotasPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/QuotasClient.ListByVMFamily")
+		ctx = tracing.StartSpan(ctx, fqdn+"/QuotasClient.List")
 		defer func() {
 			sc := -1
-			if result.lwqbvf.Response.Response != nil {
-				sc = result.lwqbvf.Response.Response.StatusCode
+			if result.lwq.Response.Response != nil {
+				sc = result.lwq.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -58,33 +58,33 @@ func (client QuotasClient) ListByVMFamily(ctx context.Context, location string) 
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: location,
 			Constraints: []validation.Constraint{{Target: "location", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("services.QuotasClient", "ListByVMFamily", err.Error())
+		return result, validation.NewError("services.QuotasClient", "List", err.Error())
 	}
 
-	result.fn = client.listByVMFamilyNextResults
-	req, err := client.ListByVMFamilyPreparer(ctx, location)
+	result.fn = client.listNextResults
+	req, err := client.ListPreparer(ctx, location)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "services.QuotasClient", "ListByVMFamily", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "services.QuotasClient", "List", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListByVMFamilySender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
-		result.lwqbvf.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "services.QuotasClient", "ListByVMFamily", resp, "Failure sending request")
+		result.lwq.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "services.QuotasClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.lwqbvf, err = client.ListByVMFamilyResponder(resp)
+	result.lwq, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "services.QuotasClient", "ListByVMFamily", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "services.QuotasClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListByVMFamilyPreparer prepares the ListByVMFamily request.
-func (client QuotasClient) ListByVMFamilyPreparer(ctx context.Context, location string) (*http.Request, error) {
+// ListPreparer prepares the List request.
+func (client QuotasClient) ListPreparer(ctx context.Context, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -103,16 +103,16 @@ func (client QuotasClient) ListByVMFamilyPreparer(ctx context.Context, location 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListByVMFamilySender sends the ListByVMFamily request. The method will close the
+// ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client QuotasClient) ListByVMFamilySender(req *http.Request) (*http.Response, error) {
+func (client QuotasClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListByVMFamilyResponder handles the response to the ListByVMFamily request. The method always
+// ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client QuotasClient) ListByVMFamilyResponder(resp *http.Response) (result ListWorkspaceQuotasByVMFamily, err error) {
+func (client QuotasClient) ListResponder(resp *http.Response) (result ListWorkspaceQuotas, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -123,31 +123,31 @@ func (client QuotasClient) ListByVMFamilyResponder(resp *http.Response) (result 
 	return
 }
 
-// listByVMFamilyNextResults retrieves the next set of results, if any.
-func (client QuotasClient) listByVMFamilyNextResults(ctx context.Context, lastResults ListWorkspaceQuotasByVMFamily) (result ListWorkspaceQuotasByVMFamily, err error) {
-	req, err := lastResults.listWorkspaceQuotasByVMFamilyPreparer(ctx)
+// listNextResults retrieves the next set of results, if any.
+func (client QuotasClient) listNextResults(ctx context.Context, lastResults ListWorkspaceQuotas) (result ListWorkspaceQuotas, err error) {
+	req, err := lastResults.listWorkspaceQuotasPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "services.QuotasClient", "listByVMFamilyNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "services.QuotasClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
 	}
-	resp, err := client.ListByVMFamilySender(req)
+	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "services.QuotasClient", "listByVMFamilyNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "services.QuotasClient", "listNextResults", resp, "Failure sending next results request")
 	}
-	result, err = client.ListByVMFamilyResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "services.QuotasClient", "listByVMFamilyNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "services.QuotasClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
-// ListByVMFamilyComplete enumerates all values, automatically crossing page boundaries as required.
-func (client QuotasClient) ListByVMFamilyComplete(ctx context.Context, location string) (result ListWorkspaceQuotasByVMFamilyIterator, err error) {
+// ListComplete enumerates all values, automatically crossing page boundaries as required.
+func (client QuotasClient) ListComplete(ctx context.Context, location string) (result ListWorkspaceQuotasIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/QuotasClient.ListByVMFamily")
+		ctx = tracing.StartSpan(ctx, fqdn+"/QuotasClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -156,7 +156,7 @@ func (client QuotasClient) ListByVMFamilyComplete(ctx context.Context, location 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByVMFamily(ctx, location)
+	result.page, err = client.List(ctx, location)
 	return
 }
 
@@ -234,12 +234,13 @@ func (client QuotasClient) UpdateSender(req *http.Request) (future QuotasUpdateF
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client QuotasClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client QuotasClient) UpdateResponder(resp *http.Response) (result UpdateWorkspaceQuotas, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

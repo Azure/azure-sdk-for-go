@@ -58,7 +58,7 @@ var _ MachineLearningComputeClientAPI = (*services.MachineLearningComputeClient)
 
 // QuotasClientAPI contains the set of methods on the QuotasClient type.
 type QuotasClientAPI interface {
-	ListByVMFamily(ctx context.Context, location string) (result services.ListWorkspaceQuotasByVMFamilyPage, err error)
+	List(ctx context.Context, location string) (result services.ListWorkspaceQuotasPage, err error)
 	Update(ctx context.Context, location string, parameters services.QuotaUpdateParameters) (result services.QuotasUpdateFuture, err error)
 }
 

@@ -79,8 +79,16 @@ const (
 type Status = original.Status
 
 const (
-	Disabled Status = original.Disabled
-	Enabled  Status = original.Enabled
+	Failure   Status = original.Failure
+	Success   Status = original.Success
+	Undefined Status = original.Undefined
+)
+
+type Status1 = original.Status1
+
+const (
+	Disabled Status1 = original.Disabled
+	Enabled  Status1 = original.Enabled
 )
 
 type AKS = original.AKS
@@ -102,9 +110,9 @@ type HDInsight = original.HDInsight
 type HDInsightProperties = original.HDInsightProperties
 type Identity = original.Identity
 type ListWorkspaceKeysResult = original.ListWorkspaceKeysResult
-type ListWorkspaceQuotasByVMFamily = original.ListWorkspaceQuotasByVMFamily
-type ListWorkspaceQuotasByVMFamilyIterator = original.ListWorkspaceQuotasByVMFamilyIterator
-type ListWorkspaceQuotasByVMFamilyPage = original.ListWorkspaceQuotasByVMFamilyPage
+type ListWorkspaceQuotas = original.ListWorkspaceQuotas
+type ListWorkspaceQuotasIterator = original.ListWorkspaceQuotasIterator
+type ListWorkspaceQuotasPage = original.ListWorkspaceQuotasPage
 type MachineLearningComputeClient = original.MachineLearningComputeClient
 type MachineLearningComputeCreateOrUpdateFuture = original.MachineLearningComputeCreateOrUpdateFuture
 type MachineLearningComputeDeleteFuture = original.MachineLearningComputeDeleteFuture
@@ -130,6 +138,7 @@ type ResourceQuota = original.ResourceQuota
 type ScaleSettings = original.ScaleSettings
 type SslConfiguration = original.SslConfiguration
 type SystemService = original.SystemService
+type UpdateWorkspaceQuotas = original.UpdateWorkspaceQuotas
 type VirtualMachine = original.VirtualMachine
 type VirtualMachineProperties = original.VirtualMachineProperties
 type VirtualMachineSSHCredentials = original.VirtualMachineSSHCredentials
@@ -146,11 +155,11 @@ type WorkspacesClient = original.WorkspacesClient
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewListWorkspaceQuotasByVMFamilyIterator(page ListWorkspaceQuotasByVMFamilyPage) ListWorkspaceQuotasByVMFamilyIterator {
-	return original.NewListWorkspaceQuotasByVMFamilyIterator(page)
+func NewListWorkspaceQuotasIterator(page ListWorkspaceQuotasPage) ListWorkspaceQuotasIterator {
+	return original.NewListWorkspaceQuotasIterator(page)
 }
-func NewListWorkspaceQuotasByVMFamilyPage(getNextPage func(context.Context, ListWorkspaceQuotasByVMFamily) (ListWorkspaceQuotasByVMFamily, error)) ListWorkspaceQuotasByVMFamilyPage {
-	return original.NewListWorkspaceQuotasByVMFamilyPage(getNextPage)
+func NewListWorkspaceQuotasPage(getNextPage func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)) ListWorkspaceQuotasPage {
+	return original.NewListWorkspaceQuotasPage(getNextPage)
 }
 func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
 	return original.NewMachineLearningComputeClient(subscriptionID)
@@ -205,6 +214,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleStatus1Values() []Status1 {
+	return original.PossibleStatus1Values()
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()

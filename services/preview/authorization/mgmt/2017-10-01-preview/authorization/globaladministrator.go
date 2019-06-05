@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// ElevateAccessClient is the role based access control provides you a way to apply granular level policy
+// GlobalAdministratorClient is the role based access control provides you a way to apply granular level policy
 // administration down to individual resources or resource groups. These operations enable you to manage role
 // definitions and role assignments. A role definition describes the set of actions that can be performed on resources.
 // A role assignment grants access to Azure Active Directory users.
-type ElevateAccessClient struct {
+type GlobalAdministratorClient struct {
 	BaseClient
 }
 
-// NewElevateAccessClient creates an instance of the ElevateAccessClient client.
-func NewElevateAccessClient(subscriptionID string) ElevateAccessClient {
-	return NewElevateAccessClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewGlobalAdministratorClient creates an instance of the GlobalAdministratorClient client.
+func NewGlobalAdministratorClient(subscriptionID string) GlobalAdministratorClient {
+	return NewGlobalAdministratorClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewElevateAccessClientWithBaseURI creates an instance of the ElevateAccessClient client.
-func NewElevateAccessClientWithBaseURI(baseURI string, subscriptionID string) ElevateAccessClient {
-	return ElevateAccessClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewGlobalAdministratorClientWithBaseURI creates an instance of the GlobalAdministratorClient client.
+func NewGlobalAdministratorClientWithBaseURI(baseURI string, subscriptionID string) GlobalAdministratorClient {
+	return GlobalAdministratorClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Post elevates access for a Global Administrator.
-func (client ElevateAccessClient) Post(ctx context.Context) (result autorest.Response, err error) {
+// ElevateAccess elevates access for a Global Administrator.
+func (client GlobalAdministratorClient) ElevateAccess(ctx context.Context) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ElevateAccessClient.Post")
+		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalAdministratorClient.ElevateAccess")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -55,29 +55,29 @@ func (client ElevateAccessClient) Post(ctx context.Context) (result autorest.Res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PostPreparer(ctx)
+	req, err := client.ElevateAccessPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.ElevateAccessClient", "Post", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "authorization.GlobalAdministratorClient", "ElevateAccess", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.PostSender(req)
+	resp, err := client.ElevateAccessSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "authorization.ElevateAccessClient", "Post", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "authorization.GlobalAdministratorClient", "ElevateAccess", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.PostResponder(resp)
+	result, err = client.ElevateAccessResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "authorization.ElevateAccessClient", "Post", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "authorization.GlobalAdministratorClient", "ElevateAccess", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// PostPreparer prepares the Post request.
-func (client ElevateAccessClient) PostPreparer(ctx context.Context) (*http.Request, error) {
+// ElevateAccessPreparer prepares the ElevateAccess request.
+func (client GlobalAdministratorClient) ElevateAccessPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2015-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -91,16 +91,16 @@ func (client ElevateAccessClient) PostPreparer(ctx context.Context) (*http.Reque
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// PostSender sends the Post request. The method will close the
+// ElevateAccessSender sends the ElevateAccess request. The method will close the
 // http.Response Body if it receives an error.
-func (client ElevateAccessClient) PostSender(req *http.Request) (*http.Response, error) {
+func (client GlobalAdministratorClient) ElevateAccessSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
-// PostResponder handles the response to the Post request. The method always
+// ElevateAccessResponder handles the response to the ElevateAccess request. The method always
 // closes the http.Response Body.
-func (client ElevateAccessClient) PostResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client GlobalAdministratorClient) ElevateAccessResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

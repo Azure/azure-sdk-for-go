@@ -30,12 +30,12 @@ type ClassicAdministratorsClientAPI interface {
 
 var _ ClassicAdministratorsClientAPI = (*authorization.ClassicAdministratorsClient)(nil)
 
-// ElevateAccessClientAPI contains the set of methods on the ElevateAccessClient type.
-type ElevateAccessClientAPI interface {
-	Post(ctx context.Context) (result autorest.Response, err error)
+// GlobalAdministratorClientAPI contains the set of methods on the GlobalAdministratorClient type.
+type GlobalAdministratorClientAPI interface {
+	ElevateAccess(ctx context.Context) (result autorest.Response, err error)
 }
 
-var _ ElevateAccessClientAPI = (*authorization.ElevateAccessClient)(nil)
+var _ GlobalAdministratorClientAPI = (*authorization.GlobalAdministratorClient)(nil)
 
 // ProviderOperationsMetadataClientAPI contains the set of methods on the ProviderOperationsMetadataClient type.
 type ProviderOperationsMetadataClientAPI interface {

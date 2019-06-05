@@ -570,7 +570,7 @@ type TrainSourceFilter struct {
 	// Uri use the prefix to restrict subfolders for content.
 	Prefix *string `json:"prefix,omitempty"`
 	// IncludeSubFolders - A flag to indicate if sub folders within the set of
-	// prefix folders will also need to included when searching
+	// prefix folders will also need to be included when searching
 	// for content to be preprocessed.
 	IncludeSubFolders *bool `json:"includeSubFolders,omitempty"`
 }

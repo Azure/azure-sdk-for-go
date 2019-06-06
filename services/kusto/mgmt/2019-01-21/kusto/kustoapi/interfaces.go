@@ -27,7 +27,7 @@ type ClustersClientAPI interface {
 	CheckNameAvailability(ctx context.Context, location string, clusterName kusto.ClusterCheckNameRequest) (result kusto.CheckNameResult, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters kusto.Cluster) (result kusto.ClustersCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string) (result kusto.ClustersDeleteFuture, err error)
-	DetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabasesToRemove kusto.FollowerDatabaseRequest) (result kusto.FollowerDatabaseListResult, err error)
+	DetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove kusto.FollowerDatabaseRequest) (result kusto.FollowerDatabaseListResult, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result kusto.Cluster, err error)
 	List(ctx context.Context) (result kusto.ClusterListResult, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result kusto.ClusterListResult, err error)

@@ -301,8 +301,8 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 // Parameters:
 // resourceGroupName - the name of the resource group containing the Kusto cluster.
 // clusterName - the name of the Kusto cluster.
-// followerDatabasesToRemove - list of follower databases to remove.
-func (client ClustersClient) DetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabasesToRemove FollowerDatabaseRequest) (result FollowerDatabaseListResult, err error) {
+// followerDatabaseToRemove - list of follower databases to remove.
+func (client ClustersClient) DetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseRequest) (result FollowerDatabaseListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.DetachFollowerDatabases")
 		defer func() {
@@ -314,13 +314,13 @@ func (client ClustersClient) DetachFollowerDatabases(ctx context.Context, resour
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: followerDatabasesToRemove,
-			Constraints: []validation.Constraint{{Target: "followerDatabasesToRemove.ClusterResourceID", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "followerDatabasesToRemove.DatabaseName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		{TargetValue: followerDatabaseToRemove,
+			Constraints: []validation.Constraint{{Target: "followerDatabaseToRemove.ClusterResourceID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "followerDatabaseToRemove.DatabaseName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("kusto.ClustersClient", "DetachFollowerDatabases", err.Error())
 	}
 
-	req, err := client.DetachFollowerDatabasesPreparer(ctx, resourceGroupName, clusterName, followerDatabasesToRemove)
+	req, err := client.DetachFollowerDatabasesPreparer(ctx, resourceGroupName, clusterName, followerDatabaseToRemove)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "DetachFollowerDatabases", nil, "Failure preparing request")
 		return
@@ -342,7 +342,7 @@ func (client ClustersClient) DetachFollowerDatabases(ctx context.Context, resour
 }
 
 // DetachFollowerDatabasesPreparer prepares the DetachFollowerDatabases request.
-func (client ClustersClient) DetachFollowerDatabasesPreparer(ctx context.Context, resourceGroupName string, clusterName string, followerDatabasesToRemove FollowerDatabaseRequest) (*http.Request, error) {
+func (client ClustersClient) DetachFollowerDatabasesPreparer(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -359,7 +359,7 @@ func (client ClustersClient) DetachFollowerDatabasesPreparer(ctx context.Context
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases", pathParameters),
-		autorest.WithJSON(followerDatabasesToRemove),
+		autorest.WithJSON(followerDatabaseToRemove),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

@@ -2234,7 +2234,7 @@ type SkuDescription struct {
 	Restrictions *[]interface{} `json:"restrictions,omitempty"`
 }
 
-// SkuDescriptionList the list of the EngagementFabric SKU descriptions
+// SkuDescriptionList the list of the Kusto SKU descriptions
 type SkuDescriptionList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; SKU descriptions

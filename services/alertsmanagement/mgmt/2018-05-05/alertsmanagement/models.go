@@ -19,6 +19,7 @@ package alertsmanagement
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
@@ -345,6 +346,8 @@ type AlertProperties struct {
 // AlertsList list the alerts.
 type AlertsList struct {
 	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of alerts.
+	NextLink *string `json:"nextLink,omitempty"`
 	// Value - List of alerts
 	Value *[]Alert `json:"value,omitempty"`
 }
@@ -600,6 +603,8 @@ type OperationDisplay struct {
 // OperationsList lists the operations available in the AlertsManagement RP.
 type OperationsList struct {
 	autorest.Response `json:"-"`
+	// NextLink - URL to fetch the next set of alerts.
+	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of operations
 	Value *[]Operation `json:"value,omitempty"`
 }
@@ -753,14 +758,74 @@ type Resource struct {
 
 // SmartGroup set of related alerts grouped together smartly by AMS.
 type SmartGroup struct {
-	autorest.Response `json:"-"`
-	Properties        *SmartGroupProperties `json:"properties,omitempty"`
+	autorest.Response     `json:"-"`
+	*SmartGroupProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SmartGroup.
+func (sg SmartGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sg.SmartGroupProperties != nil {
+		objectMap["properties"] = sg.SmartGroupProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SmartGroup struct.
+func (sg *SmartGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var smartGroupProperties SmartGroupProperties
+				err = json.Unmarshal(*v, &smartGroupProperties)
+				if err != nil {
+					return err
+				}
+				sg.SmartGroupProperties = &smartGroupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sg.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sg.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sg.Name = &name
+			}
+		}
+	}
+
+	return nil
 }
 
 // SmartGroupAggregatedProperty aggregated property of each type
@@ -843,10 +908,12 @@ type SmartGroupProperties struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SmartGroupsList list the smart groups.
+// SmartGroupsList list the alerts.
 type SmartGroupsList struct {
 	autorest.Response `json:"-"`
-	// Value - List of smart groups
+	// NextLink - URL to fetch the next set of alerts.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - List of alerts
 	Value *[]SmartGroup `json:"value,omitempty"`
 }
 

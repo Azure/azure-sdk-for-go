@@ -52,15 +52,13 @@ const (
 	Amd64 Architecture = "amd64"
 	// Arm ...
 	Arm Architecture = "arm"
-	// Arm64 ...
-	Arm64 Architecture = "arm64"
 	// X86 ...
 	X86 Architecture = "x86"
 )
 
 // PossibleArchitectureValues returns an array of possible values for the Architecture const type.
 func PossibleArchitectureValues() []Architecture {
-	return []Architecture{Amd64, Arm, Arm64, X86}
+	return []Architecture{Amd64, Arm, X86}
 }
 
 // BaseImageDependencyType enumerates the values for base image dependency type.
@@ -2036,7 +2034,7 @@ type OperationServiceSpecificationDefinition struct {
 type PlatformProperties struct {
 	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
 	Os OS `json:"os,omitempty"`
-	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm', 'Arm64'
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm'
 	Architecture Architecture `json:"architecture,omitempty"`
 	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
 	Variant Variant `json:"variant,omitempty"`
@@ -2046,7 +2044,7 @@ type PlatformProperties struct {
 type PlatformUpdateParameters struct {
 	// Os - The operating system type required for the run. Possible values include: 'Windows', 'Linux'
 	Os OS `json:"os,omitempty"`
-	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm', 'Arm64'
+	// Architecture - The OS architecture. Possible values include: 'Amd64', 'X86', 'Arm'
 	Architecture Architecture `json:"architecture,omitempty"`
 	// Variant - Variant of the CPU. Possible values include: 'V6', 'V7', 'V8'
 	Variant Variant `json:"variant,omitempty"`

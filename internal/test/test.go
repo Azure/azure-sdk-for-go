@@ -29,7 +29,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/conn"
+	"github.com/Azure/azure-amqp-common-go/v2/conn"
 	rm "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources"
 	sbmgmt "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus"
 	"github.com/Azure/go-autorest/autorest"

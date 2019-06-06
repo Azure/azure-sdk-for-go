@@ -28,7 +28,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-amqp-common-go/uuid"
+	"github.com/Azure/azure-amqp-common-go/v2/uuid"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/devigned/tab"
 )

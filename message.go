@@ -30,8 +30,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/rpc"
-	"github.com/Azure/azure-amqp-common-go/uuid"
+	"github.com/Azure/azure-amqp-common-go/v2/rpc"
+	"github.com/Azure/azure-amqp-common-go/v2/uuid"
 	"github.com/devigned/tab"
 	"github.com/mitchellh/mapstructure"
 	"pack.ag/amqp"

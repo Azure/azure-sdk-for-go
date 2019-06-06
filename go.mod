@@ -3,11 +3,10 @@ module github.com/Azure/azure-service-bus-go
 go 1.12
 
 require (
-	github.com/Azure/azure-amqp-common-go v1.1.5-0.20190529212351-f3083d80d0bb
+	github.com/Azure/azure-amqp-common-go/v2 v2.0.0
 	github.com/Azure/azure-sdk-for-go v30.0.0+incompatible
 	github.com/Azure/go-autorest v12.0.0+incompatible
 	github.com/devigned/tab v0.1.1
-	github.com/devigned/tab/opencensus v0.1.1
 	github.com/fortytw2/leaktest v1.3.0 // indirect
 	github.com/google/go-cmp v0.3.0 // indirect
 	github.com/joho/godotenv v1.3.0

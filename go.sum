@@ -2,8 +2,8 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 contrib.go.opencensus.io/exporter/ocagent v0.5.0 h1:TKXjQSRS0/cCDrP7KvkgU6SmILtF/yV2TOs/02K/WZQ=
 contrib.go.opencensus.io/exporter/ocagent v0.5.0/go.mod h1:ImxhfLRpxoYiSq891pBrLVhN+qmP8BTVvdH2YLs7Gl0=
-github.com/Azure/azure-amqp-common-go v1.1.5-0.20190529212351-f3083d80d0bb h1:SAtzHHCTssx/OAUacNGNc6W9asuCQGwr57gTtHWA3hI=
-github.com/Azure/azure-amqp-common-go v1.1.5-0.20190529212351-f3083d80d0bb/go.mod h1:1ZplNYSTFCYf0E6VZjZBTUEbj10mr75PaWv3Ve5sLBg=
+github.com/Azure/azure-amqp-common-go/v2 v2.0.0 h1:98xtMbghfioKloSBZgkIwH/SINcDYtxXBbUZoqCePiI=
+github.com/Azure/azure-amqp-common-go/v2 v2.0.0/go.mod h1:YDoDY50iQ2OabOP0WUQoNR7vpDjRlB13vIZVrvUoJLo=
 github.com/Azure/azure-sdk-for-go v29.0.0+incompatible h1:CYPU39ULbGjQBo3gXIqiWouK0C4F+Pt2Zx5CqGvqknE=
 github.com/Azure/azure-sdk-for-go v29.0.0+incompatible/go.mod h1:9XXNKU+eRnpl9moKnB4QOLf1HestfXbmab5FXxiDBjc=
 github.com/Azure/azure-sdk-for-go v30.0.0+incompatible h1:6o1Yzl7wTBYg+xw0pY4qnalaPmEQolubEEdepo1/kmI=
@@ -17,11 +17,8 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/devigned/tab v0.0.1/go.mod h1:oVYrfgGyond090gxCvvbjZji79+peOiSV6vhZhKJM0Y=
 github.com/devigned/tab v0.1.1 h1:3mD6Kb1mUOYeLpJvTVSDwSg5ZsfSxfvxGRTxRsJsITA=
 github.com/devigned/tab v0.1.1/go.mod h1:XG9mPq0dFghrYvoBF3xdRrJzSTX1b7IQrvaL9mzjeJY=
-github.com/devigned/tab/opencensus v0.1.1 h1:KX8QdRsPPEb6Wg+hWxk+gVSMvCvpXBpN3Hp3fOU1Efo=
-github.com/devigned/tab/opencensus v0.1.1/go.mod h1:U6xXMXnNwXJpdaK0mnT3zdng4WTi+vCfqn7YHofEv2A=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/fortytw2/leaktest v1.2.0 h1:cj6GCiwJDH7l3tMHLjZDo0QqPtrXJiWSI9JgpeQKw+Q=

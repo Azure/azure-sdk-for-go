@@ -1,7 +1,7 @@
 package servicebus
 
 import (
-	"github.com/Azure/azure-amqp-common-go/uuid"
+	"github.com/Azure/azure-amqp-common-go/v2/uuid"
 	"pack.ag/amqp"
 )
 

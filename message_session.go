@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/rpc"
+	"github.com/Azure/azure-amqp-common-go/v2/rpc"
 	"pack.ag/amqp"
 )
 

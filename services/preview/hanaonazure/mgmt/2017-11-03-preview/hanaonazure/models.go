@@ -555,7 +555,7 @@ type HardwareProfile struct {
 
 // IPAddress specifies the IP address of the network interface.
 type IPAddress struct {
-	// IPAddress - READ-ONLY; Specifies the IP address of the network interface.
+	// IPAddress - Specifies the IP address of the network interface.
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
@@ -600,13 +600,13 @@ type OperationList struct {
 
 // OSProfile specifies the operating system settings for the HANA instance.
 type OSProfile struct {
-	// ComputerName - READ-ONLY; Specifies the host OS name of the HANA instance.
+	// ComputerName - Specifies the host OS name of the HANA instance.
 	ComputerName *string `json:"computerName,omitempty"`
 	// OsType - READ-ONLY; This property allows you to specify the type of the OS.
 	OsType *string `json:"osType,omitempty"`
 	// Version - READ-ONLY; Specifies version of operating system.
 	Version *string `json:"version,omitempty"`
-	// SSHPublicKey - READ-ONLY; Specifies the SSH public key used to access the operating system.
+	// SSHPublicKey - Specifies the SSH public key used to access the operating system.
 	SSHPublicKey *string `json:"sshPublicKey,omitempty"`
 }
 

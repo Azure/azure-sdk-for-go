@@ -29,10 +29,10 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/Azure/azure-amqp-common-go/auth"
-	"github.com/Azure/azure-amqp-common-go/cbs"
-	"github.com/Azure/azure-amqp-common-go/conn"
-	"github.com/Azure/azure-amqp-common-go/sas"
+	"github.com/Azure/azure-amqp-common-go/v2/auth"
+	"github.com/Azure/azure-amqp-common-go/v2/cbs"
+	"github.com/Azure/azure-amqp-common-go/v2/conn"
+	"github.com/Azure/azure-amqp-common-go/v2/sas"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"golang.org/x/net/websocket"
 	"pack.ag/amqp"
@@ -48,7 +48,7 @@ const (
 	//`
 
 	// Version is the semantic version number
-	Version = "0.7.0"
+	Version = "0.8.0"
 
 	rootUserAgent = "/golang-service-bus"
 )
@@ -170,8 +170,8 @@ func (ns *Namespace) newConnection() (*amqp.Client, error) {
 }
 
 func (ns *Namespace) negotiateClaim(ctx context.Context, conn *amqp.Client, entityPath string) error {
-	span, ctx := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
-	defer span.Finish()
+	ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
+	defer span.End()
 
 	audience := ns.getEntityAudience(entityPath)
 	return cbs.NegotiateClaim(ctx, audience, conn, ns.TokenProvider)

@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/devigned/tab"
 
 	"github.com/Azure/azure-service-bus-go/atom"
 )
@@ -227,8 +227,8 @@ func (ns *Namespace) NewQueueManager() *QueueManager {
 
 // Delete deletes a Service Bus Queue entity by name
 func (qm *QueueManager) Delete(ctx context.Context, name string) error {
-	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Delete")
-	defer span.Finish()
+	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.Delete")
+	defer span.End()
 
 	res, err := qm.entityManager.Delete(ctx, "/"+name)
 	defer closeRes(ctx, res)
@@ -238,13 +238,13 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 
 // Put creates or updates a Service Bus Queue
 func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManagementOption) (*QueueEntity, error) {
-	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Put")
-	defer span.Finish()
+	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.Put")
+	defer span.End()
 
 	qd := new(QueueDescription)
 	for _, opt := range opts {
 		if err := opt(qd); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return nil, err
 		}
 	}
@@ -272,7 +272,7 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -281,13 +281,13 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -301,20 +301,20 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 
 // List fetches all of the queues for a Service Bus Namespace
 func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
-	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.List")
-	defer span.Finish()
+	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.List")
+	defer span.End()
 
 	res, err := qm.entityManager.Get(ctx, `/$Resources/Queues`)
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -333,14 +333,14 @@ func (qm *QueueManager) List(ctx context.Context) ([]*QueueEntity, error) {
 
 // Get fetches a Service Bus Queue entity by name
 func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, error) {
-	span, ctx := qm.startSpanFromContext(ctx, "sb.QueueManager.Get")
-	defer span.Finish()
+	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.Get")
+	defer span.End()
 
 	res, err := qm.entityManager.Get(ctx, name)
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -350,7 +350,7 @@ func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, err
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Azure/azure-amqp-common-go/uuid"
+	"github.com/Azure/azure-amqp-common-go/v2/uuid"
 )
 
 type (
@@ -87,15 +87,15 @@ func (bdi *BatchDispositionIterator) doUpdate(ctx context.Context, ec entityConn
 
 // SendBatchDisposition updates the LockTokenIDs to the disposition status.
 func (q *Queue) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) error {
-	span, ctx := q.startSpanFromContext(ctx, "sb.Queue.SendBatchDisposition")
-	defer span.Finish()
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.SendBatchDisposition")
+	defer span.End()
 	return iterator.doUpdate(ctx, q)
 }
 
 // SendBatchDisposition updates the LockTokenIDs to the desired disposition status.
 func (s *Subscription) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) error {
-	span, ctx := s.startSpanFromContext(ctx, "sb.Subscription.SendBatchDisposition")
-	defer span.Finish()
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.SendBatchDisposition")
+	defer span.End()
 	return iterator.doUpdate(ctx, s)
 }
 

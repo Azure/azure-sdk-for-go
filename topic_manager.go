@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/log"
 	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/devigned/tab"
 
 	"github.com/Azure/azure-service-bus-go/atom"
 )
@@ -58,8 +58,8 @@ func (ns *Namespace) NewTopicManager() *TopicManager {
 
 // Delete deletes a Service Bus Topic entity by name
 func (tm *TopicManager) Delete(ctx context.Context, name string) error {
-	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Delete")
-	defer span.Finish()
+	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.Delete")
+	defer span.End()
 
 	res, err := tm.entityManager.Delete(ctx, "/"+name)
 	defer closeRes(ctx, res)
@@ -69,13 +69,13 @@ func (tm *TopicManager) Delete(ctx context.Context, name string) error {
 
 // Put creates or updates a Service Bus Topic
 func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManagementOption) (*TopicEntity, error) {
-	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Put")
-	defer span.Finish()
+	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.Put")
+	defer span.End()
 
 	td := new(TopicDescription)
 	for _, opt := range opts {
 		if err := opt(td); err != nil {
-			log.For(ctx).Error(err)
+			tab.For(ctx).Error(err)
 			return nil, err
 		}
 	}
@@ -94,7 +94,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 
 	reqBytes, err := xml.Marshal(qe)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -103,13 +103,13 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -123,20 +123,20 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 
 // List fetches all of the Topics for a Service Bus Namespace
 func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
-	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.List")
-	defer span.Finish()
+	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.List")
+	defer span.End()
 
 	res, err := tm.entityManager.Get(ctx, `/$Resources/Topics`)
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -155,14 +155,14 @@ func (tm *TopicManager) List(ctx context.Context) ([]*TopicEntity, error) {
 
 // Get fetches a Service Bus Topic entity by name
 func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, error) {
-	span, ctx := tm.startSpanFromContext(ctx, "sb.TopicManager.Get")
-	defer span.Finish()
+	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.Get")
+	defer span.End()
 
 	res, err := tm.entityManager.Get(ctx, name)
 	defer closeRes(ctx, res)
 
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -172,7 +172,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 
 	b, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 

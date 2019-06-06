@@ -3,8 +3,8 @@ package servicebus_test
 import (
 	"context"
 	"fmt"
+
 	"github.com/Azure/azure-service-bus-go"
-	"github.com/opentracing/opentracing-go/log"
 )
 
 func ExampleMessageIterator() {
@@ -16,7 +16,8 @@ func ExampleMessageIterator() {
 	for !subject.Done() {
 		cursor, err := subject.Next(context.Background())
 		if err != nil {
-			log.Error(err)
+			fmt.Println(err)
+			return
 		}
 		fmt.Println(string(cursor.Data))
 	}

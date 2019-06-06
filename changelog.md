@@ -2,6 +2,11 @@
 
 ## `head`
 
+## `v0.8.0`
+- tab for tracing and logging which supports both opencensus and opentracing. To use opencensus, just add a
+  `_ "github.com/devigned/tab/opencensus"`. To use opentracing, just add a `_ "github.com/devigned/tab/opentracing"`
+- target azure-amqp-common-go/v2
+
 ## `v0.7.0`
 - [add batch disposition errors](https://github.com/Azure/azure-service-bus-go/pull/129)
 

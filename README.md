@@ -20,16 +20,10 @@ This library is currently a preview. There may be breaking interface changes unt
 If you run into an issue, please don't hesitate to log a 
 [new issue](https://github.com/Azure/azure-service-bus-go/issues/new) or open a pull request.
 
-## Getting Started
-### Installing the library
-Use `go get` to acquire and install from source. Versions of the project after v0.1.0 use Go modules exclusively, which 
-means you'll need Go 1.11 or later to ensure all of the dependencies are properly versioned.
+## Install using Go modules
 
-For more information on modules, see the [Go modules wiki](https://github.com/golang/go/wiki/Modules).
-
-With go get:
-```
-go get -u github.com/Azure/azure-service-bus-go/...
+``` bash
+go get -u github.com/Azure/azure-service-bus-go
 ```
 
 If you need to install Go, follow [the official instructions](https://golang.org/dl/)

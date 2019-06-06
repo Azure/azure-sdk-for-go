@@ -26,9 +26,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go"
-	"github.com/Azure/azure-amqp-common-go/log"
-	"github.com/opentracing/opentracing-go"
+	"github.com/Azure/azure-amqp-common-go/v2"
+	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
 
@@ -95,8 +94,8 @@ func ReceiverWithPrefetchCount(prefetch uint32) ReceiverOption {
 
 // NewReceiver creates a new Service Bus message listener given an AMQP client and an entity path
 func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ...ReceiverOption) (*Receiver, error) {
-	span, ctx := ns.startSpanFromContext(ctx, "sb.Hub.NewReceiver")
-	defer span.Finish()
+	ctx, span := ns.startSpanFromContext(ctx, "sb.Namespace.NewReceiver")
+	defer span.End()
 
 	receiver := &Receiver{
 		namespace:  ns,
@@ -117,6 +116,9 @@ func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ..
 
 // Close will close the AMQP session and link of the Receiver
 func (r *Receiver) Close(ctx context.Context) error {
+	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.Close")
+	defer span.End()
+
 	if r.done != nil {
 		r.done()
 	}
@@ -140,12 +142,12 @@ func (r *Receiver) Close(ctx context.Context) error {
 
 // Recover will attempt to close the current session and link, then rebuild them
 func (r *Receiver) Recover(ctx context.Context) error {
-	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.Receiver.Recover")
-	defer span.Finish()
+	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.Recover")
+	defer span.End()
 
 	// we expect the Sender, session or client is in an error state, ignore errors
 	closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	closeCtx = opentracing.ContextWithSpan(closeCtx, span)
+	closeCtx = tab.NewContext(closeCtx, span)
 	defer cancel()
 	_ = r.receiver.Close(closeCtx)
 	_ = r.session.Close(closeCtx)
@@ -155,12 +157,12 @@ func (r *Receiver) Recover(ctx context.Context) error {
 
 // ReceiveOne will receive one message from the link
 func (r *Receiver) ReceiveOne(ctx context.Context, handler Handler) error {
-	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.Receiver.ReceiveOne")
-	defer span.Finish()
+	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.ReceiveOne")
+	defer span.End()
 
 	amqpMsg, err := r.listenForMessage(ctx)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -174,8 +176,8 @@ func (r *Receiver) Listen(ctx context.Context, handler Handler) *ListenerHandle 
 	ctx, done := context.WithCancel(ctx)
 	r.done = done
 
-	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.Receiver.Listen")
-	defer span.Finish()
+	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.Listen")
+	defer span.End()
 
 	messages := make(chan *amqp.Message)
 	go r.listenForMessages(ctx, messages)
@@ -188,8 +190,8 @@ func (r *Receiver) Listen(ctx context.Context, handler Handler) *ListenerHandle 
 }
 
 func (r *Receiver) handleMessages(ctx context.Context, messages chan *amqp.Message, handler Handler) {
-	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.Receiver.handleMessages")
-	defer span.Finish()
+	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.handleMessages")
+	defer span.End()
 	for msg := range messages {
 		r.handleMessage(ctx, msg, handler)
 	}
@@ -200,20 +202,20 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 
 	event, err := messageFromAMQPMessage(msg)
 	if err != nil {
-		_, ctx := r.startConsumerSpanFromContext(ctx, optName)
-		log.For(ctx).Error(err)
+		_, span := r.startConsumerSpanFromContext(ctx, optName)
+		span.Logger().Error(err)
+		r.lastError = err
+		r.done()
+		return
 	}
-	var span opentracing.Span
-	wireContext, err := extractWireContext(event)
-	if err == nil {
-		span, ctx = r.startConsumerSpanFromWire(ctx, optName, wireContext)
-	} else {
-		span, ctx = r.startConsumerSpanFromContext(ctx, optName)
-	}
-	defer span.Finish()
+
+	ctx, span := tab.StartSpanWithRemoteParent(ctx, optName, event)
+	defer span.End()
 
 	id := messageID(msg)
-	span.SetTag("amqp.message-id", id)
+	if idStr, ok := id.(string); ok {
+		span.AddAttributes(tab.StringAttribute("amqp.message.id", idStr))
+	}
 
 	if err := handler.Handle(ctx, event); err != nil {
 		// stop handling messages since the message consumer ran into an unexpected error
@@ -238,20 +240,16 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	if err := r.DefaultDisposition(ctx); err != nil {
 		// if an error is returned by the default disposition, then we must alert the message consumer as we can't
 		// be sure the final message disposition.
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		r.lastError = err
 		r.done()
 		return
 	}
 }
 
-func extractWireContext(reader opentracing.TextMapReader) (opentracing.SpanContext, error) {
-	return opentracing.GlobalTracer().Extract(opentracing.TextMap, reader)
-}
-
 func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Message) {
-	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessages")
-	defer span.Finish()
+	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessages")
+	defer span.End()
 
 	for {
 		msg, err := r.listenForMessage(ctx)
@@ -262,18 +260,18 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 
 		select {
 		case <-ctx.Done():
-			log.For(ctx).Debug("context done")
+			tab.For(ctx).Debug("context done")
 			close(msgChan)
 			return
 		default:
 			_, retryErr := common.Retry(10, 10*time.Second, func() (interface{}, error) {
-				sp, ctx := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessages.tryRecover")
-				defer sp.Finish()
+				ctx, sp := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessages.tryRecover")
+				defer sp.End()
 
-				log.For(ctx).Debug("recovering connection")
+				tab.For(ctx).Debug("recovering connection")
 				err := r.Recover(ctx)
 				if err == nil {
-					log.For(ctx).Debug("recovered connection")
+					tab.For(ctx).Debug("recovered connection")
 					return nil, nil
 				}
 
@@ -286,10 +284,10 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 			})
 
 			if retryErr != nil {
-				log.For(ctx).Debug("retried, but error was unrecoverable")
+				tab.For(ctx).Debug("retried, but error was unrecoverable")
 				r.lastError = retryErr
 				if err := r.Close(ctx); err != nil {
-					log.For(ctx).Error(err)
+					tab.For(ctx).Error(err)
 				}
 				close(msgChan)
 				return
@@ -299,22 +297,28 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 }
 
 func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) {
-	span, ctx := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessage")
-	defer span.Finish()
+	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessage")
+	defer span.End()
 
 	msg, err := r.receiver.Receive(ctx)
 	if err != nil {
-		log.For(ctx).Debug(err.Error())
+		tab.For(ctx).Debug(err.Error())
 		return nil, err
 	}
 
 	id := messageID(msg)
-	span.SetTag("amqp.message-id", id)
+	if idStr, ok := id.(string); ok {
+		span.AddAttributes(tab.StringAttribute("amqp.message.id", idStr))
+	}
+
 	return msg, nil
 }
 
 // newSessionAndLink will replace the session and link on the Receiver
 func (r *Receiver) newSessionAndLink(ctx context.Context) error {
+	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.newSessionAndLink")
+	defer span.End()
+
 	connection, err := r.namespace.newConnection()
 	if err != nil {
 		return err
@@ -323,19 +327,19 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 
 	err = r.namespace.negotiateClaim(ctx, connection, r.entityPath)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	amqpSession, err := connection.NewSession()
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	r.session, err = newSession(amqpSession)
 	if err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 

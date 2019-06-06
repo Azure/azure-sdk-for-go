@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/Azure/azure-amqp-common-go/log"
+	"github.com/devigned/tab"
 )
 
 type (
@@ -93,7 +93,7 @@ func (dl *DeadLetter) Close(ctx context.Context) error {
 	}
 
 	if err := dl.receiver.Close(ctx); err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -140,7 +140,7 @@ func (dl *TransferDeadLetter) Close(ctx context.Context) error {
 	}
 
 	if err := dl.receiver.Close(ctx); err != nil {
-		log.For(ctx).Error(err)
+		tab.For(ctx).Error(err)
 		return err
 	}
 

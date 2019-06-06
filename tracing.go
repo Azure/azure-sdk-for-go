@@ -27,93 +27,96 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/opentracing/opentracing-go"
-	tag "github.com/opentracing/opentracing-go/ext"
+	"github.com/devigned/tab"
 )
 
-func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
+func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	return span, ctx
+	return ctx, span
 }
 
-func (m *Message) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
+func (m *Message) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	span.SetTag("amqp.message-id", m.ID)
+	attrs := []tab.Attribute{tab.StringAttribute("amqp.message.id", m.ID)}
 	if m.SessionID != nil {
-		span.SetTag("amqp.message-group-id", *m.SessionID)
+		attrs = append(attrs, tab.StringAttribute("amqp.session.id", *m.SessionID))
 	}
 	if m.GroupSequence != nil {
-		span.SetTag("amqp.message-group-sequence", *m.GroupSequence)
+		attrs = append(attrs, tab.Int64Attribute("amqp.sequence_number", int64(*m.GroupSequence)))
 	}
-	return span, ctx
+	return ctx, span
 }
 
-func (em *entityManager) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
+func (em *entityManager) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	tag.SpanKindRPCClient.Set(span)
-	return span, ctx
+	span.AddAttributes(tab.StringAttribute("span.kind", "client"))
+	return ctx, span
 }
 
-func applyRequestInfo(span opentracing.Span, req *http.Request) {
-	tag.HTTPUrl.Set(span, req.URL.String())
-	tag.HTTPMethod.Set(span, req.Method)
+func applyRequestInfo(span tab.Spanner, req *http.Request) {
+	span.AddAttributes(
+		tab.StringAttribute("http.url", req.URL.String()),
+		tab.StringAttribute("http.method", req.Method),
+	)
 }
 
-func applyResponseInfo(span opentracing.Span, res *http.Response) {
+func applyResponseInfo(span tab.Spanner, res *http.Response) {
 	if res != nil {
-		tag.HTTPStatusCode.Set(span, uint16(res.StatusCode))
+		span.AddAttributes(tab.Int64Attribute("http.status_code", int64(res.StatusCode)))
 	}
 }
 
-func (e *entity) startSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
+func (e *entity) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	return span, ctx
+	return ctx, span
 }
 
-func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
+func (si sessionIdentifiable) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	tag.SpanKindProducer.Set(span)
-	tag.MessageBusDestination.Set(span, s.getFullIdentifier())
-	return span, ctx
+	return ctx, span
 }
 
-func (r *Receiver) startConsumerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
-	span, ctx := startConsumerSpanFromContext(ctx, operationName, opts...)
-	tag.MessageBusDestination.Set(span, r.entityPath)
-	return span, ctx
-}
-
-func (r *Receiver) startConsumerSpanFromWire(ctx context.Context, operationName string, reference opentracing.SpanContext, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
-	opts = append(opts, opentracing.FollowsFrom(reference))
-	span := opentracing.StartSpan(operationName, opts...)
-	ctx = opentracing.ContextWithSpan(ctx, span)
+func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	tag.SpanKindConsumer.Set(span)
-	tag.MessageBusDestination.Set(span, r.entityPath)
-	return span, ctx
+	span.AddAttributes(
+		tab.StringAttribute("span.kind", "producer"),
+		tab.StringAttribute("message_bus.destination", s.getFullIdentifier()),
+	)
+	return ctx, span
 }
 
-func startConsumerSpanFromContext(ctx context.Context, operationName string, opts ...opentracing.StartSpanOption) (opentracing.Span, context.Context) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, operationName, opts...)
+func (r *Receiver) startConsumerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := startConsumerSpanFromContext(ctx, operationName)
+	span.AddAttributes(tab.StringAttribute("message_bus.destination", r.entityPath))
+	return ctx, span
+}
+
+func startConsumerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
-	tag.SpanKindConsumer.Set(span)
-	return span, ctx
+	span.AddAttributes(tab.StringAttribute("span.kind", "consumer"))
+	return ctx, span
 }
 
-func applyComponentInfo(span opentracing.Span) {
-	tag.Component.Set(span, "github.com/Azure/azure-service-bus-go")
-	span.SetTag("version", Version)
+func applyComponentInfo(span tab.Spanner) {
+	span.AddAttributes(
+		tab.StringAttribute("component", "github.com/Azure/azure-service-bus-go"),
+		tab.StringAttribute("version", Version),
+	)
 	applyNetworkInfo(span)
 }
 
-func applyNetworkInfo(span opentracing.Span) {
+func applyNetworkInfo(span tab.Spanner) {
 	hostname, err := os.Hostname()
 	if err == nil {
-		tag.PeerHostname.Set(span, hostname)
+		span.AddAttributes(
+			tab.StringAttribute("peer.hostname", hostname),
+		)
 	}
 }

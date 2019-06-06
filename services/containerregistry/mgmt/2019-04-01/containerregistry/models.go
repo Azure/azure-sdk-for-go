@@ -3319,8 +3319,6 @@ type RunProperties struct {
 	ImageUpdateTrigger *ImageUpdateTrigger `json:"imageUpdateTrigger,omitempty"`
 	// SourceTrigger - The source trigger that caused the run.
 	SourceTrigger *SourceTriggerDescriptor `json:"sourceTrigger,omitempty"`
-	// TimerTrigger - The timer trigger that caused the run.
-	TimerTrigger *TimerTriggerDescriptor `json:"timerTrigger,omitempty"`
 	// Platform - The platform properties against which the run will happen.
 	Platform *PlatformProperties `json:"platform,omitempty"`
 	// AgentConfiguration - The machine configuration of the run agent.
@@ -3337,6 +3335,8 @@ type RunProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.
 	IsArchiveEnabled *bool `json:"isArchiveEnabled,omitempty"`
+	// TimerTrigger - The timer trigger that caused the run.
+	TimerTrigger *TimerTriggerDescriptor `json:"timerTrigger,omitempty"`
 }
 
 // BasicRunRequest the request parameters for scheduling a run.

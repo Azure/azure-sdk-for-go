@@ -77,6 +77,13 @@ const (
 	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
+type DirectoryServiceOptions = original.DirectoryServiceOptions
+
+const (
+	DirectoryServiceOptionsAADDS DirectoryServiceOptions = original.DirectoryServiceOptionsAADDS
+	DirectoryServiceOptionsNone  DirectoryServiceOptions = original.DirectoryServiceOptionsNone
+)
+
 type GeoReplicationStatus = original.GeoReplicationStatus
 
 const (
@@ -281,6 +288,7 @@ type AccountsClient = original.AccountsClient
 type AccountsCreateFuture = original.AccountsCreateFuture
 type AccountsFailoverFuture = original.AccountsFailoverFuture
 type AzureEntityResource = original.AzureEntityResource
+type AzureFilesIdentityBasedAuthentication = original.AzureFilesIdentityBasedAuthentication
 type BaseClient = original.BaseClient
 type BlobContainer = original.BlobContainer
 type BlobContainersClient = original.BlobContainersClient
@@ -418,6 +426,9 @@ func PossibleBypassValues() []Bypass {
 }
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
+}
+func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
+	return original.PossibleDirectoryServiceOptionsValues()
 }
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return original.PossibleGeoReplicationStatusValues()

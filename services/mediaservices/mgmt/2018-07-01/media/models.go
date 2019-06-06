@@ -1178,7 +1178,7 @@ func (aa AacAudio) AsBasicCodec() (BasicCodec, bool) {
 // time can point to a different position depending on whether the media file starts from a timestamp of
 // zero or not.
 type AbsoluteClipTime struct {
-	// Time - The time position on the timeline of the input media. It is usually speicified as an ISO8601 period. e.g PT30S for 30 seconds.
+	// Time - The time position on the timeline of the input media. It is usually specified as an ISO8601 period. e.g PT30S for 30 seconds.
 	Time *string `json:"time,omitempty"`
 	// OdataType - Possible values include: 'OdataTypeClipTime', 'OdataTypeMicrosoftMediaAbsoluteClipTime'
 	OdataType OdataTypeBasicClipTime `json:"@odata.type,omitempty"`
@@ -4640,7 +4640,7 @@ func (f *Filters) UnmarshalJSON(body []byte) error {
 type FilterTrackPropertyCondition struct {
 	// Property - The track property type. Possible values include: 'FilterTrackPropertyTypeUnknown', 'FilterTrackPropertyTypeType', 'FilterTrackPropertyTypeName', 'FilterTrackPropertyTypeLanguage', 'FilterTrackPropertyTypeFourCC', 'FilterTrackPropertyTypeBitrate'
 	Property FilterTrackPropertyType `json:"property,omitempty"`
-	// Value - The track proprty value.
+	// Value - The track property value.
 	Value *string `json:"value,omitempty"`
 	// Operation - The track property condition operation. Possible values include: 'Equal', 'NotEqual'
 	Operation FilterTrackPropertyCompareOperation `json:"operation,omitempty"`
@@ -8517,7 +8517,7 @@ type PresentationTimeRange struct {
 	LiveBackoffDuration *int64 `json:"liveBackoffDuration,omitempty"`
 	// Timescale - The time scale of time stamps.
 	Timescale *int64 `json:"timescale,omitempty"`
-	// ForceEndTimestamp - The indicator of forcing exsiting of end time stamp.
+	// ForceEndTimestamp - The indicator of forcing existing of end time stamp.
 	ForceEndTimestamp *bool `json:"forceEndTimestamp,omitempty"`
 }
 

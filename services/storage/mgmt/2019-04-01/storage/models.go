@@ -869,7 +869,7 @@ type AccountPropertiesCreateParameters struct {
 	AccessTier AccessTier `json:"accessTier,omitempty"`
 	// EnableAzureFilesAadIntegration - Enables Azure Files AAD Integration for SMB if sets to true.
 	EnableAzureFilesAadIntegration *bool `json:"azureFilesAadIntegration,omitempty"`
-	// EnableHTTPSTrafficOnly - Allows https traffic only to storage service if sets to true.
+	// EnableHTTPSTrafficOnly - Allows https traffic only to storage service if sets to true. The default value is true since API version 2019-04-01.
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
 	// IsHnsEnabled - Account HierarchicalNamespace enabled if sets to true.
 	IsHnsEnabled *bool `json:"isHnsEnabled,omitempty"`

@@ -86,8 +86,8 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 
 		if modulesFlag {
 			// when generating in module-aware mode a few extra things need to happen
-			// 1. update the list of includes package to their latest module versions
-			// 2. find the latest module version for the profile we're working on
+			// 1. find the latest module version for the profile we're working on
+			// 2. update the list of includes package to their latest module versions
 			// 3. if any includes were updated generate a new major version for this profile
 			modver, err := getLatestModVer(outputRootDir)
 			if err != nil {
@@ -183,6 +183,7 @@ func getLatestModVer(profileDir string) (string, error) {
 // generate a go.mod file in the specified module major version directory (e.g. "profiles/foo/v2")
 // the provided module directory is used to calculate the module name.
 func generateGoMod(modDir string) error {
+	const gomodFormat = "module %s\n\ngo 1.12\n"
 	err := os.Mkdir(modDir, os.ModeDir|0644)
 	if err != nil {
 		return err
@@ -196,6 +197,6 @@ func generateGoMod(modDir string) error {
 	if err != nil {
 		return err
 	}
-	_, err = fmt.Fprintf(gomod, "module %s\n\ngo 1.12\n", mod)
+	_, err = fmt.Fprintf(gomod, gomodFormat, mod)
 	return err
 }

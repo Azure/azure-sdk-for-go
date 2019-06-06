@@ -65,8 +65,6 @@ type BaseClient = original.BaseClient
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type ErrorDetails = original.ErrorDetails
 type ErrorDetailsInternal = original.ErrorDetailsInternal
-type MoveResourcesParameters = original.MoveResourcesParameters
-type MoveResourcesStatusClient = original.MoveResourcesStatusClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -77,6 +75,8 @@ type OperationResultsDescription = original.OperationResultsDescription
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type ServiceAccessPolicyEntry = original.ServiceAccessPolicyEntry
+type ServiceAuthenticationConfigurationInfo = original.ServiceAuthenticationConfigurationInfo
+type ServiceCorsConfigurationInfo = original.ServiceCorsConfigurationInfo
 type ServiceCosmosDbConfigurationInfo = original.ServiceCosmosDbConfigurationInfo
 type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
@@ -93,12 +93,6 @@ type SetObject = original.SetObject
 
 func New(subscriptionID uuid.UUID) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewMoveResourcesStatusClient(subscriptionID uuid.UUID) MoveResourcesStatusClient {
-	return original.NewMoveResourcesStatusClient(subscriptionID)
-}
-func NewMoveResourcesStatusClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) MoveResourcesStatusClient {
-	return original.NewMoveResourcesStatusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

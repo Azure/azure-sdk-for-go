@@ -193,7 +193,7 @@ type HanaInstance struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Resource location
+	// Location - Resource location
 	Location *string `json:"location,omitempty"`
 	// Tags - READ-ONLY; Resource tags
 	Tags map[string]*string `json:"tags"`
@@ -204,6 +204,9 @@ func (hi HanaInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if hi.HanaInstanceProperties != nil {
 		objectMap["properties"] = hi.HanaInstanceProperties
+	}
+	if hi.Location != nil {
+		objectMap["location"] = hi.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -295,7 +298,7 @@ type HanaInstanceProperties struct {
 	ProximityPlacementGroup *string `json:"proximityPlacementGroup,omitempty"`
 	// HwRevision - READ-ONLY; Hardware revision of a HANA instance
 	HwRevision *string `json:"hwRevision,omitempty"`
-	// PartnerNodeID - READ-ONLY; ARM ID of another HanaInstance that will share a network with this HanaInstance
+	// PartnerNodeID - ARM ID of another HanaInstance that will share a network with this HanaInstance
 	PartnerNodeID *string `json:"partnerNodeId,omitempty"`
 	// ProvisioningState - READ-ONLY; State of provisioning of the HanaInstance. Possible values include: 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting', 'Migrating'
 	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
@@ -618,7 +621,7 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Resource location
+	// Location - Resource location
 	Location *string `json:"location,omitempty"`
 	// Tags - READ-ONLY; Resource tags
 	Tags map[string]*string `json:"tags"`
@@ -627,6 +630,9 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
 	return json.Marshal(objectMap)
 }
 

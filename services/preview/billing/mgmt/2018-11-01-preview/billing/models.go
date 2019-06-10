@@ -925,7 +925,7 @@ type DownloadURL struct {
 
 // EnabledAzureSKUs details about the enabled azure sku.
 type EnabledAzureSKUs struct {
-	// SkuID - READ-ONLY; The sku id.
+	// SkuID - The sku id.
 	SkuID *string `json:"skuId,omitempty"`
 	// SkuDescription - READ-ONLY; The sku description.
 	SkuDescription *string `json:"skuDescription,omitempty"`

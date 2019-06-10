@@ -27,6 +27,7 @@ _testmain.go
 *.swp
 *~
 .DS_Store
+.vscode
 
 # ignore vendor/
 vendor/

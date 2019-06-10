@@ -18,11 +18,15 @@ import (
 	"fmt"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/dirs"
+	"github.com/Masterminds/semver"
 )
 
 var (
@@ -37,6 +41,66 @@ func HasVersionSuffix(path string) bool {
 // FindVersionSuffix returns the version suffix or the empty string.
 func FindVersionSuffix(path string) string {
 	return verSuffixRegex.FindString(path)
+}
+
+// GetModuleSubdirs returns all subdirectories under path that correspond to module major versions.
+// The subdirectories are sorted according to semantic version.
+func GetModuleSubdirs(path string) ([]string, error) {
+	subdirs, err := dirs.GetSubdirs(path)
+	if err != nil {
+		return nil, err
+	}
+	modDirs := []string{}
+	for _, subdir := range subdirs {
+		matched := HasVersionSuffix(subdir)
+		if matched {
+			modDirs = append(modDirs, subdir)
+		}
+	}
+	sortModuleTagsBySemver(modDirs)
+	return modDirs, nil
+}
+
+// IncrementModuleVersion increments the passed in module major version by one.
+// E.g. a provided value of "v2" will return "v3".  If ver is "" the return value is "v2".
+func IncrementModuleVersion(ver string) string {
+	if ver == "" {
+		return "v2"
+	}
+	v, err := strconv.ParseInt(ver[1:], 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return fmt.Sprintf("v%d", v+1)
+}
+
+// sorts module tags based on their semantic versions.
+// this is necessary because lexically sorted is not sufficient
+// due to v10.0.0 appearing before v2.0.0
+func sortModuleTagsBySemver(modDirs []string) {
+	sort.SliceStable(modDirs, func(i, j int) bool {
+		lv, err := semver.NewVersion(modDirs[i])
+		if err != nil {
+			panic(err)
+		}
+		rv, err := semver.NewVersion(modDirs[j])
+		if err != nil {
+			panic(err)
+		}
+		return lv.LessThan(rv)
+	})
+}
+
+// CreateModuleNameFromPath creates a module name from the provided path.
+func CreateModuleNameFromPath(pkgDir string) (string, error) {
+	// e.g. /work/src/github.com/Azure/azure-sdk-for-go/services/foo/2019-01-01/foo
+	// returns github.com/Azure/azure-sdk-for-go/services/foo/2019-01-01/foo
+	repoRoot := filepath.Join("github.com", "Azure", "azure-sdk-for-go")
+	i := strings.Index(pkgDir, repoRoot)
+	if i < 0 {
+		return "", fmt.Errorf("didn't find '%s' in '%s'", repoRoot, pkgDir)
+	}
+	return strings.Replace(pkgDir[i:], "\\", "/", -1), nil
 }
 
 // Provider provides information about a module staged for release.

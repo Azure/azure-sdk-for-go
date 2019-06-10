@@ -182,6 +182,8 @@ type SmartGroupModificationProperties = original.SmartGroupModificationPropertie
 type SmartGroupProperties = original.SmartGroupProperties
 type SmartGroupsClient = original.SmartGroupsClient
 type SmartGroupsList = original.SmartGroupsList
+type SmartGroupsListIterator = original.SmartGroupsListIterator
+type SmartGroupsListPage = original.SmartGroupsListPage
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -215,6 +217,12 @@ func NewSmartGroupsClient(subscriptionID string) SmartGroupsClient {
 }
 func NewSmartGroupsClientWithBaseURI(baseURI string, subscriptionID string) SmartGroupsClient {
 	return original.NewSmartGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSmartGroupsListIterator(page SmartGroupsListPage) SmartGroupsListIterator {
+	return original.NewSmartGroupsListIterator(page)
+}
+func NewSmartGroupsListPage(getNextPage func(context.Context, SmartGroupsList) (SmartGroupsList, error)) SmartGroupsListPage {
+	return original.NewSmartGroupsListPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

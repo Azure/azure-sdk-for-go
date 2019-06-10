@@ -734,13 +734,13 @@ func (ap *AgentPool) UnmarshalJSON(body []byte) error {
 // AgentPoolAvailableVersions the list of available versions for an agent pool.
 type AgentPoolAvailableVersions struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Id of the agent pool avaialbe versions.
+	// ID - READ-ONLY; Id of the agent pool available versions.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Name of the agent pool avaialbe versions.
+	// Name - READ-ONLY; Name of the agent pool available versions.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of the agent pool  avaialbe versions.
+	// Type - READ-ONLY; Type of the agent pool  available versions.
 	Type *string `json:"type,omitempty"`
-	// AgentPoolAvailableVersionsProperties - Properties of agent pool avaialbe versions.
+	// AgentPoolAvailableVersionsProperties - Properties of agent pool available versions.
 	*AgentPoolAvailableVersionsProperties `json:"properties,omitempty"`
 }
 
@@ -1775,7 +1775,7 @@ type ManagedClusterAgentPoolProfile struct {
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
 	// ScaleSetPriority - ScaleSetPriority to be used to specify virtual machine scale set priority. Default to regular. Possible values include: 'Low', 'Regular'
 	ScaleSetPriority ScaleSetPriority `json:"scaleSetPriority,omitempty"`
-	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify evicition policy for low priority virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'
+	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for low priority virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'
 	ScaleSetEvictionPolicy ScaleSetEvictionPolicy `json:"scaleSetEvictionPolicy,omitempty"`
 	// NodeTaints - Taints to add when registering nodes.
 	NodeTaints *[]string `json:"nodeTaints,omitempty"`
@@ -1811,7 +1811,7 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
 	// ScaleSetPriority - ScaleSetPriority to be used to specify virtual machine scale set priority. Default to regular. Possible values include: 'Low', 'Regular'
 	ScaleSetPriority ScaleSetPriority `json:"scaleSetPriority,omitempty"`
-	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify evicition policy for low priority virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'
+	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for low priority virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'
 	ScaleSetEvictionPolicy ScaleSetEvictionPolicy `json:"scaleSetEvictionPolicy,omitempty"`
 	// NodeTaints - Taints to add when registering nodes.
 	NodeTaints *[]string `json:"nodeTaints,omitempty"`

@@ -3531,36 +3531,102 @@ type InformationType struct {
 // IoTSecurityAggregatedAlert security Solution Aggregated Alert information
 type IoTSecurityAggregatedAlert struct {
 	autorest.Response `json:"-"`
-	// AlertType - READ-ONLY; Name of the alert type
-	AlertType *string `json:"alertType,omitempty"`
-	// AlertDisplayName - READ-ONLY; Display name of the alert type
-	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
-	// AggregatedDateUtc - READ-ONLY; The date the incidents were detected by the vendor
-	AggregatedDateUtc *date.Date `json:"aggregatedDateUtc,omitempty"`
-	// VendorName - READ-ONLY; Name of the vendor that discovered the incident
-	VendorName *string `json:"vendorName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
-	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// RemediationSteps - READ-ONLY; Recommended steps for remediation
-	RemediationSteps *string `json:"remediationSteps,omitempty"`
-	// Description - READ-ONLY; Description of the incident and what it means
-	Description *string `json:"description,omitempty"`
-	// Count - READ-ONLY; Occurrence number of the alert within the aggregated date
-	Count *int32 `json:"count,omitempty"`
-	// EffectedResourceType - READ-ONLY; Azure resource ID of the resource that got the alerts
-	EffectedResourceType *string `json:"effectedResourceType,omitempty"`
-	// SystemSource - READ-ONLY; The type of the alerted resource (Azure, Non-Azure)
-	SystemSource *string `json:"systemSource,omitempty"`
-	// ActionTaken - READ-ONLY; The action that was taken as a response to the alert (Active, Blocked etc.)
-	ActionTaken *string `json:"actionTaken,omitempty"`
-	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
-	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// Location - The resource location.
+	Location *string `json:"location,omitempty"`
+	// IoTSecurityAggregatedAlertProperties - Security Solution  Aggregated Alert data
+	*IoTSecurityAggregatedAlertProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IoTSecurityAggregatedAlert.
+func (itsaa IoTSecurityAggregatedAlert) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if itsaa.Tags != nil {
+		objectMap["tags"] = itsaa.Tags
+	}
+	if itsaa.Location != nil {
+		objectMap["location"] = itsaa.Location
+	}
+	if itsaa.IoTSecurityAggregatedAlertProperties != nil {
+		objectMap["properties"] = itsaa.IoTSecurityAggregatedAlertProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IoTSecurityAggregatedAlert struct.
+func (itsaa *IoTSecurityAggregatedAlert) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				itsaa.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				itsaa.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				itsaa.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				itsaa.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				itsaa.Location = &location
+			}
+		case "properties":
+			if v != nil {
+				var ioTSecurityAggregatedAlertProperties IoTSecurityAggregatedAlertProperties
+				err = json.Unmarshal(*v, &ioTSecurityAggregatedAlertProperties)
+				if err != nil {
+					return err
+				}
+				itsaa.IoTSecurityAggregatedAlertProperties = &ioTSecurityAggregatedAlertProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // IoTSecurityAggregatedAlertList list of IoT aggregated security alerts
@@ -3710,33 +3776,133 @@ func NewIoTSecurityAggregatedAlertListPage(getNextPage func(context.Context, IoT
 	return IoTSecurityAggregatedAlertListPage{fn: getNextPage}
 }
 
+// IoTSecurityAggregatedAlertProperties security Solution Aggregated Alert data
+type IoTSecurityAggregatedAlertProperties struct {
+	// AlertType - READ-ONLY; Name of the alert type
+	AlertType *string `json:"alertType,omitempty"`
+	// AlertDisplayName - READ-ONLY; Display name of the alert type
+	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
+	// AggregatedDateUtc - READ-ONLY; The date the incidents were detected by the vendor
+	AggregatedDateUtc *date.Date `json:"aggregatedDateUtc,omitempty"`
+	// VendorName - READ-ONLY; Name of the vendor that discovered the incident
+	VendorName *string `json:"vendorName,omitempty"`
+	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
+	// RemediationSteps - READ-ONLY; Recommended steps for remediation
+	RemediationSteps *string `json:"remediationSteps,omitempty"`
+	// Description - READ-ONLY; Description of the incident and what it means
+	Description *string `json:"description,omitempty"`
+	// Count - READ-ONLY; Occurrence number of the alert within the aggregated date
+	Count *int32 `json:"count,omitempty"`
+	// EffectedResourceType - READ-ONLY; Azure resource ID of the resource that got the alerts
+	EffectedResourceType *string `json:"effectedResourceType,omitempty"`
+	// SystemSource - READ-ONLY; The type of the alerted resource (Azure, Non-Azure)
+	SystemSource *string `json:"systemSource,omitempty"`
+	// ActionTaken - READ-ONLY; The action that was taken as a response to the alert (Active, Blocked etc.)
+	ActionTaken *string `json:"actionTaken,omitempty"`
+	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
+	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
+}
+
 // IoTSecurityAggregatedRecommendation security Solution Recommendation Information
 type IoTSecurityAggregatedRecommendation struct {
 	autorest.Response `json:"-"`
-	// RecommendationName - Name of the alert type
-	RecommendationName *string `json:"recommendationName,omitempty"`
-	// RecommendationDisplayName - READ-ONLY; Display name of the alert type
-	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
-	// Description - READ-ONLY; Description of the incident and what it means
-	Description *string `json:"description,omitempty"`
-	// RecommendationTypeID - The recommendation-type GUID.
-	RecommendationTypeID *string `json:"recommendationTypeId,omitempty"`
-	// DetectedBy - READ-ONLY; Name of the vendor that discovered the incident
-	DetectedBy *string `json:"detectedBy,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
-	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// HealthyDevices - READ-ONLY; the number of the healthy devices within the solution
-	HealthyDevices *int32 `json:"healthyDevices,omitempty"`
-	// UnhealthyDevices - READ-ONLY; the number of the unhealthy devices within the solution
-	UnhealthyDevices *int32 `json:"unhealthyDevices,omitempty"`
-	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
-	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// Location - The resource location.
+	Location *string `json:"location,omitempty"`
+	// IoTSecurityAggregatedRecommendationProperties - Security Solution data
+	*IoTSecurityAggregatedRecommendationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IoTSecurityAggregatedRecommendation.
+func (itsar IoTSecurityAggregatedRecommendation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if itsar.Tags != nil {
+		objectMap["tags"] = itsar.Tags
+	}
+	if itsar.Location != nil {
+		objectMap["location"] = itsar.Location
+	}
+	if itsar.IoTSecurityAggregatedRecommendationProperties != nil {
+		objectMap["properties"] = itsar.IoTSecurityAggregatedRecommendationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IoTSecurityAggregatedRecommendation struct.
+func (itsar *IoTSecurityAggregatedRecommendation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				itsar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				itsar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				itsar.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				itsar.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				itsar.Location = &location
+			}
+		case "properties":
+			if v != nil {
+				var ioTSecurityAggregatedRecommendationProperties IoTSecurityAggregatedRecommendationProperties
+				err = json.Unmarshal(*v, &ioTSecurityAggregatedRecommendationProperties)
+				if err != nil {
+					return err
+				}
+				itsar.IoTSecurityAggregatedRecommendationProperties = &ioTSecurityAggregatedRecommendationProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // IoTSecurityAggregatedRecommendationList list of IoT aggregated security recommendations
@@ -3885,6 +4051,28 @@ func (page IoTSecurityAggregatedRecommendationListPage) Values() []IoTSecurityAg
 // Creates a new instance of the IoTSecurityAggregatedRecommendationListPage type.
 func NewIoTSecurityAggregatedRecommendationListPage(getNextPage func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error)) IoTSecurityAggregatedRecommendationListPage {
 	return IoTSecurityAggregatedRecommendationListPage{fn: getNextPage}
+}
+
+// IoTSecurityAggregatedRecommendationProperties security Solution Recommendation Information
+type IoTSecurityAggregatedRecommendationProperties struct {
+	// RecommendationName - Name of the alert type
+	RecommendationName *string `json:"recommendationName,omitempty"`
+	// RecommendationDisplayName - READ-ONLY; Display name of the alert type
+	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
+	// Description - READ-ONLY; Description of the incident and what it means
+	Description *string `json:"description,omitempty"`
+	// RecommendationTypeID - The recommendation-type GUID.
+	RecommendationTypeID *string `json:"recommendationTypeId,omitempty"`
+	// DetectedBy - READ-ONLY; Name of the vendor that discovered the incident
+	DetectedBy *string `json:"detectedBy,omitempty"`
+	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
+	// HealthyDevices - READ-ONLY; the number of the healthy devices within the solution
+	HealthyDevices *int32 `json:"healthyDevices,omitempty"`
+	// UnhealthyDevices - READ-ONLY; the number of the unhealthy devices within the solution
+	UnhealthyDevices *int32 `json:"unhealthyDevices,omitempty"`
+	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
+	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
 }
 
 // IoTSecurityDeviceAlerts statistic information about the number of alerts per device during the last

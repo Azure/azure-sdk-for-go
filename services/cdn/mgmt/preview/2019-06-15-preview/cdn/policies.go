@@ -442,7 +442,7 @@ func (client PoliciesClient) ListComplete(ctx context.Context, resourceGroupName
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // policyName - the name of the CdnWebApplicationFirewallPolicy.
-// cdnWebApplicationFirewallPolicyPatchParameters - cdnWebAplicationFirewallPolicy parameters to be patched.
+// cdnWebApplicationFirewallPolicyPatchParameters - cdnWebApplicationFirewallPolicy parameters to be patched.
 func (client PoliciesClient) Update(ctx context.Context, resourceGroupName string, policyName string, cdnWebApplicationFirewallPolicyPatchParameters WebApplicationFirewallPolicyPatchParameters) (result PoliciesUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PoliciesClient.Update")

@@ -3528,76 +3528,39 @@ type InformationType struct {
 	Keywords *[]InformationProtectionKeyword `json:"keywords,omitempty"`
 }
 
-// IoTSecurityAggregatedAlert security Solution
+// IoTSecurityAggregatedAlert security Solution Aggregated Alert information
 type IoTSecurityAggregatedAlert struct {
-	autorest.Response                     `json:"-"`
-	*IoTSecurityAggregatedAlertProperties `json:"properties,omitempty"`
+	autorest.Response `json:"-"`
+	// AlertType - READ-ONLY; Name of the alert type
+	AlertType *string `json:"alertType,omitempty"`
+	// AlertDisplayName - READ-ONLY; Display name of the alert type
+	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
+	// AggregatedDateUtc - READ-ONLY; The date the incidents were detected by the vendor
+	AggregatedDateUtc *date.Date `json:"aggregatedDateUtc,omitempty"`
+	// VendorName - READ-ONLY; Name of the vendor that discovered the incident
+	VendorName *string `json:"vendorName,omitempty"`
+	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
+	// RemediationSteps - READ-ONLY; Recommended steps for remediation
+	RemediationSteps *string `json:"remediationSteps,omitempty"`
+	// Description - READ-ONLY; Description of the incident and what it means
+	Description *string `json:"description,omitempty"`
+	// Count - READ-ONLY; Occurrence number of the alert within the aggregated date
+	Count *int32 `json:"count,omitempty"`
+	// EffectedResourceType - READ-ONLY; Azure resource ID of the resource that got the alerts
+	EffectedResourceType *string `json:"effectedResourceType,omitempty"`
+	// SystemSource - READ-ONLY; The type of the alerted resource (Azure, Non-Azure)
+	SystemSource *string `json:"systemSource,omitempty"`
+	// ActionTaken - READ-ONLY; The action that was taken as a response to the alert (Active, Blocked etc.)
+	ActionTaken *string `json:"actionTaken,omitempty"`
+	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
+	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IoTSecurityAggregatedAlert.
-func (itsaa IoTSecurityAggregatedAlert) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if itsaa.IoTSecurityAggregatedAlertProperties != nil {
-		objectMap["properties"] = itsaa.IoTSecurityAggregatedAlertProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IoTSecurityAggregatedAlert struct.
-func (itsaa *IoTSecurityAggregatedAlert) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var ioTSecurityAggregatedAlertProperties IoTSecurityAggregatedAlertProperties
-				err = json.Unmarshal(*v, &ioTSecurityAggregatedAlertProperties)
-				if err != nil {
-					return err
-				}
-				itsaa.IoTSecurityAggregatedAlertProperties = &ioTSecurityAggregatedAlertProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				itsaa.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				itsaa.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				itsaa.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
 }
 
 // IoTSecurityAggregatedAlertList list of IoT aggregated security alerts
@@ -3745,40 +3708,6 @@ func (page IoTSecurityAggregatedAlertListPage) Values() []IoTSecurityAggregatedA
 // Creates a new instance of the IoTSecurityAggregatedAlertListPage type.
 func NewIoTSecurityAggregatedAlertListPage(getNextPage func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error)) IoTSecurityAggregatedAlertListPage {
 	return IoTSecurityAggregatedAlertListPage{fn: getNextPage}
-}
-
-// IoTSecurityAggregatedAlertProperties describes security alert properties.
-type IoTSecurityAggregatedAlertProperties struct {
-	// AlertType - READ-ONLY; Name of the alert type
-	AlertType *string `json:"alertType,omitempty"`
-	// AlertDisplayName - READ-ONLY; Display name of the alert type
-	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
-	// AggregatedDateUtc - READ-ONLY; The date the incidents were detected by the vendor
-	AggregatedDateUtc *date.Date `json:"aggregatedDateUtc,omitempty"`
-	// VendorName - READ-ONLY; Name of the vendor that discovered the incident
-	VendorName *string `json:"vendorName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
-	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// RemediationSteps - READ-ONLY; Recommended steps for remediation
-	RemediationSteps *string `json:"remediationSteps,omitempty"`
-	// Description - READ-ONLY; Description of the incident and what it means
-	Description *string `json:"description,omitempty"`
-	// Count - READ-ONLY; Occurrence number of the alert within the aggregated date
-	Count *int32 `json:"count,omitempty"`
-	// EffectedResourceType - READ-ONLY; Azure resource ID of the resource that got the alerts
-	EffectedResourceType *string `json:"effectedResourceType,omitempty"`
-	// SystemSource - READ-ONLY; The type of the alerted resource (Azure, Non-Azure)
-	SystemSource *string `json:"systemSource,omitempty"`
-	// ActionTaken - READ-ONLY; The action that was taken as a response to the alert (Active, Blocked etc.)
-	ActionTaken *string `json:"actionTaken,omitempty"`
-	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
-	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
 }
 
 // IoTSecurityAggregatedRecommendation security Solution Recommendation Information

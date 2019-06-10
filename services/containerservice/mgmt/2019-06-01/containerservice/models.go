@@ -1773,6 +1773,8 @@ type ManagedClusterAgentPoolProfile struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AvailabilityZones - (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
+	// EnableNodePublicIP - Enable public IP for nodes
+	EnableNodePublicIP *bool `json:"enableNodePublicIP,omitempty"`
 	// ScaleSetPriority - ScaleSetPriority to be used to specify virtual machine scale set priority. Default to regular. Possible values include: 'Low', 'Regular'
 	ScaleSetPriority ScaleSetPriority `json:"scaleSetPriority,omitempty"`
 	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for low priority virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'
@@ -1809,6 +1811,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// AvailabilityZones - (PREVIEW) Availability zones for nodes. Must use VirtualMachineScaleSets AgentPoolType.
 	AvailabilityZones *[]string `json:"availabilityZones,omitempty"`
+	// EnableNodePublicIP - Enable public IP for nodes
+	EnableNodePublicIP *bool `json:"enableNodePublicIP,omitempty"`
 	// ScaleSetPriority - ScaleSetPriority to be used to specify virtual machine scale set priority. Default to regular. Possible values include: 'Low', 'Regular'
 	ScaleSetPriority ScaleSetPriority `json:"scaleSetPriority,omitempty"`
 	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for low priority virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'

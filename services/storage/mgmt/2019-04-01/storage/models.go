@@ -140,6 +140,21 @@ func PossibleDefaultActionValues() []DefaultAction {
 	return []DefaultAction{DefaultActionAllow, DefaultActionDeny}
 }
 
+// DirectoryServiceOptions enumerates the values for directory service options.
+type DirectoryServiceOptions string
+
+const (
+	// DirectoryServiceOptionsAADDS ...
+	DirectoryServiceOptionsAADDS DirectoryServiceOptions = "AADDS"
+	// DirectoryServiceOptionsNone ...
+	DirectoryServiceOptionsNone DirectoryServiceOptions = "None"
+)
+
+// PossibleDirectoryServiceOptionsValues returns an array of possible values for the DirectoryServiceOptions const type.
+func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
+	return []DirectoryServiceOptions{DirectoryServiceOptionsAADDS, DirectoryServiceOptionsNone}
+}
+
 // GeoReplicationStatus enumerates the values for geo replication status.
 type GeoReplicationStatus string
 
@@ -843,8 +858,8 @@ type AccountProperties struct {
 	Encryption *Encryption `json:"encryption,omitempty"`
 	// AccessTier - READ-ONLY; Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
 	AccessTier AccessTier `json:"accessTier,omitempty"`
-	// EnableAzureFilesAadIntegration - Enables Azure Files AAD Integration for SMB if sets to true.
-	EnableAzureFilesAadIntegration *bool `json:"azureFilesAadIntegration,omitempty"`
+	// AzureFilesIdentityBasedAuthentication - Provides the identity based authentication settings for Azure Files.
+	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
 	// EnableHTTPSTrafficOnly - Allows https traffic only to storage service if sets to true.
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
 	// NetworkRuleSet - READ-ONLY; Network rule set
@@ -867,8 +882,8 @@ type AccountPropertiesCreateParameters struct {
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
 	// AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
 	AccessTier AccessTier `json:"accessTier,omitempty"`
-	// EnableAzureFilesAadIntegration - Enables Azure Files AAD Integration for SMB if sets to true.
-	EnableAzureFilesAadIntegration *bool `json:"azureFilesAadIntegration,omitempty"`
+	// AzureFilesIdentityBasedAuthentication - Provides the identity based authentication settings for Azure Files.
+	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
 	// EnableHTTPSTrafficOnly - Allows https traffic only to storage service if sets to true. The default value is true since API version 2019-04-01.
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
 	// IsHnsEnabled - Account HierarchicalNamespace enabled if sets to true.
@@ -883,8 +898,8 @@ type AccountPropertiesUpdateParameters struct {
 	Encryption *Encryption `json:"encryption,omitempty"`
 	// AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
 	AccessTier AccessTier `json:"accessTier,omitempty"`
-	// EnableAzureFilesAadIntegration - Enables Azure Files AAD Integration for SMB if sets to true.
-	EnableAzureFilesAadIntegration *bool `json:"azureFilesAadIntegration,omitempty"`
+	// AzureFilesIdentityBasedAuthentication - Provides the identity based authentication settings for Azure Files.
+	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
 	// EnableHTTPSTrafficOnly - Allows https traffic only to storage service if sets to true.
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
 	// NetworkRuleSet - Network rule set
@@ -1075,6 +1090,12 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// AzureFilesIdentityBasedAuthentication settings for Azure Files identity based authentication.
+type AzureFilesIdentityBasedAuthentication struct {
+	// DirectoryServiceOptions - Indicates the directory service used. Possible values include: 'DirectoryServiceOptionsNone', 'DirectoryServiceOptionsAADDS'
+	DirectoryServiceOptions DirectoryServiceOptions `json:"directoryServiceOptions,omitempty"`
 }
 
 // BlobContainer properties of the blob container, including Id, resource name, resource type, Etag.

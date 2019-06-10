@@ -21,7 +21,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"reflect"
 	"runtime"
 	"strings"
 	"testing"
@@ -63,33 +62,6 @@ func Test_getTags(t *testing.T) {
 	}
 	if !found {
 		t.Fatal("didn't find tag v10.1.0-beta")
-	}
-}
-
-func Test_sortModuleTagsBySemver(t *testing.T) {
-	before := []string{
-		"foo/v1.0.0",
-		"foo/v1.0.1",
-		"foo/v1.1.0",
-		"foo/v10.0.0",
-		"foo/v11.1.1",
-		"foo/v2.0.0",
-		"foo/v20.2.3",
-		"foo/v3.1.0",
-	}
-	sortModuleTagsBySemver(before)
-	after := []string{
-		"foo/v1.0.0",
-		"foo/v1.0.1",
-		"foo/v1.1.0",
-		"foo/v2.0.0",
-		"foo/v3.1.0",
-		"foo/v10.0.0",
-		"foo/v11.1.1",
-		"foo/v20.2.3",
-	}
-	if !reflect.DeepEqual(before, after) {
-		t.Fatalf("sort order doesn't match, expected '%v' got '%v'", after, before)
 	}
 }
 

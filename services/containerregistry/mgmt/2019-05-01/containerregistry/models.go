@@ -3311,8 +3311,6 @@ type RunProperties struct {
 	CustomRegistries *[]string `json:"customRegistries,omitempty"`
 	// RunErrorMessage - READ-ONLY; The error message received from backend systems after the run is scheduled.
 	RunErrorMessage *string `json:"runErrorMessage,omitempty"`
-	// UpdateTriggerToken - The update trigger token passed for the Run.
-	UpdateTriggerToken *string `json:"updateTriggerToken,omitempty"`
 	// ProvisioningState - The provisioning state of a run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IsArchiveEnabled - The value that indicates whether archiving is enabled or not.

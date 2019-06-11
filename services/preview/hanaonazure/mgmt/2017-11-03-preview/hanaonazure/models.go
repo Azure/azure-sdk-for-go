@@ -193,7 +193,7 @@ type HanaInstance struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Resource location
+	// Location - Resource location
 	Location *string `json:"location,omitempty"`
 	// Tags - READ-ONLY; Resource tags
 	Tags map[string]*string `json:"tags"`
@@ -204,6 +204,9 @@ func (hi HanaInstance) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if hi.HanaInstanceProperties != nil {
 		objectMap["properties"] = hi.HanaInstanceProperties
+	}
+	if hi.Location != nil {
+		objectMap["location"] = hi.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -295,7 +298,7 @@ type HanaInstanceProperties struct {
 	ProximityPlacementGroup *string `json:"proximityPlacementGroup,omitempty"`
 	// HwRevision - READ-ONLY; Hardware revision of a HANA instance
 	HwRevision *string `json:"hwRevision,omitempty"`
-	// PartnerNodeID - READ-ONLY; ARM ID of another HanaInstance that will share a network with this HanaInstance
+	// PartnerNodeID - ARM ID of another HanaInstance that will share a network with this HanaInstance
 	PartnerNodeID *string `json:"partnerNodeId,omitempty"`
 	// ProvisioningState - READ-ONLY; State of provisioning of the HanaInstance. Possible values include: 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting', 'Migrating'
 	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
@@ -555,7 +558,7 @@ type HardwareProfile struct {
 
 // IPAddress specifies the IP address of the network interface.
 type IPAddress struct {
-	// IPAddress - READ-ONLY; Specifies the IP address of the network interface.
+	// IPAddress - Specifies the IP address of the network interface.
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
@@ -600,13 +603,13 @@ type OperationList struct {
 
 // OSProfile specifies the operating system settings for the HANA instance.
 type OSProfile struct {
-	// ComputerName - READ-ONLY; Specifies the host OS name of the HANA instance.
+	// ComputerName - Specifies the host OS name of the HANA instance.
 	ComputerName *string `json:"computerName,omitempty"`
 	// OsType - READ-ONLY; This property allows you to specify the type of the OS.
 	OsType *string `json:"osType,omitempty"`
 	// Version - READ-ONLY; Specifies version of operating system.
 	Version *string `json:"version,omitempty"`
-	// SSHPublicKey - READ-ONLY; Specifies the SSH public key used to access the operating system.
+	// SSHPublicKey - Specifies the SSH public key used to access the operating system.
 	SSHPublicKey *string `json:"sshPublicKey,omitempty"`
 }
 
@@ -618,7 +621,7 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Resource location
+	// Location - Resource location
 	Location *string `json:"location,omitempty"`
 	// Tags - READ-ONLY; Resource tags
 	Tags map[string]*string `json:"tags"`
@@ -627,6 +630,9 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
 	return json.Marshal(objectMap)
 }
 

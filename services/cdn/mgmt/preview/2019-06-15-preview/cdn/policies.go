@@ -438,7 +438,7 @@ func (client PoliciesClient) ListComplete(ctx context.Context, resourceGroupName
 }
 
 // Update update an existing CdnWebApplicationFirewallPolicy with the specified policy name under the specified
-// subcription and resource group
+// subscription and resource group
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // policyName - the name of the CdnWebApplicationFirewallPolicy.

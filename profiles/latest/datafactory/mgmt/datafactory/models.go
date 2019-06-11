@@ -861,7 +861,7 @@ const (
 	TypeSapEcc                   TypeBasicLinkedService = original.TypeSapEcc
 	TypeSapHana                  TypeBasicLinkedService = original.TypeSapHana
 	TypeSapOpenHub               TypeBasicLinkedService = original.TypeSapOpenHub
-	TypeSapOpenHub1              TypeBasicLinkedService = original.TypeSapOpenHub1
+	TypeSapTable                 TypeBasicLinkedService = original.TypeSapTable
 	TypeServiceNow               TypeBasicLinkedService = original.TypeServiceNow
 	TypeSftp                     TypeBasicLinkedService = original.TypeSftp
 	TypeShopify                  TypeBasicLinkedService = original.TypeShopify
@@ -1487,7 +1487,7 @@ type SapOpenHubLinkedServiceTypeProperties = original.SapOpenHubLinkedServiceTyp
 type SapOpenHubSource = original.SapOpenHubSource
 type SapOpenHubTableDataset = original.SapOpenHubTableDataset
 type SapOpenHubTableDatasetTypeProperties = original.SapOpenHubTableDatasetTypeProperties
-type SapTable = original.SapTable
+type SapTableLinkedService = original.SapTableLinkedService
 type SapTableLinkedServiceTypeProperties = original.SapTableLinkedServiceTypeProperties
 type SapTablePartitionSettings = original.SapTablePartitionSettings
 type SapTableResourceDataset = original.SapTableResourceDataset

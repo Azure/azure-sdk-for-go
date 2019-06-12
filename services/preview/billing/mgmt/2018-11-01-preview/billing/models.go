@@ -3714,6 +3714,10 @@ type TransactionsSummaryProperties struct {
 	TransactionAmount *Amount `json:"transactionAmount,omitempty"`
 	// Quantity - READ-ONLY; Purchase quantity.
 	Quantity *int32 `json:"quantity,omitempty"`
+	// CustomerID - READ-ONLY; Customer id to which this product belongs.
+	CustomerID *string `json:"customerId,omitempty"`
+	// CustomerDisplayName - READ-ONLY; Display name of customer to which this product belongs.
+	CustomerDisplayName *string `json:"customerDisplayName,omitempty"`
 	// InvoiceSectionID - READ-ONLY; Invoice section id to which this product belongs.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
 	// InvoiceSectionName - READ-ONLY; Invoice section name to which this product belongs.

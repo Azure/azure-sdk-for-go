@@ -34,7 +34,7 @@ var _ OperationsClientAPI = (*iothub.OperationsClient)(nil)
 // DpsCertificateClientAPI contains the set of methods on the DpsCertificateClient type.
 type DpsCertificateClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription iothub.CertificateBodyDescription, ifMatch string) (result iothub.CertificateResponse, err error)
-	Delete(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string, certificatename string, certificaterawBytes []byte, certificateisVerified *bool, certificatepurpose iothub.CertificatePurpose, certificatecreated *date.Time, certificatelastUpdated *date.Time, certificatehasPrivateKey *bool, certificatenonce string) (result autorest.Response, err error)
+	Delete(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string) (result autorest.Response, err error)
 	GenerateVerificationCode(ctx context.Context, certificateName string, ifMatch string, resourceGroupName string, provisioningServiceName string, certificatename string, certificaterawBytes []byte, certificateisVerified *bool, certificatepurpose iothub.CertificatePurpose, certificatecreated *date.Time, certificatelastUpdated *date.Time, certificatehasPrivateKey *bool, certificatenonce string) (result iothub.VerificationCodeResponse, err error)
 	Get(ctx context.Context, certificateName string, resourceGroupName string, provisioningServiceName string, ifMatch string) (result iothub.CertificateResponse, err error)
 	List(ctx context.Context, resourceGroupName string, provisioningServiceName string) (result iothub.CertificateListDescription, err error)

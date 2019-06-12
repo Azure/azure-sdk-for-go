@@ -143,15 +143,7 @@ func (client DpsCertificateClient) CreateOrUpdateResponder(resp *http.Response) 
 // provisioningServiceName - the name of the provisioning service.
 // certificateName - this is a mandatory field, and is the logical name of the certificate that the
 // provisioning service will access by.
-// certificatename - this is optional, and it is the Common Name of the certificate.
-// certificaterawBytes - raw data within the certificate.
-// certificateisVerified - indicates if certificate has been verified by owner of the private key.
-// certificatepurpose - a description that mentions the purpose of the certificate.
-// certificatecreated - time the certificate is created.
-// certificatelastUpdated - time the certificate is last updated.
-// certificatehasPrivateKey - indicates if the certificate contains a private key.
-// certificatenonce - random number generated to indicate Proof of Possession.
-func (client DpsCertificateClient) Delete(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string, certificatename string, certificaterawBytes []byte, certificateisVerified *bool, certificatepurpose CertificatePurpose, certificatecreated *date.Time, certificatelastUpdated *date.Time, certificatehasPrivateKey *bool, certificatenonce string) (result autorest.Response, err error) {
+func (client DpsCertificateClient) Delete(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DpsCertificateClient.Delete")
 		defer func() {
@@ -162,7 +154,7 @@ func (client DpsCertificateClient) Delete(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, ifMatch, provisioningServiceName, certificateName, certificatename, certificaterawBytes, certificateisVerified, certificatepurpose, certificatecreated, certificatelastUpdated, certificatehasPrivateKey, certificatenonce)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, ifMatch, provisioningServiceName, certificateName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.DpsCertificateClient", "Delete", nil, "Failure preparing request")
 		return
@@ -184,7 +176,7 @@ func (client DpsCertificateClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DpsCertificateClient) DeletePreparer(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string, certificatename string, certificaterawBytes []byte, certificateisVerified *bool, certificatepurpose CertificatePurpose, certificatecreated *date.Time, certificatelastUpdated *date.Time, certificatehasPrivateKey *bool, certificatenonce string) (*http.Request, error) {
+func (client DpsCertificateClient) DeletePreparer(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"certificateName":         autorest.Encode("path", certificateName),
 		"provisioningServiceName": autorest.Encode("path", provisioningServiceName),
@@ -195,30 +187,6 @@ func (client DpsCertificateClient) DeletePreparer(ctx context.Context, resourceG
 	const APIVersion = "2018-01-22"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if len(certificatename) > 0 {
-		queryParameters["certificate.name"] = autorest.Encode("query", certificatename)
-	}
-	if certificaterawBytes != nil && len(certificaterawBytes) > 0 {
-		queryParameters["certificate.rawBytes"] = autorest.Encode("query", certificaterawBytes)
-	}
-	if certificateisVerified != nil {
-		queryParameters["certificate.isVerified"] = autorest.Encode("query", *certificateisVerified)
-	}
-	if len(string(certificatepurpose)) > 0 {
-		queryParameters["certificate.purpose"] = autorest.Encode("query", certificatepurpose)
-	}
-	if certificatecreated != nil {
-		queryParameters["certificate.created"] = autorest.Encode("query", *certificatecreated)
-	}
-	if certificatelastUpdated != nil {
-		queryParameters["certificate.lastUpdated"] = autorest.Encode("query", *certificatelastUpdated)
-	}
-	if certificatehasPrivateKey != nil {
-		queryParameters["certificate.hasPrivateKey"] = autorest.Encode("query", *certificatehasPrivateKey)
-	}
-	if len(certificatenonce) > 0 {
-		queryParameters["certificate.nonce"] = autorest.Encode("query", certificatenonce)
 	}
 
 	preparer := autorest.CreatePreparer(

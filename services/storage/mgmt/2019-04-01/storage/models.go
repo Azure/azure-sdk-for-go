@@ -23,6 +23,8 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
@@ -1748,6 +1750,143 @@ type ListContainerItems struct {
 	Value *[]ListContainerItem `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers exceed maximum page size.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ListContainerItemsIterator provides access to a complete listing of ListContainerItem values.
+type ListContainerItemsIterator struct {
+	i    int
+	page ListContainerItemsPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ListContainerItemsIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListContainerItemsIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ListContainerItemsIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ListContainerItemsIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ListContainerItemsIterator) Response() ListContainerItems {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ListContainerItemsIterator) Value() ListContainerItem {
+	if !iter.page.NotDone() {
+		return ListContainerItem{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ListContainerItemsIterator type.
+func NewListContainerItemsIterator(page ListContainerItemsPage) ListContainerItemsIterator {
+	return ListContainerItemsIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lci ListContainerItems) IsEmpty() bool {
+	return lci.Value == nil || len(*lci.Value) == 0
+}
+
+// listContainerItemsPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lci ListContainerItems) listContainerItemsPreparer(ctx context.Context) (*http.Request, error) {
+	if lci.NextLink == nil || len(to.String(lci.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lci.NextLink)))
+}
+
+// ListContainerItemsPage contains a page of ListContainerItem values.
+type ListContainerItemsPage struct {
+	fn  func(context.Context, ListContainerItems) (ListContainerItems, error)
+	lci ListContainerItems
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ListContainerItemsPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListContainerItemsPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.lci)
+	if err != nil {
+		return err
+	}
+	page.lci = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ListContainerItemsPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ListContainerItemsPage) NotDone() bool {
+	return !page.lci.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ListContainerItemsPage) Response() ListContainerItems {
+	return page.lci
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ListContainerItemsPage) Values() []ListContainerItem {
+	if page.lci.IsEmpty() {
+		return nil
+	}
+	return *page.lci.Value
+}
+
+// Creates a new instance of the ListContainerItemsPage type.
+func NewListContainerItemsPage(getNextPage func(context.Context, ListContainerItems) (ListContainerItems, error)) ListContainerItemsPage {
+	return ListContainerItemsPage{fn: getNextPage}
 }
 
 // ListServiceSasResponse the List service SAS credentials operation response.

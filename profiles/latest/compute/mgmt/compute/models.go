@@ -782,8 +782,6 @@ type ResourceSkuRestrictions = original.ResourceSkuRestrictions
 type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
 type ResourceSkusClient = original.ResourceSkusClient
 type ResourceSkusResult = original.ResourceSkusResult
-type ResourceSkusResultIterator = original.ResourceSkusResultIterator
-type ResourceSkusResultPage = original.ResourceSkusResultPage
 type RollbackStatusInfo = original.RollbackStatusInfo
 type RollingUpgradePolicy = original.RollingUpgradePolicy
 type RollingUpgradeProgressInfo = original.RollingUpgradeProgressInfo
@@ -1112,12 +1110,6 @@ func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
 }
 func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
-	return original.NewResourceSkusResultIterator(page)
-}
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
 }
 func NewRunCommandListResultIterator(page RunCommandListResultPage) RunCommandListResultIterator {
 	return original.NewRunCommandListResultIterator(page)

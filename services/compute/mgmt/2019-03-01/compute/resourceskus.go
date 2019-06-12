@@ -41,18 +41,17 @@ func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) Res
 }
 
 // List gets the list of Microsoft.Compute SKUs available for your Subscription.
-func (client ResourceSkusClient) List(ctx context.Context) (result ResourceSkusResultPage, err error) {
+func (client ResourceSkusClient) List(ctx context.Context) (result ResourceSkusResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceSkusClient.List")
 		defer func() {
 			sc := -1
-			if result.rsr.Response.Response != nil {
-				sc = result.rsr.Response.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "List", nil, "Failure preparing request")
@@ -61,12 +60,12 @@ func (client ResourceSkusClient) List(ctx context.Context) (result ResourceSkusR
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.rsr.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.rsr, err = client.ListResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "List", resp, "Failure responding to request")
 	}
@@ -110,42 +109,5 @@ func (client ResourceSkusClient) ListResponder(resp *http.Response) (result Reso
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client ResourceSkusClient) listNextResults(ctx context.Context, lastResults ResourceSkusResult) (result ResourceSkusResult, err error) {
-	req, err := lastResults.resourceSkusResultPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.ResourceSkusClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ResourceSkusClient) ListComplete(ctx context.Context) (result ResourceSkusResultIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceSkusClient.List")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.List(ctx)
 	return
 }

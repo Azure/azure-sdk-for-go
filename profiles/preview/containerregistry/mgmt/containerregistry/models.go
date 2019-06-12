@@ -22,7 +22,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry"
+	original "github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-06-01-preview/containerregistry"
 )
 
 const (
@@ -40,6 +40,7 @@ type Architecture = original.Architecture
 const (
 	Amd64 Architecture = original.Amd64
 	Arm   Architecture = original.Arm
+	Arm64 Architecture = original.Arm64
 	X86   Architecture = original.X86
 )
 
@@ -242,6 +243,13 @@ const (
 	TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParametersTypeTaskStepUpdateParameters
 )
 
+type UpdateTriggerPayloadType = original.UpdateTriggerPayloadType
+
+const (
+	Default UpdateTriggerPayloadType = original.Default
+	Token   UpdateTriggerPayloadType = original.Token
+)
+
 type Variant = original.Variant
 
 const (
@@ -316,6 +324,7 @@ type OperationMetricSpecificationDefinition = original.OperationMetricSpecificat
 type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
 type OperationsClient = original.OperationsClient
+type OverrideTaskStepProperties = original.OverrideTaskStepProperties
 type PlatformProperties = original.PlatformProperties
 type PlatformUpdateParameters = original.PlatformUpdateParameters
 type Policies = original.Policies
@@ -580,6 +589,9 @@ func PossibleTypeBasicTaskStepUpdateParametersValues() []TypeBasicTaskStepUpdate
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
+}
+func PossibleUpdateTriggerPayloadTypeValues() []UpdateTriggerPayloadType {
+	return original.PossibleUpdateTriggerPayloadTypeValues()
 }
 func PossibleVariantValues() []Variant {
 	return original.PossibleVariantValues()

@@ -118,7 +118,7 @@ func (client AccountsClient) GetResponder(resp *http.Response) (result Account, 
 	return
 }
 
-// List lists all billing accounts for a user which he has access to.
+// List lists all billing accounts for which a user has access.
 // Parameters:
 // expand - may be used to expand the invoiceSections and billingProfiles.
 func (client AccountsClient) List(ctx context.Context, expand string) (result AccountListResult, err error) {

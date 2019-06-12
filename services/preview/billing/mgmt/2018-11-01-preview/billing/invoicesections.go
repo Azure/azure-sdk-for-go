@@ -266,7 +266,7 @@ func (client InvoiceSectionsClient) GetResponder(resp *http.Response) (result In
 	return
 }
 
-// ListByBillingAccountName lists all invoice sections for a user which he has access to.
+// ListByBillingAccountName lists all invoice sections for which a user has access.
 // Parameters:
 // billingAccountName - billing Account Id.
 // expand - may be used to expand the billingProfiles.
@@ -344,7 +344,7 @@ func (client InvoiceSectionsClient) ListByBillingAccountNameResponder(resp *http
 	return
 }
 
-// ListByBillingProfileName lists all invoice sections under a billing profile for a user which he has access to.
+// ListByBillingProfileName lists all invoice sections under a billing profile for which a user has access.
 // Parameters:
 // billingAccountName - billing Account Id.
 // billingProfileName - billing Profile Id.

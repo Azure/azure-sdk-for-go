@@ -125,7 +125,7 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDResponder(resp *h
 	return
 }
 
-// ListByBillingAccountName lists all Enrollment Accounts for a user which he has access to.
+// ListByBillingAccountName lists all Enrollment Accounts for which a user has access.
 // Parameters:
 // billingAccountName - billing Account Id.
 // expand - may be used to expand the department.

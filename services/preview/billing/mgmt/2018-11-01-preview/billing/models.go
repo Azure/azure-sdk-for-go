@@ -176,6 +176,35 @@ func PossibleProductTransferStatusValues() []ProductTransferStatus {
 	return []ProductTransferStatus{Completed, Failed, InProgress, NotStarted}
 }
 
+// ProductTransferValidationErrorCode enumerates the values for product transfer validation error code.
+type ProductTransferValidationErrorCode string
+
+const (
+	// CrossBillingAccountNotAllowed ...
+	CrossBillingAccountNotAllowed ProductTransferValidationErrorCode = "CrossBillingAccountNotAllowed"
+	// DestinationBillingProfilePastDue ...
+	DestinationBillingProfilePastDue ProductTransferValidationErrorCode = "DestinationBillingProfilePastDue"
+	// InsufficientPermissionOnDestination ...
+	InsufficientPermissionOnDestination ProductTransferValidationErrorCode = "InsufficientPermissionOnDestination"
+	// InsufficientPermissionOnSource ...
+	InsufficientPermissionOnSource ProductTransferValidationErrorCode = "InsufficientPermissionOnSource"
+	// InvalidSource ...
+	InvalidSource ProductTransferValidationErrorCode = "InvalidSource"
+	// NotAvailableForDestinationMarket ...
+	NotAvailableForDestinationMarket ProductTransferValidationErrorCode = "NotAvailableForDestinationMarket"
+	// OneTimePurchaseProductTransferNotAllowed ...
+	OneTimePurchaseProductTransferNotAllowed ProductTransferValidationErrorCode = "OneTimePurchaseProductTransferNotAllowed"
+	// ProductNotActive ...
+	ProductNotActive ProductTransferValidationErrorCode = "ProductNotActive"
+	// ProductTypeNotSupported ...
+	ProductTypeNotSupported ProductTransferValidationErrorCode = "ProductTypeNotSupported"
+)
+
+// PossibleProductTransferValidationErrorCodeValues returns an array of possible values for the ProductTransferValidationErrorCode const type.
+func PossibleProductTransferValidationErrorCodeValues() []ProductTransferValidationErrorCode {
+	return []ProductTransferValidationErrorCode{CrossBillingAccountNotAllowed, DestinationBillingProfilePastDue, InsufficientPermissionOnDestination, InsufficientPermissionOnSource, InvalidSource, NotAvailableForDestinationMarket, OneTimePurchaseProductTransferNotAllowed, ProductNotActive, ProductTypeNotSupported}
+}
+
 // ProductType enumerates the values for product type.
 type ProductType string
 
@@ -259,6 +288,34 @@ const (
 // PossibleSubscriptionStatusTypeValues returns an array of possible values for the SubscriptionStatusType const type.
 func PossibleSubscriptionStatusTypeValues() []SubscriptionStatusType {
 	return []SubscriptionStatusType{SubscriptionStatusTypeAbandoned, SubscriptionStatusTypeActive, SubscriptionStatusTypeDeleted, SubscriptionStatusTypeInactive, SubscriptionStatusTypeWarning}
+}
+
+// SubscriptionTransferValidationErrorCode enumerates the values for subscription transfer validation error
+// code.
+type SubscriptionTransferValidationErrorCode string
+
+const (
+	// SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed ...
+	SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed SubscriptionTransferValidationErrorCode = "CrossBillingAccountNotAllowed"
+	// SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue ...
+	SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue SubscriptionTransferValidationErrorCode = "DestinationBillingProfilePastDue"
+	// SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination ...
+	SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination SubscriptionTransferValidationErrorCode = "InsufficientPermissionOnDestination"
+	// SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource ...
+	SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource SubscriptionTransferValidationErrorCode = "InsufficientPermissionOnSource"
+	// SubscriptionTransferValidationErrorCodeInvalidSource ...
+	SubscriptionTransferValidationErrorCodeInvalidSource SubscriptionTransferValidationErrorCode = "InvalidSource"
+	// SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket ...
+	SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket SubscriptionTransferValidationErrorCode = "NotAvailableForDestinationMarket"
+	// SubscriptionTransferValidationErrorCodeSubscriptionNotActive ...
+	SubscriptionTransferValidationErrorCodeSubscriptionNotActive SubscriptionTransferValidationErrorCode = "SubscriptionNotActive"
+	// SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported ...
+	SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported SubscriptionTransferValidationErrorCode = "SubscriptionTypeNotSupported"
+)
+
+// PossibleSubscriptionTransferValidationErrorCodeValues returns an array of possible values for the SubscriptionTransferValidationErrorCode const type.
+func PossibleSubscriptionTransferValidationErrorCodeValues() []SubscriptionTransferValidationErrorCode {
+	return []SubscriptionTransferValidationErrorCode{SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed, SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue, SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination, SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource, SubscriptionTransferValidationErrorCodeInvalidSource, SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket, SubscriptionTransferValidationErrorCodeSubscriptionNotActive, SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported}
 }
 
 // TransactionTypeKind enumerates the values for transaction type kind.
@@ -743,6 +800,98 @@ type AvailableBalanceProperties struct {
 	Amount *Amount `json:"amount,omitempty"`
 }
 
+// Customer a partner's customer.
+type Customer struct {
+	autorest.Response `json:"-"`
+	// CustomerProperties - The customer.
+	*CustomerProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Customer.
+func (c Customer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.CustomerProperties != nil {
+		objectMap["properties"] = c.CustomerProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Customer struct.
+func (c *Customer) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var customerProperties CustomerProperties
+				err = json.Unmarshal(*v, &customerProperties)
+				if err != nil {
+					return err
+				}
+				c.CustomerProperties = &customerProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				c.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				c.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				c.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CustomerListResult result of listing customers.
+type CustomerListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of customers.
+	Value *[]Customer `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// CustomerProperties the properties of a customer.
+type CustomerProperties struct {
+	// DisplayName - The name of the customer.
+	DisplayName *string `json:"displayName,omitempty"`
+	// EnabledAzureSKUs - Information about the product.
+	EnabledAzureSKUs *[]EnabledAzureSKUs `json:"enabledAzureSKUs,omitempty"`
+	// ServiceProviders - The service providers which are allowed to provide service to this customer.
+	ServiceProviders *[]ServiceProvider `json:"serviceProviders,omitempty"`
+}
+
 // Department a department resource.
 type Department struct {
 	autorest.Response `json:"-"`
@@ -868,7 +1017,7 @@ type DownloadURL struct {
 
 // EnabledAzureSKUs details about the enabled azure sku.
 type EnabledAzureSKUs struct {
-	// SkuID - READ-ONLY; The sku id.
+	// SkuID - The sku id.
 	SkuID *string `json:"skuId,omitempty"`
 	// SkuDescription - READ-ONLY; The sku description.
 	SkuDescription *string `json:"skuDescription,omitempty"`
@@ -2363,6 +2512,20 @@ func (p *Profile) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ProfileCreationParameters the parameters for creating a new billing profile.
+type ProfileCreationParameters struct {
+	// DisplayName - The billing profile name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// PoNumber - Purchase order number.
+	PoNumber *string `json:"poNumber,omitempty"`
+	// Address - Billing address.
+	Address *Address `json:"address,omitempty"`
+	// InvoiceEmailOptIn - If the billing profile is opted in to receive invoices via email.
+	InvoiceEmailOptIn *bool `json:"invoiceEmailOptIn,omitempty"`
+	// EnableAzureSKUs - Azure skus to enable for this billing profile..
+	EnableAzureSKUs *[]EnabledAzureSKUs `json:"enableAzureSKUs,omitempty"`
+}
+
 // ProfileListResult result of listing billing profiles.
 type ProfileListResult struct {
 	autorest.Response `json:"-"`
@@ -2392,6 +2555,35 @@ type ProfileProperties struct {
 	EnabledAzureSKUs *[]EnabledAzureSKUs `json:"enabledAzureSKUs,omitempty"`
 	// InvoiceSections - The invoice sections associated to the billing profile.
 	InvoiceSections *[]InvoiceSection `json:"invoiceSections,omitempty"`
+}
+
+// ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ProfilesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ProfilesCreateFuture) Result(client ProfilesClient) (p Profile, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.ProfilesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+		p, err = client.CreateResponder(p.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.ProfilesCreateFuture", "Result", p.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -2990,6 +3182,14 @@ func (rdp *RoleDefinitionProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ServiceProvider details about a service provider.
+type ServiceProvider struct {
+	// ServiceProviderID - READ-ONLY; The service provider id.
+	ServiceProviderID *string `json:"serviceProviderId,omitempty"`
+	// Description - READ-ONLY; A description of the service provider.
+	Description *string `json:"description,omitempty"`
+}
+
 // SubscriptionProperties the usage context properties.
 type SubscriptionProperties struct {
 	// DisplayName - READ-ONLY; display name.
@@ -3006,6 +3206,10 @@ type SubscriptionProperties struct {
 	BillingProfileID *string `json:"billingProfileId,omitempty"`
 	// BillingProfileName - READ-ONLY; Billing Profile name to which this product belongs.
 	BillingProfileName *string `json:"billingProfileName,omitempty"`
+	// CustomerID - READ-ONLY; Customer id to which this product belongs.
+	CustomerID *string `json:"customerId,omitempty"`
+	// CustomerDisplayName - READ-ONLY; Display name of customer to which this product belongs.
+	CustomerDisplayName *string `json:"customerDisplayName,omitempty"`
 	// InvoiceSectionID - READ-ONLY; Invoice section id to which this product belongs.
 	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
 	// InvoiceSectionName - READ-ONLY; Invoice section name to which this product belongs.
@@ -3014,6 +3218,10 @@ type SubscriptionProperties struct {
 	SkuID *string `json:"skuId,omitempty"`
 	// SkuDescription - READ-ONLY; The sku description.
 	SkuDescription *string `json:"skuDescription,omitempty"`
+	// ServiceProviderID - The service provider id.
+	ServiceProviderID *string `json:"serviceProviderId,omitempty"`
+	// ServiceProviderDescription - READ-ONLY; The service provider description.
+	ServiceProviderDescription *string `json:"serviceProviderDescription,omitempty"`
 }
 
 // SubscriptionsListResult result of listing billing subscriptions summary.
@@ -3563,6 +3771,8 @@ func (tbsr *TransferBillingSubscriptionRequest) UnmarshalJSON(body []byte) error
 type TransferBillingSubscriptionRequestProperties struct {
 	// DestinationInvoiceSectionID - The destination invoice section id.
 	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`
+	// DestinationBillingProfileID - The destination billing profile id.
+	DestinationBillingProfileID *string `json:"destinationBillingProfileId,omitempty"`
 }
 
 // TransferBillingSubscriptionResult request parameters to transfer billing subscription.
@@ -3799,8 +4009,10 @@ func NewTransferDetailsListResultPage(getNextPage func(context.Context, Transfer
 
 // TransferProductRequestProperties the properties of the product to initiate a transfer.
 type TransferProductRequestProperties struct {
-	// DestinationInvoiceSectionID - Destination invoice section id.
+	// DestinationInvoiceSectionID - The destination invoice section id.
 	DestinationInvoiceSectionID *string `json:"destinationInvoiceSectionId,omitempty"`
+	// DestinationBillingProfileID - The destination billing profile id.
+	DestinationBillingProfileID *string `json:"destinationBillingProfileId,omitempty"`
 }
 
 // TransferProperties transfer details
@@ -3888,4 +4100,42 @@ type ValidateAddressResponse struct {
 	SuggestedAddresses *[]Address `json:"suggestedAddresses,omitempty"`
 	// ValidationMessage - Validation error message.
 	ValidationMessage *string `json:"validationMessage,omitempty"`
+}
+
+// ValidateProductTransferEligibilityError error details of the product transfer eligibility validation.
+type ValidateProductTransferEligibilityError struct {
+	// Code - Error code for the product transfer validation. Possible values include: 'InvalidSource', 'ProductNotActive', 'InsufficientPermissionOnSource', 'InsufficientPermissionOnDestination', 'DestinationBillingProfilePastDue', 'ProductTypeNotSupported', 'CrossBillingAccountNotAllowed', 'NotAvailableForDestinationMarket', 'OneTimePurchaseProductTransferNotAllowed'
+	Code ProductTransferValidationErrorCode `json:"code,omitempty"`
+	// Message - The error message.
+	Message *string `json:"message,omitempty"`
+	// Details - Detailed error message explaining the error.
+	Details *string `json:"details,omitempty"`
+}
+
+// ValidateProductTransferEligibilityResult result of the product transfer eligibility validation.
+type ValidateProductTransferEligibilityResult struct {
+	autorest.Response `json:"-"`
+	// IsTransferEligible - READ-ONLY; Specifies whether the transfer is eligible or not.
+	IsTransferEligible *bool `json:"isTransferEligible,omitempty"`
+	// ErrorDetails - Validation error details.
+	ErrorDetails *ValidateProductTransferEligibilityError `json:"errorDetails,omitempty"`
+}
+
+// ValidateSubscriptionTransferEligibilityError error details of the transfer eligibility validation
+type ValidateSubscriptionTransferEligibilityError struct {
+	// Code - Error code for the product transfer validation. Possible values include: 'SubscriptionTransferValidationErrorCodeInvalidSource', 'SubscriptionTransferValidationErrorCodeSubscriptionNotActive', 'SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource', 'SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination', 'SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue', 'SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported', 'SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed', 'SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket'
+	Code SubscriptionTransferValidationErrorCode `json:"code,omitempty"`
+	// Message - The error message.
+	Message *string `json:"message,omitempty"`
+	// Details - Detailed error message explaining the error.
+	Details *string `json:"details,omitempty"`
+}
+
+// ValidateSubscriptionTransferEligibilityResult result of the transfer eligibility validation.
+type ValidateSubscriptionTransferEligibilityResult struct {
+	autorest.Response `json:"-"`
+	// IsTransferEligible - READ-ONLY; Specifies whether the transfer is eligible or not.
+	IsTransferEligible *bool `json:"isTransferEligible,omitempty"`
+	// ErrorDetails - Validation error details.
+	ErrorDetails *ValidateSubscriptionTransferEligibilityError `json:"errorDetails,omitempty"`
 }

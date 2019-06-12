@@ -22,11 +22,20 @@ package cdn
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2019-04-15/cdn"
+	original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2019-06-15/cdn"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type Action = original.Action
+
+const (
+	Allow    Action = original.Allow
+	Block    Action = original.Block
+	Log      Action = original.Log
+	Redirect Action = original.Redirect
 )
 
 type CacheBehavior = original.CacheBehavior
@@ -85,6 +94,13 @@ const (
 	SubmittingDomainControlValidationRequest      CustomHTTPSProvisioningSubstate = original.SubmittingDomainControlValidationRequest
 )
 
+type CustomRuleEnabledState = original.CustomRuleEnabledState
+
+const (
+	CustomRuleEnabledStateDisabled CustomRuleEnabledState = original.CustomRuleEnabledStateDisabled
+	CustomRuleEnabledStateEnabled  CustomRuleEnabledState = original.CustomRuleEnabledStateEnabled
+)
+
 type DestinationProtocol = original.DestinationProtocol
 
 const (
@@ -107,8 +123,8 @@ const (
 type GeoFilterActions = original.GeoFilterActions
 
 const (
-	Allow GeoFilterActions = original.Allow
-	Block GeoFilterActions = original.Block
+	GeoFilterActionsAllow GeoFilterActions = original.GeoFilterActionsAllow
+	GeoFilterActionsBlock GeoFilterActions = original.GeoFilterActionsBlock
 )
 
 type HeaderAction = original.HeaderAction
@@ -117,6 +133,27 @@ const (
 	Append    HeaderAction = original.Append
 	Delete    HeaderAction = original.Delete
 	Overwrite HeaderAction = original.Overwrite
+)
+
+type ManagedRuleEnabledState = original.ManagedRuleEnabledState
+
+const (
+	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = original.ManagedRuleEnabledStateDisabled
+	ManagedRuleEnabledStateEnabled  ManagedRuleEnabledState = original.ManagedRuleEnabledStateEnabled
+)
+
+type MatchVariable = original.MatchVariable
+
+const (
+	Cookies       MatchVariable = original.Cookies
+	Country       MatchVariable = original.Country
+	PostArgs      MatchVariable = original.PostArgs
+	QueryString   MatchVariable = original.QueryString
+	RemoteAddr    MatchVariable = original.RemoteAddr
+	RequestBody   MatchVariable = original.RequestBody
+	RequestHeader MatchVariable = original.RequestHeader
+	RequestMethod MatchVariable = original.RequestMethod
+	RequestURI    MatchVariable = original.RequestURI
 )
 
 type Name = original.Name
@@ -147,6 +184,23 @@ const (
 	NameURLRedirect          NameBasicDeliveryRuleAction = original.NameURLRedirect
 )
 
+type Operator = original.Operator
+
+const (
+	Any                Operator = original.Any
+	BeginsWith         Operator = original.BeginsWith
+	Contains           Operator = original.Contains
+	EndsWith           Operator = original.EndsWith
+	Equal              Operator = original.Equal
+	GeoMatch           Operator = original.GeoMatch
+	GreaterThan        Operator = original.GreaterThan
+	GreaterThanOrEqual Operator = original.GreaterThanOrEqual
+	IPMatch            Operator = original.IPMatch
+	LessThan           Operator = original.LessThan
+	LessThanOrEqual    Operator = original.LessThanOrEqual
+	RegEx              Operator = original.RegEx
+)
+
 type OptimizationType = original.OptimizationType
 
 const (
@@ -165,18 +219,43 @@ const (
 	OriginResourceStateDeleting OriginResourceState = original.OriginResourceStateDeleting
 )
 
+type PolicyEnabledState = original.PolicyEnabledState
+
+const (
+	PolicyEnabledStateDisabled PolicyEnabledState = original.PolicyEnabledStateDisabled
+	PolicyEnabledStateEnabled  PolicyEnabledState = original.PolicyEnabledStateEnabled
+)
+
+type PolicyMode = original.PolicyMode
+
+const (
+	Detection  PolicyMode = original.Detection
+	Prevention PolicyMode = original.Prevention
+)
+
+type PolicyResourceState = original.PolicyResourceState
+
+const (
+	PolicyResourceStateCreating  PolicyResourceState = original.PolicyResourceStateCreating
+	PolicyResourceStateDeleting  PolicyResourceState = original.PolicyResourceStateDeleting
+	PolicyResourceStateDisabled  PolicyResourceState = original.PolicyResourceStateDisabled
+	PolicyResourceStateDisabling PolicyResourceState = original.PolicyResourceStateDisabling
+	PolicyResourceStateEnabled   PolicyResourceState = original.PolicyResourceStateEnabled
+	PolicyResourceStateEnabling  PolicyResourceState = original.PolicyResourceStateEnabling
+)
+
 type PostArgsOperator = original.PostArgsOperator
 
 const (
-	Any                PostArgsOperator = original.Any
-	BeginsWith         PostArgsOperator = original.BeginsWith
-	Contains           PostArgsOperator = original.Contains
-	EndsWith           PostArgsOperator = original.EndsWith
-	Equal              PostArgsOperator = original.Equal
-	GreaterThan        PostArgsOperator = original.GreaterThan
-	GreaterThanOrEqual PostArgsOperator = original.GreaterThanOrEqual
-	LessThan           PostArgsOperator = original.LessThan
-	LessThanOrEqual    PostArgsOperator = original.LessThanOrEqual
+	PostArgsOperatorAny                PostArgsOperator = original.PostArgsOperatorAny
+	PostArgsOperatorBeginsWith         PostArgsOperator = original.PostArgsOperatorBeginsWith
+	PostArgsOperatorContains           PostArgsOperator = original.PostArgsOperatorContains
+	PostArgsOperatorEndsWith           PostArgsOperator = original.PostArgsOperatorEndsWith
+	PostArgsOperatorEqual              PostArgsOperator = original.PostArgsOperatorEqual
+	PostArgsOperatorGreaterThan        PostArgsOperator = original.PostArgsOperatorGreaterThan
+	PostArgsOperatorGreaterThanOrEqual PostArgsOperator = original.PostArgsOperatorGreaterThanOrEqual
+	PostArgsOperatorLessThan           PostArgsOperator = original.PostArgsOperatorLessThan
+	PostArgsOperatorLessThanOrEqual    PostArgsOperator = original.PostArgsOperatorLessThanOrEqual
 )
 
 type ProfileResourceState = original.ProfileResourceState
@@ -193,6 +272,14 @@ type ProtocolType = original.ProtocolType
 const (
 	IPBased              ProtocolType = original.IPBased
 	ServerNameIndication ProtocolType = original.ServerNameIndication
+)
+
+type ProvisioningState = original.ProvisioningState
+
+const (
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type QueryStringCachingBehavior = original.QueryStringCachingBehavior
@@ -345,6 +432,7 @@ const (
 	URLPathOperatorWildcard           URLPathOperator = original.URLPathOperatorWildcard
 )
 
+type ActionType = original.ActionType
 type BaseClient = original.BaseClient
 type BasicCustomDomainHTTPSParameters = original.BasicCustomDomainHTTPSParameters
 type BasicDeliveryRuleAction = original.BasicDeliveryRuleAction
@@ -365,6 +453,8 @@ type CustomDomainPropertiesParameters = original.CustomDomainPropertiesParameter
 type CustomDomainsClient = original.CustomDomainsClient
 type CustomDomainsCreateFuture = original.CustomDomainsCreateFuture
 type CustomDomainsDeleteFuture = original.CustomDomainsDeleteFuture
+type CustomRule = original.CustomRule
+type CustomRuleList = original.CustomRuleList
 type DeepCreatedOrigin = original.DeepCreatedOrigin
 type DeepCreatedOriginProperties = original.DeepCreatedOriginProperties
 type DeliveryRule = original.DeliveryRule
@@ -398,6 +488,8 @@ type EndpointListResultPage = original.EndpointListResultPage
 type EndpointProperties = original.EndpointProperties
 type EndpointPropertiesUpdateParameters = original.EndpointPropertiesUpdateParameters
 type EndpointPropertiesUpdateParametersDeliveryPolicy = original.EndpointPropertiesUpdateParametersDeliveryPolicy
+type EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink = original.EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink
+type EndpointType = original.EndpointType
 type EndpointUpdateParameters = original.EndpointUpdateParameters
 type EndpointsClient = original.EndpointsClient
 type EndpointsCreateFuture = original.EndpointsCreateFuture
@@ -415,6 +507,19 @@ type IsDeviceMatchConditionParameters = original.IsDeviceMatchConditionParameter
 type KeyVaultCertificateSourceParameters = original.KeyVaultCertificateSourceParameters
 type LoadParameters = original.LoadParameters
 type ManagedHTTPSParameters = original.ManagedHTTPSParameters
+type ManagedRuleDefinition = original.ManagedRuleDefinition
+type ManagedRuleGroupDefinition = original.ManagedRuleGroupDefinition
+type ManagedRuleGroupOverride = original.ManagedRuleGroupOverride
+type ManagedRuleOverride = original.ManagedRuleOverride
+type ManagedRuleSet = original.ManagedRuleSet
+type ManagedRuleSetDefinition = original.ManagedRuleSetDefinition
+type ManagedRuleSetDefinitionList = original.ManagedRuleSetDefinitionList
+type ManagedRuleSetDefinitionListIterator = original.ManagedRuleSetDefinitionListIterator
+type ManagedRuleSetDefinitionListPage = original.ManagedRuleSetDefinitionListPage
+type ManagedRuleSetDefinitionProperties = original.ManagedRuleSetDefinitionProperties
+type ManagedRuleSetList = original.ManagedRuleSetList
+type ManagedRuleSetsClient = original.ManagedRuleSetsClient
+type MatchCondition = original.MatchCondition
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
@@ -430,6 +535,10 @@ type OriginPropertiesParameters = original.OriginPropertiesParameters
 type OriginUpdateParameters = original.OriginUpdateParameters
 type OriginsClient = original.OriginsClient
 type OriginsUpdateFuture = original.OriginsUpdateFuture
+type PoliciesClient = original.PoliciesClient
+type PoliciesCreateOrUpdateFuture = original.PoliciesCreateOrUpdateFuture
+type PoliciesUpdateFuture = original.PoliciesUpdateFuture
+type PolicySettings = original.PolicySettings
 type PostArgsMatchConditionParameters = original.PostArgsMatchConditionParameters
 type Profile = original.Profile
 type ProfileListResult = original.ProfileListResult
@@ -444,6 +553,8 @@ type ProfilesUpdateFuture = original.ProfilesUpdateFuture
 type ProxyResource = original.ProxyResource
 type PurgeParameters = original.PurgeParameters
 type QueryStringMatchConditionParameters = original.QueryStringMatchConditionParameters
+type RateLimitRule = original.RateLimitRule
+type RateLimitRuleList = original.RateLimitRuleList
 type RemoteAddressMatchConditionParameters = original.RemoteAddressMatchConditionParameters
 type RequestBodyMatchConditionParameters = original.RequestBodyMatchConditionParameters
 type RequestHeaderMatchConditionParameters = original.RequestHeaderMatchConditionParameters
@@ -470,9 +581,15 @@ type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
 type ValidateProbeInput = original.ValidateProbeInput
 type ValidateProbeOutput = original.ValidateProbeOutput
+type WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicy
+type WebApplicationFirewallPolicyList = original.WebApplicationFirewallPolicyList
+type WebApplicationFirewallPolicyListIterator = original.WebApplicationFirewallPolicyListIterator
+type WebApplicationFirewallPolicyListPage = original.WebApplicationFirewallPolicyListPage
+type WebApplicationFirewallPolicyPatchParameters = original.WebApplicationFirewallPolicyPatchParameters
+type WebApplicationFirewallPolicyProperties = original.WebApplicationFirewallPolicyProperties
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, subscriptionID1 string) BaseClient {
+	return original.New(subscriptionID, subscriptionID1)
 }
 func NewCustomDomainListResultIterator(page CustomDomainListResultPage) CustomDomainListResultIterator {
 	return original.NewCustomDomainListResultIterator(page)
@@ -480,17 +597,17 @@ func NewCustomDomainListResultIterator(page CustomDomainListResultPage) CustomDo
 func NewCustomDomainListResultPage(getNextPage func(context.Context, CustomDomainListResult) (CustomDomainListResult, error)) CustomDomainListResultPage {
 	return original.NewCustomDomainListResultPage(getNextPage)
 }
-func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
-	return original.NewCustomDomainsClient(subscriptionID)
+func NewCustomDomainsClient(subscriptionID string, subscriptionID1 string) CustomDomainsClient {
+	return original.NewCustomDomainsClient(subscriptionID, subscriptionID1)
 }
-func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
-	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
+func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CustomDomainsClient {
+	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewEdgeNodesClient(subscriptionID string) EdgeNodesClient {
-	return original.NewEdgeNodesClient(subscriptionID)
+func NewEdgeNodesClient(subscriptionID string, subscriptionID1 string) EdgeNodesClient {
+	return original.NewEdgeNodesClient(subscriptionID, subscriptionID1)
 }
-func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNodesClient {
-	return original.NewEdgeNodesClientWithBaseURI(baseURI, subscriptionID)
+func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) EdgeNodesClient {
+	return original.NewEdgeNodesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewEdgenodeResultIterator(page EdgenodeResultPage) EdgenodeResultIterator {
 	return original.NewEdgenodeResultIterator(page)
@@ -504,17 +621,29 @@ func NewEndpointListResultIterator(page EndpointListResultPage) EndpointListResu
 func NewEndpointListResultPage(getNextPage func(context.Context, EndpointListResult) (EndpointListResult, error)) EndpointListResultPage {
 	return original.NewEndpointListResultPage(getNextPage)
 }
-func NewEndpointsClient(subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClient(subscriptionID)
+func NewEndpointsClient(subscriptionID string, subscriptionID1 string) EndpointsClient {
+	return original.NewEndpointsClient(subscriptionID, subscriptionID1)
 }
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
-	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) EndpointsClient {
+	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewManagedRuleSetDefinitionListIterator(page ManagedRuleSetDefinitionListPage) ManagedRuleSetDefinitionListIterator {
+	return original.NewManagedRuleSetDefinitionListIterator(page)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
+	return original.NewManagedRuleSetDefinitionListPage(getNextPage)
+}
+func NewManagedRuleSetsClient(subscriptionID string, subscriptionID1 string) ManagedRuleSetsClient {
+	return original.NewManagedRuleSetsClient(subscriptionID, subscriptionID1)
+}
+func NewManagedRuleSetsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ManagedRuleSetsClient {
+	return original.NewManagedRuleSetsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+}
+func NewOperationsClient(subscriptionID string, subscriptionID1 string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, subscriptionID1)
+}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewOperationsListResultIterator(page OperationsListResultPage) OperationsListResultIterator {
 	return original.NewOperationsListResultIterator(page)
@@ -528,11 +657,17 @@ func NewOriginListResultIterator(page OriginListResultPage) OriginListResultIter
 func NewOriginListResultPage(getNextPage func(context.Context, OriginListResult) (OriginListResult, error)) OriginListResultPage {
 	return original.NewOriginListResultPage(getNextPage)
 }
-func NewOriginsClient(subscriptionID string) OriginsClient {
-	return original.NewOriginsClient(subscriptionID)
+func NewOriginsClient(subscriptionID string, subscriptionID1 string) OriginsClient {
+	return original.NewOriginsClient(subscriptionID, subscriptionID1)
 }
-func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
-	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID)
+func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OriginsClient {
+	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+}
+func NewPoliciesClient(subscriptionID string, subscriptionID1 string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID, subscriptionID1)
+}
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
 	return original.NewProfileListResultIterator(page)
@@ -540,17 +675,17 @@ func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultI
 func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
 	return original.NewProfileListResultPage(getNextPage)
 }
-func NewProfilesClient(subscriptionID string) ProfilesClient {
-	return original.NewProfilesClient(subscriptionID)
+func NewProfilesClient(subscriptionID string, subscriptionID1 string) ProfilesClient {
+	return original.NewProfilesClient(subscriptionID, subscriptionID1)
 }
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
-	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ProfilesClient {
+	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
-	return original.NewResourceUsageClient(subscriptionID)
+func NewResourceUsageClient(subscriptionID string, subscriptionID1 string) ResourceUsageClient {
+	return original.NewResourceUsageClient(subscriptionID, subscriptionID1)
 }
-func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageClient {
-	return original.NewResourceUsageClientWithBaseURI(baseURI, subscriptionID)
+func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ResourceUsageClient {
+	return original.NewResourceUsageClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewResourceUsageListResultIterator(page ResourceUsageListResultPage) ResourceUsageListResultIterator {
 	return original.NewResourceUsageListResultIterator(page)
@@ -558,8 +693,17 @@ func NewResourceUsageListResultIterator(page ResourceUsageListResultPage) Resour
 func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUsageListResult) (ResourceUsageListResult, error)) ResourceUsageListResultPage {
 	return original.NewResourceUsageListResultPage(getNextPage)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWebApplicationFirewallPolicyListIterator(page WebApplicationFirewallPolicyListPage) WebApplicationFirewallPolicyListIterator {
+	return original.NewWebApplicationFirewallPolicyListIterator(page)
+}
+func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
+	return original.NewWebApplicationFirewallPolicyListPage(getNextPage)
+}
+func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+}
+func PossibleActionValues() []Action {
+	return original.PossibleActionValues()
 }
 func PossibleCacheBehaviorValues() []CacheBehavior {
 	return original.PossibleCacheBehaviorValues()
@@ -579,6 +723,9 @@ func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState
 func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSubstate {
 	return original.PossibleCustomHTTPSProvisioningSubstateValues()
 }
+func PossibleCustomRuleEnabledStateValues() []CustomRuleEnabledState {
+	return original.PossibleCustomRuleEnabledStateValues()
+}
 func PossibleDestinationProtocolValues() []DestinationProtocol {
 	return original.PossibleDestinationProtocolValues()
 }
@@ -591,17 +738,35 @@ func PossibleGeoFilterActionsValues() []GeoFilterActions {
 func PossibleHeaderActionValues() []HeaderAction {
 	return original.PossibleHeaderActionValues()
 }
+func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
+	return original.PossibleManagedRuleEnabledStateValues()
+}
+func PossibleMatchVariableValues() []MatchVariable {
+	return original.PossibleMatchVariableValues()
+}
 func PossibleNameBasicDeliveryRuleActionValues() []NameBasicDeliveryRuleAction {
 	return original.PossibleNameBasicDeliveryRuleActionValues()
 }
 func PossibleNameValues() []Name {
 	return original.PossibleNameValues()
 }
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
+}
 func PossibleOptimizationTypeValues() []OptimizationType {
 	return original.PossibleOptimizationTypeValues()
 }
 func PossibleOriginResourceStateValues() []OriginResourceState {
 	return original.PossibleOriginResourceStateValues()
+}
+func PossiblePolicyEnabledStateValues() []PolicyEnabledState {
+	return original.PossiblePolicyEnabledStateValues()
+}
+func PossiblePolicyModeValues() []PolicyMode {
+	return original.PossiblePolicyModeValues()
+}
+func PossiblePolicyResourceStateValues() []PolicyResourceState {
+	return original.PossiblePolicyResourceStateValues()
 }
 func PossiblePostArgsOperatorValues() []PostArgsOperator {
 	return original.PossiblePostArgsOperatorValues()
@@ -611,6 +776,9 @@ func PossibleProfileResourceStateValues() []ProfileResourceState {
 }
 func PossibleProtocolTypeValues() []ProtocolType {
 	return original.PossibleProtocolTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleQueryStringCachingBehaviorValues() []QueryStringCachingBehavior {
 	return original.PossibleQueryStringCachingBehaviorValues()

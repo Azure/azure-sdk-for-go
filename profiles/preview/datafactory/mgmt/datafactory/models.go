@@ -695,6 +695,7 @@ const (
 	TypeSalesforceSource               TypeBasicCopySource = original.TypeSalesforceSource
 	TypeSapCloudForCustomerSource      TypeBasicCopySource = original.TypeSapCloudForCustomerSource
 	TypeSapEccSource                   TypeBasicCopySource = original.TypeSapEccSource
+	TypeSapHanaSource                  TypeBasicCopySource = original.TypeSapHanaSource
 	TypeSapOpenHubSource               TypeBasicCopySource = original.TypeSapOpenHubSource
 	TypeServiceNowSource               TypeBasicCopySource = original.TypeServiceNowSource
 	TypeShopifySource                  TypeBasicCopySource = original.TypeShopifySource
@@ -772,6 +773,7 @@ const (
 	TypeSalesforceObject               TypeBasicDataset = original.TypeSalesforceObject
 	TypeSapCloudForCustomerResource    TypeBasicDataset = original.TypeSapCloudForCustomerResource
 	TypeSapEccResource                 TypeBasicDataset = original.TypeSapEccResource
+	TypeSapHanaTable                   TypeBasicDataset = original.TypeSapHanaTable
 	TypeSapOpenHubTable                TypeBasicDataset = original.TypeSapOpenHubTable
 	TypeServiceNowObject               TypeBasicDataset = original.TypeServiceNowObject
 	TypeShopifyObject                  TypeBasicDataset = original.TypeShopifyObject
@@ -1493,6 +1495,9 @@ type SapEccResourceDatasetTypeProperties = original.SapEccResourceDatasetTypePro
 type SapEccSource = original.SapEccSource
 type SapHanaLinkedService = original.SapHanaLinkedService
 type SapHanaLinkedServiceProperties = original.SapHanaLinkedServiceProperties
+type SapHanaSource = original.SapHanaSource
+type SapHanaTableDataset = original.SapHanaTableDataset
+type SapHanaTableDatasetTypeProperties = original.SapHanaTableDatasetTypeProperties
 type SapOpenHubLinkedService = original.SapOpenHubLinkedService
 type SapOpenHubLinkedServiceTypeProperties = original.SapOpenHubLinkedServiceTypeProperties
 type SapOpenHubSource = original.SapOpenHubSource

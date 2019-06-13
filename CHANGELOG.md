@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## `v30.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| batch | 2019-06-01.9.0 |
+| managedservices | 2019-04-01 |
+| personalizer | v1.0 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| authorization | 2017-10-01-preview<br/>2018-01-01-preview<br/>2018-09-01-preview |
+| automation | 2015-10-31<br/>2017-05-15-preview<br/>2018-01-15-preview<br/>2018-06-30-preview |
+| datafactory | 2018-06-01 |
+| datamigration | 2018-07-15-preview |
+| documentdb | 2015-04-08 |
+| formrecognizer | v1.0 |
+| hanaonazure | 2017-11-03-preview |
+| hdinsight | 2018-06-01-preview |
+| postgresql | 2017-12-01 |
+| qnamaker | v4.0 |
+| signalr | 2018-10-01 |
+
 ## `v30.0.0`
 
 ### New Packages

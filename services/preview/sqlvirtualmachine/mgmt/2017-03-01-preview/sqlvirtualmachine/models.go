@@ -1315,7 +1315,7 @@ type Properties struct {
 	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
 	// SQLServerLicenseType - SQL Server license type. Possible values include: 'PAYG', 'AHUB'
 	SQLServerLicenseType SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
-	// SQLImageSku - READ-ONLY; SQL image sku. Possible values include: 'Developer', 'Express', 'Standard', 'Enterprise', 'Web'
+	// SQLImageSku - SQL Server edition type. Possible values include: 'Developer', 'Express', 'Standard', 'Enterprise', 'Web'
 	SQLImageSku SQLImageSku `json:"sqlImageSku,omitempty"`
 	// SQLVirtualMachineGroupResourceID - ARM resource id of the SQL virtual machine group this SQL virtual machine is or will be part of.
 	SQLVirtualMachineGroupResourceID *string `json:"sqlVirtualMachineGroupResourceId,omitempty"`
@@ -1389,10 +1389,10 @@ type SQLConnectivityUpdateSettings struct {
 type SQLStorageUpdateSettings struct {
 	// DiskCount - Virtual machine disk count.
 	DiskCount *int32 `json:"diskCount,omitempty"`
-	// DiskConfigurationType - Disk configuration to apply to SQL Server. Possible values include: 'NEW', 'EXTEND', 'ADD'
-	DiskConfigurationType DiskConfigurationType `json:"diskConfigurationType,omitempty"`
 	// StartingDeviceID - Device id of the first disk to be updated.
 	StartingDeviceID *int32 `json:"startingDeviceId,omitempty"`
+	// DiskConfigurationType - Disk configuration to apply to SQL Server. Possible values include: 'NEW', 'EXTEND', 'ADD'
+	DiskConfigurationType DiskConfigurationType `json:"diskConfigurationType,omitempty"`
 }
 
 // SQLVirtualMachine a SQL virtual machine.

@@ -1934,6 +1934,52 @@ func NewApplicationStackCollectionPage(getNextPage func(context.Context, Applica
 	return ApplicationStackCollectionPage{fn: getNextPage}
 }
 
+// AppsCopyProductionSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsCopyProductionSlotFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsCopyProductionSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsCopyProductionSlotFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("web.AppsCopyProductionSlotFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AppsCopySlotSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsCopySlotSlotFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsCopySlotSlotFuture) Result(client AppsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsCopySlotSlotFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("web.AppsCopySlotSlotFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // AppsCreateFunctionFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AppsCreateFunctionFuture struct {
@@ -6681,6 +6727,17 @@ type CorsSettings struct {
 	SupportCredentials *bool `json:"supportCredentials,omitempty"`
 }
 
+// CsmCopySlotEntity copy deployment slot parameters.
+type CsmCopySlotEntity struct {
+	// TargetSlot - Destination deployment slot during copy operation.
+	TargetSlot *string `json:"targetSlot,omitempty"`
+	// SiteConfig - The site object which will be merged with the source slot site
+	// to produce new destination slot site object.
+	// <code>null</code> to just copy source slot content. Otherwise a <code>Site</code>
+	// object with properties to override source slot site.
+	SiteConfig *SiteConfig `json:"siteConfig,omitempty"`
+}
+
 // CsmMoveResourceEnvelope object with a list of the resources that need to be moved and the resource group
 // they should be moved to.
 type CsmMoveResourceEnvelope struct {
@@ -9813,7 +9870,7 @@ type FileSystemHTTPLogsConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// FunctionEnvelope web Job Information.
+// FunctionEnvelope function information.
 type FunctionEnvelope struct {
 	autorest.Response `json:"-"`
 	// FunctionEnvelopeProperties - FunctionEnvelope resource specific properties
@@ -10056,6 +10113,8 @@ type FunctionEnvelopeProperties struct {
 	ScriptHref *string `json:"script_href,omitempty"`
 	// ConfigHref - Config URI.
 	ConfigHref *string `json:"config_href,omitempty"`
+	// TestDataHref - Test data URI.
+	TestDataHref *string `json:"test_data_href,omitempty"`
 	// SecretsFileHref - Secrets file URI.
 	SecretsFileHref *string `json:"secrets_file_href,omitempty"`
 	// Href - Function URI.
@@ -10066,6 +10125,10 @@ type FunctionEnvelopeProperties struct {
 	Files map[string]*string `json:"files"`
 	// TestData - Test data used when testing via the Azure Portal.
 	TestData *string `json:"test_data,omitempty"`
+	// InvokeURLTemplate - The invocation URL
+	InvokeURLTemplate *string `json:"invoke_url_template,omitempty"`
+	// Language - The function language
+	Language *string `json:"language,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FunctionEnvelopeProperties.
@@ -10083,6 +10146,9 @@ func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	if fe.ConfigHref != nil {
 		objectMap["config_href"] = fe.ConfigHref
 	}
+	if fe.TestDataHref != nil {
+		objectMap["test_data_href"] = fe.TestDataHref
+	}
 	if fe.SecretsFileHref != nil {
 		objectMap["secrets_file_href"] = fe.SecretsFileHref
 	}
@@ -10098,14 +10164,20 @@ func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	if fe.TestData != nil {
 		objectMap["test_data"] = fe.TestData
 	}
+	if fe.InvokeURLTemplate != nil {
+		objectMap["invoke_url_template"] = fe.InvokeURLTemplate
+	}
+	if fe.Language != nil {
+		objectMap["language"] = fe.Language
+	}
 	return json.Marshal(objectMap)
 }
 
-// FunctionSecrets function secrets.
-type FunctionSecrets struct {
+// FunctionKeys function keys.
+type FunctionKeys struct {
 	autorest.Response `json:"-"`
-	// FunctionSecretsProperties - FunctionSecrets resource specific properties
-	*FunctionSecretsProperties `json:"properties,omitempty"`
+	// FunctionKeysProperties - FunctionKeys resource specific properties
+	*FunctionKeysProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource Name.
@@ -10116,20 +10188,20 @@ type FunctionSecrets struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for FunctionSecrets.
-func (fs FunctionSecrets) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for FunctionKeys.
+func (fk FunctionKeys) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if fs.FunctionSecretsProperties != nil {
-		objectMap["properties"] = fs.FunctionSecretsProperties
+	if fk.FunctionKeysProperties != nil {
+		objectMap["properties"] = fk.FunctionKeysProperties
 	}
-	if fs.Kind != nil {
-		objectMap["kind"] = fs.Kind
+	if fk.Kind != nil {
+		objectMap["kind"] = fk.Kind
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for FunctionSecrets struct.
-func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for FunctionKeys struct.
+func (fk *FunctionKeys) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -10139,12 +10211,12 @@ func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var functionSecretsProperties FunctionSecretsProperties
-				err = json.Unmarshal(*v, &functionSecretsProperties)
+				var functionKeysProperties FunctionKeysProperties
+				err = json.Unmarshal(*v, &functionKeysProperties)
 				if err != nil {
 					return err
 				}
-				fs.FunctionSecretsProperties = &functionSecretsProperties
+				fk.FunctionKeysProperties = &functionKeysProperties
 			}
 		case "id":
 			if v != nil {
@@ -10153,7 +10225,7 @@ func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fs.ID = &ID
+				fk.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -10162,7 +10234,7 @@ func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fs.Name = &name
+				fk.Name = &name
 			}
 		case "kind":
 			if v != nil {
@@ -10171,7 +10243,7 @@ func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fs.Kind = &kind
+				fk.Kind = &kind
 			}
 		case "type":
 			if v != nil {
@@ -10180,7 +10252,7 @@ func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fs.Type = &typeVar
+				fk.Type = &typeVar
 			}
 		}
 	}
@@ -10188,8 +10260,8 @@ func (fs *FunctionSecrets) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// FunctionSecretsProperties functionSecrets resource specific properties
-type FunctionSecretsProperties struct {
+// FunctionKeysProperties functionKeys resource specific properties
+type FunctionKeysProperties struct {
 	// Key - Secret key.
 	Key *string `json:"key,omitempty"`
 	// TriggerURL - Trigger URL.
@@ -10500,6 +10572,118 @@ type HostingEnvironmentProfile struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type of the App Service Environment.
 	Type *string `json:"type,omitempty"`
+}
+
+// HostKeys functions host level keys.
+type HostKeys struct {
+	autorest.Response `json:"-"`
+	// HostKeysProperties - HostKeys resource specific properties
+	*HostKeysProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HostKeys.
+func (hk HostKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hk.HostKeysProperties != nil {
+		objectMap["properties"] = hk.HostKeysProperties
+	}
+	if hk.Kind != nil {
+		objectMap["kind"] = hk.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for HostKeys struct.
+func (hk *HostKeys) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var hostKeysProperties HostKeysProperties
+				err = json.Unmarshal(*v, &hostKeysProperties)
+				if err != nil {
+					return err
+				}
+				hk.HostKeysProperties = &hostKeysProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				hk.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				hk.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				hk.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				hk.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// HostKeysProperties hostKeys resource specific properties
+type HostKeysProperties struct {
+	// MasterKey - Secret key.
+	MasterKey *string `json:"masterKey,omitempty"`
+	// FunctionKeys - Host level function keys.
+	FunctionKeys map[string]*string `json:"functionKeys"`
+	// SystemKeys - System keys.
+	SystemKeys map[string]*string `json:"systemKeys"`
+}
+
+// MarshalJSON is the custom marshaler for HostKeysProperties.
+func (hk HostKeysProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hk.MasterKey != nil {
+		objectMap["masterKey"] = hk.MasterKey
+	}
+	if hk.FunctionKeys != nil {
+		objectMap["functionKeys"] = hk.FunctionKeys
+	}
+	if hk.SystemKeys != nil {
+		objectMap["systemKeys"] = hk.SystemKeys
+	}
+	return json.Marshal(objectMap)
 }
 
 // HostName details of a hostname derived from a domain.
@@ -11943,6 +12127,101 @@ func (j JobProperties) MarshalJSON() ([]byte, error) {
 		objectMap["settings"] = j.Settings
 	}
 	return json.Marshal(objectMap)
+}
+
+// KeyInfo function key info.
+type KeyInfo struct {
+	autorest.Response `json:"-"`
+	// KeyInfoProperties - KeyInfo resource specific properties
+	*KeyInfoProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyInfo.
+func (ki KeyInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ki.KeyInfoProperties != nil {
+		objectMap["properties"] = ki.KeyInfoProperties
+	}
+	if ki.Kind != nil {
+		objectMap["kind"] = ki.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for KeyInfo struct.
+func (ki *KeyInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var keyInfoProperties KeyInfoProperties
+				err = json.Unmarshal(*v, &keyInfoProperties)
+				if err != nil {
+					return err
+				}
+				ki.KeyInfoProperties = &keyInfoProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ki.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ki.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ki.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ki.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// KeyInfoProperties keyInfo resource specific properties
+type KeyInfoProperties struct {
+	// Name - Key name
+	Name *string `json:"name,omitempty"`
+	// Value - Key value
+	Value *string `json:"value,omitempty"`
 }
 
 // ListCapability ...
@@ -18590,7 +18869,6 @@ type SiteMachineKey struct {
 type SitePatchResource struct {
 	// SitePatchResourceProperties - SitePatchResource resource specific properties
 	*SitePatchResourceProperties `json:"properties,omitempty"`
-	Identity                     *ManagedServiceIdentity `json:"identity,omitempty"`
 	// ID - READ-ONLY; Resource Id.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource Name.
@@ -18606,9 +18884,6 @@ func (spr SitePatchResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if spr.SitePatchResourceProperties != nil {
 		objectMap["properties"] = spr.SitePatchResourceProperties
-	}
-	if spr.Identity != nil {
-		objectMap["identity"] = spr.Identity
 	}
 	if spr.Kind != nil {
 		objectMap["kind"] = spr.Kind
@@ -18633,15 +18908,6 @@ func (spr *SitePatchResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				spr.SitePatchResourceProperties = &sitePatchResourceProperties
-			}
-		case "identity":
-			if v != nil {
-				var identity ManagedServiceIdentity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				spr.Identity = &identity
 			}
 		case "id":
 			if v != nil {
@@ -18763,8 +19029,6 @@ type SitePatchResourceProperties struct {
 	RedundancyMode RedundancyMode `json:"redundancyMode,omitempty"`
 	// InProgressOperationID - READ-ONLY; Specifies an operation id if this site has a pending operation.
 	InProgressOperationID *uuid.UUID `json:"inProgressOperationId,omitempty"`
-	// GeoDistributions - GeoDistributions for this site
-	GeoDistributions *[]GeoDistribution `json:"geoDistributions,omitempty"`
 }
 
 // SitePhpErrorLogFlag used for getting PHP error logging flag.

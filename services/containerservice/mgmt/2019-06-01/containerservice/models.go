@@ -1779,7 +1779,7 @@ type ManagedClusterAgentPoolProfile struct {
 	ScaleSetPriority ScaleSetPriority `json:"scaleSetPriority,omitempty"`
 	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for low priority virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'
 	ScaleSetEvictionPolicy ScaleSetEvictionPolicy `json:"scaleSetEvictionPolicy,omitempty"`
-	// NodeTaints - Taints added to new nodes during node pool create and scale.
+	// NodeTaints - Taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
 	NodeTaints *[]string `json:"nodeTaints,omitempty"`
 }
 
@@ -1817,7 +1817,7 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	ScaleSetPriority ScaleSetPriority `json:"scaleSetPriority,omitempty"`
 	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for low priority virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'
 	ScaleSetEvictionPolicy ScaleSetEvictionPolicy `json:"scaleSetEvictionPolicy,omitempty"`
-	// NodeTaints - Taints added to new nodes during node pool create and scale.
+	// NodeTaints - Taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
 	NodeTaints *[]string `json:"nodeTaints,omitempty"`
 }
 

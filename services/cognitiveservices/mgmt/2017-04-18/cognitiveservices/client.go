@@ -99,10 +99,6 @@ func (client BaseClient) CheckDomainAvailability(ctx context.Context, parameters
 
 // CheckDomainAvailabilityPreparer prepares the CheckDomainAvailability request.
 func (client BaseClient) CheckDomainAvailabilityPreparer(ctx context.Context, parameters CheckDomainAvailabilityParameter) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
 	const APIVersion = "2017-04-18"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -112,7 +108,7 @@ func (client BaseClient) CheckDomainAvailabilityPreparer(ctx context.Context, pa
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.CognitiveServices/checkDomainAvailability", pathParameters),
+		autorest.WithPath("/providers/Microsoft.CognitiveServices/checkDomainAvailability"),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

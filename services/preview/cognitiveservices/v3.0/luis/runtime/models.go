@@ -47,7 +47,7 @@ type ErrorBody struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ExternalEntity defines a user perdicted entity that extends an already existing one.
+// ExternalEntity defines a user predicted entity that extends an already existing one.
 type ExternalEntity struct {
 	// EntityName - The name of the entity to extend.
 	EntityName *string `json:"entityName,omitempty"`
@@ -146,7 +146,7 @@ type RequestList struct {
 	Synonyms *[]string `json:"synonyms,omitempty"`
 }
 
-// Sentiment the result of the sentiment analaysis.
+// Sentiment the result of the sentiment analysis.
 type Sentiment struct {
 	// Label - The label of the sentiment analysis result.
 	Label *string `json:"label,omitempty"`

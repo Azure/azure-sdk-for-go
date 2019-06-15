@@ -47,7 +47,7 @@ type ErrorBody struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ExternalEntity defines a user predicted entity that extends an already existing one.
+// ExternalEntity defines a user perdicted entity that extends an already existing one.
 type ExternalEntity struct {
 	// EntityName - The name of the entity to extend.
 	EntityName *string `json:"entityName,omitempty"`
@@ -109,13 +109,13 @@ func (p Prediction) MarshalJSON() ([]byte, error) {
 
 // PredictionRequest represents the prediction request parameters.
 type PredictionRequest struct {
-	// Query - The query to predict
+	// Query - The query to predict.
 	Query *string `json:"query,omitempty"`
 	// Options - The custom options defined for this request.
 	Options *PredictionRequestOptions `json:"options,omitempty"`
-	// ExternalEntities - The externally predicted entities for this request
+	// ExternalEntities - The externally predicted entities for this request.
 	ExternalEntities *[]ExternalEntity `json:"externalEntities,omitempty"`
-	// DynamicLists - The dynamically created list entities for this request
+	// DynamicLists - The dynamically created list entities for this request.
 	DynamicLists *[]DynamicList `json:"dynamicLists,omitempty"`
 }
 
@@ -146,10 +146,10 @@ type RequestList struct {
 	Synonyms *[]string `json:"synonyms,omitempty"`
 }
 
-// Sentiment the result of the sentiment analysis.
+// Sentiment the result of the sentiment analaysis.
 type Sentiment struct {
-	// Score - The sentiment score of the query.
-	Score *float64 `json:"score,omitempty"`
 	// Label - The label of the sentiment analysis result.
 	Label *string `json:"label,omitempty"`
+	// Score - The sentiment score of the query.
+	Score *float64 `json:"score,omitempty"`
 }

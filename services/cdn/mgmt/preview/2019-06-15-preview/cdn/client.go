@@ -1,4 +1,4 @@
-// Package cdn implements the Azure ARM Cdn service API version 2019-04-15.
+// Package cdn implements the Azure ARM Cdn service API version 2019-06-15-preview.
 //
 // Cdn Management Client
 package cdn
@@ -37,21 +37,23 @@ const (
 // BaseClient is the base client for Cdn.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+	BaseURI         string
+	SubscriptionID  string
+	SubscriptionID1 string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID string, subscriptionID1 string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+		Client:          autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:         baseURI,
+		SubscriptionID:  subscriptionID,
+		SubscriptionID1: subscriptionID1,
 	}
 }
 
@@ -100,7 +102,7 @@ func (client BaseClient) CheckNameAvailability(ctx context.Context, checkNameAva
 
 // CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
 func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput) (*http.Request, error) {
-	const APIVersion = "2019-04-15"
+	const APIVersion = "2019-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -184,7 +186,7 @@ func (client BaseClient) CheckNameAvailabilityWithSubscriptionPreparer(ctx conte
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-04-15"
+	const APIVersion = "2019-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -268,7 +270,7 @@ func (client BaseClient) ValidateProbePreparer(ctx context.Context, validateProb
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-04-15"
+	const APIVersion = "2019-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

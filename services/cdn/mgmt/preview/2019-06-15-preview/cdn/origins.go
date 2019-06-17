@@ -32,13 +32,13 @@ type OriginsClient struct {
 }
 
 // NewOriginsClient creates an instance of the OriginsClient client.
-func NewOriginsClient(subscriptionID string) OriginsClient {
-	return NewOriginsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewOriginsClient(subscriptionID string, subscriptionID1 string) OriginsClient {
+	return NewOriginsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewOriginsClientWithBaseURI creates an instance of the OriginsClient client.
-func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
-	return OriginsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OriginsClient {
+	return OriginsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // Get gets an existing origin within an endpoint.
@@ -97,7 +97,7 @@ func (client OriginsClient) GetPreparer(ctx context.Context, resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-04-15"
+	const APIVersion = "2019-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -185,7 +185,7 @@ func (client OriginsClient) ListByEndpointPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-04-15"
+	const APIVersion = "2019-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -306,7 +306,7 @@ func (client OriginsClient) UpdatePreparer(ctx context.Context, resourceGroupNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-04-15"
+	const APIVersion = "2019-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

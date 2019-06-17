@@ -1380,7 +1380,7 @@ type QuotasUpdateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *QuotasUpdateFuture) Result(client QuotasClient) (uwq UpdateWorkspaceQuotas, err error) {
+func (future *QuotasUpdateFuture) Result(client QuotasClient) (uwqr UpdateWorkspaceQuotasResult, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -1392,10 +1392,10 @@ func (future *QuotasUpdateFuture) Result(client QuotasClient) (uwq UpdateWorkspa
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if uwq.Response.Response, err = future.GetResult(sender); err == nil && uwq.Response.Response.StatusCode != http.StatusNoContent {
-		uwq, err = client.UpdateResponder(uwq.Response.Response)
+	if uwqr.Response.Response, err = future.GetResult(sender); err == nil && uwqr.Response.Response.StatusCode != http.StatusNoContent {
+		uwqr, err = client.UpdateResponder(uwqr.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "services.QuotasUpdateFuture", "Result", uwq.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "services.QuotasUpdateFuture", "Result", uwqr.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1403,8 +1403,8 @@ func (future *QuotasUpdateFuture) Result(client QuotasClient) (uwq UpdateWorkspa
 
 // QuotaUpdateParameters quota update parameters.
 type QuotaUpdateParameters struct {
-	// Properties - READ-ONLY; The properties for update quota.
-	Properties *[]QuotaBaseProperties `json:"properties,omitempty"`
+	// Value - READ-ONLY; The list for update quota.
+	Value *[]QuotaBaseProperties `json:"value,omitempty"`
 }
 
 // RegistryListCredentialsResult ...
@@ -1500,7 +1500,6 @@ type SystemService struct {
 
 // UpdateWorkspaceQuotas the properties for update Quota response.
 type UpdateWorkspaceQuotas struct {
-	autorest.Response `json:"-"`
 	// VMFamily - The family name of the virtual machine size.
 	VMFamily *string `json:"vmFamily,omitempty"`
 	// WorkspaceID - Fully qualified resource identifier of the workspace.
@@ -1509,6 +1508,15 @@ type UpdateWorkspaceQuotas struct {
 	Quota *int32 `json:"quota,omitempty"`
 	// Status - Status of update workspace quota. Possible values include: 'Undefined', 'Success', 'Failure'
 	Status Status `json:"status,omitempty"`
+}
+
+// UpdateWorkspaceQuotasResult the result of update workspace quota.
+type UpdateWorkspaceQuotasResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of workspace quota update result.
+	Value *[]UpdateWorkspaceQuotas `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page of workspace quota update result. Call ListNext() with this to fetch the next page of Workspace Quota update result.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // VirtualMachine a Machine Learning compute based on Azure Virtual Machines.

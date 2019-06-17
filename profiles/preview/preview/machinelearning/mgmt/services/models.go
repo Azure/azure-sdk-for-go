@@ -139,6 +139,7 @@ type ScaleSettings = original.ScaleSettings
 type SslConfiguration = original.SslConfiguration
 type SystemService = original.SystemService
 type UpdateWorkspaceQuotas = original.UpdateWorkspaceQuotas
+type UpdateWorkspaceQuotasResult = original.UpdateWorkspaceQuotasResult
 type VirtualMachine = original.VirtualMachine
 type VirtualMachineProperties = original.VirtualMachineProperties
 type VirtualMachineSSHCredentials = original.VirtualMachineSSHCredentials

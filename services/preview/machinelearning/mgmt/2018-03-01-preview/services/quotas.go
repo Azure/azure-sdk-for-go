@@ -96,9 +96,9 @@ func (client QuotasClient) ListPreparer(ctx context.Context, location string) (*
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/listQuotas", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/Quotas", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -208,7 +208,7 @@ func (client QuotasClient) UpdatePreparer(ctx context.Context, location string, 
 		"api-version": APIVersion,
 	}
 
-	parameters.Properties = nil
+	parameters.Value = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
@@ -234,7 +234,7 @@ func (client QuotasClient) UpdateSender(req *http.Request) (future QuotasUpdateF
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client QuotasClient) UpdateResponder(resp *http.Response) (result UpdateWorkspaceQuotas, err error) {
+func (client QuotasClient) UpdateResponder(resp *http.Response) (result UpdateWorkspaceQuotasResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -365,6 +365,21 @@ func PossibleHyperVGenerationValues() []HyperVGeneration {
 	return []HyperVGeneration{V1, V2}
 }
 
+// HyperVGenerationType enumerates the values for hyper v generation type.
+type HyperVGenerationType string
+
+const (
+	// HyperVGenerationTypeV1 ...
+	HyperVGenerationTypeV1 HyperVGenerationType = "V1"
+	// HyperVGenerationTypeV2 ...
+	HyperVGenerationTypeV2 HyperVGenerationType = "V2"
+)
+
+// PossibleHyperVGenerationTypeValues returns an array of possible values for the HyperVGenerationType const type.
+func PossibleHyperVGenerationTypeValues() []HyperVGenerationType {
+	return []HyperVGenerationType{HyperVGenerationTypeV1, HyperVGenerationTypeV2}
+}
+
 // HyperVGenerationTypes enumerates the values for hyper v generation types.
 type HyperVGenerationTypes string
 
@@ -7261,6 +7276,8 @@ type VirtualMachineInstanceView struct {
 	OsName *string `json:"osName,omitempty"`
 	// OsVersion - The version of Operating System running on the virtual machine.
 	OsVersion *string `json:"osVersion,omitempty"`
+	// HyperVGeneration - Specifies the HyperVGeneration Type associated with a resource. Possible values include: 'HyperVGenerationTypeV1', 'HyperVGenerationTypeV2'
+	HyperVGeneration HyperVGenerationType `json:"hyperVGeneration,omitempty"`
 	// RdpThumbPrint - The Remote desktop certificate thumbprint.
 	RdpThumbPrint *string `json:"rdpThumbPrint,omitempty"`
 	// VMAgent - The VM Agent running on the virtual machine.

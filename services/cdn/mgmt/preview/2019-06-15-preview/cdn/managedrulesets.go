@@ -25,29 +25,29 @@ import (
 	"net/http"
 )
 
-// ResourceUsageClient is the cdn Management Client
-type ResourceUsageClient struct {
+// ManagedRuleSetsClient is the cdn Management Client
+type ManagedRuleSetsClient struct {
 	BaseClient
 }
 
-// NewResourceUsageClient creates an instance of the ResourceUsageClient client.
-func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
-	return NewResourceUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewManagedRuleSetsClient creates an instance of the ManagedRuleSetsClient client.
+func NewManagedRuleSetsClient(subscriptionID string, subscriptionID1 string) ManagedRuleSetsClient {
+	return NewManagedRuleSetsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
-// NewResourceUsageClientWithBaseURI creates an instance of the ResourceUsageClient client.
-func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageClient {
-	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewManagedRuleSetsClientWithBaseURI creates an instance of the ManagedRuleSetsClient client.
+func NewManagedRuleSetsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ManagedRuleSetsClient {
+	return ManagedRuleSetsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
-// List check the quota and actual usage of the CDN profiles under the given subscription.
-func (client ResourceUsageClient) List(ctx context.Context) (result ResourceUsageListResultPage, err error) {
+// List lists all available managed rule sets.
+func (client ManagedRuleSetsClient) List(ctx context.Context) (result ManagedRuleSetDefinitionListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceUsageClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedRuleSetsClient.List")
 		defer func() {
 			sc := -1
-			if result.rulr.Response.Response != nil {
-				sc = result.rulr.Response.Response.StatusCode
+			if result.mrsdl.Response.Response != nil {
+				sc = result.mrsdl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -55,54 +55,54 @@ func (client ResourceUsageClient) List(ctx context.Context) (result ResourceUsag
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "cdn.ManagedRuleSetsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.rulr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "List", resp, "Failure sending request")
+		result.mrsdl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "cdn.ManagedRuleSetsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.rulr, err = client.ListResponder(resp)
+	result.mrsdl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "cdn.ManagedRuleSetsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ResourceUsageClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client ManagedRuleSetsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-02"
+	const APIVersion = "2019-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkResourceUsage", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/CdnWebApplicationFirewallManagedRuleSets", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ResourceUsageClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ManagedRuleSetsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ResourceUsageClient) ListResponder(resp *http.Response) (result ResourceUsageListResult, err error) {
+func (client ManagedRuleSetsClient) ListResponder(resp *http.Response) (result ManagedRuleSetDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -114,10 +114,10 @@ func (client ResourceUsageClient) ListResponder(resp *http.Response) (result Res
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ResourceUsageClient) listNextResults(ctx context.Context, lastResults ResourceUsageListResult) (result ResourceUsageListResult, err error) {
-	req, err := lastResults.resourceUsageListResultPreparer(ctx)
+func (client ManagedRuleSetsClient) listNextResults(ctx context.Context, lastResults ManagedRuleSetDefinitionList) (result ManagedRuleSetDefinitionList, err error) {
+	req, err := lastResults.managedRuleSetDefinitionListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ManagedRuleSetsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -125,19 +125,19 @@ func (client ResourceUsageClient) listNextResults(ctx context.Context, lastResul
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "cdn.ManagedRuleSetsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ResourceUsageClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "cdn.ManagedRuleSetsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ResourceUsageClient) ListComplete(ctx context.Context) (result ResourceUsageListResultIterator, err error) {
+func (client ManagedRuleSetsClient) ListComplete(ctx context.Context) (result ManagedRuleSetDefinitionListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceUsageClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedRuleSetsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

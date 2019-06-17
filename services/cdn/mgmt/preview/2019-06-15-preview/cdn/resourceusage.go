@@ -31,13 +31,13 @@ type ResourceUsageClient struct {
 }
 
 // NewResourceUsageClient creates an instance of the ResourceUsageClient client.
-func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
-	return NewResourceUsageClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewResourceUsageClient(subscriptionID string, subscriptionID1 string) ResourceUsageClient {
+	return NewResourceUsageClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewResourceUsageClientWithBaseURI creates an instance of the ResourceUsageClient client.
-func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageClient {
-	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ResourceUsageClient {
+	return ResourceUsageClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // List check the quota and actual usage of the CDN profiles under the given subscription.
@@ -80,7 +80,7 @@ func (client ResourceUsageClient) ListPreparer(ctx context.Context) (*http.Reque
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-04-02"
+	const APIVersion = "2019-06-15-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

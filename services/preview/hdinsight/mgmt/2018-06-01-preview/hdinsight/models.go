@@ -1982,11 +1982,10 @@ type VirtualNetworkProfile struct {
 }
 
 // VMSizeCompatibilityFilterV2 this class represent a single filter object that defines a multidimensional
-// set. The dimensions of this set are Regions, ClusterFlavors, NodeTypes and ClusterVersionsThe dimensions
-// of this set are Regions, ClusterFlavors, NodeTypes and ClusterVersions. The constraint should be defined
-// based on the following: FilterMode (Exclude vs Include), VMSizes (the vm sizes in affect of
-// exlucsion/inclusion) and the ordering of the Filters. Later filters override previous settings if
-// conflicted.
+// set. The dimensions of this set are Regions, ClusterFlavors, NodeTypes and ClusterVersions. The
+// constraint should be defined based on the following: FilterMode (Exclude vs Include), VMSizes (the vm
+// sizes in affect of exclusion/inclusion) and the ordering of the Filters. Later filters override previous
+// settings if conflicted.
 type VMSizeCompatibilityFilterV2 struct {
 	// FilterMode - The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
 	FilterMode *string `json:"filterMode,omitempty"`

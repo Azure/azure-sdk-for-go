@@ -199,7 +199,7 @@ type ApplicationGetHTTPSEndpoint struct {
 	DestinationPort *int32 `json:"destinationPort,omitempty"`
 	// PublicPort - The public port to connect to.
 	PublicPort *int32 `json:"publicPort,omitempty"`
-	// SubDomainSuffix - The subDomainSuffix of the application and can not greater than 3 characters.
+	// SubDomainSuffix - The subDomainSuffix of the application.
 	SubDomainSuffix *string `json:"subDomainSuffix,omitempty"`
 	// DisableGatewayAuth - The value indicates whether to disable GatewayAuth.
 	DisableGatewayAuth *bool `json:"disableGatewayAuth,omitempty"`
@@ -428,6 +428,38 @@ func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar au
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// BillingMeters the billing meters.
+type BillingMeters struct {
+	// MeterParameter - The virtual machine sizes.
+	MeterParameter *string `json:"meterParameter,omitempty"`
+	// Meter - The HDInsight meter guid.
+	Meter *string `json:"meter,omitempty"`
+	// Unit - The unit of meter, VMHours or CoreHours.
+	Unit *string `json:"unit,omitempty"`
+}
+
+// BillingResources the billing resources.
+type BillingResources struct {
+	// Region - The region or location.
+	Region *string `json:"region,omitempty"`
+	// BillingMeters - The billing meter information.
+	BillingMeters *[]BillingMeters `json:"billingMeters,omitempty"`
+	// DiskBillingMeters - The managed disk billing information.
+	DiskBillingMeters *[]DiskBillingMeters `json:"diskBillingMeters,omitempty"`
+}
+
+// BillingResponseListResult the response for the operation to get regional billingSpecs for a
+// subscription.
+type BillingResponseListResult struct {
+	autorest.Response `json:"-"`
+	// VMSizes - The virtual machine sizes to include or exclude.
+	VMSizes *[]string `json:"vmSizes,omitempty"`
+	// VMSizeFilters - The virtual machine filtering mode. Effectively this can enabling or disabling the virtual machine sizes in a particular set.
+	VMSizeFilters *[]VMSizeCompatibilityFilterV2 `json:"vmSizeFilters,omitempty"`
+	// BillingResources - The billing and managed disk billing resources for a region.
+	BillingResources *[]BillingResources `json:"billingResources,omitempty"`
 }
 
 // Cluster the HDInsight cluster.
@@ -1033,6 +1065,16 @@ type DataDisksGroups struct {
 	StorageAccountType *string `json:"storageAccountType,omitempty"`
 	// DiskSizeGB - READ-ONLY; ReadOnly. The DiskSize in GB. Do not set this value.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+}
+
+// DiskBillingMeters the disk billing meters.
+type DiskBillingMeters struct {
+	// DiskRpMeter - The managed disk meter guid.
+	DiskRpMeter *string `json:"diskRpMeter,omitempty"`
+	// Sku - The managed disk billing sku, P30 or S30.
+	Sku *string `json:"sku,omitempty"`
+	// Tier - The managed disk billing tier, Standard or Premium.
+	Tier *string `json:"tier,omitempty"`
 }
 
 // DiskEncryptionProperties the disk encryption properties
@@ -1937,4 +1979,26 @@ type VirtualNetworkProfile struct {
 	ID *string `json:"id,omitempty"`
 	// Subnet - The name of the subnet.
 	Subnet *string `json:"subnet,omitempty"`
+}
+
+// VMSizeCompatibilityFilterV2 this class represent a single filter object that defines a multidimensional
+// set. The dimensions of this set are Regions, ClusterFlavors, NodeTypes and ClusterVersions. The
+// constraint should be defined based on the following: FilterMode (Exclude vs Include), VMSizes (the vm
+// sizes in affect of exclusion/inclusion) and the ordering of the Filters. Later filters override previous
+// settings if conflicted.
+type VMSizeCompatibilityFilterV2 struct {
+	// FilterMode - The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
+	FilterMode *string `json:"filterMode,omitempty"`
+	// Regions - The list of regions under the effect of the filter.
+	Regions *[]string `json:"regions,omitempty"`
+	// ClusterFlavors - The list of cluster flavors under the effect of the filter.
+	ClusterFlavors *[]string `json:"clusterFlavors,omitempty"`
+	// NodeTypes - The list of node types affected by the filter.
+	NodeTypes *[]string `json:"nodeTypes,omitempty"`
+	// ClusterVersions - The list of cluster versions affected in Major.Minor format.
+	ClusterVersions *[]string `json:"clusterVersions,omitempty"`
+	// OsType - The OSType affected, Windows or Linux.
+	OsType *[]string `json:"osType,omitempty"`
+	// VMSizes - The list of virtual machine sizes to include or exclude.
+	VMSizes *[]string `json:"vmSizes,omitempty"`
 }

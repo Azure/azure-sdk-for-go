@@ -321,6 +321,7 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 
 	connection, err := r.namespace.newConnection()
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 	r.connection = connection
@@ -366,14 +367,48 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 		} else {
 			opts = append(opts, amqp.LinkSourceFilter(name, code, r.sessionID))
 		}
+
+		err := testSessions(
+			ctx,
+			amqpSession,
+			amqp.LinkSourceFilter(name, code, nil),
+			amqp.LinkSourceAddress(r.entityPath),
+		)
+		if err != nil {
+			tab.For(ctx).Error(err)
+			return err
+		}
 	}
 
 	amqpReceiver, err := amqpSession.NewReceiver(opts...)
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	r.receiver = amqpReceiver
+	return nil
+}
+
+// Create a test link without any link disposition, so that if there is an error in session handling we'll see it
+func testSessions(ctx context.Context, amqpSession *amqp.Session, opts... amqp.LinkOption) error {
+	ctx, span := tab.StartSpan(ctx, "sb.Receiver.testSessions")
+	defer span.End()
+
+	// run twice if we must so that we definitely get the detach if required sessions is not enabled
+	for i := 0; i < 2; i++ {
+		r, err := amqpSession.NewReceiver(opts...)
+		time.Sleep(50 * time.Millisecond)
+		if err == nil {
+			if err := r.Close(ctx); err != nil {
+				tab.For(ctx).Error(err)
+				return err
+			}
+		} else {
+			return err
+		}
+	}
+
 	return nil
 }
 

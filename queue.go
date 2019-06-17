@@ -549,7 +549,7 @@ func (q *Queue) RenewLocks(ctx context.Context, messages ...*Message) error {
 	return renewLocks(ctx, q, messages...)
 }
 
-func receiveDeferred(ctx context.Context, ec entityConnector, handler Handler, sequenceNumbers ...int64) error {
+func receiveDeferred(ctx context.Context, ec *Queue, handler Handler, sequenceNumbers ...int64) error {
 	ctx, span := startConsumerSpanFromContext(ctx, "sb.receiveDeferred")
 	defer span.End()
 
@@ -566,16 +566,19 @@ func receiveDeferred(ctx context.Context, ec entityConnector, handler Handler, s
 
 	conn, err := ec.connection(ctx)
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	link, err := rpc.NewLink(conn, ec.ManagementPath())
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 

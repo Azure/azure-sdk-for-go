@@ -51,10 +51,15 @@ func NewSessionHandler(base Handler, start func(*MessageSession) error, end func
 
 // Start calls the func() that was provided to `NewSessionHandler` when a new session lock is established.
 func (dsh defaultSessionHandler) Start(ms *MessageSession) error {
-	return dsh.start(ms)
+	if dsh.start != nil {
+		return dsh.start(ms)
+	}
+	return nil
 }
 
 // End calls the func() that was provided to `NewSessionHandler` when a session is finished processing for any reason.
 func (dsh defaultSessionHandler) End() {
-	dsh.end()
+	if dsh.end != nil {
+		dsh.end()
+	}
 }

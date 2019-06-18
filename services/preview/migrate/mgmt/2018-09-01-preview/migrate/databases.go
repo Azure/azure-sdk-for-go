@@ -101,7 +101,7 @@ func (client DatabasesClient) EnumerateDatabasesPreparer(ctx context.Context, re
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}/Databases", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/migrateProjects/{migrateProjectName}/databases", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(client.AcceptLanguage) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -184,7 +184,7 @@ func (client DatabasesClient) GetDatabasePreparer(ctx context.Context, resourceG
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/MigrateProjects/{migrateProjectName}/Databases/{databaseName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/migrateProjects/{migrateProjectName}/databases/{databaseName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(client.AcceptLanguage) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,

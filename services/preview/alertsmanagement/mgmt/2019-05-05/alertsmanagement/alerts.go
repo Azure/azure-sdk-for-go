@@ -40,10 +40,10 @@ func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsCli
 	return AlertsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ChangeState change the state of the alert.
+// ChangeState change the state of an alert.
 // Parameters:
-// alertID - unique ID of an alert object.
-// newState - filter by state
+// alertID - unique ID of an alert instance.
+// newState - new state of the alert.
 func (client AlertsClient) ChangeState(ctx context.Context, alertID string, newState AlertState) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.ChangeState")
@@ -117,24 +117,36 @@ func (client AlertsClient) ChangeStateResponder(resp *http.Response) (result Ale
 	return
 }
 
-// GetAll list all the existing alerts, where the results can be selective by passing multiple filter parameters
-// including time range and sorted on specific fields.
+// GetAll list all existing alerts, where the results can be filtered on the basis of multiple parameters (e.g. time
+// range). The results can then be sorted on the basis specific fields, with the default being lastModifiedDateTime.
 // Parameters:
-// targetResource - filter by target resource
-// targetResourceGroup - filter by target resource group name
-// targetResourceType - filter by target resource type
-// monitorService - filter by monitor service which is the source of the alert object.
-// monitorCondition - filter by monitor condition which is the state of the alert at monitor service
-// severity - filter by severity
-// alertState - filter by state
-// smartGroupID - filter by smart Group Id
-// includePayload - include payload field content, default value is 'false'.
-// pageCount - number of items per page, default value is '25'.
-// sortBy - sort the query results by input field, default value is 'lastModifiedDateTime'.
-// sortOrder - sort the query results order in either ascending or descending, default value is 'desc' for time
-// fields and 'asc' for others.
-// timeRange - filter by time range, default value is 1 day
-func (client AlertsClient) GetAll(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, smartGroupID string, includePayload *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, timeRange TimeRange) (result AlertsListPage, err error) {
+// targetResource - filter by target resource( which is full ARM ID) Default value is select all.
+// targetResourceType - filter by target resource type. Default value is select all.
+// targetResourceGroup - filter by target resource group name. Default value is select all.
+// monitorService - filter by monitor service which generates the alert instance. Default value is select all.
+// monitorCondition - filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
+// select all.
+// severity - filter by severity.  Default value is select all.
+// alertState - filter by state of the alert instance. Default value is to select all.
+// alertRule - filter by specific alert rule.  Default value is to select all.
+// smartGroupID - filter the alerts list by the Smart Group Id. Default value is none.
+// includeContext - include context which has contextual data specific to the monitor service. Default value is
+// false'
+// includeEgressConfig - include egress config which would be used for displaying the content in portal.
+// Default value is 'false'.
+// pageCount - determines number of alerts returned per page in response. Permissible value is between 1 to
+// 250. When the "includeContent"  filter is selected, maximum value allowed is 25. Default value is 25.
+// sortBy - sort the query results by input field,  Default value is 'lastModifiedDateTime'.
+// sortOrder - sort the query results order in either ascending or descending.  Default value is 'desc' for
+// time fields and 'asc' for others.
+// selectParameter - this filter allows to selection of the fields(comma separated) which would  be part of the
+// essential section. This would allow to project only the  required fields rather than getting entire content.
+// Default is to fetch all the fields in the essentials section.
+// timeRange - filter by time range by below listed values. Default value is 1 day.
+// customTimeRange - filter by custom time range in the format <start-time>/<end-time>  where time is in
+// (ISO-8601 format)'. Permissible values is within 30 days from  query time. Either timeRange or
+// customTimeRange could be used but not both. Default is none.
+func (client AlertsClient) GetAll(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, selectParameter string, timeRange TimeRange, customTimeRange string) (result AlertsListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetAll")
 		defer func() {
@@ -146,7 +158,7 @@ func (client AlertsClient) GetAll(ctx context.Context, targetResource string, ta
 		}()
 	}
 	result.fn = client.getAllNextResults
-	req, err := client.GetAllPreparer(ctx, targetResource, targetResourceGroup, targetResourceType, monitorService, monitorCondition, severity, alertState, smartGroupID, includePayload, pageCount, sortBy, sortOrder, timeRange)
+	req, err := client.GetAllPreparer(ctx, targetResource, targetResourceType, targetResourceGroup, monitorService, monitorCondition, severity, alertState, alertRule, smartGroupID, includeContext, includeEgressConfig, pageCount, sortBy, sortOrder, selectParameter, timeRange, customTimeRange)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "GetAll", nil, "Failure preparing request")
 		return
@@ -168,7 +180,7 @@ func (client AlertsClient) GetAll(ctx context.Context, targetResource string, ta
 }
 
 // GetAllPreparer prepares the GetAll request.
-func (client AlertsClient) GetAllPreparer(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, smartGroupID string, includePayload *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, timeRange TimeRange) (*http.Request, error) {
+func (client AlertsClient) GetAllPreparer(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, selectParameter string, timeRange TimeRange, customTimeRange string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -180,11 +192,11 @@ func (client AlertsClient) GetAllPreparer(ctx context.Context, targetResource st
 	if len(targetResource) > 0 {
 		queryParameters["targetResource"] = autorest.Encode("query", targetResource)
 	}
-	if len(targetResourceGroup) > 0 {
-		queryParameters["targetResourceGroup"] = autorest.Encode("query", targetResourceGroup)
-	}
 	if len(targetResourceType) > 0 {
 		queryParameters["targetResourceType"] = autorest.Encode("query", targetResourceType)
+	}
+	if len(targetResourceGroup) > 0 {
+		queryParameters["targetResourceGroup"] = autorest.Encode("query", targetResourceGroup)
 	}
 	if len(string(monitorService)) > 0 {
 		queryParameters["monitorService"] = autorest.Encode("query", monitorService)
@@ -198,11 +210,17 @@ func (client AlertsClient) GetAllPreparer(ctx context.Context, targetResource st
 	if len(string(alertState)) > 0 {
 		queryParameters["alertState"] = autorest.Encode("query", alertState)
 	}
+	if len(alertRule) > 0 {
+		queryParameters["alertRule"] = autorest.Encode("query", alertRule)
+	}
 	if len(smartGroupID) > 0 {
 		queryParameters["smartGroupId"] = autorest.Encode("query", smartGroupID)
 	}
-	if includePayload != nil {
-		queryParameters["includePayload"] = autorest.Encode("query", *includePayload)
+	if includeContext != nil {
+		queryParameters["includeContext"] = autorest.Encode("query", *includeContext)
+	}
+	if includeEgressConfig != nil {
+		queryParameters["includeEgressConfig"] = autorest.Encode("query", *includeEgressConfig)
 	}
 	if pageCount != nil {
 		queryParameters["pageCount"] = autorest.Encode("query", *pageCount)
@@ -213,8 +231,14 @@ func (client AlertsClient) GetAllPreparer(ctx context.Context, targetResource st
 	if len(string(sortOrder)) > 0 {
 		queryParameters["sortOrder"] = autorest.Encode("query", sortOrder)
 	}
+	if len(selectParameter) > 0 {
+		queryParameters["select"] = autorest.Encode("query", selectParameter)
+	}
 	if len(string(timeRange)) > 0 {
 		queryParameters["timeRange"] = autorest.Encode("query", timeRange)
+	}
+	if len(customTimeRange) > 0 {
+		queryParameters["customTimeRange"] = autorest.Encode("query", customTimeRange)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -267,7 +291,7 @@ func (client AlertsClient) getAllNextResults(ctx context.Context, lastResults Al
 }
 
 // GetAllComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AlertsClient) GetAllComplete(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, smartGroupID string, includePayload *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, timeRange TimeRange) (result AlertsListIterator, err error) {
+func (client AlertsClient) GetAllComplete(ctx context.Context, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, smartGroupID string, includeContext *bool, includeEgressConfig *bool, pageCount *int32, sortBy AlertsSortByFields, sortOrder string, selectParameter string, timeRange TimeRange, customTimeRange string) (result AlertsListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetAll")
 		defer func() {
@@ -278,13 +302,13 @@ func (client AlertsClient) GetAllComplete(ctx context.Context, targetResource st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.GetAll(ctx, targetResource, targetResourceGroup, targetResourceType, monitorService, monitorCondition, severity, alertState, smartGroupID, includePayload, pageCount, sortBy, sortOrder, timeRange)
+	result.page, err = client.GetAll(ctx, targetResource, targetResourceType, targetResourceGroup, monitorService, monitorCondition, severity, alertState, alertRule, smartGroupID, includeContext, includeEgressConfig, pageCount, sortBy, sortOrder, selectParameter, timeRange, customTimeRange)
 	return
 }
 
 // GetByID get information related to a specific alert
 // Parameters:
-// alertID - unique ID of an alert object.
+// alertID - unique ID of an alert instance.
 func (client AlertsClient) GetByID(ctx context.Context, alertID string) (result Alert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetByID")
@@ -357,9 +381,10 @@ func (client AlertsClient) GetByIDResponder(resp *http.Response) (result Alert, 
 	return
 }
 
-// GetHistory get the history of the changes of an alert.
+// GetHistory get the history of an alert, which captures any monitor condition changes (Fired/Resolved) and alert
+// state changes (New/Acknowledged/Closed).
 // Parameters:
-// alertID - unique ID of an alert object.
+// alertID - unique ID of an alert instance.
 func (client AlertsClient) GetHistory(ctx context.Context, alertID string) (result AlertModification, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetHistory")
@@ -432,11 +457,26 @@ func (client AlertsClient) GetHistoryResponder(resp *http.Response) (result Aler
 	return
 }
 
-// GetSummary summary of alerts with the count each severity.
+// GetSummary get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns
+// the count of alerts for each severity).
 // Parameters:
-// targetResourceGroup - filter by target resource group name
-// timeRange - filter by time range, default value is 1 day
-func (client AlertsClient) GetSummary(ctx context.Context, targetResourceGroup string, timeRange TimeRange) (result AlertsSummary, err error) {
+// groupby - this parameter allows the result set to be grouped by input fields (Maximum 2 comma separated
+// fields supported). For example, groupby=severity or groupby=severity,alertstate.
+// includeSmartGroupsCount - include count of the SmartGroups as part of the summary. Default value is 'false'.
+// targetResource - filter by target resource( which is full ARM ID) Default value is select all.
+// targetResourceType - filter by target resource type. Default value is select all.
+// targetResourceGroup - filter by target resource group name. Default value is select all.
+// monitorService - filter by monitor service which generates the alert instance. Default value is select all.
+// monitorCondition - filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
+// select all.
+// severity - filter by severity.  Default value is select all.
+// alertState - filter by state of the alert instance. Default value is to select all.
+// alertRule - filter by specific alert rule.  Default value is to select all.
+// timeRange - filter by time range by below listed values. Default value is 1 day.
+// customTimeRange - filter by custom time range in the format <start-time>/<end-time>  where time is in
+// (ISO-8601 format)'. Permissible values is within 30 days from  query time. Either timeRange or
+// customTimeRange could be used but not both. Default is none.
+func (client AlertsClient) GetSummary(ctx context.Context, groupby AlertsSummaryGroupByFields, includeSmartGroupsCount *bool, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, timeRange TimeRange, customTimeRange string) (result AlertsSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.GetSummary")
 		defer func() {
@@ -447,7 +487,7 @@ func (client AlertsClient) GetSummary(ctx context.Context, targetResourceGroup s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetSummaryPreparer(ctx, targetResourceGroup, timeRange)
+	req, err := client.GetSummaryPreparer(ctx, groupby, includeSmartGroupsCount, targetResource, targetResourceType, targetResourceGroup, monitorService, monitorCondition, severity, alertState, alertRule, timeRange, customTimeRange)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "GetSummary", nil, "Failure preparing request")
 		return
@@ -469,7 +509,7 @@ func (client AlertsClient) GetSummary(ctx context.Context, targetResourceGroup s
 }
 
 // GetSummaryPreparer prepares the GetSummary request.
-func (client AlertsClient) GetSummaryPreparer(ctx context.Context, targetResourceGroup string, timeRange TimeRange) (*http.Request, error) {
+func (client AlertsClient) GetSummaryPreparer(ctx context.Context, groupby AlertsSummaryGroupByFields, includeSmartGroupsCount *bool, targetResource string, targetResourceType string, targetResourceGroup string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, alertState AlertState, alertRule string, timeRange TimeRange, customTimeRange string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -477,12 +517,40 @@ func (client AlertsClient) GetSummaryPreparer(ctx context.Context, targetResourc
 	const APIVersion = "2019-05-05-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+		"groupby":     autorest.Encode("query", groupby),
+	}
+	if includeSmartGroupsCount != nil {
+		queryParameters["includeSmartGroupsCount"] = autorest.Encode("query", *includeSmartGroupsCount)
+	}
+	if len(targetResource) > 0 {
+		queryParameters["targetResource"] = autorest.Encode("query", targetResource)
+	}
+	if len(targetResourceType) > 0 {
+		queryParameters["targetResourceType"] = autorest.Encode("query", targetResourceType)
 	}
 	if len(targetResourceGroup) > 0 {
 		queryParameters["targetResourceGroup"] = autorest.Encode("query", targetResourceGroup)
 	}
+	if len(string(monitorService)) > 0 {
+		queryParameters["monitorService"] = autorest.Encode("query", monitorService)
+	}
+	if len(string(monitorCondition)) > 0 {
+		queryParameters["monitorCondition"] = autorest.Encode("query", monitorCondition)
+	}
+	if len(string(severity)) > 0 {
+		queryParameters["severity"] = autorest.Encode("query", severity)
+	}
+	if len(string(alertState)) > 0 {
+		queryParameters["alertState"] = autorest.Encode("query", alertState)
+	}
+	if len(alertRule) > 0 {
+		queryParameters["alertRule"] = autorest.Encode("query", alertRule)
+	}
 	if len(string(timeRange)) > 0 {
 		queryParameters["timeRange"] = autorest.Encode("query", timeRange)
+	}
+	if len(customTimeRange) > 0 {
+		queryParameters["customTimeRange"] = autorest.Encode("query", customTimeRange)
 	}
 
 	preparer := autorest.CreatePreparer(

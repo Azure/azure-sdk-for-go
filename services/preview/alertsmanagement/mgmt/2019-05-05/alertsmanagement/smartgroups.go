@@ -40,11 +40,10 @@ func NewSmartGroupsClientWithBaseURI(baseURI string, subscriptionID string) Smar
 	return SmartGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ChangeState change the state from unresolved to resolved and all the alerts within the smart group will also be
-// resolved.
+// ChangeState change the state of a Smart Group.
 // Parameters:
-// smartGroupID - smart Group Id
-// newState - filter by state
+// smartGroupID - smart group unique id.
+// newState - new state of the alert.
 func (client SmartGroupsClient) ChangeState(ctx context.Context, smartGroupID string, newState AlertState) (result SmartGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsClient.ChangeState")
@@ -118,31 +117,34 @@ func (client SmartGroupsClient) ChangeStateResponder(resp *http.Response) (resul
 	return
 }
 
-// GetAll list all the smartGroups within the specified subscription.
+// GetAll list all the Smart Groups within a specified subscription.
 // Parameters:
-// targetResource - filter by target resource
-// targetResourceGroup - filter by target resource group name
-// targetResourceType - filter by target resource type
-// monitorService - filter by monitor service which is the source of the alert object.
-// monitorCondition - filter by monitor condition which is the state of the alert at monitor service
-// severity - filter by severity
-// smartGroupState - filter by state
-// timeRange - filter by time range, default value is 1 day
-// pageCount - number of items per page, default value is '25'.
-// sortBy - sort the query results by input field, default value is 'lastModifiedDateTime'.
-// sortOrder - sort the query results order in either ascending or descending, default value is 'desc' for time
-// fields and 'asc' for others.
-func (client SmartGroupsClient) GetAll(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, smartGroupState AlertState, timeRange TimeRange, pageCount *int32, sortBy SmartGroupsSortByFields, sortOrder string) (result SmartGroupsList, err error) {
+// targetResource - filter by target resource( which is full ARM ID) Default value is select all.
+// targetResourceGroup - filter by target resource group name. Default value is select all.
+// targetResourceType - filter by target resource type. Default value is select all.
+// monitorService - filter by monitor service which generates the alert instance. Default value is select all.
+// monitorCondition - filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to
+// select all.
+// severity - filter by severity.  Default value is select all.
+// smartGroupState - filter by state of the smart group. Default value is to select all.
+// timeRange - filter by time range by below listed values. Default value is 1 day.
+// pageCount - determines number of alerts returned per page in response. Permissible value is between 1 to
+// 250. When the "includeContent"  filter is selected, maximum value allowed is 25. Default value is 25.
+// sortBy - sort the query results by input field. Default value is sort by 'lastModifiedDateTime'.
+// sortOrder - sort the query results order in either ascending or descending.  Default value is 'desc' for
+// time fields and 'asc' for others.
+func (client SmartGroupsClient) GetAll(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, smartGroupState AlertState, timeRange TimeRange, pageCount *int32, sortBy SmartGroupsSortByFields, sortOrder string) (result SmartGroupsListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsClient.GetAll")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.sgl.Response.Response != nil {
+				sc = result.sgl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	result.fn = client.getAllNextResults
 	req, err := client.GetAllPreparer(ctx, targetResource, targetResourceGroup, targetResourceType, monitorService, monitorCondition, severity, smartGroupState, timeRange, pageCount, sortBy, sortOrder)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "GetAll", nil, "Failure preparing request")
@@ -151,12 +153,12 @@ func (client SmartGroupsClient) GetAll(ctx context.Context, targetResource strin
 
 	resp, err := client.GetAllSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.sgl.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "GetAll", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetAllResponder(resp)
+	result.sgl, err = client.GetAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "GetAll", resp, "Failure responding to request")
 	}
@@ -236,9 +238,46 @@ func (client SmartGroupsClient) GetAllResponder(resp *http.Response) (result Sma
 	return
 }
 
-// GetByID get details of smart group.
+// getAllNextResults retrieves the next set of results, if any.
+func (client SmartGroupsClient) getAllNextResults(ctx context.Context, lastResults SmartGroupsList) (result SmartGroupsList, err error) {
+	req, err := lastResults.smartGroupsListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "getAllNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.GetAllSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "getAllNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.GetAllResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "alertsmanagement.SmartGroupsClient", "getAllNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// GetAllComplete enumerates all values, automatically crossing page boundaries as required.
+func (client SmartGroupsClient) GetAllComplete(ctx context.Context, targetResource string, targetResourceGroup string, targetResourceType string, monitorService MonitorService, monitorCondition MonitorCondition, severity Severity, smartGroupState AlertState, timeRange TimeRange, pageCount *int32, sortBy SmartGroupsSortByFields, sortOrder string) (result SmartGroupsListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsClient.GetAll")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.GetAll(ctx, targetResource, targetResourceGroup, targetResourceType, monitorService, monitorCondition, severity, smartGroupState, timeRange, pageCount, sortBy, sortOrder)
+	return
+}
+
+// GetByID get information related to a specific Smart Group.
 // Parameters:
-// smartGroupID - smart Group Id
+// smartGroupID - smart group unique id.
 func (client SmartGroupsClient) GetByID(ctx context.Context, smartGroupID string) (result SmartGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsClient.GetByID")
@@ -311,9 +350,9 @@ func (client SmartGroupsClient) GetByIDResponder(resp *http.Response) (result Sm
 	return
 }
 
-// GetHistory get the history of the changes of smart group.
+// GetHistory get the history a smart group, which captures any Smart Group state changes (New/Acknowledged/Closed) .
 // Parameters:
-// smartGroupID - smart Group Id
+// smartGroupID - smart group unique id.
 func (client SmartGroupsClient) GetHistory(ctx context.Context, smartGroupID string) (result SmartGroupModification, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsClient.GetHistory")

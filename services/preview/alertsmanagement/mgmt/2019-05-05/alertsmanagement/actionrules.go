@@ -85,12 +85,18 @@ func (client ActionRulesClient) CreateUpdatePreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2019-05-05-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AlertsManagement/actionRules/{actionRuleName}", pathParameters),
-		autorest.WithJSON(actionRule))
+		autorest.WithJSON(actionRule),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -158,10 +164,16 @@ func (client ActionRulesClient) DeletePreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2019-05-05-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AlertsManagement/actionRules/{actionRuleName}", pathParameters))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AlertsManagement/actionRules/{actionRuleName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -229,10 +241,16 @@ func (client ActionRulesClient) GetByNamePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2019-05-05-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AlertsManagement/actionRules/{actionRuleName}", pathParameters))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AlertsManagement/actionRules/{actionRuleName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -260,11 +278,11 @@ func (client ActionRulesClient) GetByNameResponder(resp *http.Response) (result 
 // filters
 // Parameters:
 // resourceGroupName - resource group name where the resource is created.
-// targetResourceGroup - filter by target resource group name
-// targetResourceType - filter by target resource type
-// targetResource - filter by target resource
-// severity - filter by severity
-// monitorService - filter by monitor service which is the source of the alert object.
+// targetResourceGroup - filter by target resource group name. Default value is select all.
+// targetResourceType - filter by target resource type. Default value is select all.
+// targetResource - filter by target resource( which is full ARM ID) Default value is select all.
+// severity - filter by severity.  Default value is select all.
+// monitorService - filter by monitor service which generates the alert instance. Default value is select all.
 // impactedScope - filter by impacted/target scope (provide comma separated list for multiple scopes). The
 // value should be an well constructed ARM id of the scope.
 // description - filter by alert rule description
@@ -311,7 +329,10 @@ func (client ActionRulesClient) ListByResourceGroupPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	queryParameters := map[string]interface{}{}
+	const APIVersion = "2019-05-05-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 	if len(targetResourceGroup) > 0 {
 		queryParameters["targetResourceGroup"] = autorest.Encode("query", targetResourceGroup)
 	}
@@ -410,11 +431,11 @@ func (client ActionRulesClient) ListByResourceGroupComplete(ctx context.Context,
 
 // ListBySubscription list all action rules of the subscription and given input filters
 // Parameters:
-// targetResourceGroup - filter by target resource group name
-// targetResourceType - filter by target resource type
-// targetResource - filter by target resource
-// severity - filter by severity
-// monitorService - filter by monitor service which is the source of the alert object.
+// targetResourceGroup - filter by target resource group name. Default value is select all.
+// targetResourceType - filter by target resource type. Default value is select all.
+// targetResource - filter by target resource( which is full ARM ID) Default value is select all.
+// severity - filter by severity.  Default value is select all.
+// monitorService - filter by monitor service which generates the alert instance. Default value is select all.
 // impactedScope - filter by impacted/target scope (provide comma separated list for multiple scopes). The
 // value should be an well constructed ARM id of the scope.
 // description - filter by alert rule description
@@ -460,7 +481,10 @@ func (client ActionRulesClient) ListBySubscriptionPreparer(ctx context.Context, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	queryParameters := map[string]interface{}{}
+	const APIVersion = "2019-05-05-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
 	if len(targetResourceGroup) > 0 {
 		queryParameters["targetResourceGroup"] = autorest.Encode("query", targetResourceGroup)
 	}
@@ -602,12 +626,18 @@ func (client ActionRulesClient) UpdatePreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2019-05-05-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AlertsManagement/actionRules/{actionRuleName}", pathParameters),
-		autorest.WithJSON(actionRulePatch))
+		autorest.WithJSON(actionRulePatch),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

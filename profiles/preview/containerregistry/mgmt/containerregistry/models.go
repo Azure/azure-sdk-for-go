@@ -38,10 +38,11 @@ const (
 type Architecture = original.Architecture
 
 const (
-	Amd64 Architecture = original.Amd64
-	Arm   Architecture = original.Arm
-	Arm64 Architecture = original.Arm64
-	X86   Architecture = original.X86
+	Amd64         Architecture = original.Amd64
+	Arm           Architecture = original.Arm
+	Arm64         Architecture = original.Arm64
+	ThreeEightSix Architecture = original.ThreeEightSix
+	X86           Architecture = original.X86
 )
 
 type BaseImageDependencyType = original.BaseImageDependencyType

@@ -5163,12 +5163,12 @@ type ResourceSkuRestrictions struct {
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
 }
 
-// ResourceSkusResult the Compute List Skus operation response.
+// ResourceSkusResult the List Resource Skus operation response.
 type ResourceSkusResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of skus available for the subscription.
 	Value *[]ResourceSku `json:"value,omitempty"`
-	// NextLink - The uri to fetch the next page of Compute Skus. Call ListNext() with this to fetch the next page of VMSS Skus.
+	// NextLink - The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of Resource Skus
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -7352,7 +7352,7 @@ type VirtualMachineProperties struct {
 // VirtualMachineReimageParameters parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk
 // will always be reimaged
 type VirtualMachineReimageParameters struct {
-	// TempDisk - Specifies whether to reimage temp disk. Default value: false.
+	// TempDisk - Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported for VM/VMSS with Ephemeral OS disk.
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }
 
@@ -8806,7 +8806,7 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationProperties struct {
 type VirtualMachineScaleSetReimageParameters struct {
 	// InstanceIds - The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation being performed on all virtual machines in the virtual machine scale set.
 	InstanceIds *[]string `json:"instanceIds,omitempty"`
-	// TempDisk - Specifies whether to reimage temp disk. Default value: false.
+	// TempDisk - Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported for VM/VMSS with Ephemeral OS disk.
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }
 
@@ -10032,7 +10032,7 @@ type VirtualMachineScaleSetVMProperties struct {
 
 // VirtualMachineScaleSetVMReimageParameters describes a Virtual Machine Scale Set VM Reimage Parameters.
 type VirtualMachineScaleSetVMReimageParameters struct {
-	// TempDisk - Specifies whether to reimage temp disk. Default value: false.
+	// TempDisk - Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported for VM/VMSS with Ephemeral OS disk.
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }
 

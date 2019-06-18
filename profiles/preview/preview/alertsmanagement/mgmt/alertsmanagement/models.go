@@ -29,13 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type APIVersion = original.APIVersion
-
-const (
-	TwoZeroOneEightHyphenMinusZeroFiveHyphenMinusZeroFive                  APIVersion = original.TwoZeroOneEightHyphenMinusZeroFiveHyphenMinusZeroFive
-	TwoZeroOneNineHyphenMinusZeroFiveHyphenMinusZeroFiveHyphenMinuspreview APIVersion = original.TwoZeroOneNineHyphenMinusZeroFiveHyphenMinusZeroFiveHyphenMinuspreview
-)
-
 type ActionRuleStatus = original.ActionRuleStatus
 
 const (
@@ -74,6 +67,17 @@ const (
 	AlertsSortByFieldsTargetResourceType   AlertsSortByFields = original.AlertsSortByFieldsTargetResourceType
 )
 
+type AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFields
+
+const (
+	AlertsSummaryGroupByFieldsAlertRule        AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsAlertRule
+	AlertsSummaryGroupByFieldsAlertState       AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsAlertState
+	AlertsSummaryGroupByFieldsMonitorCondition AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsMonitorCondition
+	AlertsSummaryGroupByFieldsMonitorService   AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsMonitorService
+	AlertsSummaryGroupByFieldsSeverity         AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsSeverity
+	AlertsSummaryGroupByFieldsSignalType       AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsSignalType
+)
+
 type MonitorCondition = original.MonitorCondition
 
 const (
@@ -90,13 +94,13 @@ const (
 	ActivityLogRecommendation MonitorService = original.ActivityLogRecommendation
 	ActivityLogSecurity       MonitorService = original.ActivityLogSecurity
 	ApplicationInsights       MonitorService = original.ApplicationInsights
-	InfrastructureInsights    MonitorService = original.InfrastructureInsights
 	LogAnalytics              MonitorService = original.LogAnalytics
 	Nagios                    MonitorService = original.Nagios
 	Platform                  MonitorService = original.Platform
 	SCOM                      MonitorService = original.SCOM
 	ServiceHealth             MonitorService = original.ServiceHealth
 	SmartDetector             MonitorService = original.SmartDetector
+	VMInsights                MonitorService = original.VMInsights
 	Zabbix                    MonitorService = original.Zabbix
 )
 
@@ -206,25 +210,8 @@ type AlertsList = original.AlertsList
 type AlertsListIterator = original.AlertsListIterator
 type AlertsListPage = original.AlertsListPage
 type AlertsSummary = original.AlertsSummary
-type AlertsSummaryByMonitorCondition = original.AlertsSummaryByMonitorCondition
-type AlertsSummaryByMonitorService = original.AlertsSummaryByMonitorService
-type AlertsSummaryBySeverityAndMonitorCondition = original.AlertsSummaryBySeverityAndMonitorCondition
-type AlertsSummaryBySeverityAndMonitorConditionSev0 = original.AlertsSummaryBySeverityAndMonitorConditionSev0
-type AlertsSummaryBySeverityAndMonitorConditionSev1 = original.AlertsSummaryBySeverityAndMonitorConditionSev1
-type AlertsSummaryBySeverityAndMonitorConditionSev2 = original.AlertsSummaryBySeverityAndMonitorConditionSev2
-type AlertsSummaryBySeverityAndMonitorConditionSev3 = original.AlertsSummaryBySeverityAndMonitorConditionSev3
-type AlertsSummaryBySeverityAndMonitorConditionSev4 = original.AlertsSummaryBySeverityAndMonitorConditionSev4
-type AlertsSummaryByState = original.AlertsSummaryByState
-type AlertsSummaryProperties = original.AlertsSummaryProperties
-type AlertsSummaryPropertiesSummaryByMonitorService = original.AlertsSummaryPropertiesSummaryByMonitorService
-type AlertsSummaryPropertiesSummaryBySeverity = original.AlertsSummaryPropertiesSummaryBySeverity
-type AlertsSummaryPropertiesSummaryBySeverityAndMonitorCondition = original.AlertsSummaryPropertiesSummaryBySeverityAndMonitorCondition
-type AlertsSummaryPropertiesSummaryBySeveritySev0 = original.AlertsSummaryPropertiesSummaryBySeveritySev0
-type AlertsSummaryPropertiesSummaryBySeveritySev1 = original.AlertsSummaryPropertiesSummaryBySeveritySev1
-type AlertsSummaryPropertiesSummaryBySeveritySev2 = original.AlertsSummaryPropertiesSummaryBySeveritySev2
-type AlertsSummaryPropertiesSummaryBySeveritySev3 = original.AlertsSummaryPropertiesSummaryBySeveritySev3
-type AlertsSummaryPropertiesSummaryBySeveritySev4 = original.AlertsSummaryPropertiesSummaryBySeveritySev4
-type AlertsSummaryPropertiesSummaryByState = original.AlertsSummaryPropertiesSummaryByState
+type AlertsSummaryGroup = original.AlertsSummaryGroup
+type AlertsSummaryGroupItem = original.AlertsSummaryGroupItem
 type BaseClient = original.BaseClient
 type BasicActionRuleProperties = original.BasicActionRuleProperties
 type Bool = original.Bool
@@ -233,6 +220,7 @@ type Conditions = original.Conditions
 type Diagnostics = original.Diagnostics
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseBody = original.ErrorResponseBody
+type Essentials = original.Essentials
 type ManagedResource = original.ManagedResource
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -252,6 +240,8 @@ type SmartGroupModificationProperties = original.SmartGroupModificationPropertie
 type SmartGroupProperties = original.SmartGroupProperties
 type SmartGroupsClient = original.SmartGroupsClient
 type SmartGroupsList = original.SmartGroupsList
+type SmartGroupsListIterator = original.SmartGroupsListIterator
+type SmartGroupsListPage = original.SmartGroupsListPage
 type Suppression = original.Suppression
 type SuppressionConfig = original.SuppressionConfig
 type SuppressionSchedule = original.SuppressionSchedule
@@ -301,11 +291,14 @@ func NewSmartGroupsClient(subscriptionID string) SmartGroupsClient {
 func NewSmartGroupsClientWithBaseURI(baseURI string, subscriptionID string) SmartGroupsClient {
 	return original.NewSmartGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSmartGroupsListIterator(page SmartGroupsListPage) SmartGroupsListIterator {
+	return original.NewSmartGroupsListIterator(page)
+}
+func NewSmartGroupsListPage(getNextPage func(context.Context, SmartGroupsList) (SmartGroupsList, error)) SmartGroupsListPage {
+	return original.NewSmartGroupsListPage(getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleAPIVersionValues() []APIVersion {
-	return original.PossibleAPIVersionValues()
 }
 func PossibleActionRuleStatusValues() []ActionRuleStatus {
 	return original.PossibleActionRuleStatusValues()
@@ -318,6 +311,9 @@ func PossibleAlertStateValues() []AlertState {
 }
 func PossibleAlertsSortByFieldsValues() []AlertsSortByFields {
 	return original.PossibleAlertsSortByFieldsValues()
+}
+func PossibleAlertsSummaryGroupByFieldsValues() []AlertsSummaryGroupByFields {
+	return original.PossibleAlertsSummaryGroupByFieldsValues()
 }
 func PossibleMonitorConditionValues() []MonitorCondition {
 	return original.PossibleMonitorConditionValues()

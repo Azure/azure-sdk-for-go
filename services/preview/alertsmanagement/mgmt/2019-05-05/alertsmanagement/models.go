@@ -93,6 +93,29 @@ func PossibleAlertsSortByFieldsValues() []AlertsSortByFields {
 	return []AlertsSortByFields{AlertsSortByFieldsAlertState, AlertsSortByFieldsLastModifiedDateTime, AlertsSortByFieldsMonitorCondition, AlertsSortByFieldsName, AlertsSortByFieldsSeverity, AlertsSortByFieldsStartDateTime, AlertsSortByFieldsTargetResource, AlertsSortByFieldsTargetResourceGroup, AlertsSortByFieldsTargetResourceName, AlertsSortByFieldsTargetResourceType}
 }
 
+// AlertsSummaryGroupByFields enumerates the values for alerts summary group by fields.
+type AlertsSummaryGroupByFields string
+
+const (
+	// AlertsSummaryGroupByFieldsAlertRule ...
+	AlertsSummaryGroupByFieldsAlertRule AlertsSummaryGroupByFields = "alertRule"
+	// AlertsSummaryGroupByFieldsAlertState ...
+	AlertsSummaryGroupByFieldsAlertState AlertsSummaryGroupByFields = "alertState"
+	// AlertsSummaryGroupByFieldsMonitorCondition ...
+	AlertsSummaryGroupByFieldsMonitorCondition AlertsSummaryGroupByFields = "monitorCondition"
+	// AlertsSummaryGroupByFieldsMonitorService ...
+	AlertsSummaryGroupByFieldsMonitorService AlertsSummaryGroupByFields = "monitorService"
+	// AlertsSummaryGroupByFieldsSeverity ...
+	AlertsSummaryGroupByFieldsSeverity AlertsSummaryGroupByFields = "severity"
+	// AlertsSummaryGroupByFieldsSignalType ...
+	AlertsSummaryGroupByFieldsSignalType AlertsSummaryGroupByFields = "signalType"
+)
+
+// PossibleAlertsSummaryGroupByFieldsValues returns an array of possible values for the AlertsSummaryGroupByFields const type.
+func PossibleAlertsSummaryGroupByFieldsValues() []AlertsSummaryGroupByFields {
+	return []AlertsSummaryGroupByFields{AlertsSummaryGroupByFieldsAlertRule, AlertsSummaryGroupByFieldsAlertState, AlertsSummaryGroupByFieldsMonitorCondition, AlertsSummaryGroupByFieldsMonitorService, AlertsSummaryGroupByFieldsSeverity, AlertsSummaryGroupByFieldsSignalType}
+}
+
 // AlertState enumerates the values for alert state.
 type AlertState string
 
@@ -108,21 +131,6 @@ const (
 // PossibleAlertStateValues returns an array of possible values for the AlertState const type.
 func PossibleAlertStateValues() []AlertState {
 	return []AlertState{AlertStateAcknowledged, AlertStateClosed, AlertStateNew}
-}
-
-// APIVersion enumerates the values for api version.
-type APIVersion string
-
-const (
-	// TwoZeroOneEightHyphenMinusZeroFiveHyphenMinusZeroFive ...
-	TwoZeroOneEightHyphenMinusZeroFiveHyphenMinusZeroFive APIVersion = "2018-05-05"
-	// TwoZeroOneNineHyphenMinusZeroFiveHyphenMinusZeroFiveHyphenMinuspreview ...
-	TwoZeroOneNineHyphenMinusZeroFiveHyphenMinusZeroFiveHyphenMinuspreview APIVersion = "2019-05-05-preview"
-)
-
-// PossibleAPIVersionValues returns an array of possible values for the APIVersion const type.
-func PossibleAPIVersionValues() []APIVersion {
-	return []APIVersion{TwoZeroOneEightHyphenMinusZeroFiveHyphenMinusZeroFive, TwoZeroOneNineHyphenMinusZeroFiveHyphenMinusZeroFiveHyphenMinuspreview}
 }
 
 // MonitorCondition enumerates the values for monitor condition.
@@ -156,8 +164,6 @@ const (
 	ActivityLogSecurity MonitorService = "ActivityLog Security"
 	// ApplicationInsights ...
 	ApplicationInsights MonitorService = "Application Insights"
-	// InfrastructureInsights ...
-	InfrastructureInsights MonitorService = "Infrastructure Insights"
 	// LogAnalytics ...
 	LogAnalytics MonitorService = "Log Analytics"
 	// Nagios ...
@@ -170,13 +176,15 @@ const (
 	ServiceHealth MonitorService = "ServiceHealth"
 	// SmartDetector ...
 	SmartDetector MonitorService = "SmartDetector"
+	// VMInsights ...
+	VMInsights MonitorService = "VM Insights"
 	// Zabbix ...
 	Zabbix MonitorService = "Zabbix"
 )
 
 // PossibleMonitorServiceValues returns an array of possible values for the MonitorService const type.
 func PossibleMonitorServiceValues() []MonitorService {
-	return []MonitorService{ActivityLogAdministrative, ActivityLogAutoscale, ActivityLogPolicy, ActivityLogRecommendation, ActivityLogSecurity, ApplicationInsights, InfrastructureInsights, LogAnalytics, Nagios, Platform, SCOM, ServiceHealth, SmartDetector, Zabbix}
+	return []MonitorService{ActivityLogAdministrative, ActivityLogAutoscale, ActivityLogPolicy, ActivityLogRecommendation, ActivityLogSecurity, ApplicationInsights, LogAnalytics, Nagios, Platform, SCOM, ServiceHealth, SmartDetector, VMInsights, Zabbix}
 }
 
 // Operator enumerates the values for operator.
@@ -444,8 +452,8 @@ func (ag ActionGroup) AsBasicActionRuleProperties() (BasicActionRuleProperties, 
 // ActionRule action rule object containing target scope, conditions and suppression logic
 type ActionRule struct {
 	autorest.Response `json:"-"`
-	// BasicActionRuleProperties - action rule properties
-	BasicActionRuleProperties `json:"properties,omitempty"`
+	// Properties - action rule properties
+	Properties BasicActionRuleProperties `json:"properties,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
@@ -461,7 +469,7 @@ type ActionRule struct {
 // MarshalJSON is the custom marshaler for ActionRule.
 func (ar ActionRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["properties"] = ar.BasicActionRuleProperties
+	objectMap["properties"] = ar.Properties
 	if ar.Location != nil {
 		objectMap["location"] = ar.Location
 	}
@@ -482,11 +490,11 @@ func (ar *ActionRule) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				basicActionRuleProperties, err := unmarshalBasicActionRuleProperties(*v)
+				properties, err := unmarshalBasicActionRuleProperties(*v)
 				if err != nil {
 					return err
 				}
-				ar.BasicActionRuleProperties = basicActionRuleProperties
+				ar.Properties = properties
 			}
 		case "location":
 			if v != nil {
@@ -810,73 +818,13 @@ func NewActionRulesListPage(getNextPage func(context.Context, ActionRulesList) (
 // Alert an alert created in alert management service.
 type Alert struct {
 	autorest.Response `json:"-"`
-	*AlertProperties  `json:"properties,omitempty"`
+	Properties        *AlertProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Alert.
-func (a Alert) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if a.AlertProperties != nil {
-		objectMap["properties"] = a.AlertProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for Alert struct.
-func (a *Alert) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var alertProperties AlertProperties
-				err = json.Unmarshal(*v, &alertProperties)
-				if err != nil {
-					return err
-				}
-				a.AlertProperties = &alertProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				a.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				a.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				a.Name = &name
-			}
-		}
-	}
-
-	return nil
 }
 
 // AlertModification alert Modification details
@@ -917,40 +865,11 @@ type AlertModificationProperties struct {
 	Modifications *[]AlertModificationItem `json:"modifications,omitempty"`
 }
 
-// AlertProperties an alert created in alert management service.
+// AlertProperties alert property bag
 type AlertProperties struct {
-	// Severity - READ-ONLY; Severity of alert Sev1 being highest and Sev3 being lowest. Possible values include: 'Sev0', 'Sev1', 'Sev2', 'Sev3', 'Sev4'
-	Severity Severity `json:"severity,omitempty"`
-	// SignalType - READ-ONLY; Log based alert or metric based alert. Possible values include: 'Metric', 'Log', 'Unknown'
-	SignalType SignalType `json:"signalType,omitempty"`
-	// AlertState - READ-ONLY; Alert object state. Possible values include: 'AlertStateNew', 'AlertStateAcknowledged', 'AlertStateClosed'
-	AlertState AlertState `json:"alertState,omitempty"`
-	// MonitorCondition - READ-ONLY; Condition of the rule at the monitor service. Possible values include: 'Fired', 'Resolved'
-	MonitorCondition MonitorCondition `json:"monitorCondition,omitempty"`
-	// TargetResource - Target ARM resource, on which alert got created.
-	TargetResource *string `json:"targetResource,omitempty"`
-	// TargetResourceName - Target ARM resource name, on which alert got created.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// TargetResourceGroup - Resource group of target ARM resource.
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
-	// TargetResourceType - Resource type of target ARM resource
-	TargetResourceType *string `json:"targetResourceType,omitempty"`
-	// MonitorService - READ-ONLY; Monitor service which is the source of the alert object. Possible values include: 'Platform', 'ApplicationInsights', 'LogAnalytics', 'InfrastructureInsights', 'ActivityLogAdministrative', 'ActivityLogSecurity', 'ActivityLogRecommendation', 'ActivityLogPolicy', 'ActivityLogAutoscale', 'ServiceHealth', 'SmartDetector', 'Zabbix', 'SCOM', 'Nagios'
-	MonitorService MonitorService `json:"monitorService,omitempty"`
-	// SourceCreatedID - READ-ONLY; Unique Id created by monitor service
-	SourceCreatedID *string `json:"sourceCreatedId,omitempty"`
-	// SmartGroupID - READ-ONLY; Unique Id of the smart group
-	SmartGroupID *string `json:"smartGroupId,omitempty"`
-	// SmartGroupingReason - READ-ONLY; Reason for addition to a smart group
-	SmartGroupingReason *string `json:"smartGroupingReason,omitempty"`
-	// StartDateTime - READ-ONLY; Creation time(ISO-8601 format).
-	StartDateTime *date.Time `json:"startDateTime,omitempty"`
-	// LastModifiedDateTime - READ-ONLY; Last modification time(ISO-8601 format).
-	LastModifiedDateTime *date.Time `json:"lastModifiedDateTime,omitempty"`
-	// LastModifiedUserName - READ-ONLY; User who last modified the alert.
-	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty"`
-	// Payload - READ-ONLY; More details which are contextual to the monitor service.
-	Payload interface{} `json:"payload,omitempty"`
+	Essentials   *Essentials `json:"essentials,omitempty"`
+	Context      interface{} `json:"context,omitempty"`
+	EgressConfig interface{} `json:"egressConfig,omitempty"`
 }
 
 // AlertsList list the alerts.
@@ -1099,10 +1018,10 @@ func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList
 	return AlertsListPage{fn: getNextPage}
 }
 
-// AlertsSummary summary of the alerts.
+// AlertsSummary summary of alerts based on the input filters and 'groupby' parameters.
 type AlertsSummary struct {
-	autorest.Response        `json:"-"`
-	*AlertsSummaryProperties `json:"properties,omitempty"`
+	autorest.Response `json:"-"`
+	Properties        *AlertsSummaryGroup `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
@@ -1111,312 +1030,28 @@ type AlertsSummary struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for AlertsSummary.
-func (as AlertsSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if as.AlertsSummaryProperties != nil {
-		objectMap["properties"] = as.AlertsSummaryProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AlertsSummary struct.
-func (as *AlertsSummary) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var alertsSummaryProperties AlertsSummaryProperties
-				err = json.Unmarshal(*v, &alertsSummaryProperties)
-				if err != nil {
-					return err
-				}
-				as.AlertsSummaryProperties = &alertsSummaryProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				as.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				as.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				as.Name = &name
-			}
-		}
-	}
-
-	return nil
-}
-
-// AlertsSummaryByMonitorCondition summary of the alerts by monitor condition
-type AlertsSummaryByMonitorCondition struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryByMonitorService summary of the alerts by monitor service
-type AlertsSummaryByMonitorService struct {
-	// Platform - Count of alerts of "Platform"
-	Platform *int32 `json:"platform,omitempty"`
-	// ApplicationInsights - Count of alerts of "Application Insights"
-	ApplicationInsights *int32 `json:"application Insights,omitempty"`
-	// LogAnalytics - Count of alerts of "Log Analytics"
-	LogAnalytics *int32 `json:"log Analytics,omitempty"`
-	// Zabbix - Count of alerts of "Zabbix"
-	Zabbix *int32 `json:"zabbix,omitempty"`
-	// Scom - Count of alerts of "SCOM"
-	Scom *int32 `json:"scom,omitempty"`
-	// Nagios - Count of alerts of "Nagios"
-	Nagios *int32 `json:"nagios,omitempty"`
-	// InfrastructureInsights - Count of alerts of "Infrastructure Insights"
-	InfrastructureInsights *int32 `json:"infrastructure Insights,omitempty"`
-	// ActivityLogAdministrative - Count of alerts of "ActivityLog Administrative"
-	ActivityLogAdministrative *int32 `json:"activityLog Administrative,omitempty"`
-	// ActivityLogSecurity - Count of alerts of "ActivityLog Security"
-	ActivityLogSecurity *int32 `json:"activityLog Security,omitempty"`
-	// ActivityLogRecommendation - Count of alerts of "ActivityLog Recommendation"
-	ActivityLogRecommendation *int32 `json:"activityLog Recommendation,omitempty"`
-	// ActivityLogPolicy - Count of alerts of "ActivityLog Policy"
-	ActivityLogPolicy *int32 `json:"activityLog Policy,omitempty"`
-	// ActivityLogAutoscale - Count of alerts of "ActivityLog Autoscale"
-	ActivityLogAutoscale *int32 `json:"activityLog Autoscale,omitempty"`
-	// ServiceHealth - Count of alerts of "ServiceHealth"
-	ServiceHealth *int32 `json:"serviceHealth,omitempty"`
-	// SmartDetector - Count of alerts of "Smart Detector"
-	SmartDetector *int32 `json:"smartDetector,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorCondition summary of the alerts by severity and monitor condition
-type AlertsSummaryBySeverityAndMonitorCondition struct {
-	// Sev0 - Summary of alerts by monitor condition with severity 'Sev0'
-	Sev0 *AlertsSummaryBySeverityAndMonitorConditionSev0 `json:"sev0,omitempty"`
-	// Sev1 - Summary of alerts by monitor condition with severity 'Sev1'
-	Sev1 *AlertsSummaryBySeverityAndMonitorConditionSev1 `json:"sev1,omitempty"`
-	// Sev2 - Summary of alerts by monitor condition with severity 'Sev2'
-	Sev2 *AlertsSummaryBySeverityAndMonitorConditionSev2 `json:"sev2,omitempty"`
-	// Sev3 - Summary of alerts by monitor condition with severity 'Sev3'
-	Sev3 *AlertsSummaryBySeverityAndMonitorConditionSev3 `json:"sev3,omitempty"`
-	// Sev4 - Summary of alerts by monitor condition with severity 'Sev4'
-	Sev4 *AlertsSummaryBySeverityAndMonitorConditionSev4 `json:"sev4,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev0 summary of alerts by monitor condition with severity
-// 'Sev0'
-type AlertsSummaryBySeverityAndMonitorConditionSev0 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev1 summary of alerts by monitor condition with severity
-// 'Sev1'
-type AlertsSummaryBySeverityAndMonitorConditionSev1 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev2 summary of alerts by monitor condition with severity
-// 'Sev2'
-type AlertsSummaryBySeverityAndMonitorConditionSev2 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev3 summary of alerts by monitor condition with severity
-// 'Sev3'
-type AlertsSummaryBySeverityAndMonitorConditionSev3 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev4 summary of alerts by monitor condition with severity
-// 'Sev4'
-type AlertsSummaryBySeverityAndMonitorConditionSev4 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryByState summary of alerts by state
-type AlertsSummaryByState struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryProperties summary of the alerts
-type AlertsSummaryProperties struct {
-	// Total - Total number of alerts.
+// AlertsSummaryGroup group the result set.
+type AlertsSummaryGroup struct {
+	// Total - Total count of the result set.
 	Total *int32 `json:"total,omitempty"`
-	// SmartGroupsCount - Total number of smart groups.
+	// SmartGroupsCount - Total count of the smart groups.
 	SmartGroupsCount *int32 `json:"smartGroupsCount,omitempty"`
-	// SummaryByState - Summary of alerts by state
-	SummaryByState *AlertsSummaryPropertiesSummaryByState `json:"summaryByState,omitempty"`
-	// SummaryBySeverity - Summary of alerts by severity
-	SummaryBySeverity *AlertsSummaryPropertiesSummaryBySeverity `json:"summaryBySeverity,omitempty"`
-	// SummaryBySeverityAndMonitorCondition - Summary of alerts by severity and monitor condition
-	SummaryBySeverityAndMonitorCondition *AlertsSummaryPropertiesSummaryBySeverityAndMonitorCondition `json:"summaryBySeverityAndMonitorCondition,omitempty"`
-	// SummaryByMonitorService - Summary of alerts by severity
-	SummaryByMonitorService *AlertsSummaryPropertiesSummaryByMonitorService `json:"summaryByMonitorService,omitempty"`
-	// NextLink - URL to fetch the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	// Groupedby - Name of the field aggregated
+	Groupedby *string `json:"groupedby,omitempty"`
+	// Values - List of the items
+	Values *[]AlertsSummaryGroupItem `json:"values,omitempty"`
 }
 
-// AlertsSummaryPropertiesSummaryByMonitorService summary of alerts by severity
-type AlertsSummaryPropertiesSummaryByMonitorService struct {
-	// Platform - Count of alerts of "Platform"
-	Platform *int32 `json:"platform,omitempty"`
-	// ApplicationInsights - Count of alerts of "Application Insights"
-	ApplicationInsights *int32 `json:"application Insights,omitempty"`
-	// LogAnalytics - Count of alerts of "Log Analytics"
-	LogAnalytics *int32 `json:"log Analytics,omitempty"`
-	// Zabbix - Count of alerts of "Zabbix"
-	Zabbix *int32 `json:"zabbix,omitempty"`
-	// Scom - Count of alerts of "SCOM"
-	Scom *int32 `json:"scom,omitempty"`
-	// Nagios - Count of alerts of "Nagios"
-	Nagios *int32 `json:"nagios,omitempty"`
-	// InfrastructureInsights - Count of alerts of "Infrastructure Insights"
-	InfrastructureInsights *int32 `json:"infrastructure Insights,omitempty"`
-	// ActivityLogAdministrative - Count of alerts of "ActivityLog Administrative"
-	ActivityLogAdministrative *int32 `json:"activityLog Administrative,omitempty"`
-	// ActivityLogSecurity - Count of alerts of "ActivityLog Security"
-	ActivityLogSecurity *int32 `json:"activityLog Security,omitempty"`
-	// ActivityLogRecommendation - Count of alerts of "ActivityLog Recommendation"
-	ActivityLogRecommendation *int32 `json:"activityLog Recommendation,omitempty"`
-	// ActivityLogPolicy - Count of alerts of "ActivityLog Policy"
-	ActivityLogPolicy *int32 `json:"activityLog Policy,omitempty"`
-	// ActivityLogAutoscale - Count of alerts of "ActivityLog Autoscale"
-	ActivityLogAutoscale *int32 `json:"activityLog Autoscale,omitempty"`
-	// ServiceHealth - Count of alerts of "ServiceHealth"
-	ServiceHealth *int32 `json:"serviceHealth,omitempty"`
-	// SmartDetector - Count of alerts of "Smart Detector"
-	SmartDetector *int32 `json:"smartDetector,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeverity summary of alerts by severity
-type AlertsSummaryPropertiesSummaryBySeverity struct {
-	// Sev0 - Summary of alerts by severity 'Sev0'
-	Sev0 *AlertsSummaryPropertiesSummaryBySeveritySev0 `json:"sev0,omitempty"`
-	// Sev1 - Summary of alerts by severity 'Sev1'
-	Sev1 *AlertsSummaryPropertiesSummaryBySeveritySev1 `json:"sev1,omitempty"`
-	// Sev2 - Summary of alerts by severity 'Sev2'
-	Sev2 *AlertsSummaryPropertiesSummaryBySeveritySev2 `json:"sev2,omitempty"`
-	// Sev3 - Summary of alerts by severity 'Sev3'
-	Sev3 *AlertsSummaryPropertiesSummaryBySeveritySev3 `json:"sev3,omitempty"`
-	// Sev4 - Summary of alerts by severity 'Sev4'
-	Sev4 *AlertsSummaryPropertiesSummaryBySeveritySev4 `json:"sev4,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeverityAndMonitorCondition summary of alerts by severity and monitor
-// condition
-type AlertsSummaryPropertiesSummaryBySeverityAndMonitorCondition struct {
-	// Sev0 - Summary of alerts by monitor condition with severity 'Sev0'
-	Sev0 *AlertsSummaryBySeverityAndMonitorConditionSev0 `json:"sev0,omitempty"`
-	// Sev1 - Summary of alerts by monitor condition with severity 'Sev1'
-	Sev1 *AlertsSummaryBySeverityAndMonitorConditionSev1 `json:"sev1,omitempty"`
-	// Sev2 - Summary of alerts by monitor condition with severity 'Sev2'
-	Sev2 *AlertsSummaryBySeverityAndMonitorConditionSev2 `json:"sev2,omitempty"`
-	// Sev3 - Summary of alerts by monitor condition with severity 'Sev3'
-	Sev3 *AlertsSummaryBySeverityAndMonitorConditionSev3 `json:"sev3,omitempty"`
-	// Sev4 - Summary of alerts by monitor condition with severity 'Sev4'
-	Sev4 *AlertsSummaryBySeverityAndMonitorConditionSev4 `json:"sev4,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev0 summary of alerts by severity 'Sev0'
-type AlertsSummaryPropertiesSummaryBySeveritySev0 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev1 summary of alerts by severity 'Sev1'
-type AlertsSummaryPropertiesSummaryBySeveritySev1 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev2 summary of alerts by severity 'Sev2'
-type AlertsSummaryPropertiesSummaryBySeveritySev2 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev3 summary of alerts by severity 'Sev3'
-type AlertsSummaryPropertiesSummaryBySeveritySev3 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev4 summary of alerts by severity 'Sev4'
-type AlertsSummaryPropertiesSummaryBySeveritySev4 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryByState summary of alerts by state
-type AlertsSummaryPropertiesSummaryByState struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
+// AlertsSummaryGroupItem alerts summary group item
+type AlertsSummaryGroupItem struct {
+	// Name - Value of the aggregated field
+	Name *string `json:"name,omitempty"`
+	// Count - Count of the aggregated field
+	Count *int32 `json:"count,omitempty"`
+	// Groupedby - Name of the field aggregated
+	Groupedby *string `json:"groupedby,omitempty"`
+	// Values - List of the items
+	Values *[]AlertsSummaryGroupItem `json:"values,omitempty"`
 }
 
 // Bool ...
@@ -1536,6 +1171,44 @@ type ErrorResponseBody struct {
 	Target *string `json:"target,omitempty"`
 	// Details - A list of additional details about the error.
 	Details *[]ErrorResponseBody `json:"details,omitempty"`
+}
+
+// Essentials this object contains consistent fields across different monitor services.
+type Essentials struct {
+	// Severity - READ-ONLY; Severity of alert Sev0 being highest and Sev4 being lowest. Possible values include: 'Sev0', 'Sev1', 'Sev2', 'Sev3', 'Sev4'
+	Severity Severity `json:"severity,omitempty"`
+	// SignalType - READ-ONLY; The type of signal the alert is based on, which could be metrics, logs or activity logs. Possible values include: 'Metric', 'Log', 'Unknown'
+	SignalType SignalType `json:"signalType,omitempty"`
+	// AlertState - READ-ONLY; Alert object state, which can be modified by the user. Possible values include: 'AlertStateNew', 'AlertStateAcknowledged', 'AlertStateClosed'
+	AlertState AlertState `json:"alertState,omitempty"`
+	// MonitorCondition - READ-ONLY; Condition of the rule at the monitor service. It represents whether the underlying conditions have crossed the defined alert rule thresholds. Possible values include: 'Fired', 'Resolved'
+	MonitorCondition MonitorCondition `json:"monitorCondition,omitempty"`
+	// TargetResource - Target ARM resource, on which alert got created.
+	TargetResource *string `json:"targetResource,omitempty"`
+	// TargetResourceName - Name of the target ARM resource name, on which alert got created.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	// TargetResourceGroup - Resource group of target ARM resource, on which alert got created.
+	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
+	// TargetResourceType - Resource type of target ARM resource, on which alert got created.
+	TargetResourceType *string `json:"targetResourceType,omitempty"`
+	// MonitorService - READ-ONLY; Monitor service on which the rule(monitor) is set. Possible values include: 'ApplicationInsights', 'ActivityLogAdministrative', 'ActivityLogSecurity', 'ActivityLogRecommendation', 'ActivityLogPolicy', 'ActivityLogAutoscale', 'LogAnalytics', 'Nagios', 'Platform', 'SCOM', 'ServiceHealth', 'SmartDetector', 'VMInsights', 'Zabbix'
+	MonitorService MonitorService `json:"monitorService,omitempty"`
+	// AlertRule - READ-ONLY; Rule(monitor) which fired alert instance. Depending on the monitor service,  this would be ARM id or name of the rule.
+	AlertRule *string `json:"alertRule,omitempty"`
+	// SourceCreatedID - READ-ONLY; Unique Id created by monitor service for each alert instance. This could be used to track the issue at the monitor service, in case of Nagios, Zabbix, SCOM etc.
+	SourceCreatedID *string `json:"sourceCreatedId,omitempty"`
+	// SmartGroupID - READ-ONLY; Unique Id of the smart group
+	SmartGroupID *string `json:"smartGroupId,omitempty"`
+	// SmartGroupingReason - READ-ONLY; Verbose reason describing the reason why this alert instance is added to a smart group
+	SmartGroupingReason *string `json:"smartGroupingReason,omitempty"`
+	// StartDateTime - READ-ONLY; Creation time(ISO-8601 format) of alert instance.
+	StartDateTime *date.Time `json:"startDateTime,omitempty"`
+	// LastModifiedDateTime - READ-ONLY; Last modification time(ISO-8601 format) of alert instance.
+	LastModifiedDateTime *date.Time `json:"lastModifiedDateTime,omitempty"`
+	// MonitorConditionResolvedDateTime - READ-ONLY; Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert instance because the rule condition is no longer met.
+	MonitorConditionResolvedDateTime *date.Time `json:"monitorConditionResolvedDateTime,omitempty"`
+	// LastModifiedUserName - READ-ONLY; User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name of the user.
+	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty"`
 }
 
 // ManagedResource an azure managed resource object
@@ -1802,8 +1475,8 @@ type Resource struct {
 // Scope target scope for a given action rule. By default scope will be the subscription. User can also
 // provide list of resource groups or list of resources from the scope subscription as well.
 type Scope struct {
-	// Type - type of target scope. Possible values include: 'ScopeTypeResourceGroup', 'ScopeTypeResource'
-	Type ScopeType `json:"type,omitempty"`
+	// ScopeType - type of target scope. Possible values include: 'ScopeTypeResourceGroup', 'ScopeTypeResource'
+	ScopeType ScopeType `json:"scopeType,omitempty"`
 	// Values - list of ARM IDs of the given scope type which will be the target of the given action rule.
 	Values *[]string `json:"values,omitempty"`
 }
@@ -1967,6 +1640,143 @@ type SmartGroupsList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - List of alerts
 	Value *[]SmartGroup `json:"value,omitempty"`
+}
+
+// SmartGroupsListIterator provides access to a complete listing of SmartGroup values.
+type SmartGroupsListIterator struct {
+	i    int
+	page SmartGroupsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SmartGroupsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SmartGroupsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SmartGroupsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SmartGroupsListIterator) Response() SmartGroupsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SmartGroupsListIterator) Value() SmartGroup {
+	if !iter.page.NotDone() {
+		return SmartGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SmartGroupsListIterator type.
+func NewSmartGroupsListIterator(page SmartGroupsListPage) SmartGroupsListIterator {
+	return SmartGroupsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sgl SmartGroupsList) IsEmpty() bool {
+	return sgl.Value == nil || len(*sgl.Value) == 0
+}
+
+// smartGroupsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sgl SmartGroupsList) smartGroupsListPreparer(ctx context.Context) (*http.Request, error) {
+	if sgl.NextLink == nil || len(to.String(sgl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sgl.NextLink)))
+}
+
+// SmartGroupsListPage contains a page of SmartGroup values.
+type SmartGroupsListPage struct {
+	fn  func(context.Context, SmartGroupsList) (SmartGroupsList, error)
+	sgl SmartGroupsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SmartGroupsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SmartGroupsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.sgl)
+	if err != nil {
+		return err
+	}
+	page.sgl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SmartGroupsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SmartGroupsListPage) NotDone() bool {
+	return !page.sgl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SmartGroupsListPage) Response() SmartGroupsList {
+	return page.sgl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SmartGroupsListPage) Values() []SmartGroup {
+	if page.sgl.IsEmpty() {
+		return nil
+	}
+	return *page.sgl.Value
+}
+
+// Creates a new instance of the SmartGroupsListPage type.
+func NewSmartGroupsListPage(getNextPage func(context.Context, SmartGroupsList) (SmartGroupsList, error)) SmartGroupsListPage {
+	return SmartGroupsListPage{fn: getNextPage}
 }
 
 // Suppression action rule with suppression configuration

@@ -25,31 +25,29 @@ import (
 	"net/http"
 )
 
-// DepartmentsClient is the billing client provides access to billing resources for Azure subscriptions.
-type DepartmentsClient struct {
+// CustomersClient is the billing client provides access to billing resources for Azure subscriptions.
+type CustomersClient struct {
 	BaseClient
 }
 
-// NewDepartmentsClient creates an instance of the DepartmentsClient client.
-func NewDepartmentsClient(subscriptionID string) DepartmentsClient {
-	return NewDepartmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewCustomersClient creates an instance of the CustomersClient client.
+func NewCustomersClient(subscriptionID string) CustomersClient {
+	return NewCustomersClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDepartmentsClientWithBaseURI creates an instance of the DepartmentsClient client.
-func NewDepartmentsClientWithBaseURI(baseURI string, subscriptionID string) DepartmentsClient {
-	return DepartmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewCustomersClientWithBaseURI creates an instance of the CustomersClient client.
+func NewCustomersClientWithBaseURI(baseURI string, subscriptionID string) CustomersClient {
+	return CustomersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get the department by id.
+// Get get the customer by id.
 // Parameters:
 // billingAccountName - billing Account Id.
-// departmentName - department Id.
-// expand - may be used to expand the enrollmentAccounts.
-// filter - the filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne',
-// 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client DepartmentsClient) Get(ctx context.Context, billingAccountName string, departmentName string, expand string, filter string) (result Department, err error) {
+// customerName - customer Id.
+// expand - may be used to expand enabledAzureSkus, serviceProviders.
+func (client CustomersClient) Get(ctx context.Context, billingAccountName string, customerName string, expand string) (result Customer, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DepartmentsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomersClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -58,32 +56,32 @@ func (client DepartmentsClient) Get(ctx context.Context, billingAccountName stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, billingAccountName, departmentName, expand, filter)
+	req, err := client.GetPreparer(ctx, billingAccountName, customerName, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.DepartmentsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.DepartmentsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.DepartmentsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client DepartmentsClient) GetPreparer(ctx context.Context, billingAccountName string, departmentName string, expand string, filter string) (*http.Request, error) {
+func (client CustomersClient) GetPreparer(ctx context.Context, billingAccountName string, customerName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
-		"departmentName":     autorest.Encode("path", departmentName),
+		"customerName":       autorest.Encode("path", customerName),
 	}
 
 	const APIVersion = "2018-11-01-preview"
@@ -93,28 +91,25 @@ func (client DepartmentsClient) GetPreparer(ctx context.Context, billingAccountN
 	if len(expand) > 0 {
 		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DepartmentsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client CustomersClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DepartmentsClient) GetResponder(resp *http.Response) (result Department, err error) {
+func (client CustomersClient) GetResponder(resp *http.Response) (result Customer, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -125,15 +120,17 @@ func (client DepartmentsClient) GetResponder(resp *http.Response) (result Depart
 	return
 }
 
-// ListByBillingAccountName lists all departments for which a user has access.
+// ListByBillingAccountName lists all customers which the current user can work with on-behalf of a partner.
 // Parameters:
 // billingAccountName - billing Account Id.
-// expand - may be used to expand the enrollmentAccounts.
-// filter - the filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne',
-// 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
-func (client DepartmentsClient) ListByBillingAccountName(ctx context.Context, billingAccountName string, expand string, filter string) (result DepartmentListResult, err error) {
+// filter - may be used to filter using hasPermission('{permissionId}') to only return customers for which the
+// caller has the specified permission.
+// skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+// specifies a starting point to use for subsequent calls.
+func (client CustomersClient) ListByBillingAccountName(ctx context.Context, billingAccountName string, filter string, skiptoken string) (result CustomerListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DepartmentsClient.ListByBillingAccountName")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomersClient.ListByBillingAccountName")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -142,29 +139,29 @@ func (client DepartmentsClient) ListByBillingAccountName(ctx context.Context, bi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListByBillingAccountNamePreparer(ctx, billingAccountName, expand, filter)
+	req, err := client.ListByBillingAccountNamePreparer(ctx, billingAccountName, filter, skiptoken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.DepartmentsClient", "ListByBillingAccountName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "ListByBillingAccountName", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByBillingAccountNameSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "billing.DepartmentsClient", "ListByBillingAccountName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "ListByBillingAccountName", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.DepartmentsClient", "ListByBillingAccountName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByBillingAccountNamePreparer prepares the ListByBillingAccountName request.
-func (client DepartmentsClient) ListByBillingAccountNamePreparer(ctx context.Context, billingAccountName string, expand string, filter string) (*http.Request, error) {
+func (client CustomersClient) ListByBillingAccountNamePreparer(ctx context.Context, billingAccountName string, filter string, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"billingAccountName": autorest.Encode("path", billingAccountName),
 	}
@@ -173,31 +170,31 @@ func (client DepartmentsClient) ListByBillingAccountNamePreparer(ctx context.Con
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(expand) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", expand)
-	}
 	if len(filter) > 0 {
 		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
-func (client DepartmentsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
+func (client CustomersClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always
 // closes the http.Response Body.
-func (client DepartmentsClient) ListByBillingAccountNameResponder(resp *http.Response) (result DepartmentListResult, err error) {
+func (client CustomersClient) ListByBillingAccountNameResponder(resp *http.Response) (result CustomerListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

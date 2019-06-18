@@ -118,6 +118,84 @@ func (client SubscriptionsClient) GetResponder(resp *http.Response) (result Subs
 	return
 }
 
+// GetByCustomerName get a single billing subscription by name.
+// Parameters:
+// billingAccountName - billing Account Id.
+// customerName - customer Id.
+// billingSubscriptionName - billing Subscription Id.
+func (client SubscriptionsClient) GetByCustomerName(ctx context.Context, billingAccountName string, customerName string, billingSubscriptionName string) (result SubscriptionSummary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.GetByCustomerName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetByCustomerNamePreparer(ctx, billingAccountName, customerName, billingSubscriptionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "GetByCustomerName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetByCustomerNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "GetByCustomerName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetByCustomerNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "GetByCustomerName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetByCustomerNamePreparer prepares the GetByCustomerName request.
+func (client SubscriptionsClient) GetByCustomerNamePreparer(ctx context.Context, billingAccountName string, customerName string, billingSubscriptionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName":      autorest.Encode("path", billingAccountName),
+		"billingSubscriptionName": autorest.Encode("path", billingSubscriptionName),
+		"customerName":            autorest.Encode("path", customerName),
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/billingSubscriptions/{billingSubscriptionName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetByCustomerNameSender sends the GetByCustomerName request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubscriptionsClient) GetByCustomerNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// GetByCustomerNameResponder handles the response to the GetByCustomerName request. The method always
+// closes the http.Response Body.
+func (client SubscriptionsClient) GetByCustomerNameResponder(resp *http.Response) (result SubscriptionSummary, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListByBillingAccountName lists billing subscriptions by billing account name.
 // Parameters:
 // billingAccountName - billing Account Id.
@@ -306,6 +384,82 @@ func (client SubscriptionsClient) ListByBillingProfileNameResponder(resp *http.R
 	return
 }
 
+// ListByCustomerName lists billing subscription by customer name.
+// Parameters:
+// billingAccountName - billing Account Id.
+// customerName - customer Id.
+func (client SubscriptionsClient) ListByCustomerName(ctx context.Context, billingAccountName string, customerName string) (result SubscriptionsListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.ListByCustomerName")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListByCustomerNamePreparer(ctx, billingAccountName, customerName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByCustomerName", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByCustomerNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByCustomerName", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByCustomerNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByCustomerName", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByCustomerNamePreparer prepares the ListByCustomerName request.
+func (client SubscriptionsClient) ListByCustomerNamePreparer(ctx context.Context, billingAccountName string, customerName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+		"customerName":       autorest.Encode("path", customerName),
+	}
+
+	const APIVersion = "2018-11-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/billingSubscriptions", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByCustomerNameSender sends the ListByCustomerName request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubscriptionsClient) ListByCustomerNameSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ListByCustomerNameResponder handles the response to the ListByCustomerName request. The method always
+// closes the http.Response Body.
+func (client SubscriptionsClient) ListByCustomerNameResponder(resp *http.Response) (result SubscriptionsListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListByInvoiceSectionName lists billing subscription by invoice section name.
 // Parameters:
 // billingAccountName - billing Account Id.
@@ -451,6 +605,81 @@ func (client SubscriptionsClient) TransferResponder(resp *http.Response) (result
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ValidateTransfer validates the transfer of billing subscriptions across invoice sections.
+// Parameters:
+// billingAccountName - billing Account Id.
+// invoiceSectionName - invoiceSection Id.
+// billingSubscriptionName - billing Subscription Id.
+// parameters - parameters supplied to the Transfer Billing Subscription operation.
+func (client SubscriptionsClient) ValidateTransfer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters TransferBillingSubscriptionRequestProperties) (result ValidateSubscriptionTransferEligibilityResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.ValidateTransfer")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ValidateTransferPreparer(ctx, billingAccountName, invoiceSectionName, billingSubscriptionName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ValidateTransfer", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ValidateTransferSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ValidateTransfer", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ValidateTransferResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ValidateTransfer", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ValidateTransferPreparer prepares the ValidateTransfer request.
+func (client SubscriptionsClient) ValidateTransferPreparer(ctx context.Context, billingAccountName string, invoiceSectionName string, billingSubscriptionName string, parameters TransferBillingSubscriptionRequestProperties) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName":      autorest.Encode("path", billingAccountName),
+		"billingSubscriptionName": autorest.Encode("path", billingSubscriptionName),
+		"invoiceSectionName":      autorest.Encode("path", invoiceSectionName),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/billingSubscriptions/{billingSubscriptionName}/validateTransferEligibility", pathParameters),
+		autorest.WithJSON(parameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ValidateTransferSender sends the ValidateTransfer request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubscriptionsClient) ValidateTransferSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ValidateTransferResponder handles the response to the ValidateTransfer request. The method always
+// closes the http.Response Body.
+func (client SubscriptionsClient) ValidateTransferResponder(resp *http.Response) (result ValidateSubscriptionTransferEligibilityResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

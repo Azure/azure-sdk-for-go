@@ -22,19 +22,11 @@ package policy
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/policy"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-01-01/policy"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
-)
-
-type Mode = original.Mode
-
-const (
-	All          Mode = original.All
-	Indexed      Mode = original.Indexed
-	NotSpecified Mode = original.NotSpecified
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -47,9 +39,9 @@ const (
 type Type = original.Type
 
 const (
-	TypeBuiltIn      Type = original.TypeBuiltIn
-	TypeCustom       Type = original.TypeCustom
-	TypeNotSpecified Type = original.TypeNotSpecified
+	BuiltIn      Type = original.BuiltIn
+	Custom       Type = original.Custom
+	NotSpecified Type = original.NotSpecified
 )
 
 type Assignment = original.Assignment
@@ -117,9 +109,6 @@ func NewSetDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) S
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleModeValues() []Mode {
-	return original.PossibleModeValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

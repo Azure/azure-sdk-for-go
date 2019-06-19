@@ -851,12 +851,12 @@ type AS2MdnSettings struct {
 	ReceiptDeliveryURL *string `json:"receiptDeliveryUrl,omitempty"`
 	// DispositionNotificationTo - The disposition notification to header value.
 	DispositionNotificationTo *string `json:"dispositionNotificationTo,omitempty"`
-	// SignOutboundMdnIfOptional - The value indicating whether to sign the outbound MDN if optional.
-	SignOutboundMdnIfOptional *bool `json:"signOutboundMdnIfOptional,omitempty"`
+	// SignOutboundMDNIfOptional - The value indicating whether to sign the outbound MDN if optional.
+	SignOutboundMDNIfOptional *bool `json:"signOutboundMDNIfOptional,omitempty"`
 	// MdnText - The MDN text.
 	MdnText *string `json:"mdnText,omitempty"`
-	// SendInboundMdnToMessageBox - The value indicating whether to send inbound MDN to message box.
-	SendInboundMdnToMessageBox *bool `json:"sendInboundMdnToMessageBox,omitempty"`
+	// SendInboundMDNToMessageBox - The value indicating whether to send inbound MDN to message box.
+	SendInboundMDNToMessageBox *bool `json:"sendInboundMDNToMessageBox,omitempty"`
 	// MicHashingAlgorithm - The signing or hashing algorithm. Possible values include: 'HashingAlgorithmNotSpecified', 'HashingAlgorithmNone', 'HashingAlgorithmMD5', 'HashingAlgorithmSHA1', 'HashingAlgorithmSHA2256', 'HashingAlgorithmSHA2384', 'HashingAlgorithmSHA2512'
 	MicHashingAlgorithm HashingAlgorithm `json:"micHashingAlgorithm,omitempty"`
 }

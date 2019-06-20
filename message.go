@@ -319,6 +319,16 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 		return errors.New("lock token on the message is not set, thus cannot send disposition")
 	}
 
+	conn, err := m.ec.newConnection(ctx)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+	defer func() {
+		_ = conn.Close()
+	}()
+
+	var opts []rpc.LinkOption
 	value := map[string]interface{}{
 		"disposition-status": string(state.Status),
 		"lock-tokens":        []amqp.UUID{amqp.UUID(*m.LockToken)},
@@ -332,6 +342,11 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 		value["deadletter-description"] = state.DeadLetterDescription
 	}
 
+	if id, ok := m.ec.getSessionFilterID(); ok {
+		value["session-id"] = id
+		opts = append(opts, rpc.LinkWithSessionFilter(id))
+	}
+
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			operationFieldName: "com.microsoft:update-disposition",
@@ -339,16 +354,7 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 		Value: value,
 	}
 
-	conn, err := m.ec.newConnection(ctx)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-	defer func() {
-		_ = conn.Close()
-	}()
-
-	link, err := rpc.NewLink(conn, m.ec.ManagementPath())
+	link, err := rpc.NewLink(conn, m.ec.ManagementPath(), opts...)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err

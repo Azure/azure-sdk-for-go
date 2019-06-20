@@ -734,7 +734,7 @@ func (suite *serviceBusSuite) TestQueue_NewSessionWithNoRequiredSessions() {
 
 func (suite *serviceBusSuite) TestIssue127QueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"SendMessageToSessionQueueDeferAndThenReceiveDeferredMsg_NoZeroCheck": func(ctx context.Context, t *testing.T, queue *Queue) {
+		"SendMessageToSessionQueueDeferAndThenReceiveDeferredMsg": func(ctx context.Context, t *testing.T, queue *Queue) {
 			sessionID := "123"
 			qs := NewQueueSession(queue, &sessionID)
 
@@ -761,8 +761,10 @@ func (suite *serviceBusSuite) TestIssue127QueueClient() {
 			receivedDeferredChan := make(chan *Message, 1)
 			receiveDeferredHandler := HandlerFunc(func(dCtx context.Context, dMsg *Message) error {
 				// send signal that the deferred message was received
-				receivedDeferredChan <- dMsg
-				return nil
+				defer func(){
+					receivedDeferredChan <- dMsg
+				}()
+				return dMsg.Complete(dCtx)
 			})
 
 			// wait until we get the sequence number for the message we sent to the deferral queue

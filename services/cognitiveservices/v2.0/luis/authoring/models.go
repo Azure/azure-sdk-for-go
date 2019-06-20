@@ -736,7 +736,7 @@ type EntityLabel struct {
 	StartTokenIndex *int32 `json:"startTokenIndex,omitempty"`
 	// EndTokenIndex - The index within the utterance where the extracted entity ends.
 	EndTokenIndex *int32 `json:"endTokenIndex,omitempty"`
-	// Role - The role.
+	// Role - The role of the entity within the utterance.
 	Role *string `json:"role,omitempty"`
 	// RoleID - The role Id.
 	RoleID *string `json:"roleId,omitempty"`
@@ -750,7 +750,7 @@ type EntityLabelObject struct {
 	StartCharIndex *int32 `json:"startCharIndex,omitempty"`
 	// EndCharIndex - The index within the utterance where the extracted entity ends.
 	EndCharIndex *int32 `json:"endCharIndex,omitempty"`
-	// Role - The role.
+	// Role - The role of the entity within the utterance.
 	Role *string `json:"role,omitempty"`
 }
 
@@ -1015,7 +1015,7 @@ type JSONEntity struct {
 	EndPos *int32 `json:"endPos,omitempty"`
 	// Entity - The entity name.
 	Entity *string `json:"entity,omitempty"`
-	// Role - The role.
+	// Role - The role of the entity within the utterance.
 	Role *string `json:"role,omitempty"`
 }
 

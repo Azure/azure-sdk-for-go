@@ -208,7 +208,6 @@ func (client QuotasClient) UpdatePreparer(ctx context.Context, location string, 
 		"api-version": APIVersion,
 	}
 
-	parameters.Value = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),

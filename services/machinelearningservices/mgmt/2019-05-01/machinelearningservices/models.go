@@ -2131,9 +2131,9 @@ type Password struct {
 
 // QuotaBaseProperties the properties for Quota update or retrieval.
 type QuotaBaseProperties struct {
-	// ID - READ-ONLY; Specifies the resource ID.
+	// ID - Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
-	// Type - READ-ONLY; Specifies the resource type.
+	// Type - Specifies the resource type.
 	Type *string `json:"type,omitempty"`
 	// Quota - The workspace level quota.
 	Quota *int32 `json:"quota,omitempty"`
@@ -2169,7 +2169,7 @@ func (future *QuotasUpdateFuture) Result(client QuotasClient) (uwqr UpdateWorksp
 
 // QuotaUpdateParameters quota update parameters.
 type QuotaUpdateParameters struct {
-	// Value - READ-ONLY; The list for update quota.
+	// Value - The list for update quota.
 	Value *[]QuotaBaseProperties `json:"value,omitempty"`
 }
 
@@ -2284,7 +2284,7 @@ type UpdateWorkspaceQuotas struct {
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Specifies the resource type.
 	Type *string `json:"type,omitempty"`
-	// Quota - Quota.
+	// Quota - The quota of the resource.
 	Quota *int32 `json:"quota,omitempty"`
 	// Status - Status of update workspace quota. Possible values include: 'Undefined', 'Success', 'Failure'
 	Status Status `json:"status,omitempty"`

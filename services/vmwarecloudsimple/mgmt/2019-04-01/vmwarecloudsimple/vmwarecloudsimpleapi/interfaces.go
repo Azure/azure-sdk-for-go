@@ -76,19 +76,19 @@ type PrivateCloudByRegionClientAPI interface {
 
 var _ PrivateCloudByRegionClientAPI = (*vmwarecloudsimple.PrivateCloudByRegionClient)(nil)
 
-// ResourcepoolsByPCClientAPI contains the set of methods on the ResourcepoolsByPCClient type.
-type ResourcepoolsByPCClientAPI interface {
+// ResourcePoolsByPCClientAPI contains the set of methods on the ResourcePoolsByPCClient type.
+type ResourcePoolsByPCClientAPI interface {
 	List(ctx context.Context, pcName string) (result vmwarecloudsimple.ResourcePoolsListResponsePage, err error)
 }
 
-var _ ResourcepoolsByPCClientAPI = (*vmwarecloudsimple.ResourcepoolsByPCClient)(nil)
+var _ ResourcePoolsByPCClientAPI = (*vmwarecloudsimple.ResourcePoolsByPCClient)(nil)
 
-// ResourcepoolByPCClientAPI contains the set of methods on the ResourcepoolByPCClient type.
-type ResourcepoolByPCClientAPI interface {
+// ResourcePoolByPCClientAPI contains the set of methods on the ResourcePoolByPCClient type.
+type ResourcePoolByPCClientAPI interface {
 	Get(ctx context.Context, pcName string, resourcePoolName string) (result vmwarecloudsimple.ResourcePool, err error)
 }
 
-var _ ResourcepoolByPCClientAPI = (*vmwarecloudsimple.ResourcepoolByPCClient)(nil)
+var _ ResourcePoolByPCClientAPI = (*vmwarecloudsimple.ResourcePoolByPCClient)(nil)
 
 // VirtualMachineTemplatesByPCClientAPI contains the set of methods on the VirtualMachineTemplatesByPCClient type.
 type VirtualMachineTemplatesByPCClientAPI interface {

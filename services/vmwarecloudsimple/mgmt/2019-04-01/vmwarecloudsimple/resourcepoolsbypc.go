@@ -25,27 +25,27 @@ import (
 	"net/http"
 )
 
-// ResourcepoolsByPCClient is the description of the new service
-type ResourcepoolsByPCClient struct {
+// ResourcePoolsByPCClient is the description of the new service
+type ResourcePoolsByPCClient struct {
 	BaseClient
 }
 
-// NewResourcepoolsByPCClient creates an instance of the ResourcepoolsByPCClient client.
-func NewResourcepoolsByPCClient(referer string, regionID string, subscriptionID string) ResourcepoolsByPCClient {
-	return NewResourcepoolsByPCClientWithBaseURI(DefaultBaseURI, referer, regionID, subscriptionID)
+// NewResourcePoolsByPCClient creates an instance of the ResourcePoolsByPCClient client.
+func NewResourcePoolsByPCClient(referer string, regionID string, subscriptionID string) ResourcePoolsByPCClient {
+	return NewResourcePoolsByPCClientWithBaseURI(DefaultBaseURI, referer, regionID, subscriptionID)
 }
 
-// NewResourcepoolsByPCClientWithBaseURI creates an instance of the ResourcepoolsByPCClient client.
-func NewResourcepoolsByPCClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) ResourcepoolsByPCClient {
-	return ResourcepoolsByPCClient{NewWithBaseURI(baseURI, referer, regionID, subscriptionID)}
+// NewResourcePoolsByPCClientWithBaseURI creates an instance of the ResourcePoolsByPCClient client.
+func NewResourcePoolsByPCClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) ResourcePoolsByPCClient {
+	return ResourcePoolsByPCClient{NewWithBaseURI(baseURI, referer, regionID, subscriptionID)}
 }
 
 // List returns list of resource pools in region for private cloud
 // Parameters:
 // pcName - the private cloud name
-func (client ResourcepoolsByPCClient) List(ctx context.Context, pcName string) (result ResourcePoolsListResponsePage, err error) {
+func (client ResourcePoolsByPCClient) List(ctx context.Context, pcName string) (result ResourcePoolsListResponsePage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcepoolsByPCClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcePoolsByPCClient.List")
 		defer func() {
 			sc := -1
 			if result.rplr.Response.Response != nil {
@@ -57,27 +57,27 @@ func (client ResourcepoolsByPCClient) List(ctx context.Context, pcName string) (
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, pcName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcepoolsByPCClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsByPCClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.rplr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcepoolsByPCClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsByPCClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.rplr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcepoolsByPCClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsByPCClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ResourcepoolsByPCClient) ListPreparer(ctx context.Context, pcName string) (*http.Request, error) {
+func (client ResourcePoolsByPCClient) ListPreparer(ctx context.Context, pcName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"pcName":         autorest.Encode("path", pcName),
 		"regionId":       autorest.Encode("path", client.RegionID),
@@ -99,14 +99,14 @@ func (client ResourcepoolsByPCClient) ListPreparer(ctx context.Context, pcName s
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ResourcepoolsByPCClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ResourcePoolsByPCClient) ListSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ResourcepoolsByPCClient) ListResponder(resp *http.Response) (result ResourcePoolsListResponse, err error) {
+func (client ResourcePoolsByPCClient) ListResponder(resp *http.Response) (result ResourcePoolsListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -118,10 +118,10 @@ func (client ResourcepoolsByPCClient) ListResponder(resp *http.Response) (result
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ResourcepoolsByPCClient) listNextResults(ctx context.Context, lastResults ResourcePoolsListResponse) (result ResourcePoolsListResponse, err error) {
+func (client ResourcePoolsByPCClient) listNextResults(ctx context.Context, lastResults ResourcePoolsListResponse) (result ResourcePoolsListResponse, err error) {
 	req, err := lastResults.resourcePoolsListResponsePreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcepoolsByPCClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsByPCClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -129,19 +129,19 @@ func (client ResourcepoolsByPCClient) listNextResults(ctx context.Context, lastR
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcepoolsByPCClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsByPCClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcepoolsByPCClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsByPCClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ResourcepoolsByPCClient) ListComplete(ctx context.Context, pcName string) (result ResourcePoolsListResponseIterator, err error) {
+func (client ResourcePoolsByPCClient) ListComplete(ctx context.Context, pcName string) (result ResourcePoolsListResponseIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcepoolsByPCClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcePoolsByPCClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

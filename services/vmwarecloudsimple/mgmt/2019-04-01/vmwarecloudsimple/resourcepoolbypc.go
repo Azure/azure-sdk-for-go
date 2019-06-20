@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// ResourcepoolByPCClient is the description of the new service
-type ResourcepoolByPCClient struct {
+// ResourcePoolByPCClient is the description of the new service
+type ResourcePoolByPCClient struct {
 	BaseClient
 }
 
-// NewResourcepoolByPCClient creates an instance of the ResourcepoolByPCClient client.
-func NewResourcepoolByPCClient(referer string, regionID string, subscriptionID string) ResourcepoolByPCClient {
-	return NewResourcepoolByPCClientWithBaseURI(DefaultBaseURI, referer, regionID, subscriptionID)
+// NewResourcePoolByPCClient creates an instance of the ResourcePoolByPCClient client.
+func NewResourcePoolByPCClient(referer string, regionID string, subscriptionID string) ResourcePoolByPCClient {
+	return NewResourcePoolByPCClientWithBaseURI(DefaultBaseURI, referer, regionID, subscriptionID)
 }
 
-// NewResourcepoolByPCClientWithBaseURI creates an instance of the ResourcepoolByPCClient client.
-func NewResourcepoolByPCClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) ResourcepoolByPCClient {
-	return ResourcepoolByPCClient{NewWithBaseURI(baseURI, referer, regionID, subscriptionID)}
+// NewResourcePoolByPCClientWithBaseURI creates an instance of the ResourcePoolByPCClient client.
+func NewResourcePoolByPCClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) ResourcePoolByPCClient {
+	return ResourcePoolByPCClient{NewWithBaseURI(baseURI, referer, regionID, subscriptionID)}
 }
 
 // Get returns resource pool templates by its name
 // Parameters:
 // pcName - the private cloud name
 // resourcePoolName - resource pool id (vsphereId)
-func (client ResourcepoolByPCClient) Get(ctx context.Context, pcName string, resourcePoolName string) (result ResourcePool, err error) {
+func (client ResourcePoolByPCClient) Get(ctx context.Context, pcName string, resourcePoolName string) (result ResourcePool, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcepoolByPCClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcePoolByPCClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -57,27 +57,27 @@ func (client ResourcepoolByPCClient) Get(ctx context.Context, pcName string, res
 	}
 	req, err := client.GetPreparer(ctx, pcName, resourcePoolName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcepoolByPCClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolByPCClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcepoolByPCClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolByPCClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcepoolByPCClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolByPCClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ResourcepoolByPCClient) GetPreparer(ctx context.Context, pcName string, resourcePoolName string) (*http.Request, error) {
+func (client ResourcePoolByPCClient) GetPreparer(ctx context.Context, pcName string, resourcePoolName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"pcName":           autorest.Encode("path", pcName),
 		"regionId":         autorest.Encode("path", client.RegionID),
@@ -100,14 +100,14 @@ func (client ResourcepoolByPCClient) GetPreparer(ctx context.Context, pcName str
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ResourcepoolByPCClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ResourcePoolByPCClient) GetSender(req *http.Request) (*http.Response, error) {
 	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ResourcepoolByPCClient) GetResponder(resp *http.Response) (result ResourcePool, err error) {
+func (client ResourcePoolByPCClient) GetResponder(resp *http.Response) (result ResourcePool, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

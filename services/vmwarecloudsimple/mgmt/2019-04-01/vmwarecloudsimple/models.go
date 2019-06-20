@@ -1022,7 +1022,7 @@ func (dcnp *DedicatedCloudNodeProperties) UnmarshalJSON(body []byte) error {
 // DedicatedCloudService dedicated cloud service model
 type DedicatedCloudService struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/dedicatedcloudservices/{dedicatedCloudServiceName}
+	// ID - READ-ONLY; /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/dedicatedCloudServices/{dedicatedCloudServiceName}
 	ID *string `json:"id,omitempty"`
 	// Location - Azure region
 	Location *string `json:"location,omitempty"`
@@ -1893,11 +1893,11 @@ func NewResourcePoolsListResponsePage(getNextPage func(context.Context, Resource
 type Sku struct {
 	// Capacity - The capacity of the SKU
 	Capacity *string `json:"capacity,omitempty"`
-	// Description - dedicatedcloudnode example: 8 x Ten-Core Intel® Xeon® Processor E5-2640 v4 2.40GHz 25MB Cache (90W); 12 x 64GB PC4-19200 2400MHz DDR4 ECC Registered DIMM, ...
+	// Description - dedicatedCloudNode example: 8 x Ten-Core Intel® Xeon® Processor E5-2640 v4 2.40GHz 25MB Cache (90W); 12 x 64GB PC4-19200 2400MHz DDR4 ECC Registered DIMM, ...
 	Description *string `json:"description,omitempty"`
 	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here
 	Family *string `json:"family,omitempty"`
-	// Name - The name of the SKU for VMWare Cloudsimple Node
+	// Name - The name of the SKU for VMWare CloudSimple Node
 	Name *string `json:"name,omitempty"`
 	// Tier - The tier of the SKU
 	Tier *string `json:"tier,omitempty"`
@@ -1905,13 +1905,13 @@ type Sku struct {
 
 // SkuAvailability SKU availability model
 type SkuAvailability struct {
-	// DedicatedAvailabilityZoneID - CSOS Availability Zone id
+	// DedicatedAvailabilityZoneID - CloudSimple Availability Zone id
 	DedicatedAvailabilityZoneID *string `json:"dedicatedAvailabilityZoneId,omitempty"`
-	// DedicatedAvailabilityZoneName - CSOS Availability Zone Name
+	// DedicatedAvailabilityZoneName - CloudSimple Availability Zone Name
 	DedicatedAvailabilityZoneName *string `json:"dedicatedAvailabilityZoneName,omitempty"`
-	// DedicatedPlacementGroupID - CSOS Placement Group Id
+	// DedicatedPlacementGroupID - CloudSimple Placement Group Id
 	DedicatedPlacementGroupID *string `json:"dedicatedPlacementGroupId,omitempty"`
-	// DedicatedPlacementGroupName - CSOS Placement Group name
+	// DedicatedPlacementGroupName - CloudSimple Placement Group name
 	DedicatedPlacementGroupName *string `json:"dedicatedPlacementGroupName,omitempty"`
 	// Limit - indicates how many resources of a given SKU is available in a AZ->PG
 	Limit *int32 `json:"limit,omitempty"`
@@ -3216,18 +3216,18 @@ type VirtualNetworkProperties struct {
 
 // VirtualNic virtual NIC model
 type VirtualNic struct {
-	// IPAddresses - NIC's ip address
+	// IPAddresses - NIC ip address
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`
-	// MacAddress - NIC's MAC address
+	// MacAddress - NIC MAC address
 	MacAddress *string `json:"macAddress,omitempty"`
 	// Network - The list of Virtual Networks
 	Network *VirtualNetwork `json:"network,omitempty"`
-	// NicType - NIC's type. Possible values include: 'E1000', 'E1000E', 'PCNET32', 'VMXNET', 'VMXNET2', 'VMXNET3'
+	// NicType - NIC type. Possible values include: 'E1000', 'E1000E', 'PCNET32', 'VMXNET', 'VMXNET2', 'VMXNET3'
 	NicType NICType `json:"nicType,omitempty"`
 	// PowerOnBoot - Is NIC powered on/off on boot
 	PowerOnBoot *bool `json:"powerOnBoot,omitempty"`
-	// VirtualNicID - NIC's id
+	// VirtualNicID - NIC id
 	VirtualNicID *string `json:"virtualNicId,omitempty"`
-	// VirtualNicName - READ-ONLY; NIC's name
+	// VirtualNicName - READ-ONLY; NIC name
 	VirtualNicName *string `json:"virtualNicName,omitempty"`
 }

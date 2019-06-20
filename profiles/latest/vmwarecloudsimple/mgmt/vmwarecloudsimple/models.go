@@ -160,12 +160,12 @@ type PrivateCloudListIterator = original.PrivateCloudListIterator
 type PrivateCloudListPage = original.PrivateCloudListPage
 type PrivateCloudProperties = original.PrivateCloudProperties
 type ResourcePool = original.ResourcePool
+type ResourcePoolByPCClient = original.ResourcePoolByPCClient
 type ResourcePoolProperties = original.ResourcePoolProperties
+type ResourcePoolsByPCClient = original.ResourcePoolsByPCClient
 type ResourcePoolsListResponse = original.ResourcePoolsListResponse
 type ResourcePoolsListResponseIterator = original.ResourcePoolsListResponseIterator
 type ResourcePoolsListResponsePage = original.ResourcePoolsListResponsePage
-type ResourcepoolByPCClient = original.ResourcepoolByPCClient
-type ResourcepoolsByPCClient = original.ResourcepoolsByPCClient
 type Sku = original.Sku
 type SkuAvailability = original.SkuAvailability
 type SkuAvailabilityListResponse = original.SkuAvailabilityListResponse
@@ -260,23 +260,23 @@ func NewPrivateCloudListIterator(page PrivateCloudListPage) PrivateCloudListIter
 func NewPrivateCloudListPage(getNextPage func(context.Context, PrivateCloudList) (PrivateCloudList, error)) PrivateCloudListPage {
 	return original.NewPrivateCloudListPage(getNextPage)
 }
+func NewResourcePoolByPCClient(referer string, regionID string, subscriptionID string) ResourcePoolByPCClient {
+	return original.NewResourcePoolByPCClient(referer, regionID, subscriptionID)
+}
+func NewResourcePoolByPCClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) ResourcePoolByPCClient {
+	return original.NewResourcePoolByPCClientWithBaseURI(baseURI, referer, regionID, subscriptionID)
+}
+func NewResourcePoolsByPCClient(referer string, regionID string, subscriptionID string) ResourcePoolsByPCClient {
+	return original.NewResourcePoolsByPCClient(referer, regionID, subscriptionID)
+}
+func NewResourcePoolsByPCClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) ResourcePoolsByPCClient {
+	return original.NewResourcePoolsByPCClientWithBaseURI(baseURI, referer, regionID, subscriptionID)
+}
 func NewResourcePoolsListResponseIterator(page ResourcePoolsListResponsePage) ResourcePoolsListResponseIterator {
 	return original.NewResourcePoolsListResponseIterator(page)
 }
 func NewResourcePoolsListResponsePage(getNextPage func(context.Context, ResourcePoolsListResponse) (ResourcePoolsListResponse, error)) ResourcePoolsListResponsePage {
 	return original.NewResourcePoolsListResponsePage(getNextPage)
-}
-func NewResourcepoolByPCClient(referer string, regionID string, subscriptionID string) ResourcepoolByPCClient {
-	return original.NewResourcepoolByPCClient(referer, regionID, subscriptionID)
-}
-func NewResourcepoolByPCClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) ResourcepoolByPCClient {
-	return original.NewResourcepoolByPCClientWithBaseURI(baseURI, referer, regionID, subscriptionID)
-}
-func NewResourcepoolsByPCClient(referer string, regionID string, subscriptionID string) ResourcepoolsByPCClient {
-	return original.NewResourcepoolsByPCClient(referer, regionID, subscriptionID)
-}
-func NewResourcepoolsByPCClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) ResourcepoolsByPCClient {
-	return original.NewResourcepoolsByPCClientWithBaseURI(baseURI, referer, regionID, subscriptionID)
 }
 func NewSkuAvailabilityListResponseIterator(page SkuAvailabilityListResponsePage) SkuAvailabilityListResponseIterator {
 	return original.NewSkuAvailabilityListResponseIterator(page)

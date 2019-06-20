@@ -1624,9 +1624,9 @@ type PrivateCloudProperties struct {
 	Type *string `json:"type,omitempty"`
 	// VSphereVersion - e.g. "6.5u2"
 	VSphereVersion *string `json:"vSphereVersion,omitempty"`
-	// VcenterFqdn - FQDN for vcneter access
+	// VcenterFqdn - FQDN for vcenter access
 	VcenterFqdn *string `json:"vcenterFqdn,omitempty"`
-	// VcenterRefid - Vcenters' ip address
+	// VcenterRefid - Vcenter ip address
 	VcenterRefid *string `json:"vcenterRefid,omitempty"`
 	// VirtualMachineTemplates - The list of Virtual Machine Templates
 	VirtualMachineTemplates *[]VirtualMachineTemplate `json:"virtualMachineTemplates,omitempty"`
@@ -2263,7 +2263,7 @@ type VirtualDiskController struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The display name of Controller
 	Name *string `json:"name,omitempty"`
-	// SubType - READ-ONLY; dik controller subtype (VMWARE_PARAVIRTUAL, BUS_PARALEL, LSI_PARALEL, LSI_SAS)
+	// SubType - READ-ONLY; dik controller subtype (VMWARE_PARAVIRTUAL, BUS_PARALLEL, LSI_PARALLEL, LSI_SAS)
 	SubType *string `json:"subType,omitempty"`
 	// Type - READ-ONLY; disk controller type (SCSI)
 	Type *string `json:"type,omitempty"`

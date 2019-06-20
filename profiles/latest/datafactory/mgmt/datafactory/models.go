@@ -58,11 +58,33 @@ const (
 	TRACE   AzureFunctionActivityMethod = original.TRACE
 )
 
+type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
+
+const (
+	Merge  AzureSearchIndexWriteBehaviorType = original.Merge
+	Upload AzureSearchIndexWriteBehaviorType = original.Upload
+)
+
 type BlobEventTypes = original.BlobEventTypes
 
 const (
 	MicrosoftStorageBlobCreated BlobEventTypes = original.MicrosoftStorageBlobCreated
 	MicrosoftStorageBlobDeleted BlobEventTypes = original.MicrosoftStorageBlobDeleted
+)
+
+type CassandraSourceReadConsistencyLevels = original.CassandraSourceReadConsistencyLevels
+
+const (
+	ALL         CassandraSourceReadConsistencyLevels = original.ALL
+	EACHQUORUM  CassandraSourceReadConsistencyLevels = original.EACHQUORUM
+	LOCALONE    CassandraSourceReadConsistencyLevels = original.LOCALONE
+	LOCALQUORUM CassandraSourceReadConsistencyLevels = original.LOCALQUORUM
+	LOCALSERIAL CassandraSourceReadConsistencyLevels = original.LOCALSERIAL
+	ONE         CassandraSourceReadConsistencyLevels = original.ONE
+	QUORUM      CassandraSourceReadConsistencyLevels = original.QUORUM
+	SERIAL      CassandraSourceReadConsistencyLevels = original.SERIAL
+	THREE       CassandraSourceReadConsistencyLevels = original.THREE
+	TWO         CassandraSourceReadConsistencyLevels = original.TWO
 )
 
 type DayOfWeek = original.DayOfWeek
@@ -400,6 +422,27 @@ const (
 	RunQueryOrderByFieldTriggerRunTimestamp RunQueryOrderByField = original.RunQueryOrderByFieldTriggerRunTimestamp
 )
 
+type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
+
+const (
+	Insert SalesforceSinkWriteBehavior = original.Insert
+	Upsert SalesforceSinkWriteBehavior = original.Upsert
+)
+
+type SalesforceSourceReadBehavior = original.SalesforceSourceReadBehavior
+
+const (
+	Query    SalesforceSourceReadBehavior = original.Query
+	QueryAll SalesforceSourceReadBehavior = original.QueryAll
+)
+
+type SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehavior
+
+const (
+	SapCloudForCustomerSinkWriteBehaviorInsert SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehaviorInsert
+	SapCloudForCustomerSinkWriteBehaviorUpdate SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehaviorUpdate
+)
+
 type SapHanaAuthenticationType = original.SapHanaAuthenticationType
 
 const (
@@ -655,7 +698,6 @@ const (
 	TypeSQLServerSource                TypeBasicCopySource = original.TypeSQLServerSource
 	TypeSQLSource                      TypeBasicCopySource = original.TypeSQLSource
 	TypeSquareSource                   TypeBasicCopySource = original.TypeSquareSource
-	TypeTeradataSource                 TypeBasicCopySource = original.TypeTeradataSource
 	TypeVerticaSource                  TypeBasicCopySource = original.TypeVerticaSource
 	TypeWebSource                      TypeBasicCopySource = original.TypeWebSource
 	TypeXeroSource                     TypeBasicCopySource = original.TypeXeroSource
@@ -729,7 +771,6 @@ const (
 	TypeSparkObject                    TypeBasicDataset = original.TypeSparkObject
 	TypeSQLServerTable                 TypeBasicDataset = original.TypeSQLServerTable
 	TypeSquareObject                   TypeBasicDataset = original.TypeSquareObject
-	TypeTeradataTable                  TypeBasicDataset = original.TypeTeradataTable
 	TypeVerticaTable                   TypeBasicDataset = original.TypeVerticaTable
 	TypeWebTable                       TypeBasicDataset = original.TypeWebTable
 	TypeXeroObject                     TypeBasicDataset = original.TypeXeroObject
@@ -1366,7 +1407,6 @@ type OperationServiceSpecification = original.OperationServiceSpecification
 type OperationsClient = original.OperationsClient
 type OracleLinkedService = original.OracleLinkedService
 type OracleLinkedServiceTypeProperties = original.OracleLinkedServiceTypeProperties
-type OraclePartitionSettings = original.OraclePartitionSettings
 type OracleServiceCloudLinkedService = original.OracleServiceCloudLinkedService
 type OracleServiceCloudLinkedServiceTypeProperties = original.OracleServiceCloudLinkedServiceTypeProperties
 type OracleServiceCloudObjectDataset = original.OracleServiceCloudObjectDataset
@@ -1496,7 +1536,6 @@ type SapOpenHubTableDataset = original.SapOpenHubTableDataset
 type SapOpenHubTableDatasetTypeProperties = original.SapOpenHubTableDatasetTypeProperties
 type SapTableLinkedService = original.SapTableLinkedService
 type SapTableLinkedServiceTypeProperties = original.SapTableLinkedServiceTypeProperties
-type SapTablePartitionSettings = original.SapTablePartitionSettings
 type SapTableResourceDataset = original.SapTableResourceDataset
 type SapTableResourceDatasetTypeProperties = original.SapTableResourceDatasetTypeProperties
 type SapTableSource = original.SapTableSource
@@ -1551,10 +1590,6 @@ type SybaseLinkedService = original.SybaseLinkedService
 type SybaseLinkedServiceTypeProperties = original.SybaseLinkedServiceTypeProperties
 type TeradataLinkedService = original.TeradataLinkedService
 type TeradataLinkedServiceTypeProperties = original.TeradataLinkedServiceTypeProperties
-type TeradataPartitionSettings = original.TeradataPartitionSettings
-type TeradataSource = original.TeradataSource
-type TeradataTableDataset = original.TeradataTableDataset
-type TeradataTableDatasetTypeProperties = original.TeradataTableDatasetTypeProperties
 type TextFormat = original.TextFormat
 type Trigger = original.Trigger
 type TriggerDependencyReference = original.TriggerDependencyReference
@@ -1757,8 +1792,14 @@ func PossibleAuthorizationTypeValues() []AuthorizationType {
 func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
 	return original.PossibleAzureFunctionActivityMethodValues()
 }
+func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
+	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()
+}
 func PossibleBlobEventTypesValues() []BlobEventTypes {
 	return original.PossibleBlobEventTypesValues()
+}
+func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
+	return original.PossibleCassandraSourceReadConsistencyLevelsValues()
 }
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
@@ -1873,6 +1914,15 @@ func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
 }
 func PossibleRunQueryOrderValues() []RunQueryOrder {
 	return original.PossibleRunQueryOrderValues()
+}
+func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
+	return original.PossibleSalesforceSinkWriteBehaviorValues()
+}
+func PossibleSalesforceSourceReadBehaviorValues() []SalesforceSourceReadBehavior {
+	return original.PossibleSalesforceSourceReadBehaviorValues()
+}
+func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerSinkWriteBehavior {
+	return original.PossibleSapCloudForCustomerSinkWriteBehaviorValues()
 }
 func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
 	return original.PossibleSapHanaAuthenticationTypeValues()

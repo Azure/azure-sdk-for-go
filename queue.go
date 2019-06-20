@@ -52,13 +52,12 @@ type (
 	// message consumer.
 	Queue struct {
 		*entity
-		sender            *Sender
-		receiver          *Receiver
-		receiverMu        sync.Mutex
-		senderMu          sync.Mutex
-		receiveMode       ReceiveMode
-		requiredSessionID *string
-		prefetchCount     *uint32
+		sender        *Sender
+		receiver      *Receiver
+		receiverMu    sync.Mutex
+		senderMu      sync.Mutex
+		receiveMode   ReceiveMode
+		prefetchCount *uint32
 	}
 
 	// queueContent is a specialized Queue body for an Atom entry
@@ -104,7 +103,8 @@ type (
 
 	entityConnector interface {
 		EntityManagementAddresser
-		connection(ctx context.Context) (*amqp.Client, error)
+		newConnection(ctx context.Context) (*amqp.Client, error)
+		getSessionFilterID() (*string, bool)
 	}
 )
 
@@ -549,31 +549,43 @@ func (q *Queue) RenewLocks(ctx context.Context, messages ...*Message) error {
 	return renewLocks(ctx, q, messages...)
 }
 
-func receiveDeferred(ctx context.Context, ec *Queue, handler Handler, sequenceNumbers ...int64) error {
+func receiveDeferred(ctx context.Context, ec entityConnector, handler Handler, sequenceNumbers ...int64) error {
 	ctx, span := startConsumerSpanFromContext(ctx, "sb.receiveDeferred")
 	defer span.End()
 
 	const messagesField, messageField = "messages", "message"
+
+	conn, err := ec.newConnection(ctx)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+	defer func() {
+		_ = conn.Close()
+	}()
+
+	values := map[string]interface{}{
+		"sequence-numbers":     sequenceNumbers,
+		"receiver-settle-mode": uint32(1), // pick up messages with peek lock
+	}
+
+	var opts []rpc.LinkOption
+	if id, ok := ec.getSessionFilterID(); ok {
+		opts = append(opts, rpc.LinkWithSessionFilter(id))
+		values["session-id"] = id
+	}
+
+	link, err := rpc.NewLink(conn, ec.ManagementPath(), opts...)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
 	msg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			operationFieldName: "com.microsoft:receive-by-sequence-number",
 		},
-		Value: map[string]interface{}{
-			"sequence-numbers":     sequenceNumbers,
-			"receiver-settle-mode": uint32(1), // pick up messages with peek lock
-		},
-	}
-
-	conn, err := ec.connection(ctx)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	link, err := rpc.NewLink(conn, ec.ManagementPath())
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
+		Value: values,
 	}
 
 	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
@@ -748,14 +760,27 @@ func (q *Queue) ManagementPath() string {
 	return fmt.Sprintf("%s/$management", q.Name)
 }
 
-func (q *Queue) connection(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.connection")
+func (q *Queue) newConnection(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.newConnection")
 	defer span.End()
 
-	if err := q.ensureReceiver(ctx); err != nil {
+	client, err := q.namespace.newConnection()
+	if err != nil {
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
-	return q.receiver.connection, nil
+
+	if err := q.namespace.negotiateClaim(ctx, client, q.ManagementPath()); err != nil {
+		tab.For(ctx).Error(err)
+		_ = client.Close()
+		return nil, err
+	}
+
+	return client, nil
+}
+
+func (q *Queue) getSessionFilterID() (*string, bool) {
+	return nil, false
 }
 
 func (e *entity) lockMutex() *sync.Mutex {

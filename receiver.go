@@ -359,25 +359,8 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 		opts = append(opts, amqp.LinkSenderSettle(amqp.ModeSettled))
 	}
 
-	if r.useSessions {
-		const name = "com.microsoft:session-filter"
-		const code = uint64(0x00000137000000C)
-		if r.sessionID == nil {
-			opts = append(opts, amqp.LinkSourceFilter(name, code, nil))
-		} else {
-			opts = append(opts, amqp.LinkSourceFilter(name, code, r.sessionID))
-		}
-
-		err := testSessions(
-			ctx,
-			amqpSession,
-			amqp.LinkSourceFilter(name, code, nil),
-			amqp.LinkSourceAddress(r.entityPath),
-		)
-		if err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
+	if opt, ok := r.getSessionFilterLinkOption(); ok {
+		opts = append(opts, opt)
 	}
 
 	amqpReceiver, err := amqpSession.NewReceiver(opts...)
@@ -390,26 +373,23 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	return nil
 }
 
-// Create a test link without any link disposition, so that if there is an error in session handling we'll see it
-func testSessions(ctx context.Context, amqpSession *amqp.Session, opts... amqp.LinkOption) error {
-	ctx, span := tab.StartSpan(ctx, "sb.Receiver.testSessions")
-	defer span.End()
+func (r *Receiver) getSessionFilterLinkOption() (amqp.LinkOption, bool) {
+	const name = "com.microsoft:session-filter"
+	const code = uint64(0x00000137000000C)
 
-	// run twice if we must so that we definitely get the detach if required sessions is not enabled
-	for i := 0; i < 2; i++ {
-		r, err := amqpSession.NewReceiver(opts...)
-		time.Sleep(50 * time.Millisecond)
-		if err == nil {
-			if err := r.Close(ctx); err != nil {
-				tab.For(ctx).Error(err)
-				return err
-			}
-		} else {
-			return err
-		}
+	if !r.useSessions {
+		return nil, false
 	}
 
-	return nil
+	if r.sessionID == nil {
+		return amqp.LinkSourceFilter(name, code, nil), true
+	}
+
+	return amqp.LinkSourceFilter(name, code, r.sessionID), true
+}
+
+func (r *Receiver) getSessionFilterID() (*string, bool) {
+	return r.sessionID, r.useSessions
 }
 
 func messageID(msg *amqp.Message) interface{} {

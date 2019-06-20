@@ -324,12 +324,13 @@ func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOptio
 	return nil
 }
 
-func (s *Subscription) connection(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.connection")
+func (s *Subscription) newConnection(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.newConnection")
 	defer span.End()
 
-	if err := s.ensureReceiver(ctx); err != nil {
-		return nil, err
-	}
-	return s.receiver.connection, nil
+	return s.namespace.newConnection()
+}
+
+func (s *Subscription) getSessionFilterID() (*string, bool) {
+	return nil, false
 }

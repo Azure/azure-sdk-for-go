@@ -51,10 +51,13 @@ func renewLocks(ctx context.Context, lr lockRenewer, messages ...*Message) error
 	}
 
 	entityManagementAddress := lr.ManagementPath()
-	conn, err := lr.connection(ctx)
+	conn, err := lr.newConnection(ctx)
 	if err != nil {
 		return err
 	}
+	defer func() {
+		_ = conn.Close()
+	}()
 
 	rpcLink, err := rpc.NewLink(conn, entityManagementAddress)
 	if err != nil {

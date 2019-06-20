@@ -339,11 +339,14 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 		Value: value,
 	}
 
-	conn, err := m.ec.connection(ctx)
+	conn, err := m.ec.newConnection(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
+	defer func() {
+		_ = conn.Close()
+	}()
 
 	link, err := rpc.NewLink(conn, m.ec.ManagementPath())
 	if err != nil {

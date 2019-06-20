@@ -715,7 +715,7 @@ func (suite *serviceBusSuite) TestQueue_NewSession() {
 	suite.Equal(sessionID, *qs.SessionID())
 }
 
-func (suite *serviceBusSuite) TestQueue_NewSessionWithNoRequiredSessions(){
+func (suite *serviceBusSuite) TestQueue_NewSessionWithNoRequiredSessions() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"ReceiveOne": func(ctx context.Context, t *testing.T, queue *Queue) {
 			sessionID := "123"
@@ -734,7 +734,7 @@ func (suite *serviceBusSuite) TestQueue_NewSessionWithNoRequiredSessions(){
 
 func (suite *serviceBusSuite) TestIssue127QueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"SendMessageToSessionQueueDeferAndThenReceiveDeferredMsg": func(ctx context.Context, t *testing.T, queue *Queue) {
+		"SendMessageToSessionQueueDeferAndThenReceiveDeferredMsg_NoZeroCheck": func(ctx context.Context, t *testing.T, queue *Queue) {
 			sessionID := "123"
 			qs := NewQueueSession(queue, &sessionID)
 
@@ -745,7 +745,7 @@ func (suite *serviceBusSuite) TestIssue127QueueClient() {
 			rCtx, cancel := context.WithCancel(ctx)
 			defer cancel()
 			deferHandler := HandlerFunc(func(hCtx context.Context, hMsg *Message) error {
-				defer func(){
+				defer func() {
 					// send the signal after the Defer was completed
 					sequenceNumberChan <- hMsg.SystemProperties.SequenceNumber
 					cancel()
@@ -758,10 +758,10 @@ func (suite *serviceBusSuite) TestIssue127QueueClient() {
 				suite.Require().NoError(err)
 			}
 
-			receivedDeferredChan := make(chan struct{}, 1)
+			receivedDeferredChan := make(chan *Message, 1)
 			receiveDeferredHandler := HandlerFunc(func(dCtx context.Context, dMsg *Message) error {
 				// send signal that the deferred message was received
-				receivedDeferredChan <- struct{}{}
+				receivedDeferredChan <- dMsg
 				return nil
 			})
 
@@ -769,16 +769,16 @@ func (suite *serviceBusSuite) TestIssue127QueueClient() {
 			select {
 			case <-ctx.Done():
 				suite.Fail("failed to receive first message in time")
-			case sequenceNumber := <- sequenceNumberChan:
-				suite.Require().NoError(queue.ReceiveDeferred(ctx, receiveDeferredHandler, *sequenceNumber))
+			case sequenceNumber := <-sequenceNumberChan:
+				suite.Require().NoError(qs.ReceiveDeferred(ctx, receiveDeferredHandler, *sequenceNumber))
 			}
 
 			// wait until we get the signal the deferred message was received
 			select {
 			case <-ctx.Done():
 				suite.Fail("failed to receive the deferred message in time")
-			case <- receivedDeferredChan:
-				return // success
+			case receivedMsg := <-receivedDeferredChan:
+				assert.Equal(t, msg, string(receivedMsg.Data))
 			}
 		},
 	}

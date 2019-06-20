@@ -1302,35 +1302,6 @@ type DedicatedCloudServiceProperties struct {
 	ServiceURL *string `json:"serviceURL,omitempty"`
 }
 
-// GetOperationResultByRegionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type GetOperationResultByRegionFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *GetOperationResultByRegionFuture) Result(client BaseClient) (or OperationResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.GetOperationResultByRegionFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.GetOperationResultByRegionFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
-		or, err = client.GetOperationResultByRegionResponder(or.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.GetOperationResultByRegionFuture", "Result", or.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // OperationError operation error model
 type OperationError struct {
 	// Code - Error's code

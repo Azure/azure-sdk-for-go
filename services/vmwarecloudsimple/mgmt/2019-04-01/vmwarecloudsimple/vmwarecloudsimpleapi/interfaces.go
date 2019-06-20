@@ -25,7 +25,7 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	GetOperationResultByRegion(ctx context.Context, operationID string) (result vmwarecloudsimple.GetOperationResultByRegionFuture, err error)
+	GetOperationResultByRegion(ctx context.Context, operationID string) (result vmwarecloudsimple.OperationResource, err error)
 	GetPrivateCloud(ctx context.Context, pcName string) (result vmwarecloudsimple.PrivateCloud, err error)
 }
 

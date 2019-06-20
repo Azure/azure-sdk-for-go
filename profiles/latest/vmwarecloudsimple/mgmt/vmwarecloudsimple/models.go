@@ -150,7 +150,6 @@ type DedicatedCloudServiceListResponse = original.DedicatedCloudServiceListRespo
 type DedicatedCloudServiceListResponseIterator = original.DedicatedCloudServiceListResponseIterator
 type DedicatedCloudServiceListResponsePage = original.DedicatedCloudServiceListResponsePage
 type DedicatedCloudServiceProperties = original.DedicatedCloudServiceProperties
-type GetOperationResultByRegionFuture = original.GetOperationResultByRegionFuture
 type OperationError = original.OperationError
 type OperationResource = original.OperationResource
 type PatchPayload = original.PatchPayload

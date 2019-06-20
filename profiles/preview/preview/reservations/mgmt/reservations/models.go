@@ -169,6 +169,7 @@ type OrderPurchaseFuture = original.OrderPurchaseFuture
 type OrderResponse = original.OrderResponse
 type Patch = original.Patch
 type PatchProperties = original.PatchProperties
+type PatchPropertiesRenewProperties = original.PatchPropertiesRenewProperties
 type Properties = original.Properties
 type PurchaseRequest = original.PurchaseRequest
 type PurchaseRequestProperties = original.PurchaseRequestProperties

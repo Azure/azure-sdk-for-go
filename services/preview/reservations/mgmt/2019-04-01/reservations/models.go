@@ -1093,9 +1093,14 @@ type PatchProperties struct {
 	// InstanceFlexibility - Possible values include: 'On', 'Off'
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
 	// Name - Name of the Reservation
-	Name                   *string          `json:"name,omitempty"`
-	Renew                  *bool            `json:"renew,omitempty"`
-	RenewRequestProperties *PurchaseRequest `json:"renewRequestProperties,omitempty"`
+	Name            *string                         `json:"name,omitempty"`
+	Renew           *bool                           `json:"renew,omitempty"`
+	RenewProperties *PatchPropertiesRenewProperties `json:"renewProperties,omitempty"`
+}
+
+// PatchPropertiesRenewProperties ...
+type PatchPropertiesRenewProperties struct {
+	PurchaseProperties *PurchaseRequest `json:"purchaseProperties,omitempty"`
 }
 
 // Properties ...

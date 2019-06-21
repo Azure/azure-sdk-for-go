@@ -18,7 +18,6 @@ package anomalydetector
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 )
@@ -68,15 +67,19 @@ func PossibleLabelTypeValues() []LabelType {
 type LabelValue string
 
 const (
-	// False ...
-	False LabelValue = "false"
-	// True ...
-	True LabelValue = "true"
+	// NegativeAnomaly ...
+	NegativeAnomaly LabelValue = "negativeAnomaly"
+	// NegativeChangePoint ...
+	NegativeChangePoint LabelValue = "negativeChangePoint"
+	// PositiveAnomaly ...
+	PositiveAnomaly LabelValue = "positiveAnomaly"
+	// PositiveChangePoint ...
+	PositiveChangePoint LabelValue = "positiveChangePoint"
 )
 
 // PossibleLabelValueValues returns an array of possible values for the LabelValue const type.
 func PossibleLabelValueValues() []LabelValue {
-	return []LabelValue{False, True}
+	return []LabelValue{NegativeAnomaly, NegativeChangePoint, PositiveAnomaly, PositiveChangePoint}
 }
 
 // TimeSeriesField enumerates the values for time series field.
@@ -122,7 +125,6 @@ type AnomalyDetectOnTimestampRequest struct {
 
 // AnomalyDetectOnTimestampResponse ...
 type AnomalyDetectOnTimestampResponse struct {
-	autorest.Response `json:"-"`
 	// Period - Frequency extracted from the series, zero means no recurrent pattern has been found.
 	Period *int32 `json:"period,omitempty"`
 	// Timestamp - Timestamp of a point.
@@ -141,10 +143,13 @@ type AnomalyDetectOnTimestampResponse struct {
 	IsNegativeAnomaly *bool `json:"isNegativeAnomaly,omitempty"`
 	// IsPositiveAnomaly - Anomaly status in positive direction on the timestamp. True means a positive anomaly has been detected. A positive anomaly means the point is detected as an anomaly and its real value is larger than the expected one.
 	IsPositiveAnomaly *bool `json:"isPositiveAnomaly,omitempty"`
+	// ConfidenceScore - Confidence score of the anomaly, significiant anomalies will get higher score.
+	ConfidenceScore *float64 `json:"confidenceScore,omitempty"`
 }
 
 // APIError error information returned by the API.
 type APIError struct {
+	autorest.Response `json:"-"`
 	// Code - The error code.
 	Code interface{} `json:"code,omitempty"`
 	// Message - A message explaining the error reported by the service.
@@ -165,7 +170,6 @@ type ChangePointDetectOnTimestampRequest struct {
 
 // ChangePointDetectOnTimestampResponse ...
 type ChangePointDetectOnTimestampResponse struct {
-	autorest.Response `json:"-"`
 	// Period - Frequency extracted from the series, zero means no recurrent pattern has been found.
 	Period *int32 `json:"period,omitempty"`
 	// IsChangePoint - Change point property. True means a change point has been detected.
@@ -224,15 +228,12 @@ type EntireDetectResponse struct {
 
 // Inconsistency ...
 type Inconsistency struct {
-	autorest.Response `json:"-"`
 	// InconsistentSeriesIds - IDs of inconsistent series in the time series group.
 	InconsistentSeriesIds *[]string `json:"inconsistentSeriesIds,omitempty"`
 	// ConfidenceScores - Scores of inconsistent series in the time series group.
 	ConfidenceScores *[]float64 `json:"confidenceScores,omitempty"`
-	// Timestamp - Inconsistency detect timestamp.
-	Timestamp *date.Time `json:"timestamp,omitempty"`
-	// Epsilon - Parameter to be tuned to get inconsistency.
-	Epsilon *float64 `json:"epsilon,omitempty"`
+	// PrincipleTrend - The principle trend of the group of time series.
+	PrincipleTrend *[]float64 `json:"principleTrend,omitempty"`
 }
 
 // InconsistencyDetectRequest ...
@@ -241,14 +242,8 @@ type InconsistencyDetectRequest struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Epsilon - Parameter to be tuned to get inconsistency.
 	Epsilon *float64 `json:"epsilon,omitempty"`
-}
-
-// InconsistencyQueryRequest ...
-type InconsistencyQueryRequest struct {
-	// Begin - Start time of the time series group.
-	Begin *date.Time `json:"begin,omitempty"`
-	// End - End time of the time series group.
-	End *date.Time `json:"end,omitempty"`
+	// TimeSeriesIds - IDs of time series need to be detected.
+	TimeSeriesIds *[]string `json:"timeSeriesIds,omitempty"`
 }
 
 // LabelRequest ...
@@ -259,7 +254,7 @@ type LabelRequest struct {
 	End *date.Time `json:"end,omitempty"`
 	// Type - Possible values include: 'ChangePoint', 'Anomaly'
 	Type LabelType `json:"type,omitempty"`
-	// Value - Possible values include: 'True', 'False'
+	// Value - Possible values include: 'PositiveAnomaly', 'NegativeAnomaly', 'PositiveChangePoint', 'NegativeChangePoint'
 	Value LabelValue `json:"value,omitempty"`
 }
 
@@ -282,12 +277,6 @@ type LastDetectResponse struct {
 	IsNegativeAnomaly *bool `json:"isNegativeAnomaly,omitempty"`
 	// IsPositiveAnomaly - Anomaly status in positive direction of the latest point. True means the latest point is an anomaly and its real value is larger than the expected one.
 	IsPositiveAnomaly *bool `json:"isPositiveAnomaly,omitempty"`
-}
-
-// ListInconsistency ...
-type ListInconsistency struct {
-	autorest.Response `json:"-"`
-	Value             *[]Inconsistency `json:"value,omitempty"`
 }
 
 // Point ...
@@ -314,125 +303,32 @@ type Request struct {
 	Sensitivity *int32 `json:"sensitivity,omitempty"`
 }
 
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
+}
+
 // TimeSeries ...
 type TimeSeries struct {
-	autorest.Response `json:"-"`
 	// SeriesID - Unique id for time series.
 	SeriesID *string `json:"seriesId,omitempty"`
 	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly or minutely. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely'
 	Granularity Granularity `json:"granularity,omitempty"`
-	// Dimensions - Property of a time series
-	Dimensions map[string]*string `json:"dimensions"`
 	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
 	CustomInterval *int32 `json:"customInterval,omitempty"`
 	// RetentionDurationInHours - Hours that the data is kept.
 	RetentionDurationInHours *int32 `json:"retentionDurationInHours,omitempty"`
-	// Description - Description for the time series.
-	Description *string `json:"description,omitempty"`
-	// Name - Name of the time series.
-	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TimeSeries.
-func (ts TimeSeries) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ts.SeriesID != nil {
-		objectMap["seriesId"] = ts.SeriesID
-	}
-	if ts.Granularity != "" {
-		objectMap["granularity"] = ts.Granularity
-	}
-	if ts.Dimensions != nil {
-		objectMap["dimensions"] = ts.Dimensions
-	}
-	if ts.CustomInterval != nil {
-		objectMap["customInterval"] = ts.CustomInterval
-	}
-	if ts.RetentionDurationInHours != nil {
-		objectMap["retentionDurationInHours"] = ts.RetentionDurationInHours
-	}
-	if ts.Description != nil {
-		objectMap["description"] = ts.Description
-	}
-	if ts.Name != nil {
-		objectMap["name"] = ts.Name
-	}
-	return json.Marshal(objectMap)
 }
 
 // TimeSeriesCreateRequest ...
 type TimeSeriesCreateRequest struct {
 	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly or minutely. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely'
 	Granularity Granularity `json:"granularity,omitempty"`
-	// Dimensions - Property of a time series
-	Dimensions map[string]*string `json:"dimensions"`
 	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
 	CustomInterval *int32 `json:"customInterval,omitempty"`
 	// RetentionDurationInHours - Hours that the data is kept.
 	RetentionDurationInHours *int32 `json:"retentionDurationInHours,omitempty"`
-	// Description - Description for the time series.
-	Description *string `json:"description,omitempty"`
-	// Name - Name of the time series.
-	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TimeSeriesCreateRequest.
-func (tscr TimeSeriesCreateRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tscr.Granularity != "" {
-		objectMap["granularity"] = tscr.Granularity
-	}
-	if tscr.Dimensions != nil {
-		objectMap["dimensions"] = tscr.Dimensions
-	}
-	if tscr.CustomInterval != nil {
-		objectMap["customInterval"] = tscr.CustomInterval
-	}
-	if tscr.RetentionDurationInHours != nil {
-		objectMap["retentionDurationInHours"] = tscr.RetentionDurationInHours
-	}
-	if tscr.Description != nil {
-		objectMap["description"] = tscr.Description
-	}
-	if tscr.Name != nil {
-		objectMap["name"] = tscr.Name
-	}
-	return json.Marshal(objectMap)
-}
-
-// TimeSeriesGroup ...
-type TimeSeriesGroup struct {
-	autorest.Response `json:"-"`
-	// GroupID - Unique id for time series group.
-	GroupID *string `json:"groupId,omitempty"`
-	// Description - Description of the time series group
-	Description *string `json:"description,omitempty"`
-	// Name - Name of the time series group
-	Name *string `json:"name,omitempty"`
-	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly or minutely. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely'
-	Granularity Granularity `json:"granularity,omitempty"`
-	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
-	CustomInterval *int32 `json:"customInterval,omitempty"`
-}
-
-// TimeSeriesGroupCreateRequest ...
-type TimeSeriesGroupCreateRequest struct {
-	// Description - Description of the time series group
-	Description *string `json:"description,omitempty"`
-	// Name - Name of the time series group
-	Name *string `json:"name,omitempty"`
-	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly or minutely. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely'
-	Granularity Granularity `json:"granularity,omitempty"`
-	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
-	CustomInterval *int32 `json:"customInterval,omitempty"`
-}
-
-// TimeSeriesGroupList ...
-type TimeSeriesGroupList struct {
-	autorest.Response `json:"-"`
-	// Groups - A list of TimeSeriesGroup.
-	Groups *[]TimeSeriesGroup `json:"groups,omitempty"`
-	Next   *string            `json:"next,omitempty"`
 }
 
 // TimeSeriesList ...
@@ -455,7 +351,6 @@ type TimeSeriesQueryRequest struct {
 
 // TimeSeriesQueryResponse ...
 type TimeSeriesQueryResponse struct {
-	autorest.Response `json:"-"`
 	// Timestamps - Timestamps of data points (ISO8601 format).
 	Timestamps *[]date.Time `json:"timestamps,omitempty"`
 	// FieldValues - Values of queried timeseries field.

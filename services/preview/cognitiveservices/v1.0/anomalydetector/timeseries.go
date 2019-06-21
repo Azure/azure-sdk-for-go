@@ -50,7 +50,7 @@ func NewTimeSeriesClient(endpoint string) TimeSeriesClient {
 // Parameters:
 // timeSeriesID - unique id for time series.
 // body - timestamp is needed. Advanced model parameters can also be set in the request if needed.
-func (client TimeSeriesClient) ChangePointDetectOnTimestamp(ctx context.Context, timeSeriesID string, body ChangePointDetectOnTimestampRequest) (result ChangePointDetectOnTimestampResponse, err error) {
+func (client TimeSeriesClient) ChangePointDetectOnTimestamp(ctx context.Context, timeSeriesID string, body ChangePointDetectOnTimestampRequest) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.ChangePointDetectOnTimestamp")
 		defer func() {
@@ -119,12 +119,12 @@ func (client TimeSeriesClient) ChangePointDetectOnTimestampSender(req *http.Requ
 
 // ChangePointDetectOnTimestampResponder handles the response to the ChangePointDetectOnTimestamp request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) ChangePointDetectOnTimestampResponder(resp *http.Response) (result ChangePointDetectOnTimestampResponse, err error) {
+func (client TimeSeriesClient) ChangePointDetectOnTimestampResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -134,13 +134,13 @@ func (client TimeSeriesClient) ChangePointDetectOnTimestampResponder(resp *http.
 // description can be provided through the interface.
 // Parameters:
 // timeSeriesID - unique id for time series.
-func (client TimeSeriesClient) Create(ctx context.Context, timeSeriesID string, body TimeSeriesCreateRequest) (result autorest.Response, err error) {
+func (client TimeSeriesClient) Create(ctx context.Context, timeSeriesID string, body TimeSeriesCreateRequest) (result APIError, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -160,7 +160,7 @@ func (client TimeSeriesClient) Create(ctx context.Context, timeSeriesID string, 
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "Create", resp, "Failure sending request")
 		return
 	}
@@ -185,7 +185,7 @@ func (client TimeSeriesClient) CreatePreparer(ctx context.Context, timeSeriesID 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
+		autorest.AsPut(),
 		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
 		autorest.WithPathParameters("/timeseries/{timeSeriesId}", pathParameters),
 		autorest.WithJSON(body))
@@ -201,13 +201,14 @@ func (client TimeSeriesClient) CreateSender(req *http.Request) (*http.Response, 
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) CreateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client TimeSeriesClient) CreateResponder(resp *http.Response) (result APIError, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent, http.StatusConflict),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -283,7 +284,7 @@ func (client TimeSeriesClient) DeleteResponder(resp *http.Response) (result auto
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -296,7 +297,7 @@ func (client TimeSeriesClient) DeleteResponder(resp *http.Response) (result auto
 // timeSeriesID - unique id for time series.
 // body - timestamp is required in the request. Advanced model parameters (period, sensitivity,
 // maxAnomalyRatio) can also be set in the request.
-func (client TimeSeriesClient) DetectOnTimestamp(ctx context.Context, timeSeriesID string, body AnomalyDetectOnTimestampRequest) (result AnomalyDetectOnTimestampResponse, err error) {
+func (client TimeSeriesClient) DetectOnTimestamp(ctx context.Context, timeSeriesID string, body AnomalyDetectOnTimestampRequest) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.DetectOnTimestamp")
 		defer func() {
@@ -365,12 +366,12 @@ func (client TimeSeriesClient) DetectOnTimestampSender(req *http.Request) (*http
 
 // DetectOnTimestampResponder handles the response to the DetectOnTimestamp request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) DetectOnTimestampResponder(resp *http.Response) (result AnomalyDetectOnTimestampResponse, err error) {
+func (client TimeSeriesClient) DetectOnTimestampResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -379,7 +380,7 @@ func (client TimeSeriesClient) DetectOnTimestampResponder(resp *http.Response) (
 // Get corresponds to create series, get series meta with timeseries id.
 // Parameters:
 // timeSeriesID - unique id for time series.
-func (client TimeSeriesClient) Get(ctx context.Context, timeSeriesID string) (result TimeSeries, err error) {
+func (client TimeSeriesClient) Get(ctx context.Context, timeSeriesID string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.Get")
 		defer func() {
@@ -444,12 +445,89 @@ func (client TimeSeriesClient) GetSender(req *http.Request) (*http.Response, err
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) GetResponder(resp *http.Response) (result TimeSeries, err error) {
+func (client TimeSeriesClient) GetResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// InconsistencyDetect this operation helps detect the inconsistent series among a group series with similar trend.
+// Parameters:
+// body - timestamp is necessary, and a parameter called epsilon is needed to tune the result. Epsilon should
+// be within 0 and 1. A list of time series ids need to be provided to the service.
+func (client TimeSeriesClient) InconsistencyDetect(ctx context.Context, body InconsistencyDetectRequest) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.InconsistencyDetect")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: body,
+			Constraints: []validation.Constraint{{Target: "body.Timestamp", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("anomalydetector.TimeSeriesClient", "InconsistencyDetect", err.Error())
+	}
+
+	req, err := client.InconsistencyDetectPreparer(ctx, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "InconsistencyDetect", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.InconsistencyDetectSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "InconsistencyDetect", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.InconsistencyDetectResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "InconsistencyDetect", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// InconsistencyDetectPreparer prepares the InconsistencyDetect request.
+func (client TimeSeriesClient) InconsistencyDetectPreparer(ctx context.Context, body InconsistencyDetectRequest) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
+		autorest.WithPath("/timeseries/inconsistency/detect"),
+		autorest.WithJSON(body))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// InconsistencyDetectSender sends the InconsistencyDetect request. The method will close the
+// http.Response Body if it receives an error.
+func (client TimeSeriesClient) InconsistencyDetectSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// InconsistencyDetectResponder handles the response to the InconsistencyDetect request. The method always
+// closes the http.Response Body.
+func (client TimeSeriesClient) InconsistencyDetectResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -460,13 +538,13 @@ func (client TimeSeriesClient) GetResponder(resp *http.Response) (result TimeSer
 // Parameters:
 // timeSeriesID - unique id for time series.
 // body - in Label request, user can set Anomaly|ChangePoint state (true, false, unknown) for a time range
-func (client TimeSeriesClient) Label(ctx context.Context, timeSeriesID string, body LabelRequest) (result autorest.Response, err error) {
+func (client TimeSeriesClient) Label(ctx context.Context, timeSeriesID string, body LabelRequest) (result APIError, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.Label")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -489,7 +567,7 @@ func (client TimeSeriesClient) Label(ctx context.Context, timeSeriesID string, b
 
 	resp, err := client.LabelSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "Label", resp, "Failure sending request")
 		return
 	}
@@ -530,13 +608,14 @@ func (client TimeSeriesClient) LabelSender(req *http.Request) (*http.Response, e
 
 // LabelResponder handles the response to the Label request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) LabelResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client TimeSeriesClient) LabelResponder(resp *http.Response) (result APIError, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -614,98 +693,11 @@ func (client TimeSeriesClient) ListResponder(resp *http.Response) (result TimeSe
 	return
 }
 
-// ListGroups list TimeSeriesGroups that a TimeSeries belongs to. One TimeSeries could belong to multiple
-// TimeSeriesGroups.
-// Parameters:
-// timeSeriesID - unique id for time series.
-// next - use "next" as query parameter to get next page data.
-func (client TimeSeriesClient) ListGroups(ctx context.Context, timeSeriesID string, next string) (result TimeSeriesGroupList, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.ListGroups")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: timeSeriesID,
-			Constraints: []validation.Constraint{{Target: "timeSeriesID", Name: validation.MaxLength, Rule: 64, Chain: nil},
-				{Target: "timeSeriesID", Name: validation.Pattern, Rule: `^[a-z0-9-_]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("anomalydetector.TimeSeriesClient", "ListGroups", err.Error())
-	}
-
-	req, err := client.ListGroupsPreparer(ctx, timeSeriesID, next)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "ListGroups", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListGroupsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "ListGroups", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListGroupsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "ListGroups", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListGroupsPreparer prepares the ListGroups request.
-func (client TimeSeriesClient) ListGroupsPreparer(ctx context.Context, timeSeriesID string, next string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	pathParameters := map[string]interface{}{
-		"timeSeriesId": autorest.Encode("path", timeSeriesID),
-	}
-
-	queryParameters := map[string]interface{}{}
-	if len(next) > 0 {
-		queryParameters["next"] = autorest.Encode("query", next)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
-		autorest.WithPathParameters("/timeseries/{timeSeriesId}/timeseriesgroups", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListGroupsSender sends the ListGroups request. The method will close the
-// http.Response Body if it receives an error.
-func (client TimeSeriesClient) ListGroupsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-}
-
-// ListGroupsResponder handles the response to the ListGroups request. The method always
-// closes the http.Response Body.
-func (client TimeSeriesClient) ListGroupsResponder(resp *http.Response) (result TimeSeriesGroupList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // Query query timeseries with required field in each timestamp.
 // Parameters:
 // timeSeriesID - unique id for time series.
 // body - request body for querying timeseries.
-func (client TimeSeriesClient) Query(ctx context.Context, timeSeriesID string, body TimeSeriesQueryRequest) (result TimeSeriesQueryResponse, err error) {
+func (client TimeSeriesClient) Query(ctx context.Context, timeSeriesID string, body TimeSeriesQueryRequest) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.Query")
 		defer func() {
@@ -776,12 +768,12 @@ func (client TimeSeriesClient) QuerySender(req *http.Request) (*http.Response, e
 
 // QueryResponder handles the response to the Query request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) QueryResponder(resp *http.Response) (result TimeSeriesQueryResponse, err error) {
+func (client TimeSeriesClient) QueryResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -792,13 +784,13 @@ func (client TimeSeriesClient) QueryResponder(resp *http.Response) (result TimeS
 // Parameters:
 // timeSeriesID - unique id for time series.
 // body - request body for writing timeseries.
-func (client TimeSeriesClient) Write(ctx context.Context, timeSeriesID string, body []Point) (result autorest.Response, err error) {
+func (client TimeSeriesClient) Write(ctx context.Context, timeSeriesID string, body []Point) (result APIError, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TimeSeriesClient.Write")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -820,7 +812,7 @@ func (client TimeSeriesClient) Write(ctx context.Context, timeSeriesID string, b
 
 	resp, err := client.WriteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "anomalydetector.TimeSeriesClient", "Write", resp, "Failure sending request")
 		return
 	}
@@ -845,7 +837,7 @@ func (client TimeSeriesClient) WritePreparer(ctx context.Context, timeSeriesID s
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
+		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
 		autorest.WithPathParameters("/timeseries/{timeSeriesId}/write", pathParameters),
 		autorest.WithJSON(body))
@@ -861,12 +853,13 @@ func (client TimeSeriesClient) WriteSender(req *http.Request) (*http.Response, e
 
 // WriteResponder handles the response to the Write request. The method always
 // closes the http.Response Body.
-func (client TimeSeriesClient) WriteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client TimeSeriesClient) WriteResponder(resp *http.Response) (result APIError, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

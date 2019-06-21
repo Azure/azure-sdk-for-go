@@ -34,31 +34,16 @@ var _ BaseClientAPI = (*anomalydetector.BaseClient)(nil)
 
 // TimeSeriesClientAPI contains the set of methods on the TimeSeriesClient type.
 type TimeSeriesClientAPI interface {
-	ChangePointDetectOnTimestamp(ctx context.Context, timeSeriesID string, body anomalydetector.ChangePointDetectOnTimestampRequest) (result anomalydetector.ChangePointDetectOnTimestampResponse, err error)
-	Create(ctx context.Context, timeSeriesID string, body anomalydetector.TimeSeriesCreateRequest) (result autorest.Response, err error)
+	ChangePointDetectOnTimestamp(ctx context.Context, timeSeriesID string, body anomalydetector.ChangePointDetectOnTimestampRequest) (result anomalydetector.SetObject, err error)
+	Create(ctx context.Context, timeSeriesID string, body anomalydetector.TimeSeriesCreateRequest) (result anomalydetector.APIError, err error)
 	Delete(ctx context.Context, timeSeriesID string) (result autorest.Response, err error)
-	DetectOnTimestamp(ctx context.Context, timeSeriesID string, body anomalydetector.AnomalyDetectOnTimestampRequest) (result anomalydetector.AnomalyDetectOnTimestampResponse, err error)
-	Get(ctx context.Context, timeSeriesID string) (result anomalydetector.TimeSeries, err error)
-	Label(ctx context.Context, timeSeriesID string, body anomalydetector.LabelRequest) (result autorest.Response, err error)
+	DetectOnTimestamp(ctx context.Context, timeSeriesID string, body anomalydetector.AnomalyDetectOnTimestampRequest) (result anomalydetector.SetObject, err error)
+	Get(ctx context.Context, timeSeriesID string) (result anomalydetector.SetObject, err error)
+	InconsistencyDetect(ctx context.Context, body anomalydetector.InconsistencyDetectRequest) (result anomalydetector.SetObject, err error)
+	Label(ctx context.Context, timeSeriesID string, body anomalydetector.LabelRequest) (result anomalydetector.APIError, err error)
 	List(ctx context.Context, next string) (result anomalydetector.TimeSeriesList, err error)
-	ListGroups(ctx context.Context, timeSeriesID string, next string) (result anomalydetector.TimeSeriesGroupList, err error)
-	Query(ctx context.Context, timeSeriesID string, body anomalydetector.TimeSeriesQueryRequest) (result anomalydetector.TimeSeriesQueryResponse, err error)
-	Write(ctx context.Context, timeSeriesID string, body []anomalydetector.Point) (result autorest.Response, err error)
+	Query(ctx context.Context, timeSeriesID string, body anomalydetector.TimeSeriesQueryRequest) (result anomalydetector.SetObject, err error)
+	Write(ctx context.Context, timeSeriesID string, body []anomalydetector.Point) (result anomalydetector.APIError, err error)
 }
 
 var _ TimeSeriesClientAPI = (*anomalydetector.TimeSeriesClient)(nil)
-
-// TimeSeriesGroupClientAPI contains the set of methods on the TimeSeriesGroupClient type.
-type TimeSeriesGroupClientAPI interface {
-	AddTimeSeries(ctx context.Context, timeSeriesGroupID string, timeSeriesID string) (result autorest.Response, err error)
-	Create(ctx context.Context, timeSeriesGroupID string, body anomalydetector.TimeSeriesGroupCreateRequest) (result autorest.Response, err error)
-	Delete(ctx context.Context, timeSeriesGroupID string) (result autorest.Response, err error)
-	DeleteTimeSeries(ctx context.Context, timeSeriesGroupID string, timeSeriesID string) (result autorest.Response, err error)
-	Get(ctx context.Context, timeSeriesGroupID string) (result anomalydetector.TimeSeriesGroup, err error)
-	InconsistencyDetect(ctx context.Context, timeSeriesGroupID string, body anomalydetector.InconsistencyDetectRequest) (result anomalydetector.Inconsistency, err error)
-	InconsistencyQuery(ctx context.Context, timeSeriesGroupID string, body anomalydetector.InconsistencyQueryRequest) (result anomalydetector.ListInconsistency, err error)
-	List(ctx context.Context, next string) (result anomalydetector.TimeSeriesGroupList, err error)
-	ListSeries(ctx context.Context, timeSeriesGroupID string, next string) (result anomalydetector.TimeSeriesList, err error)
-}
-
-var _ TimeSeriesGroupClientAPI = (*anomalydetector.TimeSeriesGroupClient)(nil)

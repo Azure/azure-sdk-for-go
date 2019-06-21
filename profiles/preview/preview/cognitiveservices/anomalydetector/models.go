@@ -42,8 +42,10 @@ const (
 type LabelValue = original.LabelValue
 
 const (
-	False LabelValue = original.False
-	True  LabelValue = original.True
+	NegativeAnomaly     LabelValue = original.NegativeAnomaly
+	NegativeChangePoint LabelValue = original.NegativeChangePoint
+	PositiveAnomaly     LabelValue = original.PositiveAnomaly
+	PositiveChangePoint LabelValue = original.PositiveChangePoint
 )
 
 type TimeSeriesField = original.TimeSeriesField
@@ -71,19 +73,14 @@ type ChangePointDetectResponse = original.ChangePointDetectResponse
 type EntireDetectResponse = original.EntireDetectResponse
 type Inconsistency = original.Inconsistency
 type InconsistencyDetectRequest = original.InconsistencyDetectRequest
-type InconsistencyQueryRequest = original.InconsistencyQueryRequest
 type LabelRequest = original.LabelRequest
 type LastDetectResponse = original.LastDetectResponse
-type ListInconsistency = original.ListInconsistency
 type Point = original.Point
 type Request = original.Request
+type SetObject = original.SetObject
 type TimeSeries = original.TimeSeries
 type TimeSeriesClient = original.TimeSeriesClient
 type TimeSeriesCreateRequest = original.TimeSeriesCreateRequest
-type TimeSeriesGroup = original.TimeSeriesGroup
-type TimeSeriesGroupClient = original.TimeSeriesGroupClient
-type TimeSeriesGroupCreateRequest = original.TimeSeriesGroupCreateRequest
-type TimeSeriesGroupList = original.TimeSeriesGroupList
 type TimeSeriesList = original.TimeSeriesList
 type TimeSeriesQueryRequest = original.TimeSeriesQueryRequest
 type TimeSeriesQueryResponse = original.TimeSeriesQueryResponse
@@ -93,9 +90,6 @@ func New(endpoint string) BaseClient {
 }
 func NewTimeSeriesClient(endpoint string) TimeSeriesClient {
 	return original.NewTimeSeriesClient(endpoint)
-}
-func NewTimeSeriesGroupClient(endpoint string) TimeSeriesGroupClient {
-	return original.NewTimeSeriesGroupClient(endpoint)
 }
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)

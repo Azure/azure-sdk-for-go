@@ -563,7 +563,7 @@ func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionLis
 type DefinitionProperties struct {
 	// PolicyType - The type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn', 'Custom'
 	PolicyType Type `json:"policyType,omitempty"`
-	// Mode - The policy definition mode.
+	// Mode - The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
 	Mode *string `json:"mode,omitempty"`
 	// DisplayName - The display name of the policy definition.
 	DisplayName *string `json:"displayName,omitempty"`

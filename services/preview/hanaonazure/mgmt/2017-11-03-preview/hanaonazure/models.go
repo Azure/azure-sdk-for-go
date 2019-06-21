@@ -636,6 +636,151 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// SapMonitor SAP monitor info on Azure (ARM properties and SAP monitor properties)
+type SapMonitor struct {
+	autorest.Response `json:"-"`
+	// SapMonitorProperties - SAP monitor properties
+	*SapMonitorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - READ-ONLY; Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for SapMonitor.
+func (sm SapMonitor) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sm.SapMonitorProperties != nil {
+		objectMap["properties"] = sm.SapMonitorProperties
+	}
+	if sm.Location != nil {
+		objectMap["location"] = sm.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SapMonitor struct.
+func (sm *SapMonitor) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var sapMonitorProperties SapMonitorProperties
+				err = json.Unmarshal(*v, &sapMonitorProperties)
+				if err != nil {
+					return err
+				}
+				sm.SapMonitorProperties = &sapMonitorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sm.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sm.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sm.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sm.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sm.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// SapMonitorProperties describes the properties of a SAP monitor.
+type SapMonitorProperties struct {
+	// HanaSubnet - READ-ONLY; Specifies the SAP monitor unique ID.
+	HanaSubnet *string `json:"hanaSubnet,omitempty"`
+	// HanaHostname - Hostname of the HANA instance.
+	HanaHostname *string `json:"hanaHostname,omitempty"`
+	// HanaDbName - Database name of the HANA instance.
+	HanaDbName *string `json:"hanaDbName,omitempty"`
+	// HanaDbSQLPort - Database port of the HANA instance.
+	HanaDbSQLPort *int32 `json:"hanaDbSqlPort,omitempty"`
+	// HanaDbUsername - Database username of the HANA instance.
+	HanaDbUsername *string `json:"hanaDbUsername,omitempty"`
+	// HanaDbPassword - Database password of the HANA instance.
+	HanaDbPassword *string `json:"hanaDbPassword,omitempty"`
+	// ProvisioningState - READ-ONLY; State of provisioning of the HanaInstance. Possible values include: 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting', 'Migrating'
+	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
+}
+
+// SapMonitorsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SapMonitorsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SapMonitorsCreateFuture) Result(client SapMonitorsClient) (sm SapMonitor, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.SapMonitorsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
+		sm, err = client.CreateResponder(sm.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsCreateFuture", "Result", sm.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // StorageProfile specifies the storage settings for the HANA instance disks.
 type StorageProfile struct {
 	// NfsIPAddress - READ-ONLY; IP Address to connect to storage.

@@ -30,7 +30,12 @@ func (m *MockedBuilder) NewSender(ctx context.Context, opts ...SenderOption) (*S
 	return args.Get(0).(*Sender), args.Error(1)
 }
 
-func (m *MockedBuilder) newConnection(ctx context.Context) (*amqp.Client, error) {
+func (m *MockedBuilder) newRPCClient(ctx context.Context) (*amqp.Client, error) {
+	args := m.Called(ctx)
+	return args.Get(0).(*amqp.Client), args.Error(1)
+}
+
+func (m *MockedBuilder) getRPCClient(ctx context.Context) (*amqp.Client, error) {
 	args := m.Called(ctx)
 	return args.Get(0).(*amqp.Client), args.Error(1)
 }

@@ -36,7 +36,7 @@ type (
 	// Sender provides connection, session and link handling for an sending to an entity path
 	Sender struct {
 		namespace  *Namespace
-		connection *amqp.Client
+		client     *amqp.Client
 		session    *session
 		sender     *amqp.Sender
 		entityPath string
@@ -92,7 +92,7 @@ func (s *Sender) Recover(ctx context.Context) error {
 	defer cancel()
 	_ = s.sender.Close(closeCtx)
 	_ = s.session.Close(closeCtx)
-	_ = s.connection.Close()
+	_ = s.client.Close()
 	return s.newSessionAndLink(ctx)
 }
 
@@ -104,17 +104,17 @@ func (s *Sender) Close(ctx context.Context) error {
 	err := s.sender.Close(ctx)
 	if err != nil {
 		_ = s.session.Close(ctx)
-		_ = s.connection.Close()
+		_ = s.client.Close()
 		return err
 	}
 
 	err = s.session.Close(ctx)
 	if err != nil {
-		_ = s.connection.Close()
+		_ = s.client.Close()
 		return err
 	}
 
-	return s.connection.Close()
+	return s.client.Close()
 }
 
 // Send will send a message to the entity path with options
@@ -220,12 +220,12 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.newSessionAndLink")
 	defer span.End()
 
-	connection, err := s.namespace.newConnection()
+	connection, err := s.namespace.newClient()
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
-	s.connection = connection
+	s.client = connection
 
 	err = s.namespace.negotiateClaim(ctx, connection, s.getAddress())
 	if err != nil {

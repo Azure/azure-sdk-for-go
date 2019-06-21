@@ -136,7 +136,7 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	return ns, nil
 }
 
-func (ns *Namespace) newConnection() (*amqp.Client, error) {
+func (ns *Namespace) newClient() (*amqp.Client, error) {
 	defaultConnOptions := []amqp.ConnOption{
 		amqp.ConnSASLAnonymous(),
 		amqp.ConnMaxSessions(65535),

@@ -51,26 +51,28 @@ func renewLocks(ctx context.Context, lr lockRenewer, messages ...*Message) error
 	}
 
 	entityManagementAddress := lr.ManagementPath()
-	conn, err := lr.newConnection(ctx)
+	conn, err := lr.getRPCClient(ctx)
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
-	defer func() {
-		_ = conn.Close()
-	}()
 
 	rpcLink, err := rpc.NewLink(conn, entityManagementAddress)
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	response, err := rpcLink.RetryableRPC(ctx, 3, 1*time.Second, renewRequestMsg)
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	if response.Code != 200 {
-		return fmt.Errorf("error renewing locks: %v", response.Description)
+		err := fmt.Errorf("error renewing locks: %v", response.Description)
+		tab.For(ctx).Error(err)
+		return err
 	}
 
 	return nil

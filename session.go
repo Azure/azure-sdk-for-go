@@ -44,9 +44,15 @@ type (
 		sessionID *string
 	}
 
+	lockedRPC struct {
+		rpcClient   *amqp.Client
+		rpcClientMu sync.Mutex
+	}
+
 	// QueueSession wraps Service Bus session functionality over a Queue
 	QueueSession struct {
 		sessionIdentifiable
+		lockedRPC
 		builder   SendAndReceiveBuilder
 		builderMu sync.Mutex
 		receiver  *Receiver
@@ -56,6 +62,7 @@ type (
 	// SubscriptionSession wraps Service Bus session functionality over a Subscription
 	SubscriptionSession struct {
 		sessionIdentifiable
+		lockedRPC
 		builder   ReceiveBuilder
 		builderMu sync.Mutex
 		receiver  *Receiver
@@ -137,7 +144,7 @@ func NewQueueSession(builder SendAndReceiveBuilder, sessionID *string) *QueueSes
 }
 
 // ReceiveOne waits for the lock on a particular session to become available, takes it, then process the session.
-// The session can contain multiple messages. ReceiveOneSession will receive all messages within that session.
+// The session can contain multiple messages. ReceiveOne will receive all messages within that session.
 //
 // Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
 // have a disposition set, the Queue's DefaultDisposition will be used.
@@ -218,25 +225,29 @@ func (qs *QueueSession) Close(ctx context.Context) error {
 	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.Close")
 	defer span.End()
 
+	var lastErr error
 	if qs.receiver != nil {
 		if err := qs.receiver.Close(ctx); err != nil {
 			tab.For(ctx).Error(err)
-			if qs.sender != nil {
-				if senderErr := qs.sender.Close(ctx); err != nil {
-					tab.For(ctx).Error(senderErr)
-				}
-			}
-			return err
+			lastErr = err
 		}
 	}
 
 	if qs.sender != nil {
 		if err := qs.sender.Close(ctx); err != nil {
 			tab.For(ctx).Error(err)
-			return err
+			lastErr = err
 		}
 	}
-	return nil
+
+	if qs.rpcClient != nil {
+		if err := qs.rpcClient.Close(); err != nil {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+	}
+
+	return lastErr
 }
 
 // SessionID is the identifier for the Service Bus session
@@ -253,8 +264,42 @@ func (qs *QueueSession) getSessionFilterID() (*string, bool) {
 	return qs.sessionID, true
 }
 
-func (qs *QueueSession) newConnection(ctx context.Context) (*amqp.Client, error) {
-	return qs.builder.newConnection(ctx)
+func (qs *QueueSession) getRPCClient(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.getRPCClient")
+	defer span.End()
+
+	if err := qs.ensureRPCClient(ctx); err != nil {
+		return nil, err
+	}
+
+	return qs.rpcClient, nil
+}
+
+func (qs *QueueSession) newRPCClient(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.newRPCClient")
+	defer span.End()
+
+	return qs.builder.newRPCClient(ctx)
+}
+
+func (qs *QueueSession) ensureRPCClient(ctx context.Context) error {
+	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.ensureRPCConn")
+	defer span.End()
+
+	qs.rpcClientMu.Lock()
+	defer qs.rpcClientMu.Unlock()
+
+	if qs.rpcClient != nil {
+		return nil
+	}
+
+	client, err := qs.builder.newRPCClient(ctx)
+	if err != nil {
+		return err
+	}
+
+	qs.rpcClient = client
+	return nil
 }
 
 func (qs *QueueSession) ensureSender(ctx context.Context) error {
@@ -263,6 +308,10 @@ func (qs *QueueSession) ensureSender(ctx context.Context) error {
 
 	qs.builderMu.Lock()
 	defer qs.builderMu.Unlock()
+
+	if qs.sender != nil {
+		return nil
+	}
 
 	s, err := qs.builder.NewSender(ctx, SenderWithSession(qs.sessionID))
 	if err != nil {
@@ -279,6 +328,10 @@ func (qs *QueueSession) ensureReceiver(ctx context.Context) error {
 
 	qs.builderMu.Lock()
 	defer qs.builderMu.Unlock()
+
+	if qs.receiver != nil {
+		return nil
+	}
 
 	r, err := qs.builder.NewReceiver(ctx, ReceiverWithSession(qs.sessionID))
 	if err != nil {
@@ -334,7 +387,13 @@ func (ss *SubscriptionSession) ReceiveOne(ctx context.Context, handler SessionHa
 
 	select {
 	case <-handle.Done():
-		return handle.Err()
+		err := handle.Err()
+		if err != nil {
+			tab.For(ctx).Error(err)
+			_ = ss.receiver.Close(ctx)
+
+		}
+		return err
 	case <-ms.done:
 		return nil
 	}
@@ -371,10 +430,22 @@ func (ss *SubscriptionSession) Close(ctx context.Context) error {
 	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.Close")
 	defer span.End()
 
+	var lastErr error
 	if ss.receiver != nil {
-		return ss.receiver.Close(ctx)
+		if err := ss.receiver.Close(ctx); err != nil {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
 	}
-	return nil
+
+	if ss.rpcClient != nil {
+		if err := ss.rpcClient.Close(); err != nil {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+	}
+
+	return lastErr
 }
 
 func (ss *SubscriptionSession) ensureReceiver(ctx context.Context) error {
@@ -407,8 +478,42 @@ func (ss *SubscriptionSession) getSessionFilterID() (*string, bool) {
 	return ss.sessionID, true
 }
 
-func (ss *SubscriptionSession) newConnection(ctx context.Context) (*amqp.Client, error) {
-	return ss.builder.newConnection(ctx)
+func (ss *SubscriptionSession) newRPCClient(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.newClient")
+	defer span.End()
+
+	return ss.builder.newRPCClient(ctx)
+}
+
+func (ss *SubscriptionSession) getRPCClient(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.getRPCClient")
+	defer span.End()
+
+	if err := ss.ensureRPCClient(ctx); err != nil {
+		return nil, err
+	}
+
+	return ss.rpcClient, nil
+}
+
+func (ss *SubscriptionSession) ensureRPCClient(ctx context.Context) error {
+	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.ensureRpcConn")
+	defer span.End()
+
+	ss.rpcClientMu.Lock()
+	defer ss.rpcClientMu.Unlock()
+
+	if ss.rpcClient != nil {
+		return nil
+	}
+
+	client, err := ss.builder.newRPCClient(ctx)
+	if err != nil {
+		return err
+	}
+
+	ss.rpcClient = client
+	return nil
 }
 
 // NewTopicSession creates a new session receiver to receive from a Service Bus topic.

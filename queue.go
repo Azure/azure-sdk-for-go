@@ -52,6 +52,7 @@ type (
 	// message consumer.
 	Queue struct {
 		*entity
+		lockedRPC
 		sender        *Sender
 		receiver      *Receiver
 		receiverMu    sync.Mutex
@@ -103,7 +104,8 @@ type (
 
 	entityConnector interface {
 		EntityManagementAddresser
-		newConnection(ctx context.Context) (*amqp.Client, error)
+		newRPCClient(ctx context.Context) (*amqp.Client, error)
+		getRPCClient(ctx context.Context) (*amqp.Client, error)
 		getSessionFilterID() (*string, bool)
 	}
 )
@@ -280,7 +282,7 @@ func (q *Queue) ScheduleAt(ctx context.Context, enqueueTime time.Time, messages 
 		return nil, err
 	}
 
-	link, err := rpc.NewLink(q.sender.connection, q.ManagementPath())
+	link, err := rpc.NewLink(q.sender.client, q.ManagementPath())
 	if err != nil {
 		return nil, err
 	}
@@ -336,7 +338,7 @@ func (q *Queue) CancelScheduled(ctx context.Context, seq ...int64) error {
 		return err
 	}
 
-	link, err := rpc.NewLink(q.sender.connection, q.ManagementPath())
+	link, err := rpc.NewLink(q.sender.client, q.ManagementPath())
 	if err != nil {
 		return err
 	}
@@ -555,14 +557,11 @@ func receiveDeferred(ctx context.Context, ec entityConnector, handler Handler, s
 
 	const messagesField, messageField = "messages", "message"
 
-	conn, err := ec.newConnection(ctx)
+	conn, err := ec.newRPCClient(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
-	defer func() {
-		_ = conn.Close()
-	}()
 
 	values := map[string]interface{}{
 		"sequence-numbers":     sequenceNumbers,
@@ -670,31 +669,29 @@ func (q *Queue) Close(ctx context.Context) error {
 	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.Close")
 	defer span.End()
 
+	var lastErr error
 	if q.receiver != nil {
-		if err := q.receiver.Close(ctx); err != nil {
-			if q.sender != nil {
-				if err := q.sender.Close(ctx); err != nil && !isConnectionClosed(err) {
-					tab.For(ctx).Error(err)
-				}
-			}
-
-			if !isConnectionClosed(err) {
-				tab.For(ctx).Error(err)
-				return err
-			}
-
-			return nil
+		if err := q.receiver.Close(ctx); err != nil && !isConnectionClosed(err) {
+			tab.For(ctx).Error(err)
+			lastErr = err
 		}
 	}
 
 	if q.sender != nil {
-		err := q.sender.Close(ctx)
-		if err != nil && !isConnectionClosed(err) {
-			return err
+		if err := q.sender.Close(ctx); err != nil && !isConnectionClosed(err) {
+			tab.For(ctx).Error(err)
+			lastErr = err
 		}
 	}
 
-	return nil
+	if q.rpcClient != nil {
+		if err := q.rpcClient.Close(); err != nil && !isConnectionClosed(err) {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+	}
+
+	return lastErr
 }
 
 func isConnectionClosed(err error) bool {
@@ -755,16 +752,36 @@ func (q *Queue) ensureSender(ctx context.Context) error {
 	return nil
 }
 
+func (q *Queue) ensureRPCClient(ctx context.Context) error {
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.ensureRPCClient")
+	defer span.End()
+
+	q.rpcClientMu.Lock()
+	defer q.rpcClientMu.Unlock()
+
+	if q.rpcClient != nil {
+		return nil
+	}
+
+	client, err := q.newRPCClient(ctx)
+	if err != nil {
+		return err
+	}
+
+	q.rpcClient = client
+	return nil
+}
+
 // ManagementPath is the relative uri to address the entity's management functionality
 func (q *Queue) ManagementPath() string {
 	return fmt.Sprintf("%s/$management", q.Name)
 }
 
-func (q *Queue) newConnection(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.newConnection")
+func (q *Queue) newRPCClient(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.newRPCClient")
 	defer span.End()
 
-	client, err := q.namespace.newConnection()
+	client, err := q.namespace.newClient()
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return nil, err
@@ -777,6 +794,17 @@ func (q *Queue) newConnection(ctx context.Context) (*amqp.Client, error) {
 	}
 
 	return client, nil
+}
+
+func (q *Queue) getRPCClient(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.getRPCClient")
+	defer span.End()
+
+	if err := q.ensureRPCClient(ctx); err != nil {
+		return nil, err
+	}
+
+	return q.rpcClient, nil
 }
 
 func (q *Queue) getSessionFilterID() (*string, bool) {

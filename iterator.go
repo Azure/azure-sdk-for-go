@@ -155,16 +155,13 @@ func (pi *peekIterator) getNextPage(ctx context.Context) error {
 		msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
 	}
 
-	conn, err := pi.entity.newConnection(ctx)
+	client, err := pi.entity.getRPCClient(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
-	defer func() {
-		_ = conn.Close()
-	}()
 
-	link, err := rpc.NewLink(conn, pi.entity.ManagementPath())
+	link, err := rpc.NewLink(client, pi.entity.ManagementPath())
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err

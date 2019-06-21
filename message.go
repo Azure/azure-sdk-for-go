@@ -319,14 +319,11 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 		return errors.New("lock token on the message is not set, thus cannot send disposition")
 	}
 
-	conn, err := m.ec.newConnection(ctx)
+	client, err := m.ec.getRPCClient(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
-	defer func() {
-		_ = conn.Close()
-	}()
 
 	var opts []rpc.LinkOption
 	value := map[string]interface{}{
@@ -354,7 +351,7 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 		Value: value,
 	}
 
-	link, err := rpc.NewLink(conn, m.ec.ManagementPath(), opts...)
+	link, err := rpc.NewLink(client, m.ec.ManagementPath(), opts...)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err

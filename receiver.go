@@ -35,7 +35,7 @@ type (
 	// Receiver provides connection, session and link handling for a receiving to an entity path
 	Receiver struct {
 		namespace          *Namespace
-		connection         *amqp.Client
+		client             *amqp.Client
 		session            *session
 		receiver           *amqp.Receiver
 		entityPath         string
@@ -127,17 +127,17 @@ func (r *Receiver) Close(ctx context.Context) error {
 	err := r.receiver.Close(ctx)
 	if err != nil {
 		_ = r.session.Close(ctx)
-		_ = r.connection.Close()
+		_ = r.client.Close()
 		return err
 	}
 
 	err = r.session.Close(ctx)
 	if err != nil {
-		_ = r.connection.Close()
+		_ = r.client.Close()
 		return err
 	}
 
-	return r.connection.Close()
+	return r.client.Close()
 }
 
 // Recover will attempt to close the current session and link, then rebuild them
@@ -151,7 +151,7 @@ func (r *Receiver) Recover(ctx context.Context) error {
 	defer cancel()
 	_ = r.receiver.Close(closeCtx)
 	_ = r.session.Close(closeCtx)
-	_ = r.connection.Close()
+	_ = r.client.Close()
 	return r.newSessionAndLink(ctx)
 }
 
@@ -319,20 +319,20 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.newSessionAndLink")
 	defer span.End()
 
-	connection, err := r.namespace.newConnection()
+	client, err := r.namespace.newClient()
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
-	r.connection = connection
+	r.client = client
 
-	err = r.namespace.negotiateClaim(ctx, connection, r.entityPath)
+	err = r.namespace.negotiateClaim(ctx, client, r.entityPath)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
 
-	amqpSession, err := connection.NewSession()
+	amqpSession, err := client.NewSession()
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err

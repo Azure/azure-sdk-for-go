@@ -68,15 +68,15 @@ func (bdi *BatchDispositionIterator) Next() (uuid *uuid.UUID) {
 func (bdi *BatchDispositionIterator) doUpdate(ctx context.Context, ec entityConnector) BatchDispositionError {
 	batchError := BatchDispositionError{}
 	for !bdi.Done() {
-		if uuid := bdi.Next(); uuid != nil {
+		if id := bdi.Next(); id != nil {
 			m := &Message{
-				LockToken: uuid,
+				LockToken: id,
 			}
 			m.ec = ec
 			err := m.sendDisposition(ctx, bdi.Status)
 			if err != nil {
 				batchError.Errors = append(batchError.Errors, DispositionError{
-					LockTokenID: uuid,
+					LockTokenID: id,
 					err:         err,
 				})
 			}

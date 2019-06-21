@@ -761,7 +761,7 @@ func (suite *serviceBusSuite) TestIssue127QueueClient() {
 			receivedDeferredChan := make(chan *Message, 1)
 			receiveDeferredHandler := HandlerFunc(func(dCtx context.Context, dMsg *Message) error {
 				// send signal that the deferred message was received
-				defer func(){
+				defer func() {
 					receivedDeferredChan <- dMsg
 				}()
 				return dMsg.Complete(dCtx)

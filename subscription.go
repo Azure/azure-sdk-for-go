@@ -37,6 +37,7 @@ type (
 	//Messages are received from a subscription identically to the way they are received from a queue.
 	Subscription struct {
 		*entity
+		lockedRPC
 		Topic             *Topic
 		receiver          *Receiver
 		receiverMu        sync.Mutex
@@ -287,14 +288,22 @@ func (s *Subscription) Close(ctx context.Context) error {
 	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.Close")
 	defer span.End()
 
+	var lastErr error
 	if s.receiver != nil {
-		err := s.receiver.Close(ctx)
-		if err != nil && !isConnectionClosed(err) {
+		if err := s.receiver.Close(ctx); err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
-			return err
+			lastErr = err
 		}
 	}
-	return nil
+
+	if s.rpcClient != nil {
+		if err := s.rpcClient.Close(); err != nil && !isConnectionClosed(err) {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+	}
+
+	return lastErr
 }
 
 // ManagementPath is the relative uri to address the entity's management functionality
@@ -324,11 +333,54 @@ func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOptio
 	return nil
 }
 
-func (s *Subscription) newConnection(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.newConnection")
+func (s *Subscription) newRPCClient(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.newRPCClient")
 	defer span.End()
 
-	return s.namespace.newConnection()
+	client, err := s.namespace.newClient()
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	if err := s.namespace.negotiateClaim(ctx, client, s.ManagementPath()); err != nil {
+		tab.For(ctx).Error(err)
+		_ = client.Close()
+		return nil, err
+	}
+
+	return client, nil
+}
+
+func (s *Subscription) getRPCClient(ctx context.Context) (*amqp.Client, error) {
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.getRPCClient")
+	defer span.End()
+
+	if err := s.ensureRPCClient(ctx); err != nil {
+		return nil, err
+	}
+
+	return s.rpcClient, nil
+}
+
+func (s *Subscription) ensureRPCClient(ctx context.Context) error {
+	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.ensureRPCClient")
+	defer span.End()
+
+	s.rpcClientMu.Lock()
+	defer s.rpcClientMu.Unlock()
+
+	if s.rpcClient != nil {
+		return nil
+	}
+
+	client, err := s.newRPCClient(ctx)
+	if err != nil {
+		return err
+	}
+
+	s.rpcClient = client
+	return nil
 }
 
 func (s *Subscription) getSessionFilterID() (*string, bool) {

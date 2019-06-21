@@ -227,21 +227,21 @@ func (qs *QueueSession) Close(ctx context.Context) error {
 
 	var lastErr error
 	if qs.receiver != nil {
-		if err := qs.receiver.Close(ctx); err != nil {
+		if err := qs.receiver.Close(ctx); err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
 			lastErr = err
 		}
 	}
 
 	if qs.sender != nil {
-		if err := qs.sender.Close(ctx); err != nil {
+		if err := qs.sender.Close(ctx); err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
 			lastErr = err
 		}
 	}
 
 	if qs.rpcClient != nil {
-		if err := qs.rpcClient.Close(); err != nil {
+		if err := qs.rpcClient.Close(); err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
 			lastErr = err
 		}
@@ -432,14 +432,14 @@ func (ss *SubscriptionSession) Close(ctx context.Context) error {
 
 	var lastErr error
 	if ss.receiver != nil {
-		if err := ss.receiver.Close(ctx); err != nil {
+		if err := ss.receiver.Close(ctx); err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
 			lastErr = err
 		}
 	}
 
 	if ss.rpcClient != nil {
-		if err := ss.rpcClient.Close(); err != nil {
+		if err := ss.rpcClient.Close(); err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
 			lastErr = err
 		}

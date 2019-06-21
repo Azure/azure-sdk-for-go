@@ -143,7 +143,7 @@ type AnomalyDetectOnTimestampResponse struct {
 	IsNegativeAnomaly *bool `json:"isNegativeAnomaly,omitempty"`
 	// IsPositiveAnomaly - Anomaly status in positive direction on the timestamp. True means a positive anomaly has been detected. A positive anomaly means the point is detected as an anomaly and its real value is larger than the expected one.
 	IsPositiveAnomaly *bool `json:"isPositiveAnomaly,omitempty"`
-	// ConfidenceScore - Confidence score of the anomaly, significiant anomalies will get higher score.
+	// ConfidenceScore - Confidence score of the anomaly, significant anomalies will get higher score.
 	ConfidenceScore *float64 `json:"confidenceScore,omitempty"`
 }
 

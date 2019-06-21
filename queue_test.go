@@ -810,7 +810,6 @@ func testReceiveOneFromDeadLetter(ctx context.Context, t *testing.T, q *Queue) {
 	}
 	assert.NoError(t, q.Close(ctx))
 
-	fmt.Println("got here!!")
 	dl := q.NewDeadLetter()
 	called := false
 	err = dl.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {

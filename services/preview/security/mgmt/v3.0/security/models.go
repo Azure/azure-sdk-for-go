@@ -3768,6 +3768,8 @@ type JitNetworkAccessPolicyVirtualMachine struct {
 	ID *string `json:"id,omitempty"`
 	// Ports - Port configurations for the virtual machine
 	Ports *[]JitNetworkAccessPortRule `json:"ports,omitempty"`
+	// PublicIPAddress - Public IP address of the Azure Firewall that is linked to this policy, if applicable
+	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 }
 
 // JitNetworkAccessPortRule ...
@@ -3806,6 +3808,8 @@ type JitNetworkAccessRequestPort struct {
 	Status Status `json:"status,omitempty"`
 	// StatusReason - A description of why the `status` has its value. Possible values include: 'Expired', 'UserRequested', 'NewerRequestInitiated'
 	StatusReason StatusReason `json:"statusReason,omitempty"`
+	// MappedPort - The port which is mapped to this port's `number` in the Azure Firewall, if applicable
+	MappedPort interface{} `json:"mappedPort,omitempty"`
 }
 
 // JitNetworkAccessRequestVirtualMachine ...

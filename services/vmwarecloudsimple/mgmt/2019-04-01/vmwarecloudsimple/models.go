@@ -827,20 +827,20 @@ func NewDedicatedCloudNodeListResponsePage(getNextPage func(context.Context, Ded
 
 // DedicatedCloudNodeProperties properties of dedicated cloud node
 type DedicatedCloudNodeProperties struct {
-	// AvailabilityZoneID - Availability Zone id, e.g. "az1"
-	AvailabilityZoneID *string `json:"availabilityZoneId,omitempty"`
-	// AvailabilityZoneName - READ-ONLY; Availability Zone name, e.g. "Availability Zone 1"
-	AvailabilityZoneName *string `json:"availabilityZoneName,omitempty"`
 	// CloudRackName - READ-ONLY; VMWare Cloud Rack Name
 	CloudRackName *string `json:"cloudRackName,omitempty"`
 	// Created - READ-ONLY; date time the resource was created
 	Created interface{} `json:"created,omitempty"`
+	// DedicatedAvailabilityZoneID - CloudSimple Availability Zone id, e.g. "az1"
+	DedicatedAvailabilityZoneID *string `json:"dedicatedAvailabilityZoneId,omitempty"`
+	// DedicatedAvailabilityZoneName - READ-ONLY; CloudSimple Availability Zone name, e.g. "Availability Zone 1"
+	DedicatedAvailabilityZoneName *string `json:"dedicatedAvailabilityZoneName,omitempty"`
+	// DedicatedPlacementGroupID - CloudSimple Placement Group id, e.g. "n1"
+	DedicatedPlacementGroupID *string `json:"dedicatedPlacementGroupId,omitempty"`
+	// DedicatedPlacementGroupName - READ-ONLY; CloudSimple Placement Name, e.g. "Placement Group 1"
+	DedicatedPlacementGroupName *string `json:"dedicatedPlacementGroupName,omitempty"`
 	// NodesCount - count of nodes to create
 	NodesCount *int32 `json:"nodesCount,omitempty"`
-	// PlacementGroupID - Placement Group id, e.g. "n1"
-	PlacementGroupID *string `json:"placementGroupId,omitempty"`
-	// PlacementGroupName - READ-ONLY; Placement Name, e.g. "Placement Group 1"
-	PlacementGroupName *string `json:"placementGroupName,omitempty"`
 	// PrivateCloudID - READ-ONLY; Private Cloud Id
 	PrivateCloudID *string `json:"privateCloudId,omitempty"`
 	// PrivateCloudName - READ-ONLY; Resource Pool Name
@@ -860,14 +860,14 @@ type DedicatedCloudNodeProperties struct {
 // MarshalJSON is the custom marshaler for DedicatedCloudNodeProperties.
 func (dcnp DedicatedCloudNodeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dcnp.AvailabilityZoneID != nil {
-		objectMap["availabilityZoneId"] = dcnp.AvailabilityZoneID
+	if dcnp.DedicatedAvailabilityZoneID != nil {
+		objectMap["dedicatedAvailabilityZoneId"] = dcnp.DedicatedAvailabilityZoneID
+	}
+	if dcnp.DedicatedPlacementGroupID != nil {
+		objectMap["dedicatedPlacementGroupId"] = dcnp.DedicatedPlacementGroupID
 	}
 	if dcnp.NodesCount != nil {
 		objectMap["nodesCount"] = dcnp.NodesCount
-	}
-	if dcnp.PlacementGroupID != nil {
-		objectMap["placementGroupId"] = dcnp.PlacementGroupID
 	}
 	if dcnp.PurchaseID != nil {
 		objectMap["purchaseId"] = dcnp.PurchaseID
@@ -887,24 +887,6 @@ func (dcnp *DedicatedCloudNodeProperties) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "availabilityZoneId":
-			if v != nil {
-				var availabilityZoneID string
-				err = json.Unmarshal(*v, &availabilityZoneID)
-				if err != nil {
-					return err
-				}
-				dcnp.AvailabilityZoneID = &availabilityZoneID
-			}
-		case "availabilityZoneName":
-			if v != nil {
-				var availabilityZoneName string
-				err = json.Unmarshal(*v, &availabilityZoneName)
-				if err != nil {
-					return err
-				}
-				dcnp.AvailabilityZoneName = &availabilityZoneName
-			}
 		case "cloudRackName":
 			if v != nil {
 				var cloudRackName string
@@ -923,6 +905,42 @@ func (dcnp *DedicatedCloudNodeProperties) UnmarshalJSON(body []byte) error {
 				}
 				dcnp.Created = created
 			}
+		case "dedicatedAvailabilityZoneId":
+			if v != nil {
+				var dedicatedAvailabilityZoneID string
+				err = json.Unmarshal(*v, &dedicatedAvailabilityZoneID)
+				if err != nil {
+					return err
+				}
+				dcnp.DedicatedAvailabilityZoneID = &dedicatedAvailabilityZoneID
+			}
+		case "dedicatedAvailabilityZoneName":
+			if v != nil {
+				var dedicatedAvailabilityZoneName string
+				err = json.Unmarshal(*v, &dedicatedAvailabilityZoneName)
+				if err != nil {
+					return err
+				}
+				dcnp.DedicatedAvailabilityZoneName = &dedicatedAvailabilityZoneName
+			}
+		case "dedicatedPlacementGroupId":
+			if v != nil {
+				var dedicatedPlacementGroupID string
+				err = json.Unmarshal(*v, &dedicatedPlacementGroupID)
+				if err != nil {
+					return err
+				}
+				dcnp.DedicatedPlacementGroupID = &dedicatedPlacementGroupID
+			}
+		case "dedicatedPlacementGroupName":
+			if v != nil {
+				var dedicatedPlacementGroupName string
+				err = json.Unmarshal(*v, &dedicatedPlacementGroupName)
+				if err != nil {
+					return err
+				}
+				dcnp.DedicatedPlacementGroupName = &dedicatedPlacementGroupName
+			}
 		case "nodesCount":
 			if v != nil {
 				var nodesCount int32
@@ -931,24 +949,6 @@ func (dcnp *DedicatedCloudNodeProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dcnp.NodesCount = &nodesCount
-			}
-		case "placementGroupId":
-			if v != nil {
-				var placementGroupID string
-				err = json.Unmarshal(*v, &placementGroupID)
-				if err != nil {
-					return err
-				}
-				dcnp.PlacementGroupID = &placementGroupID
-			}
-		case "placementGroupName":
-			if v != nil {
-				var placementGroupName string
-				err = json.Unmarshal(*v, &placementGroupName)
-				if err != nil {
-					return err
-				}
-				dcnp.PlacementGroupName = &placementGroupName
 			}
 		case "privateCloudId":
 			if v != nil {
@@ -1292,10 +1292,10 @@ func NewDedicatedCloudServiceListResponsePage(getNextPage func(context.Context, 
 
 // DedicatedCloudServiceProperties properties of dedicated cloud service
 type DedicatedCloudServiceProperties struct {
+	// AccountOnboardingState - READ-ONLY; indicates whether account onboarded or not in a given region. Possible values include: 'NotOnBoarded', 'OnBoarded', 'OnBoardingFailed', 'OnBoarding'
+	AccountOnboardingState OnboardingStatus `json:"accountOnboardingState,omitempty"`
 	// GatewaySubnet - gateway Subnet for the account. It will collect the subnet address and always treat it as /28
 	GatewaySubnet *string `json:"gatewaySubnet,omitempty"`
-	// IsAccountOnboarded - READ-ONLY; indicates whether account onboarded or not in a given region. Possible values include: 'NotOnBoarded', 'OnBoarded', 'OnBoardingFailed', 'OnBoarding'
-	IsAccountOnboarded OnboardingStatus `json:"isAccountOnboarded,omitempty"`
 	// Nodes - total nodes purchased
 	Nodes *int32 `json:"nodes,omitempty"`
 	// ServiceURL - link to a service management web portal
@@ -1586,26 +1586,26 @@ func NewPrivateCloudListPage(getNextPage func(context.Context, PrivateCloudList)
 
 // PrivateCloudProperties properties of private
 type PrivateCloudProperties struct {
-	// AvailabilityZoneID - Availability Zone id, e.g. "az1"
-	AvailabilityZoneID *string `json:"availabilityZoneId,omitempty"`
-	// AvailabilityZoneName - Availability Zone name, e.g. "Availability Zone 1"
-	AvailabilityZoneName *string `json:"availabilityZoneName,omitempty"`
 	// ClustersNumber - Number of clusters
 	ClustersNumber *int32 `json:"clustersNumber,omitempty"`
 	// CreatedBy - User's emails who created cloud
 	CreatedBy *string `json:"createdBy,omitempty"`
 	// CreatedOn - When private cloud was created
 	CreatedOn *date.Time `json:"createdOn,omitempty"`
+	// DedicatedAvailabilityZoneID - CloudSimple Availability Zone id, e.g. "az1"
+	DedicatedAvailabilityZoneID *string `json:"dedicatedAvailabilityZoneId,omitempty"`
+	// DedicatedAvailabilityZoneName - CloudSimple Availability Zone name, e.g. "Availability Zone 1"
+	DedicatedAvailabilityZoneName *string `json:"dedicatedAvailabilityZoneName,omitempty"`
+	// DedicatedPlacementGroupID - CloudSimple Placement Group id, e.g. "n1"
+	DedicatedPlacementGroupID *string `json:"dedicatedPlacementGroupId,omitempty"`
+	// DedicatedPlacementGroupName - CloudSimple Placement Group name
+	DedicatedPlacementGroupName *string `json:"dedicatedPlacementGroupName,omitempty"`
 	// DNSServers - Array of DNS servers
 	DNSServers *[]string `json:"dnsServers,omitempty"`
 	// Expires - Expiration date of PC
 	Expires *string `json:"expires,omitempty"`
 	// NsxType - Nsx Type, e.g. "Advanced"
 	NsxType *string `json:"nsxType,omitempty"`
-	// PlacementGroupID - Placement Group id, e.g. "n1"
-	PlacementGroupID *string `json:"placementGroupId,omitempty"`
-	// PlacementGroupName - Placement Group name
-	PlacementGroupName *string `json:"placementGroupName,omitempty"`
 	// PrivateCloudID - Id of a private cloud
 	PrivateCloudID *uuid.UUID `json:"privateCloudId,omitempty"`
 	// ResourcePools - The list of Resource Pools

@@ -158,6 +158,19 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Unknown, Updating}
 }
 
+// QuotaUnit enumerates the values for quota unit.
+type QuotaUnit string
+
+const (
+	// Count ...
+	Count QuotaUnit = "Count"
+)
+
+// PossibleQuotaUnitValues returns an array of possible values for the QuotaUnit const type.
+func PossibleQuotaUnitValues() []QuotaUnit {
+	return []QuotaUnit{Count}
+}
+
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
@@ -222,13 +235,13 @@ func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
 type UsageUnit string
 
 const (
-	// Count ...
-	Count UsageUnit = "Count"
+	// UsageUnitCount ...
+	UsageUnitCount UsageUnit = "Count"
 )
 
 // PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
 func PossibleUsageUnitValues() []UsageUnit {
-	return []UsageUnit{Count}
+	return []UsageUnit{UsageUnitCount}
 }
 
 // VMPriority enumerates the values for vm priority.
@@ -2135,36 +2148,8 @@ type QuotaBaseProperties struct {
 	ID *string `json:"id,omitempty"`
 	// Type - Specifies the resource type.
 	Type *string `json:"type,omitempty"`
-	// Quota - The workspace level quota.
-	Quota *int32 `json:"quota,omitempty"`
-}
-
-// QuotasUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type QuotasUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *QuotasUpdateFuture) Result(client QuotasClient) (uwqr UpdateWorkspaceQuotasResult, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.QuotasUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("machinelearningservices.QuotasUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if uwqr.Response.Response, err = future.GetResult(sender); err == nil && uwqr.Response.Response.StatusCode != http.StatusNoContent {
-		uwqr, err = client.UpdateResponder(uwqr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "machinelearningservices.QuotasUpdateFuture", "Result", uwqr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
+	// Limit - The maximum permitted quota of the resource.
+	Limit *int64 `json:"limit,omitempty"`
 }
 
 // QuotaUpdateParameters quota update parameters.
@@ -2232,10 +2217,10 @@ type ResourceQuota struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Name of the resource.
 	Name *ResourceName `json:"name,omitempty"`
-	// Quota - READ-ONLY; Quota assigned to the resource.
-	Quota *int32 `json:"quota,omitempty"`
-	// Unit - READ-ONLY; The units used to represent the quota.
-	Unit *string `json:"unit,omitempty"`
+	// Limit - READ-ONLY; The maximum permitted quota of the resource.
+	Limit *int64 `json:"limit,omitempty"`
+	// Unit - READ-ONLY; An enum describing the unit of quota measurement. Possible values include: 'Count'
+	Unit QuotaUnit `json:"unit,omitempty"`
 }
 
 // ScaleSettings scale settings for AML Compute
@@ -2284,8 +2269,8 @@ type UpdateWorkspaceQuotas struct {
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Specifies the resource type.
 	Type *string `json:"type,omitempty"`
-	// Quota - The quota of the resource.
-	Quota *int32 `json:"quota,omitempty"`
+	// Limit - The maximum permitted quota of the resource.
+	Limit *int64 `json:"limit,omitempty"`
 	// Status - Status of update workspace quota. Possible values include: 'Undefined', 'Success', 'Failure'
 	Status Status `json:"status,omitempty"`
 }
@@ -2305,7 +2290,7 @@ type Usage struct {
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Specifies the resource type.
 	Type *string `json:"type,omitempty"`
-	// Unit - READ-ONLY; An enum describing the unit of usage measurement. Possible values include: 'Count'
+	// Unit - READ-ONLY; An enum describing the unit of usage measurement. Possible values include: 'UsageUnitCount'
 	Unit UsageUnit `json:"unit,omitempty"`
 	// CurrentValue - READ-ONLY; The current usage of the resource.
 	CurrentValue *int64 `json:"currentValue,omitempty"`

@@ -164,13 +164,13 @@ func (client QuotasClient) ListComplete(ctx context.Context, location string) (r
 // Parameters:
 // location - the location for update quota is queried.
 // parameters - quota update parameters.
-func (client QuotasClient) Update(ctx context.Context, location string, parameters QuotaUpdateParameters) (result QuotasUpdateFuture, err error) {
+func (client QuotasClient) Update(ctx context.Context, location string, parameters QuotaUpdateParameters) (result UpdateWorkspaceQuotasResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/QuotasClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -187,10 +187,16 @@ func (client QuotasClient) Update(ctx context.Context, location string, paramete
 		return
 	}
 
-	result, err = client.UpdateSender(req)
+	resp, err := client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.QuotasClient", "Update", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "machinelearningservices.QuotasClient", "Update", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.QuotasClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
@@ -220,15 +226,9 @@ func (client QuotasClient) UpdatePreparer(ctx context.Context, location string, 
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client QuotasClient) UpdateSender(req *http.Request) (future QuotasUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
+func (client QuotasClient) UpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
 }
 
 // UpdateResponder handles the response to the Update request. The method always

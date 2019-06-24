@@ -89,6 +89,12 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
+type QuotaUnit = original.QuotaUnit
+
+const (
+	Count QuotaUnit = original.Count
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
@@ -120,7 +126,7 @@ const (
 type UsageUnit = original.UsageUnit
 
 const (
-	Count UsageUnit = original.Count
+	UsageUnitCount UsageUnit = original.UsageUnitCount
 )
 
 type VMPriority = original.VMPriority
@@ -184,7 +190,6 @@ type Password = original.Password
 type QuotaBaseProperties = original.QuotaBaseProperties
 type QuotaUpdateParameters = original.QuotaUpdateParameters
 type QuotasClient = original.QuotasClient
-type QuotasUpdateFuture = original.QuotasUpdateFuture
 type RegistryListCredentialsResult = original.RegistryListCredentialsResult
 type Resource = original.Resource
 type ResourceID = original.ResourceID
@@ -299,6 +304,9 @@ func PossibleComputeTypeValues() []ComputeType {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleQuotaUnitValues() []QuotaUnit {
+	return original.PossibleQuotaUnitValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

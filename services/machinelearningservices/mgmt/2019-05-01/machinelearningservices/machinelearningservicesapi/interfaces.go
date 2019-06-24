@@ -61,7 +61,7 @@ var _ VirtualMachineSizesClientAPI = (*machinelearningservices.VirtualMachineSiz
 // QuotasClientAPI contains the set of methods on the QuotasClient type.
 type QuotasClientAPI interface {
 	List(ctx context.Context, location string) (result machinelearningservices.ListWorkspaceQuotasPage, err error)
-	Update(ctx context.Context, location string, parameters machinelearningservices.QuotaUpdateParameters) (result machinelearningservices.QuotasUpdateFuture, err error)
+	Update(ctx context.Context, location string, parameters machinelearningservices.QuotaUpdateParameters) (result machinelearningservices.UpdateWorkspaceQuotasResult, err error)
 }
 
 var _ QuotasClientAPI = (*machinelearningservices.QuotasClient)(nil)

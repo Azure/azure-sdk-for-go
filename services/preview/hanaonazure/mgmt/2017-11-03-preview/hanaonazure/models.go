@@ -734,6 +734,152 @@ func (sm *SapMonitor) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// SapMonitorListResult the response from the List SAP monitors operation.
+type SapMonitorListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of SAP monitors.
+	Value *[]SapMonitor `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of SAP monitors.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SapMonitorListResultIterator provides access to a complete listing of SapMonitor values.
+type SapMonitorListResultIterator struct {
+	i    int
+	page SapMonitorListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SapMonitorListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SapMonitorListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SapMonitorListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SapMonitorListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SapMonitorListResultIterator) Response() SapMonitorListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SapMonitorListResultIterator) Value() SapMonitor {
+	if !iter.page.NotDone() {
+		return SapMonitor{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SapMonitorListResultIterator type.
+func NewSapMonitorListResultIterator(page SapMonitorListResultPage) SapMonitorListResultIterator {
+	return SapMonitorListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (smlr SapMonitorListResult) IsEmpty() bool {
+	return smlr.Value == nil || len(*smlr.Value) == 0
+}
+
+// sapMonitorListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (smlr SapMonitorListResult) sapMonitorListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if smlr.NextLink == nil || len(to.String(smlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(smlr.NextLink)))
+}
+
+// SapMonitorListResultPage contains a page of SapMonitor values.
+type SapMonitorListResultPage struct {
+	fn   func(context.Context, SapMonitorListResult) (SapMonitorListResult, error)
+	smlr SapMonitorListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SapMonitorListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SapMonitorListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.smlr)
+	if err != nil {
+		return err
+	}
+	page.smlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SapMonitorListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SapMonitorListResultPage) NotDone() bool {
+	return !page.smlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SapMonitorListResultPage) Response() SapMonitorListResult {
+	return page.smlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SapMonitorListResultPage) Values() []SapMonitor {
+	if page.smlr.IsEmpty() {
+		return nil
+	}
+	return *page.smlr.Value
+}
+
+// Creates a new instance of the SapMonitorListResultPage type.
+func NewSapMonitorListResultPage(getNextPage func(context.Context, SapMonitorListResult) (SapMonitorListResult, error)) SapMonitorListResultPage {
+	return SapMonitorListResultPage{fn: getNextPage}
+}
+
 // SapMonitorProperties describes the properties of a SAP monitor.
 type SapMonitorProperties struct {
 	// HanaSubnet - READ-ONLY; Specifies the SAP monitor unique ID.
@@ -778,6 +924,29 @@ func (future *SapMonitorsCreateFuture) Result(client SapMonitorsClient) (sm SapM
 			err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsCreateFuture", "Result", sm.Response.Response, "Failure responding to request")
 		}
 	}
+	return
+}
+
+// SapMonitorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SapMonitorsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SapMonitorsDeleteFuture) Result(client SapMonitorsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.SapMonitorsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 

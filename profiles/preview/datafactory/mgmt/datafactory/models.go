@@ -58,11 +58,33 @@ const (
 	TRACE   AzureFunctionActivityMethod = original.TRACE
 )
 
+type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
+
+const (
+	Merge  AzureSearchIndexWriteBehaviorType = original.Merge
+	Upload AzureSearchIndexWriteBehaviorType = original.Upload
+)
+
 type BlobEventTypes = original.BlobEventTypes
 
 const (
 	MicrosoftStorageBlobCreated BlobEventTypes = original.MicrosoftStorageBlobCreated
 	MicrosoftStorageBlobDeleted BlobEventTypes = original.MicrosoftStorageBlobDeleted
+)
+
+type CassandraSourceReadConsistencyLevels = original.CassandraSourceReadConsistencyLevels
+
+const (
+	ALL         CassandraSourceReadConsistencyLevels = original.ALL
+	EACHQUORUM  CassandraSourceReadConsistencyLevels = original.EACHQUORUM
+	LOCALONE    CassandraSourceReadConsistencyLevels = original.LOCALONE
+	LOCALQUORUM CassandraSourceReadConsistencyLevels = original.LOCALQUORUM
+	LOCALSERIAL CassandraSourceReadConsistencyLevels = original.LOCALSERIAL
+	ONE         CassandraSourceReadConsistencyLevels = original.ONE
+	QUORUM      CassandraSourceReadConsistencyLevels = original.QUORUM
+	SERIAL      CassandraSourceReadConsistencyLevels = original.SERIAL
+	THREE       CassandraSourceReadConsistencyLevels = original.THREE
+	TWO         CassandraSourceReadConsistencyLevels = original.TWO
 )
 
 type DayOfWeek = original.DayOfWeek
@@ -281,6 +303,14 @@ const (
 	MongoDbAuthenticationTypeBasic     MongoDbAuthenticationType = original.MongoDbAuthenticationTypeBasic
 )
 
+type NetezzaPartitionOption = original.NetezzaPartitionOption
+
+const (
+	NetezzaPartitionOptionDataSlice    NetezzaPartitionOption = original.NetezzaPartitionOptionDataSlice
+	NetezzaPartitionOptionDynamicRange NetezzaPartitionOption = original.NetezzaPartitionOptionDynamicRange
+	NetezzaPartitionOptionNone         NetezzaPartitionOption = original.NetezzaPartitionOptionNone
+)
+
 type ODataAadServicePrincipalCredentialType = original.ODataAadServicePrincipalCredentialType
 
 const (
@@ -296,6 +326,14 @@ const (
 	ODataAuthenticationTypeBasic                  ODataAuthenticationType = original.ODataAuthenticationTypeBasic
 	ODataAuthenticationTypeManagedServiceIdentity ODataAuthenticationType = original.ODataAuthenticationTypeManagedServiceIdentity
 	ODataAuthenticationTypeWindows                ODataAuthenticationType = original.ODataAuthenticationTypeWindows
+)
+
+type OraclePartitionOption = original.OraclePartitionOption
+
+const (
+	OraclePartitionOptionDynamicRange              OraclePartitionOption = original.OraclePartitionOptionDynamicRange
+	OraclePartitionOptionNone                      OraclePartitionOption = original.OraclePartitionOptionNone
+	OraclePartitionOptionPhysicalPartitionsOfTable OraclePartitionOption = original.OraclePartitionOptionPhysicalPartitionsOfTable
 )
 
 type ParameterType = original.ParameterType
@@ -400,11 +438,42 @@ const (
 	RunQueryOrderByFieldTriggerRunTimestamp RunQueryOrderByField = original.RunQueryOrderByFieldTriggerRunTimestamp
 )
 
+type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
+
+const (
+	Insert SalesforceSinkWriteBehavior = original.Insert
+	Upsert SalesforceSinkWriteBehavior = original.Upsert
+)
+
+type SalesforceSourceReadBehavior = original.SalesforceSourceReadBehavior
+
+const (
+	Query    SalesforceSourceReadBehavior = original.Query
+	QueryAll SalesforceSourceReadBehavior = original.QueryAll
+)
+
+type SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehavior
+
+const (
+	SapCloudForCustomerSinkWriteBehaviorInsert SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehaviorInsert
+	SapCloudForCustomerSinkWriteBehaviorUpdate SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehaviorUpdate
+)
+
 type SapHanaAuthenticationType = original.SapHanaAuthenticationType
 
 const (
 	SapHanaAuthenticationTypeBasic   SapHanaAuthenticationType = original.SapHanaAuthenticationTypeBasic
 	SapHanaAuthenticationTypeWindows SapHanaAuthenticationType = original.SapHanaAuthenticationTypeWindows
+)
+
+type SapTablePartitionOption = original.SapTablePartitionOption
+
+const (
+	SapTablePartitionOptionNone                     SapTablePartitionOption = original.SapTablePartitionOptionNone
+	SapTablePartitionOptionPartitionOnCalendarDate  SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnCalendarDate
+	SapTablePartitionOptionPartitionOnCalendarMonth SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnCalendarMonth
+	SapTablePartitionOptionPartitionOnCalendarYear  SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnCalendarYear
+	SapTablePartitionOptionPartitionOnInt           SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnInt
 )
 
 type SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatus
@@ -491,6 +560,14 @@ type TeradataAuthenticationType = original.TeradataAuthenticationType
 const (
 	TeradataAuthenticationTypeBasic   TeradataAuthenticationType = original.TeradataAuthenticationTypeBasic
 	TeradataAuthenticationTypeWindows TeradataAuthenticationType = original.TeradataAuthenticationTypeWindows
+)
+
+type TeradataPartitionOption = original.TeradataPartitionOption
+
+const (
+	TeradataPartitionOptionDynamicRange TeradataPartitionOption = original.TeradataPartitionOptionDynamicRange
+	TeradataPartitionOptionHash         TeradataPartitionOption = original.TeradataPartitionOptionHash
+	TeradataPartitionOptionNone         TeradataPartitionOption = original.TeradataPartitionOptionNone
 )
 
 type TriggerRunStatus = original.TriggerRunStatus
@@ -1793,8 +1870,14 @@ func PossibleAuthorizationTypeValues() []AuthorizationType {
 func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
 	return original.PossibleAzureFunctionActivityMethodValues()
 }
+func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
+	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()
+}
 func PossibleBlobEventTypesValues() []BlobEventTypes {
 	return original.PossibleBlobEventTypesValues()
+}
+func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
+	return original.PossibleCassandraSourceReadConsistencyLevelsValues()
 }
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
@@ -1874,11 +1957,17 @@ func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRun
 func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
 	return original.PossibleMongoDbAuthenticationTypeValues()
 }
+func PossibleNetezzaPartitionOptionValues() []NetezzaPartitionOption {
+	return original.PossibleNetezzaPartitionOptionValues()
+}
 func PossibleODataAadServicePrincipalCredentialTypeValues() []ODataAadServicePrincipalCredentialType {
 	return original.PossibleODataAadServicePrincipalCredentialTypeValues()
 }
 func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
 	return original.PossibleODataAuthenticationTypeValues()
+}
+func PossibleOraclePartitionOptionValues() []OraclePartitionOption {
+	return original.PossibleOraclePartitionOptionValues()
 }
 func PossibleParameterTypeValues() []ParameterType {
 	return original.PossibleParameterTypeValues()
@@ -1910,8 +1999,20 @@ func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
 func PossibleRunQueryOrderValues() []RunQueryOrder {
 	return original.PossibleRunQueryOrderValues()
 }
+func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
+	return original.PossibleSalesforceSinkWriteBehaviorValues()
+}
+func PossibleSalesforceSourceReadBehaviorValues() []SalesforceSourceReadBehavior {
+	return original.PossibleSalesforceSourceReadBehaviorValues()
+}
+func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerSinkWriteBehavior {
+	return original.PossibleSapCloudForCustomerSinkWriteBehaviorValues()
+}
 func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
 	return original.PossibleSapHanaAuthenticationTypeValues()
+}
+func PossibleSapTablePartitionOptionValues() []SapTablePartitionOption {
+	return original.PossibleSapTablePartitionOptionValues()
 }
 func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
 	return original.PossibleSelfHostedIntegrationRuntimeNodeStatusValues()
@@ -1942,6 +2043,9 @@ func PossibleSybaseAuthenticationTypeValues() []SybaseAuthenticationType {
 }
 func PossibleTeradataAuthenticationTypeValues() []TeradataAuthenticationType {
 	return original.PossibleTeradataAuthenticationTypeValues()
+}
+func PossibleTeradataPartitionOptionValues() []TeradataPartitionOption {
+	return original.PossibleTeradataPartitionOptionValues()
 }
 func PossibleTriggerRunStatusValues() []TriggerRunStatus {
 	return original.PossibleTriggerRunStatusValues()

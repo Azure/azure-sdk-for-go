@@ -23,7 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
-	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -33,12 +32,12 @@ type ServicesClient struct {
 }
 
 // NewServicesClient creates an instance of the ServicesClient client.
-func NewServicesClient(subscriptionID uuid.UUID) ServicesClient {
+func NewServicesClient(subscriptionID string) ServicesClient {
 	return NewServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewServicesClientWithBaseURI creates an instance of the ServicesClient client.
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) ServicesClient {
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
 	return ServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 

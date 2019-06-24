@@ -333,7 +333,7 @@ type HybridUseBenefitProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreatedDate - READ-ONLY; Created date
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
-	// LastUpdatedDate - READ-ONLY; Last Ureated date
+	// LastUpdatedDate - READ-ONLY; Last updated date
 	LastUpdatedDate *date.Time `json:"lastUpdatedDate,omitempty"`
 }
 

@@ -607,7 +607,7 @@ func NewAmlComputeNodesInformationIterator(page AmlComputeNodesInformationPage) 
 
 // IsEmpty returns true if the ListResult contains no values.
 func (acni AmlComputeNodesInformation) IsEmpty() bool {
-	return acni.Value == nil || len(*acni.Value) == 0
+	return acni.Nodes == nil || len(*acni.Nodes) == 0
 }
 
 // amlComputeNodesInformationPreparer prepares a request to retrieve the next set of results.
@@ -671,7 +671,7 @@ func (page AmlComputeNodesInformationPage) Values() []AmlComputeNodeInformation 
 	if page.acni.IsEmpty() {
 		return nil
 	}
-	return *page.acni.Value
+	return *page.acni.Nodes
 }
 
 // Creates a new instance of the AmlComputeNodesInformationPage type.

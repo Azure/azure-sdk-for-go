@@ -22,7 +22,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-05-01/machinelearningservices"
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-06-01/machinelearningservices"
 )
 
 const (
@@ -77,6 +77,17 @@ const (
 	ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ComputeTypeBasicComputeSecrets = original.ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine
 )
 
+type NodeState = original.NodeState
+
+const (
+	Idle      NodeState = original.Idle
+	Leaving   NodeState = original.Leaving
+	Preempted NodeState = original.Preempted
+	Preparing NodeState = original.Preparing
+	Running   NodeState = original.Running
+	Unusable  NodeState = original.Unusable
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -89,6 +100,14 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
+type RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccess
+
+const (
+	Disabled     RemoteLoginPortPublicAccess = original.Disabled
+	Enabled      RemoteLoginPortPublicAccess = original.Enabled
+	NotSpecified RemoteLoginPortPublicAccess = original.NotSpecified
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
@@ -98,8 +117,8 @@ const (
 type Status = original.Status
 
 const (
-	Disabled Status = original.Disabled
-	Enabled  Status = original.Enabled
+	StatusDisabled Status = original.StatusDisabled
+	StatusEnabled  Status = original.StatusEnabled
 )
 
 type UnderlyingResourceAction = original.UnderlyingResourceAction
@@ -266,8 +285,14 @@ func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
 func PossibleComputeTypeValues() []ComputeType {
 	return original.PossibleComputeTypeValues()
 }
+func PossibleNodeStateValues() []NodeState {
+	return original.PossibleNodeStateValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
+	return original.PossibleRemoteLoginPortPublicAccessValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

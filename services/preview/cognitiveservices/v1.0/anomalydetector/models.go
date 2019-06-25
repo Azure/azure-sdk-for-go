@@ -86,6 +86,10 @@ func PossibleLabelValueValues() []LabelValue {
 type TimeSeriesField string
 
 const (
+	// AnomalyConfidenceScore ...
+	AnomalyConfidenceScore TimeSeriesField = "anomalyConfidenceScore"
+	// ChangePointConfidenceScore ...
+	ChangePointConfidenceScore TimeSeriesField = "changePointConfidenceScore"
 	// ExpectedValue ...
 	ExpectedValue TimeSeriesField = "expectedValue"
 	// IsAnomaly ...
@@ -108,7 +112,7 @@ const (
 
 // PossibleTimeSeriesFieldValues returns an array of possible values for the TimeSeriesField const type.
 func PossibleTimeSeriesFieldValues() []TimeSeriesField {
-	return []TimeSeriesField{ExpectedValue, IsAnomaly, IsChangePoint, IsNegativeAnomaly, IsPositiveAnomaly, LowerMargin, Period, UpperMargin, Value}
+	return []TimeSeriesField{AnomalyConfidenceScore, ChangePointConfidenceScore, ExpectedValue, IsAnomaly, IsChangePoint, IsNegativeAnomaly, IsPositiveAnomaly, LowerMargin, Period, UpperMargin, Value}
 }
 
 // AnomalyDetectOnTimestampRequest ...
@@ -335,8 +339,8 @@ type TimeSeriesCreateRequest struct {
 type TimeSeriesList struct {
 	autorest.Response `json:"-"`
 	// Series - Array of TimeSeries objects.
-	Series *[]TimeSeries `json:"series,omitempty"`
-	Next   *string       `json:"next,omitempty"`
+	Series   *[]TimeSeries `json:"series,omitempty"`
+	NextLink *string       `json:"nextLink,omitempty"`
 }
 
 // TimeSeriesQueryRequest ...

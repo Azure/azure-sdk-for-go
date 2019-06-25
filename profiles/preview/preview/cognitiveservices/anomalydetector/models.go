@@ -51,15 +51,17 @@ const (
 type TimeSeriesField = original.TimeSeriesField
 
 const (
-	ExpectedValue     TimeSeriesField = original.ExpectedValue
-	IsAnomaly         TimeSeriesField = original.IsAnomaly
-	IsChangePoint     TimeSeriesField = original.IsChangePoint
-	IsNegativeAnomaly TimeSeriesField = original.IsNegativeAnomaly
-	IsPositiveAnomaly TimeSeriesField = original.IsPositiveAnomaly
-	LowerMargin       TimeSeriesField = original.LowerMargin
-	Period            TimeSeriesField = original.Period
-	UpperMargin       TimeSeriesField = original.UpperMargin
-	Value             TimeSeriesField = original.Value
+	AnomalyConfidenceScore     TimeSeriesField = original.AnomalyConfidenceScore
+	ChangePointConfidenceScore TimeSeriesField = original.ChangePointConfidenceScore
+	ExpectedValue              TimeSeriesField = original.ExpectedValue
+	IsAnomaly                  TimeSeriesField = original.IsAnomaly
+	IsChangePoint              TimeSeriesField = original.IsChangePoint
+	IsNegativeAnomaly          TimeSeriesField = original.IsNegativeAnomaly
+	IsPositiveAnomaly          TimeSeriesField = original.IsPositiveAnomaly
+	LowerMargin                TimeSeriesField = original.LowerMargin
+	Period                     TimeSeriesField = original.Period
+	UpperMargin                TimeSeriesField = original.UpperMargin
+	Value                      TimeSeriesField = original.Value
 )
 
 type APIError = original.APIError

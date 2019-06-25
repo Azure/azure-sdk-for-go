@@ -539,10 +539,10 @@ func (ac AmlCompute) AsBasicCompute() (BasicCompute, bool) {
 type AmlComputeNodeInformation struct {
 	// NodeID - READ-ONLY; ID of the compute node.
 	NodeID *string `json:"nodeId,omitempty"`
-	// PrivateAddress - READ-ONLY; Private IP address of the compute node.
-	PrivateAddress *string `json:"privateAddress,omitempty"`
-	// PublicAddress - READ-ONLY; Public IP address of the compute node.
-	PublicAddress *string `json:"publicAddress,omitempty"`
+	// PrivateIPAddress - READ-ONLY; Private IP address of the compute node.
+	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
+	// PublicIPAddress - READ-ONLY; Public IP address of the compute node.
+	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 	// Port - READ-ONLY; SSH port number of the node.
 	Port *float64 `json:"port,omitempty"`
 	// NodeState - READ-ONLY; State of the compute node. Values are idle, running, preparing, unusable, leaving and preempted. Possible values include: 'Idle', 'Running', 'Preparing', 'Unusable', 'Leaving', 'Preempted'

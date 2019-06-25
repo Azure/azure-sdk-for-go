@@ -473,7 +473,8 @@ func (client TimeSeriesClient) InconsistencyDetect(ctx context.Context, body Inc
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Timestamp", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "body.Timestamp", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "body.TimeSeriesIds", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("anomalydetector.TimeSeriesClient", "InconsistencyDetect", err.Error())
 	}
 

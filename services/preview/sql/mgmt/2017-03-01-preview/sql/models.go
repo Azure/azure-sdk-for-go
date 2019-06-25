@@ -578,25 +578,6 @@ func PossibleJobTargetTypeValues() []JobTargetType {
 	return []JobTargetType{JobTargetTypeSQLDatabase, JobTargetTypeSQLElasticPool, JobTargetTypeSQLServer, JobTargetTypeSQLShardMap, JobTargetTypeTargetGroup}
 }
 
-// MaintenanceWindowFrequency enumerates the values for maintenance window frequency.
-type MaintenanceWindowFrequency string
-
-const (
-	// Flexible ...
-	Flexible MaintenanceWindowFrequency = "Flexible"
-	// Monthly ...
-	Monthly MaintenanceWindowFrequency = "Monthly"
-	// NonRecurrent ...
-	NonRecurrent MaintenanceWindowFrequency = "NonRecurrent"
-	// Weekly ...
-	Weekly MaintenanceWindowFrequency = "Weekly"
-)
-
-// PossibleMaintenanceWindowFrequencyValues returns an array of possible values for the MaintenanceWindowFrequency const type.
-func PossibleMaintenanceWindowFrequencyValues() []MaintenanceWindowFrequency {
-	return []MaintenanceWindowFrequency{Flexible, Monthly, NonRecurrent, Weekly}
-}
-
 // ManagedDatabaseCreateMode enumerates the values for managed database create mode.
 type ManagedDatabaseCreateMode string
 
@@ -7777,29 +7758,6 @@ func NewLogicalServerSecurityAlertPolicyListResultPage(getNextPage func(context.
 	return LogicalServerSecurityAlertPolicyListResultPage{fn: getNextPage}
 }
 
-// MaintenanceWindowSettings the properties of managed instance maintenance window.
-type MaintenanceWindowSettings struct {
-	// TimeOfUpgrade - Specifies time of upgrade for maintenance window of managed instance.
-	TimeOfUpgrade *string `json:"timeOfUpgrade,omitempty"`
-	// Dates - Specifies days of the month when maintenance window is to be opened.
-	Dates *[]int32 `json:"dates,omitempty"`
-	// ScheduledDays - Specifies days in a week when maintenance window is to be opened.
-	ScheduledDays *[]string `json:"scheduledDays,omitempty"`
-	// ScheduledWeeks - Specifies weeks on which the maintenance window should be opened. E.g. if '1,3' is provided and for ScheduledDays Sunday is provided,
-	//         that means that window is to be opened on Sunday every first and third week.
-	ScheduledWeeks *[]int32 `json:"scheduledWeeks,omitempty"`
-	// OneOffStartTime - Specifies one off start time for a maintenance window. This is the time when window will be opened for the first time.
-	OneOffStartTime *date.Time `json:"oneOffStartTime,omitempty"`
-	// Frequency - Specifies frequency of a maintenance window.
-	//             None - No recurring pattern,
-	//             Daily - Daily window; specified by days of week,
-	//             Monthly - Monthly window; specified by dates in a month,
-	//             Flexible - Flexible window; specified by week numbers and days of week. Possible values include: 'NonRecurrent', 'Weekly', 'Monthly', 'Flexible'
-	Frequency MaintenanceWindowFrequency `json:"frequency,omitempty"`
-	// CustomerTimeZone - Specifies the timezone for which the window will be set. See reference for TimezoneId of ManagedInstance.
-	CustomerTimeZone *string `json:"customerTimeZone,omitempty"`
-}
-
 // ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving
 // the results of a long-running operation.
 type ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture struct {
@@ -8843,8 +8801,6 @@ type ManagedInstanceProperties struct {
 	TimezoneID *string `json:"timezoneId,omitempty"`
 	// InstancePoolID - The Id of the instance pool this managed server belongs to.
 	InstancePoolID *string `json:"instancePoolId,omitempty"`
-	// MaintenanceWindowSettings - Specifies maintenance window settings for a managed instance.
-	MaintenanceWindowSettings *MaintenanceWindowSettings `json:"maintenanceWindowSettings,omitempty"`
 }
 
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

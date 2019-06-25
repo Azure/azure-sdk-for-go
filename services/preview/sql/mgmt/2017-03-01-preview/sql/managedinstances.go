@@ -63,11 +63,7 @@ func (client ManagedInstancesClient) CreateOrUpdate(ctx context.Context, resourc
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}},
-				{Target: "parameters.ManagedInstanceProperties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "parameters.ManagedInstanceProperties.MaintenanceWindowSettings", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.ManagedInstanceProperties.MaintenanceWindowSettings.CustomerTimeZone", Name: validation.Null, Rule: true, Chain: nil}}},
-					}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "parameters.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("sql.ManagedInstancesClient", "CreateOrUpdate", err.Error())
 	}
 

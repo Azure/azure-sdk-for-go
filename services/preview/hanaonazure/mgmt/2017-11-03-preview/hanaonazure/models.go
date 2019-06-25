@@ -882,7 +882,7 @@ func NewSapMonitorListResultPage(getNextPage func(context.Context, SapMonitorLis
 
 // SapMonitorProperties describes the properties of a SAP monitor.
 type SapMonitorProperties struct {
-	// HanaSubnet - READ-ONLY; Specifies the SAP monitor unique ID.
+	// HanaSubnet - Specifies the SAP monitor unique ID.
 	HanaSubnet *string `json:"hanaSubnet,omitempty"`
 	// HanaHostname - Hostname of the HANA instance.
 	HanaHostname *string `json:"hanaHostname,omitempty"`

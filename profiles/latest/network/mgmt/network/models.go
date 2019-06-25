@@ -114,6 +114,7 @@ const (
 type ApplicationGatewaySslCipherSuite = original.ApplicationGatewaySslCipherSuite
 
 const (
+	TLSDHEDSSWITH3DESEDECBCSHA       ApplicationGatewaySslCipherSuite = original.TLSDHEDSSWITH3DESEDECBCSHA
 	TLSDHEDSSWITHAES128CBCSHA        ApplicationGatewaySslCipherSuite = original.TLSDHEDSSWITHAES128CBCSHA
 	TLSDHEDSSWITHAES128CBCSHA256     ApplicationGatewaySslCipherSuite = original.TLSDHEDSSWITHAES128CBCSHA256
 	TLSDHEDSSWITHAES256CBCSHA        ApplicationGatewaySslCipherSuite = original.TLSDHEDSSWITHAES256CBCSHA
@@ -130,8 +131,10 @@ const (
 	TLSECDHEECDSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = original.TLSECDHEECDSAWITHAES256GCMSHA384
 	TLSECDHERSAWITHAES128CBCSHA      ApplicationGatewaySslCipherSuite = original.TLSECDHERSAWITHAES128CBCSHA
 	TLSECDHERSAWITHAES128CBCSHA256   ApplicationGatewaySslCipherSuite = original.TLSECDHERSAWITHAES128CBCSHA256
+	TLSECDHERSAWITHAES128GCMSHA256   ApplicationGatewaySslCipherSuite = original.TLSECDHERSAWITHAES128GCMSHA256
 	TLSECDHERSAWITHAES256CBCSHA      ApplicationGatewaySslCipherSuite = original.TLSECDHERSAWITHAES256CBCSHA
 	TLSECDHERSAWITHAES256CBCSHA384   ApplicationGatewaySslCipherSuite = original.TLSECDHERSAWITHAES256CBCSHA384
+	TLSECDHERSAWITHAES256GCMSHA384   ApplicationGatewaySslCipherSuite = original.TLSECDHERSAWITHAES256GCMSHA384
 	TLSRSAWITH3DESEDECBCSHA          ApplicationGatewaySslCipherSuite = original.TLSRSAWITH3DESEDECBCSHA
 	TLSRSAWITHAES128CBCSHA           ApplicationGatewaySslCipherSuite = original.TLSRSAWITHAES128CBCSHA
 	TLSRSAWITHAES128CBCSHA256        ApplicationGatewaySslCipherSuite = original.TLSRSAWITHAES128CBCSHA256
@@ -1504,6 +1507,7 @@ type ProfileListResultIterator = original.ProfileListResultIterator
 type ProfileListResultPage = original.ProfileListResultPage
 type ProfilePropertiesFormat = original.ProfilePropertiesFormat
 type ProfilesClient = original.ProfilesClient
+type ProfilesDeleteFuture = original.ProfilesDeleteFuture
 type ProtocolConfiguration = original.ProtocolConfiguration
 type ProtocolCustomSettingsFormat = original.ProtocolCustomSettingsFormat
 type PublicIPAddress = original.PublicIPAddress
@@ -1687,6 +1691,8 @@ type VirtualNetworkGatewaySku = original.VirtualNetworkGatewaySku
 type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
 type VirtualNetworkGatewaysCreateOrUpdateFuture = original.VirtualNetworkGatewaysCreateOrUpdateFuture
 type VirtualNetworkGatewaysDeleteFuture = original.VirtualNetworkGatewaysDeleteFuture
+type VirtualNetworkGatewaysGenerateVpnProfileFuture = original.VirtualNetworkGatewaysGenerateVpnProfileFuture
+type VirtualNetworkGatewaysGeneratevpnclientpackageFuture = original.VirtualNetworkGatewaysGeneratevpnclientpackageFuture
 type VirtualNetworkGatewaysGetAdvertisedRoutesFuture = original.VirtualNetworkGatewaysGetAdvertisedRoutesFuture
 type VirtualNetworkGatewaysGetBgpPeerStatusFuture = original.VirtualNetworkGatewaysGetBgpPeerStatusFuture
 type VirtualNetworkGatewaysGetLearnedRoutesFuture = original.VirtualNetworkGatewaysGetLearnedRoutesFuture

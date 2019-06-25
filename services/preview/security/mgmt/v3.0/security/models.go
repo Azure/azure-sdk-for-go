@@ -3809,7 +3809,7 @@ type JitNetworkAccessRequestPort struct {
 	// StatusReason - A description of why the `status` has its value. Possible values include: 'Expired', 'UserRequested', 'NewerRequestInitiated'
 	StatusReason StatusReason `json:"statusReason,omitempty"`
 	// MappedPort - The port which is mapped to this port's `number` in the Azure Firewall, if applicable
-	MappedPort interface{} `json:"mappedPort,omitempty"`
+	MappedPort *int32 `json:"mappedPort,omitempty"`
 }
 
 // JitNetworkAccessRequestVirtualMachine ...

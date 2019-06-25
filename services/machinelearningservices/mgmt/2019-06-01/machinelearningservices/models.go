@@ -133,6 +133,29 @@ func PossibleComputeTypeBasicComputeSecretsValues() []ComputeTypeBasicComputeSec
 	return []ComputeTypeBasicComputeSecrets{ComputeTypeBasicComputeSecretsComputeTypeAKS, ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets, ComputeTypeBasicComputeSecretsComputeTypeDatabricks, ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine}
 }
 
+// NodeState enumerates the values for node state.
+type NodeState string
+
+const (
+	// Idle ...
+	Idle NodeState = "idle"
+	// Leaving ...
+	Leaving NodeState = "leaving"
+	// Preempted ...
+	Preempted NodeState = "preempted"
+	// Preparing ...
+	Preparing NodeState = "preparing"
+	// Running ...
+	Running NodeState = "running"
+	// Unusable ...
+	Unusable NodeState = "unusable"
+)
+
+// PossibleNodeStateValues returns an array of possible values for the NodeState const type.
+func PossibleNodeStateValues() []NodeState {
+	return []NodeState{Idle, Leaving, Preempted, Preparing, Running, Unusable}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
@@ -158,6 +181,23 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Unknown, Updating}
 }
 
+// RemoteLoginPortPublicAccess enumerates the values for remote login port public access.
+type RemoteLoginPortPublicAccess string
+
+const (
+	// Disabled ...
+	Disabled RemoteLoginPortPublicAccess = "Disabled"
+	// Enabled ...
+	Enabled RemoteLoginPortPublicAccess = "Enabled"
+	// NotSpecified ...
+	NotSpecified RemoteLoginPortPublicAccess = "NotSpecified"
+)
+
+// PossibleRemoteLoginPortPublicAccessValues returns an array of possible values for the RemoteLoginPortPublicAccess const type.
+func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
+	return []RemoteLoginPortPublicAccess{Disabled, Enabled, NotSpecified}
+}
+
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
@@ -175,15 +215,15 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type Status string
 
 const (
-	// Disabled ...
-	Disabled Status = "Disabled"
-	// Enabled ...
-	Enabled Status = "Enabled"
+	// StatusDisabled ...
+	StatusDisabled Status = "Disabled"
+	// StatusEnabled ...
+	StatusEnabled Status = "Enabled"
 )
 
 // PossibleStatusValues returns an array of possible values for the Status const type.
 func PossibleStatusValues() []Status {
-	return []Status{Disabled, Enabled}
+	return []Status{StatusDisabled, StatusEnabled}
 }
 
 // UnderlyingResourceAction enumerates the values for underlying resource action.
@@ -499,10 +539,16 @@ func (ac AmlCompute) AsBasicCompute() (BasicCompute, bool) {
 type AmlComputeNodeInformation struct {
 	// NodeID - READ-ONLY; ID of the compute node.
 	NodeID *string `json:"nodeId,omitempty"`
-	// IPAddress - READ-ONLY; Public IP address of the compute node.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	// PrivateAddress - READ-ONLY; Private IP address of the compute node.
+	PrivateAddress *string `json:"privateAddress,omitempty"`
+	// PublicAddress - READ-ONLY; Public IP address of the compute node.
+	PublicAddress *string `json:"publicAddress,omitempty"`
 	// Port - READ-ONLY; SSH port number of the node.
 	Port *float64 `json:"port,omitempty"`
+	// NodeState - READ-ONLY; State of the compute node. Values are idle, running, preparing, unusable, leaving and preempted. Possible values include: 'Idle', 'Running', 'Preparing', 'Unusable', 'Leaving', 'Preempted'
+	NodeState NodeState `json:"nodeState,omitempty"`
+	// RunID - READ-ONLY; ID of the Experiment running on the node, if any else null.
+	RunID *string `json:"runId,omitempty"`
 }
 
 // AmlComputeNodesInformation compute node information related to a AmlCompute.
@@ -553,6 +599,8 @@ type AmlComputeProperties struct {
 	UserAccountCredentials *UserAccountCredentials `json:"userAccountCredentials,omitempty"`
 	// Subnet - Virtual network subnet resource ID the compute nodes belong to.
 	Subnet *ResourceID `json:"subnet,omitempty"`
+	// RemoteLoginPortPublicAccess - READ-ONLY; State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can be default only during cluster creation time, after creation it will be either enabled or disabled. Possible values include: 'Enabled', 'Disabled', 'NotSpecified'
+	RemoteLoginPortPublicAccess RemoteLoginPortPublicAccess `json:"remoteLoginPortPublicAccess,omitempty"`
 	// AllocationState - READ-ONLY; Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There are no changes to the number of compute nodes in the compute in progress. A compute enters this state when it is created and when no operations are being performed on the compute to change the number of compute nodes. resizing - Indicates that the compute is resizing; that is, compute nodes are being added to or removed from the compute. Possible values include: 'Steady', 'Resizing'
 	AllocationState AllocationState `json:"allocationState,omitempty"`
 	// AllocationStateTransitionTime - READ-ONLY; The time at which the compute entered its current allocation state.
@@ -2029,7 +2077,7 @@ type ServicePrincipalCredentials struct {
 
 // SslConfiguration the ssl configuration for scoring
 type SslConfiguration struct {
-	// Status - Enable or disable ssl for scoring. Possible values include: 'Disabled', 'Enabled'
+	// Status - Enable or disable ssl for scoring. Possible values include: 'StatusDisabled', 'StatusEnabled'
 	Status Status `json:"status,omitempty"`
 	// Cert - Cert data
 	Cert *string `json:"cert,omitempty"`
@@ -2239,6 +2287,8 @@ type VirtualMachineSize struct {
 	Family *string `json:"family,omitempty"`
 	// VCPUs - READ-ONLY; The number of vCPUs supported by the virtual machine size.
 	VCPUs *int32 `json:"vCPUs,omitempty"`
+	// Gpus - READ-ONLY; The number of gPUs supported by the virtual machine size.
+	Gpus *int32 `json:"gpus,omitempty"`
 	// OsVhdSizeMB - READ-ONLY; The OS VHD disk size, in MB, allowed by the virtual machine size.
 	OsVhdSizeMB *int32 `json:"osVhdSizeMB,omitempty"`
 	// MaxResourceVolumeMB - READ-ONLY; The resource volume size, in MB, allowed by the virtual machine size.

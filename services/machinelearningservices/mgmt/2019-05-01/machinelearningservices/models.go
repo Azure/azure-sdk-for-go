@@ -2150,6 +2150,8 @@ type QuotaBaseProperties struct {
 	Type *string `json:"type,omitempty"`
 	// Limit - The maximum permitted quota of the resource.
 	Limit *int64 `json:"limit,omitempty"`
+	// Unit - READ-ONLY; An enum describing the unit of quota measurement. Possible values include: 'Count'
+	Unit QuotaUnit `json:"unit,omitempty"`
 }
 
 // QuotaUpdateParameters quota update parameters.
@@ -2271,6 +2273,8 @@ type UpdateWorkspaceQuotas struct {
 	Type *string `json:"type,omitempty"`
 	// Limit - The maximum permitted quota of the resource.
 	Limit *int64 `json:"limit,omitempty"`
+	// Unit - READ-ONLY; An enum describing the unit of quota measurement. Possible values include: 'Count'
+	Unit QuotaUnit `json:"unit,omitempty"`
 	// Status - Status of update workspace quota. Possible values include: 'Undefined', 'Success', 'Failure'
 	Status Status `json:"status,omitempty"`
 }

@@ -1956,7 +1956,7 @@ type DiagnosticSettings struct {
 	Logs *[]LogSettings `json:"logs,omitempty"`
 	// WorkspaceID - The full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs. Example: /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2
 	WorkspaceID *string `json:"workspaceId,omitempty"`
-	// LogAnalyticsDestinationType - A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destinatin type constructed as follows: <normalized service identity>_<normalized category name>. Possible values are: Dedicated and null (null is default.)
+	// LogAnalyticsDestinationType - A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows: <normalized service identity>_<normalized category name>. Possible values are: Dedicated and null (null is default.)
 	LogAnalyticsDestinationType *string `json:"logAnalyticsDestinationType,omitempty"`
 }
 

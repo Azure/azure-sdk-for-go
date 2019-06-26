@@ -22,7 +22,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-03-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-07-01/compute"
 )
 
 const (
@@ -686,7 +686,7 @@ type GalleriesCreateOrUpdateFuture = original.GalleriesCreateOrUpdateFuture
 type GalleriesDeleteFuture = original.GalleriesDeleteFuture
 type Gallery = original.Gallery
 type GalleryArtifactPublishingProfileBase = original.GalleryArtifactPublishingProfileBase
-type GalleryArtifactSource = original.GalleryArtifactSource
+type GalleryArtifactVersionSource = original.GalleryArtifactVersionSource
 type GalleryDataDiskImage = original.GalleryDataDiskImage
 type GalleryDiskImage = original.GalleryDiskImage
 type GalleryIdentifier = original.GalleryIdentifier
@@ -751,7 +751,6 @@ type LogAnalyticsInputBase = original.LogAnalyticsInputBase
 type LogAnalyticsOperationResult = original.LogAnalyticsOperationResult
 type LogAnalyticsOutput = original.LogAnalyticsOutput
 type MaintenanceRedeployStatus = original.MaintenanceRedeployStatus
-type ManagedArtifact = original.ManagedArtifact
 type ManagedDiskParameters = original.ManagedDiskParameters
 type NetworkInterfaceReference = original.NetworkInterfaceReference
 type NetworkInterfaceReferenceProperties = original.NetworkInterfaceReferenceProperties

@@ -128,17 +128,18 @@ func (client CustomersClient) GetResponder(resp *http.Response) (result Customer
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
-func (client CustomersClient) ListByBillingAccountName(ctx context.Context, billingAccountName string, filter string, skiptoken string) (result CustomerListResult, err error) {
+func (client CustomersClient) ListByBillingAccountName(ctx context.Context, billingAccountName string, filter string, skiptoken string) (result CustomerListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CustomersClient.ListByBillingAccountName")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.clr.Response.Response != nil {
+				sc = result.clr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	result.fn = client.listByBillingAccountNameNextResults
 	req, err := client.ListByBillingAccountNamePreparer(ctx, billingAccountName, filter, skiptoken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "ListByBillingAccountName", nil, "Failure preparing request")
@@ -147,12 +148,12 @@ func (client CustomersClient) ListByBillingAccountName(ctx context.Context, bill
 
 	resp, err := client.ListByBillingAccountNameSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.clr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "ListByBillingAccountName", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListByBillingAccountNameResponder(resp)
+	result.clr, err = client.ListByBillingAccountNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
@@ -202,5 +203,42 @@ func (client CustomersClient) ListByBillingAccountNameResponder(resp *http.Respo
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByBillingAccountNameNextResults retrieves the next set of results, if any.
+func (client CustomersClient) listByBillingAccountNameNextResults(ctx context.Context, lastResults CustomerListResult) (result CustomerListResult, err error) {
+	req, err := lastResults.customerListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "billing.CustomersClient", "listByBillingAccountNameNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByBillingAccountNameSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "billing.CustomersClient", "listByBillingAccountNameNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByBillingAccountNameResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "listByBillingAccountNameNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByBillingAccountNameComplete enumerates all values, automatically crossing page boundaries as required.
+func (client CustomersClient) ListByBillingAccountNameComplete(ctx context.Context, billingAccountName string, filter string, skiptoken string) (result CustomerListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomersClient.ListByBillingAccountName")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByBillingAccountName(ctx, billingAccountName, filter, skiptoken)
 	return
 }

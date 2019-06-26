@@ -44,7 +44,9 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 // CreateOrUpdate create or update the specified NetApp account within the resource group
 // Parameters:
 // body - netApp Account object supplied in the body of the operation.
-func (client AccountsClient) CreateOrUpdate(ctx context.Context, body Account) (result AccountsCreateOrUpdateFuture, err error) {
+// resourceGroupName - the name of the resource group.
+// accountName - the name of the NetApp account
+func (client AccountsClient) CreateOrUpdate(ctx context.Context, body Account, resourceGroupName string, accountName string) (result AccountsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.CreateOrUpdate")
 		defer func() {
@@ -57,11 +59,15 @@ func (client AccountsClient) CreateOrUpdate(ctx context.Context, body Account) (
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "body.Location", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("netapp.AccountsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, body)
+	req, err := client.CreateOrUpdatePreparer(ctx, body, resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.AccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -77,7 +83,18 @@ func (client AccountsClient) CreateOrUpdate(ctx context.Context, body Account) (
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AccountsClient) CreateOrUpdatePreparer(ctx context.Context, body Account) (*http.Request, error) {
+func (client AccountsClient) CreateOrUpdatePreparer(ctx context.Context, body Account, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	body.ID = nil
 	body.Name = nil
 	body.Type = nil
@@ -85,8 +102,9 @@ func (client AccountsClient) CreateOrUpdatePreparer(ctx context.Context, body Ac
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}"),
-		autorest.WithJSON(body))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}", pathParameters),
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -117,7 +135,10 @@ func (client AccountsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 }
 
 // Delete delete the specified NetApp account
-func (client AccountsClient) Delete(ctx context.Context) (result AccountsDeleteFuture, err error) {
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// accountName - the name of the NetApp account
+func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result AccountsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Delete")
 		defer func() {
@@ -128,7 +149,15 @@ func (client AccountsClient) Delete(ctx context.Context) (result AccountsDeleteF
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("netapp.AccountsClient", "Delete", err.Error())
+	}
+
+	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.AccountsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -144,11 +173,23 @@ func (client AccountsClient) Delete(ctx context.Context) (result AccountsDeleteF
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AccountsClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
+func (client AccountsClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}"))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -348,7 +389,9 @@ func (client AccountsClient) ListResponder(resp *http.Response) (result AccountL
 // Update patch the specified NetApp account
 // Parameters:
 // body - netApp Account object supplied in the body of the operation.
-func (client AccountsClient) Update(ctx context.Context, body AccountPatch) (result Account, err error) {
+// resourceGroupName - the name of the resource group.
+// accountName - the name of the NetApp account
+func (client AccountsClient) Update(ctx context.Context, body AccountPatch, resourceGroupName string, accountName string) (result Account, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Update")
 		defer func() {
@@ -359,7 +402,15 @@ func (client AccountsClient) Update(ctx context.Context, body AccountPatch) (res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, body)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("netapp.AccountsClient", "Update", err.Error())
+	}
+
+	req, err := client.UpdatePreparer(ctx, body, resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.AccountsClient", "Update", nil, "Failure preparing request")
 		return
@@ -381,7 +432,18 @@ func (client AccountsClient) Update(ctx context.Context, body AccountPatch) (res
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AccountsClient) UpdatePreparer(ctx context.Context, body AccountPatch) (*http.Request, error) {
+func (client AccountsClient) UpdatePreparer(ctx context.Context, body AccountPatch, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	body.ID = nil
 	body.Name = nil
 	body.Type = nil
@@ -389,8 +451,9 @@ func (client AccountsClient) UpdatePreparer(ctx context.Context, body AccountPat
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}"),
-		autorest.WithJSON(body))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}", pathParameters),
+		autorest.WithJSON(body),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

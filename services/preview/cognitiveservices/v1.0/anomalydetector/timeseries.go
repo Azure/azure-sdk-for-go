@@ -105,7 +105,7 @@ func (client TimeSeriesClient) ChangePointDetectOnTimestampPreparer(ctx context.
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/anomalydetector/v1.0", urlParameters),
-		autorest.WithPathParameters("/timeseries/{timeSeriesId}/changepoint/detect", pathParameters),
+		autorest.WithPathParameters("/timeseries/{timeSeriesId}/changePoint/detect", pathParameters),
 		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

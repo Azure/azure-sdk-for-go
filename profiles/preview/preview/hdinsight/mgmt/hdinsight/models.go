@@ -47,10 +47,29 @@ const (
 	ClusterProvisioningStateSucceeded  ClusterProvisioningState = original.ClusterProvisioningStateSucceeded
 )
 
+type DaysOfWeek = original.DaysOfWeek
+
+const (
+	Friday    DaysOfWeek = original.Friday
+	Monday    DaysOfWeek = original.Monday
+	Saturday  DaysOfWeek = original.Saturday
+	Sunday    DaysOfWeek = original.Sunday
+	Thursday  DaysOfWeek = original.Thursday
+	Tuesday   DaysOfWeek = original.Tuesday
+	Wednesday DaysOfWeek = original.Wednesday
+)
+
 type DirectoryType = original.DirectoryType
 
 const (
 	ActiveDirectory DirectoryType = original.ActiveDirectory
+)
+
+type FilterMode = original.FilterMode
+
+const (
+	Exclude FilterMode = original.Exclude
+	Include FilterMode = original.Include
 )
 
 type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm
@@ -94,6 +113,11 @@ type ApplicationProperties = original.ApplicationProperties
 type ApplicationsClient = original.ApplicationsClient
 type ApplicationsCreateFuture = original.ApplicationsCreateFuture
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
+type Autoscale = original.Autoscale
+type AutoscaleCapacity = original.AutoscaleCapacity
+type AutoscaleRecurrence = original.AutoscaleRecurrence
+type AutoscaleSchedule = original.AutoscaleSchedule
+type AutoscaleTimeAndCapacity = original.AutoscaleTimeAndCapacity
 type BaseClient = original.BaseClient
 type BillingMeters = original.BillingMeters
 type BillingResources = original.BillingResources
@@ -272,8 +296,14 @@ func PossibleAsyncOperationStateValues() []AsyncOperationState {
 func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	return original.PossibleClusterProvisioningStateValues()
 }
+func PossibleDaysOfWeekValues() []DaysOfWeek {
+	return original.PossibleDaysOfWeekValues()
+}
 func PossibleDirectoryTypeValues() []DirectoryType {
 	return original.PossibleDirectoryTypeValues()
+}
+func PossibleFilterModeValues() []FilterMode {
+	return original.PossibleFilterModeValues()
 }
 func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
 	return original.PossibleJSONWebKeyEncryptionAlgorithmValues()

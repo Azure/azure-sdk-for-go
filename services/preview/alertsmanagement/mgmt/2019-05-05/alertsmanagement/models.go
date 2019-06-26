@@ -137,13 +137,29 @@ func PossibleAlertStateValues() []AlertState {
 type Identifier string
 
 const (
-	// IdentifierAlertsMetaDataProperties ...
-	IdentifierAlertsMetaDataProperties Identifier = "alertsMetaDataProperties"
+	// BackendMonitorServiceList ...
+	BackendMonitorServiceList Identifier = "BackendMonitorServiceList"
+	// MonitorServiceList ...
+	MonitorServiceList Identifier = "MonitorServiceList"
 )
 
 // PossibleIdentifierValues returns an array of possible values for the Identifier const type.
 func PossibleIdentifierValues() []Identifier {
-	return []Identifier{IdentifierAlertsMetaDataProperties}
+	return []Identifier{BackendMonitorServiceList, MonitorServiceList}
+}
+
+// IdentifierBasicAlertsMetaDataProperties enumerates the values for identifier basic alerts meta data
+// properties.
+type IdentifierBasicAlertsMetaDataProperties string
+
+const (
+	// IdentifierAlertsMetaDataProperties ...
+	IdentifierAlertsMetaDataProperties IdentifierBasicAlertsMetaDataProperties = "alertsMetaDataProperties"
+)
+
+// PossibleIdentifierBasicAlertsMetaDataPropertiesValues returns an array of possible values for the IdentifierBasicAlertsMetaDataProperties const type.
+func PossibleIdentifierBasicAlertsMetaDataPropertiesValues() []IdentifierBasicAlertsMetaDataProperties {
+	return []IdentifierBasicAlertsMetaDataProperties{IdentifierAlertsMetaDataProperties}
 }
 
 // MonitorCondition enumerates the values for monitor condition.
@@ -1070,7 +1086,7 @@ type AlertsMetaDataProperties struct {
 	// Data - List of alert meta data information
 	Data *[]interface{} `json:"data,omitempty"`
 	// Identifier - Possible values include: 'IdentifierAlertsMetaDataProperties'
-	Identifier Identifier `json:"identifier,omitempty"`
+	Identifier IdentifierBasicAlertsMetaDataProperties `json:"identifier,omitempty"`
 }
 
 func unmarshalBasicAlertsMetaDataProperties(body []byte) (BasicAlertsMetaDataProperties, error) {

@@ -619,7 +619,7 @@ func (client AlertsClient) MetaDataPreparer(ctx context.Context) (*http.Request,
 	const APIVersion = "2019-05-05-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"identifier":  autorest.Encode("query", "monitorServiceList"),
+		"identifier":  autorest.Encode("query", "MonitorServiceList"),
 	}
 
 	preparer := autorest.CreatePreparer(

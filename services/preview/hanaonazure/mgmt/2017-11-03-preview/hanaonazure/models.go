@@ -548,6 +548,52 @@ func (future *HanaInstancesRestartFuture) Result(client HanaInstancesClient) (ar
 	return
 }
 
+// HanaInstancesShutdownFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type HanaInstancesShutdownFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HanaInstancesShutdownFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesShutdownFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesShutdownFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// HanaInstancesStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type HanaInstancesStartFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *HanaInstancesStartFuture) Result(client HanaInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesStartFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesStartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // HardwareProfile specifies the hardware settings for the HANA instance.
 type HardwareProfile struct {
 	// HardwareType - READ-ONLY; Name of the hardware type (vendor and/or their product name). Possible values include: 'CiscoUCS', 'HPE'

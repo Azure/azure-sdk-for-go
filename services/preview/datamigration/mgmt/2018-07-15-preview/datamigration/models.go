@@ -4751,6 +4751,14 @@ type ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskOutput struct {
 	TargetServerBrandVersion *string `json:"targetServerBrandVersion,omitempty"`
 	// ValidationErrors - READ-ONLY; Validation errors associated with the task
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+	// DatabaseSchemaMap - Mapping of schemas per database
+	DatabaseSchemaMap *[]ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskOutputDatabaseSchemaMapItem `json:"databaseSchemaMap,omitempty"`
+}
+
+// ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskOutputDatabaseSchemaMapItem ...
+type ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskOutputDatabaseSchemaMapItem struct {
+	Database *string   `json:"database,omitempty"`
+	Schemas  *[]string `json:"schemas,omitempty"`
 }
 
 // ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskProperties properties for the task that validates
@@ -6991,6 +6999,46 @@ func (gtcstp *GetTdeCertificatesSQLTaskProperties) UnmarshalJSON(body []byte) er
 	}
 
 	return nil
+}
+
+// GetUserTablesOracleTaskInput input for the task that gets the list of tables contained within a provided
+// list of Oracle schemas.
+type GetUserTablesOracleTaskInput struct {
+	// ConnectionInfo - Information for connecting to Oracle source
+	ConnectionInfo *OracleConnectionInfo `json:"connectionInfo,omitempty"`
+	// SelectedSchemas - List of Oracle Schemas for which to collect tables
+	SelectedSchemas *[]string `json:"selectedSchemas,omitempty"`
+}
+
+// GetUserTablesOracleTaskOutput output for the task that gets the list of tables contained within a
+// provided list of Oracle schemas.
+type GetUserTablesOracleTaskOutput struct {
+	// SchemaName - READ-ONLY; The schema this result is for
+	SchemaName *string `json:"schemaName,omitempty"`
+	// Tables - READ-ONLY; List of valid tables found for this schema
+	Tables *[]QueryTable `json:"tables,omitempty"`
+	// ValidationErrors - READ-ONLY; Validation errors associated with the task
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
+}
+
+// GetUserTablesPostgreSQLTaskInput input for the task that gets the list of tables for a provided list of
+// PostgreSQL databases.
+type GetUserTablesPostgreSQLTaskInput struct {
+	// ConnectionInfo - Information for connecting to PostgreSQL source
+	ConnectionInfo *PostgreSQLConnectionInfo `json:"connectionInfo,omitempty"`
+	// SelectedDatabases - List of PostgreSQL databases for which to collect tables
+	SelectedDatabases *[]string `json:"selectedDatabases,omitempty"`
+}
+
+// GetUserTablesPostgreSQLTaskOutput output for the task that gets the list of tables for a provided list
+// of PostgreSQL databases.
+type GetUserTablesPostgreSQLTaskOutput struct {
+	// DatabaseName - READ-ONLY; The database this result is for
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// Tables - READ-ONLY; List of valid tables found for this database
+	Tables *[]QueryTable `json:"tables,omitempty"`
+	// ValidationErrors - READ-ONLY; Validation errors associated with the task
+	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
 }
 
 // GetUserTablesSQLSyncTaskInput input for the task that collects user tables for the given list of
@@ -16550,6 +16598,14 @@ type QueryExecutionResult struct {
 	SourceResult *ExecutionStatistics `json:"sourceResult,omitempty"`
 	// TargetResult - Query analysis result from the target
 	TargetResult *ExecutionStatistics `json:"targetResult,omitempty"`
+}
+
+// QueryTable information about a single table.
+type QueryTable struct {
+	// HasRows - Whether the table has any rows
+	HasRows *bool `json:"hasRows,omitempty"`
+	// Name - The schema-qualifed table name
+	Name *string `json:"name,omitempty"`
 }
 
 // Quota describes a quota for or usage details about a resource

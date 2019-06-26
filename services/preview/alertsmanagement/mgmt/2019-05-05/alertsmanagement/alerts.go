@@ -582,9 +582,7 @@ func (client AlertsClient) GetSummaryResponder(resp *http.Response) (result Aler
 }
 
 // MetaData list alerts meta data information based on value of identifier parameter.
-// Parameters:
-// identifier - identification of the information to be retrieved by API call.
-func (client AlertsClient) MetaData(ctx context.Context, identifier AlertState) (result AlertsMetaData, err error) {
+func (client AlertsClient) MetaData(ctx context.Context) (result AlertsMetaData, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.MetaData")
 		defer func() {
@@ -595,7 +593,7 @@ func (client AlertsClient) MetaData(ctx context.Context, identifier AlertState) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.MetaDataPreparer(ctx, identifier)
+	req, err := client.MetaDataPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "MetaData", nil, "Failure preparing request")
 		return
@@ -617,11 +615,11 @@ func (client AlertsClient) MetaData(ctx context.Context, identifier AlertState) 
 }
 
 // MetaDataPreparer prepares the MetaData request.
-func (client AlertsClient) MetaDataPreparer(ctx context.Context, identifier AlertState) (*http.Request, error) {
+func (client AlertsClient) MetaDataPreparer(ctx context.Context) (*http.Request, error) {
 	const APIVersion = "2019-05-05-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-		"identifier":  autorest.Encode("query", identifier),
+		"identifier":  autorest.Encode("query", "monitorServiceList"),
 	}
 
 	preparer := autorest.CreatePreparer(

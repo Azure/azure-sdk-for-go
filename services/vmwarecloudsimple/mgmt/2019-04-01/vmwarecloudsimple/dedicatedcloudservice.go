@@ -414,7 +414,7 @@ func (client DedicatedCloudServiceClient) ListByResourceGroupComplete(ctx contex
 	return
 }
 
-// ListBySubscription returns list of dedicated cloud service within within subscription
+// ListBySubscription returns list of dedicated cloud services within a subscription
 // Parameters:
 // filter - the filter to apply on the list operation
 // top - the maximum number of record sets to return

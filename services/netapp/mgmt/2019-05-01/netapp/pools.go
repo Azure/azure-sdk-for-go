@@ -44,10 +44,7 @@ func NewPoolsClientWithBaseURI(baseURI string, subscriptionID string) PoolsClien
 // CreateOrUpdate create or Update a capacity pool
 // Parameters:
 // body - capacity pool object supplied in the body of the operation.
-// resourceGroupName - the name of the resource group.
-// accountName - the name of the NetApp account
-// poolName - the name of the capacity pool
-func (client PoolsClient) CreateOrUpdate(ctx context.Context, body CapacityPool, resourceGroupName string, accountName string, poolName string) (result PoolsCreateOrUpdateFuture, err error) {
+func (client PoolsClient) CreateOrUpdate(ctx context.Context, body CapacityPool) (result PoolsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PoolsClient.CreateOrUpdate")
 		defer func() {
@@ -71,15 +68,11 @@ func (client PoolsClient) CreateOrUpdate(ctx context.Context, body CapacityPool,
 							Chain: []validation.Constraint{{Target: "body.PoolProperties.Size", Name: validation.InclusiveMaximum, Rule: int64(549755813888000), Chain: nil},
 								{Target: "body.PoolProperties.Size", Name: validation.InclusiveMinimum, Rule: 4398046511104, Chain: nil},
 							}},
-					}}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+					}}}}}); err != nil {
 		return result, validation.NewError("netapp.PoolsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, body, resourceGroupName, accountName, poolName)
+	req, err := client.CreateOrUpdatePreparer(ctx, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.PoolsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -95,19 +88,7 @@ func (client PoolsClient) CreateOrUpdate(ctx context.Context, body CapacityPool,
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PoolsClient) CreateOrUpdatePreparer(ctx context.Context, body CapacityPool, resourceGroupName string, accountName string, poolName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"poolName":          autorest.Encode("path", poolName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
+func (client PoolsClient) CreateOrUpdatePreparer(ctx context.Context, body CapacityPool) (*http.Request, error) {
 	body.ID = nil
 	body.Name = nil
 	body.Type = nil
@@ -115,9 +96,8 @@ func (client PoolsClient) CreateOrUpdatePreparer(ctx context.Context, body Capac
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}", pathParameters),
-		autorest.WithJSON(body),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}"),
+		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -148,11 +128,7 @@ func (client PoolsClient) CreateOrUpdateResponder(resp *http.Response) (result C
 }
 
 // Delete delete the specified capacity pool
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// accountName - the name of the NetApp account
-// poolName - the name of the capacity pool
-func (client PoolsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, poolName string) (result PoolsDeleteFuture, err error) {
+func (client PoolsClient) Delete(ctx context.Context) (result PoolsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PoolsClient.Delete")
 		defer func() {
@@ -163,15 +139,7 @@ func (client PoolsClient) Delete(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("netapp.PoolsClient", "Delete", err.Error())
-	}
-
-	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, poolName)
+	req, err := client.DeletePreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.PoolsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -187,24 +155,11 @@ func (client PoolsClient) Delete(ctx context.Context, resourceGroupName string, 
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PoolsClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string, poolName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"poolName":          autorest.Encode("path", poolName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
+func (client PoolsClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -408,10 +363,7 @@ func (client PoolsClient) ListResponder(resp *http.Response) (result CapacityPoo
 // Update patch the specified capacity pool
 // Parameters:
 // body - capacity pool object supplied in the body of the operation.
-// resourceGroupName - the name of the resource group.
-// accountName - the name of the NetApp account
-// poolName - the name of the capacity pool
-func (client PoolsClient) Update(ctx context.Context, body CapacityPoolPatch, resourceGroupName string, accountName string, poolName string) (result CapacityPool, err error) {
+func (client PoolsClient) Update(ctx context.Context, body CapacityPoolPatch) (result CapacityPool, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PoolsClient.Update")
 		defer func() {
@@ -422,15 +374,7 @@ func (client PoolsClient) Update(ctx context.Context, body CapacityPoolPatch, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("netapp.PoolsClient", "Update", err.Error())
-	}
-
-	req, err := client.UpdatePreparer(ctx, body, resourceGroupName, accountName, poolName)
+	req, err := client.UpdatePreparer(ctx, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.PoolsClient", "Update", nil, "Failure preparing request")
 		return
@@ -452,19 +396,7 @@ func (client PoolsClient) Update(ctx context.Context, body CapacityPoolPatch, re
 }
 
 // UpdatePreparer prepares the Update request.
-func (client PoolsClient) UpdatePreparer(ctx context.Context, body CapacityPoolPatch, resourceGroupName string, accountName string, poolName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"poolName":          autorest.Encode("path", poolName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
+func (client PoolsClient) UpdatePreparer(ctx context.Context, body CapacityPoolPatch) (*http.Request, error) {
 	body.ID = nil
 	body.Name = nil
 	body.Type = nil
@@ -472,9 +404,8 @@ func (client PoolsClient) UpdatePreparer(ctx context.Context, body CapacityPoolP
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}", pathParameters),
-		autorest.WithJSON(body),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}"),
+		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

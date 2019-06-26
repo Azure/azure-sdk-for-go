@@ -44,12 +44,7 @@ func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) Snapsh
 // Create create the specified snapshot within the given volume
 // Parameters:
 // body - snapshot object supplied in the body of the operation.
-// resourceGroupName - the name of the resource group.
-// accountName - the name of the NetApp account
-// poolName - the name of the capacity pool
-// volumeName - the name of the volume
-// snapshotName - the name of the mount target
-func (client SnapshotsClient) Create(ctx context.Context, body Snapshot, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (result SnapshotsCreateFuture, err error) {
+func (client SnapshotsClient) Create(ctx context.Context, body Snapshot) (result SnapshotsCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotsClient.Create")
 		defer func() {
@@ -74,15 +69,11 @@ func (client SnapshotsClient) Create(ctx context.Context, body Snapshot, resourc
 								{Target: "body.SnapshotProperties.FileSystemID", Name: validation.MinLength, Rule: 36, Chain: nil},
 								{Target: "body.SnapshotProperties.FileSystemID", Name: validation.Pattern, Rule: `^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$`, Chain: nil},
 							}},
-					}}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+					}}}}}); err != nil {
 		return result, validation.NewError("netapp.SnapshotsClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, body, resourceGroupName, accountName, poolName, volumeName, snapshotName)
+	req, err := client.CreatePreparer(ctx, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotsClient", "Create", nil, "Failure preparing request")
 		return
@@ -98,21 +89,7 @@ func (client SnapshotsClient) Create(ctx context.Context, body Snapshot, resourc
 }
 
 // CreatePreparer prepares the Create request.
-func (client SnapshotsClient) CreatePreparer(ctx context.Context, body Snapshot, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"poolName":          autorest.Encode("path", poolName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"snapshotName":      autorest.Encode("path", snapshotName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"volumeName":        autorest.Encode("path", volumeName),
-	}
-
-	const APIVersion = "2019-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
+func (client SnapshotsClient) CreatePreparer(ctx context.Context, body Snapshot) (*http.Request, error) {
 	body.ID = nil
 	body.Name = nil
 	body.Type = nil
@@ -120,9 +97,8 @@ func (client SnapshotsClient) CreatePreparer(ctx context.Context, body Snapshot,
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/snapshots/{snapshotName}", pathParameters),
-		autorest.WithJSON(body),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/snapshots/{snapshotName}"),
+		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -153,13 +129,7 @@ func (client SnapshotsClient) CreateResponder(resp *http.Response) (result Snaps
 }
 
 // Delete delete snapshot
-// Parameters:
-// resourceGroupName - the name of the resource group.
-// accountName - the name of the NetApp account
-// poolName - the name of the capacity pool
-// volumeName - the name of the volume
-// snapshotName - the name of the mount target
-func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (result SnapshotsDeleteFuture, err error) {
+func (client SnapshotsClient) Delete(ctx context.Context) (result SnapshotsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotsClient.Delete")
 		defer func() {
@@ -170,15 +140,7 @@ func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("netapp.SnapshotsClient", "Delete", err.Error())
-	}
-
-	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, poolName, volumeName, snapshotName)
+	req, err := client.DeletePreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -194,26 +156,11 @@ func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SnapshotsClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"poolName":          autorest.Encode("path", poolName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"snapshotName":      autorest.Encode("path", snapshotName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"volumeName":        autorest.Encode("path", volumeName),
-	}
-
-	const APIVersion = "2019-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
+func (client SnapshotsClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/snapshots/{snapshotName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/snapshots/{snapshotName}"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -425,12 +372,7 @@ func (client SnapshotsClient) ListResponder(resp *http.Response) (result Snapsho
 // Update patch a snapshot
 // Parameters:
 // body - snapshot object supplied in the body of the operation.
-// resourceGroupName - the name of the resource group.
-// accountName - the name of the NetApp account
-// poolName - the name of the capacity pool
-// volumeName - the name of the volume
-// snapshotName - the name of the mount target
-func (client SnapshotsClient) Update(ctx context.Context, body SnapshotPatch, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (result Snapshot, err error) {
+func (client SnapshotsClient) Update(ctx context.Context, body SnapshotPatch) (result Snapshot, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotsClient.Update")
 		defer func() {
@@ -441,15 +383,7 @@ func (client SnapshotsClient) Update(ctx context.Context, body SnapshotPatch, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("netapp.SnapshotsClient", "Update", err.Error())
-	}
-
-	req, err := client.UpdatePreparer(ctx, body, resourceGroupName, accountName, poolName, volumeName, snapshotName)
+	req, err := client.UpdatePreparer(ctx, body)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.SnapshotsClient", "Update", nil, "Failure preparing request")
 		return
@@ -471,28 +405,13 @@ func (client SnapshotsClient) Update(ctx context.Context, body SnapshotPatch, re
 }
 
 // UpdatePreparer prepares the Update request.
-func (client SnapshotsClient) UpdatePreparer(ctx context.Context, body SnapshotPatch, resourceGroupName string, accountName string, poolName string, volumeName string, snapshotName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"poolName":          autorest.Encode("path", poolName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"snapshotName":      autorest.Encode("path", snapshotName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"volumeName":        autorest.Encode("path", volumeName),
-	}
-
-	const APIVersion = "2019-05-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
+func (client SnapshotsClient) UpdatePreparer(ctx context.Context, body SnapshotPatch) (*http.Request, error) {
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/snapshots/{snapshotName}", pathParameters),
-		autorest.WithJSON(body),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithPath("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/snapshots/{snapshotName}"),
+		autorest.WithJSON(body))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

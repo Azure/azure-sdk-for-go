@@ -58,11 +58,33 @@ const (
 	TRACE   AzureFunctionActivityMethod = original.TRACE
 )
 
+type AzureSearchIndexWriteBehaviorType = original.AzureSearchIndexWriteBehaviorType
+
+const (
+	Merge  AzureSearchIndexWriteBehaviorType = original.Merge
+	Upload AzureSearchIndexWriteBehaviorType = original.Upload
+)
+
 type BlobEventTypes = original.BlobEventTypes
 
 const (
 	MicrosoftStorageBlobCreated BlobEventTypes = original.MicrosoftStorageBlobCreated
 	MicrosoftStorageBlobDeleted BlobEventTypes = original.MicrosoftStorageBlobDeleted
+)
+
+type CassandraSourceReadConsistencyLevels = original.CassandraSourceReadConsistencyLevels
+
+const (
+	ALL         CassandraSourceReadConsistencyLevels = original.ALL
+	EACHQUORUM  CassandraSourceReadConsistencyLevels = original.EACHQUORUM
+	LOCALONE    CassandraSourceReadConsistencyLevels = original.LOCALONE
+	LOCALQUORUM CassandraSourceReadConsistencyLevels = original.LOCALQUORUM
+	LOCALSERIAL CassandraSourceReadConsistencyLevels = original.LOCALSERIAL
+	ONE         CassandraSourceReadConsistencyLevels = original.ONE
+	QUORUM      CassandraSourceReadConsistencyLevels = original.QUORUM
+	SERIAL      CassandraSourceReadConsistencyLevels = original.SERIAL
+	THREE       CassandraSourceReadConsistencyLevels = original.THREE
+	TWO         CassandraSourceReadConsistencyLevels = original.TWO
 )
 
 type DayOfWeek = original.DayOfWeek
@@ -400,6 +422,27 @@ const (
 	RunQueryOrderByFieldTriggerRunTimestamp RunQueryOrderByField = original.RunQueryOrderByFieldTriggerRunTimestamp
 )
 
+type SalesforceSinkWriteBehavior = original.SalesforceSinkWriteBehavior
+
+const (
+	Insert SalesforceSinkWriteBehavior = original.Insert
+	Upsert SalesforceSinkWriteBehavior = original.Upsert
+)
+
+type SalesforceSourceReadBehavior = original.SalesforceSourceReadBehavior
+
+const (
+	Query    SalesforceSourceReadBehavior = original.Query
+	QueryAll SalesforceSourceReadBehavior = original.QueryAll
+)
+
+type SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehavior
+
+const (
+	SapCloudForCustomerSinkWriteBehaviorInsert SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehaviorInsert
+	SapCloudForCustomerSinkWriteBehaviorUpdate SapCloudForCustomerSinkWriteBehavior = original.SapCloudForCustomerSinkWriteBehaviorUpdate
+)
+
 type SapHanaAuthenticationType = original.SapHanaAuthenticationType
 
 const (
@@ -655,7 +698,6 @@ const (
 	TypeSQLServerSource                TypeBasicCopySource = original.TypeSQLServerSource
 	TypeSQLSource                      TypeBasicCopySource = original.TypeSQLSource
 	TypeSquareSource                   TypeBasicCopySource = original.TypeSquareSource
-	TypeTeradataSource                 TypeBasicCopySource = original.TypeTeradataSource
 	TypeVerticaSource                  TypeBasicCopySource = original.TypeVerticaSource
 	TypeWebSource                      TypeBasicCopySource = original.TypeWebSource
 	TypeXeroSource                     TypeBasicCopySource = original.TypeXeroSource
@@ -729,7 +771,6 @@ const (
 	TypeSparkObject                    TypeBasicDataset = original.TypeSparkObject
 	TypeSQLServerTable                 TypeBasicDataset = original.TypeSQLServerTable
 	TypeSquareObject                   TypeBasicDataset = original.TypeSquareObject
-	TypeTeradataTable                  TypeBasicDataset = original.TypeTeradataTable
 	TypeVerticaTable                   TypeBasicDataset = original.TypeVerticaTable
 	TypeWebTable                       TypeBasicDataset = original.TypeWebTable
 	TypeXeroObject                     TypeBasicDataset = original.TypeXeroObject
@@ -944,7 +985,7 @@ type AmazonS3DatasetTypeProperties = original.AmazonS3DatasetTypeProperties
 type AmazonS3LinkedService = original.AmazonS3LinkedService
 type AmazonS3LinkedServiceTypeProperties = original.AmazonS3LinkedServiceTypeProperties
 type AmazonS3Location = original.AmazonS3Location
-type AmazonS3ReadSetting = original.AmazonS3ReadSetting
+type AmazonS3ReadSettings = original.AmazonS3ReadSettings
 type AppendVariableActivity = original.AppendVariableActivity
 type AppendVariableActivityTypeProperties = original.AppendVariableActivityTypeProperties
 type AvroFormat = original.AvroFormat
@@ -957,15 +998,15 @@ type AzureBlobFSDatasetTypeProperties = original.AzureBlobFSDatasetTypePropertie
 type AzureBlobFSLinkedService = original.AzureBlobFSLinkedService
 type AzureBlobFSLinkedServiceTypeProperties = original.AzureBlobFSLinkedServiceTypeProperties
 type AzureBlobFSLocation = original.AzureBlobFSLocation
-type AzureBlobFSReadSetting = original.AzureBlobFSReadSetting
+type AzureBlobFSReadSettings = original.AzureBlobFSReadSettings
 type AzureBlobFSSink = original.AzureBlobFSSink
 type AzureBlobFSSource = original.AzureBlobFSSource
-type AzureBlobFSWriteSetting = original.AzureBlobFSWriteSetting
+type AzureBlobFSWriteSettings = original.AzureBlobFSWriteSettings
 type AzureBlobStorageLinkedService = original.AzureBlobStorageLinkedService
 type AzureBlobStorageLinkedServiceTypeProperties = original.AzureBlobStorageLinkedServiceTypeProperties
 type AzureBlobStorageLocation = original.AzureBlobStorageLocation
-type AzureBlobStorageReadSetting = original.AzureBlobStorageReadSetting
-type AzureBlobStorageWriteSetting = original.AzureBlobStorageWriteSetting
+type AzureBlobStorageReadSettings = original.AzureBlobStorageReadSettings
+type AzureBlobStorageWriteSettings = original.AzureBlobStorageWriteSettings
 type AzureDataExplorerDatasetTypeProperties = original.AzureDataExplorerDatasetTypeProperties
 type AzureDataExplorerLinkedService = original.AzureDataExplorerLinkedService
 type AzureDataExplorerLinkedServiceTypeProperties = original.AzureDataExplorerLinkedServiceTypeProperties
@@ -979,10 +1020,10 @@ type AzureDataLakeStoreDatasetTypeProperties = original.AzureDataLakeStoreDatase
 type AzureDataLakeStoreLinkedService = original.AzureDataLakeStoreLinkedService
 type AzureDataLakeStoreLinkedServiceTypeProperties = original.AzureDataLakeStoreLinkedServiceTypeProperties
 type AzureDataLakeStoreLocation = original.AzureDataLakeStoreLocation
-type AzureDataLakeStoreReadSetting = original.AzureDataLakeStoreReadSetting
+type AzureDataLakeStoreReadSettings = original.AzureDataLakeStoreReadSettings
 type AzureDataLakeStoreSink = original.AzureDataLakeStoreSink
 type AzureDataLakeStoreSource = original.AzureDataLakeStoreSource
-type AzureDataLakeStoreWriteSetting = original.AzureDataLakeStoreWriteSetting
+type AzureDataLakeStoreWriteSettings = original.AzureDataLakeStoreWriteSettings
 type AzureDatabricksLinkedService = original.AzureDatabricksLinkedService
 type AzureDatabricksLinkedServiceTypeProperties = original.AzureDatabricksLinkedServiceTypeProperties
 type AzureFunctionActivity = original.AzureFunctionActivity
@@ -1069,8 +1110,6 @@ type ConcurLinkedService = original.ConcurLinkedService
 type ConcurLinkedServiceTypeProperties = original.ConcurLinkedServiceTypeProperties
 type ConcurObjectDataset = original.ConcurObjectDataset
 type ConcurSource = original.ConcurSource
-type ConnectorReadSetting = original.ConnectorReadSetting
-type ConnectorWriteSetting = original.ConnectorWriteSetting
 type ControlActivity = original.ControlActivity
 type CopyActivity = original.CopyActivity
 type CopyActivityTypeProperties = original.CopyActivityTypeProperties
@@ -1124,10 +1163,10 @@ type DeleteActivity = original.DeleteActivity
 type DeleteActivityTypeProperties = original.DeleteActivityTypeProperties
 type DelimitedTextDataset = original.DelimitedTextDataset
 type DelimitedTextDatasetTypeProperties = original.DelimitedTextDatasetTypeProperties
-type DelimitedTextReadSetting = original.DelimitedTextReadSetting
+type DelimitedTextReadSettings = original.DelimitedTextReadSettings
 type DelimitedTextSink = original.DelimitedTextSink
 type DelimitedTextSource = original.DelimitedTextSource
-type DelimitedTextWriteSetting = original.DelimitedTextWriteSetting
+type DelimitedTextWriteSettings = original.DelimitedTextWriteSettings
 type DependencyReference = original.DependencyReference
 type DistcpSettings = original.DistcpSettings
 type DocumentDbCollectionDataset = original.DocumentDbCollectionDataset
@@ -1178,8 +1217,8 @@ type FactoryVSTSConfiguration = original.FactoryVSTSConfiguration
 type FileServerLinkedService = original.FileServerLinkedService
 type FileServerLinkedServiceTypeProperties = original.FileServerLinkedServiceTypeProperties
 type FileServerLocation = original.FileServerLocation
-type FileServerReadSetting = original.FileServerReadSetting
-type FileServerWriteSetting = original.FileServerWriteSetting
+type FileServerReadSettings = original.FileServerReadSettings
+type FileServerWriteSettings = original.FileServerWriteSettings
 type FileShareDataset = original.FileShareDataset
 type FileShareDatasetTypeProperties = original.FileShareDatasetTypeProperties
 type FileSystemSink = original.FileSystemSink
@@ -1188,9 +1227,9 @@ type FilterActivity = original.FilterActivity
 type FilterActivityTypeProperties = original.FilterActivityTypeProperties
 type ForEachActivity = original.ForEachActivity
 type ForEachActivityTypeProperties = original.ForEachActivityTypeProperties
-type FormatReadSetting = original.FormatReadSetting
-type FormatWriteSetting = original.FormatWriteSetting
-type FtpReadSetting = original.FtpReadSetting
+type FormatReadSettings = original.FormatReadSettings
+type FormatWriteSettings = original.FormatWriteSettings
+type FtpReadSettings = original.FtpReadSettings
 type FtpServerLinkedService = original.FtpServerLinkedService
 type FtpServerLinkedServiceTypeProperties = original.FtpServerLinkedServiceTypeProperties
 type FtpServerLocation = original.FtpServerLocation
@@ -1234,13 +1273,13 @@ type HTTPDataset = original.HTTPDataset
 type HTTPDatasetTypeProperties = original.HTTPDatasetTypeProperties
 type HTTPLinkedService = original.HTTPLinkedService
 type HTTPLinkedServiceTypeProperties = original.HTTPLinkedServiceTypeProperties
-type HTTPReadSetting = original.HTTPReadSetting
+type HTTPReadSettings = original.HTTPReadSettings
 type HTTPServerLocation = original.HTTPServerLocation
 type HTTPSource = original.HTTPSource
 type HdfsLinkedService = original.HdfsLinkedService
 type HdfsLinkedServiceTypeProperties = original.HdfsLinkedServiceTypeProperties
 type HdfsLocation = original.HdfsLocation
-type HdfsReadSetting = original.HdfsReadSetting
+type HdfsReadSettings = original.HdfsReadSettings
 type HdfsSource = original.HdfsSource
 type HiveLinkedService = original.HiveLinkedService
 type HiveLinkedServiceTypeProperties = original.HiveLinkedServiceTypeProperties
@@ -1366,7 +1405,6 @@ type OperationServiceSpecification = original.OperationServiceSpecification
 type OperationsClient = original.OperationsClient
 type OracleLinkedService = original.OracleLinkedService
 type OracleLinkedServiceTypeProperties = original.OracleLinkedServiceTypeProperties
-type OraclePartitionSettings = original.OraclePartitionSettings
 type OracleServiceCloudLinkedService = original.OracleServiceCloudLinkedService
 type OracleServiceCloudLinkedServiceTypeProperties = original.OracleServiceCloudLinkedServiceTypeProperties
 type OracleServiceCloudObjectDataset = original.OracleServiceCloudObjectDataset
@@ -1496,7 +1534,6 @@ type SapOpenHubTableDataset = original.SapOpenHubTableDataset
 type SapOpenHubTableDatasetTypeProperties = original.SapOpenHubTableDatasetTypeProperties
 type SapTableLinkedService = original.SapTableLinkedService
 type SapTableLinkedServiceTypeProperties = original.SapTableLinkedServiceTypeProperties
-type SapTablePartitionSettings = original.SapTablePartitionSettings
 type SapTableResourceDataset = original.SapTableResourceDataset
 type SapTableResourceDatasetTypeProperties = original.SapTableResourceDatasetTypeProperties
 type SapTableSource = original.SapTableSource
@@ -1519,7 +1556,7 @@ type ServiceNowSource = original.ServiceNowSource
 type SetVariableActivity = original.SetVariableActivity
 type SetVariableActivityTypeProperties = original.SetVariableActivityTypeProperties
 type SftpLocation = original.SftpLocation
-type SftpReadSetting = original.SftpReadSetting
+type SftpReadSettings = original.SftpReadSettings
 type SftpServerLinkedService = original.SftpServerLinkedService
 type SftpServerLinkedServiceTypeProperties = original.SftpServerLinkedServiceTypeProperties
 type ShopifyLinkedService = original.ShopifyLinkedService
@@ -1545,16 +1582,14 @@ type SsisParameter = original.SsisParameter
 type SsisProject = original.SsisProject
 type SsisVariable = original.SsisVariable
 type StagingSettings = original.StagingSettings
+type StoreReadSettings = original.StoreReadSettings
+type StoreWriteSettings = original.StoreWriteSettings
 type StoredProcedureParameter = original.StoredProcedureParameter
 type SubResource = original.SubResource
 type SybaseLinkedService = original.SybaseLinkedService
 type SybaseLinkedServiceTypeProperties = original.SybaseLinkedServiceTypeProperties
 type TeradataLinkedService = original.TeradataLinkedService
 type TeradataLinkedServiceTypeProperties = original.TeradataLinkedServiceTypeProperties
-type TeradataPartitionSettings = original.TeradataPartitionSettings
-type TeradataSource = original.TeradataSource
-type TeradataTableDataset = original.TeradataTableDataset
-type TeradataTableDatasetTypeProperties = original.TeradataTableDatasetTypeProperties
 type TextFormat = original.TextFormat
 type Trigger = original.Trigger
 type TriggerDependencyReference = original.TriggerDependencyReference
@@ -1757,8 +1792,14 @@ func PossibleAuthorizationTypeValues() []AuthorizationType {
 func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
 	return original.PossibleAzureFunctionActivityMethodValues()
 }
+func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBehaviorType {
+	return original.PossibleAzureSearchIndexWriteBehaviorTypeValues()
+}
 func PossibleBlobEventTypesValues() []BlobEventTypes {
 	return original.PossibleBlobEventTypesValues()
+}
+func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
+	return original.PossibleCassandraSourceReadConsistencyLevelsValues()
 }
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
@@ -1873,6 +1914,15 @@ func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
 }
 func PossibleRunQueryOrderValues() []RunQueryOrder {
 	return original.PossibleRunQueryOrderValues()
+}
+func PossibleSalesforceSinkWriteBehaviorValues() []SalesforceSinkWriteBehavior {
+	return original.PossibleSalesforceSinkWriteBehaviorValues()
+}
+func PossibleSalesforceSourceReadBehaviorValues() []SalesforceSourceReadBehavior {
+	return original.PossibleSalesforceSourceReadBehaviorValues()
+}
+func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerSinkWriteBehavior {
+	return original.PossibleSapCloudForCustomerSinkWriteBehaviorValues()
 }
 func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
 	return original.PossibleSapHanaAuthenticationTypeValues()

@@ -4303,7 +4303,7 @@ type WorkflowProperties struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// IntegrationAccount - The integration account.
 	IntegrationAccount *ResourceReference `json:"integrationAccount,omitempty"`
-	// Definition - The definition.
+	// Definition - The definition. See [Schema reference for Workflow Definition Language in Azure Logic Apps](https://docs.microsoft.com/azure/logic-apps/logic-apps-workflow-definition-language).
 	Definition interface{} `json:"definition,omitempty"`
 	// Parameters - The parameters.
 	Parameters map[string]*WorkflowParameter `json:"parameters"`

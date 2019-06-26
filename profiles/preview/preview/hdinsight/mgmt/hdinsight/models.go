@@ -65,6 +65,13 @@ const (
 	ActiveDirectory DirectoryType = original.ActiveDirectory
 )
 
+type FilterMode = original.FilterMode
+
+const (
+	Exclude FilterMode = original.Exclude
+	Include FilterMode = original.Include
+)
+
 type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm
 
 const (
@@ -112,6 +119,9 @@ type AutoscaleRecurrence = original.AutoscaleRecurrence
 type AutoscaleSchedule = original.AutoscaleSchedule
 type AutoscaleTimeAndCapacity = original.AutoscaleTimeAndCapacity
 type BaseClient = original.BaseClient
+type BillingMeters = original.BillingMeters
+type BillingResources = original.BillingResources
+type BillingResponseListResult = original.BillingResponseListResult
 type Cluster = original.Cluster
 type ClusterConfigurations = original.ClusterConfigurations
 type ClusterCreateParametersExtended = original.ClusterCreateParametersExtended
@@ -142,6 +152,7 @@ type ConfigurationsClient = original.ConfigurationsClient
 type ConfigurationsUpdateFuture = original.ConfigurationsUpdateFuture
 type ConnectivityEndpoint = original.ConnectivityEndpoint
 type DataDisksGroups = original.DataDisksGroups
+type DiskBillingMeters = original.DiskBillingMeters
 type DiskEncryptionProperties = original.DiskEncryptionProperties
 type ErrorResponse = original.ErrorResponse
 type Errors = original.Errors
@@ -192,6 +203,7 @@ type TrackedResource = original.TrackedResource
 type UpdateGatewaySettingsParameters = original.UpdateGatewaySettingsParameters
 type Usage = original.Usage
 type UsagesListResult = original.UsagesListResult
+type VMSizeCompatibilityFilterV2 = original.VMSizeCompatibilityFilterV2
 type VirtualNetworkProfile = original.VirtualNetworkProfile
 
 func New(subscriptionID string) BaseClient {
@@ -289,6 +301,9 @@ func PossibleDaysOfWeekValues() []DaysOfWeek {
 }
 func PossibleDirectoryTypeValues() []DirectoryType {
 	return original.PossibleDirectoryTypeValues()
+}
+func PossibleFilterModeValues() []FilterMode {
+	return original.PossibleFilterModeValues()
 }
 func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
 	return original.PossibleJSONWebKeyEncryptionAlgorithmValues()

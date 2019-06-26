@@ -26,7 +26,8 @@ import (
 )
 
 const (
-	DefaultBaseURI = original.DefaultBaseURI
+	DefaultBaseURI    = original.DefaultBaseURI
+	DefaultIdentifier = original.DefaultIdentifier
 )
 
 type ActionRuleStatus = original.ActionRuleStatus
@@ -78,17 +79,10 @@ const (
 	AlertsSummaryGroupByFieldsSignalType       AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsSignalType
 )
 
-type Identifier = original.Identifier
+type Identifier1 = original.Identifier1
 
 const (
-	BackendMonitorServiceList Identifier = original.BackendMonitorServiceList
-	MonitorServiceList        Identifier = original.MonitorServiceList
-)
-
-type IdentifierBasicAlertsMetaDataProperties = original.IdentifierBasicAlertsMetaDataProperties
-
-const (
-	IdentifierAlertsMetaDataProperties IdentifierBasicAlertsMetaDataProperties = original.IdentifierAlertsMetaDataProperties
+	IdentifierAlertsMetaDataProperties Identifier1 = original.IdentifierAlertsMetaDataProperties
 )
 
 type MonitorCondition = original.MonitorCondition
@@ -331,11 +325,8 @@ func PossibleAlertsSortByFieldsValues() []AlertsSortByFields {
 func PossibleAlertsSummaryGroupByFieldsValues() []AlertsSummaryGroupByFields {
 	return original.PossibleAlertsSummaryGroupByFieldsValues()
 }
-func PossibleIdentifierBasicAlertsMetaDataPropertiesValues() []IdentifierBasicAlertsMetaDataProperties {
-	return original.PossibleIdentifierBasicAlertsMetaDataPropertiesValues()
-}
-func PossibleIdentifierValues() []Identifier {
-	return original.PossibleIdentifierValues()
+func PossibleIdentifier1Values() []Identifier1 {
+	return original.PossibleIdentifier1Values()
 }
 func PossibleMonitorConditionValues() []MonitorCondition {
 	return original.PossibleMonitorConditionValues()

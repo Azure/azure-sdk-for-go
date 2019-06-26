@@ -27,6 +27,8 @@ import (
 const (
 	// DefaultBaseURI is the default URI used for the service Alertsmanagement
 	DefaultBaseURI = "https://management.azure.com"
+	// DefaultIdentifier is the default value for identifier
+	DefaultIdentifier = "MonitorServiceList"
 )
 
 // BaseClient is the base client for Alertsmanagement.
@@ -34,6 +36,7 @@ type BaseClient struct {
 	autorest.Client
 	BaseURI        string
 	SubscriptionID string
+	Identifier     string
 }
 
 // New creates an instance of the BaseClient client.
@@ -47,5 +50,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 		Client:         autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
+		Identifier:     DefaultIdentifier,
 	}
 }

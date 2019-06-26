@@ -133,33 +133,17 @@ func PossibleAlertStateValues() []AlertState {
 	return []AlertState{AlertStateAcknowledged, AlertStateClosed, AlertStateNew}
 }
 
-// Identifier enumerates the values for identifier.
-type Identifier string
-
-const (
-	// BackendMonitorServiceList ...
-	BackendMonitorServiceList Identifier = "BackendMonitorServiceList"
-	// MonitorServiceList ...
-	MonitorServiceList Identifier = "MonitorServiceList"
-)
-
-// PossibleIdentifierValues returns an array of possible values for the Identifier const type.
-func PossibleIdentifierValues() []Identifier {
-	return []Identifier{BackendMonitorServiceList, MonitorServiceList}
-}
-
-// IdentifierBasicAlertsMetaDataProperties enumerates the values for identifier basic alerts meta data
-// properties.
-type IdentifierBasicAlertsMetaDataProperties string
+// Identifier1 enumerates the values for identifier 1.
+type Identifier1 string
 
 const (
 	// IdentifierAlertsMetaDataProperties ...
-	IdentifierAlertsMetaDataProperties IdentifierBasicAlertsMetaDataProperties = "alertsMetaDataProperties"
+	IdentifierAlertsMetaDataProperties Identifier1 = "alertsMetaDataProperties"
 )
 
-// PossibleIdentifierBasicAlertsMetaDataPropertiesValues returns an array of possible values for the IdentifierBasicAlertsMetaDataProperties const type.
-func PossibleIdentifierBasicAlertsMetaDataPropertiesValues() []IdentifierBasicAlertsMetaDataProperties {
-	return []IdentifierBasicAlertsMetaDataProperties{IdentifierAlertsMetaDataProperties}
+// PossibleIdentifier1Values returns an array of possible values for the Identifier1 const type.
+func PossibleIdentifier1Values() []Identifier1 {
+	return []Identifier1{IdentifierAlertsMetaDataProperties}
 }
 
 // MonitorCondition enumerates the values for monitor condition.
@@ -1086,7 +1070,7 @@ type AlertsMetaDataProperties struct {
 	// Data - List of alert meta data information
 	Data *[]interface{} `json:"data,omitempty"`
 	// Identifier - Possible values include: 'IdentifierAlertsMetaDataProperties'
-	Identifier IdentifierBasicAlertsMetaDataProperties `json:"identifier,omitempty"`
+	Identifier Identifier1 `json:"identifier,omitempty"`
 }
 
 func unmarshalBasicAlertsMetaDataProperties(body []byte) (BasicAlertsMetaDataProperties, error) {

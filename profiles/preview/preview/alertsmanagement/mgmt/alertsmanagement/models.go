@@ -79,10 +79,10 @@ const (
 	AlertsSummaryGroupByFieldsSignalType       AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsSignalType
 )
 
-type Identifier1 = original.Identifier1
+type MetadataIdentifier = original.MetadataIdentifier
 
 const (
-	IdentifierAlertsMetaDataProperties Identifier1 = original.IdentifierAlertsMetaDataProperties
+	MetadataIdentifierAlertsMetaDataProperties MetadataIdentifier = original.MetadataIdentifierAlertsMetaDataProperties
 )
 
 type MonitorCondition = original.MonitorCondition
@@ -325,8 +325,8 @@ func PossibleAlertsSortByFieldsValues() []AlertsSortByFields {
 func PossibleAlertsSummaryGroupByFieldsValues() []AlertsSummaryGroupByFields {
 	return original.PossibleAlertsSummaryGroupByFieldsValues()
 }
-func PossibleIdentifier1Values() []Identifier1 {
-	return original.PossibleIdentifier1Values()
+func PossibleMetadataIdentifierValues() []MetadataIdentifier {
+	return original.PossibleMetadataIdentifierValues()
 }
 func PossibleMonitorConditionValues() []MonitorCondition {
 	return original.PossibleMonitorConditionValues()

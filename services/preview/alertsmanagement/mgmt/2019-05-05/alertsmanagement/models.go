@@ -133,17 +133,17 @@ func PossibleAlertStateValues() []AlertState {
 	return []AlertState{AlertStateAcknowledged, AlertStateClosed, AlertStateNew}
 }
 
-// Identifier1 enumerates the values for identifier 1.
-type Identifier1 string
+// MetadataIdentifier enumerates the values for metadata identifier.
+type MetadataIdentifier string
 
 const (
-	// IdentifierAlertsMetaDataProperties ...
-	IdentifierAlertsMetaDataProperties Identifier1 = "alertsMetaDataProperties"
+	// MetadataIdentifierAlertsMetaDataProperties ...
+	MetadataIdentifierAlertsMetaDataProperties MetadataIdentifier = "alertsMetaDataProperties"
 )
 
-// PossibleIdentifier1Values returns an array of possible values for the Identifier1 const type.
-func PossibleIdentifier1Values() []Identifier1 {
-	return []Identifier1{IdentifierAlertsMetaDataProperties}
+// PossibleMetadataIdentifierValues returns an array of possible values for the MetadataIdentifier const type.
+func PossibleMetadataIdentifierValues() []MetadataIdentifier {
+	return []MetadataIdentifier{MetadataIdentifierAlertsMetaDataProperties}
 }
 
 // MonitorCondition enumerates the values for monitor condition.
@@ -1069,8 +1069,8 @@ type BasicAlertsMetaDataProperties interface {
 type AlertsMetaDataProperties struct {
 	// Data - List of alert meta data information
 	Data *[]interface{} `json:"data,omitempty"`
-	// Identifier - Possible values include: 'IdentifierAlertsMetaDataProperties'
-	Identifier Identifier1 `json:"identifier,omitempty"`
+	// MetadataIdentifier - Possible values include: 'MetadataIdentifierAlertsMetaDataProperties'
+	MetadataIdentifier MetadataIdentifier `json:"metadataIdentifier,omitempty"`
 }
 
 func unmarshalBasicAlertsMetaDataProperties(body []byte) (BasicAlertsMetaDataProperties, error) {
@@ -1080,7 +1080,7 @@ func unmarshalBasicAlertsMetaDataProperties(body []byte) (BasicAlertsMetaDataPro
 		return nil, err
 	}
 
-	switch m["identifier"] {
+	switch m["metadataIdentifier"] {
 	default:
 		var amdp AlertsMetaDataProperties
 		err := json.Unmarshal(body, &amdp)
@@ -1108,13 +1108,13 @@ func unmarshalBasicAlertsMetaDataPropertiesArray(body []byte) ([]BasicAlertsMeta
 
 // MarshalJSON is the custom marshaler for AlertsMetaDataProperties.
 func (amdp AlertsMetaDataProperties) MarshalJSON() ([]byte, error) {
-	amdp.Identifier = IdentifierAlertsMetaDataProperties
+	amdp.MetadataIdentifier = MetadataIdentifierAlertsMetaDataProperties
 	objectMap := make(map[string]interface{})
 	if amdp.Data != nil {
 		objectMap["data"] = amdp.Data
 	}
-	if amdp.Identifier != "" {
-		objectMap["identifier"] = amdp.Identifier
+	if amdp.MetadataIdentifier != "" {
+		objectMap["metadataIdentifier"] = amdp.MetadataIdentifier
 	}
 	return json.Marshal(objectMap)
 }

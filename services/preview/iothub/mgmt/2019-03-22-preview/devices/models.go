@@ -862,9 +862,9 @@ type IotHubDescription struct {
 	Sku *IotHubSkuInfo `json:"sku,omitempty"`
 	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The resource name.
+	// Name - The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The resource type.
+	// Type - The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -883,6 +883,12 @@ func (ihd IotHubDescription) MarshalJSON() ([]byte, error) {
 	}
 	if ihd.Sku != nil {
 		objectMap["sku"] = ihd.Sku
+	}
+	if ihd.Name != nil {
+		objectMap["name"] = ihd.Name
+	}
+	if ihd.Type != nil {
+		objectMap["type"] = ihd.Type
 	}
 	if ihd.Location != nil {
 		objectMap["location"] = ihd.Location
@@ -1963,9 +1969,9 @@ type RegistryStatistics struct {
 type Resource struct {
 	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The resource name.
+	// Name - The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The resource type.
+	// Type - The resource type.
 	Type *string `json:"type,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -1976,6 +1982,12 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

@@ -1067,7 +1067,7 @@ type BasicAlertsMetaDataProperties interface {
 
 // AlertsMetaDataProperties alert meta data property bag
 type AlertsMetaDataProperties struct {
-	// Data - List of alert meta data information
+	// Data - Array of operations
 	Data *[]interface{} `json:"data,omitempty"`
 	// MetadataIdentifier - Possible values include: 'MetadataIdentifierAlertsMetaDataProperties'
 	MetadataIdentifier MetadataIdentifier `json:"metadataIdentifier,omitempty"`

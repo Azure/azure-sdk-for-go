@@ -24,8 +24,8 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	CheckFilePathAvailability(ctx context.Context, body interface{}, location string) (result netapp.ResourceNameAvailability, err error)
-	CheckNameAvailability(ctx context.Context, body interface{}, location string) (result netapp.ResourceNameAvailability, err error)
+	CheckFilePathAvailability(ctx context.Context, location string) (result netapp.ResourceNameAvailability, err error)
+	CheckNameAvailability(ctx context.Context, location string) (result netapp.ResourceNameAvailability, err error)
 }
 
 var _ BaseClientAPI = (*netapp.BaseClient)(nil)

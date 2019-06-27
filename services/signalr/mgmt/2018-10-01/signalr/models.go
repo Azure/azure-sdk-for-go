@@ -93,6 +93,12 @@ func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{Basic, Free, Premium, Standard}
 }
 
+// CorsSettings cross-Origin Resource Sharing (CORS) settings.
+type CorsSettings struct {
+	// AllowedOrigins - Gets or sets the list of origins that should be allowed to make cross-origin calls (for example: http://example.com:12345). Use "*" to allow all. If omitted, allow all by default.
+	AllowedOrigins *[]string `json:"allowedOrigins,omitempty"`
+}
+
 // CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CreateOrUpdateFuture struct {
@@ -134,6 +140,8 @@ type CreateOrUpdateProperties struct {
 	// When a featureFlag is not explicitly set, SignalR service will use its globally default value.
 	// But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags.
 	Features *[]Feature `json:"features,omitempty"`
+	// Cors - Cross-Origin Resource Sharing (CORS) settings.
+	Cors *CorsSettings `json:"cors,omitempty"`
 }
 
 // CreateParameters parameters for SignalR service create/update operation.
@@ -485,6 +493,8 @@ type Properties struct {
 	// When a featureFlag is not explicitly set, SignalR service will use its globally default value.
 	// But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags.
 	Features *[]Feature `json:"features,omitempty"`
+	// Cors - Cross-Origin Resource Sharing (CORS) settings.
+	Cors *CorsSettings `json:"cors,omitempty"`
 }
 
 // RegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running

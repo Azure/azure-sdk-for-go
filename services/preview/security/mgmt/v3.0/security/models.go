@@ -78,6 +78,25 @@ func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 	return []AlertsToAdmins{AlertsToAdminsOff, AlertsToAdminsOn}
 }
 
+// AssessedResourceType enumerates the values for assessed resource type.
+type AssessedResourceType string
+
+const (
+	// AssessedResourceTypeAdditionalData ...
+	AssessedResourceTypeAdditionalData AssessedResourceType = "AdditionalData"
+	// AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment ...
+	AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment AssessedResourceType = "ContainerRegistryVulnerabilitySubAssessment"
+	// AssessedResourceTypeServerVulnerabilityAssessment ...
+	AssessedResourceTypeServerVulnerabilityAssessment AssessedResourceType = "ServerVulnerabilityAssessment"
+	// AssessedResourceTypeSQLServerSubAssessment ...
+	AssessedResourceTypeSQLServerSubAssessment AssessedResourceType = "SqlServerSubAssessment"
+)
+
+// PossibleAssessedResourceTypeValues returns an array of possible values for the AssessedResourceType const type.
+func PossibleAssessedResourceTypeValues() []AssessedResourceType {
+	return []AssessedResourceType{AssessedResourceTypeAdditionalData, AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment, AssessedResourceTypeServerVulnerabilityAssessment, AssessedResourceTypeSQLServerSubAssessment}
+}
+
 // AutoProvision enumerates the values for auto provision.
 type AutoProvision string
 
@@ -233,6 +252,23 @@ func PossibleResourceStatusValues() []ResourceStatus {
 	return []ResourceStatus{Healthy, NotApplicable, NotHealthy, OffByPolicy}
 }
 
+// Risk enumerates the values for risk.
+type Risk string
+
+const (
+	// RiskHigh ...
+	RiskHigh Risk = "High"
+	// RiskLow ...
+	RiskLow Risk = "Low"
+	// RiskMedium ...
+	RiskMedium Risk = "Medium"
+)
+
+// PossibleRiskValues returns an array of possible values for the Risk const type.
+func PossibleRiskValues() []Risk {
+	return []Risk{RiskHigh, RiskLow, RiskMedium}
+}
+
 // SettingKind enumerates the values for setting kind.
 type SettingKind string
 
@@ -246,6 +282,48 @@ const (
 // PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
 func PossibleSettingKindValues() []SettingKind {
 	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
+}
+
+// Severity enumerates the values for severity.
+type Severity string
+
+const (
+	// SeverityHealthy ...
+	SeverityHealthy Severity = "Healthy"
+	// SeverityHigh ...
+	SeverityHigh Severity = "High"
+	// SeverityLow ...
+	SeverityLow Severity = "Low"
+	// SeverityMedium ...
+	SeverityMedium Severity = "Medium"
+	// SeverityNotApplicable ...
+	SeverityNotApplicable Severity = "NotApplicable"
+	// SeverityOffByPolicy ...
+	SeverityOffByPolicy Severity = "OffByPolicy"
+	// SeverityUnknown ...
+	SeverityUnknown Severity = "Unknown"
+)
+
+// PossibleSeverityValues returns an array of possible values for the Severity const type.
+func PossibleSeverityValues() []Severity {
+	return []Severity{SeverityHealthy, SeverityHigh, SeverityLow, SeverityMedium, SeverityNotApplicable, SeverityOffByPolicy, SeverityUnknown}
+}
+
+// Source enumerates the values for source.
+type Source string
+
+const (
+	// SourceAws ...
+	SourceAws Source = "Aws"
+	// SourceAzure ...
+	SourceAzure Source = "Azure"
+	// SourceResourceDetails ...
+	SourceResourceDetails Source = "ResourceDetails"
+)
+
+// PossibleSourceValues returns an array of possible values for the Source const type.
+func PossibleSourceValues() []Source {
+	return []Source{SourceAws, SourceAzure, SourceResourceDetails}
 }
 
 // State enumerates the values for state.
@@ -366,6 +444,100 @@ type AadSolutionProperties struct {
 	Workspace    *ConnectedWorkspace `json:"workspace,omitempty"`
 	// ConnectivityState - Possible values include: 'Discovered', 'NotLicensed', 'Connected'
 	ConnectivityState AadConnectivityState `json:"connectivityState,omitempty"`
+}
+
+// BasicAdditionalData details of the sub-assessment
+type BasicAdditionalData interface {
+	AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool)
+	AsContainerRegistryVulnerabilitySubAssessmentProperties() (*ContainerRegistryVulnerabilitySubAssessmentProperties, bool)
+	AsServerVulnerabilitySubAssessmentProperties() (*ServerVulnerabilitySubAssessmentProperties, bool)
+	AsAdditionalData() (*AdditionalData, bool)
+}
+
+// AdditionalData details of the sub-assessment
+type AdditionalData struct {
+	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerSubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
+	AssessedResourceType AssessedResourceType `json:"assessedResourceType,omitempty"`
+}
+
+func unmarshalBasicAdditionalData(body []byte) (BasicAdditionalData, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["assessedResourceType"] {
+	case string(AssessedResourceTypeSQLServerSubAssessment):
+		var sssap SQLServerSubAssessmentProperties
+		err := json.Unmarshal(body, &sssap)
+		return sssap, err
+	case string(AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment):
+		var crvsap ContainerRegistryVulnerabilitySubAssessmentProperties
+		err := json.Unmarshal(body, &crvsap)
+		return crvsap, err
+	case string(AssessedResourceTypeServerVulnerabilityAssessment):
+		var svsap ServerVulnerabilitySubAssessmentProperties
+		err := json.Unmarshal(body, &svsap)
+		return svsap, err
+	default:
+		var ad AdditionalData
+		err := json.Unmarshal(body, &ad)
+		return ad, err
+	}
+}
+func unmarshalBasicAdditionalDataArray(body []byte) ([]BasicAdditionalData, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	adArray := make([]BasicAdditionalData, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ad, err := unmarshalBasicAdditionalData(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		adArray[index] = ad
+	}
+	return adArray, nil
+}
+
+// MarshalJSON is the custom marshaler for AdditionalData.
+func (ad AdditionalData) MarshalJSON() ([]byte, error) {
+	ad.AssessedResourceType = AssessedResourceTypeAdditionalData
+	objectMap := make(map[string]interface{})
+	if ad.AssessedResourceType != "" {
+		objectMap["assessedResourceType"] = ad.AssessedResourceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSQLServerSubAssessmentProperties is the BasicAdditionalData implementation for AdditionalData.
+func (ad AdditionalData) AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool) {
+	return nil, false
+}
+
+// AsContainerRegistryVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for AdditionalData.
+func (ad AdditionalData) AsContainerRegistryVulnerabilitySubAssessmentProperties() (*ContainerRegistryVulnerabilitySubAssessmentProperties, bool) {
+	return nil, false
+}
+
+// AsServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for AdditionalData.
+func (ad AdditionalData) AsServerVulnerabilitySubAssessmentProperties() (*ServerVulnerabilitySubAssessmentProperties, bool) {
+	return nil, false
+}
+
+// AsAdditionalData is the BasicAdditionalData implementation for AdditionalData.
+func (ad AdditionalData) AsAdditionalData() (*AdditionalData, bool) {
+	return &ad, true
+}
+
+// AsBasicAdditionalData is the BasicAdditionalData implementation for AdditionalData.
+func (ad AdditionalData) AsBasicAdditionalData() (BasicAdditionalData, bool) {
+	return &ad, true
 }
 
 // AdvancedThreatProtectionProperties the Advanced Threat Protection settings.
@@ -1556,6 +1728,84 @@ type AutoProvisioningSettingProperties struct {
 	AutoProvision AutoProvision `json:"autoProvision,omitempty"`
 }
 
+// AwsResourceDetails details of the resource that was assessed
+type AwsResourceDetails struct {
+	// AccountID - READ-ONLY; AWS account ID
+	AccountID *string `json:"accountId,omitempty"`
+	// AwsResourceID - READ-ONLY; AWS resource ID. can be ARN or other
+	AwsResourceID *string `json:"awsResourceId,omitempty"`
+	// Source - Possible values include: 'SourceResourceDetails', 'SourceAzure', 'SourceAws'
+	Source Source `json:"source,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AwsResourceDetails.
+func (ard AwsResourceDetails) MarshalJSON() ([]byte, error) {
+	ard.Source = SourceAws
+	objectMap := make(map[string]interface{})
+	if ard.Source != "" {
+		objectMap["source"] = ard.Source
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAzureResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
+func (ard AwsResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
+	return nil, false
+}
+
+// AsAwsResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
+func (ard AwsResourceDetails) AsAwsResourceDetails() (*AwsResourceDetails, bool) {
+	return &ard, true
+}
+
+// AsResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
+func (ard AwsResourceDetails) AsResourceDetails() (*ResourceDetails, bool) {
+	return nil, false
+}
+
+// AsBasicResourceDetails is the BasicResourceDetails implementation for AwsResourceDetails.
+func (ard AwsResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, bool) {
+	return &ard, true
+}
+
+// AzureResourceDetails details of the resource that was assessed
+type AzureResourceDetails struct {
+	// ID - READ-ONLY; Azure resource ID of the assessed resource
+	ID *string `json:"id,omitempty"`
+	// Source - Possible values include: 'SourceResourceDetails', 'SourceAzure', 'SourceAws'
+	Source Source `json:"source,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureResourceDetails.
+func (ard AzureResourceDetails) MarshalJSON() ([]byte, error) {
+	ard.Source = SourceAzure
+	objectMap := make(map[string]interface{})
+	if ard.Source != "" {
+		objectMap["source"] = ard.Source
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAzureResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
+func (ard AzureResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
+	return &ard, true
+}
+
+// AsAwsResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
+func (ard AzureResourceDetails) AsAwsResourceDetails() (*AwsResourceDetails, bool) {
+	return nil, false
+}
+
+// AsResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
+func (ard AzureResourceDetails) AsResourceDetails() (*ResourceDetails, bool) {
+	return nil, false
+}
+
+// AsBasicResourceDetails is the BasicResourceDetails implementation for AzureResourceDetails.
+func (ard AzureResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, bool) {
+	return &ard, true
+}
+
 // CefExternalSecuritySolution represents a security solution which sends CEF logs to an OMS workspace
 type CefExternalSecuritySolution struct {
 	Properties *CefSolutionProperties `json:"properties,omitempty"`
@@ -2495,6 +2745,82 @@ type ContactProperties struct {
 	AlertNotifications AlertNotifications `json:"alertNotifications,omitempty"`
 	// AlertsToAdmins - Whether to send security alerts notifications to subscription admins. Possible values include: 'AlertsToAdminsOn', 'AlertsToAdminsOff'
 	AlertsToAdmins AlertsToAdmins `json:"alertsToAdmins,omitempty"`
+}
+
+// ContainerRegistryVulnerabilitySubAssessmentProperties additional context fields for container registry
+// Vulnerability assessment
+type ContainerRegistryVulnerabilitySubAssessmentProperties struct {
+	// Type - READ-ONLY; Vulnerability Type. e.g: Vulnerability, Potential Vulnerability, Information Gathered, Vulnerability
+	Type *string `json:"type,omitempty"`
+	// Cvss - READ-ONLY; Dictionary from cvss version to cvss details object
+	Cvss map[string]*CVSS `json:"cvss"`
+	// Patchable - READ-ONLY; Indicates whether a patch is available or not
+	Patchable *bool `json:"patchable,omitempty"`
+	// Cve - READ-ONLY; List of CVEs
+	Cve *[]CVE `json:"cve,omitempty"`
+	// Threat - READ-ONLY; Threat name
+	Threat *string `json:"threat,omitempty"`
+	// RemediationLink - READ-ONLY; Link for additional remediation explanation
+	RemediationLink *string `json:"remediationLink,omitempty"`
+	// VendorReferences - READ-ONLY
+	VendorReferences *[]VendorReference `json:"vendorReferences,omitempty"`
+	// RepositoryName - READ-ONLY; Name of the repository which the vulnerable image belongs to
+	RepositoryName *string `json:"repositoryName,omitempty"`
+	// ImageName - READ-ONLY; Name of the vulnerable image
+	ImageName *string `json:"imageName,omitempty"`
+	// ImageDigest - READ-ONLY; Digest of the vulnerable image
+	ImageDigest *string `json:"imageDigest,omitempty"`
+	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerSubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
+	AssessedResourceType AssessedResourceType `json:"assessedResourceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerRegistryVulnerabilitySubAssessmentProperties.
+func (crvsap ContainerRegistryVulnerabilitySubAssessmentProperties) MarshalJSON() ([]byte, error) {
+	crvsap.AssessedResourceType = AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment
+	objectMap := make(map[string]interface{})
+	if crvsap.AssessedResourceType != "" {
+		objectMap["assessedResourceType"] = crvsap.AssessedResourceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSQLServerSubAssessmentProperties is the BasicAdditionalData implementation for ContainerRegistryVulnerabilitySubAssessmentProperties.
+func (crvsap ContainerRegistryVulnerabilitySubAssessmentProperties) AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool) {
+	return nil, false
+}
+
+// AsContainerRegistryVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for ContainerRegistryVulnerabilitySubAssessmentProperties.
+func (crvsap ContainerRegistryVulnerabilitySubAssessmentProperties) AsContainerRegistryVulnerabilitySubAssessmentProperties() (*ContainerRegistryVulnerabilitySubAssessmentProperties, bool) {
+	return &crvsap, true
+}
+
+// AsServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for ContainerRegistryVulnerabilitySubAssessmentProperties.
+func (crvsap ContainerRegistryVulnerabilitySubAssessmentProperties) AsServerVulnerabilitySubAssessmentProperties() (*ServerVulnerabilitySubAssessmentProperties, bool) {
+	return nil, false
+}
+
+// AsAdditionalData is the BasicAdditionalData implementation for ContainerRegistryVulnerabilitySubAssessmentProperties.
+func (crvsap ContainerRegistryVulnerabilitySubAssessmentProperties) AsAdditionalData() (*AdditionalData, bool) {
+	return nil, false
+}
+
+// AsBasicAdditionalData is the BasicAdditionalData implementation for ContainerRegistryVulnerabilitySubAssessmentProperties.
+func (crvsap ContainerRegistryVulnerabilitySubAssessmentProperties) AsBasicAdditionalData() (BasicAdditionalData, bool) {
+	return &crvsap, true
+}
+
+// CVE CVE details
+type CVE struct {
+	// Title - READ-ONLY; CVE title
+	Title *string `json:"title,omitempty"`
+	// Link - READ-ONLY; Link url
+	Link *string `json:"link,omitempty"`
+}
+
+// CVSS CVSS details
+type CVSS struct {
+	// Base - READ-ONLY; CVSS base
+	Base *float64 `json:"base,omitempty"`
 }
 
 // DataExportSetting represents a data export setting
@@ -4799,6 +5125,90 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// BasicResourceDetails details of the resource that was assessed
+type BasicResourceDetails interface {
+	AsAzureResourceDetails() (*AzureResourceDetails, bool)
+	AsAwsResourceDetails() (*AwsResourceDetails, bool)
+	AsResourceDetails() (*ResourceDetails, bool)
+}
+
+// ResourceDetails details of the resource that was assessed
+type ResourceDetails struct {
+	// Source - Possible values include: 'SourceResourceDetails', 'SourceAzure', 'SourceAws'
+	Source Source `json:"source,omitempty"`
+}
+
+func unmarshalBasicResourceDetails(body []byte) (BasicResourceDetails, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["source"] {
+	case string(SourceAzure):
+		var ard AzureResourceDetails
+		err := json.Unmarshal(body, &ard)
+		return ard, err
+	case string(SourceAws):
+		var ard AwsResourceDetails
+		err := json.Unmarshal(body, &ard)
+		return ard, err
+	default:
+		var rd ResourceDetails
+		err := json.Unmarshal(body, &rd)
+		return rd, err
+	}
+}
+func unmarshalBasicResourceDetailsArray(body []byte) ([]BasicResourceDetails, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	rdArray := make([]BasicResourceDetails, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		rd, err := unmarshalBasicResourceDetails(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		rdArray[index] = rd
+	}
+	return rdArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ResourceDetails.
+func (rd ResourceDetails) MarshalJSON() ([]byte, error) {
+	rd.Source = SourceResourceDetails
+	objectMap := make(map[string]interface{})
+	if rd.Source != "" {
+		objectMap["source"] = rd.Source
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAzureResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
+func (rd ResourceDetails) AsAzureResourceDetails() (*AzureResourceDetails, bool) {
+	return nil, false
+}
+
+// AsAwsResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
+func (rd ResourceDetails) AsAwsResourceDetails() (*AwsResourceDetails, bool) {
+	return nil, false
+}
+
+// AsResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
+func (rd ResourceDetails) AsResourceDetails() (*ResourceDetails, bool) {
+	return &rd, true
+}
+
+// AsBasicResourceDetails is the BasicResourceDetails implementation for ResourceDetails.
+func (rd ResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, bool) {
+	return &rd, true
+}
+
 // SensitivityLabel the sensitivity label.
 type SensitivityLabel struct {
 	// DisplayName - The name of the sensitivity label.
@@ -4807,6 +5217,61 @@ type SensitivityLabel struct {
 	Order *float64 `json:"order,omitempty"`
 	// Enabled - Indicates whether the label is enabled or not.
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// ServerVulnerabilitySubAssessmentProperties additional context fields for server vulnerability assessment
+type ServerVulnerabilitySubAssessmentProperties struct {
+	// Type - READ-ONLY; Vulnerability Type. e.g: Vulnerability, Potential Vulnerability, Information Gathered
+	Type *string `json:"type,omitempty"`
+	// Cvss - READ-ONLY; Dictionary from cvss version to cvss details object
+	Cvss map[string]*CVSS `json:"cvss"`
+	// Patchable - READ-ONLY; Indicates whether a patch is available or not
+	Patchable *bool `json:"patchable,omitempty"`
+	// Cve - READ-ONLY; List of CVEs
+	Cve *[]CVE `json:"cve,omitempty"`
+	// Threat - READ-ONLY; Threat name
+	Threat *string `json:"threat,omitempty"`
+	// RemediationLink - READ-ONLY; Link for additional remediation explanation
+	RemediationLink *string `json:"remediationLink,omitempty"`
+	// VendorReferences - READ-ONLY
+	VendorReferences *[]VendorReference `json:"vendorReferences,omitempty"`
+	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerSubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
+	AssessedResourceType AssessedResourceType `json:"assessedResourceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerVulnerabilitySubAssessmentProperties.
+func (svsap ServerVulnerabilitySubAssessmentProperties) MarshalJSON() ([]byte, error) {
+	svsap.AssessedResourceType = AssessedResourceTypeServerVulnerabilityAssessment
+	objectMap := make(map[string]interface{})
+	if svsap.AssessedResourceType != "" {
+		objectMap["assessedResourceType"] = svsap.AssessedResourceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSQLServerSubAssessmentProperties is the BasicAdditionalData implementation for ServerVulnerabilitySubAssessmentProperties.
+func (svsap ServerVulnerabilitySubAssessmentProperties) AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool) {
+	return nil, false
+}
+
+// AsContainerRegistryVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for ServerVulnerabilitySubAssessmentProperties.
+func (svsap ServerVulnerabilitySubAssessmentProperties) AsContainerRegistryVulnerabilitySubAssessmentProperties() (*ContainerRegistryVulnerabilitySubAssessmentProperties, bool) {
+	return nil, false
+}
+
+// AsServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for ServerVulnerabilitySubAssessmentProperties.
+func (svsap ServerVulnerabilitySubAssessmentProperties) AsServerVulnerabilitySubAssessmentProperties() (*ServerVulnerabilitySubAssessmentProperties, bool) {
+	return &svsap, true
+}
+
+// AsAdditionalData is the BasicAdditionalData implementation for ServerVulnerabilitySubAssessmentProperties.
+func (svsap ServerVulnerabilitySubAssessmentProperties) AsAdditionalData() (*AdditionalData, bool) {
+	return nil, false
+}
+
+// AsBasicAdditionalData is the BasicAdditionalData implementation for ServerVulnerabilitySubAssessmentProperties.
+func (svsap ServerVulnerabilitySubAssessmentProperties) AsBasicAdditionalData() (BasicAdditionalData, bool) {
+	return &svsap, true
 }
 
 // Setting represents a security setting in Azure Security Center.
@@ -4978,6 +5443,401 @@ func (page SettingsListPage) Values() []Setting {
 // Creates a new instance of the SettingsListPage type.
 func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
 	return SettingsListPage{fn: getNextPage}
+}
+
+// SQLServerSubAssessmentProperties details of the resource that was assessed
+type SQLServerSubAssessmentProperties struct {
+	// Query - READ-ONLY; The T-SQL query that runs on your SQL database to perform the particular check
+	Query *string `json:"query,omitempty"`
+	// Risk - READ-ONLY; The risk level associated with the particular vulnerability assessment check. Possible values include: 'RiskLow', 'RiskMedium', 'RiskHigh'
+	Risk Risk `json:"risk,omitempty"`
+	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerSubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
+	AssessedResourceType AssessedResourceType `json:"assessedResourceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLServerSubAssessmentProperties.
+func (sssap SQLServerSubAssessmentProperties) MarshalJSON() ([]byte, error) {
+	sssap.AssessedResourceType = AssessedResourceTypeSQLServerSubAssessment
+	objectMap := make(map[string]interface{})
+	if sssap.AssessedResourceType != "" {
+		objectMap["assessedResourceType"] = sssap.AssessedResourceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsSQLServerSubAssessmentProperties is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
+func (sssap SQLServerSubAssessmentProperties) AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool) {
+	return &sssap, true
+}
+
+// AsContainerRegistryVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
+func (sssap SQLServerSubAssessmentProperties) AsContainerRegistryVulnerabilitySubAssessmentProperties() (*ContainerRegistryVulnerabilitySubAssessmentProperties, bool) {
+	return nil, false
+}
+
+// AsServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
+func (sssap SQLServerSubAssessmentProperties) AsServerVulnerabilitySubAssessmentProperties() (*ServerVulnerabilitySubAssessmentProperties, bool) {
+	return nil, false
+}
+
+// AsAdditionalData is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
+func (sssap SQLServerSubAssessmentProperties) AsAdditionalData() (*AdditionalData, bool) {
+	return nil, false
+}
+
+// AsBasicAdditionalData is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
+func (sssap SQLServerSubAssessmentProperties) AsBasicAdditionalData() (BasicAdditionalData, bool) {
+	return &sssap, true
+}
+
+// SubAssessment security sub-assessment on a resource
+type SubAssessment struct {
+	autorest.Response        `json:"-"`
+	*SubAssessmentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubAssessment.
+func (sa SubAssessment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sa.SubAssessmentProperties != nil {
+		objectMap["properties"] = sa.SubAssessmentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SubAssessment struct.
+func (sa *SubAssessment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var subAssessmentProperties SubAssessmentProperties
+				err = json.Unmarshal(*v, &subAssessmentProperties)
+				if err != nil {
+					return err
+				}
+				sa.SubAssessmentProperties = &subAssessmentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sa.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sa.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sa.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SubAssessmentList list of security sub-assessments
+type SubAssessmentList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY
+	Value *[]SubAssessment `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SubAssessmentListIterator provides access to a complete listing of SubAssessment values.
+type SubAssessmentListIterator struct {
+	i    int
+	page SubAssessmentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SubAssessmentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubAssessmentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SubAssessmentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SubAssessmentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SubAssessmentListIterator) Response() SubAssessmentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SubAssessmentListIterator) Value() SubAssessment {
+	if !iter.page.NotDone() {
+		return SubAssessment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SubAssessmentListIterator type.
+func NewSubAssessmentListIterator(page SubAssessmentListPage) SubAssessmentListIterator {
+	return SubAssessmentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sal SubAssessmentList) IsEmpty() bool {
+	return sal.Value == nil || len(*sal.Value) == 0
+}
+
+// subAssessmentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sal SubAssessmentList) subAssessmentListPreparer(ctx context.Context) (*http.Request, error) {
+	if sal.NextLink == nil || len(to.String(sal.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sal.NextLink)))
+}
+
+// SubAssessmentListPage contains a page of SubAssessment values.
+type SubAssessmentListPage struct {
+	fn  func(context.Context, SubAssessmentList) (SubAssessmentList, error)
+	sal SubAssessmentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SubAssessmentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubAssessmentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.sal)
+	if err != nil {
+		return err
+	}
+	page.sal = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SubAssessmentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SubAssessmentListPage) NotDone() bool {
+	return !page.sal.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SubAssessmentListPage) Response() SubAssessmentList {
+	return page.sal
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SubAssessmentListPage) Values() []SubAssessment {
+	if page.sal.IsEmpty() {
+		return nil
+	}
+	return *page.sal.Value
+}
+
+// Creates a new instance of the SubAssessmentListPage type.
+func NewSubAssessmentListPage(getNextPage func(context.Context, SubAssessmentList) (SubAssessmentList, error)) SubAssessmentListPage {
+	return SubAssessmentListPage{fn: getNextPage}
+}
+
+// SubAssessmentProperties describes properties of an sub-assessment.
+type SubAssessmentProperties struct {
+	// ID - READ-ONLY; Vulnerability ID.
+	ID *string `json:"id,omitempty"`
+	// DisplayName - READ-ONLY; User friendly display name of the sub-assessment
+	DisplayName *string              `json:"displayName,omitempty"`
+	Status      *SubAssessmentStatus `json:"status,omitempty"`
+	// Remediation - READ-ONLY; Information on how to remediate this sub-assessment
+	Remediation *string `json:"remediation,omitempty"`
+	// Impact - READ-ONLY; Description of the impact of this sub-assessment
+	Impact *string `json:"impact,omitempty"`
+	// Category - READ-ONLY; Category of the sub-assessment
+	Category *string `json:"category,omitempty"`
+	// Description - READ-ONLY; Human readable description of the assessment status
+	Description *string `json:"description,omitempty"`
+	// TimeGenerated - READ-ONLY; The date and time the sub-assessment was generated
+	TimeGenerated   *date.Time           `json:"timeGenerated,omitempty"`
+	ResourceDetails BasicResourceDetails `json:"resourceDetails,omitempty"`
+	AdditionalData  BasicAdditionalData  `json:"additionalData,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SubAssessmentProperties struct.
+func (sap *SubAssessmentProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sap.ID = &ID
+			}
+		case "displayName":
+			if v != nil {
+				var displayName string
+				err = json.Unmarshal(*v, &displayName)
+				if err != nil {
+					return err
+				}
+				sap.DisplayName = &displayName
+			}
+		case "status":
+			if v != nil {
+				var status SubAssessmentStatus
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				sap.Status = &status
+			}
+		case "remediation":
+			if v != nil {
+				var remediation string
+				err = json.Unmarshal(*v, &remediation)
+				if err != nil {
+					return err
+				}
+				sap.Remediation = &remediation
+			}
+		case "impact":
+			if v != nil {
+				var impact string
+				err = json.Unmarshal(*v, &impact)
+				if err != nil {
+					return err
+				}
+				sap.Impact = &impact
+			}
+		case "category":
+			if v != nil {
+				var category string
+				err = json.Unmarshal(*v, &category)
+				if err != nil {
+					return err
+				}
+				sap.Category = &category
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				sap.Description = &description
+			}
+		case "timeGenerated":
+			if v != nil {
+				var timeGenerated date.Time
+				err = json.Unmarshal(*v, &timeGenerated)
+				if err != nil {
+					return err
+				}
+				sap.TimeGenerated = &timeGenerated
+			}
+		case "resourceDetails":
+			if v != nil {
+				resourceDetails, err := unmarshalBasicResourceDetails(*v)
+				if err != nil {
+					return err
+				}
+				sap.ResourceDetails = resourceDetails
+			}
+		case "additionalData":
+			if v != nil {
+				additionalData, err := unmarshalBasicAdditionalData(*v)
+				if err != nil {
+					return err
+				}
+				sap.AdditionalData = additionalData
+			}
+		}
+	}
+
+	return nil
+}
+
+// SubAssessmentStatus status of the sub-assessment
+type SubAssessmentStatus struct {
+	// Severity - READ-ONLY; The sub-assessment severity level. Possible values include: 'SeverityUnknown', 'SeverityHealthy', 'SeverityOffByPolicy', 'SeverityNotApplicable', 'SeverityLow', 'SeverityMedium', 'SeverityHigh'
+	Severity Severity `json:"severity,omitempty"`
+	// Cause - READ-ONLY; The cause of the assessment status. Optional field in case the severity level requires additional data.
+	Cause *string `json:"cause,omitempty"`
 }
 
 // Task security task that we recommend to do in order to strengthen security
@@ -5530,6 +6390,14 @@ type TopologySingleResourceChild struct {
 type TopologySingleResourceParent struct {
 	// ResourceID - READ-ONLY; Azure resource id which serves as parent resource in topology view
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// VendorReference vendor reference
+type VendorReference struct {
+	// Title - READ-ONLY; Link title
+	Title *string `json:"title,omitempty"`
+	// Link - READ-ONLY; Link url
+	Link *string `json:"link,omitempty"`
 }
 
 // WorkspaceSetting configures where to store the OMS agent data for workspaces under a scope

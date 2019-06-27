@@ -51,6 +51,15 @@ const (
 	AlertsToAdminsOn  AlertsToAdmins = original.AlertsToAdminsOn
 )
 
+type AssessedResourceType = original.AssessedResourceType
+
+const (
+	AssessedResourceTypeAdditionalData                              AssessedResourceType = original.AssessedResourceTypeAdditionalData
+	AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment AssessedResourceType = original.AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment
+	AssessedResourceTypeServerVulnerabilityAssessment               AssessedResourceType = original.AssessedResourceTypeServerVulnerabilityAssessment
+	AssessedResourceTypeSQLServerSubAssessment                      AssessedResourceType = original.AssessedResourceTypeSQLServerSubAssessment
+)
+
 type AutoProvision = original.AutoProvision
 
 const (
@@ -124,11 +133,39 @@ const (
 	OffByPolicy   ResourceStatus = original.OffByPolicy
 )
 
+type Risk = original.Risk
+
+const (
+	RiskHigh   Risk = original.RiskHigh
+	RiskLow    Risk = original.RiskLow
+	RiskMedium Risk = original.RiskMedium
+)
+
 type SettingKind = original.SettingKind
 
 const (
 	SettingKindAlertSuppressionSetting SettingKind = original.SettingKindAlertSuppressionSetting
 	SettingKindDataExportSetting       SettingKind = original.SettingKindDataExportSetting
+)
+
+type Severity = original.Severity
+
+const (
+	SeverityHealthy       Severity = original.SeverityHealthy
+	SeverityHigh          Severity = original.SeverityHigh
+	SeverityLow           Severity = original.SeverityLow
+	SeverityMedium        Severity = original.SeverityMedium
+	SeverityNotApplicable Severity = original.SeverityNotApplicable
+	SeverityOffByPolicy   Severity = original.SeverityOffByPolicy
+	SeverityUnknown       Severity = original.SeverityUnknown
+)
+
+type Source = original.Source
+
+const (
+	SourceAws             Source = original.SourceAws
+	SourceAzure           Source = original.SourceAzure
+	SourceResourceDetails Source = original.SourceResourceDetails
 )
 
 type State = original.State
@@ -158,6 +195,7 @@ const (
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
+type AdditionalData = original.AdditionalData
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
 type AdvancedThreatProtectionSetting = original.AdvancedThreatProtectionSetting
@@ -187,8 +225,14 @@ type AutoProvisioningSettingListIterator = original.AutoProvisioningSettingListI
 type AutoProvisioningSettingListPage = original.AutoProvisioningSettingListPage
 type AutoProvisioningSettingProperties = original.AutoProvisioningSettingProperties
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
+type AwsResourceDetails = original.AwsResourceDetails
+type AzureResourceDetails = original.AzureResourceDetails
 type BaseClient = original.BaseClient
+type BasicAdditionalData = original.BasicAdditionalData
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
+type BasicResourceDetails = original.BasicResourceDetails
+type CVE = original.CVE
+type CVSS = original.CVSS
 type CefExternalSecuritySolution = original.CefExternalSecuritySolution
 type CefSolutionProperties = original.CefSolutionProperties
 type CloudError = original.CloudError
@@ -215,6 +259,7 @@ type ContactListIterator = original.ContactListIterator
 type ContactListPage = original.ContactListPage
 type ContactProperties = original.ContactProperties
 type ContactsClient = original.ContactsClient
+type ContainerRegistryVulnerabilitySubAssessmentProperties = original.ContainerRegistryVulnerabilitySubAssessmentProperties
 type DataExportSetting = original.DataExportSetting
 type DataExportSettingProperties = original.DataExportSettingProperties
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
@@ -285,13 +330,23 @@ type RegulatoryComplianceStandardListPage = original.RegulatoryComplianceStandar
 type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStandardProperties
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
+type ResourceDetails = original.ResourceDetails
+type SQLServerSubAssessmentProperties = original.SQLServerSubAssessmentProperties
 type SensitivityLabel = original.SensitivityLabel
+type ServerVulnerabilitySubAssessmentProperties = original.ServerVulnerabilitySubAssessmentProperties
 type Setting = original.Setting
 type SettingResource = original.SettingResource
 type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
 type SettingsListPage = original.SettingsListPage
+type SubAssessment = original.SubAssessment
+type SubAssessmentList = original.SubAssessmentList
+type SubAssessmentListIterator = original.SubAssessmentListIterator
+type SubAssessmentListPage = original.SubAssessmentListPage
+type SubAssessmentProperties = original.SubAssessmentProperties
+type SubAssessmentStatus = original.SubAssessmentStatus
+type SubAssessmentsClient = original.SubAssessmentsClient
 type Task = original.Task
 type TaskList = original.TaskList
 type TaskListIterator = original.TaskListIterator
@@ -308,6 +363,7 @@ type TopologyResourceProperties = original.TopologyResourceProperties
 type TopologySingleResource = original.TopologySingleResource
 type TopologySingleResourceChild = original.TopologySingleResourceChild
 type TopologySingleResourceParent = original.TopologySingleResourceParent
+type VendorReference = original.VendorReference
 type WorkspaceSetting = original.WorkspaceSetting
 type WorkspaceSettingList = original.WorkspaceSettingList
 type WorkspaceSettingListIterator = original.WorkspaceSettingListIterator
@@ -522,6 +578,18 @@ func NewSettingsListIterator(page SettingsListPage) SettingsListIterator {
 func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
 	return original.NewSettingsListPage(getNextPage)
 }
+func NewSubAssessmentListIterator(page SubAssessmentListPage) SubAssessmentListIterator {
+	return original.NewSubAssessmentListIterator(page)
+}
+func NewSubAssessmentListPage(getNextPage func(context.Context, SubAssessmentList) (SubAssessmentList, error)) SubAssessmentListPage {
+	return original.NewSubAssessmentListPage(getNextPage)
+}
+func NewSubAssessmentsClient(subscriptionID string, ascLocation string) SubAssessmentsClient {
+	return original.NewSubAssessmentsClient(subscriptionID, ascLocation)
+}
+func NewSubAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SubAssessmentsClient {
+	return original.NewSubAssessmentsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewTaskListIterator(page TaskListPage) TaskListIterator {
 	return original.NewTaskListIterator(page)
 }
@@ -570,6 +638,9 @@ func PossibleAlertNotificationsValues() []AlertNotifications {
 func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 	return original.PossibleAlertsToAdminsValues()
 }
+func PossibleAssessedResourceTypeValues() []AssessedResourceType {
+	return original.PossibleAssessedResourceTypeValues()
+}
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
 }
@@ -597,8 +668,17 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 func PossibleResourceStatusValues() []ResourceStatus {
 	return original.PossibleResourceStatusValues()
 }
+func PossibleRiskValues() []Risk {
+	return original.PossibleRiskValues()
+}
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()
+}
+func PossibleSeverityValues() []Severity {
+	return original.PossibleSeverityValues()
+}
+func PossibleSourceValues() []Source {
+	return original.PossibleSourceValues()
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()

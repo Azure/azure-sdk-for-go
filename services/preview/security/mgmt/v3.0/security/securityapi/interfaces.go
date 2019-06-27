@@ -197,6 +197,14 @@ type WorkspaceSettingsClientAPI interface {
 
 var _ WorkspaceSettingsClientAPI = (*security.WorkspaceSettingsClient)(nil)
 
+// SubAssessmentsClientAPI contains the set of methods on the SubAssessmentsClient type.
+type SubAssessmentsClientAPI interface {
+	Get(ctx context.Context, resourceID string, assessmentName string, subAssessmentName string) (result security.SubAssessment, err error)
+	List(ctx context.Context, scope string, assessmentName string, filter string, selectParameter string, expand string) (result security.SubAssessmentListPage, err error)
+}
+
+var _ SubAssessmentsClientAPI = (*security.SubAssessmentsClient)(nil)
+
 // RegulatoryComplianceStandardsClientAPI contains the set of methods on the RegulatoryComplianceStandardsClient type.
 type RegulatoryComplianceStandardsClientAPI interface {
 	Get(ctx context.Context, regulatoryComplianceStandardName string) (result security.RegulatoryComplianceStandard, err error)

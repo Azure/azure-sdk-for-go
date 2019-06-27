@@ -39,6 +39,7 @@ type RegulatoryComplianceAssessmentsClientAPI = original.RegulatoryComplianceAss
 type RegulatoryComplianceControlsClientAPI = original.RegulatoryComplianceControlsClientAPI
 type RegulatoryComplianceStandardsClientAPI = original.RegulatoryComplianceStandardsClientAPI
 type SettingsClientAPI = original.SettingsClientAPI
+type SubAssessmentsClientAPI = original.SubAssessmentsClientAPI
 type TasksClientAPI = original.TasksClientAPI
 type TopologyClientAPI = original.TopologyClientAPI
 type WorkspaceSettingsClientAPI = original.WorkspaceSettingsClientAPI

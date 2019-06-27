@@ -133,19 +133,6 @@ func PossibleAlertStateValues() []AlertState {
 	return []AlertState{AlertStateAcknowledged, AlertStateClosed, AlertStateNew}
 }
 
-// MetadataIdentifier enumerates the values for metadata identifier.
-type MetadataIdentifier string
-
-const (
-	// MetadataIdentifierAlertsMetaDataProperties ...
-	MetadataIdentifierAlertsMetaDataProperties MetadataIdentifier = "alertsMetaDataProperties"
-)
-
-// PossibleMetadataIdentifierValues returns an array of possible values for the MetadataIdentifier const type.
-func PossibleMetadataIdentifierValues() []MetadataIdentifier {
-	return []MetadataIdentifier{MetadataIdentifierAlertsMetaDataProperties}
-}
-
 // MonitorCondition enumerates the values for monitor condition.
 type MonitorCondition string
 
@@ -1034,99 +1021,15 @@ func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList
 // AlertsMetaData alert meta data information.
 type AlertsMetaData struct {
 	autorest.Response `json:"-"`
-	Properties        BasicAlertsMetaDataProperties `json:"properties,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for AlertsMetaData struct.
-func (amd *AlertsMetaData) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				properties, err := unmarshalBasicAlertsMetaDataProperties(*v)
-				if err != nil {
-					return err
-				}
-				amd.Properties = properties
-			}
-		}
-	}
-
-	return nil
-}
-
-// BasicAlertsMetaDataProperties alert meta data property bag
-type BasicAlertsMetaDataProperties interface {
-	AsAlertsMetaDataProperties() (*AlertsMetaDataProperties, bool)
+	Properties        *AlertsMetaDataProperties `json:"properties,omitempty"`
 }
 
 // AlertsMetaDataProperties alert meta data property bag
 type AlertsMetaDataProperties struct {
+	// MetadataIdentifier - Identification of the information to be retrieved by API call
+	MetadataIdentifier *string `json:"metadataIdentifier,omitempty"`
 	// Data - Array of operations
 	Data *[]interface{} `json:"data,omitempty"`
-	// MetadataIdentifier - Possible values include: 'MetadataIdentifierAlertsMetaDataProperties'
-	MetadataIdentifier MetadataIdentifier `json:"metadataIdentifier,omitempty"`
-}
-
-func unmarshalBasicAlertsMetaDataProperties(body []byte) (BasicAlertsMetaDataProperties, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["metadataIdentifier"] {
-	default:
-		var amdp AlertsMetaDataProperties
-		err := json.Unmarshal(body, &amdp)
-		return amdp, err
-	}
-}
-func unmarshalBasicAlertsMetaDataPropertiesArray(body []byte) ([]BasicAlertsMetaDataProperties, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	amdpArray := make([]BasicAlertsMetaDataProperties, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		amdp, err := unmarshalBasicAlertsMetaDataProperties(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		amdpArray[index] = amdp
-	}
-	return amdpArray, nil
-}
-
-// MarshalJSON is the custom marshaler for AlertsMetaDataProperties.
-func (amdp AlertsMetaDataProperties) MarshalJSON() ([]byte, error) {
-	amdp.MetadataIdentifier = MetadataIdentifierAlertsMetaDataProperties
-	objectMap := make(map[string]interface{})
-	if amdp.Data != nil {
-		objectMap["data"] = amdp.Data
-	}
-	if amdp.MetadataIdentifier != "" {
-		objectMap["metadataIdentifier"] = amdp.MetadataIdentifier
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for AlertsMetaDataProperties.
-func (amdp AlertsMetaDataProperties) AsAlertsMetaDataProperties() (*AlertsMetaDataProperties, bool) {
-	return &amdp, true
-}
-
-// AsBasicAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for AlertsMetaDataProperties.
-func (amdp AlertsMetaDataProperties) AsBasicAlertsMetaDataProperties() (BasicAlertsMetaDataProperties, bool) {
-	return &amdp, true
 }
 
 // AlertsSummary summary of alerts based on the input filters and 'groupby' parameters.

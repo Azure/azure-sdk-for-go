@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2018-05-05-preview/alertsmanagement"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/alertsmanagement/mgmt/2019-03-01/alertsmanagement"
 
 // AlertModificationEvent enumerates the values for alert modification event.
 type AlertModificationEvent string
@@ -45,6 +45,21 @@ const (
 // PossibleAlertModificationEventValues returns an array of possible values for the AlertModificationEvent const type.
 func PossibleAlertModificationEventValues() []AlertModificationEvent {
 	return []AlertModificationEvent{AlertCreated, MonitorConditionChange, StateChange}
+}
+
+// AlertRuleState enumerates the values for alert rule state.
+type AlertRuleState string
+
+const (
+	// Disabled ...
+	Disabled AlertRuleState = "Disabled"
+	// Enabled ...
+	Enabled AlertRuleState = "Enabled"
+)
+
+// PossibleAlertRuleStateValues returns an array of possible values for the AlertRuleState const type.
+func PossibleAlertRuleStateValues() []AlertRuleState {
+	return []AlertRuleState{Disabled, Enabled}
 }
 
 // AlertsSortByFields enumerates the values for alerts sort by fields.
@@ -78,6 +93,29 @@ func PossibleAlertsSortByFieldsValues() []AlertsSortByFields {
 	return []AlertsSortByFields{AlertsSortByFieldsAlertState, AlertsSortByFieldsLastModifiedDateTime, AlertsSortByFieldsMonitorCondition, AlertsSortByFieldsName, AlertsSortByFieldsSeverity, AlertsSortByFieldsStartDateTime, AlertsSortByFieldsTargetResource, AlertsSortByFieldsTargetResourceGroup, AlertsSortByFieldsTargetResourceName, AlertsSortByFieldsTargetResourceType}
 }
 
+// AlertsSummaryGroupByFields enumerates the values for alerts summary group by fields.
+type AlertsSummaryGroupByFields string
+
+const (
+	// AlertsSummaryGroupByFieldsAlertRule ...
+	AlertsSummaryGroupByFieldsAlertRule AlertsSummaryGroupByFields = "alertRule"
+	// AlertsSummaryGroupByFieldsAlertState ...
+	AlertsSummaryGroupByFieldsAlertState AlertsSummaryGroupByFields = "alertState"
+	// AlertsSummaryGroupByFieldsMonitorCondition ...
+	AlertsSummaryGroupByFieldsMonitorCondition AlertsSummaryGroupByFields = "monitorCondition"
+	// AlertsSummaryGroupByFieldsMonitorService ...
+	AlertsSummaryGroupByFieldsMonitorService AlertsSummaryGroupByFields = "monitorService"
+	// AlertsSummaryGroupByFieldsSeverity ...
+	AlertsSummaryGroupByFieldsSeverity AlertsSummaryGroupByFields = "severity"
+	// AlertsSummaryGroupByFieldsSignalType ...
+	AlertsSummaryGroupByFieldsSignalType AlertsSummaryGroupByFields = "signalType"
+)
+
+// PossibleAlertsSummaryGroupByFieldsValues returns an array of possible values for the AlertsSummaryGroupByFields const type.
+func PossibleAlertsSummaryGroupByFieldsValues() []AlertsSummaryGroupByFields {
+	return []AlertsSummaryGroupByFields{AlertsSummaryGroupByFieldsAlertRule, AlertsSummaryGroupByFieldsAlertState, AlertsSummaryGroupByFieldsMonitorCondition, AlertsSummaryGroupByFieldsMonitorService, AlertsSummaryGroupByFieldsSeverity, AlertsSummaryGroupByFieldsSignalType}
+}
+
 // AlertState enumerates the values for alert state.
 type AlertState string
 
@@ -93,21 +131,6 @@ const (
 // PossibleAlertStateValues returns an array of possible values for the AlertState const type.
 func PossibleAlertStateValues() []AlertState {
 	return []AlertState{AlertStateAcknowledged, AlertStateClosed, AlertStateNew}
-}
-
-// APIVersion enumerates the values for api version.
-type APIVersion string
-
-const (
-	// TwoZeroOneEightHyphenMinusZeroFiveHyphenMinusZeroFiveHyphenMinuspreview ...
-	TwoZeroOneEightHyphenMinusZeroFiveHyphenMinusZeroFiveHyphenMinuspreview APIVersion = "2018-05-05-preview"
-	// TwoZeroOneSevenHyphenMinusOneOneHyphenMinusOneFiveHyphenMinusprivatepreview ...
-	TwoZeroOneSevenHyphenMinusOneOneHyphenMinusOneFiveHyphenMinusprivatepreview APIVersion = "2017-11-15-privatepreview"
-)
-
-// PossibleAPIVersionValues returns an array of possible values for the APIVersion const type.
-func PossibleAPIVersionValues() []APIVersion {
-	return []APIVersion{TwoZeroOneEightHyphenMinusZeroFiveHyphenMinusZeroFiveHyphenMinuspreview, TwoZeroOneSevenHyphenMinusOneOneHyphenMinusOneFiveHyphenMinusprivatepreview}
 }
 
 // MonitorCondition enumerates the values for monitor condition.
@@ -141,27 +164,29 @@ const (
 	ActivityLogSecurity MonitorService = "ActivityLog Security"
 	// ApplicationInsights ...
 	ApplicationInsights MonitorService = "Application Insights"
-	// InfrastructureInsights ...
-	InfrastructureInsights MonitorService = "Infrastructure Insights"
 	// LogAnalytics ...
 	LogAnalytics MonitorService = "Log Analytics"
 	// Nagios ...
 	Nagios MonitorService = "Nagios"
 	// Platform ...
 	Platform MonitorService = "Platform"
+	// ResourceHealth ...
+	ResourceHealth MonitorService = "Resource Health"
 	// SCOM ...
 	SCOM MonitorService = "SCOM"
 	// ServiceHealth ...
 	ServiceHealth MonitorService = "ServiceHealth"
 	// SmartDetector ...
 	SmartDetector MonitorService = "SmartDetector"
+	// VMInsights ...
+	VMInsights MonitorService = "VM Insights"
 	// Zabbix ...
 	Zabbix MonitorService = "Zabbix"
 )
 
 // PossibleMonitorServiceValues returns an array of possible values for the MonitorService const type.
 func PossibleMonitorServiceValues() []MonitorService {
-	return []MonitorService{ActivityLogAdministrative, ActivityLogAutoscale, ActivityLogPolicy, ActivityLogRecommendation, ActivityLogSecurity, ApplicationInsights, InfrastructureInsights, LogAnalytics, Nagios, Platform, SCOM, ServiceHealth, SmartDetector, Zabbix}
+	return []MonitorService{ActivityLogAdministrative, ActivityLogAutoscale, ActivityLogPolicy, ActivityLogRecommendation, ActivityLogSecurity, ApplicationInsights, LogAnalytics, Nagios, Platform, ResourceHealth, SCOM, ServiceHealth, SmartDetector, VMInsights, Zabbix}
 }
 
 // Severity enumerates the values for severity.
@@ -278,76 +303,26 @@ func PossibleTimeRangeValues() []TimeRange {
 	return []TimeRange{Oned, Oneh, Sevend, ThreeZerod}
 }
 
+// ActionGroupsInformation the Action Groups information, used by the alert rule.
+type ActionGroupsInformation struct {
+	// CustomEmailSubject - An optional custom email subject to use in email notifications.
+	CustomEmailSubject *string `json:"customEmailSubject,omitempty"`
+	// CustomWebhookPayload - An optional custom web-hook payload to use in web-hook notifications.
+	CustomWebhookPayload *string `json:"customWebhookPayload,omitempty"`
+	// GroupIds - The Action Group resource IDs.
+	GroupIds *[]string `json:"groupIds,omitempty"`
+}
+
 // Alert an alert created in alert management service.
 type Alert struct {
 	autorest.Response `json:"-"`
-	*AlertProperties  `json:"properties,omitempty"`
+	Properties        *AlertProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Alert.
-func (a Alert) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if a.AlertProperties != nil {
-		objectMap["properties"] = a.AlertProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for Alert struct.
-func (a *Alert) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var alertProperties AlertProperties
-				err = json.Unmarshal(*v, &alertProperties)
-				if err != nil {
-					return err
-				}
-				a.AlertProperties = &alertProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				a.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				a.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				a.Name = &name
-			}
-		}
-	}
-
-	return nil
 }
 
 // AlertModification alert Modification details
@@ -388,40 +363,250 @@ type AlertModificationProperties struct {
 	Modifications *[]AlertModificationItem `json:"modifications,omitempty"`
 }
 
-// AlertProperties an alert created in alert management service.
+// AlertProperties alert property bag
 type AlertProperties struct {
-	// Severity - READ-ONLY; Severity of alert Sev1 being highest and Sev3 being lowest. Possible values include: 'Sev0', 'Sev1', 'Sev2', 'Sev3', 'Sev4'
+	Essentials   *Essentials `json:"essentials,omitempty"`
+	Context      interface{} `json:"context,omitempty"`
+	EgressConfig interface{} `json:"egressConfig,omitempty"`
+}
+
+// AlertRule the alert rule information
+type AlertRule struct {
+	autorest.Response `json:"-"`
+	// AlertRuleProperties - The properties of the alert rule.
+	*AlertRuleProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertRule.
+func (ar AlertRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ar.AlertRuleProperties != nil {
+		objectMap["properties"] = ar.AlertRuleProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRule struct.
+func (ar *AlertRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var alertRuleProperties AlertRuleProperties
+				err = json.Unmarshal(*v, &alertRuleProperties)
+				if err != nil {
+					return err
+				}
+				ar.AlertRuleProperties = &alertRuleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ar.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ar.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ar.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// AlertRuleProperties the alert rule properties.
+type AlertRuleProperties struct {
+	// Description - The alert rule description.
+	Description *string `json:"description,omitempty"`
+	// State - The alert rule state. Possible values include: 'Enabled', 'Disabled'
+	State AlertRuleState `json:"state,omitempty"`
+	// Severity - The alert rule severity. Possible values include: 'Sev0', 'Sev1', 'Sev2', 'Sev3', 'Sev4'
 	Severity Severity `json:"severity,omitempty"`
-	// SignalType - READ-ONLY; Log based alert or metric based alert. Possible values include: 'Metric', 'Log', 'Unknown'
-	SignalType SignalType `json:"signalType,omitempty"`
-	// AlertState - READ-ONLY; Alert object state. Possible values include: 'AlertStateNew', 'AlertStateAcknowledged', 'AlertStateClosed'
-	AlertState AlertState `json:"alertState,omitempty"`
-	// MonitorCondition - READ-ONLY; Condition of the rule at the monitor service. Possible values include: 'Fired', 'Resolved'
-	MonitorCondition MonitorCondition `json:"monitorCondition,omitempty"`
-	// TargetResource - Target ARM resource, on which alert got created.
-	TargetResource *string `json:"targetResource,omitempty"`
-	// TargetResourceName - Target ARM resource name, on which alert got created.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
-	// TargetResourceGroup - Resource group of target ARM resource.
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
-	// TargetResourceType - Resource type of target ARM resource
-	TargetResourceType *string `json:"targetResourceType,omitempty"`
-	// MonitorService - READ-ONLY; Monitor service which is the source of the alert object. Possible values include: 'Platform', 'ApplicationInsights', 'LogAnalytics', 'InfrastructureInsights', 'ActivityLogAdministrative', 'ActivityLogSecurity', 'ActivityLogRecommendation', 'ActivityLogPolicy', 'ActivityLogAutoscale', 'ServiceHealth', 'SmartDetector', 'Zabbix', 'SCOM', 'Nagios'
-	MonitorService MonitorService `json:"monitorService,omitempty"`
-	// SourceCreatedID - READ-ONLY; Unique Id created by monitor service
-	SourceCreatedID *string `json:"sourceCreatedId,omitempty"`
-	// SmartGroupID - READ-ONLY; Unique Id of the smart group
-	SmartGroupID *string `json:"smartGroupId,omitempty"`
-	// SmartGroupingReason - READ-ONLY; Reason for addition to a smart group
-	SmartGroupingReason *string `json:"smartGroupingReason,omitempty"`
-	// StartDateTime - READ-ONLY; Creation time(ISO-8601 format).
-	StartDateTime *date.Time `json:"startDateTime,omitempty"`
-	// LastModifiedDateTime - READ-ONLY; Last modification time(ISO-8601 format).
-	LastModifiedDateTime *date.Time `json:"lastModifiedDateTime,omitempty"`
-	// LastModifiedUserName - READ-ONLY; User who last modified the alert.
-	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty"`
-	// Payload - READ-ONLY; More details which are contextual to the monitor service.
-	Payload interface{} `json:"payload,omitempty"`
+	// Frequency - The alert rule frequency in ISO8601 format. The time granularity must be in minutes and minimum value is 5 minutes.
+	Frequency *string `json:"frequency,omitempty"`
+	// Detector - The alert rule's detector.
+	Detector *Detector `json:"detector,omitempty"`
+	// Scope - The alert rule resources scope.
+	Scope *[]string `json:"scope,omitempty"`
+	// ActionGroups - The alert rule actions.
+	ActionGroups *ActionGroupsInformation `json:"actionGroups,omitempty"`
+	// Throttling - The alert rule throttling information.
+	Throttling *ThrottlingInformation `json:"throttling,omitempty"`
+}
+
+// AlertRulesList list of Smart Detector alert rules.
+type AlertRulesList struct {
+	autorest.Response `json:"-"`
+	// Value - List of Smart Detector alert rules.
+	Value *[]AlertRule `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AlertRulesListIterator provides access to a complete listing of AlertRule values.
+type AlertRulesListIterator struct {
+	i    int
+	page AlertRulesListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AlertRulesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AlertRulesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AlertRulesListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AlertRulesListIterator) Response() AlertRulesList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AlertRulesListIterator) Value() AlertRule {
+	if !iter.page.NotDone() {
+		return AlertRule{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AlertRulesListIterator type.
+func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
+	return AlertRulesListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (arl AlertRulesList) IsEmpty() bool {
+	return arl.Value == nil || len(*arl.Value) == 0
+}
+
+// alertRulesListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (arl AlertRulesList) alertRulesListPreparer(ctx context.Context) (*http.Request, error) {
+	if arl.NextLink == nil || len(to.String(arl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(arl.NextLink)))
+}
+
+// AlertRulesListPage contains a page of AlertRule values.
+type AlertRulesListPage struct {
+	fn  func(context.Context, AlertRulesList) (AlertRulesList, error)
+	arl AlertRulesList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AlertRulesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRulesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.arl)
+	if err != nil {
+		return err
+	}
+	page.arl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AlertRulesListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AlertRulesListPage) NotDone() bool {
+	return !page.arl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AlertRulesListPage) Response() AlertRulesList {
+	return page.arl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AlertRulesListPage) Values() []AlertRule {
+	if page.arl.IsEmpty() {
+		return nil
+	}
+	return *page.arl.Value
+}
+
+// Creates a new instance of the AlertRulesListPage type.
+func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return AlertRulesListPage{fn: getNextPage}
 }
 
 // AlertsList list the alerts.
@@ -570,10 +755,10 @@ func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList
 	return AlertsListPage{fn: getNextPage}
 }
 
-// AlertsSummary summary of the alerts.
+// AlertsSummary summary of alerts based on the input filters and 'groupby' parameters.
 type AlertsSummary struct {
-	autorest.Response        `json:"-"`
-	*AlertsSummaryProperties `json:"properties,omitempty"`
+	autorest.Response `json:"-"`
+	Properties        *AlertsSummaryGroup `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
@@ -582,317 +767,92 @@ type AlertsSummary struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for AlertsSummary.
-func (as AlertsSummary) MarshalJSON() ([]byte, error) {
+// AlertsSummaryGroup group the result set.
+type AlertsSummaryGroup struct {
+	// Total - Total count of the result set.
+	Total *int32 `json:"total,omitempty"`
+	// SmartGroupsCount - Total count of the smart groups.
+	SmartGroupsCount *int32 `json:"smartGroupsCount,omitempty"`
+	// Groupedby - Name of the field aggregated
+	Groupedby *string `json:"groupedby,omitempty"`
+	// Values - List of the items
+	Values *[]AlertsSummaryGroupItem `json:"values,omitempty"`
+}
+
+// AlertsSummaryGroupItem alerts summary group item
+type AlertsSummaryGroupItem struct {
+	// Name - Value of the aggregated field
+	Name *string `json:"name,omitempty"`
+	// Count - Count of the aggregated field
+	Count *int32 `json:"count,omitempty"`
+	// Groupedby - Name of the field aggregated
+	Groupedby *string `json:"groupedby,omitempty"`
+	// Values - List of the items
+	Values *[]AlertsSummaryGroupItem `json:"values,omitempty"`
+}
+
+// AzureResource an Azure resource object
+type AzureResource struct {
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty"`
+}
+
+// Detector the detector information. By default this is not populated, unless it's specified in
+// expandDetector
+type Detector struct {
+	// ID - The detector id.
+	ID *string `json:"id,omitempty"`
+	// Parameters - The detector's parameters.'
+	Parameters map[string]interface{} `json:"parameters"`
+	// Name - The Smart Detector name. By default this is not populated, unless it's specified in expandDetector
+	Name *string `json:"name,omitempty"`
+	// Description - The Smart Detector description. By default this is not populated, unless it's specified in expandDetector
+	Description *string `json:"description,omitempty"`
+	// SupportedResourceTypes - The Smart Detector supported resource types. By default this is not populated, unless it's specified in expandDetector
+	SupportedResourceTypes *[]string `json:"supportedResourceTypes,omitempty"`
+	// ImagePaths - The Smart Detector image path. By default this is not populated, unless it's specified in expandDetector
+	ImagePaths *[]string `json:"imagePaths,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Detector.
+func (d Detector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if as.AlertsSummaryProperties != nil {
-		objectMap["properties"] = as.AlertsSummaryProperties
+	if d.ID != nil {
+		objectMap["id"] = d.ID
+	}
+	if d.Parameters != nil {
+		objectMap["parameters"] = d.Parameters
+	}
+	if d.Name != nil {
+		objectMap["name"] = d.Name
+	}
+	if d.Description != nil {
+		objectMap["description"] = d.Description
+	}
+	if d.SupportedResourceTypes != nil {
+		objectMap["supportedResourceTypes"] = d.SupportedResourceTypes
+	}
+	if d.ImagePaths != nil {
+		objectMap["imagePaths"] = d.ImagePaths
 	}
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AlertsSummary struct.
-func (as *AlertsSummary) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var alertsSummaryProperties AlertsSummaryProperties
-				err = json.Unmarshal(*v, &alertsSummaryProperties)
-				if err != nil {
-					return err
-				}
-				as.AlertsSummaryProperties = &alertsSummaryProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				as.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				as.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				as.Name = &name
-			}
-		}
-	}
-
-	return nil
-}
-
-// AlertsSummaryByMonitorCondition summary of the alerts by monitor condition
-type AlertsSummaryByMonitorCondition struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryByMonitorService summary of the alerts by monitor service
-type AlertsSummaryByMonitorService struct {
-	// Platform - Count of alerts of "Platform"
-	Platform *int32 `json:"platform,omitempty"`
-	// ApplicationInsights - Count of alerts of "Application Insights"
-	ApplicationInsights *int32 `json:"application Insights,omitempty"`
-	// LogAnalytics - Count of alerts of "Log Analytics"
-	LogAnalytics *int32 `json:"log Analytics,omitempty"`
-	// Zabbix - Count of alerts of "Zabbix"
-	Zabbix *int32 `json:"zabbix,omitempty"`
-	// Scom - Count of alerts of "SCOM"
-	Scom *int32 `json:"scom,omitempty"`
-	// Nagios - Count of alerts of "Nagios"
-	Nagios *int32 `json:"nagios,omitempty"`
-	// InfrastructureInsights - Count of alerts of "Infrastructure Insights"
-	InfrastructureInsights *int32 `json:"infrastructure Insights,omitempty"`
-	// ActivityLogAdministrative - Count of alerts of "ActivityLog Administrative"
-	ActivityLogAdministrative *int32 `json:"activityLog Administrative,omitempty"`
-	// ActivityLogSecurity - Count of alerts of "ActivityLog Security"
-	ActivityLogSecurity *int32 `json:"activityLog Security,omitempty"`
-	// ActivityLogRecommendation - Count of alerts of "ActivityLog Recommendation"
-	ActivityLogRecommendation *int32 `json:"activityLog Recommendation,omitempty"`
-	// ActivityLogPolicy - Count of alerts of "ActivityLog Policy"
-	ActivityLogPolicy *int32 `json:"activityLog Policy,omitempty"`
-	// ActivityLogAutoscale - Count of alerts of "ActivityLog Autoscale"
-	ActivityLogAutoscale *int32 `json:"activityLog Autoscale,omitempty"`
-	// ServiceHealth - Count of alerts of "ServiceHealth"
-	ServiceHealth *int32 `json:"serviceHealth,omitempty"`
-	// SmartDetector - Count of alerts of "Smart Detector"
-	SmartDetector *int32 `json:"smartDetector,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorCondition summary of the alerts by severity and monitor condition
-type AlertsSummaryBySeverityAndMonitorCondition struct {
-	// Sev0 - Summary of alerts by monitor condition with severity 'Sev0'
-	Sev0 *AlertsSummaryBySeverityAndMonitorConditionSev0 `json:"sev0,omitempty"`
-	// Sev1 - Summary of alerts by monitor condition with severity 'Sev1'
-	Sev1 *AlertsSummaryBySeverityAndMonitorConditionSev1 `json:"sev1,omitempty"`
-	// Sev2 - Summary of alerts by monitor condition with severity 'Sev2'
-	Sev2 *AlertsSummaryBySeverityAndMonitorConditionSev2 `json:"sev2,omitempty"`
-	// Sev3 - Summary of alerts by monitor condition with severity 'Sev3'
-	Sev3 *AlertsSummaryBySeverityAndMonitorConditionSev3 `json:"sev3,omitempty"`
-	// Sev4 - Summary of alerts by monitor condition with severity 'Sev4'
-	Sev4 *AlertsSummaryBySeverityAndMonitorConditionSev4 `json:"sev4,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev0 summary of alerts by monitor condition with severity
-// 'Sev0'
-type AlertsSummaryBySeverityAndMonitorConditionSev0 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev1 summary of alerts by monitor condition with severity
-// 'Sev1'
-type AlertsSummaryBySeverityAndMonitorConditionSev1 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev2 summary of alerts by monitor condition with severity
-// 'Sev2'
-type AlertsSummaryBySeverityAndMonitorConditionSev2 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev3 summary of alerts by monitor condition with severity
-// 'Sev3'
-type AlertsSummaryBySeverityAndMonitorConditionSev3 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryBySeverityAndMonitorConditionSev4 summary of alerts by monitor condition with severity
-// 'Sev4'
-type AlertsSummaryBySeverityAndMonitorConditionSev4 struct {
-	// Fired - Count of alerts with monitorCondition 'Fired'
-	Fired *int32 `json:"fired,omitempty"`
-	// Resolved - Count of alerts with monitorCondition 'Resolved'
-	Resolved *int32 `json:"resolved,omitempty"`
-}
-
-// AlertsSummaryByState summary of alerts by state
-type AlertsSummaryByState struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryProperties summary of the alerts
-type AlertsSummaryProperties struct {
-	// Total - Total number of alerts.
-	Total *int32 `json:"total,omitempty"`
-	// SmartGroupsCount - Total number of smart groups.
-	SmartGroupsCount *int32 `json:"smartGroupsCount,omitempty"`
-	// SummaryByState - Summary of alerts by state
-	SummaryByState *AlertsSummaryPropertiesSummaryByState `json:"summaryByState,omitempty"`
-	// SummaryBySeverity - Summary of alerts by severity
-	SummaryBySeverity *AlertsSummaryPropertiesSummaryBySeverity `json:"summaryBySeverity,omitempty"`
-	// SummaryBySeverityAndMonitorCondition - Summary of alerts by severity and monitor condition
-	SummaryBySeverityAndMonitorCondition *AlertsSummaryPropertiesSummaryBySeverityAndMonitorCondition `json:"summaryBySeverityAndMonitorCondition,omitempty"`
-	// SummaryByMonitorService - Summary of alerts by severity
-	SummaryByMonitorService *AlertsSummaryPropertiesSummaryByMonitorService `json:"summaryByMonitorService,omitempty"`
-	// NextLink - URL to fetch the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryByMonitorService summary of alerts by severity
-type AlertsSummaryPropertiesSummaryByMonitorService struct {
-	// Platform - Count of alerts of "Platform"
-	Platform *int32 `json:"platform,omitempty"`
-	// ApplicationInsights - Count of alerts of "Application Insights"
-	ApplicationInsights *int32 `json:"application Insights,omitempty"`
-	// LogAnalytics - Count of alerts of "Log Analytics"
-	LogAnalytics *int32 `json:"log Analytics,omitempty"`
-	// Zabbix - Count of alerts of "Zabbix"
-	Zabbix *int32 `json:"zabbix,omitempty"`
-	// Scom - Count of alerts of "SCOM"
-	Scom *int32 `json:"scom,omitempty"`
-	// Nagios - Count of alerts of "Nagios"
-	Nagios *int32 `json:"nagios,omitempty"`
-	// InfrastructureInsights - Count of alerts of "Infrastructure Insights"
-	InfrastructureInsights *int32 `json:"infrastructure Insights,omitempty"`
-	// ActivityLogAdministrative - Count of alerts of "ActivityLog Administrative"
-	ActivityLogAdministrative *int32 `json:"activityLog Administrative,omitempty"`
-	// ActivityLogSecurity - Count of alerts of "ActivityLog Security"
-	ActivityLogSecurity *int32 `json:"activityLog Security,omitempty"`
-	// ActivityLogRecommendation - Count of alerts of "ActivityLog Recommendation"
-	ActivityLogRecommendation *int32 `json:"activityLog Recommendation,omitempty"`
-	// ActivityLogPolicy - Count of alerts of "ActivityLog Policy"
-	ActivityLogPolicy *int32 `json:"activityLog Policy,omitempty"`
-	// ActivityLogAutoscale - Count of alerts of "ActivityLog Autoscale"
-	ActivityLogAutoscale *int32 `json:"activityLog Autoscale,omitempty"`
-	// ServiceHealth - Count of alerts of "ServiceHealth"
-	ServiceHealth *int32 `json:"serviceHealth,omitempty"`
-	// SmartDetector - Count of alerts of "Smart Detector"
-	SmartDetector *int32 `json:"smartDetector,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeverity summary of alerts by severity
-type AlertsSummaryPropertiesSummaryBySeverity struct {
-	// Sev0 - Summary of alerts by severity 'Sev0'
-	Sev0 *AlertsSummaryPropertiesSummaryBySeveritySev0 `json:"sev0,omitempty"`
-	// Sev1 - Summary of alerts by severity 'Sev1'
-	Sev1 *AlertsSummaryPropertiesSummaryBySeveritySev1 `json:"sev1,omitempty"`
-	// Sev2 - Summary of alerts by severity 'Sev2'
-	Sev2 *AlertsSummaryPropertiesSummaryBySeveritySev2 `json:"sev2,omitempty"`
-	// Sev3 - Summary of alerts by severity 'Sev3'
-	Sev3 *AlertsSummaryPropertiesSummaryBySeveritySev3 `json:"sev3,omitempty"`
-	// Sev4 - Summary of alerts by severity 'Sev4'
-	Sev4 *AlertsSummaryPropertiesSummaryBySeveritySev4 `json:"sev4,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeverityAndMonitorCondition summary of alerts by severity and monitor
-// condition
-type AlertsSummaryPropertiesSummaryBySeverityAndMonitorCondition struct {
-	// Sev0 - Summary of alerts by monitor condition with severity 'Sev0'
-	Sev0 *AlertsSummaryBySeverityAndMonitorConditionSev0 `json:"sev0,omitempty"`
-	// Sev1 - Summary of alerts by monitor condition with severity 'Sev1'
-	Sev1 *AlertsSummaryBySeverityAndMonitorConditionSev1 `json:"sev1,omitempty"`
-	// Sev2 - Summary of alerts by monitor condition with severity 'Sev2'
-	Sev2 *AlertsSummaryBySeverityAndMonitorConditionSev2 `json:"sev2,omitempty"`
-	// Sev3 - Summary of alerts by monitor condition with severity 'Sev3'
-	Sev3 *AlertsSummaryBySeverityAndMonitorConditionSev3 `json:"sev3,omitempty"`
-	// Sev4 - Summary of alerts by monitor condition with severity 'Sev4'
-	Sev4 *AlertsSummaryBySeverityAndMonitorConditionSev4 `json:"sev4,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev0 summary of alerts by severity 'Sev0'
-type AlertsSummaryPropertiesSummaryBySeveritySev0 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev1 summary of alerts by severity 'Sev1'
-type AlertsSummaryPropertiesSummaryBySeveritySev1 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev2 summary of alerts by severity 'Sev2'
-type AlertsSummaryPropertiesSummaryBySeveritySev2 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev3 summary of alerts by severity 'Sev3'
-type AlertsSummaryPropertiesSummaryBySeveritySev3 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryBySeveritySev4 summary of alerts by severity 'Sev4'
-type AlertsSummaryPropertiesSummaryBySeveritySev4 struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
-}
-
-// AlertsSummaryPropertiesSummaryByState summary of alerts by state
-type AlertsSummaryPropertiesSummaryByState struct {
-	// New - Count of alerts with state 'New'
-	New *int32 `json:"new,omitempty"`
-	// Acknowledged - Count of alerts with state 'Acknowledged'
-	Acknowledged *int32 `json:"acknowledged,omitempty"`
-	// Closed - Count of alerts with state 'Closed'
-	Closed *int32 `json:"closed,omitempty"`
 }
 
 // ErrorResponse an error response from the service.
 type ErrorResponse struct {
 	Error *ErrorResponseBody `json:"error,omitempty"`
+}
+
+// ErrorResponse1 describe the format of an Error response.
+type ErrorResponse1 struct {
+	// Code - Error code
+	Code *string `json:"code,omitempty"`
+	// Message - Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
 }
 
 // ErrorResponseBody details of error response.
@@ -905,6 +865,44 @@ type ErrorResponseBody struct {
 	Target *string `json:"target,omitempty"`
 	// Details - A list of additional details about the error.
 	Details *[]ErrorResponseBody `json:"details,omitempty"`
+}
+
+// Essentials this object contains consistent fields across different monitor services.
+type Essentials struct {
+	// Severity - READ-ONLY; Severity of alert Sev0 being highest and Sev4 being lowest. Possible values include: 'Sev0', 'Sev1', 'Sev2', 'Sev3', 'Sev4'
+	Severity Severity `json:"severity,omitempty"`
+	// SignalType - READ-ONLY; The type of signal the alert is based on, which could be metrics, logs or activity logs. Possible values include: 'Metric', 'Log', 'Unknown'
+	SignalType SignalType `json:"signalType,omitempty"`
+	// AlertState - READ-ONLY; Alert object state, which can be modified by the user. Possible values include: 'AlertStateNew', 'AlertStateAcknowledged', 'AlertStateClosed'
+	AlertState AlertState `json:"alertState,omitempty"`
+	// MonitorCondition - READ-ONLY; Can be 'Fired' or 'Resolved', which represents whether the underlying conditions have crossed the defined alert rule thresholds. Possible values include: 'Fired', 'Resolved'
+	MonitorCondition MonitorCondition `json:"monitorCondition,omitempty"`
+	// TargetResource - Target ARM resource, on which alert got created.
+	TargetResource *string `json:"targetResource,omitempty"`
+	// TargetResourceName - Name of the target ARM resource name, on which alert got created.
+	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	// TargetResourceGroup - Resource group of target ARM resource, on which alert got created.
+	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
+	// TargetResourceType - Resource type of target ARM resource, on which alert got created.
+	TargetResourceType *string `json:"targetResourceType,omitempty"`
+	// MonitorService - READ-ONLY; Monitor service on which the rule(monitor) is set. Possible values include: 'ApplicationInsights', 'ActivityLogAdministrative', 'ActivityLogSecurity', 'ActivityLogRecommendation', 'ActivityLogPolicy', 'ActivityLogAutoscale', 'LogAnalytics', 'Nagios', 'Platform', 'SCOM', 'ServiceHealth', 'SmartDetector', 'VMInsights', 'Zabbix', 'ResourceHealth'
+	MonitorService MonitorService `json:"monitorService,omitempty"`
+	// AlertRule - READ-ONLY; Rule(monitor) which fired alert instance. Depending on the monitor service,  this would be ARM id or name of the rule.
+	AlertRule *string `json:"alertRule,omitempty"`
+	// SourceCreatedID - READ-ONLY; Unique Id created by monitor service for each alert instance. This could be used to track the issue at the monitor service, in case of Nagios, Zabbix, SCOM etc.
+	SourceCreatedID *string `json:"sourceCreatedId,omitempty"`
+	// SmartGroupID - READ-ONLY; Unique Id of the smart group
+	SmartGroupID *string `json:"smartGroupId,omitempty"`
+	// SmartGroupingReason - READ-ONLY; Verbose reason describing the reason why this alert instance is added to a smart group
+	SmartGroupingReason *string `json:"smartGroupingReason,omitempty"`
+	// StartDateTime - READ-ONLY; Creation time(ISO-8601 format) of alert instance.
+	StartDateTime *date.Time `json:"startDateTime,omitempty"`
+	// LastModifiedDateTime - READ-ONLY; Last modification time(ISO-8601 format) of alert instance.
+	LastModifiedDateTime *date.Time `json:"lastModifiedDateTime,omitempty"`
+	// MonitorConditionResolvedDateTime - READ-ONLY; Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert instance because the rule condition is no longer met.
+	MonitorConditionResolvedDateTime *date.Time `json:"monitorConditionResolvedDateTime,omitempty"`
+	// LastModifiedUserName - READ-ONLY; User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name of the user.
+	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty"`
 }
 
 // Operation operation provided by provider
@@ -1073,8 +1071,8 @@ func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (Op
 	return OperationsListPage{fn: getNextPage}
 }
 
-// Resource an azure resource object
-type Resource struct {
+// ProxyResource an azure resource object
+type ProxyResource struct {
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
@@ -1242,4 +1240,10 @@ type SmartGroupsList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - List of alerts
 	Value *[]SmartGroup `json:"value,omitempty"`
+}
+
+// ThrottlingInformation optional throttling information for the alert rule.
+type ThrottlingInformation struct {
+	// Duration - The required duration (in ISO8601 format) to wait before notifying on the alert rule again. The time granularity must be in minutes and minimum value is 0 minutes
+	Duration *string `json:"duration,omitempty"`
 }

@@ -57,7 +57,7 @@ const (
 	AssessedResourceTypeAdditionalData                              AssessedResourceType = original.AssessedResourceTypeAdditionalData
 	AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment AssessedResourceType = original.AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment
 	AssessedResourceTypeServerVulnerabilityAssessment               AssessedResourceType = original.AssessedResourceTypeServerVulnerabilityAssessment
-	AssessedResourceTypeSQLServerSubAssessment                      AssessedResourceType = original.AssessedResourceTypeSQLServerSubAssessment
+	AssessedResourceTypeSQLServerVulnerabilitySubAssessment         AssessedResourceType = original.AssessedResourceTypeSQLServerVulnerabilitySubAssessment
 )
 
 type AutoProvision = original.AutoProvision
@@ -331,7 +331,7 @@ type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStand
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
 type ResourceDetails = original.ResourceDetails
-type SQLServerSubAssessmentProperties = original.SQLServerSubAssessmentProperties
+type SQLServerVulnerabilitySubAssessmentProperties = original.SQLServerVulnerabilitySubAssessmentProperties
 type SensitivityLabel = original.SensitivityLabel
 type ServerVulnerabilitySubAssessmentProperties = original.ServerVulnerabilitySubAssessmentProperties
 type Setting = original.Setting

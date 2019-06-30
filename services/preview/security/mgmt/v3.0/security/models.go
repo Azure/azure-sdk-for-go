@@ -88,13 +88,13 @@ const (
 	AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment AssessedResourceType = "ContainerRegistryVulnerabilitySubAssessment"
 	// AssessedResourceTypeServerVulnerabilityAssessment ...
 	AssessedResourceTypeServerVulnerabilityAssessment AssessedResourceType = "ServerVulnerabilityAssessment"
-	// AssessedResourceTypeSQLServerSubAssessment ...
-	AssessedResourceTypeSQLServerSubAssessment AssessedResourceType = "SqlServerSubAssessment"
+	// AssessedResourceTypeSQLServerVulnerabilitySubAssessment ...
+	AssessedResourceTypeSQLServerVulnerabilitySubAssessment AssessedResourceType = "SqlServerVulnerabilitySubAssessment"
 )
 
 // PossibleAssessedResourceTypeValues returns an array of possible values for the AssessedResourceType const type.
 func PossibleAssessedResourceTypeValues() []AssessedResourceType {
-	return []AssessedResourceType{AssessedResourceTypeAdditionalData, AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment, AssessedResourceTypeServerVulnerabilityAssessment, AssessedResourceTypeSQLServerSubAssessment}
+	return []AssessedResourceType{AssessedResourceTypeAdditionalData, AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment, AssessedResourceTypeServerVulnerabilityAssessment, AssessedResourceTypeSQLServerVulnerabilitySubAssessment}
 }
 
 // AutoProvision enumerates the values for auto provision.
@@ -448,7 +448,7 @@ type AadSolutionProperties struct {
 
 // BasicAdditionalData details of the sub-assessment
 type BasicAdditionalData interface {
-	AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool)
+	AsSQLServerVulnerabilitySubAssessmentProperties() (*SQLServerVulnerabilitySubAssessmentProperties, bool)
 	AsContainerRegistryVulnerabilitySubAssessmentProperties() (*ContainerRegistryVulnerabilitySubAssessmentProperties, bool)
 	AsServerVulnerabilitySubAssessmentProperties() (*ServerVulnerabilitySubAssessmentProperties, bool)
 	AsAdditionalData() (*AdditionalData, bool)
@@ -456,7 +456,7 @@ type BasicAdditionalData interface {
 
 // AdditionalData details of the sub-assessment
 type AdditionalData struct {
-	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerSubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
+	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerVulnerabilitySubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
 	AssessedResourceType AssessedResourceType `json:"assessedResourceType,omitempty"`
 }
 
@@ -468,10 +468,10 @@ func unmarshalBasicAdditionalData(body []byte) (BasicAdditionalData, error) {
 	}
 
 	switch m["assessedResourceType"] {
-	case string(AssessedResourceTypeSQLServerSubAssessment):
-		var sssap SQLServerSubAssessmentProperties
-		err := json.Unmarshal(body, &sssap)
-		return sssap, err
+	case string(AssessedResourceTypeSQLServerVulnerabilitySubAssessment):
+		var ssvsap SQLServerVulnerabilitySubAssessmentProperties
+		err := json.Unmarshal(body, &ssvsap)
+		return ssvsap, err
 	case string(AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment):
 		var crvsap ContainerRegistryVulnerabilitySubAssessmentProperties
 		err := json.Unmarshal(body, &crvsap)
@@ -515,8 +515,8 @@ func (ad AdditionalData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsSQLServerSubAssessmentProperties is the BasicAdditionalData implementation for AdditionalData.
-func (ad AdditionalData) AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool) {
+// AsSQLServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for AdditionalData.
+func (ad AdditionalData) AsSQLServerVulnerabilitySubAssessmentProperties() (*SQLServerVulnerabilitySubAssessmentProperties, bool) {
 	return nil, false
 }
 
@@ -2770,7 +2770,7 @@ type ContainerRegistryVulnerabilitySubAssessmentProperties struct {
 	ImageName *string `json:"imageName,omitempty"`
 	// ImageDigest - READ-ONLY; Digest of the vulnerable image
 	ImageDigest *string `json:"imageDigest,omitempty"`
-	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerSubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
+	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerVulnerabilitySubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
 	AssessedResourceType AssessedResourceType `json:"assessedResourceType,omitempty"`
 }
 
@@ -2784,8 +2784,8 @@ func (crvsap ContainerRegistryVulnerabilitySubAssessmentProperties) MarshalJSON(
 	return json.Marshal(objectMap)
 }
 
-// AsSQLServerSubAssessmentProperties is the BasicAdditionalData implementation for ContainerRegistryVulnerabilitySubAssessmentProperties.
-func (crvsap ContainerRegistryVulnerabilitySubAssessmentProperties) AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool) {
+// AsSQLServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for ContainerRegistryVulnerabilitySubAssessmentProperties.
+func (crvsap ContainerRegistryVulnerabilitySubAssessmentProperties) AsSQLServerVulnerabilitySubAssessmentProperties() (*SQLServerVulnerabilitySubAssessmentProperties, bool) {
 	return nil, false
 }
 
@@ -5235,7 +5235,7 @@ type ServerVulnerabilitySubAssessmentProperties struct {
 	RemediationLink *string `json:"remediationLink,omitempty"`
 	// VendorReferences - READ-ONLY
 	VendorReferences *[]VendorReference `json:"vendorReferences,omitempty"`
-	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerSubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
+	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerVulnerabilitySubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
 	AssessedResourceType AssessedResourceType `json:"assessedResourceType,omitempty"`
 }
 
@@ -5249,8 +5249,8 @@ func (svsap ServerVulnerabilitySubAssessmentProperties) MarshalJSON() ([]byte, e
 	return json.Marshal(objectMap)
 }
 
-// AsSQLServerSubAssessmentProperties is the BasicAdditionalData implementation for ServerVulnerabilitySubAssessmentProperties.
-func (svsap ServerVulnerabilitySubAssessmentProperties) AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool) {
+// AsSQLServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for ServerVulnerabilitySubAssessmentProperties.
+func (svsap ServerVulnerabilitySubAssessmentProperties) AsSQLServerVulnerabilitySubAssessmentProperties() (*SQLServerVulnerabilitySubAssessmentProperties, bool) {
 	return nil, false
 }
 
@@ -5445,49 +5445,49 @@ func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (Settin
 	return SettingsListPage{fn: getNextPage}
 }
 
-// SQLServerSubAssessmentProperties details of the resource that was assessed
-type SQLServerSubAssessmentProperties struct {
+// SQLServerVulnerabilitySubAssessmentProperties details of the resource that was assessed
+type SQLServerVulnerabilitySubAssessmentProperties struct {
 	// Query - READ-ONLY; The T-SQL query that runs on your SQL database to perform the particular check
 	Query *string `json:"query,omitempty"`
 	// Risk - READ-ONLY; The risk level associated with the particular vulnerability assessment check. Possible values include: 'RiskLow', 'RiskMedium', 'RiskHigh'
 	Risk Risk `json:"risk,omitempty"`
-	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerSubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
+	// AssessedResourceType - Possible values include: 'AssessedResourceTypeAdditionalData', 'AssessedResourceTypeSQLServerVulnerabilitySubAssessment', 'AssessedResourceTypeContainerRegistryVulnerabilitySubAssessment', 'AssessedResourceTypeServerVulnerabilityAssessment'
 	AssessedResourceType AssessedResourceType `json:"assessedResourceType,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for SQLServerSubAssessmentProperties.
-func (sssap SQLServerSubAssessmentProperties) MarshalJSON() ([]byte, error) {
-	sssap.AssessedResourceType = AssessedResourceTypeSQLServerSubAssessment
+// MarshalJSON is the custom marshaler for SQLServerVulnerabilitySubAssessmentProperties.
+func (ssvsap SQLServerVulnerabilitySubAssessmentProperties) MarshalJSON() ([]byte, error) {
+	ssvsap.AssessedResourceType = AssessedResourceTypeSQLServerVulnerabilitySubAssessment
 	objectMap := make(map[string]interface{})
-	if sssap.AssessedResourceType != "" {
-		objectMap["assessedResourceType"] = sssap.AssessedResourceType
+	if ssvsap.AssessedResourceType != "" {
+		objectMap["assessedResourceType"] = ssvsap.AssessedResourceType
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsSQLServerSubAssessmentProperties is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
-func (sssap SQLServerSubAssessmentProperties) AsSQLServerSubAssessmentProperties() (*SQLServerSubAssessmentProperties, bool) {
-	return &sssap, true
+// AsSQLServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for SQLServerVulnerabilitySubAssessmentProperties.
+func (ssvsap SQLServerVulnerabilitySubAssessmentProperties) AsSQLServerVulnerabilitySubAssessmentProperties() (*SQLServerVulnerabilitySubAssessmentProperties, bool) {
+	return &ssvsap, true
 }
 
-// AsContainerRegistryVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
-func (sssap SQLServerSubAssessmentProperties) AsContainerRegistryVulnerabilitySubAssessmentProperties() (*ContainerRegistryVulnerabilitySubAssessmentProperties, bool) {
+// AsContainerRegistryVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for SQLServerVulnerabilitySubAssessmentProperties.
+func (ssvsap SQLServerVulnerabilitySubAssessmentProperties) AsContainerRegistryVulnerabilitySubAssessmentProperties() (*ContainerRegistryVulnerabilitySubAssessmentProperties, bool) {
 	return nil, false
 }
 
-// AsServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
-func (sssap SQLServerSubAssessmentProperties) AsServerVulnerabilitySubAssessmentProperties() (*ServerVulnerabilitySubAssessmentProperties, bool) {
+// AsServerVulnerabilitySubAssessmentProperties is the BasicAdditionalData implementation for SQLServerVulnerabilitySubAssessmentProperties.
+func (ssvsap SQLServerVulnerabilitySubAssessmentProperties) AsServerVulnerabilitySubAssessmentProperties() (*ServerVulnerabilitySubAssessmentProperties, bool) {
 	return nil, false
 }
 
-// AsAdditionalData is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
-func (sssap SQLServerSubAssessmentProperties) AsAdditionalData() (*AdditionalData, bool) {
+// AsAdditionalData is the BasicAdditionalData implementation for SQLServerVulnerabilitySubAssessmentProperties.
+func (ssvsap SQLServerVulnerabilitySubAssessmentProperties) AsAdditionalData() (*AdditionalData, bool) {
 	return nil, false
 }
 
-// AsBasicAdditionalData is the BasicAdditionalData implementation for SQLServerSubAssessmentProperties.
-func (sssap SQLServerSubAssessmentProperties) AsBasicAdditionalData() (BasicAdditionalData, bool) {
-	return &sssap, true
+// AsBasicAdditionalData is the BasicAdditionalData implementation for SQLServerVulnerabilitySubAssessmentProperties.
+func (ssvsap SQLServerVulnerabilitySubAssessmentProperties) AsBasicAdditionalData() (BasicAdditionalData, bool) {
+	return &ssvsap, true
 }
 
 // SubAssessment security sub-assessment on a resource

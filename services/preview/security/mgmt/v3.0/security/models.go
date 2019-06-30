@@ -5447,6 +5447,8 @@ func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (Settin
 
 // SQLServerVulnerabilitySubAssessmentProperties details of the resource that was assessed
 type SQLServerVulnerabilitySubAssessmentProperties struct {
+	// Type - READ-ONLY; The resource type the sub assessment refers to in its resource details
+	Type *string `json:"type,omitempty"`
 	// Query - READ-ONLY; The T-SQL query that runs on your SQL database to perform the particular check
 	Query *string `json:"query,omitempty"`
 	// Risk - READ-ONLY; The risk level associated with the particular vulnerability assessment check. Possible values include: 'RiskLow', 'RiskMedium', 'RiskHigh'

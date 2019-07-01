@@ -1,5 +1,57 @@
 # CHANGELOG
 
+## `v31.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| alertsmanagement | 2019-05-05 |
+| appconfiguration | 2019-02-01-preview |
+| cdn | 2019-06-15-preview |
+| containerservice | 2019-06-01 |
+| insights | 2019-06-01 |
+| machinelearningservices | 2018-03-01-preview<br/>2018-11-19<br/>2019-05-01 |
+| network | 2019-04-01 |
+| resources | 2019-05-01 |
+| servicefabric | 6.5 |
+| softwareplan | 2019-06-01-preview |
+| vmwarecloudsimple | 2019-04-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| cognitiveservices | 2017-04-18 |
+| compute | 2019-03-01 |
+| containerregistry | 2019-04-01<br/>2019-05-01 |
+| hanaonazure | 2017-11-03-preview |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| insights | 2017-05-01-preview<br/>2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01 |
+| managementgroups | 2018-03-01-preview |
+| media | 2018-07-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| alertsmanagement | 2018-05-05 |
+| authorization | 2015-07-01 |
+| billing | 2018-11-01-preview |
+| blueprint | 2018-11-01-preview |
+| computervision | v2.0 |
+| datafactory | 2017-09-01-preview<br/>2018-06-01 |
+| eventgrid | 2018-01-01 |
+| eventhub | 2015-08-01<br/>2018-01-01-preview |
+| face | v1.0 |
+| netapp | 2019-05-01 |
+| network | 2015-06-15<br/>2016-09-01<br/>2016-12-01<br/>2017-03-01<br/>2017-06-01<br/>2017-08-01<br/>2017-09-01<br/>2017-10-01<br/>2017-11-01<br/>2018-01-01<br/>2018-02-01<br/>2018-04-01<br/>2018-06-01<br/>2018-07-01<br/>2018-08-01<br/>2018-10-01<br/>2018-11-01<br/>2018-12-01<br/>2019-02-01 |
+| reservations | 2019-04-01 |
+| resourcegraph | 2019-04-01 |
+| securityinsight | 2017-08-01-preview |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview |
+| storage | 2019-04-01 |
+
 ## `v30.1.0`
 
 ### New Packages

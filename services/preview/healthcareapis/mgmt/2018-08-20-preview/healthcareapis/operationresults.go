@@ -22,7 +22,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
-	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -32,12 +31,12 @@ type OperationResultsClient struct {
 }
 
 // NewOperationResultsClient creates an instance of the OperationResultsClient client.
-func NewOperationResultsClient(subscriptionID uuid.UUID) OperationResultsClient {
+func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
 	return NewOperationResultsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewOperationResultsClientWithBaseURI creates an instance of the OperationResultsClient client.
-func NewOperationResultsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationResultsClient {
+func NewOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) OperationResultsClient {
 	return OperationResultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 

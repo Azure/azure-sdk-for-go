@@ -1109,7 +1109,7 @@ type IotHubProperties struct {
 	DeviceStreams *IotHubPropertiesDeviceStreams `json:"deviceStreams,omitempty"`
 	// Features - The capabilities and features enabled for the IoT hub. Possible values include: 'None', 'DeviceManagement'
 	Features Capabilities `json:"features,omitempty"`
-	// Locations - Primary and secondary location for iot hub
+	// Locations - READ-ONLY; Primary and secondary location for iot hub
 	Locations *[]IotHubLocationDescription `json:"locations,omitempty"`
 }
 
@@ -1148,9 +1148,6 @@ func (ihp IotHubProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ihp.Features != "" {
 		objectMap["features"] = ihp.Features
-	}
-	if ihp.Locations != nil {
-		objectMap["locations"] = ihp.Locations
 	}
 	return json.Marshal(objectMap)
 }

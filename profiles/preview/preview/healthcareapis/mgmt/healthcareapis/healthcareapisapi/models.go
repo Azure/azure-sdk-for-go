@@ -21,7 +21,6 @@ package healthcareapisapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/healthcareapis/mgmt/2018-08-20-preview/healthcareapis/healthcareapisapi"
 
-type MoveResourcesStatusClientAPI = original.MoveResourcesStatusClientAPI
 type OperationResultsClientAPI = original.OperationResultsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ServicesClientAPI = original.ServicesClientAPI

@@ -23,7 +23,6 @@ import (
 	"context"
 
 	original "github.com/Azure/azure-sdk-for-go/services/preview/healthcareapis/mgmt/2018-08-20-preview/healthcareapis"
-	uuid "github.com/satori/go.uuid"
 )
 
 const (
@@ -65,8 +64,6 @@ type BaseClient = original.BaseClient
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type ErrorDetails = original.ErrorDetails
 type ErrorDetailsInternal = original.ErrorDetailsInternal
-type MoveResourcesParameters = original.MoveResourcesParameters
-type MoveResourcesStatusClient = original.MoveResourcesStatusClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -77,6 +74,8 @@ type OperationResultsDescription = original.OperationResultsDescription
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
 type ServiceAccessPolicyEntry = original.ServiceAccessPolicyEntry
+type ServiceAuthenticationConfigurationInfo = original.ServiceAuthenticationConfigurationInfo
+type ServiceCorsConfigurationInfo = original.ServiceCorsConfigurationInfo
 type ServiceCosmosDbConfigurationInfo = original.ServiceCosmosDbConfigurationInfo
 type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
@@ -91,14 +90,8 @@ type ServicesProperties = original.ServicesProperties
 type ServicesUpdateFuture = original.ServicesUpdateFuture
 type SetObject = original.SetObject
 
-func New(subscriptionID uuid.UUID) BaseClient {
+func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewMoveResourcesStatusClient(subscriptionID uuid.UUID) MoveResourcesStatusClient {
-	return original.NewMoveResourcesStatusClient(subscriptionID)
-}
-func NewMoveResourcesStatusClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) MoveResourcesStatusClient {
-	return original.NewMoveResourcesStatusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -106,22 +99,22 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationResultsClient(subscriptionID uuid.UUID) OperationResultsClient {
+func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
 	return original.NewOperationResultsClient(subscriptionID)
 }
-func NewOperationResultsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationResultsClient {
+func NewOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) OperationResultsClient {
 	return original.NewOperationResultsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
+func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewServicesClient(subscriptionID uuid.UUID) ServicesClient {
+func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)
 }
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) ServicesClient {
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
 	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServicesDescriptionListResultIterator(page ServicesDescriptionListResultPage) ServicesDescriptionListResultIterator {
@@ -130,7 +123,7 @@ func NewServicesDescriptionListResultIterator(page ServicesDescriptionListResult
 func NewServicesDescriptionListResultPage(getNextPage func(context.Context, ServicesDescriptionListResult) (ServicesDescriptionListResult, error)) ServicesDescriptionListResultPage {
 	return original.NewServicesDescriptionListResultPage(getNextPage)
 }
-func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleOperationResultStatusValues() []OperationResultStatus {

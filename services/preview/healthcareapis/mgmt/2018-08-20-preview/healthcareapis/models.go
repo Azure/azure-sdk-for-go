@@ -119,16 +119,6 @@ type ErrorDetailsInternal struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// MoveResourcesParameters input values.
-type MoveResourcesParameters struct {
-	// TargetSubscriptionID - The target subscription to move resources to.
-	TargetSubscriptionID *string `json:"targetSubscriptionId,omitempty"`
-	// TargetResourceGroupName - The target resource group to move resources to.
-	TargetResourceGroupName *string `json:"targetResourceGroupName,omitempty"`
-	// ResourceIdsToMove - The list of resources to move.
-	ResourceIdsToMove *[]string `json:"resourceIdsToMove,omitempty"`
-}
-
 // Operation service REST API operation.
 type Operation struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
@@ -352,6 +342,30 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type ServiceAccessPolicyEntry struct {
 	// ObjectID - An object ID that is allowed access to the FHIR service.
 	ObjectID *string `json:"objectId,omitempty"`
+}
+
+// ServiceAuthenticationConfigurationInfo authentication configuration information
+type ServiceAuthenticationConfigurationInfo struct {
+	// Authority - The authority url for the service
+	Authority *string `json:"authority,omitempty"`
+	// Audience - The audience url for the service
+	Audience *string `json:"audience,omitempty"`
+	// SmartProxyEnabled - If the SMART on FHIR proxy is enabled
+	SmartProxyEnabled *bool `json:"smartProxyEnabled,omitempty"`
+}
+
+// ServiceCorsConfigurationInfo the settings for the CORS configuration of the service instance.
+type ServiceCorsConfigurationInfo struct {
+	// Origins - The origins to be allowed via CORS.
+	Origins *[]string `json:"origins,omitempty"`
+	// Headers - The headers to be allowed via CORS.
+	Headers *[]string `json:"headers,omitempty"`
+	// Methods - The methods to be allowed via CORS.
+	Methods *[]string `json:"methods,omitempty"`
+	// MaxAge - The max age to be allowed via CORS.
+	MaxAge *int32 `json:"maxAge,omitempty"`
+	// AllowCredentials - If credentials are allowed via CORS.
+	AllowCredentials *bool `json:"allowCredentials,omitempty"`
 }
 
 // ServiceCosmosDbConfigurationInfo the settings for the Cosmos DB database backing the service.
@@ -635,6 +649,10 @@ type ServicesProperties struct {
 	AccessPolicies *[]ServiceAccessPolicyEntry `json:"accessPolicies,omitempty"`
 	// CosmosDbConfiguration - The settings for the Cosmos DB database backing the service.
 	CosmosDbConfiguration *ServiceCosmosDbConfigurationInfo `json:"cosmosDbConfiguration,omitempty"`
+	// AuthenticationConfiguration - The authentication configuration for the service instance.
+	AuthenticationConfiguration *ServiceAuthenticationConfigurationInfo `json:"authenticationConfiguration,omitempty"`
+	// CorsConfiguration - The settings for the CORS configuration of the service instance.
+	CorsConfiguration *ServiceCorsConfigurationInfo `json:"corsConfiguration,omitempty"`
 }
 
 // ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

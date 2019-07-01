@@ -999,7 +999,7 @@ type AssignmentProperties struct {
 	// BlueprintID - ID of the published version of a blueprint definition.
 	BlueprintID *string `json:"blueprintId,omitempty"`
 	// Parameters - Blueprint assignment parameter values.
-	Parameters map[string]*ParameterValueBase `json:"parameters"`
+	Parameters map[string]*ParameterValue `json:"parameters"`
 	// ResourceGroups - Names and locations of resource group placeholders.
 	ResourceGroups map[string]*ResourceGroupValue `json:"resourceGroups"`
 	// Status - READ-ONLY; Status of blueprint assignment. This field is readonly.
@@ -1547,7 +1547,7 @@ type PolicyAssignmentArtifactProperties struct {
 	// PolicyDefinitionID - Azure resource ID of the policy definition.
 	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
 	// Parameters - Parameter values for the policy definition.
-	Parameters map[string]*ParameterValueBase `json:"parameters"`
+	Parameters map[string]*ParameterValue `json:"parameters"`
 	// ResourceGroup - Name of the resource group placeholder to which the policy will be assigned.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 }
@@ -2350,7 +2350,7 @@ type TemplateArtifactProperties struct {
 	// ResourceGroup - If applicable, the name of the resource group placeholder to which the Resource Manager template blueprint artifact will be deployed.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
 	// Parameters - Resource Manager template blueprint artifact parameter values.
-	Parameters map[string]*ParameterValueBase `json:"parameters"`
+	Parameters map[string]*ParameterValue `json:"parameters"`
 }
 
 // MarshalJSON is the custom marshaler for TemplateArtifactProperties.

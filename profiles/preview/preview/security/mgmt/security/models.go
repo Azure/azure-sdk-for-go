@@ -51,11 +51,28 @@ const (
 	AlertsToAdminsOn  AlertsToAdmins = original.AlertsToAdminsOn
 )
 
+type AssessmentType = original.AssessmentType
+
+const (
+	BuiltIn AssessmentType = original.BuiltIn
+	Custom  AssessmentType = original.Custom
+)
+
 type AutoProvision = original.AutoProvision
 
 const (
 	AutoProvisionOff AutoProvision = original.AutoProvisionOff
 	AutoProvisionOn  AutoProvision = original.AutoProvisionOn
+)
+
+type Category = original.Category
+
+const (
+	Compute           Category = original.Compute
+	Data              Category = original.Data
+	IdentityAndAccess Category = original.IdentityAndAccess
+	IoT               Category = original.IoT
+	Network           Category = original.Network
 )
 
 type ConnectionType = original.ConnectionType
@@ -113,6 +130,15 @@ const (
 	Informational ReportedSeverity = original.Informational
 	Low           ReportedSeverity = original.Low
 	Medium        ReportedSeverity = original.Medium
+)
+
+type RequiredPricingBundle = original.RequiredPricingBundle
+
+const (
+	AppServices     RequiredPricingBundle = original.AppServices
+	SQLServers      RequiredPricingBundle = original.SQLServers
+	StorageAccounts RequiredPricingBundle = original.StorageAccounts
+	VirtualMachines RequiredPricingBundle = original.VirtualMachines
 )
 
 type ResourceStatus = original.ResourceStatus
@@ -179,6 +205,12 @@ type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
 type AscLocationListPage = original.AscLocationListPage
+type AssessmentMetadata = original.AssessmentMetadata
+type AssessmentMetadataList = original.AssessmentMetadataList
+type AssessmentMetadataListIterator = original.AssessmentMetadataListIterator
+type AssessmentMetadataListPage = original.AssessmentMetadataListPage
+type AssessmentMetadataProperties = original.AssessmentMetadataProperties
+type AssessmentsMetadataClient = original.AssessmentsMetadataClient
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
 type AtaSolutionProperties = original.AtaSolutionProperties
 type AutoProvisioningSetting = original.AutoProvisioningSetting
@@ -353,6 +385,18 @@ func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterato
 }
 func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
 	return original.NewAscLocationListPage(getNextPage)
+}
+func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
+	return original.NewAssessmentMetadataListIterator(page)
+}
+func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
+	return original.NewAssessmentMetadataListPage(getNextPage)
+}
+func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) AssessmentsMetadataClient {
+	return original.NewAssessmentsMetadataClient(subscriptionID, ascLocation)
+}
+func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataClient {
+	return original.NewAssessmentsMetadataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)
@@ -570,8 +614,14 @@ func PossibleAlertNotificationsValues() []AlertNotifications {
 func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 	return original.PossibleAlertsToAdminsValues()
 }
+func PossibleAssessmentTypeValues() []AssessmentType {
+	return original.PossibleAssessmentTypeValues()
+}
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
+}
+func PossibleCategoryValues() []Category {
+	return original.PossibleCategoryValues()
 }
 func PossibleConnectionTypeValues() []ConnectionType {
 	return original.PossibleConnectionTypeValues()
@@ -593,6 +643,9 @@ func PossibleProtocolValues() []Protocol {
 }
 func PossibleReportedSeverityValues() []ReportedSeverity {
 	return original.PossibleReportedSeverityValues()
+}
+func PossibleRequiredPricingBundleValues() []RequiredPricingBundle {
+	return original.PossibleRequiredPricingBundleValues()
 }
 func PossibleResourceStatusValues() []ResourceStatus {
 	return original.PossibleResourceStatusValues()

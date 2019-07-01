@@ -2188,12 +2188,12 @@ type ServiceProviderProperties struct {
 	Parameters *[]ServiceProviderParameter `json:"parameters,omitempty"`
 }
 
-// ServiceProviderResponseList the list of bot service service providers response.
+// ServiceProviderResponseList the list of bot service providers response.
 type ServiceProviderResponseList struct {
 	autorest.Response `json:"-"`
-	// NextLink - The link used to get the next page of bot service service providers.
+	// NextLink - The link used to get the next page of bot service providers.
 	NextLink *string `json:"nextLink,omitempty"`
-	// Value - READ-ONLY; Gets the list of bot service service providers and their properties.
+	// Value - READ-ONLY; Gets the list of bot service providers and their properties.
 	Value *[]ServiceProvider `json:"value,omitempty"`
 }
 

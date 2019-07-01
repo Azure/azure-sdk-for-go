@@ -25,6 +25,7 @@ type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClient
 type AlertsClientAPI = original.AlertsClientAPI
 type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
 type AssessmentsMetadataClientAPI = original.AssessmentsMetadataClientAPI
+type AssessmentsMetadataSubscriptionClientAPI = original.AssessmentsMetadataSubscriptionClientAPI
 type AutoProvisioningSettingsClientAPI = original.AutoProvisioningSettingsClientAPI
 type ComplianceResultsClientAPI = original.ComplianceResultsClientAPI
 type CompliancesClientAPI = original.CompliancesClientAPI

@@ -211,6 +211,7 @@ type AssessmentMetadataListIterator = original.AssessmentMetadataListIterator
 type AssessmentMetadataListPage = original.AssessmentMetadataListPage
 type AssessmentMetadataProperties = original.AssessmentMetadataProperties
 type AssessmentsMetadataClient = original.AssessmentsMetadataClient
+type AssessmentsMetadataSubscriptionClient = original.AssessmentsMetadataSubscriptionClient
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
 type AtaSolutionProperties = original.AtaSolutionProperties
 type AutoProvisioningSetting = original.AutoProvisioningSetting
@@ -397,6 +398,12 @@ func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) Ass
 }
 func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataClient {
 	return original.NewAssessmentsMetadataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAssessmentsMetadataSubscriptionClient(subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
+	return original.NewAssessmentsMetadataSubscriptionClient(subscriptionID, ascLocation)
+}
+func NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
+	return original.NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)

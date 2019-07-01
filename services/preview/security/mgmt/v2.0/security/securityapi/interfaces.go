@@ -50,12 +50,18 @@ var _ RegulatoryComplianceAssessmentsClientAPI = (*security.RegulatoryCompliance
 // AssessmentsMetadataClientAPI contains the set of methods on the AssessmentsMetadataClient type.
 type AssessmentsMetadataClientAPI interface {
 	Get(ctx context.Context, assessmentsMetadataName string) (result security.AssessmentMetadata, err error)
-	Get1(ctx context.Context, assessmentsMetadataName string) (result security.AssessmentMetadata, err error)
 	List(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
-	List1(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
 }
 
 var _ AssessmentsMetadataClientAPI = (*security.AssessmentsMetadataClient)(nil)
+
+// AssessmentsMetadataSubscriptionClientAPI contains the set of methods on the AssessmentsMetadataSubscriptionClient type.
+type AssessmentsMetadataSubscriptionClientAPI interface {
+	Get(ctx context.Context, assessmentsMetadataName string) (result security.AssessmentMetadata, err error)
+	List(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
+}
+
+var _ AssessmentsMetadataSubscriptionClientAPI = (*security.AssessmentsMetadataSubscriptionClient)(nil)
 
 // PricingsClientAPI contains the set of methods on the PricingsClient type.
 type PricingsClientAPI interface {

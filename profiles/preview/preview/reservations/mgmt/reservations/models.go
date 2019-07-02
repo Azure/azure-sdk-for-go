@@ -113,10 +113,14 @@ const (
 type ReservedResourceType = original.ReservedResourceType
 
 const (
-	CosmosDb        ReservedResourceType = original.CosmosDb
-	SQLDatabases    ReservedResourceType = original.SQLDatabases
-	SuseLinux       ReservedResourceType = original.SuseLinux
-	VirtualMachines ReservedResourceType = original.VirtualMachines
+	CosmosDb          ReservedResourceType = original.CosmosDb
+	RedHat            ReservedResourceType = original.RedHat
+	RedHatOsa         ReservedResourceType = original.RedHatOsa
+	SQLDatabases      ReservedResourceType = original.SQLDatabases
+	SQLDataWarehouse  ReservedResourceType = original.SQLDataWarehouse
+	SuseLinux         ReservedResourceType = original.SuseLinux
+	VirtualMachines   ReservedResourceType = original.VirtualMachines
+	VMwareCloudSimple ReservedResourceType = original.VMwareCloudSimple
 )
 
 type StatusCode = original.StatusCode
@@ -175,7 +179,8 @@ type PurchaseRequest = original.PurchaseRequest
 type PurchaseRequestProperties = original.PurchaseRequestProperties
 type PurchaseRequestPropertiesReservedResourceProperties = original.PurchaseRequestPropertiesReservedResourceProperties
 type RenewPropertiesResponse = original.RenewPropertiesResponse
-type RenewPropertiesResponseLockedPriceTotal = original.RenewPropertiesResponseLockedPriceTotal
+type RenewPropertiesResponseBillingCurrencyTotal = original.RenewPropertiesResponseBillingCurrencyTotal
+type RenewPropertiesResponsePricingCurrencyTotal = original.RenewPropertiesResponsePricingCurrencyTotal
 type ReservationMergeFuture = original.ReservationMergeFuture
 type ReservationUpdateFuture = original.ReservationUpdateFuture
 type Response = original.Response

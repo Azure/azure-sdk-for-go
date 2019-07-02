@@ -1,9 +1,7 @@
-// Package subscriptions implements the Azure ARM Subscriptions service API version 2016-06-01.
+// Package managedapplications implements the Azure ARM Managedapplications service API version 2019-03-01.
 //
-// All resource groups and resources exist within subscriptions. These operation enable you get information about your
-// subscriptions and tenants. A tenant is a dedicated instance of Azure Active Directory (Azure AD) for your
-// organization.
-package subscriptions
+// ARM applications
+package managedapplications
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -27,25 +25,27 @@ import (
 )
 
 const (
-	// DefaultBaseURI is the default URI used for the service Subscriptions
+	// DefaultBaseURI is the default URI used for the service Managedapplications
 	DefaultBaseURI = "https://management.azure.com"
 )
 
-// BaseClient is the base client for Subscriptions.
+// BaseClient is the base client for Managedapplications.
 type BaseClient struct {
 	autorest.Client
-	BaseURI string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithBaseURI(DefaultBaseURI)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:  autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI: baseURI,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

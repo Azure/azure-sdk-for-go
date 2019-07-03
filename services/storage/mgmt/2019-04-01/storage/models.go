@@ -1899,7 +1899,7 @@ type ListServiceSasResponse struct {
 // ManagementPolicy the Get Storage Account ManagementPolicies operation response.
 type ManagementPolicy struct {
 	autorest.Response `json:"-"`
-	// ManagementPolicyProperties - READ-ONLY; Returns the Storage Account Data Policies Rules.
+	// ManagementPolicyProperties - Returns the Storage Account Data Policies Rules.
 	*ManagementPolicyProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1912,6 +1912,9 @@ type ManagementPolicy struct {
 // MarshalJSON is the custom marshaler for ManagementPolicy.
 func (mp ManagementPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if mp.ManagementPolicyProperties != nil {
+		objectMap["properties"] = mp.ManagementPolicyProperties
+	}
 	return json.Marshal(objectMap)
 }
 

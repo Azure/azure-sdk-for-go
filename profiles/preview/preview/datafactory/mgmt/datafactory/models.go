@@ -394,6 +394,13 @@ const (
 	SparkThriftTransportProtocolSASL   SparkThriftTransportProtocol = original.SparkThriftTransportProtocolSASL
 )
 
+type SsisPackageLocationType = original.SsisPackageLocationType
+
+const (
+	File   SsisPackageLocationType = original.File
+	SSISDB SsisPackageLocationType = original.SSISDB
+)
+
 type SybaseAuthenticationType = original.SybaseAuthenticationType
 
 const (
@@ -1134,9 +1141,13 @@ type SQLServerTableDataset = original.SQLServerTableDataset
 type SQLServerTableDatasetTypeProperties = original.SQLServerTableDatasetTypeProperties
 type SQLSink = original.SQLSink
 type SQLSource = original.SQLSource
+type SSISAccessCredential = original.SSISAccessCredential
 type SSISExecutionCredential = original.SSISExecutionCredential
 type SSISExecutionParameter = original.SSISExecutionParameter
+type SSISLogLocation = original.SSISLogLocation
+type SSISLogLocationTypeProperties = original.SSISLogLocationTypeProperties
 type SSISPackageLocation = original.SSISPackageLocation
+type SSISPackageLocationTypeProperties = original.SSISPackageLocationTypeProperties
 type SSISPropertyOverride = original.SSISPropertyOverride
 type SalesforceLinkedService = original.SalesforceLinkedService
 type SalesforceLinkedServiceTypeProperties = original.SalesforceLinkedServiceTypeProperties
@@ -1488,6 +1499,9 @@ func PossibleSparkServerTypeValues() []SparkServerType {
 }
 func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol {
 	return original.PossibleSparkThriftTransportProtocolValues()
+}
+func PossibleSsisPackageLocationTypeValues() []SsisPackageLocationType {
+	return original.PossibleSsisPackageLocationTypeValues()
 }
 func PossibleSybaseAuthenticationTypeValues() []SybaseAuthenticationType {
 	return original.PossibleSybaseAuthenticationTypeValues()

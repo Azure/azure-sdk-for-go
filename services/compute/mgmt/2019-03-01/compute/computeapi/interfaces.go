@@ -55,6 +55,29 @@ type ProximityPlacementGroupsClientAPI interface {
 
 var _ ProximityPlacementGroupsClientAPI = (*compute.ProximityPlacementGroupsClient)(nil)
 
+// DedicatedHostGroupsClientAPI contains the set of methods on the DedicatedHostGroupsClient type.
+type DedicatedHostGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, parameters compute.DedicatedHostGroup) (result compute.DedicatedHostGroup, err error)
+	Delete(ctx context.Context, resourceGroupName string, hostGroupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, hostGroupName string) (result compute.DedicatedHostGroup, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.DedicatedHostGroupListResultPage, err error)
+	ListBySubscription(ctx context.Context) (result compute.DedicatedHostGroupListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, hostGroupName string, parameters compute.DedicatedHostGroupUpdate) (result compute.DedicatedHostGroup, err error)
+}
+
+var _ DedicatedHostGroupsClientAPI = (*compute.DedicatedHostGroupsClient)(nil)
+
+// DedicatedHostsClientAPI contains the set of methods on the DedicatedHostsClient type.
+type DedicatedHostsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters compute.DedicatedHost) (result compute.DedicatedHostsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string) (result compute.DedicatedHostsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, expand compute.InstanceViewTypes) (result compute.DedicatedHost, err error)
+	ListByHostGroup(ctx context.Context, resourceGroupName string, hostGroupName string) (result compute.DedicatedHostListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters compute.DedicatedHostUpdate) (result compute.DedicatedHostsUpdateFuture, err error)
+}
+
+var _ DedicatedHostsClientAPI = (*compute.DedicatedHostsClient)(nil)
+
 // VirtualMachineExtensionImagesClientAPI contains the set of methods on the VirtualMachineExtensionImagesClient type.
 type VirtualMachineExtensionImagesClientAPI interface {
 	Get(ctx context.Context, location string, publisherName string, typeParameter string, version string) (result compute.VirtualMachineExtensionImage, err error)

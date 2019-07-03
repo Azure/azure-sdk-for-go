@@ -109,13 +109,13 @@ func (p Prediction) MarshalJSON() ([]byte, error) {
 
 // PredictionRequest represents the prediction request parameters.
 type PredictionRequest struct {
-	// Query - The query to predict
+	// Query - The query to predict.
 	Query *string `json:"query,omitempty"`
 	// Options - The custom options defined for this request.
 	Options *PredictionRequestOptions `json:"options,omitempty"`
-	// ExternalEntities - The externally predicted entities for this request
+	// ExternalEntities - The externally predicted entities for this request.
 	ExternalEntities *[]ExternalEntity `json:"externalEntities,omitempty"`
-	// DynamicLists - The dynamically created list entities for this request
+	// DynamicLists - The dynamically created list entities for this request.
 	DynamicLists *[]DynamicList `json:"dynamicLists,omitempty"`
 }
 
@@ -148,8 +148,8 @@ type RequestList struct {
 
 // Sentiment the result of the sentiment analysis.
 type Sentiment struct {
-	// Score - The sentiment score of the query.
-	Score *float64 `json:"score,omitempty"`
 	// Label - The label of the sentiment analysis result.
 	Label *string `json:"label,omitempty"`
+	// Score - The sentiment score of the query.
+	Score *float64 `json:"score,omitempty"`
 }

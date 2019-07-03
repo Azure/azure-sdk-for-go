@@ -46,6 +46,19 @@ func PossibleConflictResolutionModeValues() []ConflictResolutionMode {
 	return []ConflictResolutionMode{Custom, LastWriterWins}
 }
 
+// ConnectorOffer enumerates the values for connector offer.
+type ConnectorOffer string
+
+const (
+	// Small ...
+	Small ConnectorOffer = "Small"
+)
+
+// PossibleConnectorOfferValues returns an array of possible values for the ConnectorOffer const type.
+func PossibleConnectorOfferValues() []ConnectorOffer {
+	return []ConnectorOffer{Small}
+}
+
 // DatabaseAccountKind enumerates the values for database account kind.
 type DatabaseAccountKind string
 
@@ -923,6 +936,10 @@ type DatabaseAccountCreateUpdateProperties struct {
 	VirtualNetworkRules *[]VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 	// EnableMultipleWriteLocations - Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool `json:"enableMultipleWriteLocations,omitempty"`
+	// EnableCassandraConnector - Enables the cassandra connector on the Cosmos DB C* account
+	EnableCassandraConnector *bool `json:"enableCassandraConnector,omitempty"`
+	// ConnectorOffer - The cassandra connector offer type for the Cosmos DB database C* account. Possible values include: 'Small'
+	ConnectorOffer ConnectorOffer `json:"connectorOffer,omitempty"`
 }
 
 // DatabaseAccountListConnectionStringsResult the connection strings for the given database account.
@@ -1086,6 +1103,10 @@ type DatabaseAccountProperties struct {
 	VirtualNetworkRules *[]VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 	// EnableMultipleWriteLocations - Enables the account to write in multiple locations
 	EnableMultipleWriteLocations *bool `json:"enableMultipleWriteLocations,omitempty"`
+	// EnableCassandraConnector - Enables the cassandra connector on the Cosmos DB C* account
+	EnableCassandraConnector *bool `json:"enableCassandraConnector,omitempty"`
+	// ConnectorOffer - The cassandra connector offer type for the Cosmos DB database C* account. Possible values include: 'Small'
+	ConnectorOffer ConnectorOffer `json:"connectorOffer,omitempty"`
 }
 
 // DatabaseAccountRegenerateKeyParameters parameters to regenerate the keys within the database account.

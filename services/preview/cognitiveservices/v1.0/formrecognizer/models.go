@@ -27,6 +27,25 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/formrecognizer"
 
+// OperationStatusCodes enumerates the values for operation status codes.
+type OperationStatusCodes string
+
+const (
+	// Failed ...
+	Failed OperationStatusCodes = "Failed"
+	// NotStarted ...
+	NotStarted OperationStatusCodes = "NotStarted"
+	// Running ...
+	Running OperationStatusCodes = "Running"
+	// Succeeded ...
+	Succeeded OperationStatusCodes = "Succeeded"
+)
+
+// PossibleOperationStatusCodesValues returns an array of possible values for the OperationStatusCodes const type.
+func PossibleOperationStatusCodesValues() []OperationStatusCodes {
+	return []OperationStatusCodes{Failed, NotStarted, Running, Succeeded}
+}
+
 // Status enumerates the values for status.
 type Status string
 
@@ -78,25 +97,6 @@ func PossibleStatus2Values() []Status2 {
 	return []Status2{Status2Failure, Status2PartialSuccess, Status2Success}
 }
 
-// TextOperationStatusCodes enumerates the values for text operation status codes.
-type TextOperationStatusCodes string
-
-const (
-	// Failed ...
-	Failed TextOperationStatusCodes = "Failed"
-	// NotStarted ...
-	NotStarted TextOperationStatusCodes = "Not Started"
-	// Running ...
-	Running TextOperationStatusCodes = "Running"
-	// Succeeded ...
-	Succeeded TextOperationStatusCodes = "Succeeded"
-)
-
-// PossibleTextOperationStatusCodesValues returns an array of possible values for the TextOperationStatusCodes const type.
-func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
-	return []TextOperationStatusCodes{Failed, NotStarted, Running, Succeeded}
-}
-
 // TextRecognitionResultConfidenceClass enumerates the values for text recognition result confidence class.
 type TextRecognitionResultConfidenceClass string
 
@@ -144,6 +144,17 @@ func PossibleValueTypeValues() []ValueType {
 	return []ValueType{ValueTypeFieldValue, ValueTypeNumberValue, ValueTypeStringValue}
 }
 
+// AnalyzeReceiptResult result of the 'Analyze Receipt' operation.
+type AnalyzeReceiptResult struct {
+	autorest.Response `json:"-"`
+	// Status - Status of the analysis operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
+	Status OperationStatusCodes `json:"status,omitempty"`
+	// RecognitionResults - An array of objects, each representing the OCR result for a page in the input document.
+	RecognitionResults *[]TextRecognitionResult `json:"recognitionResults,omitempty"`
+	// UnderstandingResults - An array of objects, each representing a receipt detected in the input document.
+	UnderstandingResults *[]UnderstandingResult `json:"understandingResults,omitempty"`
+}
+
 // AnalyzeResult analyze API call result.
 type AnalyzeResult struct {
 	autorest.Response `json:"-"`
@@ -157,18 +168,9 @@ type AnalyzeResult struct {
 	Errors *[]FormOperationError `json:"errors,omitempty"`
 }
 
-// ComputerVisionError details about the API request error.
-type ComputerVisionError struct {
-	// Code - The error code.
-	Code interface{} `json:"code,omitempty"`
-	// Message - A message explaining the error reported by the service.
-	Message *string `json:"message,omitempty"`
-	// RequestID - A unique request identifier.
-	RequestID *string `json:"requestId,omitempty"`
-}
-
-// ElementReference reference to an OCR word.
+// ElementReference reference to an OCR word element.
 type ElementReference struct {
+	// Ref - JSON pointer to an OCR word element. For example, "#/recognitionResults/0/lines/1/words/2" refers to 3rd word in the 2nd line of the 1st page in the document.
 	Ref *string `json:"$ref,omitempty"`
 }
 
@@ -252,7 +254,7 @@ type BasicFieldValue interface {
 
 // FieldValue base class representing a recognized field value.
 type FieldValue struct {
-	// Text - OCR text content of the recognized field.
+	// Text - Extracted text content of the recognized field.
 	Text *string `json:"text,omitempty"`
 	// Elements - List of references to OCR words comprising the recognized field value.
 	Elements *[]ElementReference `json:"elements,omitempty"`
@@ -386,7 +388,7 @@ func (kr KeysResult) MarshalJSON() ([]byte, error) {
 // Line an object representing a recognized text line.
 type Line struct {
 	// BoundingBox - Bounding box of a recognized line.
-	BoundingBox *[]int32 `json:"boundingBox,omitempty"`
+	BoundingBox *[]float64 `json:"boundingBox,omitempty"`
 	// Text - The text content of the line.
 	Text *string `json:"text,omitempty"`
 	// Words - List of words in the text line.
@@ -417,7 +419,7 @@ type ModelsResult struct {
 type NumberValue struct {
 	// Value - Numeric value of the recognized field.
 	Value *float64 `json:"value,omitempty"`
-	// Text - OCR text content of the recognized field.
+	// Text - Extracted text content of the recognized field.
 	Text *string `json:"text,omitempty"`
 	// Elements - List of references to OCR words comprising the recognized field value.
 	Elements *[]ElementReference `json:"elements,omitempty"`
@@ -464,22 +466,11 @@ func (nv NumberValue) AsBasicFieldValue() (BasicFieldValue, bool) {
 	return &nv, true
 }
 
-// ReadReceiptResult analysis result of the 'Batch Read Receipt' operation.
-type ReadReceiptResult struct {
-	autorest.Response `json:"-"`
-	// Status - Status of the read operation. Possible values include: 'NotStarted', 'Running', 'Failed', 'Succeeded'
-	Status TextOperationStatusCodes `json:"status,omitempty"`
-	// RecognitionResults - Text recognition result of the 'Batch Read Receipt' operation.
-	RecognitionResults *[]TextRecognitionResult `json:"recognitionResults,omitempty"`
-	// UnderstandingResults - Semantic understanding result of the 'Batch Read Receipt' operation.
-	UnderstandingResults *[]UnderstandingResult `json:"understandingResults,omitempty"`
-}
-
 // StringValue recognized string field value.
 type StringValue struct {
 	// Value - String value of the recognized field.
 	Value *string `json:"value,omitempty"`
-	// Text - OCR text content of the recognized field.
+	// Text - Extracted text content of the recognized field.
 	Text *string `json:"text,omitempty"`
 	// Elements - List of references to OCR words comprising the recognized field value.
 	Elements *[]ElementReference `json:"elements,omitempty"`
@@ -526,19 +517,20 @@ func (sv StringValue) AsBasicFieldValue() (BasicFieldValue, bool) {
 	return &sv, true
 }
 
-// TextRecognitionResult an object representing a recognized text region
+// TextRecognitionResult text recognition result from a page in the input document.
 type TextRecognitionResult struct {
 	// Page - The 1-based page number of the recognition result.
 	Page *int32 `json:"page,omitempty"`
-	// ClockwiseOrientation - The orientation of the image in degrees in the clockwise direction. Range between [0, 360).
+	// ClockwiseOrientation - The orientation of the image in clockwise direction, measured in degrees between [0, 360).
 	ClockwiseOrientation *float64 `json:"clockwiseOrientation,omitempty"`
-	// Width - The width of the image in pixels or the PDF in inches.
+	// Width - The width of the image/PDF in pixels/inches, respectively.
 	Width *float64 `json:"width,omitempty"`
-	// Height - The height of the image in pixels or the PDF in inches.
+	// Height - The height of the image/PDF in pixels/inches, respectively.
 	Height *float64 `json:"height,omitempty"`
-	// Unit - The unit used in the Width, Height and BoundingBox. For images, the unit is 'pixel'. For PDF, the unit is 'inch'. Possible values include: 'Pixel', 'Inch'
+	// Unit - The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the unit is "inch". Possible values include: 'Pixel', 'Inch'
 	Unit TextRecognitionResultDimensionUnit `json:"unit,omitempty"`
-	// Lines - A list of recognized text lines.
+	// Lines - A list of recognized text lines. The maximum number of lines returned is 300 per page.
+	// The lines are sorted top to bottom, left to right, although in certain cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change across images and OCR version updates. Thus, business logic should be built upon the actual line location instead of order.
 	Lines *[]Line `json:"lines,omitempty"`
 }
 
@@ -578,9 +570,9 @@ type TrainSourceFilter struct {
 // UnderstandingResult a set of extracted fields corresponding to a semantic object, such as a receipt, in
 // the input document.
 type UnderstandingResult struct {
-	// Pages - List of pages where the document is found.
+	// Pages - List of pages where the receipt is found.
 	Pages *[]int32 `json:"pages,omitempty"`
-	// Fields - Dictionary of recognized field values.
+	// Fields - Dictionary of analyzed field values. If a field is not detected, the corresponding field value will be set to null.
 	Fields map[string]*FieldValue `json:"fields"`
 }
 
@@ -599,7 +591,7 @@ func (ur UnderstandingResult) MarshalJSON() ([]byte, error) {
 // Word an object representing a recognized word.
 type Word struct {
 	// BoundingBox - Bounding box of a recognized word.
-	BoundingBox *[]int32 `json:"boundingBox,omitempty"`
+	BoundingBox *[]float64 `json:"boundingBox,omitempty"`
 	// Text - The text content of the word.
 	Text *string `json:"text,omitempty"`
 	// Confidence - Qualitative confidence measure. Possible values include: 'High', 'Low'

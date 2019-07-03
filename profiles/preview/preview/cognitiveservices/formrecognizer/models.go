@@ -21,6 +21,15 @@ package formrecognizer
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/formrecognizer"
 
+type OperationStatusCodes = original.OperationStatusCodes
+
+const (
+	Failed     OperationStatusCodes = original.Failed
+	NotStarted OperationStatusCodes = original.NotStarted
+	Running    OperationStatusCodes = original.Running
+	Succeeded  OperationStatusCodes = original.Succeeded
+)
+
 type Status = original.Status
 
 const (
@@ -45,15 +54,6 @@ const (
 	Status2Success        Status2 = original.Status2Success
 )
 
-type TextOperationStatusCodes = original.TextOperationStatusCodes
-
-const (
-	Failed     TextOperationStatusCodes = original.Failed
-	NotStarted TextOperationStatusCodes = original.NotStarted
-	Running    TextOperationStatusCodes = original.Running
-	Succeeded  TextOperationStatusCodes = original.Succeeded
-)
-
 type TextRecognitionResultConfidenceClass = original.TextRecognitionResultConfidenceClass
 
 const (
@@ -76,10 +76,10 @@ const (
 	ValueTypeStringValue ValueType = original.ValueTypeStringValue
 )
 
+type AnalyzeReceiptResult = original.AnalyzeReceiptResult
 type AnalyzeResult = original.AnalyzeResult
 type BaseClient = original.BaseClient
 type BasicFieldValue = original.BasicFieldValue
-type ComputerVisionError = original.ComputerVisionError
 type ElementReference = original.ElementReference
 type ErrorInformation = original.ErrorInformation
 type ErrorResponse = original.ErrorResponse
@@ -98,7 +98,6 @@ type Line = original.Line
 type ModelResult = original.ModelResult
 type ModelsResult = original.ModelsResult
 type NumberValue = original.NumberValue
-type ReadReceiptResult = original.ReadReceiptResult
 type StringValue = original.StringValue
 type TextRecognitionResult = original.TextRecognitionResult
 type TrainRequest = original.TrainRequest
@@ -113,6 +112,9 @@ func New(endpoint string) BaseClient {
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)
 }
+func PossibleOperationStatusCodesValues() []OperationStatusCodes {
+	return original.PossibleOperationStatusCodesValues()
+}
 func PossibleStatus1Values() []Status1 {
 	return original.PossibleStatus1Values()
 }
@@ -121,9 +123,6 @@ func PossibleStatus2Values() []Status2 {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
-}
-func PossibleTextOperationStatusCodesValues() []TextOperationStatusCodes {
-	return original.PossibleTextOperationStatusCodesValues()
 }
 func PossibleTextRecognitionResultConfidenceClassValues() []TextRecognitionResultConfidenceClass {
 	return original.PossibleTextRecognitionResultConfidenceClassValues()

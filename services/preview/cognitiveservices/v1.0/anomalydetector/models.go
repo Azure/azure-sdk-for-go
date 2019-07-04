@@ -176,8 +176,8 @@ type ChangePointDetectOnTimestampRequest struct {
 type ChangePointDetectOnTimestampResponse struct {
 	// Period - Frequency extracted from the series, zero means no recurrent pattern has been found.
 	Period *int32 `json:"period,omitempty"`
-	// IsChangePoint - Change point property. True means a change point has been detected.
-	IsChangePoint *bool `json:"isChangePoint,omitempty"`
+	// ChangePoint - The closest change point's timestamp.
+	ChangePoint *date.Time `json:"changePoint,omitempty"`
 	// ConfidenceScore - The change point confidence score.
 	ConfidenceScore *float64 `json:"confidenceScore,omitempty"`
 	// Timestamp - Timestamp of a data point (ISO8601 format).

@@ -46,7 +46,8 @@ func NewTimeSeriesClient(endpoint string) TimeSeriesClient {
 	return TimeSeriesClient{New(endpoint)}
 }
 
-// ChangePointDetectOnTimestamp evaluate change point score of every series point between start and end.
+// ChangePointDetectOnTimestamp evaluate change point score before the given timestamp and give the closest change
+// point.
 // Parameters:
 // timeSeriesID - unique id for time series.
 // body - timestamp is needed. Advanced model parameters can also be set in the request if needed.

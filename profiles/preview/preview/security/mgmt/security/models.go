@@ -123,6 +123,16 @@ const (
 	UDP Protocol = original.UDP
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	Canceled       ProvisioningState = original.Canceled
+	Deprovisioning ProvisioningState = original.Deprovisioning
+	Failed         ProvisioningState = original.Failed
+	Provisioning   ProvisioningState = original.Provisioning
+	Succeeded      ProvisioningState = original.Succeeded
+)
+
 type ReportedSeverity = original.ReportedSeverity
 
 const (
@@ -160,10 +170,10 @@ const (
 type State = original.State
 
 const (
-	Failed      State = original.Failed
-	Passed      State = original.Passed
-	Skipped     State = original.Skipped
-	Unsupported State = original.Unsupported
+	StateFailed      State = original.StateFailed
+	StatePassed      State = original.StatePassed
+	StateSkipped     State = original.StateSkipped
+	StateUnsupported State = original.StateUnsupported
 )
 
 type Status = original.Status
@@ -319,6 +329,10 @@ type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStand
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
 type SensitivityLabel = original.SensitivityLabel
+type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
+type ServerVulnerabilityAssessmentClient = original.ServerVulnerabilityAssessmentClient
+type ServerVulnerabilityAssessmentProperties = original.ServerVulnerabilityAssessmentProperties
+type ServerVulnerabilityAssessmentsList = original.ServerVulnerabilityAssessmentsList
 type Setting = original.Setting
 type SettingResource = original.SettingResource
 type SettingsClient = original.SettingsClient
@@ -561,6 +575,12 @@ func NewRegulatoryComplianceStandardsClient(subscriptionID string, ascLocation s
 func NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
 	return original.NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewServerVulnerabilityAssessmentClient(subscriptionID string, ascLocation string) ServerVulnerabilityAssessmentClient {
+	return original.NewServerVulnerabilityAssessmentClient(subscriptionID, ascLocation)
+}
+func NewServerVulnerabilityAssessmentClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ServerVulnerabilityAssessmentClient {
+	return original.NewServerVulnerabilityAssessmentClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewSettingsClient(subscriptionID string, ascLocation string) SettingsClient {
 	return original.NewSettingsClient(subscriptionID, ascLocation)
 }
@@ -647,6 +667,9 @@ func PossiblePricingTierValues() []PricingTier {
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleReportedSeverityValues() []ReportedSeverity {
 	return original.PossibleReportedSeverityValues()

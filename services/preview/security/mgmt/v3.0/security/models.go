@@ -231,6 +231,27 @@ func PossibleProtocolValues() []Protocol {
 	return []Protocol{All, TCP, UDP}
 }
 
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
+
+const (
+	// Canceled ...
+	Canceled ProvisioningState = "Canceled"
+	// Deprovisioning ...
+	Deprovisioning ProvisioningState = "Deprovisioning"
+	// Failed ...
+	Failed ProvisioningState = "Failed"
+	// Provisioning ...
+	Provisioning ProvisioningState = "Provisioning"
+	// Succeeded ...
+	Succeeded ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Canceled, Deprovisioning, Failed, Provisioning, Succeeded}
+}
+
 // ReportedSeverity enumerates the values for reported severity.
 type ReportedSeverity string
 
@@ -307,19 +328,20 @@ func PossibleSettingKindValues() []SettingKind {
 type State string
 
 const (
-	// Failed At least one supported regulatory compliance control in the given standard has a state of failed
-	Failed State = "Failed"
-	// Passed All supported regulatory compliance controls in the given standard have a passed state
-	Passed State = "Passed"
-	// Skipped All supported regulatory compliance controls in the given standard have a state of skipped
-	Skipped State = "Skipped"
-	// Unsupported No supported regulatory compliance data for the given standard
-	Unsupported State = "Unsupported"
+	// StateFailed At least one supported regulatory compliance control in the given standard has a state of
+	// failed
+	StateFailed State = "Failed"
+	// StatePassed All supported regulatory compliance controls in the given standard have a passed state
+	StatePassed State = "Passed"
+	// StateSkipped All supported regulatory compliance controls in the given standard have a state of skipped
+	StateSkipped State = "Skipped"
+	// StateUnsupported No supported regulatory compliance data for the given standard
+	StateUnsupported State = "Unsupported"
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
 func PossibleStateValues() []State {
-	return []State{Failed, Passed, Skipped, Unsupported}
+	return []State{StateFailed, StatePassed, StateSkipped, StateUnsupported}
 }
 
 // Status enumerates the values for status.
@@ -4063,6 +4085,8 @@ type JitNetworkAccessPolicyVirtualMachine struct {
 	ID *string `json:"id,omitempty"`
 	// Ports - Port configurations for the virtual machine
 	Ports *[]JitNetworkAccessPortRule `json:"ports,omitempty"`
+	// PublicIPAddress - Public IP address of the Azure Firewall that is linked to this policy, if applicable
+	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 }
 
 // JitNetworkAccessPortRule ...
@@ -4101,6 +4125,8 @@ type JitNetworkAccessRequestPort struct {
 	Status Status `json:"status,omitempty"`
 	// StatusReason - A description of why the `status` has its value. Possible values include: 'Expired', 'UserRequested', 'NewerRequestInitiated'
 	StatusReason StatusReason `json:"statusReason,omitempty"`
+	// MappedPort - The port which is mapped to this port's `number` in the Azure Firewall, if applicable
+	MappedPort *int32 `json:"mappedPort,omitempty"`
 }
 
 // JitNetworkAccessRequestVirtualMachine ...
@@ -4605,7 +4631,7 @@ type RegulatoryComplianceAssessmentProperties struct {
 	AssessmentType *string `json:"assessmentType,omitempty"`
 	// AssessmentDetailsLink - READ-ONLY; Link to more detailed assessment results data. The response type will be according to the assessmentType field
 	AssessmentDetailsLink *string `json:"assessmentDetailsLink,omitempty"`
-	// State - Aggregative state based on the assessment's scanned resources states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
+	// State - Aggregative state based on the assessment's scanned resources states. Possible values include: 'StatePassed', 'StateFailed', 'StateSkipped', 'StateUnsupported'
 	State State `json:"state,omitempty"`
 	// PassedResources - READ-ONLY; The given assessment's related resources count with passed state.
 	PassedResources *int32 `json:"passedResources,omitempty"`
@@ -4841,7 +4867,7 @@ func NewRegulatoryComplianceControlListPage(getNextPage func(context.Context, Re
 type RegulatoryComplianceControlProperties struct {
 	// Description - READ-ONLY; The description of the regulatory compliance control
 	Description *string `json:"description,omitempty"`
-	// State - Aggregative state based on the control's supported assessments states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
+	// State - Aggregative state based on the control's supported assessments states. Possible values include: 'StatePassed', 'StateFailed', 'StateSkipped', 'StateUnsupported'
 	State State `json:"state,omitempty"`
 	// PassedAssessments - READ-ONLY; The number of supported regulatory compliance assessments of the given control with a passed state
 	PassedAssessments *int32 `json:"passedAssessments,omitempty"`
@@ -5072,7 +5098,7 @@ func NewRegulatoryComplianceStandardListPage(getNextPage func(context.Context, R
 
 // RegulatoryComplianceStandardProperties regulatory compliance standard data
 type RegulatoryComplianceStandardProperties struct {
-	// State - Aggregative state based on the standard's supported controls states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
+	// State - Aggregative state based on the standard's supported controls states. Possible values include: 'StatePassed', 'StateFailed', 'StateSkipped', 'StateUnsupported'
 	State State `json:"state,omitempty"`
 	// PassedControls - READ-ONLY; The number of supported regulatory compliance controls of the given standard with a passed state
 	PassedControls *int32 `json:"passedControls,omitempty"`
@@ -5102,6 +5128,90 @@ type SensitivityLabel struct {
 	Order *float64 `json:"order,omitempty"`
 	// Enabled - Indicates whether the label is enabled or not.
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// ServerVulnerabilityAssessment describes the server vulnerability assessment details on a resource
+type ServerVulnerabilityAssessment struct {
+	autorest.Response                        `json:"-"`
+	*ServerVulnerabilityAssessmentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerVulnerabilityAssessment.
+func (sva ServerVulnerabilityAssessment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sva.ServerVulnerabilityAssessmentProperties != nil {
+		objectMap["properties"] = sva.ServerVulnerabilityAssessmentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServerVulnerabilityAssessment struct.
+func (sva *ServerVulnerabilityAssessment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var serverVulnerabilityAssessmentProperties ServerVulnerabilityAssessmentProperties
+				err = json.Unmarshal(*v, &serverVulnerabilityAssessmentProperties)
+				if err != nil {
+					return err
+				}
+				sva.ServerVulnerabilityAssessmentProperties = &serverVulnerabilityAssessmentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sva.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sva.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sva.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ServerVulnerabilityAssessmentProperties describes ServerVulnerabilityAssessment properties.
+type ServerVulnerabilityAssessmentProperties struct {
+	// ProvisioningState - READ-ONLY; The provisioningState of the vulnerability assessment capability on the VM. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'Provisioning', 'Deprovisioning'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// ServerVulnerabilityAssessmentsList list of server vulnerability assessments
+type ServerVulnerabilityAssessmentsList struct {
+	autorest.Response `json:"-"`
+	Value             *[]ServerVulnerabilityAssessment `json:"value,omitempty"`
 }
 
 // Setting represents a security setting in Azure Security Center.

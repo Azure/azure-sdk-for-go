@@ -40,6 +40,7 @@ type PricingsClientAPI = original.PricingsClientAPI
 type RegulatoryComplianceAssessmentsClientAPI = original.RegulatoryComplianceAssessmentsClientAPI
 type RegulatoryComplianceControlsClientAPI = original.RegulatoryComplianceControlsClientAPI
 type RegulatoryComplianceStandardsClientAPI = original.RegulatoryComplianceStandardsClientAPI
+type ServerVulnerabilityAssessmentClientAPI = original.ServerVulnerabilityAssessmentClientAPI
 type SettingsClientAPI = original.SettingsClientAPI
 type TasksClientAPI = original.TasksClientAPI
 type TopologyClientAPI = original.TopologyClientAPI

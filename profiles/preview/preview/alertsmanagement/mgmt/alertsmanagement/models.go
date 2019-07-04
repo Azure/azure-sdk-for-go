@@ -79,6 +79,13 @@ const (
 	AlertsSummaryGroupByFieldsSignalType       AlertsSummaryGroupByFields = original.AlertsSummaryGroupByFieldsSignalType
 )
 
+type MetadataIdentifier = original.MetadataIdentifier
+
+const (
+	MetadataIdentifierAlertsMetaDataProperties MetadataIdentifier = original.MetadataIdentifierAlertsMetaDataProperties
+	MetadataIdentifierMonitorServiceList       MetadataIdentifier = original.MetadataIdentifierMonitorServiceList
+)
+
 type MonitorCondition = original.MonitorCondition
 
 const (
@@ -217,6 +224,7 @@ type AlertsSummaryGroup = original.AlertsSummaryGroup
 type AlertsSummaryGroupItem = original.AlertsSummaryGroupItem
 type BaseClient = original.BaseClient
 type BasicActionRuleProperties = original.BasicActionRuleProperties
+type BasicAlertsMetaDataProperties = original.BasicAlertsMetaDataProperties
 type Bool = original.Bool
 type Condition = original.Condition
 type Conditions = original.Conditions
@@ -225,6 +233,8 @@ type ErrorResponse = original.ErrorResponse
 type ErrorResponseBody = original.ErrorResponseBody
 type Essentials = original.Essentials
 type ManagedResource = original.ManagedResource
+type MonitorServiceDetails = original.MonitorServiceDetails
+type MonitorServiceList = original.MonitorServiceList
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
@@ -317,6 +327,9 @@ func PossibleAlertsSortByFieldsValues() []AlertsSortByFields {
 }
 func PossibleAlertsSummaryGroupByFieldsValues() []AlertsSummaryGroupByFields {
 	return original.PossibleAlertsSummaryGroupByFieldsValues()
+}
+func PossibleMetadataIdentifierValues() []MetadataIdentifier {
+	return original.PossibleMetadataIdentifierValues()
 }
 func PossibleMonitorConditionValues() []MonitorCondition {
 	return original.PossibleMonitorConditionValues()

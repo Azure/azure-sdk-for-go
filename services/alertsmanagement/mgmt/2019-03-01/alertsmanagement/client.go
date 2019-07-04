@@ -1,4 +1,4 @@
-// Package alertsmanagement implements the Azure ARM Alertsmanagement service API version 2018-05-05-preview.
+// Package alertsmanagement implements the Azure ARM Alertsmanagement service API version 2019-03-01.
 //
 // AlertsManagement Client
 package alertsmanagement
@@ -33,21 +33,23 @@ const (
 type BaseClient struct {
 	autorest.Client
 	BaseURI         string
+	Scope           string
 	SubscriptionID  string
-	MonitorService1 MonitorService
+	SubscriptionID1 string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, monitorService1 MonitorService) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, monitorService1)
+func New(scope string, subscriptionID string, subscriptionID1 string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, scope, subscriptionID, subscriptionID1)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, monitorService1 MonitorService) BaseClient {
+func NewWithBaseURI(baseURI string, scope string, subscriptionID string, subscriptionID1 string) BaseClient {
 	return BaseClient{
 		Client:          autorest.NewClientWithUserAgent(UserAgent()),
 		BaseURI:         baseURI,
+		Scope:           scope,
 		SubscriptionID:  subscriptionID,
-		MonitorService1: monitorService1,
+		SubscriptionID1: subscriptionID1,
 	}
 }

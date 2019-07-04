@@ -133,6 +133,21 @@ func PossibleAlertStateValues() []AlertState {
 	return []AlertState{AlertStateAcknowledged, AlertStateClosed, AlertStateNew}
 }
 
+// MetadataIdentifier enumerates the values for metadata identifier.
+type MetadataIdentifier string
+
+const (
+	// MetadataIdentifierAlertsMetaDataProperties ...
+	MetadataIdentifierAlertsMetaDataProperties MetadataIdentifier = "alertsMetaDataProperties"
+	// MetadataIdentifierMonitorServiceList ...
+	MetadataIdentifierMonitorServiceList MetadataIdentifier = "MonitorServiceList"
+)
+
+// PossibleMetadataIdentifierValues returns an array of possible values for the MetadataIdentifier const type.
+func PossibleMetadataIdentifierValues() []MetadataIdentifier {
+	return []MetadataIdentifier{MetadataIdentifierAlertsMetaDataProperties, MetadataIdentifierMonitorServiceList}
+}
+
 // MonitorCondition enumerates the values for monitor condition.
 type MonitorCondition string
 
@@ -1021,15 +1036,104 @@ func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList
 // AlertsMetaData alert meta data information.
 type AlertsMetaData struct {
 	autorest.Response `json:"-"`
-	Properties        *AlertsMetaDataProperties `json:"properties,omitempty"`
+	Properties        BasicAlertsMetaDataProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertsMetaData struct.
+func (amd *AlertsMetaData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				properties, err := unmarshalBasicAlertsMetaDataProperties(*v)
+				if err != nil {
+					return err
+				}
+				amd.Properties = properties
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicAlertsMetaDataProperties alert meta data property bag
+type BasicAlertsMetaDataProperties interface {
+	AsMonitorServiceList() (*MonitorServiceList, bool)
+	AsAlertsMetaDataProperties() (*AlertsMetaDataProperties, bool)
 }
 
 // AlertsMetaDataProperties alert meta data property bag
 type AlertsMetaDataProperties struct {
-	// MetadataIdentifier - Identification of the information to be retrieved by API call
-	MetadataIdentifier *string `json:"metadataIdentifier,omitempty"`
-	// Data - Array of operations
-	Data *[]interface{} `json:"data,omitempty"`
+	// MetadataIdentifier - Possible values include: 'MetadataIdentifierAlertsMetaDataProperties', 'MetadataIdentifierMonitorServiceList'
+	MetadataIdentifier MetadataIdentifier `json:"metadataIdentifier,omitempty"`
+}
+
+func unmarshalBasicAlertsMetaDataProperties(body []byte) (BasicAlertsMetaDataProperties, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["metadataIdentifier"] {
+	case string(MetadataIdentifierMonitorServiceList):
+		var msl MonitorServiceList
+		err := json.Unmarshal(body, &msl)
+		return msl, err
+	default:
+		var amdp AlertsMetaDataProperties
+		err := json.Unmarshal(body, &amdp)
+		return amdp, err
+	}
+}
+func unmarshalBasicAlertsMetaDataPropertiesArray(body []byte) ([]BasicAlertsMetaDataProperties, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	amdpArray := make([]BasicAlertsMetaDataProperties, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		amdp, err := unmarshalBasicAlertsMetaDataProperties(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		amdpArray[index] = amdp
+	}
+	return amdpArray, nil
+}
+
+// MarshalJSON is the custom marshaler for AlertsMetaDataProperties.
+func (amdp AlertsMetaDataProperties) MarshalJSON() ([]byte, error) {
+	amdp.MetadataIdentifier = MetadataIdentifierAlertsMetaDataProperties
+	objectMap := make(map[string]interface{})
+	if amdp.MetadataIdentifier != "" {
+		objectMap["metadataIdentifier"] = amdp.MetadataIdentifier
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMonitorServiceList is the BasicAlertsMetaDataProperties implementation for AlertsMetaDataProperties.
+func (amdp AlertsMetaDataProperties) AsMonitorServiceList() (*MonitorServiceList, bool) {
+	return nil, false
+}
+
+// AsAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for AlertsMetaDataProperties.
+func (amdp AlertsMetaDataProperties) AsAlertsMetaDataProperties() (*AlertsMetaDataProperties, bool) {
+	return &amdp, true
+}
+
+// AsBasicAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for AlertsMetaDataProperties.
+func (amdp AlertsMetaDataProperties) AsBasicAlertsMetaDataProperties() (BasicAlertsMetaDataProperties, bool) {
+	return &amdp, true
 }
 
 // AlertsSummary summary of alerts based on the input filters and 'groupby' parameters.
@@ -1249,6 +1353,50 @@ func (mr ManagedResource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = mr.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// MonitorServiceDetails details of a monitor service
+type MonitorServiceDetails struct {
+	// Name - Monitor service name
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Monitor service display name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// MonitorServiceList monitor service details
+type MonitorServiceList struct {
+	// Data - Array of operations
+	Data *[]MonitorServiceDetails `json:"data,omitempty"`
+	// MetadataIdentifier - Possible values include: 'MetadataIdentifierAlertsMetaDataProperties', 'MetadataIdentifierMonitorServiceList'
+	MetadataIdentifier MetadataIdentifier `json:"metadataIdentifier,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MonitorServiceList.
+func (msl MonitorServiceList) MarshalJSON() ([]byte, error) {
+	msl.MetadataIdentifier = MetadataIdentifierMonitorServiceList
+	objectMap := make(map[string]interface{})
+	if msl.Data != nil {
+		objectMap["data"] = msl.Data
+	}
+	if msl.MetadataIdentifier != "" {
+		objectMap["metadataIdentifier"] = msl.MetadataIdentifier
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMonitorServiceList is the BasicAlertsMetaDataProperties implementation for MonitorServiceList.
+func (msl MonitorServiceList) AsMonitorServiceList() (*MonitorServiceList, bool) {
+	return &msl, true
+}
+
+// AsAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for MonitorServiceList.
+func (msl MonitorServiceList) AsAlertsMetaDataProperties() (*AlertsMetaDataProperties, bool) {
+	return nil, false
+}
+
+// AsBasicAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for MonitorServiceList.
+func (msl MonitorServiceList) AsBasicAlertsMetaDataProperties() (BasicAlertsMetaDataProperties, bool) {
+	return &msl, true
 }
 
 // Operation operation provided by provider

@@ -46,6 +46,16 @@ const (
 	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
 )
 
+type AvroCompressionCodec = original.AvroCompressionCodec
+
+const (
+	Bzip2   AvroCompressionCodec = original.Bzip2
+	Deflate AvroCompressionCodec = original.Deflate
+	None    AvroCompressionCodec = original.None
+	Snappy  AvroCompressionCodec = original.Snappy
+	Xz      AvroCompressionCodec = original.Xz
+)
+
 type AzureFunctionActivityMethod = original.AzureFunctionActivityMethod
 
 const (
@@ -157,9 +167,9 @@ const (
 type HDInsightActivityDebugInfoOption = original.HDInsightActivityDebugInfoOption
 
 const (
-	Always  HDInsightActivityDebugInfoOption = original.Always
-	Failure HDInsightActivityDebugInfoOption = original.Failure
-	None    HDInsightActivityDebugInfoOption = original.None
+	HDInsightActivityDebugInfoOptionAlways  HDInsightActivityDebugInfoOption = original.HDInsightActivityDebugInfoOptionAlways
+	HDInsightActivityDebugInfoOptionFailure HDInsightActivityDebugInfoOption = original.HDInsightActivityDebugInfoOptionFailure
+	HDInsightActivityDebugInfoOptionNone    HDInsightActivityDebugInfoOption = original.HDInsightActivityDebugInfoOptionNone
 )
 
 type HTTPAuthenticationType = original.HTTPAuthenticationType
@@ -608,6 +618,7 @@ const (
 type TypeBasicCopySink = original.TypeBasicCopySink
 
 const (
+	TypeAvroSink                 TypeBasicCopySink = original.TypeAvroSink
 	TypeAzureBlobFSSink          TypeBasicCopySink = original.TypeAzureBlobFSSink
 	TypeAzureDataExplorerSink    TypeBasicCopySink = original.TypeAzureDataExplorerSink
 	TypeAzureDataLakeStoreSink   TypeBasicCopySink = original.TypeAzureDataLakeStoreSink
@@ -637,6 +648,7 @@ type TypeBasicCopySource = original.TypeBasicCopySource
 const (
 	TypeAmazonMWSSource                TypeBasicCopySource = original.TypeAmazonMWSSource
 	TypeAmazonRedshiftSource           TypeBasicCopySource = original.TypeAmazonRedshiftSource
+	TypeAvroSource                     TypeBasicCopySource = original.TypeAvroSource
 	TypeAzureBlobFSSource              TypeBasicCopySource = original.TypeAzureBlobFSSource
 	TypeAzureDataExplorerSource        TypeBasicCopySource = original.TypeAzureDataExplorerSource
 	TypeAzureDataLakeStoreSource       TypeBasicCopySource = original.TypeAzureDataLakeStoreSource
@@ -709,6 +721,7 @@ type TypeBasicDataset = original.TypeBasicDataset
 const (
 	TypeAmazonMWSObject                TypeBasicDataset = original.TypeAmazonMWSObject
 	TypeAmazonS3Object                 TypeBasicDataset = original.TypeAmazonS3Object
+	TypeAvro                           TypeBasicDataset = original.TypeAvro
 	TypeAzureBlob                      TypeBasicDataset = original.TypeAzureBlob
 	TypeAzureBlobFSFile                TypeBasicDataset = original.TypeAzureBlobFSFile
 	TypeAzureDataExplorerTable         TypeBasicDataset = original.TypeAzureDataExplorerTable
@@ -988,7 +1001,12 @@ type AmazonS3Location = original.AmazonS3Location
 type AmazonS3ReadSettings = original.AmazonS3ReadSettings
 type AppendVariableActivity = original.AppendVariableActivity
 type AppendVariableActivityTypeProperties = original.AppendVariableActivityTypeProperties
+type AvroDataset = original.AvroDataset
+type AvroDatasetTypeProperties = original.AvroDatasetTypeProperties
 type AvroFormat = original.AvroFormat
+type AvroSink = original.AvroSink
+type AvroSource = original.AvroSource
+type AvroWriteSettings = original.AvroWriteSettings
 type AzureBatchLinkedService = original.AzureBatchLinkedService
 type AzureBatchLinkedServiceTypeProperties = original.AzureBatchLinkedServiceTypeProperties
 type AzureBlobDataset = original.AzureBlobDataset
@@ -1788,6 +1806,9 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 }
 func PossibleAuthorizationTypeValues() []AuthorizationType {
 	return original.PossibleAuthorizationTypeValues()
+}
+func PossibleAvroCompressionCodecValues() []AvroCompressionCodec {
+	return original.PossibleAvroCompressionCodecValues()
 }
 func PossibleAzureFunctionActivityMethodValues() []AzureFunctionActivityMethod {
 	return original.PossibleAzureFunctionActivityMethodValues()

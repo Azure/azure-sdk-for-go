@@ -197,6 +197,30 @@ type WorkspaceSettingsClientAPI interface {
 
 var _ WorkspaceSettingsClientAPI = (*security.WorkspaceSettingsClient)(nil)
 
+// IoTSecuritySolutionsClientAPI contains the set of methods on the IoTSecuritySolutionsClient type.
+type IoTSecuritySolutionsClientAPI interface {
+	List(ctx context.Context, filter string) (result security.IoTSecuritySolutionsListPage, err error)
+}
+
+var _ IoTSecuritySolutionsClientAPI = (*security.IoTSecuritySolutionsClient)(nil)
+
+// IoTSecuritySolutionsResourceGroupClientAPI contains the set of methods on the IoTSecuritySolutionsResourceGroupClient type.
+type IoTSecuritySolutionsResourceGroupClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, filter string) (result security.IoTSecuritySolutionsListPage, err error)
+}
+
+var _ IoTSecuritySolutionsResourceGroupClientAPI = (*security.IoTSecuritySolutionsResourceGroupClient)(nil)
+
+// IotSecuritySolutionClientAPI contains the set of methods on the IotSecuritySolutionClient type.
+type IotSecuritySolutionClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData security.IoTSecuritySolutionModel) (result security.IoTSecuritySolutionModel, err error)
+	Delete(ctx context.Context, resourceGroupName string, solutionName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionModel, err error)
+	Update(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData security.UpdateIotSecuritySolutionData) (result security.IoTSecuritySolutionModel, err error)
+}
+
+var _ IotSecuritySolutionClientAPI = (*security.IotSecuritySolutionClient)(nil)
+
 // RegulatoryComplianceStandardsClientAPI contains the set of methods on the RegulatoryComplianceStandardsClient type.
 type RegulatoryComplianceStandardsClientAPI interface {
 	Get(ctx context.Context, regulatoryComplianceStandardName string) (result security.RegulatoryComplianceStandard, err error)

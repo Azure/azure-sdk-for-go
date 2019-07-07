@@ -108,6 +108,32 @@ func PossibleConnectionTypeValues() []ConnectionType {
 	return []ConnectionType{External, Internal}
 }
 
+// DataSource enumerates the values for data source.
+type DataSource string
+
+const (
+	// TwinData Devices twin data
+	TwinData DataSource = "TwinData"
+)
+
+// PossibleDataSourceValues returns an array of possible values for the DataSource const type.
+func PossibleDataSourceValues() []DataSource {
+	return []DataSource{TwinData}
+}
+
+// ExportData enumerates the values for export data.
+type ExportData string
+
+const (
+	// RawEvents Agent raw events
+	RawEvents ExportData = "RawEvents"
+)
+
+// PossibleExportDataValues returns an array of possible values for the ExportData const type.
+func PossibleExportDataValues() []ExportData {
+	return []ExportData{RawEvents}
+}
+
 // ExternalSecuritySolutionKind enumerates the values for external security solution kind.
 type ExternalSecuritySolutionKind string
 
@@ -216,6 +242,76 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Canceled, Deprovisioning, Failed, Provisioning, Succeeded}
 }
 
+// RecommendationConfigStatus enumerates the values for recommendation config status.
+type RecommendationConfigStatus string
+
+const (
+	// Disabled ...
+	Disabled RecommendationConfigStatus = "Disabled"
+	// Enabled ...
+	Enabled RecommendationConfigStatus = "Enabled"
+)
+
+// PossibleRecommendationConfigStatusValues returns an array of possible values for the RecommendationConfigStatus const type.
+func PossibleRecommendationConfigStatusValues() []RecommendationConfigStatus {
+	return []RecommendationConfigStatus{Disabled, Enabled}
+}
+
+// RecommendationType enumerates the values for recommendation type.
+type RecommendationType string
+
+const (
+	// IoTACRAuthentication Authentication schema used for pull an edge module from an ACR repository does not
+	// use Service Prinicpal Authentication.
+	IoTACRAuthentication RecommendationType = "IoT_ACRAuthentication"
+	// IoTAgentSendsUnutilizedMessages IoT agent message size capacity is currently underutilized, causing an
+	// increase in the number of sent messages. Adjust message intervals for better utilization.
+	IoTAgentSendsUnutilizedMessages RecommendationType = "IoT_AgentSendsUnutilizedMessages"
+	// IoTBaseline Identified security related system configuration issues.
+	IoTBaseline RecommendationType = "IoT_Baseline"
+	// IoTEdgeHubMemOptimize You can optimize Edge Hub memory usage by turning off protocol heads for any
+	// protocols not used by Edge modules in your solution.
+	IoTEdgeHubMemOptimize RecommendationType = "IoT_EdgeHubMemOptimize"
+	// IoTEdgeLoggingOptions Logging is disabled for this edge module.
+	IoTEdgeLoggingOptions RecommendationType = "IoT_EdgeLoggingOptions"
+	// IoTInconsistentModuleSettings A minority within a device security group has inconsistent Edge Module
+	// settings with the rest of their group.
+	IoTInconsistentModuleSettings RecommendationType = "IoT_InconsistentModuleSettings"
+	// IoTInstallAgent Install the Azure Security of Things Agent.
+	IoTInstallAgent RecommendationType = "IoT_InstallAgent"
+	// IoTIPFilterDenyAll IP Filter Configuration should have rules defined for allowed traffic and should deny
+	// all other traffic by default.
+	IoTIPFilterDenyAll RecommendationType = "IoT_IPFilter_DenyAll"
+	// IoTIPFilterPermissiveRule An Allow IP Filter rule�s source IP range is too large. Overly permissive
+	// rules might expose your IoT hub to malicious intenders.
+	IoTIPFilterPermissiveRule RecommendationType = "IoT_IPFilter_PermissiveRule"
+	// IoTOpenPorts A listening endpoint was found on the device.
+	IoTOpenPorts RecommendationType = "IoT_OpenPorts"
+	// IoTPermissiveFirewallPolicy An Allowed firewall policy was found (INPUT/OUTPUT). The policy should Deny
+	// all traffic by default and define rules to allow necessary communication to/from the device.
+	IoTPermissiveFirewallPolicy RecommendationType = "IoT_PermissiveFirewallPolicy"
+	// IoTPermissiveInputFirewallRules A rule in the firewall has been found that contains a permissive pattern
+	// for a wide range of IP addresses or Ports.
+	IoTPermissiveInputFirewallRules RecommendationType = "IoT_PermissiveInputFirewallRules"
+	// IoTPermissiveOutputFirewallRules A rule in the firewall has been found that contains a permissive
+	// pattern for a wide range of IP addresses or Ports.
+	IoTPermissiveOutputFirewallRules RecommendationType = "IoT_PermissiveOutputFirewallRules"
+	// IoTPrivilegedDockerOptions Edge module is configured to run in privileged mode, with extensive Linux
+	// capabilities or with host-level network access (send/receive data to host machine).
+	IoTPrivilegedDockerOptions RecommendationType = "IoT_PrivilegedDockerOptions"
+	// IoTSharedCredentials Same authentication credentials to the IoT Hub used by multiple devices. This could
+	// indicate an illegitimate device impersonating a legitimate device. It also exposes the risk of device
+	// impersonation by an attacker.
+	IoTSharedCredentials RecommendationType = "IoT_SharedCredentials"
+	// IoTVulnerableTLSCipherSuite Unsecure TLS configurations detected. Immediate upgrade recommended.
+	IoTVulnerableTLSCipherSuite RecommendationType = "IoT_VulnerableTLSCipherSuite"
+)
+
+// PossibleRecommendationTypeValues returns an array of possible values for the RecommendationType const type.
+func PossibleRecommendationTypeValues() []RecommendationType {
+	return []RecommendationType{IoTACRAuthentication, IoTAgentSendsUnutilizedMessages, IoTBaseline, IoTEdgeHubMemOptimize, IoTEdgeLoggingOptions, IoTInconsistentModuleSettings, IoTInstallAgent, IoTIPFilterDenyAll, IoTIPFilterPermissiveRule, IoTOpenPorts, IoTPermissiveFirewallPolicy, IoTPermissiveInputFirewallRules, IoTPermissiveOutputFirewallRules, IoTPrivilegedDockerOptions, IoTSharedCredentials, IoTVulnerableTLSCipherSuite}
+}
+
 // ReportedSeverity enumerates the values for reported severity.
 type ReportedSeverity string
 
@@ -267,6 +363,21 @@ const (
 // PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
 func PossibleSettingKindValues() []SettingKind {
 	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
+}
+
+// SolutionStatus enumerates the values for solution status.
+type SolutionStatus string
+
+const (
+	// SolutionStatusDisabled ...
+	SolutionStatusDisabled SolutionStatus = "Disabled"
+	// SolutionStatusEnabled ...
+	SolutionStatusEnabled SolutionStatus = "Enabled"
+)
+
+// PossibleSolutionStatusValues returns an array of possible values for the SolutionStatus const type.
+func PossibleSolutionStatusValues() []SolutionStatus {
+	return []SolutionStatus{SolutionStatusDisabled, SolutionStatusEnabled}
 }
 
 // State enumerates the values for state.
@@ -3509,6 +3620,274 @@ type InformationType struct {
 	Keywords *[]InformationProtectionKeyword `json:"keywords,omitempty"`
 }
 
+// IoTSecuritySolutionModel security Solution
+type IoTSecuritySolutionModel struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// Location - The resource location.
+	Location *string `json:"location,omitempty"`
+	// IoTSecuritySolutionProperties - Security Solution data
+	*IoTSecuritySolutionProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IoTSecuritySolutionModel.
+func (itssm IoTSecuritySolutionModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if itssm.Tags != nil {
+		objectMap["tags"] = itssm.Tags
+	}
+	if itssm.Location != nil {
+		objectMap["location"] = itssm.Location
+	}
+	if itssm.IoTSecuritySolutionProperties != nil {
+		objectMap["properties"] = itssm.IoTSecuritySolutionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IoTSecuritySolutionModel struct.
+func (itssm *IoTSecuritySolutionModel) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				itssm.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				itssm.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				itssm.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				itssm.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				itssm.Location = &location
+			}
+		case "properties":
+			if v != nil {
+				var ioTSecuritySolutionProperties IoTSecuritySolutionProperties
+				err = json.Unmarshal(*v, &ioTSecuritySolutionProperties)
+				if err != nil {
+					return err
+				}
+				itssm.IoTSecuritySolutionProperties = &ioTSecuritySolutionProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// IoTSecuritySolutionProperties security Solution setting data
+type IoTSecuritySolutionProperties struct {
+	// Workspace - Workspace resource ID
+	Workspace *string `json:"workspace,omitempty"`
+	// DisplayName - Resource display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Status - Security solution status. Possible values include: 'SolutionStatusEnabled', 'SolutionStatusDisabled'
+	Status SolutionStatus `json:"status,omitempty"`
+	// Export - List of additional export to workspace data options
+	Export *[]ExportData `json:"export,omitempty"`
+	// DisabledDataSources - Disabled data sources. Disabling these data sources compromises the system.
+	DisabledDataSources *[]DataSource `json:"disabledDataSources,omitempty"`
+	// IotHubs - IoT Hub resource IDs
+	IotHubs              *[]string                       `json:"iotHubs,omitempty"`
+	UserDefinedResources *UserDefinedResourcesProperties `json:"userDefinedResources,omitempty"`
+	// AutoDiscoveredResources - READ-ONLY; List of resources that were automatically discovered as relevant to the security solution.
+	AutoDiscoveredResources      *[]string                                `json:"autoDiscoveredResources,omitempty"`
+	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
+}
+
+// IoTSecuritySolutionsList list of iot solutions
+type IoTSecuritySolutionsList struct {
+	autorest.Response `json:"-"`
+	// Value - List of security solutions
+	Value *[]IoTSecuritySolutionModel `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IoTSecuritySolutionsListIterator provides access to a complete listing of IoTSecuritySolutionModel
+// values.
+type IoTSecuritySolutionsListIterator struct {
+	i    int
+	page IoTSecuritySolutionsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IoTSecuritySolutionsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IoTSecuritySolutionsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IoTSecuritySolutionsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IoTSecuritySolutionsListIterator) Response() IoTSecuritySolutionsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IoTSecuritySolutionsListIterator) Value() IoTSecuritySolutionModel {
+	if !iter.page.NotDone() {
+		return IoTSecuritySolutionModel{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IoTSecuritySolutionsListIterator type.
+func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTSecuritySolutionsListIterator {
+	return IoTSecuritySolutionsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (itssl IoTSecuritySolutionsList) IsEmpty() bool {
+	return itssl.Value == nil || len(*itssl.Value) == 0
+}
+
+// ioTSecuritySolutionsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (itssl IoTSecuritySolutionsList) ioTSecuritySolutionsListPreparer(ctx context.Context) (*http.Request, error) {
+	if itssl.NextLink == nil || len(to.String(itssl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(itssl.NextLink)))
+}
+
+// IoTSecuritySolutionsListPage contains a page of IoTSecuritySolutionModel values.
+type IoTSecuritySolutionsListPage struct {
+	fn    func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)
+	itssl IoTSecuritySolutionsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IoTSecuritySolutionsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.itssl)
+	if err != nil {
+		return err
+	}
+	page.itssl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IoTSecuritySolutionsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IoTSecuritySolutionsListPage) NotDone() bool {
+	return !page.itssl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IoTSecuritySolutionsListPage) Response() IoTSecuritySolutionsList {
+	return page.itssl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IoTSecuritySolutionsListPage) Values() []IoTSecuritySolutionModel {
+	if page.itssl.IsEmpty() {
+		return nil
+	}
+	return *page.itssl.Value
+}
+
+// Creates a new instance of the IoTSecuritySolutionsListPage type.
+func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
+	return IoTSecuritySolutionsListPage{fn: getNextPage}
+}
+
 // JitNetworkAccessPoliciesList ...
 type JitNetworkAccessPoliciesList struct {
 	autorest.Response `json:"-"`
@@ -4107,6 +4486,16 @@ type PricingProperties struct {
 	PricingTier PricingTier `json:"pricingTier,omitempty"`
 	// FreeTrialRemainingTime - READ-ONLY; The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
 	FreeTrialRemainingTime *string `json:"freeTrialRemainingTime,omitempty"`
+}
+
+// RecommendationConfigurationProperties recommendation configuration
+type RecommendationConfigurationProperties struct {
+	// RecommendationType - The recommendation type. Possible values include: 'IoTACRAuthentication', 'IoTAgentSendsUnutilizedMessages', 'IoTBaseline', 'IoTEdgeHubMemOptimize', 'IoTEdgeLoggingOptions', 'IoTInconsistentModuleSettings', 'IoTInstallAgent', 'IoTIPFilterDenyAll', 'IoTIPFilterPermissiveRule', 'IoTOpenPorts', 'IoTPermissiveFirewallPolicy', 'IoTPermissiveInputFirewallRules', 'IoTPermissiveOutputFirewallRules', 'IoTPrivilegedDockerOptions', 'IoTSharedCredentials', 'IoTVulnerableTLSCipherSuite'
+	RecommendationType RecommendationType `json:"recommendationType,omitempty"`
+	// Name - READ-ONLY
+	Name *string `json:"name,omitempty"`
+	// Status - Recommendation status. The recommendation is not generated when the status is disabled. Possible values include: 'Disabled', 'Enabled'
+	Status RecommendationConfigStatus `json:"status,omitempty"`
 }
 
 // RegulatoryComplianceAssessment regulatory compliance assessment details and state
@@ -5090,6 +5479,21 @@ func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (Settin
 	return SettingsListPage{fn: getNextPage}
 }
 
+// TagsResource a container holding only the Tags for a resource, allowing the user to update the tags.
+type TagsResource struct {
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TagsResource.
+func (tr TagsResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // Task security task that we recommend to do in order to strengthen security
 type Task struct {
 	autorest.Response `json:"-"`
@@ -5640,6 +6044,37 @@ type TopologySingleResourceChild struct {
 type TopologySingleResourceParent struct {
 	// ResourceID - READ-ONLY; Azure resource id which serves as parent resource in topology view
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// UpdateIotSecuritySolutionData ...
+type UpdateIotSecuritySolutionData struct {
+	UserDefinedResources         *UserDefinedResourcesProperties          `json:"userDefinedResources,omitempty"`
+	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for UpdateIotSecuritySolutionData.
+func (uissd UpdateIotSecuritySolutionData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if uissd.UserDefinedResources != nil {
+		objectMap["userDefinedResources"] = uissd.UserDefinedResources
+	}
+	if uissd.RecommendationsConfiguration != nil {
+		objectMap["recommendationsConfiguration"] = uissd.RecommendationsConfiguration
+	}
+	if uissd.Tags != nil {
+		objectMap["tags"] = uissd.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UserDefinedResourcesProperties properties of the solution's user defined resources.
+type UserDefinedResourcesProperties struct {
+	// Query - Azure Resource Graph query which represents the security solution's user defined resources. Required to start with "where type != "Microsoft.Devices/IotHubs""
+	Query *string `json:"query,omitempty"`
+	// QuerySubscriptions - List of Azure subscription ids on which the user defined resources query should be executed.
+	QuerySubscriptions *[]string `json:"querySubscriptions,omitempty"`
 }
 
 // WorkspaceSetting configures where to store the OMS agent data for workspaces under a scope

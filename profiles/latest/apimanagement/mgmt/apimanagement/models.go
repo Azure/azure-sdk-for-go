@@ -156,6 +156,14 @@ const (
 	System   GroupType = original.System
 )
 
+type HTTPCorrelationProtocol = original.HTTPCorrelationProtocol
+
+const (
+	Legacy HTTPCorrelationProtocol = original.Legacy
+	None   HTTPCorrelationProtocol = original.None
+	W3C    HTTPCorrelationProtocol = original.W3C
+)
+
 type HostnameType = original.HostnameType
 
 const (
@@ -254,9 +262,9 @@ const (
 type ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleType
 
 const (
-	Automatic ResourceSkuCapacityScaleType = original.Automatic
-	Manual    ResourceSkuCapacityScaleType = original.Manual
-	None      ResourceSkuCapacityScaleType = original.None
+	ResourceSkuCapacityScaleTypeAutomatic ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeAutomatic
+	ResourceSkuCapacityScaleTypeManual    ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeManual
+	ResourceSkuCapacityScaleTypeNone      ResourceSkuCapacityScaleType = original.ResourceSkuCapacityScaleTypeNone
 )
 
 type SamplingType = original.SamplingType
@@ -1365,6 +1373,9 @@ func PossibleGrantTypeValues() []GrantType {
 }
 func PossibleGroupTypeValues() []GroupType {
 	return original.PossibleGroupTypeValues()
+}
+func PossibleHTTPCorrelationProtocolValues() []HTTPCorrelationProtocol {
+	return original.PossibleHTTPCorrelationProtocolValues()
 }
 func PossibleHostnameTypeValues() []HostnameType {
 	return original.PossibleHostnameTypeValues()

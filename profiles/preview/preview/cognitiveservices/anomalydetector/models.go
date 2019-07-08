@@ -51,17 +51,17 @@ const (
 type TimeSeriesField = original.TimeSeriesField
 
 const (
-	AnomalyConfidenceScore     TimeSeriesField = original.AnomalyConfidenceScore
-	ChangePointConfidenceScore TimeSeriesField = original.ChangePointConfidenceScore
-	ExpectedValue              TimeSeriesField = original.ExpectedValue
-	IsAnomaly                  TimeSeriesField = original.IsAnomaly
-	IsChangePoint              TimeSeriesField = original.IsChangePoint
-	IsNegativeAnomaly          TimeSeriesField = original.IsNegativeAnomaly
-	IsPositiveAnomaly          TimeSeriesField = original.IsPositiveAnomaly
-	LowerMargin                TimeSeriesField = original.LowerMargin
-	Period                     TimeSeriesField = original.Period
-	UpperMargin                TimeSeriesField = original.UpperMargin
-	Value                      TimeSeriesField = original.Value
+	TimeSeriesFieldAnomalyConfidenceScore     TimeSeriesField = original.TimeSeriesFieldAnomalyConfidenceScore
+	TimeSeriesFieldChangePoint                TimeSeriesField = original.TimeSeriesFieldChangePoint
+	TimeSeriesFieldChangePointConfidenceScore TimeSeriesField = original.TimeSeriesFieldChangePointConfidenceScore
+	TimeSeriesFieldExpectedValue              TimeSeriesField = original.TimeSeriesFieldExpectedValue
+	TimeSeriesFieldIsAnomaly                  TimeSeriesField = original.TimeSeriesFieldIsAnomaly
+	TimeSeriesFieldIsNegativeAnomaly          TimeSeriesField = original.TimeSeriesFieldIsNegativeAnomaly
+	TimeSeriesFieldIsPositiveAnomaly          TimeSeriesField = original.TimeSeriesFieldIsPositiveAnomaly
+	TimeSeriesFieldLowerMargin                TimeSeriesField = original.TimeSeriesFieldLowerMargin
+	TimeSeriesFieldPeriod                     TimeSeriesField = original.TimeSeriesFieldPeriod
+	TimeSeriesFieldUpperMargin                TimeSeriesField = original.TimeSeriesFieldUpperMargin
+	TimeSeriesFieldValue                      TimeSeriesField = original.TimeSeriesFieldValue
 )
 
 type APIError = original.APIError

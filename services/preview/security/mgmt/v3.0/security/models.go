@@ -303,7 +303,7 @@ const (
 	// indicate an illegitimate device impersonating a legitimate device. It also exposes the risk of device
 	// impersonation by an attacker.
 	IoTSharedCredentials RecommendationType = "IoT_SharedCredentials"
-	// IoTVulnerableTLSCipherSuite Unsecure TLS configurations detected. Immediate upgrade recommended.
+	// IoTVulnerableTLSCipherSuite Insecure TLS configurations detected. Immediate upgrade recommended.
 	IoTVulnerableTLSCipherSuite RecommendationType = "IoT_VulnerableTLSCipherSuite"
 )
 

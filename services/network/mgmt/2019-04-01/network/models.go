@@ -22733,6 +22733,8 @@ type PublicIPPrefixPropertiesFormat struct {
 	IPTags *[]IPTag `json:"ipTags,omitempty"`
 	// PrefixLength - The Length of the Public IP Prefix.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
+	// LoadBalancerFrontendIPConfiguration - The frontend ip configuration of the load balancer
+	LoadBalancerFrontendIPConfiguration *SubResource `json:"loadBalancerFrontendIpConfiguration,omitempty"`
 	// IPPrefix - The allocated Prefix.
 	IPPrefix *string `json:"ipPrefix,omitempty"`
 	// PublicIPAddresses - The list of all referenced PublicIPAddresses.

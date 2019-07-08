@@ -6795,8 +6795,8 @@ type BackendAddressPoolPropertiesFormat struct {
 	BackendIPConfigurations *[]InterfaceIPConfiguration `json:"backendIPConfigurations,omitempty"`
 	// LoadBalancingRules - READ-ONLY; Gets load balancing rules that use this backend address pool.
 	LoadBalancingRules *[]SubResource `json:"loadBalancingRules,omitempty"`
-	// OutboundRule - READ-ONLY; Gets outbound rules that use this backend address pool.
-	OutboundRule *SubResource `json:"outboundRule,omitempty"`
+	// OutboundRules - READ-ONLY; Gets outbound rules that use this backend address pool.
+	OutboundRules *SubResource `json:"outboundRules,omitempty"`
 	// ProvisioningState - Get provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }

@@ -262,7 +262,7 @@ type RecommendationType string
 
 const (
 	// IoTACRAuthentication Authentication schema used for pull an edge module from an ACR repository does not
-	// use Service Prinicpal Authentication.
+	// use Service Principal Authentication.
 	IoTACRAuthentication RecommendationType = "IoT_ACRAuthentication"
 	// IoTAgentSendsUnutilizedMessages IoT agent message size capacity is currently underutilized, causing an
 	// increase in the number of sent messages. Adjust message intervals for better utilization.
@@ -282,8 +282,8 @@ const (
 	// IoTIPFilterDenyAll IP Filter Configuration should have rules defined for allowed traffic and should deny
 	// all other traffic by default.
 	IoTIPFilterDenyAll RecommendationType = "IoT_IPFilter_DenyAll"
-	// IoTIPFilterPermissiveRule An Allow IP Filter rule�s source IP range is too large. Overly permissive
-	// rules might expose your IoT hub to malicious intenders.
+	// IoTIPFilterPermissiveRule An Allow IP Filter rules source IP range is too large. Overly permissive rules
+	// might expose your IoT hub to malicious intenders.
 	IoTIPFilterPermissiveRule RecommendationType = "IoT_IPFilter_PermissiveRule"
 	// IoTOpenPorts A listening endpoint was found on the device.
 	IoTOpenPorts RecommendationType = "IoT_OpenPorts"

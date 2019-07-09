@@ -580,3 +580,72 @@ func (client AlertsClient) GetSummaryResponder(resp *http.Response) (result Aler
 	result.Response = autorest.Response{Response: resp}
 	return
 }
+
+// MetaData list alerts meta data information based on value of identifier parameter.
+func (client AlertsClient) MetaData(ctx context.Context) (result AlertsMetaData, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertsClient.MetaData")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.MetaDataPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "MetaData", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.MetaDataSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "MetaData", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.MetaDataResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "alertsmanagement.AlertsClient", "MetaData", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// MetaDataPreparer prepares the MetaData request.
+func (client AlertsClient) MetaDataPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2019-05-05-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+		"identifier":  autorest.Encode("query", "MonitorServiceList"),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPath("/providers/Microsoft.AlertsManagement/alertsMetaData"),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// MetaDataSender sends the MetaData request. The method will close the
+// http.Response Body if it receives an error.
+func (client AlertsClient) MetaDataSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
+		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// MetaDataResponder handles the response to the MetaData request. The method always
+// closes the http.Response Body.
+func (client AlertsClient) MetaDataResponder(resp *http.Response) (result AlertsMetaData, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

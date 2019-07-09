@@ -128,6 +128,14 @@ const (
 	StandardGS5   ContainerServiceVMSizeTypes = original.StandardGS5
 )
 
+type DedicatedHostLicenseTypes = original.DedicatedHostLicenseTypes
+
+const (
+	DedicatedHostLicenseTypesNone                   DedicatedHostLicenseTypes = original.DedicatedHostLicenseTypesNone
+	DedicatedHostLicenseTypesWindowsServerHybrid    DedicatedHostLicenseTypes = original.DedicatedHostLicenseTypesWindowsServerHybrid
+	DedicatedHostLicenseTypesWindowsServerPerpetual DedicatedHostLicenseTypes = original.DedicatedHostLicenseTypesWindowsServerPerpetual
+)
+
 type DiffDiskOptions = original.DiffDiskOptions
 
 const (
@@ -671,6 +679,27 @@ type ContainerServicesDeleteFuture = original.ContainerServicesDeleteFuture
 type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
+type DedicatedHost = original.DedicatedHost
+type DedicatedHostAllocatableVM = original.DedicatedHostAllocatableVM
+type DedicatedHostAvailableCapacity = original.DedicatedHostAvailableCapacity
+type DedicatedHostCapacity = original.DedicatedHostCapacity
+type DedicatedHostGroup = original.DedicatedHostGroup
+type DedicatedHostGroupListResult = original.DedicatedHostGroupListResult
+type DedicatedHostGroupListResultIterator = original.DedicatedHostGroupListResultIterator
+type DedicatedHostGroupListResultPage = original.DedicatedHostGroupListResultPage
+type DedicatedHostGroupProperties = original.DedicatedHostGroupProperties
+type DedicatedHostGroupUpdate = original.DedicatedHostGroupUpdate
+type DedicatedHostGroupsClient = original.DedicatedHostGroupsClient
+type DedicatedHostInstanceView = original.DedicatedHostInstanceView
+type DedicatedHostListResult = original.DedicatedHostListResult
+type DedicatedHostListResultIterator = original.DedicatedHostListResultIterator
+type DedicatedHostListResultPage = original.DedicatedHostListResultPage
+type DedicatedHostProperties = original.DedicatedHostProperties
+type DedicatedHostUpdate = original.DedicatedHostUpdate
+type DedicatedHostsClient = original.DedicatedHostsClient
+type DedicatedHostsCreateOrUpdateFuture = original.DedicatedHostsCreateOrUpdateFuture
+type DedicatedHostsDeleteFuture = original.DedicatedHostsDeleteFuture
+type DedicatedHostsUpdateFuture = original.DedicatedHostsUpdateFuture
 type DiagnosticsProfile = original.DiagnosticsProfile
 type DiffDiskSettings = original.DiffDiskSettings
 type Disallowed = original.Disallowed
@@ -1053,6 +1082,30 @@ func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
 func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
 	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewDedicatedHostGroupListResultIterator(page DedicatedHostGroupListResultPage) DedicatedHostGroupListResultIterator {
+	return original.NewDedicatedHostGroupListResultIterator(page)
+}
+func NewDedicatedHostGroupListResultPage(getNextPage func(context.Context, DedicatedHostGroupListResult) (DedicatedHostGroupListResult, error)) DedicatedHostGroupListResultPage {
+	return original.NewDedicatedHostGroupListResultPage(getNextPage)
+}
+func NewDedicatedHostGroupsClient(subscriptionID string) DedicatedHostGroupsClient {
+	return original.NewDedicatedHostGroupsClient(subscriptionID)
+}
+func NewDedicatedHostGroupsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostGroupsClient {
+	return original.NewDedicatedHostGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDedicatedHostListResultIterator(page DedicatedHostListResultPage) DedicatedHostListResultIterator {
+	return original.NewDedicatedHostListResultIterator(page)
+}
+func NewDedicatedHostListResultPage(getNextPage func(context.Context, DedicatedHostListResult) (DedicatedHostListResult, error)) DedicatedHostListResultPage {
+	return original.NewDedicatedHostListResultPage(getNextPage)
+}
+func NewDedicatedHostsClient(subscriptionID string) DedicatedHostsClient {
+	return original.NewDedicatedHostsClient(subscriptionID)
+}
+func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostsClient {
+	return original.NewDedicatedHostsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewDiskListIterator(page DiskListPage) DiskListIterator {
 	return original.NewDiskListIterator(page)
 }
@@ -1328,6 +1381,9 @@ func PossibleContainerServiceOrchestratorTypesValues() []ContainerServiceOrchest
 }
 func PossibleContainerServiceVMSizeTypesValues() []ContainerServiceVMSizeTypes {
 	return original.PossibleContainerServiceVMSizeTypesValues()
+}
+func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
+	return original.PossibleDedicatedHostLicenseTypesValues()
 }
 func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 	return original.PossibleDiffDiskOptionsValues()

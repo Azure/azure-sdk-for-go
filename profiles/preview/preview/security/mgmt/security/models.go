@@ -137,11 +137,12 @@ const (
 type FileType = original.FileType
 
 const (
-	Dll     FileType = original.Dll
-	Exe     FileType = original.Exe
-	Msi     FileType = original.Msi
-	Script  FileType = original.Script
-	Unknown FileType = original.Unknown
+	Dll        FileType = original.Dll
+	Exe        FileType = original.Exe
+	Executable FileType = original.Executable
+	Msi        FileType = original.Msi
+	Script     FileType = original.Script
+	Unknown    FileType = original.Unknown
 )
 
 type Issue = original.Issue

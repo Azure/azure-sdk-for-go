@@ -262,6 +262,8 @@ const (
 	Dll FileType = "Dll"
 	// Exe ...
 	Exe FileType = "Exe"
+	// Executable ...
+	Executable FileType = "Executable"
 	// Msi ...
 	Msi FileType = "Msi"
 	// Script ...
@@ -272,7 +274,7 @@ const (
 
 // PossibleFileTypeValues returns an array of possible values for the FileType const type.
 func PossibleFileTypeValues() []FileType {
-	return []FileType{Dll, Exe, Msi, Script, Unknown}
+	return []FileType{Dll, Exe, Executable, Msi, Script, Unknown}
 }
 
 // Issue enumerates the values for issue.
@@ -4407,7 +4409,7 @@ type PathRecommendation struct {
 	Common    *bool                 `json:"common,omitempty"`
 	UserSids  *[]string             `json:"userSids,omitempty"`
 	Usernames *[]UserRecommendation `json:"usernames,omitempty"`
-	// FileType - Possible values include: 'Exe', 'Dll', 'Msi', 'Script', 'Unknown'
+	// FileType - Possible values include: 'Exe', 'Dll', 'Msi', 'Script', 'Executable', 'Unknown'
 	FileType FileType `json:"fileType,omitempty"`
 	// ConfigurationStatus - Possible values include: 'ConfigurationStatus1Configured', 'ConfigurationStatus1NotConfigured', 'ConfigurationStatus1InProgress', 'ConfigurationStatus1Failed', 'ConfigurationStatus1NoStatus'
 	ConfigurationStatus ConfigurationStatus1 `json:"configurationStatus,omitempty"`

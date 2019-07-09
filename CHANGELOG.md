@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## `v31.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| alertsmanagement | 2019-03-01 |
+| authorization | 2018-07-01-preview |
+| batch | 2019-04-01 |
+| containerregistry | 2019-06-01-preview |
+| netapp | 2019-06-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| alertsmanagement | 2018-05-05-preview |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| sqlvirtualmachine | 2017-03-01-preview |
+
 ## `v31.0.0`
 
 ### New Packages

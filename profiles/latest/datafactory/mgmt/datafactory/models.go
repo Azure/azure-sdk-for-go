@@ -644,6 +644,7 @@ const (
 	TypeAzurePostgreSQLSource          TypeBasicCopySource = original.TypeAzurePostgreSQLSource
 	TypeAzureSQLSource                 TypeBasicCopySource = original.TypeAzureSQLSource
 	TypeAzureTableSource               TypeBasicCopySource = original.TypeAzureTableSource
+	TypeBinarySource                   TypeBasicCopySource = original.TypeBinarySource
 	TypeBlobSource                     TypeBasicCopySource = original.TypeBlobSource
 	TypeCassandraSource                TypeBasicCopySource = original.TypeCassandraSource
 	TypeConcurSource                   TypeBasicCopySource = original.TypeConcurSource
@@ -719,6 +720,7 @@ const (
 	TypeAzureSQLDWTable                TypeBasicDataset = original.TypeAzureSQLDWTable
 	TypeAzureSQLTable                  TypeBasicDataset = original.TypeAzureSQLTable
 	TypeAzureTable                     TypeBasicDataset = original.TypeAzureTable
+	TypeBinary                         TypeBasicDataset = original.TypeBinary
 	TypeCassandraTable                 TypeBasicDataset = original.TypeCassandraTable
 	TypeConcurObject                   TypeBasicDataset = original.TypeConcurObject
 	TypeCosmosDbMongoDbAPICollection   TypeBasicDataset = original.TypeCosmosDbMongoDbAPICollection
@@ -1093,6 +1095,9 @@ type BasicSsisObjectMetadata = original.BasicSsisObjectMetadata
 type BasicTrigger = original.BasicTrigger
 type BasicTriggerDependencyReference = original.BasicTriggerDependencyReference
 type BasicWebLinkedServiceTypeProperties = original.BasicWebLinkedServiceTypeProperties
+type BinaryDataset = original.BinaryDataset
+type BinaryDatasetTypeProperties = original.BinaryDatasetTypeProperties
+type BinarySource = original.BinarySource
 type BlobEventsTrigger = original.BlobEventsTrigger
 type BlobEventsTriggerTypeProperties = original.BlobEventsTriggerTypeProperties
 type BlobSink = original.BlobSink

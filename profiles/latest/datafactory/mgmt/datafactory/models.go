@@ -126,6 +126,20 @@ const (
 	Succeeded DependencyCondition = original.Succeeded
 )
 
+type DynamicsAuthenticationType = original.DynamicsAuthenticationType
+
+const (
+	Ifd       DynamicsAuthenticationType = original.Ifd
+	Office365 DynamicsAuthenticationType = original.Office365
+)
+
+type DynamicsDeploymentType = original.DynamicsDeploymentType
+
+const (
+	Online            DynamicsDeploymentType = original.Online
+	OnPremisesWithIfd DynamicsDeploymentType = original.OnPremisesWithIfd
+)
+
 type FtpAuthenticationType = original.FtpAuthenticationType
 
 const (
@@ -260,16 +274,16 @@ const (
 type IntegrationRuntimeState = original.IntegrationRuntimeState
 
 const (
-	AccessDenied     IntegrationRuntimeState = original.AccessDenied
-	Initial          IntegrationRuntimeState = original.Initial
-	Limited          IntegrationRuntimeState = original.Limited
-	NeedRegistration IntegrationRuntimeState = original.NeedRegistration
-	Offline          IntegrationRuntimeState = original.Offline
-	Online           IntegrationRuntimeState = original.Online
-	Started          IntegrationRuntimeState = original.Started
-	Starting         IntegrationRuntimeState = original.Starting
-	Stopped          IntegrationRuntimeState = original.Stopped
-	Stopping         IntegrationRuntimeState = original.Stopping
+	IntegrationRuntimeStateAccessDenied     IntegrationRuntimeState = original.IntegrationRuntimeStateAccessDenied
+	IntegrationRuntimeStateInitial          IntegrationRuntimeState = original.IntegrationRuntimeStateInitial
+	IntegrationRuntimeStateLimited          IntegrationRuntimeState = original.IntegrationRuntimeStateLimited
+	IntegrationRuntimeStateNeedRegistration IntegrationRuntimeState = original.IntegrationRuntimeStateNeedRegistration
+	IntegrationRuntimeStateOffline          IntegrationRuntimeState = original.IntegrationRuntimeStateOffline
+	IntegrationRuntimeStateOnline           IntegrationRuntimeState = original.IntegrationRuntimeStateOnline
+	IntegrationRuntimeStateStarted          IntegrationRuntimeState = original.IntegrationRuntimeStateStarted
+	IntegrationRuntimeStateStarting         IntegrationRuntimeState = original.IntegrationRuntimeStateStarting
+	IntegrationRuntimeStateStopped          IntegrationRuntimeState = original.IntegrationRuntimeStateStopped
+	IntegrationRuntimeStateStopping         IntegrationRuntimeState = original.IntegrationRuntimeStateStopping
 )
 
 type IntegrationRuntimeType = original.IntegrationRuntimeType
@@ -290,10 +304,10 @@ const (
 type ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatus
 
 const (
-	ManagedIntegrationRuntimeNodeStatusAvailable   ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusAvailable
-	ManagedIntegrationRuntimeNodeStatusRecycling   ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusRecycling
-	ManagedIntegrationRuntimeNodeStatusStarting    ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusStarting
-	ManagedIntegrationRuntimeNodeStatusUnavailable ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusUnavailable
+	Available   ManagedIntegrationRuntimeNodeStatus = original.Available
+	Recycling   ManagedIntegrationRuntimeNodeStatus = original.Recycling
+	Starting    ManagedIntegrationRuntimeNodeStatus = original.Starting
+	Unavailable ManagedIntegrationRuntimeNodeStatus = original.Unavailable
 )
 
 type MongoDbAuthenticationType = original.MongoDbAuthenticationType
@@ -547,9 +561,9 @@ const (
 type TriggerRuntimeState = original.TriggerRuntimeState
 
 const (
-	TriggerRuntimeStateDisabled TriggerRuntimeState = original.TriggerRuntimeStateDisabled
-	TriggerRuntimeStateStarted  TriggerRuntimeState = original.TriggerRuntimeStateStarted
-	TriggerRuntimeStateStopped  TriggerRuntimeState = original.TriggerRuntimeStateStopped
+	Disabled TriggerRuntimeState = original.Disabled
+	Started  TriggerRuntimeState = original.Started
+	Stopped  TriggerRuntimeState = original.Stopped
 )
 
 type TumblingWindowFrequency = original.TumblingWindowFrequency
@@ -1842,6 +1856,12 @@ func PossibleDb2AuthenticationTypeValues() []Db2AuthenticationType {
 }
 func PossibleDependencyConditionValues() []DependencyCondition {
 	return original.PossibleDependencyConditionValues()
+}
+func PossibleDynamicsAuthenticationTypeValues() []DynamicsAuthenticationType {
+	return original.PossibleDynamicsAuthenticationTypeValues()
+}
+func PossibleDynamicsDeploymentTypeValues() []DynamicsDeploymentType {
+	return original.PossibleDynamicsDeploymentTypeValues()
 }
 func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
 	return original.PossibleFtpAuthenticationTypeValues()

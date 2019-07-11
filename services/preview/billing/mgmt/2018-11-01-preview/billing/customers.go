@@ -44,7 +44,7 @@ func NewCustomersClientWithBaseURI(baseURI string, subscriptionID string) Custom
 // Parameters:
 // billingAccountName - billing Account Id.
 // customerName - customer Id.
-// expand - may be used to expand enabledAzureSkus, serviceProviders.
+// expand - may be used to expand enabledAzureSkus, resellers.
 func (client CustomersClient) Get(ctx context.Context, billingAccountName string, customerName string, expand string) (result Customer, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CustomersClient.Get")

@@ -1299,8 +1299,8 @@ type CustomerProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// EnabledAzureSKUs - Information about the product.
 	EnabledAzureSKUs *[]EnabledAzureSKUs `json:"enabledAzureSKUs,omitempty"`
-	// ServiceProviders - The service providers which are allowed to provide service to this customer.
-	ServiceProviders *[]ServiceProvider `json:"serviceProviders,omitempty"`
+	// Resellers - The resellers which are allowed to provide service to this customer.
+	Resellers *[]Reseller `json:"resellers,omitempty"`
 }
 
 // Department a department resource.
@@ -4021,6 +4021,14 @@ type RecipientTransferProperties struct {
 	DetailedTransferStatus *[]DetailedTransferStatus `json:"detailedTransferStatus,omitempty"`
 }
 
+// Reseller details about a reseller.
+type Reseller struct {
+	// ResellerID - READ-ONLY; The reseller id.
+	ResellerID *string `json:"resellerId,omitempty"`
+	// Description - READ-ONLY; A description of the reseller.
+	Description *string `json:"description,omitempty"`
+}
+
 // Resource the Resource model definition.
 type Resource struct {
 	// ID - READ-ONLY; Resource Id.
@@ -4278,14 +4286,6 @@ func (rdp *RoleDefinitionProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServiceProvider details about a service provider.
-type ServiceProvider struct {
-	// ServiceProviderID - READ-ONLY; The service provider id.
-	ServiceProviderID *string `json:"serviceProviderId,omitempty"`
-	// Description - READ-ONLY; A description of the service provider.
-	Description *string `json:"description,omitempty"`
-}
-
 // SubscriptionProperties the usage context properties.
 type SubscriptionProperties struct {
 	// DisplayName - READ-ONLY; display name.
@@ -4314,10 +4314,10 @@ type SubscriptionProperties struct {
 	SkuID *string `json:"skuId,omitempty"`
 	// SkuDescription - READ-ONLY; The sku description.
 	SkuDescription *string `json:"skuDescription,omitempty"`
-	// ServiceProviderID - The service provider id.
-	ServiceProviderID *string `json:"serviceProviderId,omitempty"`
-	// ServiceProviderDescription - READ-ONLY; The service provider description.
-	ServiceProviderDescription *string `json:"serviceProviderDescription,omitempty"`
+	// ResellerID - The reseller id.
+	ResellerID *string `json:"resellerId,omitempty"`
+	// Description - READ-ONLY; The name of the reseller.
+	Description *string `json:"description,omitempty"`
 }
 
 // SubscriptionsListResult result of listing billing subscriptions summary.

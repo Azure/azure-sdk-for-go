@@ -10072,7 +10072,7 @@ type FunctionEnvelopeProperties struct {
 	InvokeURLTemplate *string `json:"invoke_url_template,omitempty"`
 	// Language - The function language
 	Language *string `json:"language,omitempty"`
-	// IsDisabled - Gets or sets a value indicating whether the function is disabled
+	// IsDisabled - Gets a value indicating whether the function is disabled
 	IsDisabled *bool `json:"isDisabled,omitempty"`
 }
 

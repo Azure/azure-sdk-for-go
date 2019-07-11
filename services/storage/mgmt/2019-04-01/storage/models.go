@@ -1347,13 +1347,13 @@ type CustomDomain struct {
 // DateAfterCreation object to define the number of days after creation.
 type DateAfterCreation struct {
 	// DaysAfterCreationGreaterThan - Integer value indicating the age in days after creation
-	DaysAfterCreationGreaterThan *int32 `json:"daysAfterCreationGreaterThan,omitempty"`
+	DaysAfterCreationGreaterThan *float64 `json:"daysAfterCreationGreaterThan,omitempty"`
 }
 
 // DateAfterModification object to define the number of days after last modification.
 type DateAfterModification struct {
 	// DaysAfterModificationGreaterThan - Integer value indicating the age in days after last modification
-	DaysAfterModificationGreaterThan *int32 `json:"daysAfterModificationGreaterThan,omitempty"`
+	DaysAfterModificationGreaterThan *float64 `json:"daysAfterModificationGreaterThan,omitempty"`
 }
 
 // DeleteRetentionPolicy the blob service properties for soft delete.

@@ -615,6 +615,7 @@ const (
 	TypeAzureSearchIndexSink     TypeBasicCopySink = original.TypeAzureSearchIndexSink
 	TypeAzureSQLSink             TypeBasicCopySink = original.TypeAzureSQLSink
 	TypeAzureTableSink           TypeBasicCopySink = original.TypeAzureTableSink
+	TypeBinarySink               TypeBasicCopySink = original.TypeBinarySink
 	TypeBlobSink                 TypeBasicCopySink = original.TypeBlobSink
 	TypeCopySink                 TypeBasicCopySink = original.TypeCopySink
 	TypeCosmosDbMongoDbAPISink   TypeBasicCopySink = original.TypeCosmosDbMongoDbAPISink
@@ -1097,6 +1098,7 @@ type BasicTriggerDependencyReference = original.BasicTriggerDependencyReference
 type BasicWebLinkedServiceTypeProperties = original.BasicWebLinkedServiceTypeProperties
 type BinaryDataset = original.BinaryDataset
 type BinaryDatasetTypeProperties = original.BinaryDatasetTypeProperties
+type BinarySink = original.BinarySink
 type BinarySource = original.BinarySource
 type BlobEventsTrigger = original.BlobEventsTrigger
 type BlobEventsTriggerTypeProperties = original.BlobEventsTriggerTypeProperties

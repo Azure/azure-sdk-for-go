@@ -924,7 +924,7 @@ type CacheKeyQueryStringActionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
 	// QueryStringBehavior - Caching behavior for the requests. Possible values include: 'Include', 'IncludeAll', 'Exclude', 'ExcludeAll'
 	QueryStringBehavior QueryStringBehavior `json:"queryStringBehavior,omitempty"`
-	// QueryParameters - query parameters to include or exlude. (comma separated)
+	// QueryParameters - query parameters to include or exclude (comma separated).
 	QueryParameters *string `json:"queryParameters,omitempty"`
 }
 
@@ -5896,11 +5896,11 @@ func (ura URLRewriteAction) AsBasicDeliveryRuleAction() (BasicDeliveryRuleAction
 // URLRewriteActionParameters defines the parameters for the url rewrite action.
 type URLRewriteActionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
-	// SourcePattern - define a request URI pattern that identifies the type of requests that may be rewritten. If value is blank, all strings are matched
+	// SourcePattern - define a request URI pattern that identifies the type of requests that may be rewritten. If value is blank, all strings are matched.
 	SourcePattern *string `json:"sourcePattern,omitempty"`
-	// Destination - Define the relative URL to which the above requests will be rewritten by
+	// Destination - Define the relative URL to which the above requests will be rewritten by.
 	Destination *string `json:"destination,omitempty"`
-	// PreserveUnmatchedPath - Whether to preserve unmatched path. Default value is true
+	// PreserveUnmatchedPath - Whether to preserve unmatched path. Default value is true.
 	PreserveUnmatchedPath *bool `json:"preserveUnmatchedPath,omitempty"`
 }
 

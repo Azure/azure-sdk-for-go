@@ -1346,13 +1346,13 @@ type CustomDomain struct {
 
 // DateAfterCreation object to define the number of days after creation.
 type DateAfterCreation struct {
-	// DaysAfterCreationGreaterThan - Integer value indicating the age in days after creation
+	// DaysAfterCreationGreaterThan - Value indicating the age in days after creation
 	DaysAfterCreationGreaterThan *float64 `json:"daysAfterCreationGreaterThan,omitempty"`
 }
 
 // DateAfterModification object to define the number of days after last modification.
 type DateAfterModification struct {
-	// DaysAfterModificationGreaterThan - Integer value indicating the age in days after last modification
+	// DaysAfterModificationGreaterThan - Value indicating the age in days after last modification
 	DaysAfterModificationGreaterThan *float64 `json:"daysAfterModificationGreaterThan,omitempty"`
 }
 

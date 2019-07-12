@@ -1,0 +1,46 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+variables:
+  GOROOT: '/usr/local/go1.12'
+  GOPATH: '$(system.defaultWorkingDirectory)/work'
+  sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
+
+steps:
+- script: |
+    set -e
+    mkdir -p '$(GOPATH)/bin'
+    mkdir -p '$(sdkPath)'
+    shopt -s extglob
+    mv !(work) '$(sdkPath)'
+    echo '##vso[task.prependpath]$(GOROOT)/bin'
+    echo '##vso[task.prependpath]$(GOPATH)/bin'
+  displayName: 'Create Go Workspace'
+- script: |
+    set -e
+    curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+    dep ensure -v
+    go install ./vendor/golang.org/x/lint/golint
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Install Dependencies'
+- script: go vet $(go list ./... | grep -v vendor)
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Vet'
+- script: go build -v $(go list ./... | grep -v vendor)
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Build'
+- script: grep -L -r --include *.go --exclude-dir vendor -P "Copyright (\d{4}|\(c\)) Microsoft" ./ | tee >&2
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Copyright Header Check'
+  failOnStderr: true
+  condition: succeededOrFailed()
+- script: gofmt -s -l -w $(go list ./... | grep -v vendor) >&2
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Format Check'
+  failOnStderr: true
+  condition: succeededOrFailed()
+- script: golint $(go list ./... | grep -v vendor) >&2
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Linter Check'
+  failOnStderr: true
+  condition: succeededOrFailed()

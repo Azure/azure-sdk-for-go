@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -57,6 +58,13 @@ func (client DedicatedHostGroupsClient) CreateOrUpdate(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.DedicatedHostGroupProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.DedicatedHostGroupProperties.PlatformFaultDomainCount", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("compute.DedicatedHostGroupsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, hostGroupName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DedicatedHostGroupsClient", "CreateOrUpdate", nil, "Failure preparing request")

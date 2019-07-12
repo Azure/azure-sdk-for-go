@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -45,7 +46,7 @@ func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string) D
 // resourceGroupName - the name of the resource group.
 // hostGroupName - the name of the dedicated host group.
 // hostName - the name of the dedicated host .
-// parameters - parameters supplied to the Create Dedicated Host .
+// parameters - parameters supplied to the Create Dedicated Host.
 func (client DedicatedHostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost) (result DedicatedHostsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedHostsClient.CreateOrUpdate")
@@ -57,6 +58,12 @@ func (client DedicatedHostsClient) CreateOrUpdate(ctx context.Context, resourceG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("compute.DedicatedHostsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, hostGroupName, hostName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsClient", "CreateOrUpdate", nil, "Failure preparing request")

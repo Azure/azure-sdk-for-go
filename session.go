@@ -45,7 +45,7 @@ type (
 	}
 
 	lockedRPC struct {
-		rpcClient   *amqp.Client
+		rpcClient   *rpcClient
 		rpcClientMu sync.Mutex
 	}
 
@@ -202,7 +202,24 @@ func (qs *QueueSession) ReceiveDeferred(ctx context.Context, handler Handler, se
 	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.ReceiveDeferred")
 	defer span.End()
 
-	return receiveDeferred(ctx, qs, handler, sequenceNumbers...)
+	if err := qs.ensureRPCClient(ctx); err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	messages, err := qs.rpcClient.ReceiveDeferred(ctx, sequenceNumbers...)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	for _, msg := range messages {
+		if err := handler.Handle(ctx, msg); err != nil {
+			tab.For(ctx).Error(err)
+			return err
+		}
+	}
+	return nil
 }
 
 // Send the message to the queue within a session
@@ -260,28 +277,6 @@ func (qs *QueueSession) ManagementPath() string {
 	return qs.builder.ManagementPath()
 }
 
-func (qs *QueueSession) getSessionFilterID() (*string, bool) {
-	return qs.sessionID, true
-}
-
-func (qs *QueueSession) getRPCClient(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.getRPCClient")
-	defer span.End()
-
-	if err := qs.ensureRPCClient(ctx); err != nil {
-		return nil, err
-	}
-
-	return qs.rpcClient, nil
-}
-
-func (qs *QueueSession) newRPCClient(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.newRPCClient")
-	defer span.End()
-
-	return qs.builder.newRPCClient(ctx)
-}
-
 func (qs *QueueSession) ensureRPCClient(ctx context.Context) error {
 	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.ensureRPCConn")
 	defer span.End()
@@ -293,8 +288,9 @@ func (qs *QueueSession) ensureRPCClient(ctx context.Context) error {
 		return nil
 	}
 
-	client, err := qs.builder.newRPCClient(ctx)
+	client, err := newRPCClient(ctx, qs.builder, rpcClientWithSession(qs.sessionID))
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -315,6 +311,7 @@ func (qs *QueueSession) ensureSender(ctx context.Context) error {
 
 	s, err := qs.builder.NewSender(ctx, SenderWithSession(qs.sessionID))
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -391,7 +388,6 @@ func (ss *SubscriptionSession) ReceiveOne(ctx context.Context, handler SessionHa
 		if err != nil {
 			tab.For(ctx).Error(err)
 			_ = ss.receiver.Close(ctx)
-
 		}
 		return err
 	case <-ms.done:
@@ -422,7 +418,24 @@ func (ss *SubscriptionSession) ReceiveDeferred(ctx context.Context, handler Hand
 	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.ReceiveDeferred")
 	defer span.End()
 
-	return receiveDeferred(ctx, ss.builder, handler, sequenceNumbers...)
+	if err := ss.ensureRPCClient(ctx); err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	messages, err := ss.rpcClient.ReceiveDeferred(ctx, sequenceNumbers...)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	for _, msg := range messages {
+		if err := handler.Handle(ctx, msg); err != nil {
+			tab.For(ctx).Error(err)
+			return err
+		}
+	}
+	return nil
 }
 
 // Close the underlying connection to Service Bus
@@ -474,28 +487,6 @@ func (ss *SubscriptionSession) ManagementPath() string {
 	return ss.builder.ManagementPath()
 }
 
-func (ss *SubscriptionSession) getSessionFilterID() (*string, bool) {
-	return ss.sessionID, true
-}
-
-func (ss *SubscriptionSession) newRPCClient(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.newClient")
-	defer span.End()
-
-	return ss.builder.newRPCClient(ctx)
-}
-
-func (ss *SubscriptionSession) getRPCClient(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.getRPCClient")
-	defer span.End()
-
-	if err := ss.ensureRPCClient(ctx); err != nil {
-		return nil, err
-	}
-
-	return ss.rpcClient, nil
-}
-
 func (ss *SubscriptionSession) ensureRPCClient(ctx context.Context) error {
 	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.ensureRpcConn")
 	defer span.End()
@@ -507,8 +498,9 @@ func (ss *SubscriptionSession) ensureRPCClient(ctx context.Context) error {
 		return nil
 	}
 
-	client, err := ss.builder.newRPCClient(ctx)
+	client, err := newRPCClient(ctx, ss.builder, rpcClientWithSession(ss.sessionID))
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 

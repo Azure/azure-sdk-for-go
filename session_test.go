@@ -6,7 +6,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"pack.ag/amqp"
 )
 
 type (
@@ -30,19 +29,14 @@ func (m *MockedBuilder) NewSender(ctx context.Context, opts ...SenderOption) (*S
 	return args.Get(0).(*Sender), args.Error(1)
 }
 
-func (m *MockedBuilder) newRPCClient(ctx context.Context) (*amqp.Client, error) {
-	args := m.Called(ctx)
-	return args.Get(0).(*amqp.Client), args.Error(1)
-}
-
-func (m *MockedBuilder) getRPCClient(ctx context.Context) (*amqp.Client, error) {
-	args := m.Called(ctx)
-	return args.Get(0).(*amqp.Client), args.Error(1)
-}
-
-func (m *MockedBuilder) getSessionFilterID() (*string, bool) {
+func (m *MockedBuilder) Namespace() *Namespace {
 	args := m.Called()
-	return args.Get(0).(*string), args.Bool(1)
+	return args.Get(0).(*Namespace)
+}
+
+func (m *MockedBuilder) getEntity() *entity {
+	args := m.Called()
+	return args.Get(0).(*entity)
 }
 
 func TestQueueSession_SessionID(t *testing.T) {

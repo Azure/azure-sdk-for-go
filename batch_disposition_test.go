@@ -42,7 +42,9 @@ func TestBatchDispositionUnsupportedStatus(t *testing.T) {
 		Status: status,
 	}
 
-	subscription := Subscription{}
+	subscription := Subscription{
+		receivingEntity: newReceivingEntity(newEntity("foo", "bar", nil)),
+	}
 	err := subscription.SendBatchDisposition(context.Background(), bdi)
 	be := err.(BatchDispositionError)
 	assert.NotNil(t, be, fmt.Sprintf("Wrong error type %T", err))

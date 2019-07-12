@@ -41,7 +41,7 @@ var _ SkusClientAPI = (*storage.SkusClient)(nil)
 type AccountsClientAPI interface {
 	CheckNameAvailability(ctx context.Context, accountName storage.AccountCheckNameAvailabilityParameters) (result storage.CheckNameAvailabilityResult, err error)
 	Create(ctx context.Context, resourceGroupName string, accountName string, parameters storage.AccountCreateParameters) (result storage.AccountsCreateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string) (result storage.SetObject, err error)
 	Failover(ctx context.Context, resourceGroupName string, accountName string) (result storage.AccountsFailoverFuture, err error)
 	GetProperties(ctx context.Context, resourceGroupName string, accountName string, expand storage.AccountExpand) (result storage.Account, err error)
 	List(ctx context.Context) (result storage.AccountListResult, err error)
@@ -66,7 +66,7 @@ var _ UsagesClientAPI = (*storage.UsagesClient)(nil)
 // ManagementPoliciesClientAPI contains the set of methods on the ManagementPoliciesClient type.
 type ManagementPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, properties storage.ManagementPolicy) (result storage.ManagementPolicy, err error)
-	Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string) (result storage.SetObject, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result storage.ManagementPolicy, err error)
 }
 

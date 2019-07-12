@@ -971,7 +971,7 @@ type AccountsFailoverFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *AccountsFailoverFuture) Result(client AccountsClient) (ar autorest.Response, err error) {
+func (future *AccountsFailoverFuture) Result(client AccountsClient) (so SetObject, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -982,7 +982,13 @@ func (future *AccountsFailoverFuture) Result(client AccountsClient) (ar autorest
 		err = azure.NewAsyncOpIncompleteError("storage.AccountsFailoverFuture")
 		return
 	}
-	ar.Response = future.Response()
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so, err = client.FailoverResponder(so.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storage.AccountsFailoverFuture", "Result", so.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 

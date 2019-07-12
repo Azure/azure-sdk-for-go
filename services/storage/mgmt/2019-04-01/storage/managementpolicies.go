@@ -149,13 +149,13 @@ func (client ManagementPoliciesClient) CreateOrUpdateResponder(resp *http.Respon
 // insensitive.
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-func (client ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
+func (client ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagementPoliciesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -181,7 +181,7 @@ func (client ManagementPoliciesClient) Delete(ctx context.Context, resourceGroup
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "storage.ManagementPoliciesClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -225,13 +225,14 @@ func (client ManagementPoliciesClient) DeleteSender(req *http.Request) (*http.Re
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ManagementPoliciesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ManagementPoliciesClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

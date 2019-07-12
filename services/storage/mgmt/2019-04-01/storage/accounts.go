@@ -240,13 +240,13 @@ func (client AccountsClient) CreateResponder(resp *http.Response) (result SetObj
 // insensitive.
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
+func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -272,7 +272,7 @@ func (client AccountsClient) Delete(ctx context.Context, resourceGroupName strin
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "storage.AccountsClient", "Delete", resp, "Failure sending request")
 		return
 	}
@@ -315,13 +315,14 @@ func (client AccountsClient) DeleteSender(req *http.Request) (*http.Response, er
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AccountsClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -408,13 +409,14 @@ func (client AccountsClient) FailoverSender(req *http.Request) (future AccountsF
 
 // FailoverResponder handles the response to the Failover request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) FailoverResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AccountsClient) FailoverResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 

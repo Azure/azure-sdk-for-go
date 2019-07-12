@@ -20,7 +20,7 @@ steps:
     set -e
     curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
     dep ensure -v
-    go install ./vendor/golang.org/x/lint/golint
+    go get -u golang.org/x/lint/golint
   workingDirectory: '$(sdkPath)'
   displayName: 'Install Dependencies'
 - script: go vet $(go list ./... | grep -v vendor)
@@ -34,12 +34,12 @@ steps:
   displayName: 'Copyright Header Check'
   failOnStderr: true
   condition: succeededOrFailed()
-- script: gofmt -s -l -w $(go list ./... | grep -v vendor) >&2
+- script: gofmt -s -l -w $(find . -path ./vendor -prune -o -name '*.go' -print) >&2
   workingDirectory: '$(sdkPath)'
   displayName: 'Format Check'
   failOnStderr: true
   condition: succeededOrFailed()
-- script: golint $(go list ./... | grep -v vendor) >&2
+- script: golint $(find . -path ./vendor -prune -o -name '*.go' -print) >&2
   workingDirectory: '$(sdkPath)'
   displayName: 'Linter Check'
   failOnStderr: true

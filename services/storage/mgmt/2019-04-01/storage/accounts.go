@@ -223,7 +223,7 @@ func (client AccountsClient) CreateSender(req *http.Request) (future AccountsCre
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client AccountsClient) CreateResponder(resp *http.Response) (result Account, err error) {
+func (client AccountsClient) CreateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

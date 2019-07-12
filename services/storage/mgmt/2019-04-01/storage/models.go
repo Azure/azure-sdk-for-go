@@ -942,7 +942,7 @@ type AccountsCreateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, err error) {
+func (future *AccountsCreateFuture) Result(client AccountsClient) (so SetObject, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -954,10 +954,10 @@ func (future *AccountsCreateFuture) Result(client AccountsClient) (a Account, er
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.CreateResponder(a.Response.Response)
+	if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so, err = client.CreateResponder(so.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", a.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", so.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2251,6 +2251,12 @@ type ServiceSasParameters struct {
 type ServiceSpecification struct {
 	// MetricSpecifications - Metric specifications of operation.
 	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
+}
+
+// SetObject ...
+type SetObject struct {
+	autorest.Response `json:"-"`
+	Value             interface{} `json:"value,omitempty"`
 }
 
 // Sku the SKU of the storage account.

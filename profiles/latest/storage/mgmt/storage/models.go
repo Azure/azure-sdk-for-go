@@ -352,6 +352,7 @@ type Restriction = original.Restriction
 type SKUCapability = original.SKUCapability
 type ServiceSasParameters = original.ServiceSasParameters
 type ServiceSpecification = original.ServiceSpecification
+type SetObject = original.SetObject
 type Sku = original.Sku
 type SkuListResult = original.SkuListResult
 type SkusClient = original.SkusClient

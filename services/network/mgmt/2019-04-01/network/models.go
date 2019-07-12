@@ -7093,7 +7093,7 @@ func (bh *BastionHost) UnmarshalJSON(body []byte) error {
 type BastionHostIPConfiguration struct {
 	// BastionHostIPConfigurationPropertiesFormat - Represents the ip configuration associated with the resource.
 	*BastionHostIPConfigurationPropertiesFormat `json:"properties,omitempty"`
-	// Name - READ-ONLY; Name of the resource that is unique within a resource group. This name can be used to access the resource.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -7108,6 +7108,9 @@ func (bhic BastionHostIPConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if bhic.BastionHostIPConfigurationPropertiesFormat != nil {
 		objectMap["properties"] = bhic.BastionHostIPConfigurationPropertiesFormat
+	}
+	if bhic.Name != nil {
+		objectMap["name"] = bhic.Name
 	}
 	if bhic.ID != nil {
 		objectMap["id"] = bhic.ID

@@ -277,14 +277,14 @@ func Test_updateGoModVerB(t *testing.T) {
 
 func cleanTestData() {
 	cmd := exec.Command("git", "clean", "-xdf", "../../testdata")
-	err := cmd.Run()
+	output, err := cmd.CombinedOutput()
 	if err != nil {
-		panic(err)
+		panic(string(output))
 	}
 	cmd = exec.Command("git", "checkout", "--", "../../testdata")
-	err = cmd.Run()
+	output, err = cmd.CombinedOutput()
 	if err != nil {
-		panic(err)
+		panic(string(output))
 	}
 }
 

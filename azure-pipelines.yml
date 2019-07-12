@@ -39,7 +39,10 @@ steps:
   displayName: 'Format Check'
   failOnStderr: true
   condition: succeededOrFailed()
-- script: golint $(find . -path ./vendor -prune -o -name '*.go' -print) >&2
+- script: |
+    golint $(find ./services -path ./vendor -prune -o -name '*.go' -print) >&2
+    golint $(find ./storage -path ./vendor -prune -o -name '*.go' -print) >&2
+    golint $(find ./tools -path ./vendor -prune -o -name '*.go' -print) >&2
   workingDirectory: '$(sdkPath)'
   displayName: 'Linter Check'
   failOnStderr: true

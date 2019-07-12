@@ -69,23 +69,23 @@ func TestLatestTrackerAPIVer(t *testing.T) {
 		result int
 	}
 	tests := []tc{
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/abc/2019-01-01/abc",
 			result: 1,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/abc/2018-05-11/abc",
 			result: -1,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/abc/2019-07-13/abc",
 			result: 0,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/def/2015-03-01/def",
 			result: 1,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/def/2017-10-01/def",
 			result: 0,
 		},
@@ -123,43 +123,43 @@ func TestLatestTrackerModVer(t *testing.T) {
 		result int
 	}
 	tests := []tc{
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/abc/2019-01-01/abc",
 			result: 1,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/abc/2018-05-11/abc",
 			result: -1,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/abc/2019-01-01/abc/v2",
 			result: 0,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/abc/2019-07-13/abc",
 			result: 0,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/abc/2019-07-13/abc/v2",
 			result: 0,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/def/2015-03-01/def",
 			result: 1,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/def/2017-10-01/def",
 			result: 0,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/def/2015-03-01/def/v2",
 			result: -1,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/def/2017-10-01/def/v2",
 			result: 0,
 		},
-		tc{
+		{
 			input:  "/work/src/github.com/Azure/azure-sdk-for-go/services/def/2017-10-01/def/v3",
 			result: 0,
 		},

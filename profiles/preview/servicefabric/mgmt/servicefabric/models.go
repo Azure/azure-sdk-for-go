@@ -36,6 +36,13 @@ const (
 	SharedProcess    ArmServicePackageActivationMode = original.SharedProcess
 )
 
+type ArmUpgradeFailureAction = original.ArmUpgradeFailureAction
+
+const (
+	Manual   ArmUpgradeFailureAction = original.Manual
+	Rollback ArmUpgradeFailureAction = original.Rollback
+)
+
 type ClusterState = original.ClusterState
 
 const (
@@ -184,8 +191,8 @@ const (
 type UpgradeMode = original.UpgradeMode
 
 const (
-	Automatic UpgradeMode = original.Automatic
-	Manual    UpgradeMode = original.Manual
+	UpgradeModeAutomatic UpgradeMode = original.UpgradeModeAutomatic
+	UpgradeModeManual    UpgradeMode = original.UpgradeModeManual
 )
 
 type UpgradeMode1 = original.UpgradeMode1
@@ -246,6 +253,8 @@ type ApplicationsCreateFuture = original.ApplicationsCreateFuture
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
 type ApplicationsUpdateFuture = original.ApplicationsUpdateFuture
 type ArmApplicationHealthPolicy = original.ArmApplicationHealthPolicy
+type ArmRollingUpgradeMonitoringPolicy = original.ArmRollingUpgradeMonitoringPolicy
+type ArmServiceTypeHealthPolicy = original.ArmServiceTypeHealthPolicy
 type AvailableOperationDisplay = original.AvailableOperationDisplay
 type AzureActiveDirectory = original.AzureActiveDirectory
 type BaseClient = original.BaseClient
@@ -285,7 +294,6 @@ type OperationsClient = original.OperationsClient
 type PartitionSchemeDescription = original.PartitionSchemeDescription
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
-type RollingUpgradeMonitoringPolicy = original.RollingUpgradeMonitoringPolicy
 type ServerCertificateCommonName = original.ServerCertificateCommonName
 type ServerCertificateCommonNames = original.ServerCertificateCommonNames
 type ServiceCorrelationDescription = original.ServiceCorrelationDescription
@@ -368,6 +376,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleArmServicePackageActivationModeValues() []ArmServicePackageActivationMode {
 	return original.PossibleArmServicePackageActivationModeValues()
+}
+func PossibleArmUpgradeFailureActionValues() []ArmUpgradeFailureAction {
+	return original.PossibleArmUpgradeFailureActionValues()
 }
 func PossibleClusterStateValues() []ClusterState {
 	return original.PossibleClusterStateValues()

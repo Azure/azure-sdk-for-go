@@ -81,7 +81,7 @@ func (client ApplicationsClient) CreatePreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01-preview"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -162,7 +162,7 @@ func (client ApplicationsClient) DeletePreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01-preview"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -247,7 +247,7 @@ func (client ApplicationsClient) GetPreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01-preview"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -325,7 +325,7 @@ func (client ApplicationsClient) ListPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01-preview"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -399,7 +399,7 @@ func (client ApplicationsClient) UpdatePreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01-preview"
+	const APIVersion = "2019-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -429,7 +429,7 @@ func (client ApplicationsClient) UpdateSender(req *http.Request) (future Applica
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ApplicationsClient) UpdateResponder(resp *http.Response) (result ApplicationResourceUpdate, err error) {
+func (client ApplicationsClient) UpdateResponder(resp *http.Response) (result ApplicationResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

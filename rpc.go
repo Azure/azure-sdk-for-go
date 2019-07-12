@@ -103,7 +103,7 @@ func (r *rpcClient) ensureConn(ctx context.Context) error {
 	return err
 }
 
-func (r *rpcClient) ReceiveDeferred(ctx context.Context, sequenceNumbers ...int64) ([]*Message, error) {
+func (r *rpcClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers ...int64) ([]*Message, error) {
 	ctx, span := startConsumerSpanFromContext(ctx, "sb.rpcClient.ReceiveDeferred")
 	defer span.End()
 
@@ -119,7 +119,7 @@ func (r *rpcClient) ReceiveDeferred(ctx context.Context, sequenceNumbers ...int6
 
 	values := map[string]interface{}{
 		"sequence-numbers":     sequenceNumbers,
-		"receiver-settle-mode": uint32(1), // pick up messages with peek lock
+		"receiver-settle-mode": uint32(mode), // pick up messages with peek lock
 	}
 
 	var opts []rpc.LinkOption

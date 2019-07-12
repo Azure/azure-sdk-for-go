@@ -198,7 +198,7 @@ func (qs *QueueSession) ReceiveOne(ctx context.Context, handler SessionHandler) 
 //
 // Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
 // processed, while leaving those messages safely in the message store for which processing needs to be postponed.
-func (qs *QueueSession) ReceiveDeferred(ctx context.Context, handler Handler, sequenceNumbers ...int64) error {
+func (qs *QueueSession) ReceiveDeferred(ctx context.Context, handler Handler, mode ReceiveMode, sequenceNumbers ...int64) error {
 	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.ReceiveDeferred")
 	defer span.End()
 
@@ -207,7 +207,7 @@ func (qs *QueueSession) ReceiveDeferred(ctx context.Context, handler Handler, se
 		return err
 	}
 
-	messages, err := qs.rpcClient.ReceiveDeferred(ctx, sequenceNumbers...)
+	messages, err := qs.rpcClient.ReceiveDeferred(ctx, mode, sequenceNumbers...)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
@@ -414,7 +414,7 @@ func (ss *SubscriptionSession) ReceiveOne(ctx context.Context, handler SessionHa
 //
 // Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
 // processed, while leaving those messages safely in the message store for which processing needs to be postponed.
-func (ss *SubscriptionSession) ReceiveDeferred(ctx context.Context, handler Handler, sequenceNumbers ...int64) error {
+func (ss *SubscriptionSession) ReceiveDeferred(ctx context.Context, handler Handler, mode ReceiveMode, sequenceNumbers ...int64) error {
 	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.ReceiveDeferred")
 	defer span.End()
 
@@ -423,7 +423,7 @@ func (ss *SubscriptionSession) ReceiveDeferred(ctx context.Context, handler Hand
 		return err
 	}
 
-	messages, err := ss.rpcClient.ReceiveDeferred(ctx, sequenceNumbers...)
+	messages, err := ss.rpcClient.ReceiveDeferred(ctx, mode, sequenceNumbers...)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err

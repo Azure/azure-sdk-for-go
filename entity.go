@@ -140,13 +140,39 @@ func (re *receivingEntity) ReceiveDeferred(ctx context.Context, handler Handler,
 	ctx, span := re.startSpanFromContext(ctx, "sb.receivingEntity.ReceiveDeferred")
 	defer span.End()
 
+	return re.ReceiveDeferredWithMode(ctx, handler, PeekLockMode, sequenceNumbers...)
+}
+
+// ReceiveDeferredWithMode will receive and handle a set of deferred messages
+//
+// When a queue or subscription client receives a message that it is willing to process, but for which processing is
+// not currently possible due to special circumstances inside of the application, it has the option of "deferring"
+// retrieval of the message to a later point. The message remains in the queue or subscription, but it is set aside.
+//
+// Deferral is a feature specifically created for workflow processing scenarios. Workflow frameworks may require certain
+// operations to be processed in a particular order, and may have to postpone processing of some received messages
+// until prescribed prior work that is informed by other messages has been completed.
+//
+// A simple illustrative example is an order processing sequence in which a payment notification from an external
+// payment provider appears in a system before the matching purchase order has been propagated from the store front
+// to the fulfillment system. In that case, the fulfillment system might defer processing the payment notification
+// until there is an order with which to associate it. In rendezvous scenarios, where messages from different sources
+// drive a workflow forward, the real-time execution order may indeed be correct, but the messages reflecting the
+// outcomes may arrive out of order.
+//
+// Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
+// processed, while leaving those messages safely in the message store for which processing needs to be postponed.
+func (re *receivingEntity) ReceiveDeferredWithMode(ctx context.Context, handler Handler, mode ReceiveMode, sequenceNumbers ...int64) error {
+	ctx, span := re.startSpanFromContext(ctx, "sb.receivingEntity.ReceiveDeferred")
+	defer span.End()
+
 	rpcClient, err := re.entity.GetRPCClient(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
 
-	messages, err := rpcClient.ReceiveDeferred(ctx, sequenceNumbers...)
+	messages, err := rpcClient.ReceiveDeferred(ctx, mode, sequenceNumbers...)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err

@@ -2592,7 +2592,7 @@ func NewDedicatedHostGroupListResultPage(getNextPage func(context.Context, Dedic
 
 // DedicatedHostGroupProperties dedicated Host Group Properties.
 type DedicatedHostGroupProperties struct {
-	// PlatformFaultDomainCount - Number of fault domains that the host group can span. Supported values 1,2,3.
+	// PlatformFaultDomainCount - Number of fault domains that the host group can span.
 	PlatformFaultDomainCount *int32 `json:"platformFaultDomainCount,omitempty"`
 	// Hosts - READ-ONLY; A list of references to all dedicated hosts in the dedicated host group.
 	Hosts *[]SubResourceReadOnly `json:"hosts,omitempty"`
@@ -2823,7 +2823,7 @@ func NewDedicatedHostListResultPage(getNextPage func(context.Context, DedicatedH
 
 // DedicatedHostProperties properties of the dedicated host.
 type DedicatedHostProperties struct {
-	// PlatformFaultDomain - Fault domain of the dedicated host within a dedicated host group. Supported values 0,1,2.
+	// PlatformFaultDomain - Fault domain of the dedicated host within a dedicated host group.
 	PlatformFaultDomain *int32 `json:"platformFaultDomain,omitempty"`
 	// AutoReplaceOnFailure - Specifies whether the dedicated host should be replaced automatically in case of a failure. The value is defaulted to 'true' when not provided.
 	AutoReplaceOnFailure *bool `json:"autoReplaceOnFailure,omitempty"`

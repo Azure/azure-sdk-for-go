@@ -2322,8 +2322,6 @@ type DedicatedHostAllocatableVM struct {
 
 // DedicatedHostAvailableCapacity dedicated host unutilized capacity.
 type DedicatedHostAvailableCapacity struct {
-	// AvailableVCpus - The number of virtual CPUs available for new allocations.
-	AvailableVCpus *float64 `json:"availableVCpus,omitempty"`
 	// AllocatableVMs - The unutilized capacity of the dedicated host represented in terms of each VM size that is allowed to be deployed to the dedicated host.
 	AllocatableVMs *[]DedicatedHostAllocatableVM `json:"allocatableVMs,omitempty"`
 }

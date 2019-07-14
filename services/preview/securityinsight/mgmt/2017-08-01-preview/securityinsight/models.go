@@ -529,14 +529,6 @@ type AADDataConnectorProperties struct {
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
-// AATPDataConnectorProperties AATP (Azure Advanced Threat Protection) data connector properties.
-type AATPDataConnectorProperties struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-	// DataTypes - The available data types for the connector.
-	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
-}
-
 // AccountEntity represents an account entity.
 type AccountEntity struct {
 	// AccountEntityProperties - Account entity properties
@@ -1646,8 +1638,8 @@ type AwsCloudTrailDataConnectorProperties struct {
 
 // AzureAdvancedThreatProtectionDataConnector represents Azure Advanced Threat Protection data connector.
 type AzureAdvancedThreatProtectionDataConnector struct {
-	// AATPDataConnectorProperties - Azure Advanced Threat Protection data connector properties.
-	*AATPDataConnectorProperties `json:"properties,omitempty"`
+	// AzureAdvancedThreatProtectionDataConnectorProperties - Azure Advanced Threat Protection data connector properties.
+	*AzureAdvancedThreatProtectionDataConnectorProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
@@ -1664,8 +1656,8 @@ type AzureAdvancedThreatProtectionDataConnector struct {
 func (aatpdc AzureAdvancedThreatProtectionDataConnector) MarshalJSON() ([]byte, error) {
 	aatpdc.Kind = KindAzureAdvancedThreatProtection
 	objectMap := make(map[string]interface{})
-	if aatpdc.AATPDataConnectorProperties != nil {
-		objectMap["properties"] = aatpdc.AATPDataConnectorProperties
+	if aatpdc.AzureAdvancedThreatProtectionDataConnectorProperties != nil {
+		objectMap["properties"] = aatpdc.AzureAdvancedThreatProtectionDataConnectorProperties
 	}
 	if aatpdc.Etag != nil {
 		objectMap["etag"] = aatpdc.Etag
@@ -1737,12 +1729,12 @@ func (aatpdc *AzureAdvancedThreatProtectionDataConnector) UnmarshalJSON(body []b
 		switch k {
 		case "properties":
 			if v != nil {
-				var aATPDataConnectorProperties AATPDataConnectorProperties
-				err = json.Unmarshal(*v, &aATPDataConnectorProperties)
+				var azureAdvancedThreatProtectionDataConnectorProperties AzureAdvancedThreatProtectionDataConnectorProperties
+				err = json.Unmarshal(*v, &azureAdvancedThreatProtectionDataConnectorProperties)
 				if err != nil {
 					return err
 				}
-				aatpdc.AATPDataConnectorProperties = &aATPDataConnectorProperties
+				aatpdc.AzureAdvancedThreatProtectionDataConnectorProperties = &azureAdvancedThreatProtectionDataConnectorProperties
 			}
 		case "id":
 			if v != nil {
@@ -1793,6 +1785,15 @@ func (aatpdc *AzureAdvancedThreatProtectionDataConnector) UnmarshalJSON(body []b
 	}
 
 	return nil
+}
+
+// AzureAdvancedThreatProtectionDataConnectorProperties azure Advanced Threat Protection data connector
+// properties.
+type AzureAdvancedThreatProtectionDataConnectorProperties struct {
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
 // Bookmark represents a bookmark in Azure Security Insights.
@@ -3830,20 +3831,11 @@ type MCASDataConnectorProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
-// MDATPDataConnectorProperties MDATP (Microsoft Defender Advanced Threat Protection) data connector
-// properties.
-type MDATPDataConnectorProperties struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-	// DataTypes - The available data types for the connector.
-	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
-}
-
 // MicrosoftDefenderAdvancedThreatProtectionDataConnector represents Microsoft Defender Advanced Threat
 // Protection data connector.
 type MicrosoftDefenderAdvancedThreatProtectionDataConnector struct {
-	// MDATPDataConnectorProperties - Microsoft Defender Advanced Threat Protection data connector properties.
-	*MDATPDataConnectorProperties `json:"properties,omitempty"`
+	// MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties - Microsoft Defender Advanced Threat Protection data connector properties.
+	*MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
@@ -3860,8 +3852,8 @@ type MicrosoftDefenderAdvancedThreatProtectionDataConnector struct {
 func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) MarshalJSON() ([]byte, error) {
 	mdatpdc.Kind = KindMicrosoftDefenderAdvancedThreatProtection
 	objectMap := make(map[string]interface{})
-	if mdatpdc.MDATPDataConnectorProperties != nil {
-		objectMap["properties"] = mdatpdc.MDATPDataConnectorProperties
+	if mdatpdc.MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties != nil {
+		objectMap["properties"] = mdatpdc.MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties
 	}
 	if mdatpdc.Etag != nil {
 		objectMap["etag"] = mdatpdc.Etag
@@ -3933,12 +3925,12 @@ func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) Unmarshal
 		switch k {
 		case "properties":
 			if v != nil {
-				var mDATPDataConnectorProperties MDATPDataConnectorProperties
-				err = json.Unmarshal(*v, &mDATPDataConnectorProperties)
+				var microsoftDefenderAdvancedThreatProtectionDataConnectorProperties MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties
+				err = json.Unmarshal(*v, &microsoftDefenderAdvancedThreatProtectionDataConnectorProperties)
 				if err != nil {
 					return err
 				}
-				mdatpdc.MDATPDataConnectorProperties = &mDATPDataConnectorProperties
+				mdatpdc.MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties = &microsoftDefenderAdvancedThreatProtectionDataConnectorProperties
 			}
 		case "id":
 			if v != nil {
@@ -3989,6 +3981,15 @@ func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) Unmarshal
 	}
 
 	return nil
+}
+
+// MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties microsoft Defender Advanced Threat
+// Protection data connector properties.
+type MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties struct {
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
 // OfficeConsent consent for Office365 tenant that already made.

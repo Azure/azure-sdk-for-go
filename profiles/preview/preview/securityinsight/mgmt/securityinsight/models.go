@@ -191,7 +191,6 @@ const (
 
 type AADDataConnector = original.AADDataConnector
 type AADDataConnectorProperties = original.AADDataConnectorProperties
-type AATPDataConnector = original.AATPDataConnector
 type AATPDataConnectorProperties = original.AATPDataConnectorProperties
 type ASCDataConnector = original.ASCDataConnector
 type ASCDataConnectorProperties = original.ASCDataConnectorProperties
@@ -219,6 +218,7 @@ type AwsCloudTrailDataConnector = original.AwsCloudTrailDataConnector
 type AwsCloudTrailDataConnectorDataTypes = original.AwsCloudTrailDataConnectorDataTypes
 type AwsCloudTrailDataConnectorDataTypesLogs = original.AwsCloudTrailDataConnectorDataTypesLogs
 type AwsCloudTrailDataConnectorProperties = original.AwsCloudTrailDataConnectorProperties
+type AzureAdvancedThreatProtectionDataConnector = original.AzureAdvancedThreatProtectionDataConnector
 type BaseClient = original.BaseClient
 type BasicAggregations = original.BasicAggregations
 type BasicAlertRule = original.BasicAlertRule
@@ -275,8 +275,8 @@ type MCASDataConnector = original.MCASDataConnector
 type MCASDataConnectorDataTypes = original.MCASDataConnectorDataTypes
 type MCASDataConnectorDataTypesDiscoveryLogs = original.MCASDataConnectorDataTypesDiscoveryLogs
 type MCASDataConnectorProperties = original.MCASDataConnectorProperties
-type MDATPDataConnector = original.MDATPDataConnector
 type MDATPDataConnectorProperties = original.MDATPDataConnectorProperties
+type MicrosoftDefenderAdvancedThreatProtectionDataConnector = original.MicrosoftDefenderAdvancedThreatProtectionDataConnector
 type OfficeConsent = original.OfficeConsent
 type OfficeConsentList = original.OfficeConsentList
 type OfficeConsentListIterator = original.OfficeConsentListIterator

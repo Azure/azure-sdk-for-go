@@ -117,9 +117,14 @@ func (r *rpcClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, seque
 
 	const messagesField, messageField = "messages", "message"
 
+	backwardsMode := uint32(0)
+	if mode == PeekLockMode {
+		backwardsMode = 1
+	}
+
 	values := map[string]interface{}{
 		"sequence-numbers":     sequenceNumbers,
-		"receiver-settle-mode": uint32(mode), // pick up messages with peek lock
+		"receiver-settle-mode": uint32(backwardsMode), // pick up messages with peek lock
 	}
 
 	var opts []rpc.LinkOption

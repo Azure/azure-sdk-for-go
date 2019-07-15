@@ -732,49 +732,55 @@ func (suite *serviceBusSuite) TestQueue_NewSessionWithNoRequiredSessions() {
 	suite.queueMessageTestWithMgmtOptions(tests)
 }
 
-func (suite *serviceBusSuite) TestIssue127And126QueueClient() {
+//func (suite *serviceBusSuite) TestIssue126QueueClient() {
+//	tests := map[string]func(context.Context, *testing.T, *Queue){
+//		"SendMessageToSessionQueueDeferAndThenReceiveDeferredMsgReceiveDelete": func(ctx context.Context, t *testing.T, queue *Queue) {
+//			sessionID := "123"
+//			qs := NewQueueSession(queue, &sessionID)
+//
+//			const msg string = "issue126"
+//			suite.Require().NoError(qs.Send(ctx, NewMessageFromString(msg)))
+//
+//			sequenceNumberChan := make(chan *int64, 1)
+//			rCtx, cancel := context.WithCancel(ctx)
+//			defer cancel()
+//			deferHandler := HandlerFunc(func(hCtx context.Context, hMsg *Message) error {
+//				defer func() {
+//					// send the signal after the Defer was completed
+//					sequenceNumberChan <- hMsg.SystemProperties.SequenceNumber
+//					cancel()
+//				}()
+//
+//				return hMsg.Defer(hCtx)
+//			})
+//			err := qs.ReceiveOne(rCtx, NewSessionHandler(deferHandler, nil, nil))
+//			if err != nil && err != context.Canceled {
+//				suite.Require().NoError(err)
+//			}
+//
+//			receiveDeferredHandler := HandlerFunc(func(dCtx context.Context, dMsg *Message) error {
+//				// noop. In ReceiveAndDeleteMode there should be no need to call complete on the message
+//				return nil
+//			})
+//			err = qs.ReceiveOne(rCtx, NewSessionHandler(deferHandler, nil, nil))
+//			if err != nil && err != context.Canceled {
+//				suite.Require().NoError(err)
+//			}
+//
+//			// wait until we get the sequence number for the message we sent to the deferral queue
+//			select {
+//			case <-ctx.Done():
+//				suite.Fail("failed to receive first message in time")
+//			case sequenceNumber := <-sequenceNumberChan:
+//				suite.Require().NoError(qs.ReceiveDeferred(ctx, receiveDeferredHandler, ReceiveAndDeleteMode, *sequenceNumber))
+//			}
+//		},
+//	}
+//	suite.queueMessageTestWithMgmtOptions(tests, QueueEntityWithRequiredSessions())
+//}
+
+func (suite *serviceBusSuite) TestIssue127QueueClient() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
-		//"SendMessageToSessionQueueDeferAndThenReceiveDeferredMsgReceiveDelete": func(ctx context.Context, t *testing.T, queue *Queue) {
-		//	sessionID := "123"
-		//	qs := NewQueueSession(queue, &sessionID)
-		//
-		//	const msg string = "issue126"
-		//	suite.Require().NoError(qs.Send(ctx, NewMessageFromString(msg)))
-		//
-		//	sequenceNumberChan := make(chan *int64, 1)
-		//	rCtx, cancel := context.WithCancel(ctx)
-		//	defer cancel()
-		//	deferHandler := HandlerFunc(func(hCtx context.Context, hMsg *Message) error {
-		//		defer func() {
-		//			// send the signal after the Defer was completed
-		//			sequenceNumberChan <- hMsg.SystemProperties.SequenceNumber
-		//			cancel()
-		//		}()
-		//
-		//		return hMsg.Defer(hCtx)
-		//	})
-		//	err := qs.ReceiveOne(rCtx, NewSessionHandler(deferHandler, nil, nil))
-		//	if err != nil && err != context.Canceled {
-		//		suite.Require().NoError(err)
-		//	}
-		//
-		//	receiveDeferredHandler := HandlerFunc(func(dCtx context.Context, dMsg *Message) error {
-		//		// noop. In ReceiveAndDeleteMode there should be no need to call complete on the message
-		//		return nil
-		//	})
-		//	err = qs.ReceiveOne(rCtx, NewSessionHandler(deferHandler, nil, nil))
-		//	if err != nil && err != context.Canceled {
-		//		suite.Require().NoError(err)
-		//	}
-		//
-		//	// wait until we get the sequence number for the message we sent to the deferral queue
-		//	select {
-		//	case <-ctx.Done():
-		//		suite.Fail("failed to receive first message in time")
-		//	case sequenceNumber := <-sequenceNumberChan:
-		//		suite.Require().NoError(qs.ReceiveDeferred(ctx, receiveDeferredHandler, ReceiveAndDeleteMode, *sequenceNumber))
-		//	}
-		//},
 		"SendMessageToSessionQueueDeferAndThenReceiveDeferredMsg": func(ctx context.Context, t *testing.T, queue *Queue) {
 			sessionID := "123"
 			qs := NewQueueSession(queue, &sessionID)

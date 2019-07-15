@@ -12,7 +12,7 @@ steps:
     set -e
     mkdir -p '$(GOPATH)/bin'
     mkdir -p '$(sdkPath)'
-    shopt -s extglob
+    shopt -s dotglob extglob
     mv !(work) '$(sdkPath)'
     echo '##vso[task.prependpath]$(GOROOT)/bin'
     echo '##vso[task.prependpath]$(GOPATH)/bin'

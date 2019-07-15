@@ -1,6 +1,9 @@
 # Change Log
 
 ## `head`
+- refactor management functionality for entities into composition structs
+- fix session deferral for queues and subscriptions
+- add topic scheduled messages
 
 ## `v0.8.0`
 - tab for tracing and logging which supports both opencensus and opentracing. To use opencensus, just add a

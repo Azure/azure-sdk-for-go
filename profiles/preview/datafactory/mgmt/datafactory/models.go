@@ -126,6 +126,20 @@ const (
 	Succeeded DependencyCondition = original.Succeeded
 )
 
+type DynamicsAuthenticationType = original.DynamicsAuthenticationType
+
+const (
+	Ifd       DynamicsAuthenticationType = original.Ifd
+	Office365 DynamicsAuthenticationType = original.Office365
+)
+
+type DynamicsDeploymentType = original.DynamicsDeploymentType
+
+const (
+	Online            DynamicsDeploymentType = original.Online
+	OnPremisesWithIfd DynamicsDeploymentType = original.OnPremisesWithIfd
+)
+
 type FtpAuthenticationType = original.FtpAuthenticationType
 
 const (
@@ -260,16 +274,16 @@ const (
 type IntegrationRuntimeState = original.IntegrationRuntimeState
 
 const (
-	AccessDenied     IntegrationRuntimeState = original.AccessDenied
-	Initial          IntegrationRuntimeState = original.Initial
-	Limited          IntegrationRuntimeState = original.Limited
-	NeedRegistration IntegrationRuntimeState = original.NeedRegistration
-	Offline          IntegrationRuntimeState = original.Offline
-	Online           IntegrationRuntimeState = original.Online
-	Started          IntegrationRuntimeState = original.Started
-	Starting         IntegrationRuntimeState = original.Starting
-	Stopped          IntegrationRuntimeState = original.Stopped
-	Stopping         IntegrationRuntimeState = original.Stopping
+	IntegrationRuntimeStateAccessDenied     IntegrationRuntimeState = original.IntegrationRuntimeStateAccessDenied
+	IntegrationRuntimeStateInitial          IntegrationRuntimeState = original.IntegrationRuntimeStateInitial
+	IntegrationRuntimeStateLimited          IntegrationRuntimeState = original.IntegrationRuntimeStateLimited
+	IntegrationRuntimeStateNeedRegistration IntegrationRuntimeState = original.IntegrationRuntimeStateNeedRegistration
+	IntegrationRuntimeStateOffline          IntegrationRuntimeState = original.IntegrationRuntimeStateOffline
+	IntegrationRuntimeStateOnline           IntegrationRuntimeState = original.IntegrationRuntimeStateOnline
+	IntegrationRuntimeStateStarted          IntegrationRuntimeState = original.IntegrationRuntimeStateStarted
+	IntegrationRuntimeStateStarting         IntegrationRuntimeState = original.IntegrationRuntimeStateStarting
+	IntegrationRuntimeStateStopped          IntegrationRuntimeState = original.IntegrationRuntimeStateStopped
+	IntegrationRuntimeStateStopping         IntegrationRuntimeState = original.IntegrationRuntimeStateStopping
 )
 
 type IntegrationRuntimeType = original.IntegrationRuntimeType
@@ -290,10 +304,10 @@ const (
 type ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatus
 
 const (
-	ManagedIntegrationRuntimeNodeStatusAvailable   ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusAvailable
-	ManagedIntegrationRuntimeNodeStatusRecycling   ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusRecycling
-	ManagedIntegrationRuntimeNodeStatusStarting    ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusStarting
-	ManagedIntegrationRuntimeNodeStatusUnavailable ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatusUnavailable
+	Available   ManagedIntegrationRuntimeNodeStatus = original.Available
+	Recycling   ManagedIntegrationRuntimeNodeStatus = original.Recycling
+	Starting    ManagedIntegrationRuntimeNodeStatus = original.Starting
+	Unavailable ManagedIntegrationRuntimeNodeStatus = original.Unavailable
 )
 
 type MongoDbAuthenticationType = original.MongoDbAuthenticationType
@@ -301,6 +315,14 @@ type MongoDbAuthenticationType = original.MongoDbAuthenticationType
 const (
 	MongoDbAuthenticationTypeAnonymous MongoDbAuthenticationType = original.MongoDbAuthenticationTypeAnonymous
 	MongoDbAuthenticationTypeBasic     MongoDbAuthenticationType = original.MongoDbAuthenticationTypeBasic
+)
+
+type NetezzaPartitionOption = original.NetezzaPartitionOption
+
+const (
+	NetezzaPartitionOptionDataSlice    NetezzaPartitionOption = original.NetezzaPartitionOptionDataSlice
+	NetezzaPartitionOptionDynamicRange NetezzaPartitionOption = original.NetezzaPartitionOptionDynamicRange
+	NetezzaPartitionOptionNone         NetezzaPartitionOption = original.NetezzaPartitionOptionNone
 )
 
 type ODataAadServicePrincipalCredentialType = original.ODataAadServicePrincipalCredentialType
@@ -318,6 +340,14 @@ const (
 	ODataAuthenticationTypeBasic                  ODataAuthenticationType = original.ODataAuthenticationTypeBasic
 	ODataAuthenticationTypeManagedServiceIdentity ODataAuthenticationType = original.ODataAuthenticationTypeManagedServiceIdentity
 	ODataAuthenticationTypeWindows                ODataAuthenticationType = original.ODataAuthenticationTypeWindows
+)
+
+type OraclePartitionOption = original.OraclePartitionOption
+
+const (
+	OraclePartitionOptionDynamicRange              OraclePartitionOption = original.OraclePartitionOptionDynamicRange
+	OraclePartitionOptionNone                      OraclePartitionOption = original.OraclePartitionOptionNone
+	OraclePartitionOptionPhysicalPartitionsOfTable OraclePartitionOption = original.OraclePartitionOptionPhysicalPartitionsOfTable
 )
 
 type ParameterType = original.ParameterType
@@ -450,6 +480,17 @@ const (
 	SapHanaAuthenticationTypeWindows SapHanaAuthenticationType = original.SapHanaAuthenticationTypeWindows
 )
 
+type SapTablePartitionOption = original.SapTablePartitionOption
+
+const (
+	SapTablePartitionOptionNone                     SapTablePartitionOption = original.SapTablePartitionOptionNone
+	SapTablePartitionOptionPartitionOnCalendarDate  SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnCalendarDate
+	SapTablePartitionOptionPartitionOnCalendarMonth SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnCalendarMonth
+	SapTablePartitionOptionPartitionOnCalendarYear  SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnCalendarYear
+	SapTablePartitionOptionPartitionOnInt           SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnInt
+	SapTablePartitionOptionPartitionOnTime          SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnTime
+)
+
 type SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatus
 
 const (
@@ -547,9 +588,9 @@ const (
 type TriggerRuntimeState = original.TriggerRuntimeState
 
 const (
-	TriggerRuntimeStateDisabled TriggerRuntimeState = original.TriggerRuntimeStateDisabled
-	TriggerRuntimeStateStarted  TriggerRuntimeState = original.TriggerRuntimeStateStarted
-	TriggerRuntimeStateStopped  TriggerRuntimeState = original.TriggerRuntimeStateStopped
+	Disabled TriggerRuntimeState = original.Disabled
+	Started  TriggerRuntimeState = original.Started
+	Stopped  TriggerRuntimeState = original.Stopped
 )
 
 type TumblingWindowFrequency = original.TumblingWindowFrequency
@@ -608,28 +649,32 @@ const (
 type TypeBasicCopySink = original.TypeBasicCopySink
 
 const (
-	TypeAzureBlobFSSink          TypeBasicCopySink = original.TypeAzureBlobFSSink
-	TypeAzureDataExplorerSink    TypeBasicCopySink = original.TypeAzureDataExplorerSink
-	TypeAzureDataLakeStoreSink   TypeBasicCopySink = original.TypeAzureDataLakeStoreSink
-	TypeAzureQueueSink           TypeBasicCopySink = original.TypeAzureQueueSink
-	TypeAzureSearchIndexSink     TypeBasicCopySink = original.TypeAzureSearchIndexSink
-	TypeAzureSQLSink             TypeBasicCopySink = original.TypeAzureSQLSink
-	TypeAzureTableSink           TypeBasicCopySink = original.TypeAzureTableSink
-	TypeBlobSink                 TypeBasicCopySink = original.TypeBlobSink
-	TypeCopySink                 TypeBasicCopySink = original.TypeCopySink
-	TypeCosmosDbMongoDbAPISink   TypeBasicCopySink = original.TypeCosmosDbMongoDbAPISink
-	TypeDelimitedTextSink        TypeBasicCopySink = original.TypeDelimitedTextSink
-	TypeDocumentDbCollectionSink TypeBasicCopySink = original.TypeDocumentDbCollectionSink
-	TypeDynamicsSink             TypeBasicCopySink = original.TypeDynamicsSink
-	TypeFileSystemSink           TypeBasicCopySink = original.TypeFileSystemSink
-	TypeOdbcSink                 TypeBasicCopySink = original.TypeOdbcSink
-	TypeOracleSink               TypeBasicCopySink = original.TypeOracleSink
-	TypeParquetSink              TypeBasicCopySink = original.TypeParquetSink
-	TypeSalesforceSink           TypeBasicCopySink = original.TypeSalesforceSink
-	TypeSapCloudForCustomerSink  TypeBasicCopySink = original.TypeSapCloudForCustomerSink
-	TypeSQLDWSink                TypeBasicCopySink = original.TypeSQLDWSink
-	TypeSQLServerSink            TypeBasicCopySink = original.TypeSQLServerSink
-	TypeSQLSink                  TypeBasicCopySink = original.TypeSQLSink
+	TypeAzureBlobFSSink              TypeBasicCopySink = original.TypeAzureBlobFSSink
+	TypeAzureDataExplorerSink        TypeBasicCopySink = original.TypeAzureDataExplorerSink
+	TypeAzureDataLakeStoreSink       TypeBasicCopySink = original.TypeAzureDataLakeStoreSink
+	TypeAzurePostgreSQLSink          TypeBasicCopySink = original.TypeAzurePostgreSQLSink
+	TypeAzureQueueSink               TypeBasicCopySink = original.TypeAzureQueueSink
+	TypeAzureSearchIndexSink         TypeBasicCopySink = original.TypeAzureSearchIndexSink
+	TypeAzureSQLSink                 TypeBasicCopySink = original.TypeAzureSQLSink
+	TypeAzureTableSink               TypeBasicCopySink = original.TypeAzureTableSink
+	TypeBlobSink                     TypeBasicCopySink = original.TypeBlobSink
+	TypeCommonDataServiceForAppsSink TypeBasicCopySink = original.TypeCommonDataServiceForAppsSink
+	TypeCopySink                     TypeBasicCopySink = original.TypeCopySink
+	TypeCosmosDbMongoDbAPISink       TypeBasicCopySink = original.TypeCosmosDbMongoDbAPISink
+	TypeDelimitedTextSink            TypeBasicCopySink = original.TypeDelimitedTextSink
+	TypeDocumentDbCollectionSink     TypeBasicCopySink = original.TypeDocumentDbCollectionSink
+	TypeDynamicsCrmSink              TypeBasicCopySink = original.TypeDynamicsCrmSink
+	TypeDynamicsSink                 TypeBasicCopySink = original.TypeDynamicsSink
+	TypeFileSystemSink               TypeBasicCopySink = original.TypeFileSystemSink
+	TypeOdbcSink                     TypeBasicCopySink = original.TypeOdbcSink
+	TypeOracleSink                   TypeBasicCopySink = original.TypeOracleSink
+	TypeParquetSink                  TypeBasicCopySink = original.TypeParquetSink
+	TypeSalesforceSink               TypeBasicCopySink = original.TypeSalesforceSink
+	TypeSapCloudForCustomerSink      TypeBasicCopySink = original.TypeSapCloudForCustomerSink
+	TypeSQLDWSink                    TypeBasicCopySink = original.TypeSQLDWSink
+	TypeSQLMISink                    TypeBasicCopySink = original.TypeSQLMISink
+	TypeSQLServerSink                TypeBasicCopySink = original.TypeSQLServerSink
+	TypeSQLSink                      TypeBasicCopySink = original.TypeSQLSink
 )
 
 type TypeBasicCopySource = original.TypeBasicCopySource
@@ -646,14 +691,17 @@ const (
 	TypeAzureTableSource               TypeBasicCopySource = original.TypeAzureTableSource
 	TypeBlobSource                     TypeBasicCopySource = original.TypeBlobSource
 	TypeCassandraSource                TypeBasicCopySource = original.TypeCassandraSource
+	TypeCommonDataServiceForAppsSource TypeBasicCopySource = original.TypeCommonDataServiceForAppsSource
 	TypeConcurSource                   TypeBasicCopySource = original.TypeConcurSource
 	TypeCopySource                     TypeBasicCopySource = original.TypeCopySource
 	TypeCosmosDbMongoDbAPISource       TypeBasicCopySource = original.TypeCosmosDbMongoDbAPISource
 	TypeCouchbaseSource                TypeBasicCopySource = original.TypeCouchbaseSource
+	TypeDb2Source                      TypeBasicCopySource = original.TypeDb2Source
 	TypeDelimitedTextSource            TypeBasicCopySource = original.TypeDelimitedTextSource
 	TypeDocumentDbCollectionSource     TypeBasicCopySource = original.TypeDocumentDbCollectionSource
 	TypeDrillSource                    TypeBasicCopySource = original.TypeDrillSource
 	TypeDynamicsAXSource               TypeBasicCopySource = original.TypeDynamicsAXSource
+	TypeDynamicsCrmSource              TypeBasicCopySource = original.TypeDynamicsCrmSource
 	TypeDynamicsSource                 TypeBasicCopySource = original.TypeDynamicsSource
 	TypeEloquaSource                   TypeBasicCopySource = original.TypeEloquaSource
 	TypeFileSystemSource               TypeBasicCopySource = original.TypeFileSystemSource
@@ -672,13 +720,17 @@ const (
 	TypeMarketoSource                  TypeBasicCopySource = original.TypeMarketoSource
 	TypeMongoDbSource                  TypeBasicCopySource = original.TypeMongoDbSource
 	TypeMongoDbV2Source                TypeBasicCopySource = original.TypeMongoDbV2Source
+	TypeMySQLSource                    TypeBasicCopySource = original.TypeMySQLSource
 	TypeNetezzaSource                  TypeBasicCopySource = original.TypeNetezzaSource
+	TypeODataSource                    TypeBasicCopySource = original.TypeODataSource
+	TypeOdbcSource                     TypeBasicCopySource = original.TypeOdbcSource
 	TypeOffice365Source                TypeBasicCopySource = original.TypeOffice365Source
 	TypeOracleServiceCloudSource       TypeBasicCopySource = original.TypeOracleServiceCloudSource
 	TypeOracleSource                   TypeBasicCopySource = original.TypeOracleSource
 	TypeParquetSource                  TypeBasicCopySource = original.TypeParquetSource
 	TypePaypalSource                   TypeBasicCopySource = original.TypePaypalSource
 	TypePhoenixSource                  TypeBasicCopySource = original.TypePhoenixSource
+	TypePostgreSQLSource               TypeBasicCopySource = original.TypePostgreSQLSource
 	TypePrestoSource                   TypeBasicCopySource = original.TypePrestoSource
 	TypeQuickBooksSource               TypeBasicCopySource = original.TypeQuickBooksSource
 	TypeRelationalSource               TypeBasicCopySource = original.TypeRelationalSource
@@ -686,6 +738,7 @@ const (
 	TypeRestSource                     TypeBasicCopySource = original.TypeRestSource
 	TypeSalesforceMarketingCloudSource TypeBasicCopySource = original.TypeSalesforceMarketingCloudSource
 	TypeSalesforceSource               TypeBasicCopySource = original.TypeSalesforceSource
+	TypeSapBwSource                    TypeBasicCopySource = original.TypeSapBwSource
 	TypeSapCloudForCustomerSource      TypeBasicCopySource = original.TypeSapCloudForCustomerSource
 	TypeSapEccSource                   TypeBasicCopySource = original.TypeSapEccSource
 	TypeSapHanaSource                  TypeBasicCopySource = original.TypeSapHanaSource
@@ -695,9 +748,11 @@ const (
 	TypeShopifySource                  TypeBasicCopySource = original.TypeShopifySource
 	TypeSparkSource                    TypeBasicCopySource = original.TypeSparkSource
 	TypeSQLDWSource                    TypeBasicCopySource = original.TypeSQLDWSource
+	TypeSQLMISource                    TypeBasicCopySource = original.TypeSQLMISource
 	TypeSQLServerSource                TypeBasicCopySource = original.TypeSQLServerSource
 	TypeSQLSource                      TypeBasicCopySource = original.TypeSQLSource
 	TypeSquareSource                   TypeBasicCopySource = original.TypeSquareSource
+	TypeSybaseSource                   TypeBasicCopySource = original.TypeSybaseSource
 	TypeVerticaSource                  TypeBasicCopySource = original.TypeVerticaSource
 	TypeWebSource                      TypeBasicCopySource = original.TypeWebSource
 	TypeXeroSource                     TypeBasicCopySource = original.TypeXeroSource
@@ -717,9 +772,11 @@ const (
 	TypeAzurePostgreSQLTable           TypeBasicDataset = original.TypeAzurePostgreSQLTable
 	TypeAzureSearchIndex               TypeBasicDataset = original.TypeAzureSearchIndex
 	TypeAzureSQLDWTable                TypeBasicDataset = original.TypeAzureSQLDWTable
+	TypeAzureSQLMITable                TypeBasicDataset = original.TypeAzureSQLMITable
 	TypeAzureSQLTable                  TypeBasicDataset = original.TypeAzureSQLTable
 	TypeAzureTable                     TypeBasicDataset = original.TypeAzureTable
 	TypeCassandraTable                 TypeBasicDataset = original.TypeCassandraTable
+	TypeCommonDataServiceForAppsEntity TypeBasicDataset = original.TypeCommonDataServiceForAppsEntity
 	TypeConcurObject                   TypeBasicDataset = original.TypeConcurObject
 	TypeCosmosDbMongoDbAPICollection   TypeBasicDataset = original.TypeCosmosDbMongoDbAPICollection
 	TypeCouchbaseTable                 TypeBasicDataset = original.TypeCouchbaseTable
@@ -729,6 +786,7 @@ const (
 	TypeDocumentDbCollection           TypeBasicDataset = original.TypeDocumentDbCollection
 	TypeDrillTable                     TypeBasicDataset = original.TypeDrillTable
 	TypeDynamicsAXResource             TypeBasicDataset = original.TypeDynamicsAXResource
+	TypeDynamicsCrmEntity              TypeBasicDataset = original.TypeDynamicsCrmEntity
 	TypeDynamicsEntity                 TypeBasicDataset = original.TypeDynamicsEntity
 	TypeEloquaObject                   TypeBasicDataset = original.TypeEloquaObject
 	TypeFileShare                      TypeBasicDataset = original.TypeFileShare
@@ -746,14 +804,17 @@ const (
 	TypeMarketoObject                  TypeBasicDataset = original.TypeMarketoObject
 	TypeMongoDbCollection              TypeBasicDataset = original.TypeMongoDbCollection
 	TypeMongoDbV2Collection            TypeBasicDataset = original.TypeMongoDbV2Collection
+	TypeMySQLTable                     TypeBasicDataset = original.TypeMySQLTable
 	TypeNetezzaTable                   TypeBasicDataset = original.TypeNetezzaTable
 	TypeODataResource                  TypeBasicDataset = original.TypeODataResource
+	TypeOdbcTable                      TypeBasicDataset = original.TypeOdbcTable
 	TypeOffice365Table                 TypeBasicDataset = original.TypeOffice365Table
 	TypeOracleServiceCloudObject       TypeBasicDataset = original.TypeOracleServiceCloudObject
 	TypeOracleTable                    TypeBasicDataset = original.TypeOracleTable
 	TypeParquet                        TypeBasicDataset = original.TypeParquet
 	TypePaypalObject                   TypeBasicDataset = original.TypePaypalObject
 	TypePhoenixObject                  TypeBasicDataset = original.TypePhoenixObject
+	TypePostgreSQLTable                TypeBasicDataset = original.TypePostgreSQLTable
 	TypePrestoObject                   TypeBasicDataset = original.TypePrestoObject
 	TypeQuickBooksObject               TypeBasicDataset = original.TypeQuickBooksObject
 	TypeRelationalTable                TypeBasicDataset = original.TypeRelationalTable
@@ -761,6 +822,7 @@ const (
 	TypeRestResource                   TypeBasicDataset = original.TypeRestResource
 	TypeSalesforceMarketingCloudObject TypeBasicDataset = original.TypeSalesforceMarketingCloudObject
 	TypeSalesforceObject               TypeBasicDataset = original.TypeSalesforceObject
+	TypeSapBwCube                      TypeBasicDataset = original.TypeSapBwCube
 	TypeSapCloudForCustomerResource    TypeBasicDataset = original.TypeSapCloudForCustomerResource
 	TypeSapEccResource                 TypeBasicDataset = original.TypeSapEccResource
 	TypeSapHanaTable                   TypeBasicDataset = original.TypeSapHanaTable
@@ -771,6 +833,7 @@ const (
 	TypeSparkObject                    TypeBasicDataset = original.TypeSparkObject
 	TypeSQLServerTable                 TypeBasicDataset = original.TypeSQLServerTable
 	TypeSquareObject                   TypeBasicDataset = original.TypeSquareObject
+	TypeSybaseTable                    TypeBasicDataset = original.TypeSybaseTable
 	TypeVerticaTable                   TypeBasicDataset = original.TypeVerticaTable
 	TypeWebTable                       TypeBasicDataset = original.TypeWebTable
 	TypeXeroObject                     TypeBasicDataset = original.TypeXeroObject
@@ -852,9 +915,11 @@ const (
 	TypeAzureSearch              TypeBasicLinkedService = original.TypeAzureSearch
 	TypeAzureSQLDatabase         TypeBasicLinkedService = original.TypeAzureSQLDatabase
 	TypeAzureSQLDW               TypeBasicLinkedService = original.TypeAzureSQLDW
+	TypeAzureSQLMI               TypeBasicLinkedService = original.TypeAzureSQLMI
 	TypeAzureStorage             TypeBasicLinkedService = original.TypeAzureStorage
 	TypeAzureTableStorage        TypeBasicLinkedService = original.TypeAzureTableStorage
 	TypeCassandra                TypeBasicLinkedService = original.TypeCassandra
+	TypeCommonDataServiceForApps TypeBasicLinkedService = original.TypeCommonDataServiceForApps
 	TypeConcur                   TypeBasicLinkedService = original.TypeConcur
 	TypeCosmosDb                 TypeBasicLinkedService = original.TypeCosmosDb
 	TypeCosmosDbMongoDbAPI       TypeBasicLinkedService = original.TypeCosmosDbMongoDbAPI
@@ -864,6 +929,7 @@ const (
 	TypeDrill                    TypeBasicLinkedService = original.TypeDrill
 	TypeDynamics                 TypeBasicLinkedService = original.TypeDynamics
 	TypeDynamicsAX               TypeBasicLinkedService = original.TypeDynamicsAX
+	TypeDynamicsCrm              TypeBasicLinkedService = original.TypeDynamicsCrm
 	TypeEloqua                   TypeBasicLinkedService = original.TypeEloqua
 	TypeFileServer               TypeBasicLinkedService = original.TypeFileServer
 	TypeFtpServer                TypeBasicLinkedService = original.TypeFtpServer
@@ -1047,8 +1113,10 @@ type AzureMySQLTableDataset = original.AzureMySQLTableDataset
 type AzureMySQLTableDatasetTypeProperties = original.AzureMySQLTableDatasetTypeProperties
 type AzurePostgreSQLLinkedService = original.AzurePostgreSQLLinkedService
 type AzurePostgreSQLLinkedServiceTypeProperties = original.AzurePostgreSQLLinkedServiceTypeProperties
+type AzurePostgreSQLSink = original.AzurePostgreSQLSink
 type AzurePostgreSQLSource = original.AzurePostgreSQLSource
 type AzurePostgreSQLTableDataset = original.AzurePostgreSQLTableDataset
+type AzurePostgreSQLTableDatasetTypeProperties = original.AzurePostgreSQLTableDatasetTypeProperties
 type AzureQueueSink = original.AzureQueueSink
 type AzureSQLDWLinkedService = original.AzureSQLDWLinkedService
 type AzureSQLDWLinkedServiceTypeProperties = original.AzureSQLDWLinkedServiceTypeProperties
@@ -1056,6 +1124,10 @@ type AzureSQLDWTableDataset = original.AzureSQLDWTableDataset
 type AzureSQLDWTableDatasetTypeProperties = original.AzureSQLDWTableDatasetTypeProperties
 type AzureSQLDatabaseLinkedService = original.AzureSQLDatabaseLinkedService
 type AzureSQLDatabaseLinkedServiceTypeProperties = original.AzureSQLDatabaseLinkedServiceTypeProperties
+type AzureSQLMILinkedService = original.AzureSQLMILinkedService
+type AzureSQLMILinkedServiceTypeProperties = original.AzureSQLMILinkedServiceTypeProperties
+type AzureSQLMITableDataset = original.AzureSQLMITableDataset
+type AzureSQLMITableDatasetTypeProperties = original.AzureSQLMITableDatasetTypeProperties
 type AzureSQLSink = original.AzureSQLSink
 type AzureSQLSource = original.AzureSQLSource
 type AzureSQLTableDataset = original.AzureSQLTableDataset
@@ -1106,6 +1178,12 @@ type CassandraTableDataset = original.CassandraTableDataset
 type CassandraTableDatasetTypeProperties = original.CassandraTableDatasetTypeProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type CommonDataServiceForAppsEntityDataset = original.CommonDataServiceForAppsEntityDataset
+type CommonDataServiceForAppsEntityDatasetTypeProperties = original.CommonDataServiceForAppsEntityDatasetTypeProperties
+type CommonDataServiceForAppsLinkedService = original.CommonDataServiceForAppsLinkedService
+type CommonDataServiceForAppsLinkedServiceTypeProperties = original.CommonDataServiceForAppsLinkedServiceTypeProperties
+type CommonDataServiceForAppsSink = original.CommonDataServiceForAppsSink
+type CommonDataServiceForAppsSource = original.CommonDataServiceForAppsSource
 type ConcurLinkedService = original.ConcurLinkedService
 type ConcurLinkedServiceTypeProperties = original.ConcurLinkedServiceTypeProperties
 type ConcurObjectDataset = original.ConcurObjectDataset
@@ -1159,6 +1237,7 @@ type DatasetZipDeflateCompression = original.DatasetZipDeflateCompression
 type DatasetsClient = original.DatasetsClient
 type Db2LinkedService = original.Db2LinkedService
 type Db2LinkedServiceTypeProperties = original.Db2LinkedServiceTypeProperties
+type Db2Source = original.Db2Source
 type DeleteActivity = original.DeleteActivity
 type DeleteActivityTypeProperties = original.DeleteActivityTypeProperties
 type DelimitedTextDataset = original.DelimitedTextDataset
@@ -1182,6 +1261,12 @@ type DynamicsAXLinkedServiceTypeProperties = original.DynamicsAXLinkedServiceTyp
 type DynamicsAXResourceDataset = original.DynamicsAXResourceDataset
 type DynamicsAXResourceDatasetTypeProperties = original.DynamicsAXResourceDatasetTypeProperties
 type DynamicsAXSource = original.DynamicsAXSource
+type DynamicsCrmEntityDataset = original.DynamicsCrmEntityDataset
+type DynamicsCrmEntityDatasetTypeProperties = original.DynamicsCrmEntityDatasetTypeProperties
+type DynamicsCrmLinkedService = original.DynamicsCrmLinkedService
+type DynamicsCrmLinkedServiceTypeProperties = original.DynamicsCrmLinkedServiceTypeProperties
+type DynamicsCrmSink = original.DynamicsCrmSink
+type DynamicsCrmSource = original.DynamicsCrmSource
 type DynamicsEntityDataset = original.DynamicsEntityDataset
 type DynamicsEntityDatasetTypeProperties = original.DynamicsEntityDatasetTypeProperties
 type DynamicsLinkedService = original.DynamicsLinkedService
@@ -1375,17 +1460,25 @@ type MongoDbV2Source = original.MongoDbV2Source
 type MultiplePipelineTrigger = original.MultiplePipelineTrigger
 type MySQLLinkedService = original.MySQLLinkedService
 type MySQLLinkedServiceTypeProperties = original.MySQLLinkedServiceTypeProperties
+type MySQLSource = original.MySQLSource
+type MySQLTableDataset = original.MySQLTableDataset
+type MySQLTableDatasetTypeProperties = original.MySQLTableDatasetTypeProperties
 type NetezzaLinkedService = original.NetezzaLinkedService
 type NetezzaLinkedServiceTypeProperties = original.NetezzaLinkedServiceTypeProperties
+type NetezzaPartitionSettings = original.NetezzaPartitionSettings
 type NetezzaSource = original.NetezzaSource
 type NetezzaTableDataset = original.NetezzaTableDataset
 type ODataLinkedService = original.ODataLinkedService
 type ODataLinkedServiceTypeProperties = original.ODataLinkedServiceTypeProperties
 type ODataResourceDataset = original.ODataResourceDataset
 type ODataResourceDatasetTypeProperties = original.ODataResourceDatasetTypeProperties
+type ODataSource = original.ODataSource
 type OdbcLinkedService = original.OdbcLinkedService
 type OdbcLinkedServiceTypeProperties = original.OdbcLinkedServiceTypeProperties
 type OdbcSink = original.OdbcSink
+type OdbcSource = original.OdbcSource
+type OdbcTableDataset = original.OdbcTableDataset
+type OdbcTableDatasetTypeProperties = original.OdbcTableDatasetTypeProperties
 type Office365Dataset = original.Office365Dataset
 type Office365DatasetTypeProperties = original.Office365DatasetTypeProperties
 type Office365LinkedService = original.Office365LinkedService
@@ -1405,6 +1498,7 @@ type OperationServiceSpecification = original.OperationServiceSpecification
 type OperationsClient = original.OperationsClient
 type OracleLinkedService = original.OracleLinkedService
 type OracleLinkedServiceTypeProperties = original.OracleLinkedServiceTypeProperties
+type OraclePartitionSettings = original.OraclePartitionSettings
 type OracleServiceCloudLinkedService = original.OracleServiceCloudLinkedService
 type OracleServiceCloudLinkedServiceTypeProperties = original.OracleServiceCloudLinkedServiceTypeProperties
 type OracleServiceCloudObjectDataset = original.OracleServiceCloudObjectDataset
@@ -1443,6 +1537,9 @@ type PipelinesClient = original.PipelinesClient
 type PolybaseSettings = original.PolybaseSettings
 type PostgreSQLLinkedService = original.PostgreSQLLinkedService
 type PostgreSQLLinkedServiceTypeProperties = original.PostgreSQLLinkedServiceTypeProperties
+type PostgreSQLSource = original.PostgreSQLSource
+type PostgreSQLTableDataset = original.PostgreSQLTableDataset
+type PostgreSQLTableDatasetTypeProperties = original.PostgreSQLTableDatasetTypeProperties
 type PrestoLinkedService = original.PrestoLinkedService
 type PrestoLinkedServiceTypeProperties = original.PrestoLinkedServiceTypeProperties
 type PrestoObjectDataset = original.PrestoObjectDataset
@@ -1485,6 +1582,8 @@ type RunQueryFilter = original.RunQueryFilter
 type RunQueryOrderBy = original.RunQueryOrderBy
 type SQLDWSink = original.SQLDWSink
 type SQLDWSource = original.SQLDWSource
+type SQLMISink = original.SQLMISink
+type SQLMISource = original.SQLMISource
 type SQLServerLinkedService = original.SQLServerLinkedService
 type SQLServerLinkedServiceTypeProperties = original.SQLServerLinkedServiceTypeProperties
 type SQLServerSink = original.SQLServerSink
@@ -1511,6 +1610,8 @@ type SalesforceSink = original.SalesforceSink
 type SalesforceSource = original.SalesforceSource
 type SapBWLinkedService = original.SapBWLinkedService
 type SapBWLinkedServiceTypeProperties = original.SapBWLinkedServiceTypeProperties
+type SapBwCubeDataset = original.SapBwCubeDataset
+type SapBwSource = original.SapBwSource
 type SapCloudForCustomerLinkedService = original.SapCloudForCustomerLinkedService
 type SapCloudForCustomerLinkedServiceTypeProperties = original.SapCloudForCustomerLinkedServiceTypeProperties
 type SapCloudForCustomerResourceDataset = original.SapCloudForCustomerResourceDataset
@@ -1534,6 +1635,7 @@ type SapOpenHubTableDataset = original.SapOpenHubTableDataset
 type SapOpenHubTableDatasetTypeProperties = original.SapOpenHubTableDatasetTypeProperties
 type SapTableLinkedService = original.SapTableLinkedService
 type SapTableLinkedServiceTypeProperties = original.SapTableLinkedServiceTypeProperties
+type SapTablePartitionSettings = original.SapTablePartitionSettings
 type SapTableResourceDataset = original.SapTableResourceDataset
 type SapTableResourceDatasetTypeProperties = original.SapTableResourceDatasetTypeProperties
 type SapTableSource = original.SapTableSource
@@ -1588,6 +1690,9 @@ type StoredProcedureParameter = original.StoredProcedureParameter
 type SubResource = original.SubResource
 type SybaseLinkedService = original.SybaseLinkedService
 type SybaseLinkedServiceTypeProperties = original.SybaseLinkedServiceTypeProperties
+type SybaseSource = original.SybaseSource
+type SybaseTableDataset = original.SybaseTableDataset
+type SybaseTableDatasetTypeProperties = original.SybaseTableDatasetTypeProperties
 type TeradataLinkedService = original.TeradataLinkedService
 type TeradataLinkedServiceTypeProperties = original.TeradataLinkedServiceTypeProperties
 type TextFormat = original.TextFormat
@@ -1813,6 +1918,12 @@ func PossibleDb2AuthenticationTypeValues() []Db2AuthenticationType {
 func PossibleDependencyConditionValues() []DependencyCondition {
 	return original.PossibleDependencyConditionValues()
 }
+func PossibleDynamicsAuthenticationTypeValues() []DynamicsAuthenticationType {
+	return original.PossibleDynamicsAuthenticationTypeValues()
+}
+func PossibleDynamicsDeploymentTypeValues() []DynamicsDeploymentType {
+	return original.PossibleDynamicsDeploymentTypeValues()
+}
 func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
 	return original.PossibleFtpAuthenticationTypeValues()
 }
@@ -1879,11 +1990,17 @@ func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRun
 func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
 	return original.PossibleMongoDbAuthenticationTypeValues()
 }
+func PossibleNetezzaPartitionOptionValues() []NetezzaPartitionOption {
+	return original.PossibleNetezzaPartitionOptionValues()
+}
 func PossibleODataAadServicePrincipalCredentialTypeValues() []ODataAadServicePrincipalCredentialType {
 	return original.PossibleODataAadServicePrincipalCredentialTypeValues()
 }
 func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
 	return original.PossibleODataAuthenticationTypeValues()
+}
+func PossibleOraclePartitionOptionValues() []OraclePartitionOption {
+	return original.PossibleOraclePartitionOptionValues()
 }
 func PossibleParameterTypeValues() []ParameterType {
 	return original.PossibleParameterTypeValues()
@@ -1926,6 +2043,9 @@ func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerS
 }
 func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
 	return original.PossibleSapHanaAuthenticationTypeValues()
+}
+func PossibleSapTablePartitionOptionValues() []SapTablePartitionOption {
+	return original.PossibleSapTablePartitionOptionValues()
 }
 func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
 	return original.PossibleSelfHostedIntegrationRuntimeNodeStatusValues()

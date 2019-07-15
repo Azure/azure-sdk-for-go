@@ -39,7 +39,7 @@ type (
 		session            *session
 		receiver           *amqp.Receiver
 		entityPath         string
-		done               func()
+		doneListening      func()
 		Name               string
 		useSessions        bool
 		sessionID          *string
@@ -48,6 +48,7 @@ type (
 		prefetch           uint32
 		DefaultDisposition DispositionAction
 		Closed             bool
+		doneRefreshingAuth func()
 	}
 
 	// ReceiverOption provides a structure for configuring receivers
@@ -111,7 +112,12 @@ func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ..
 	}
 
 	err := receiver.newSessionAndLink(ctx)
-	return receiver, err
+	if err != nil {
+		_ = receiver.Close(ctx)
+		return nil, err
+	}
+
+	return receiver, nil
 }
 
 // Close will close the AMQP session and link of the Receiver
@@ -119,25 +125,43 @@ func (r *Receiver) Close(ctx context.Context) error {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.Close")
 	defer span.End()
 
-	if r.done != nil {
-		r.done()
+	if r.doneListening != nil {
+		r.doneListening()
+	}
+
+	if r.doneRefreshingAuth != nil {
+		r.doneRefreshingAuth()
 	}
 
 	r.Closed = true
-	err := r.receiver.Close(ctx)
-	if err != nil {
-		_ = r.session.Close(ctx)
-		_ = r.client.Close()
-		return err
+
+	var lastErr error
+	if r.receiver != nil {
+		lastErr = r.receiver.Close(ctx)
+		if lastErr != nil {
+			tab.For(ctx).Error(lastErr)
+		}
 	}
 
-	err = r.session.Close(ctx)
-	if err != nil {
-		_ = r.client.Close()
-		return err
+	if r.session != nil {
+		if err := r.session.Close(ctx); err != nil {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
 	}
 
-	return r.client.Close()
+	if r.client != nil {
+		if err := r.client.Close(); err != nil {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+	}
+
+	r.receiver = nil
+	r.session = nil
+	r.client = nil
+
+	return lastErr
 }
 
 // Recover will attempt to close the current session and link, then rebuild them
@@ -174,7 +198,7 @@ func (r *Receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 // Listen start a listener for messages sent to the entity path
 func (r *Receiver) Listen(ctx context.Context, handler Handler) *ListenerHandle {
 	ctx, done := context.WithCancel(ctx)
-	r.done = done
+	r.doneListening = done
 
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.Listen")
 	defer span.End()
@@ -205,7 +229,7 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 		_, span := r.startConsumerSpanFromContext(ctx, optName)
 		span.Logger().Error(err)
 		r.lastError = err
-		r.done()
+		r.doneListening()
 		return
 	}
 
@@ -220,7 +244,7 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	if err := handler.Handle(ctx, event); err != nil {
 		// stop handling messages since the message consumer ran into an unexpected error
 		r.lastError = err
-		r.done()
+		r.doneListening()
 		return
 	}
 
@@ -242,7 +266,7 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 		// be sure the final message disposition.
 		tab.For(ctx).Error(err)
 		r.lastError = err
-		r.done()
+		r.doneListening()
 		return
 	}
 }
@@ -388,8 +412,28 @@ func (r *Receiver) getSessionFilterLinkOption() (amqp.LinkOption, bool) {
 	return amqp.LinkSourceFilter(name, code, r.sessionID), true
 }
 
-func (r *Receiver) getSessionFilterID() (*string, bool) {
-	return r.sessionID, r.useSessions
+func (r *Receiver) periodicallyRefreshAuth() {
+	ctx, done := context.WithCancel(context.Background())
+	r.doneRefreshingAuth = done
+
+	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.periodicallyRefreshAuth")
+	defer span.End()
+
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				time.Sleep(5 * time.Minute)
+				if r.client != nil {
+					if err := r.namespace.negotiateClaim(ctx, r.client, r.entityPath); err != nil {
+						tab.For(ctx).Error(err)
+					}
+				}
+			}
+		}
+	}()
 }
 
 func messageID(msg *amqp.Message) interface{} {

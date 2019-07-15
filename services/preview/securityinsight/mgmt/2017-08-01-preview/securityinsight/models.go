@@ -432,13 +432,13 @@ func (adc AADDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return nil, false
 }
 
-// AsAzureAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool) {
+// AsAATPDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsMicrosoftDefenderAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for AADDataConnector.
-func (adc AADDataConnector) AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool) {
+// AsMDATPDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
@@ -523,6 +523,165 @@ func (adc *AADDataConnector) UnmarshalJSON(body []byte) error {
 
 // AADDataConnectorProperties AAD (Azure Active Directory) data connector properties.
 type AADDataConnectorProperties struct {
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
+}
+
+// AATPDataConnector represents AATP (Azure Advanced Threat Protection) data connector.
+type AATPDataConnector struct {
+	// AATPDataConnectorProperties - AATP (Azure Advanced Threat Protection) data connector properties.
+	*AATPDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the data connector.
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAmazonWebServicesCloudTrail', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindAzureAdvancedThreatProtection', 'KindMicrosoftDefenderAdvancedThreatProtection'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AATPDataConnector.
+func (adc AATPDataConnector) MarshalJSON() ([]byte, error) {
+	adc.Kind = KindAzureAdvancedThreatProtection
+	objectMap := make(map[string]interface{})
+	if adc.AATPDataConnectorProperties != nil {
+		objectMap["properties"] = adc.AATPDataConnectorProperties
+	}
+	if adc.Etag != nil {
+		objectMap["etag"] = adc.Etag
+	}
+	if adc.Kind != "" {
+		objectMap["kind"] = adc.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsOfficeDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsTIDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsAATPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
+	return &adc, true
+}
+
+// AsMDATPDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return nil, false
+}
+
+// AsDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsDataConnector() (*DataConnector, bool) {
+	return nil, false
+}
+
+// AsBasicDataConnector is the BasicDataConnector implementation for AATPDataConnector.
+func (adc AATPDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
+	return &adc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AATPDataConnector struct.
+func (adc *AATPDataConnector) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var aATPDataConnectorProperties AATPDataConnectorProperties
+				err = json.Unmarshal(*v, &aATPDataConnectorProperties)
+				if err != nil {
+					return err
+				}
+				adc.AATPDataConnectorProperties = &aATPDataConnectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				adc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				adc.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				adc.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				adc.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				adc.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// AATPDataConnectorProperties AATP (Azure Advanced Threat Protection) data connector properties.
+type AATPDataConnectorProperties struct {
 	// TenantID - The tenant id to connect to, and get the data from.
 	TenantID *string `json:"tenantId,omitempty"`
 	// DataTypes - The available data types for the connector.
@@ -1367,13 +1526,13 @@ func (adc ASCDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return nil, false
 }
 
-// AsAzureAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool) {
+// AsAATPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsMicrosoftDefenderAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for ASCDataConnector.
-func (adc ASCDataConnector) AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool) {
+// AsMDATPDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
@@ -1526,13 +1685,13 @@ func (actdc AwsCloudTrailDataConnector) AsMCASDataConnector() (*MCASDataConnecto
 	return nil, false
 }
 
-// AsAzureAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool) {
+// AsAATPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsMicrosoftDefenderAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
-func (actdc AwsCloudTrailDataConnector) AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool) {
+// AsMDATPDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
@@ -1634,166 +1793,6 @@ type AwsCloudTrailDataConnectorProperties struct {
 	AwsRoleArn *string `json:"awsRoleArn,omitempty"`
 	// DataTypes - The available data types for the connector.
 	DataTypes *AwsCloudTrailDataConnectorDataTypes `json:"dataTypes,omitempty"`
-}
-
-// AzureAdvancedThreatProtectionDataConnector represents Azure Advanced Threat Protection data connector.
-type AzureAdvancedThreatProtectionDataConnector struct {
-	// AzureAdvancedThreatProtectionDataConnectorProperties - Azure Advanced Threat Protection data connector properties.
-	*AzureAdvancedThreatProtectionDataConnectorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Etag - Etag of the data connector.
-	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAmazonWebServicesCloudTrail', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity', 'KindAzureAdvancedThreatProtection', 'KindMicrosoftDefenderAdvancedThreatProtection'
-	Kind KindBasicDataConnector `json:"kind,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) MarshalJSON() ([]byte, error) {
-	aatpdc.Kind = KindAzureAdvancedThreatProtection
-	objectMap := make(map[string]interface{})
-	if aatpdc.AzureAdvancedThreatProtectionDataConnectorProperties != nil {
-		objectMap["properties"] = aatpdc.AzureAdvancedThreatProtectionDataConnectorProperties
-	}
-	if aatpdc.Etag != nil {
-		objectMap["etag"] = aatpdc.Etag
-	}
-	if aatpdc.Kind != "" {
-		objectMap["kind"] = aatpdc.Kind
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsOfficeDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
-	return nil, false
-}
-
-// AsTIDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
-	return nil, false
-}
-
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
-	return nil, false
-}
-
-// AsAADDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
-	return nil, false
-}
-
-// AsASCDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
-	return nil, false
-}
-
-// AsMCASDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
-	return nil, false
-}
-
-// AsAzureAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool) {
-	return &aatpdc, true
-}
-
-// AsMicrosoftDefenderAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool) {
-	return nil, false
-}
-
-// AsDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsDataConnector() (*DataConnector, bool) {
-	return nil, false
-}
-
-// AsBasicDataConnector is the BasicDataConnector implementation for AzureAdvancedThreatProtectionDataConnector.
-func (aatpdc AzureAdvancedThreatProtectionDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
-	return &aatpdc, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for AzureAdvancedThreatProtectionDataConnector struct.
-func (aatpdc *AzureAdvancedThreatProtectionDataConnector) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var azureAdvancedThreatProtectionDataConnectorProperties AzureAdvancedThreatProtectionDataConnectorProperties
-				err = json.Unmarshal(*v, &azureAdvancedThreatProtectionDataConnectorProperties)
-				if err != nil {
-					return err
-				}
-				aatpdc.AzureAdvancedThreatProtectionDataConnectorProperties = &azureAdvancedThreatProtectionDataConnectorProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				aatpdc.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				aatpdc.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				aatpdc.Name = &name
-			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				aatpdc.Etag = &etag
-			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				aatpdc.Kind = kind
-			}
-		}
-	}
-
-	return nil
-}
-
-// AzureAdvancedThreatProtectionDataConnectorProperties azure Advanced Threat Protection data connector
-// properties.
-type AzureAdvancedThreatProtectionDataConnectorProperties struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-	// DataTypes - The available data types for the connector.
-	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
 // Bookmark represents a bookmark in Azure Security Insights.
@@ -2499,8 +2498,8 @@ type BasicDataConnector interface {
 	AsAADDataConnector() (*AADDataConnector, bool)
 	AsASCDataConnector() (*ASCDataConnector, bool)
 	AsMCASDataConnector() (*MCASDataConnector, bool)
-	AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool)
-	AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool)
+	AsAATPDataConnector() (*AATPDataConnector, bool)
+	AsMDATPDataConnector() (*MDATPDataConnector, bool)
 	AsDataConnector() (*DataConnector, bool)
 }
 
@@ -2552,13 +2551,13 @@ func unmarshalBasicDataConnector(body []byte) (BasicDataConnector, error) {
 		err := json.Unmarshal(body, &mdc)
 		return mdc, err
 	case string(KindAzureAdvancedThreatProtection):
-		var aatpdc AzureAdvancedThreatProtectionDataConnector
-		err := json.Unmarshal(body, &aatpdc)
-		return aatpdc, err
+		var adc AATPDataConnector
+		err := json.Unmarshal(body, &adc)
+		return adc, err
 	case string(KindMicrosoftDefenderAdvancedThreatProtection):
-		var mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector
-		err := json.Unmarshal(body, &mdatpdc)
-		return mdatpdc, err
+		var mdc MDATPDataConnector
+		err := json.Unmarshal(body, &mdc)
+		return mdc, err
 	default:
 		var dc DataConnector
 		err := json.Unmarshal(body, &dc)
@@ -2627,13 +2626,13 @@ func (dc DataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return nil, false
 }
 
-// AsAzureAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool) {
+// AsAATPDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsMicrosoftDefenderAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for DataConnector.
-func (dc DataConnector) AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool) {
+// AsMDATPDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
@@ -3719,13 +3718,13 @@ func (mdc MCASDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return &mdc, true
 }
 
-// AsAzureAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool) {
+// AsAATPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsMicrosoftDefenderAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for MCASDataConnector.
-func (mdc MCASDataConnector) AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool) {
+// AsMDATPDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
@@ -3831,11 +3830,10 @@ type MCASDataConnectorProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
-// MicrosoftDefenderAdvancedThreatProtectionDataConnector represents Microsoft Defender Advanced Threat
-// Protection data connector.
-type MicrosoftDefenderAdvancedThreatProtectionDataConnector struct {
-	// MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties - Microsoft Defender Advanced Threat Protection data connector properties.
-	*MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties `json:"properties,omitempty"`
+// MDATPDataConnector represents MDATP (Microsoft Defender Advanced Threat Protection) data connector.
+type MDATPDataConnector struct {
+	// MDATPDataConnectorProperties - MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
+	*MDATPDataConnectorProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
@@ -3848,74 +3846,74 @@ type MicrosoftDefenderAdvancedThreatProtectionDataConnector struct {
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) MarshalJSON() ([]byte, error) {
-	mdatpdc.Kind = KindMicrosoftDefenderAdvancedThreatProtection
+// MarshalJSON is the custom marshaler for MDATPDataConnector.
+func (mdc MDATPDataConnector) MarshalJSON() ([]byte, error) {
+	mdc.Kind = KindMicrosoftDefenderAdvancedThreatProtection
 	objectMap := make(map[string]interface{})
-	if mdatpdc.MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties != nil {
-		objectMap["properties"] = mdatpdc.MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties
+	if mdc.MDATPDataConnectorProperties != nil {
+		objectMap["properties"] = mdc.MDATPDataConnectorProperties
 	}
-	if mdatpdc.Etag != nil {
-		objectMap["etag"] = mdatpdc.Etag
+	if mdc.Etag != nil {
+		objectMap["etag"] = mdc.Etag
 	}
-	if mdatpdc.Kind != "" {
-		objectMap["kind"] = mdatpdc.Kind
+	if mdc.Kind != "" {
+		objectMap["kind"] = mdc.Kind
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsOfficeDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+// AsOfficeDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
 	return nil, false
 }
 
-// AsTIDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+// AsTIDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
-// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
 	return nil, false
 }
 
-// AsAADDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
+// AsAADDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
 }
 
-// AsASCDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+// AsASCDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
 	return nil, false
 }
 
-// AsMCASDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+// AsMCASDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return nil, false
 }
 
-// AsAzureAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool) {
+// AsAATPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsMicrosoftDefenderAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool) {
-	return &mdatpdc, true
+// AsMDATPDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
+	return &mdc, true
 }
 
-// AsDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsDataConnector() (*DataConnector, bool) {
+// AsDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsDataConnector() (*DataConnector, bool) {
 	return nil, false
 }
 
-// AsBasicDataConnector is the BasicDataConnector implementation for MicrosoftDefenderAdvancedThreatProtectionDataConnector.
-func (mdatpdc MicrosoftDefenderAdvancedThreatProtectionDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
-	return &mdatpdc, true
+// AsBasicDataConnector is the BasicDataConnector implementation for MDATPDataConnector.
+func (mdc MDATPDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
+	return &mdc, true
 }
 
-// UnmarshalJSON is the custom unmarshaler for MicrosoftDefenderAdvancedThreatProtectionDataConnector struct.
-func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for MDATPDataConnector struct.
+func (mdc *MDATPDataConnector) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -3925,12 +3923,12 @@ func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) Unmarshal
 		switch k {
 		case "properties":
 			if v != nil {
-				var microsoftDefenderAdvancedThreatProtectionDataConnectorProperties MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties
-				err = json.Unmarshal(*v, &microsoftDefenderAdvancedThreatProtectionDataConnectorProperties)
+				var mDATPDataConnectorProperties MDATPDataConnectorProperties
+				err = json.Unmarshal(*v, &mDATPDataConnectorProperties)
 				if err != nil {
 					return err
 				}
-				mdatpdc.MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties = &microsoftDefenderAdvancedThreatProtectionDataConnectorProperties
+				mdc.MDATPDataConnectorProperties = &mDATPDataConnectorProperties
 			}
 		case "id":
 			if v != nil {
@@ -3939,7 +3937,7 @@ func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) Unmarshal
 				if err != nil {
 					return err
 				}
-				mdatpdc.ID = &ID
+				mdc.ID = &ID
 			}
 		case "type":
 			if v != nil {
@@ -3948,7 +3946,7 @@ func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) Unmarshal
 				if err != nil {
 					return err
 				}
-				mdatpdc.Type = &typeVar
+				mdc.Type = &typeVar
 			}
 		case "name":
 			if v != nil {
@@ -3957,7 +3955,7 @@ func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) Unmarshal
 				if err != nil {
 					return err
 				}
-				mdatpdc.Name = &name
+				mdc.Name = &name
 			}
 		case "etag":
 			if v != nil {
@@ -3966,7 +3964,7 @@ func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) Unmarshal
 				if err != nil {
 					return err
 				}
-				mdatpdc.Etag = &etag
+				mdc.Etag = &etag
 			}
 		case "kind":
 			if v != nil {
@@ -3975,7 +3973,7 @@ func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) Unmarshal
 				if err != nil {
 					return err
 				}
-				mdatpdc.Kind = kind
+				mdc.Kind = kind
 			}
 		}
 	}
@@ -3983,9 +3981,9 @@ func (mdatpdc *MicrosoftDefenderAdvancedThreatProtectionDataConnector) Unmarshal
 	return nil
 }
 
-// MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties microsoft Defender Advanced Threat
-// Protection data connector properties.
-type MicrosoftDefenderAdvancedThreatProtectionDataConnectorProperties struct {
+// MDATPDataConnectorProperties MDATP (Microsoft Defender Advanced Threat Protection) data connector
+// properties.
+type MDATPDataConnectorProperties struct {
 	// TenantID - The tenant id to connect to, and get the data from.
 	TenantID *string `json:"tenantId,omitempty"`
 	// DataTypes - The available data types for the connector.
@@ -4281,13 +4279,13 @@ func (odc OfficeDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) 
 	return nil, false
 }
 
-// AsAzureAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool) {
+// AsAATPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsMicrosoftDefenderAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
-func (odc OfficeDataConnector) AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool) {
+// AsMDATPDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 
@@ -4899,13 +4897,13 @@ func (tdc TIDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
 	return nil, false
 }
 
-// AsAzureAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsAzureAdvancedThreatProtectionDataConnector() (*AzureAdvancedThreatProtectionDataConnector, bool) {
+// AsAATPDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsAATPDataConnector() (*AATPDataConnector, bool) {
 	return nil, false
 }
 
-// AsMicrosoftDefenderAdvancedThreatProtectionDataConnector is the BasicDataConnector implementation for TIDataConnector.
-func (tdc TIDataConnector) AsMicrosoftDefenderAdvancedThreatProtectionDataConnector() (*MicrosoftDefenderAdvancedThreatProtectionDataConnector, bool) {
+// AsMDATPDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsMDATPDataConnector() (*MDATPDataConnector, bool) {
 	return nil, false
 }
 

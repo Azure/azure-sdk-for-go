@@ -163,7 +163,7 @@ var versionLE = func() func(string, string) (bool, error) {
 	// inconsistencies in the directory structure (e.g. v1, 6.2, v1.0 etc).  given this we must always check
 	// the API version strategry first as the semver strategy can match an API version yielding incorrect results.
 	wellKnownStrategies := []strategyTuple{
-		strategyTuple{
+		{
 			match: regexp.MustCompile(`^(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})(?:[\.\-](?P<tag>.+))?$`),
 			handler: func(leftMatch, rightMatch []string) (bool, error) {
 				var err error
@@ -197,7 +197,7 @@ var versionLE = func() func(string, string) (bool, error) {
 				return true, nil
 			},
 		},
-		strategyTuple{
+		{
 			match: regexp.MustCompile(`(?P<major>\d+)(?:\.(?P<minor>\d+)(?:\.(?P<patch>\d+))?-?(?P<tag>.*))?`),
 			handler: func(leftMatch, rightMatch []string) (bool, error) {
 				for i := 1; i <= 3; i++ {

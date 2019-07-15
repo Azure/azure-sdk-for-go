@@ -137,6 +137,8 @@ func PossibleCloseReasonValues() []CloseReason {
 type DataConnectorKind string
 
 const (
+	// AmazonWebServicesCloudTrail ...
+	AmazonWebServicesCloudTrail DataConnectorKind = "AmazonWebServicesCloudTrail"
 	// AzureActiveDirectory ...
 	AzureActiveDirectory DataConnectorKind = "AzureActiveDirectory"
 	// AzureSecurityCenter ...
@@ -151,7 +153,7 @@ const (
 
 // PossibleDataConnectorKindValues returns an array of possible values for the DataConnectorKind const type.
 func PossibleDataConnectorKindValues() []DataConnectorKind {
-	return []DataConnectorKind{AzureActiveDirectory, AzureSecurityCenter, MicrosoftCloudAppSecurity, Office365, ThreatIntelligence}
+	return []DataConnectorKind{AmazonWebServicesCloudTrail, AzureActiveDirectory, AzureSecurityCenter, MicrosoftCloudAppSecurity, Office365, ThreatIntelligence}
 }
 
 // DataTypeState enumerates the values for data type state.
@@ -220,6 +222,8 @@ func PossibleKindBasicAggregationsValues() []KindBasicAggregations {
 type KindBasicDataConnector string
 
 const (
+	// KindAmazonWebServicesCloudTrail ...
+	KindAmazonWebServicesCloudTrail KindBasicDataConnector = "AmazonWebServicesCloudTrail"
 	// KindAzureActiveDirectory ...
 	KindAzureActiveDirectory KindBasicDataConnector = "AzureActiveDirectory"
 	// KindAzureSecurityCenter ...
@@ -236,7 +240,7 @@ const (
 
 // PossibleKindBasicDataConnectorValues returns an array of possible values for the KindBasicDataConnector const type.
 func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
-	return []KindBasicDataConnector{KindAzureActiveDirectory, KindAzureSecurityCenter, KindDataConnector, KindMicrosoftCloudAppSecurity, KindOffice365, KindThreatIntelligence}
+	return []KindBasicDataConnector{KindAmazonWebServicesCloudTrail, KindAzureActiveDirectory, KindAzureSecurityCenter, KindDataConnector, KindMicrosoftCloudAppSecurity, KindOffice365, KindThreatIntelligence}
 }
 
 // KindBasicEntity enumerates the values for kind basic entity.
@@ -370,7 +374,7 @@ type AADDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAmazonWebServicesCloudTrail', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -397,6 +401,11 @@ func (adc AADDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool)
 
 // AsTIDataConnector is the BasicDataConnector implementation for AADDataConnector.
 func (adc AADDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AADDataConnector.
+func (adc AADDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
 	return nil, false
 }
 
@@ -1290,7 +1299,7 @@ type ASCDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAmazonWebServicesCloudTrail', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -1317,6 +1326,11 @@ func (adc ASCDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool)
 
 // AsTIDataConnector is the BasicDataConnector implementation for ASCDataConnector.
 func (adc ASCDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for ASCDataConnector.
+func (adc ASCDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
 	return nil, false
 }
 
@@ -1420,6 +1434,168 @@ type ASCDataConnectorProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 	// DataTypes - The available data types for the connector.
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
+}
+
+// AwsCloudTrailDataConnector represents Amazon Web Services CloudTrail data connector.
+type AwsCloudTrailDataConnector struct {
+	// AwsCloudTrailDataConnectorProperties - Amazon Web Services CloudTrail data connector properties.
+	*AwsCloudTrailDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the data connector.
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAmazonWebServicesCloudTrail', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) MarshalJSON() ([]byte, error) {
+	actdc.Kind = KindAmazonWebServicesCloudTrail
+	objectMap := make(map[string]interface{})
+	if actdc.AwsCloudTrailDataConnectorProperties != nil {
+		objectMap["properties"] = actdc.AwsCloudTrailDataConnectorProperties
+	}
+	if actdc.Etag != nil {
+		objectMap["etag"] = actdc.Etag
+	}
+	if actdc.Kind != "" {
+		objectMap["kind"] = actdc.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsOfficeDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) {
+	return nil, false
+}
+
+// AsTIDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return &actdc, true
+}
+
+// AsAADDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
+	return nil, false
+}
+
+// AsASCDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsASCDataConnector() (*ASCDataConnector, bool) {
+	return nil, false
+}
+
+// AsMCASDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsMCASDataConnector() (*MCASDataConnector, bool) {
+	return nil, false
+}
+
+// AsDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsDataConnector() (*DataConnector, bool) {
+	return nil, false
+}
+
+// AsBasicDataConnector is the BasicDataConnector implementation for AwsCloudTrailDataConnector.
+func (actdc AwsCloudTrailDataConnector) AsBasicDataConnector() (BasicDataConnector, bool) {
+	return &actdc, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for AwsCloudTrailDataConnector struct.
+func (actdc *AwsCloudTrailDataConnector) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var awsCloudTrailDataConnectorProperties AwsCloudTrailDataConnectorProperties
+				err = json.Unmarshal(*v, &awsCloudTrailDataConnectorProperties)
+				if err != nil {
+					return err
+				}
+				actdc.AwsCloudTrailDataConnectorProperties = &awsCloudTrailDataConnectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				actdc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				actdc.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				actdc.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				actdc.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				actdc.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// AwsCloudTrailDataConnectorDataTypes the available data types for Amazon Web Services CloudTrail data
+// connector.
+type AwsCloudTrailDataConnectorDataTypes struct {
+	// Logs - Logs data type.
+	Logs *AwsCloudTrailDataConnectorDataTypesLogs `json:"logs,omitempty"`
+}
+
+// AwsCloudTrailDataConnectorDataTypesLogs logs data type.
+type AwsCloudTrailDataConnectorDataTypesLogs struct {
+	// State - Describe whether this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
+	State DataTypeState `json:"state,omitempty"`
+}
+
+// AwsCloudTrailDataConnectorProperties amazon Web Services CloudTrail data connector properties.
+type AwsCloudTrailDataConnectorProperties struct {
+	// AwsRoleArn - The Aws Role Arn (with CloudTrailReadOnly policy) that is used to access the Aws account.
+	AwsRoleArn *string `json:"awsRoleArn,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *AwsCloudTrailDataConnectorDataTypes `json:"dataTypes,omitempty"`
 }
 
 // Bookmark represents a bookmark in Azure Security Insights.
@@ -2121,6 +2297,7 @@ type CloudErrorBody struct {
 type BasicDataConnector interface {
 	AsOfficeDataConnector() (*OfficeDataConnector, bool)
 	AsTIDataConnector() (*TIDataConnector, bool)
+	AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool)
 	AsAADDataConnector() (*AADDataConnector, bool)
 	AsASCDataConnector() (*ASCDataConnector, bool)
 	AsMCASDataConnector() (*MCASDataConnector, bool)
@@ -2138,7 +2315,7 @@ type DataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAmazonWebServicesCloudTrail', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -2158,6 +2335,10 @@ func unmarshalBasicDataConnector(body []byte) (BasicDataConnector, error) {
 		var tdc TIDataConnector
 		err := json.Unmarshal(body, &tdc)
 		return tdc, err
+	case string(KindAmazonWebServicesCloudTrail):
+		var actdc AwsCloudTrailDataConnector
+		err := json.Unmarshal(body, &actdc)
+		return actdc, err
 	case string(KindAzureActiveDirectory):
 		var adc AADDataConnector
 		err := json.Unmarshal(body, &adc)
@@ -2218,6 +2399,11 @@ func (dc DataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return nil, false
 }
 
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for DataConnector.
+func (dc DataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
+}
+
 // AsAADDataConnector is the BasicDataConnector implementation for DataConnector.
 func (dc DataConnector) AsAADDataConnector() (*AADDataConnector, bool) {
 	return nil, false
@@ -2251,7 +2437,7 @@ type DataConnectorDataTypeCommon struct {
 
 // DataConnectorKind1 describes an Azure resource with kind.
 type DataConnectorKind1 struct {
-	// Kind - The kind of the data connector. Possible values include: 'AzureActiveDirectory', 'AzureSecurityCenter', 'MicrosoftCloudAppSecurity', 'ThreatIntelligence', 'Office365'
+	// Kind - The kind of the data connector. Possible values include: 'AzureActiveDirectory', 'AzureSecurityCenter', 'MicrosoftCloudAppSecurity', 'ThreatIntelligence', 'Office365', 'AmazonWebServicesCloudTrail'
 	Kind DataConnectorKind `json:"kind,omitempty"`
 }
 
@@ -3265,7 +3451,7 @@ type MCASDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAmazonWebServicesCloudTrail', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -3292,6 +3478,11 @@ func (mdc MCASDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool
 
 // AsTIDataConnector is the BasicDataConnector implementation for MCASDataConnector.
 func (mdc MCASDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for MCASDataConnector.
+func (mdc MCASDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
 	return nil, false
 }
 
@@ -3636,7 +3827,7 @@ type OfficeDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAmazonWebServicesCloudTrail', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -3663,6 +3854,11 @@ func (odc OfficeDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bo
 
 // AsTIDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
 func (odc OfficeDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
+	return nil, false
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for OfficeDataConnector.
+func (odc OfficeDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
 	return nil, false
 }
 
@@ -4239,7 +4435,7 @@ type TIDataConnector struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - Etag of the data connector.
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
+	// Kind - Possible values include: 'KindDataConnector', 'KindOffice365', 'KindThreatIntelligence', 'KindAmazonWebServicesCloudTrail', 'KindAzureActiveDirectory', 'KindAzureSecurityCenter', 'KindMicrosoftCloudAppSecurity'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
@@ -4267,6 +4463,11 @@ func (tdc TIDataConnector) AsOfficeDataConnector() (*OfficeDataConnector, bool) 
 // AsTIDataConnector is the BasicDataConnector implementation for TIDataConnector.
 func (tdc TIDataConnector) AsTIDataConnector() (*TIDataConnector, bool) {
 	return &tdc, true
+}
+
+// AsAwsCloudTrailDataConnector is the BasicDataConnector implementation for TIDataConnector.
+func (tdc TIDataConnector) AsAwsCloudTrailDataConnector() (*AwsCloudTrailDataConnector, bool) {
+	return nil, false
 }
 
 // AsAADDataConnector is the BasicDataConnector implementation for TIDataConnector.

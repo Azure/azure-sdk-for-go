@@ -695,7 +695,7 @@ func (client GlobalSchedulesClient) RetargetResponder(resp *http.Response) (resu
 	return
 }
 
-// Update modify properties of schedules.
+// Update allows modifying tags of schedules. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // name - the name of the schedule.

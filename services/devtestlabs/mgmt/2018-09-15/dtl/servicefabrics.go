@@ -41,12 +41,12 @@ func NewServiceFabricsClientWithBaseURI(baseURI string, subscriptionID string) S
 	return ServiceFabricsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or replace an existing Service Fabric. This operation can take a while to complete.
+// CreateOrUpdate create or replace an existing service fabric. This operation can take a while to complete.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 // serviceFabric - a Service Fabric.
 func (client ServiceFabricsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabric) (result ServiceFabricsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -145,7 +145,7 @@ func (client ServiceFabricsClient) CreateOrUpdateResponder(resp *http.Response) 
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 func (client ServiceFabricsClient) Delete(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result ServiceFabricsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.Delete")
@@ -225,7 +225,7 @@ func (client ServiceFabricsClient) DeleteResponder(resp *http.Response) (result 
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 // expand - specify the $expand query. Example: 'properties($expand=applicableSchedule)'
 func (client ServiceFabricsClient) Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, expand string) (result ServiceFabric, err error) {
 	if tracing.IsEnabled() {
@@ -443,7 +443,7 @@ func (client ServiceFabricsClient) ListComplete(ctx context.Context, resourceGro
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 func (client ServiceFabricsClient) ListApplicableSchedules(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result ApplicableSchedule, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.ListApplicableSchedules")
@@ -524,7 +524,7 @@ func (client ServiceFabricsClient) ListApplicableSchedulesResponder(resp *http.R
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 func (client ServiceFabricsClient) Start(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result ServiceFabricsStartFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.Start")
@@ -604,7 +604,7 @@ func (client ServiceFabricsClient) StartResponder(resp *http.Response) (result a
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 func (client ServiceFabricsClient) Stop(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result ServiceFabricsStopFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.Stop")
@@ -679,12 +679,12 @@ func (client ServiceFabricsClient) StopResponder(resp *http.Response) (result au
 	return
 }
 
-// Update modify properties of service fabrics.
+// Update allows modifying tags of service fabrics. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 // serviceFabric - a Service Fabric.
 func (client ServiceFabricsClient) Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabricFragment) (result ServiceFabric, err error) {
 	if tracing.IsEnabled() {

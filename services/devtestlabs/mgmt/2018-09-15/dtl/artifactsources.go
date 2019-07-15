@@ -421,7 +421,7 @@ func (client ArtifactSourcesClient) ListComplete(ctx context.Context, resourceGr
 	return
 }
 
-// Update modify properties of artifact sources.
+// Update allows modifying tags of artifact sources. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

@@ -46,7 +46,7 @@ func NewServiceFabricSchedulesClientWithBaseURI(baseURI string, subscriptionID s
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// serviceFabricName - the name of the service Fabric.
+// serviceFabricName - the name of the service fabric.
 // name - the name of the schedule.
 // schedule - a schedule.
 func (client ServiceFabricSchedulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string, schedule Schedule) (result Schedule, err error) {
@@ -138,7 +138,7 @@ func (client ServiceFabricSchedulesClient) CreateOrUpdateResponder(resp *http.Re
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// serviceFabricName - the name of the service Fabric.
+// serviceFabricName - the name of the service fabric.
 // name - the name of the schedule.
 func (client ServiceFabricSchedulesClient) Delete(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -220,7 +220,7 @@ func (client ServiceFabricSchedulesClient) DeleteResponder(resp *http.Response) 
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// serviceFabricName - the name of the service Fabric.
+// serviceFabricName - the name of the service fabric.
 // name - the name of the schedule.
 func (client ServiceFabricSchedulesClient) Execute(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string) (result ServiceFabricSchedulesExecuteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -302,7 +302,7 @@ func (client ServiceFabricSchedulesClient) ExecuteResponder(resp *http.Response)
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// serviceFabricName - the name of the service Fabric.
+// serviceFabricName - the name of the service fabric.
 // name - the name of the schedule.
 // expand - specify the $expand query. Example: 'properties($select=status)'
 func (client ServiceFabricSchedulesClient) Get(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string, expand string) (result Schedule, err error) {
@@ -389,7 +389,7 @@ func (client ServiceFabricSchedulesClient) GetResponder(resp *http.Response) (re
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// serviceFabricName - the name of the service Fabric.
+// serviceFabricName - the name of the service fabric.
 // expand - specify the $expand query. Example: 'properties($select=status)'
 // filter - the filter to apply to the operation. Example: '$filter=contains(name,'myName')
 // top - the maximum number of resources to return from the operation. Example: '$top=10'
@@ -519,12 +519,12 @@ func (client ServiceFabricSchedulesClient) ListComplete(ctx context.Context, res
 	return
 }
 
-// Update modify properties of schedules.
+// Update allows modifying tags of schedules. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// serviceFabricName - the name of the service Fabric.
+// serviceFabricName - the name of the service fabric.
 // name - the name of the schedule.
 // schedule - a schedule.
 func (client ServiceFabricSchedulesClient) Update(ctx context.Context, resourceGroupName string, labName string, userName string, serviceFabricName string, name string, schedule ScheduleFragment) (result Schedule, err error) {

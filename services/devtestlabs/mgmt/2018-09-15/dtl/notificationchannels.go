@@ -41,11 +41,11 @@ func NewNotificationChannelsClientWithBaseURI(baseURI string, subscriptionID str
 	return NotificationChannelsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or replace an existing notificationChannel.
+// CreateOrUpdate create or replace an existing notification channel.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
-// name - the name of the notificationChannel.
+// name - the name of the notification channel.
 // notificationChannel - a notification.
 func (client NotificationChannelsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannel) (result NotificationChannel, err error) {
 	if tracing.IsEnabled() {
@@ -133,7 +133,7 @@ func (client NotificationChannelsClient) CreateOrUpdateResponder(resp *http.Resp
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
-// name - the name of the notificationChannel.
+// name - the name of the notification channel.
 func (client NotificationChannelsClient) Delete(ctx context.Context, resourceGroupName string, labName string, name string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotificationChannelsClient.Delete")
@@ -211,7 +211,7 @@ func (client NotificationChannelsClient) DeleteResponder(resp *http.Response) (r
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
-// name - the name of the notificationChannel.
+// name - the name of the notification channel.
 // expand - specify the $expand query. Example: 'properties($select=webHookUrl)'
 func (client NotificationChannelsClient) Get(ctx context.Context, resourceGroupName string, labName string, name string, expand string) (result NotificationChannel, err error) {
 	if tracing.IsEnabled() {
@@ -425,7 +425,7 @@ func (client NotificationChannelsClient) ListComplete(ctx context.Context, resou
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
-// name - the name of the notificationChannel.
+// name - the name of the notification channel.
 // notifyParameters - properties for generating a Notification.
 func (client NotificationChannelsClient) Notify(ctx context.Context, resourceGroupName string, labName string, name string, notifyParameters NotifyParameters) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -502,11 +502,11 @@ func (client NotificationChannelsClient) NotifyResponder(resp *http.Response) (r
 	return
 }
 
-// Update modify properties of notification channels.
+// Update allows modifying tags of notification channels. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
-// name - the name of the notificationChannel.
+// name - the name of the notification channel.
 // notificationChannel - a notification.
 func (client NotificationChannelsClient) Update(ctx context.Context, resourceGroupName string, labName string, name string, notificationChannel NotificationChannelFragment) (result NotificationChannel, err error) {
 	if tracing.IsEnabled() {

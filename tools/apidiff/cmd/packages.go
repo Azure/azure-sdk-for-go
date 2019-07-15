@@ -191,7 +191,7 @@ type CommitPkgsReport struct {
 	CommitsReports   map[string]pkgsReport `json:"deltas"`
 }
 
-// returns true if the report contains no data
+// IsEmpty returns true if the report contains no data.
 func (c CommitPkgsReport) IsEmpty() bool {
 	for _, r := range c.CommitsReports {
 		if !r.isEmpty() {
@@ -201,7 +201,7 @@ func (c CommitPkgsReport) IsEmpty() bool {
 	return true
 }
 
-// returns true if the report contains breaking changes
+// HasBreakingChanges returns true if the report contains breaking changes.
 func (c CommitPkgsReport) HasBreakingChanges() bool {
 	for _, r := range c.CommitsReports {
 		if r.hasBreakingChanges() {
@@ -211,7 +211,7 @@ func (c CommitPkgsReport) HasBreakingChanges() bool {
 	return false
 }
 
-// returns true if the package contains additive changes
+// HasAdditiveChanges returns true if the package contains additive changes.
 func (c CommitPkgsReport) HasAdditiveChanges() bool {
 	for _, r := range c.CommitsReports {
 		if r.hasAdditiveChanges() {

@@ -29,7 +29,7 @@ func TestDeconstructPath(t *testing.T) {
 		pi   PathInfo
 	}
 	testcases := []testcase{
-		testcase{
+		{
 			name: "arm1",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "storage", "mgmt", "2016-01-01", "storage"),
 			pi: PathInfo{
@@ -39,7 +39,7 @@ func TestDeconstructPath(t *testing.T) {
 				Group:    "storage",
 			},
 		},
-		testcase{
+		{
 			name: "arm2",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "datalake", "analytics", "mgmt", "2016-11-01", "account"),
 			pi: PathInfo{
@@ -49,7 +49,7 @@ func TestDeconstructPath(t *testing.T) {
 				Group:    "account",
 			},
 		},
-		testcase{
+		{
 			name: "arm3",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "datalake", "analytics", "mgmt", "2016-11-01", "account", "v2"),
 			pi: PathInfo{
@@ -60,7 +60,7 @@ func TestDeconstructPath(t *testing.T) {
 				ModVer:   "v2",
 			},
 		},
-		testcase{
+		{
 			name: "arm4",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "datalake", "analytics", "mgmt", "2016-11-01", "account", "v2", "accountapi"),
 			pi: PathInfo{
@@ -72,7 +72,7 @@ func TestDeconstructPath(t *testing.T) {
 				APIPkg:   "accountapi",
 			},
 		},
-		testcase{
+		{
 			name: "arm5",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "storage", "mgmt", "2016-01-01", "storage", "v10"),
 			pi: PathInfo{
@@ -83,7 +83,7 @@ func TestDeconstructPath(t *testing.T) {
 				ModVer:   "v10",
 			},
 		},
-		testcase{
+		{
 			name: "arm6",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "storage", "mgmt", "2016-01-01", "storage", "v10", "storageapi"),
 			pi: PathInfo{
@@ -95,7 +95,7 @@ func TestDeconstructPath(t *testing.T) {
 				APIPkg:   "storageapi",
 			},
 		},
-		testcase{
+		{
 			name: "arm7",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "storage", "mgmt", "2016-01-01", "storage", "storageapi"),
 			pi: PathInfo{
@@ -106,7 +106,7 @@ func TestDeconstructPath(t *testing.T) {
 				APIPkg:   "storageapi",
 			},
 		},
-		testcase{
+		{
 			name: "arm8",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "datalake", "analytics", "mgmt", "2016-11-01", "account", "accountapi"),
 			pi: PathInfo{
@@ -117,7 +117,7 @@ func TestDeconstructPath(t *testing.T) {
 				APIPkg:   "accountapi",
 			},
 		},
-		testcase{
+		{
 			name: "dataplane1",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "cognitiveservices", "v2.0", "luis", "authoring"),
 			pi: PathInfo{
@@ -127,7 +127,7 @@ func TestDeconstructPath(t *testing.T) {
 				Group:    filepath.Join("luis", "authoring"),
 			},
 		},
-		testcase{
+		{
 			name: "dataplane2",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "datalake", "analytics", "2016-11-01", "job"),
 			pi: PathInfo{
@@ -137,7 +137,7 @@ func TestDeconstructPath(t *testing.T) {
 				Group:    "job",
 			},
 		},
-		testcase{
+		{
 			name: "dataplane3",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "appinsights", "v1", "insights"),
 			pi: PathInfo{
@@ -147,7 +147,7 @@ func TestDeconstructPath(t *testing.T) {
 				Group:    "insights",
 			},
 		},
-		testcase{
+		{
 			name: "dataplane4",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "cognitiveservices", "v2.0", "luis", "authoring", "v2"),
 			pi: PathInfo{
@@ -158,7 +158,7 @@ func TestDeconstructPath(t *testing.T) {
 				ModVer:   "v2",
 			},
 		},
-		testcase{
+		{
 			name: "dataplane5",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "cognitiveservices", "v2.0", "luis", "authoring", "v2", "authoringapi"),
 			pi: PathInfo{
@@ -170,7 +170,7 @@ func TestDeconstructPath(t *testing.T) {
 				APIPkg:   "authoringapi",
 			},
 		},
-		testcase{
+		{
 			name: "dataplane6",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "appinsights", "v1", "insights", "v4"),
 			pi: PathInfo{
@@ -181,7 +181,7 @@ func TestDeconstructPath(t *testing.T) {
 				ModVer:   "v4",
 			},
 		},
-		testcase{
+		{
 			name: "dataplane7",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "appinsights", "v1", "insights", "insightsapi"),
 			pi: PathInfo{
@@ -192,7 +192,7 @@ func TestDeconstructPath(t *testing.T) {
 				APIPkg:   "insightsapi",
 			},
 		},
-		testcase{
+		{
 			name: "dataplane8",
 			path: filepath.Join("work", "src", "github.com", "Azure", "azure-sdk-for-go", "services", "appinsights", "v1", "insights", "v4", "insightsapi"),
 			pi: PathInfo{

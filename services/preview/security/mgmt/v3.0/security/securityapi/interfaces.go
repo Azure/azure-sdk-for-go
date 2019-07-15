@@ -282,22 +282,6 @@ type RegulatoryComplianceAssessmentsClientAPI interface {
 
 var _ RegulatoryComplianceAssessmentsClientAPI = (*security.RegulatoryComplianceAssessmentsClient)(nil)
 
-// AssessmentsMetadataClientAPI contains the set of methods on the AssessmentsMetadataClient type.
-type AssessmentsMetadataClientAPI interface {
-	Get(ctx context.Context, assessmentsMetadataName string) (result security.AssessmentMetadata, err error)
-	List(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
-}
-
-var _ AssessmentsMetadataClientAPI = (*security.AssessmentsMetadataClient)(nil)
-
-// AssessmentsMetadataSubscriptionClientAPI contains the set of methods on the AssessmentsMetadataSubscriptionClient type.
-type AssessmentsMetadataSubscriptionClientAPI interface {
-	Get(ctx context.Context, assessmentsMetadataName string) (result security.AssessmentMetadata, err error)
-	List(ctx context.Context) (result security.AssessmentMetadataListPage, err error)
-}
-
-var _ AssessmentsMetadataSubscriptionClientAPI = (*security.AssessmentsMetadataSubscriptionClient)(nil)
-
 // ServerVulnerabilityAssessmentClientAPI contains the set of methods on the ServerVulnerabilityAssessmentClient type.
 type ServerVulnerabilityAssessmentClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessment, err error)

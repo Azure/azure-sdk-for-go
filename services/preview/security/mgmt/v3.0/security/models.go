@@ -78,21 +78,6 @@ func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 	return []AlertsToAdmins{AlertsToAdminsOff, AlertsToAdminsOn}
 }
 
-// AssessmentType enumerates the values for assessment type.
-type AssessmentType string
-
-const (
-	// BuiltIn ...
-	BuiltIn AssessmentType = "BuiltIn"
-	// Custom ...
-	Custom AssessmentType = "Custom"
-)
-
-// PossibleAssessmentTypeValues returns an array of possible values for the AssessmentType const type.
-func PossibleAssessmentTypeValues() []AssessmentType {
-	return []AssessmentType{BuiltIn, Custom}
-}
-
 // AutoProvision enumerates the values for auto provision.
 type AutoProvision string
 
@@ -106,27 +91,6 @@ const (
 // PossibleAutoProvisionValues returns an array of possible values for the AutoProvision const type.
 func PossibleAutoProvisionValues() []AutoProvision {
 	return []AutoProvision{AutoProvisionOff, AutoProvisionOn}
-}
-
-// Category enumerates the values for category.
-type Category string
-
-const (
-	// Compute ...
-	Compute Category = "Compute"
-	// Data ...
-	Data Category = "Data"
-	// IdentityAndAccess ...
-	IdentityAndAccess Category = "IdentityAndAccess"
-	// IoT ...
-	IoT Category = "IoT"
-	// Network ...
-	Network Category = "Network"
-)
-
-// PossibleCategoryValues returns an array of possible values for the Category const type.
-func PossibleCategoryValues() []Category {
-	return []Category{Compute, Data, IdentityAndAccess, IoT, Network}
 }
 
 // ConnectionType enumerates the values for connection type.
@@ -355,25 +319,6 @@ const (
 // PossibleReportedSeverityValues returns an array of possible values for the ReportedSeverity const type.
 func PossibleReportedSeverityValues() []ReportedSeverity {
 	return []ReportedSeverity{High, Informational, Low, Medium}
-}
-
-// RequiredPricingBundle enumerates the values for required pricing bundle.
-type RequiredPricingBundle string
-
-const (
-	// AppServices ...
-	AppServices RequiredPricingBundle = "AppServices"
-	// SQLServers ...
-	SQLServers RequiredPricingBundle = "SqlServers"
-	// StorageAccounts ...
-	StorageAccounts RequiredPricingBundle = "StorageAccounts"
-	// VirtualMachines ...
-	VirtualMachines RequiredPricingBundle = "VirtualMachines"
-)
-
-// PossibleRequiredPricingBundleValues returns an array of possible values for the RequiredPricingBundle const type.
-func PossibleRequiredPricingBundleValues() []RequiredPricingBundle {
-	return []RequiredPricingBundle{AppServices, SQLServers, StorageAccounts, VirtualMachines}
 }
 
 // ResourceStatus enumerates the values for resource status.
@@ -1359,246 +1304,6 @@ func (page AscLocationListPage) Values() []AscLocation {
 // Creates a new instance of the AscLocationListPage type.
 func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
 	return AscLocationListPage{fn: getNextPage}
-}
-
-// AssessmentMetadata security assessment metadata
-type AssessmentMetadata struct {
-	autorest.Response             `json:"-"`
-	*AssessmentMetadataProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AssessmentMetadata.
-func (am AssessmentMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if am.AssessmentMetadataProperties != nil {
-		objectMap["properties"] = am.AssessmentMetadataProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AssessmentMetadata struct.
-func (am *AssessmentMetadata) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var assessmentMetadataProperties AssessmentMetadataProperties
-				err = json.Unmarshal(*v, &assessmentMetadataProperties)
-				if err != nil {
-					return err
-				}
-				am.AssessmentMetadataProperties = &assessmentMetadataProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				am.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				am.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				am.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// AssessmentMetadataList list of security assessment metadata
-type AssessmentMetadataList struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY
-	Value *[]AssessmentMetadata `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// AssessmentMetadataListIterator provides access to a complete listing of AssessmentMetadata values.
-type AssessmentMetadataListIterator struct {
-	i    int
-	page AssessmentMetadataListPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *AssessmentMetadataListIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataListIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *AssessmentMetadataListIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter AssessmentMetadataListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter AssessmentMetadataListIterator) Response() AssessmentMetadataList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter AssessmentMetadataListIterator) Value() AssessmentMetadata {
-	if !iter.page.NotDone() {
-		return AssessmentMetadata{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the AssessmentMetadataListIterator type.
-func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
-	return AssessmentMetadataListIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (aml AssessmentMetadataList) IsEmpty() bool {
-	return aml.Value == nil || len(*aml.Value) == 0
-}
-
-// assessmentMetadataListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (aml AssessmentMetadataList) assessmentMetadataListPreparer(ctx context.Context) (*http.Request, error) {
-	if aml.NextLink == nil || len(to.String(aml.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(aml.NextLink)))
-}
-
-// AssessmentMetadataListPage contains a page of AssessmentMetadata values.
-type AssessmentMetadataListPage struct {
-	fn  func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)
-	aml AssessmentMetadataList
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *AssessmentMetadataListPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataListPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.aml)
-	if err != nil {
-		return err
-	}
-	page.aml = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *AssessmentMetadataListPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page AssessmentMetadataListPage) NotDone() bool {
-	return !page.aml.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page AssessmentMetadataListPage) Response() AssessmentMetadataList {
-	return page.aml
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page AssessmentMetadataListPage) Values() []AssessmentMetadata {
-	if page.aml.IsEmpty() {
-		return nil
-	}
-	return *page.aml.Value
-}
-
-// Creates a new instance of the AssessmentMetadataListPage type.
-func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
-	return AssessmentMetadataListPage{fn: getNextPage}
-}
-
-// AssessmentMetadataProperties describes properties of an assessment metadata.
-type AssessmentMetadataProperties struct {
-	// DisplayName - READ-ONLY; User friendly display name of the assessment
-	DisplayName *string `json:"displayName,omitempty"`
-	// PolicyDefinitionID - READ-ONLY; Azure resource ID of the policy definition that turns this assessment calculation on
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
-	// Description - READ-ONLY; Human readable description of the assessment
-	Description *string `json:"description,omitempty"`
-	// RemediationDescription - READ-ONLY; Human readable description of what you should do to mitigate this security issue
-	RemediationDescription *string `json:"remediationDescription,omitempty"`
-	// Category - READ-ONLY
-	Category *[]Category `json:"category,omitempty"`
-	// SecureScoreWeight - READ-ONLY; Weight for the security score calculation. the higher this number, this severity  of this assessment is higher
-	SecureScoreWeight *int32 `json:"secureScoreWeight,omitempty"`
-	// RequiredPricingBundle - READ-ONLY
-	RequiredPricingBundle *[]RequiredPricingBundle `json:"requiredPricingBundle,omitempty"`
-	// Preview - READ-ONLY; True if this assessment is in preview release status
-	Preview *bool `json:"preview,omitempty"`
-	// AssessmentType - READ-ONLY; BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'Custom'
-	AssessmentType AssessmentType `json:"assessmentType,omitempty"`
 }
 
 // AtaExternalSecuritySolution represents an ATA security solution which sends logs to an OMS workspace
@@ -5459,7 +5164,7 @@ type PricingList struct {
 
 // PricingProperties pricing properties for the relevant scope
 type PricingProperties struct {
-	// PricingTier - The pricing tier value. Possible values include: 'Free', 'Standard'
+	// PricingTier - The pricing tier value. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. Possible values include: 'Free', 'Standard'
 	PricingTier PricingTier `json:"pricingTier,omitempty"`
 	// FreeTrialRemainingTime - READ-ONLY; The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
 	FreeTrialRemainingTime *string `json:"freeTrialRemainingTime,omitempty"`

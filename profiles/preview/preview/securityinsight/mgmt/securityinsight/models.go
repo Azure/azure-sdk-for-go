@@ -80,11 +80,12 @@ const (
 type DataConnectorKind = original.DataConnectorKind
 
 const (
-	AzureActiveDirectory      DataConnectorKind = original.AzureActiveDirectory
-	AzureSecurityCenter       DataConnectorKind = original.AzureSecurityCenter
-	MicrosoftCloudAppSecurity DataConnectorKind = original.MicrosoftCloudAppSecurity
-	Office365                 DataConnectorKind = original.Office365
-	ThreatIntelligence        DataConnectorKind = original.ThreatIntelligence
+	AmazonWebServicesCloudTrail DataConnectorKind = original.AmazonWebServicesCloudTrail
+	AzureActiveDirectory        DataConnectorKind = original.AzureActiveDirectory
+	AzureSecurityCenter         DataConnectorKind = original.AzureSecurityCenter
+	MicrosoftCloudAppSecurity   DataConnectorKind = original.MicrosoftCloudAppSecurity
+	Office365                   DataConnectorKind = original.Office365
+	ThreatIntelligence          DataConnectorKind = original.ThreatIntelligence
 )
 
 type DataTypeState = original.DataTypeState
@@ -119,12 +120,13 @@ const (
 type KindBasicDataConnector = original.KindBasicDataConnector
 
 const (
-	KindAzureActiveDirectory      KindBasicDataConnector = original.KindAzureActiveDirectory
-	KindAzureSecurityCenter       KindBasicDataConnector = original.KindAzureSecurityCenter
-	KindDataConnector             KindBasicDataConnector = original.KindDataConnector
-	KindMicrosoftCloudAppSecurity KindBasicDataConnector = original.KindMicrosoftCloudAppSecurity
-	KindOffice365                 KindBasicDataConnector = original.KindOffice365
-	KindThreatIntelligence        KindBasicDataConnector = original.KindThreatIntelligence
+	KindAmazonWebServicesCloudTrail KindBasicDataConnector = original.KindAmazonWebServicesCloudTrail
+	KindAzureActiveDirectory        KindBasicDataConnector = original.KindAzureActiveDirectory
+	KindAzureSecurityCenter         KindBasicDataConnector = original.KindAzureSecurityCenter
+	KindDataConnector               KindBasicDataConnector = original.KindDataConnector
+	KindMicrosoftCloudAppSecurity   KindBasicDataConnector = original.KindMicrosoftCloudAppSecurity
+	KindOffice365                   KindBasicDataConnector = original.KindOffice365
+	KindThreatIntelligence          KindBasicDataConnector = original.KindThreatIntelligence
 )
 
 type KindBasicEntity = original.KindBasicEntity
@@ -207,6 +209,10 @@ type AlertRulesListIterator = original.AlertRulesListIterator
 type AlertRulesListPage = original.AlertRulesListPage
 type AlertsDataTypeOfDataConnector = original.AlertsDataTypeOfDataConnector
 type AlertsDataTypeOfDataConnectorAlerts = original.AlertsDataTypeOfDataConnectorAlerts
+type AwsCloudTrailDataConnector = original.AwsCloudTrailDataConnector
+type AwsCloudTrailDataConnectorDataTypes = original.AwsCloudTrailDataConnectorDataTypes
+type AwsCloudTrailDataConnectorDataTypesLogs = original.AwsCloudTrailDataConnectorDataTypesLogs
+type AwsCloudTrailDataConnectorProperties = original.AwsCloudTrailDataConnectorProperties
 type BaseClient = original.BaseClient
 type BasicAggregations = original.BasicAggregations
 type BasicAlertRule = original.BasicAlertRule

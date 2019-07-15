@@ -3877,7 +3877,7 @@ type GenerateUploadURIParameter struct {
 	BlobName *string `json:"blobName,omitempty"`
 }
 
-// GenerateUploadURIResponse reponse body for generating an upload URI.
+// GenerateUploadURIResponse response body for generating an upload URI.
 type GenerateUploadURIResponse struct {
 	autorest.Response `json:"-"`
 	// UploadURI - The upload URI for the VHD.

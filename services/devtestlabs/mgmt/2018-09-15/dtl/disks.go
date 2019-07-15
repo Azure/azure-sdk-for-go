@@ -596,7 +596,7 @@ func (client DisksClient) ListComplete(ctx context.Context, resourceGroupName st
 	return
 }
 
-// Update modify properties of disks.
+// Update allows modifying tags of disks. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

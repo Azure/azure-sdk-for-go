@@ -429,7 +429,7 @@ func (client PoliciesClient) ListComplete(ctx context.Context, resourceGroupName
 	return
 }
 
-// Update modify properties of policies.
+// Update allows modifying tags of policies. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

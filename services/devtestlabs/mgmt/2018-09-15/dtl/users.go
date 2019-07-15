@@ -414,7 +414,7 @@ func (client UsersClient) ListComplete(ctx context.Context, resourceGroupName st
 	return
 }
 
-// Update modify properties of user profiles.
+// Update allows modifying tags of user profiles. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

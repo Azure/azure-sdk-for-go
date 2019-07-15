@@ -519,7 +519,7 @@ func (client ServiceFabricSchedulesClient) ListComplete(ctx context.Context, res
 	return
 }
 
-// Update modify properties of schedules.
+// Update allows modifying tags of schedules. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

@@ -421,7 +421,7 @@ func (client FormulasClient) ListComplete(ctx context.Context, resourceGroupName
 	return
 }
 
-// Update modify properties of formulas.
+// Update allows modifying tags of formulas. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

@@ -1043,7 +1043,7 @@ func (client LabsClient) ListVhdsComplete(ctx context.Context, resourceGroupName
 	return
 }
 
-// Update modify properties of labs.
+// Update allows modifying tags of labs. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // name - the name of the lab.

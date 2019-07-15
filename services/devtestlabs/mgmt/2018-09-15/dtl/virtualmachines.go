@@ -1461,7 +1461,7 @@ func (client VirtualMachinesClient) UnClaimResponder(resp *http.Response) (resul
 	return
 }
 
-// Update modify properties of virtual machines.
+// Update allows modifying tags of virtual machines. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

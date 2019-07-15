@@ -679,7 +679,7 @@ func (client ServiceFabricsClient) StopResponder(resp *http.Response) (result au
 	return
 }
 
-// Update modify properties of service fabrics.
+// Update allows modifying tags of service fabrics. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

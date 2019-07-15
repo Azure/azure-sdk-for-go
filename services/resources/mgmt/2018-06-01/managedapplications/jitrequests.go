@@ -45,14 +45,13 @@ func NewJitRequestsClientWithBaseURI(baseURI string, subscriptionID string) JitR
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // jitRequestName - the name of the JIT request.
-// parameters - parameters supplied to the update JIT request.
-func (client JitRequestsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition) (result JitRequestsCreateOrUpdateFuture, err error) {
+func (client JitRequestsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string) (result JitRequestDefinition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/JitRequestsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -61,65 +60,57 @@ func (client JitRequestsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}},
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.JitRequestProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.JitRequestProperties.ApplicationResourceID", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.JitRequestProperties.JitAuthorizationPolicies", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.JitRequestProperties.JitSchedulingPolicy", Name: validation.Null, Rule: false, Chain: nil},
-				}}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("managedapplications.JitRequestsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, jitRequestName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, jitRequestName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateOrUpdateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client JitRequestsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition) (*http.Request, error) {
+func (client JitRequestsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, jitRequestName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"jitRequestName":    autorest.Encode("path", jitRequestName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}", pathParameters),
-		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client JitRequestsClient) CreateOrUpdateSender(req *http.Request) (future JitRequestsCreateOrUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
+func (client JitRequestsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return autorest.SendWithSender(client, req,
 		azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -187,7 +178,7 @@ func (client JitRequestsClient) DeletePreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -271,7 +262,7 @@ func (client JitRequestsClient) GetByNamePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -297,7 +288,7 @@ func (client JitRequestsClient) GetByNameResponder(resp *http.Response) (result 
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -354,7 +345,7 @@ func (client JitRequestsClient) ListByResourceGroupPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -426,7 +417,7 @@ func (client JitRequestsClient) ListBySubscriptionPreparer(ctx context.Context) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

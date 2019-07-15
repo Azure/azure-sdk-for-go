@@ -99,7 +99,7 @@ func (client AssignmentsClient) CreatePreparer(ctx context.Context, scope string
 		"scope":                scope,
 	}
 
-	const APIVersion = "2018-05-01"
+	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -194,7 +194,7 @@ func (client AssignmentsClient) CreateByIDPreparer(ctx context.Context, policyAs
 		"policyAssignmentId": policyAssignmentID,
 	}
 
-	const APIVersion = "2018-05-01"
+	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -281,7 +281,7 @@ func (client AssignmentsClient) DeletePreparer(ctx context.Context, scope string
 		"scope":                scope,
 	}
 
-	const APIVersion = "2018-05-01"
+	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -362,7 +362,7 @@ func (client AssignmentsClient) DeleteByIDPreparer(ctx context.Context, policyAs
 		"policyAssignmentId": policyAssignmentID,
 	}
 
-	const APIVersion = "2018-05-01"
+	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -442,7 +442,7 @@ func (client AssignmentsClient) GetPreparer(ctx context.Context, scope string, p
 		"scope":                scope,
 	}
 
-	const APIVersion = "2018-05-01"
+	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -522,7 +522,7 @@ func (client AssignmentsClient) GetByIDPreparer(ctx context.Context, policyAssig
 		"policyAssignmentId": policyAssignmentID,
 	}
 
-	const APIVersion = "2018-05-01"
+	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -605,7 +605,7 @@ func (client AssignmentsClient) ListPreparer(ctx context.Context, filter string)
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-01"
+	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -758,7 +758,7 @@ func (client AssignmentsClient) ListForResourcePreparer(ctx context.Context, res
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-01"
+	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -892,7 +892,7 @@ func (client AssignmentsClient) ListForResourceGroupPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-05-01"
+	const APIVersion = "2019-01-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -45,8 +45,7 @@ func NewUpdateAccessClientWithBaseURI(baseURI string, subscriptionID string) Upd
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // applicationName - the name of the managed application.
-// parameters - parameters supplied to the update managed application access.
-func (client UpdateAccessClient) Post(ctx context.Context, resourceGroupName string, applicationName string, parameters JitUpdateAccessDefinition) (result UpdateAccessPostFuture, err error) {
+func (client UpdateAccessClient) Post(ctx context.Context, resourceGroupName string, applicationName string) (result UpdateAccessPostFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/UpdateAccessClient.Post")
 		defer func() {
@@ -68,7 +67,7 @@ func (client UpdateAccessClient) Post(ctx context.Context, resourceGroupName str
 		return result, validation.NewError("managedapplications.UpdateAccessClient", "Post", err.Error())
 	}
 
-	req, err := client.PostPreparer(ctx, resourceGroupName, applicationName, parameters)
+	req, err := client.PostPreparer(ctx, resourceGroupName, applicationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedapplications.UpdateAccessClient", "Post", nil, "Failure preparing request")
 		return
@@ -84,24 +83,22 @@ func (client UpdateAccessClient) Post(ctx context.Context, resourceGroupName str
 }
 
 // PostPreparer prepares the Post request.
-func (client UpdateAccessClient) PostPreparer(ctx context.Context, resourceGroupName string, applicationName string, parameters JitUpdateAccessDefinition) (*http.Request, error) {
+func (client UpdateAccessClient) PostPreparer(ctx context.Context, resourceGroupName string, applicationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationName":   autorest.Encode("path", applicationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2018-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/applications/{applicationName}/updateAccess", pathParameters),
-		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

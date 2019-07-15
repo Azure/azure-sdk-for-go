@@ -141,6 +141,7 @@ type JitRequestDefinitionListResult = original.JitRequestDefinitionListResult
 type JitRequestMetadata = original.JitRequestMetadata
 type JitRequestProperties = original.JitRequestProperties
 type JitRequestsClient = original.JitRequestsClient
+type JitRequestsCreateOrUpdateFuture = original.JitRequestsCreateOrUpdateFuture
 type JitSchedulingPolicy = original.JitSchedulingPolicy
 type JitUpdateAccessDefinition = original.JitUpdateAccessDefinition
 type Plan = original.Plan

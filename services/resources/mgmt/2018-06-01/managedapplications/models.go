@@ -22,6 +22,7 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -62,37 +63,121 @@ func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
 	return []ApplicationLockLevel{CanNotDelete, None, ReadOnly}
 }
 
+// JitRequestState enumerates the values for jit request state.
+type JitRequestState string
+
+const (
+	// Approved ...
+	Approved JitRequestState = "Approved"
+	// Canceled ...
+	Canceled JitRequestState = "Canceled"
+	// Denied ...
+	Denied JitRequestState = "Denied"
+	// Expired ...
+	Expired JitRequestState = "Expired"
+	// Failed ...
+	Failed JitRequestState = "Failed"
+	// NotSpecified ...
+	NotSpecified JitRequestState = "NotSpecified"
+	// Pending ...
+	Pending JitRequestState = "Pending"
+	// Timeout ...
+	Timeout JitRequestState = "Timeout"
+)
+
+// PossibleJitRequestStateValues returns an array of possible values for the JitRequestState const type.
+func PossibleJitRequestStateValues() []JitRequestState {
+	return []JitRequestState{Approved, Canceled, Denied, Expired, Failed, NotSpecified, Pending, Timeout}
+}
+
+// JitSchedulingType enumerates the values for jit scheduling type.
+type JitSchedulingType string
+
+const (
+	// JitSchedulingTypeNotSpecified ...
+	JitSchedulingTypeNotSpecified JitSchedulingType = "NotSpecified"
+	// JitSchedulingTypeOnce ...
+	JitSchedulingTypeOnce JitSchedulingType = "Once"
+	// JitSchedulingTypeRecurring ...
+	JitSchedulingTypeRecurring JitSchedulingType = "Recurring"
+)
+
+// PossibleJitSchedulingTypeValues returns an array of possible values for the JitSchedulingType const type.
+func PossibleJitSchedulingTypeValues() []JitSchedulingType {
+	return []JitSchedulingType{JitSchedulingTypeNotSpecified, JitSchedulingTypeOnce, JitSchedulingTypeRecurring}
+}
+
+// JITStatusUpdate enumerates the values for jit status update.
+type JITStatusUpdate string
+
+const (
+	// JITStatusUpdateElevate ...
+	JITStatusUpdateElevate JITStatusUpdate = "Elevate"
+	// JITStatusUpdateNotSpecified ...
+	JITStatusUpdateNotSpecified JITStatusUpdate = "NotSpecified"
+	// JITStatusUpdateRemove ...
+	JITStatusUpdateRemove JITStatusUpdate = "Remove"
+)
+
+// PossibleJITStatusUpdateValues returns an array of possible values for the JITStatusUpdate const type.
+func PossibleJITStatusUpdateValues() []JITStatusUpdate {
+	return []JITStatusUpdate{JITStatusUpdateElevate, JITStatusUpdateNotSpecified, JITStatusUpdateRemove}
+}
+
+// JITSubStatus enumerates the values for jit sub status.
+type JITSubStatus string
+
+const (
+	// JITSubStatusApproved ...
+	JITSubStatusApproved JITSubStatus = "Approved"
+	// JITSubStatusDenied ...
+	JITSubStatusDenied JITSubStatus = "Denied"
+	// JITSubStatusExpired ...
+	JITSubStatusExpired JITSubStatus = "Expired"
+	// JITSubStatusFailed ...
+	JITSubStatusFailed JITSubStatus = "Failed"
+	// JITSubStatusNotSpecified ...
+	JITSubStatusNotSpecified JITSubStatus = "NotSpecified"
+	// JITSubStatusTimeout ...
+	JITSubStatusTimeout JITSubStatus = "Timeout"
+)
+
+// PossibleJITSubStatusValues returns an array of possible values for the JITSubStatus const type.
+func PossibleJITSubStatusValues() []JITSubStatus {
+	return []JITSubStatus{JITSubStatusApproved, JITSubStatusDenied, JITSubStatusExpired, JITSubStatusFailed, JITSubStatusNotSpecified, JITSubStatusTimeout}
+}
+
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
 const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Created ...
-	Created ProvisioningState = "Created"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleted ...
-	Deleted ProvisioningState = "Deleted"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Ready ...
-	Ready ProvisioningState = "Ready"
-	// Running ...
-	Running ProvisioningState = "Running"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
+	// ProvisioningStateAccepted ...
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	// ProvisioningStateCanceled ...
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateCreated ...
+	ProvisioningStateCreated ProvisioningState = "Created"
+	// ProvisioningStateCreating ...
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleted ...
+	ProvisioningStateDeleted ProvisioningState = "Deleted"
+	// ProvisioningStateDeleting ...
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateReady ...
+	ProvisioningStateReady ProvisioningState = "Ready"
+	// ProvisioningStateRunning ...
+	ProvisioningStateRunning ProvisioningState = "Running"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating ...
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Canceled, Created, Creating, Deleted, Deleting, Failed, Ready, Running, Succeeded, Updating}
+	return []ProvisioningState{ProvisioningStateAccepted, ProvisioningStateCanceled, ProvisioningStateCreated, ProvisioningStateCreating, ProvisioningStateDeleted, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateReady, ProvisioningStateRunning, ProvisioningStateSucceeded, ProvisioningStateUpdating}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.
@@ -287,6 +372,17 @@ type ApplicationArtifact struct {
 	URI *string `json:"uri,omitempty"`
 	// Type - The managed application artifact type. Possible values include: 'Template', 'Custom'
 	Type ApplicationArtifactType `json:"type,omitempty"`
+}
+
+// ApplicationClientDetails the application client details to track the entity creating/updating the
+// managed app resource.
+type ApplicationClientDetails struct {
+	// Oid - The client Oid.
+	Oid *string `json:"Oid,omitempty"`
+	// Puid - The client Puid
+	Puid *string `json:"Puid,omitempty"`
+	// ApplicationID - The client application Id.
+	ApplicationID *string `json:"ApplicationId,omitempty"`
 }
 
 // ApplicationDefinition information about managed application definition.
@@ -1031,7 +1127,7 @@ type ApplicationProperties struct {
 	Parameters interface{} `json:"parameters,omitempty"`
 	// Outputs - READ-ONLY; Name and value pairs that define the managed application outputs.
 	Outputs interface{} `json:"outputs,omitempty"`
-	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
+	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateRunning', 'ProvisioningStateReady', 'ProvisioningStateCreating', 'ProvisioningStateCreated', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateCanceled', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -1045,7 +1141,7 @@ type ApplicationPropertiesPatchable struct {
 	Parameters interface{} `json:"parameters,omitempty"`
 	// Outputs - READ-ONLY; Name and value pairs that define the managed application outputs.
 	Outputs interface{} `json:"outputs,omitempty"`
-	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
+	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateRunning', 'ProvisioningStateReady', 'ProvisioningStateCreating', 'ProvisioningStateCreated', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateCanceled', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -1223,6 +1319,177 @@ type Identity struct {
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
+// JitAuthorizationPolicies the JIT authorization policies.
+type JitAuthorizationPolicies struct {
+	// PrincipalID - The the principal id that will be granted JIT access.
+	PrincipalID *string `json:"PrincipalId,omitempty"`
+	// RoleDefinitionID - The role definition id that will be granted to the Principal.
+	RoleDefinitionID *string `json:"RoleDefinitionId,omitempty"`
+}
+
+// JitRequestDefinition information about JIT request definition.
+type JitRequestDefinition struct {
+	autorest.Response `json:"-"`
+	// JitRequestProperties - The JIT request properties.
+	*JitRequestProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for JitRequestDefinition.
+func (jrd JitRequestDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jrd.JitRequestProperties != nil {
+		objectMap["properties"] = jrd.JitRequestProperties
+	}
+	if jrd.Location != nil {
+		objectMap["location"] = jrd.Location
+	}
+	if jrd.Tags != nil {
+		objectMap["tags"] = jrd.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for JitRequestDefinition struct.
+func (jrd *JitRequestDefinition) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var jitRequestProperties JitRequestProperties
+				err = json.Unmarshal(*v, &jitRequestProperties)
+				if err != nil {
+					return err
+				}
+				jrd.JitRequestProperties = &jitRequestProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				jrd.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				jrd.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				jrd.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				jrd.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				jrd.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// JitRequestDefinitionListResult list of managed applications.
+type JitRequestDefinitionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The array of Jit request definition.
+	Value *[]JitRequestDefinition `json:"value,omitempty"`
+	// NextLink - The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// JitRequestMetadata the JIT request metadata.
+type JitRequestMetadata struct {
+	// OriginRequestID - The JIT request id.
+	OriginRequestID *string `json:"OriginRequestId,omitempty"`
+	// RequestorID - The publisher tenant requestor id.
+	RequestorID *string `json:"RequestorId,omitempty"`
+	// TenantDisplayName - The publisher tenant name.
+	TenantDisplayName *string `json:"TenantDisplayName,omitempty"`
+	// SubjectDisplayName - The publisher subject display name.
+	SubjectDisplayName *string `json:"SubjectDisplayName,omitempty"`
+}
+
+// JitRequestProperties information about JIT request properties
+type JitRequestProperties struct {
+	// ApplicationResourceID - The parent application id.
+	ApplicationResourceID *string `json:"ApplicationResourceId,omitempty"`
+	// PublisherTenantID - The publisher tenant id.
+	PublisherTenantID *string `json:"PublisherTenantId,omitempty"`
+	// JitAuthorizationPolicies - The JIT authorization policies.
+	JitAuthorizationPolicies *[]JitAuthorizationPolicies `json:"JitAuthorizationPolicies,omitempty"`
+	// JitSchedulingPolicy - The JIT request properties.
+	JitSchedulingPolicy *JitRequestProperties `json:"JitSchedulingPolicy,omitempty"`
+	// ProvisioningState - READ-ONLY; The JIT request provisioning state. Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateRunning', 'ProvisioningStateReady', 'ProvisioningStateCreating', 'ProvisioningStateCreated', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateCanceled', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating'
+	ProvisioningState ProvisioningState `json:"ProvisioningState,omitempty"`
+	// JitRequestState - READ-ONLY; The JIT request state. Possible values include: 'NotSpecified', 'Pending', 'Approved', 'Denied', 'Failed', 'Canceled', 'Expired', 'Timeout'
+	JitRequestState JitRequestState `json:"JitRequestState,omitempty"`
+	// CreatedBy - The client entity that created the JIT request.
+	CreatedBy *ApplicationClientDetails `json:"CreatedBy,omitempty"`
+	// UpdatedBy - The client entity that last updated the JIT request.
+	UpdatedBy *ApplicationClientDetails `json:"UpdatedBy,omitempty"`
+}
+
+// JitSchedulingPolicy the JIT scheduling policies.
+type JitSchedulingPolicy struct {
+	// Type - The type of JIT schedule. Possible values include: 'JitSchedulingTypeNotSpecified', 'JitSchedulingTypeOnce', 'JitSchedulingTypeRecurring'
+	Type     JitSchedulingType `json:"Type,omitempty"`
+	Duration *string           `json:"Duration,omitempty"`
+	// StartTime - The start time of the request.
+	StartTime *date.Time `json:"StartTime,omitempty"`
+}
+
+// JitUpdateAccessDefinition the JIT update access definition.
+type JitUpdateAccessDefinition struct {
+	autorest.Response `json:"-"`
+	// Approver - The approver name.
+	Approver *string     `json:"Approver,omitempty"`
+	Metadata interface{} `json:"Metadata,omitempty"`
+	// Status - The JIT status. Possible values include: 'JITStatusUpdateNotSpecified', 'JITStatusUpdateElevate', 'JITStatusUpdateRemove'
+	Status JITStatusUpdate `json:"Status,omitempty"`
+	// SubStatus - The JIT sub-status. Possible values include: 'JITSubStatusNotSpecified', 'JITSubStatusApproved', 'JITSubStatusDenied', 'JITSubStatusFailed', 'JITSubStatusExpired', 'JITSubStatusTimeout'
+	SubStatus JITSubStatus `json:"SubStatus,omitempty"`
+}
+
 // Plan plan for the managed application.
 type Plan struct {
 	// Name - The plan name.
@@ -1291,4 +1558,33 @@ type Sku struct {
 	Model *string `json:"model,omitempty"`
 	// Capacity - The SKU capacity.
 	Capacity *int32 `json:"capacity,omitempty"`
+}
+
+// UpdateAccessPostFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type UpdateAccessPostFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *UpdateAccessPostFuture) Result(client UpdateAccessClient) (juad JitUpdateAccessDefinition, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.UpdateAccessPostFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.UpdateAccessPostFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if juad.Response.Response, err = future.GetResult(sender); err == nil && juad.Response.Response.StatusCode != http.StatusNoContent {
+		juad, err = client.PostResponder(juad.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.UpdateAccessPostFuture", "Result", juad.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }

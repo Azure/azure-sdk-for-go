@@ -1469,6 +1469,35 @@ type JitRequestProperties struct {
 	UpdatedBy *ApplicationClientDetails `json:"UpdatedBy,omitempty"`
 }
 
+// JitRequestsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type JitRequestsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *JitRequestsCreateOrUpdateFuture) Result(client JitRequestsClient) (jrd JitRequestDefinition, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("managedapplications.JitRequestsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if jrd.Response.Response, err = future.GetResult(sender); err == nil && jrd.Response.Response.StatusCode != http.StatusNoContent {
+		jrd, err = client.CreateOrUpdateResponder(jrd.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsCreateOrUpdateFuture", "Result", jrd.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // JitSchedulingPolicy the JIT scheduling policies.
 type JitSchedulingPolicy struct {
 	// Type - The type of JIT schedule. Possible values include: 'JitSchedulingTypeNotSpecified', 'JitSchedulingTypeOnce', 'JitSchedulingTypeRecurring'
@@ -1482,8 +1511,9 @@ type JitSchedulingPolicy struct {
 type JitUpdateAccessDefinition struct {
 	autorest.Response `json:"-"`
 	// Approver - The approver name.
-	Approver *string     `json:"Approver,omitempty"`
-	Metadata interface{} `json:"Metadata,omitempty"`
+	Approver *string `json:"Approver,omitempty"`
+	// Metadata - The JIT meta data.
+	Metadata *JitRequestMetadata `json:"Metadata,omitempty"`
 	// Status - The JIT status. Possible values include: 'JITStatusUpdateNotSpecified', 'JITStatusUpdateElevate', 'JITStatusUpdateRemove'
 	Status JITStatusUpdate `json:"Status,omitempty"`
 	// SubStatus - The JIT sub-status. Possible values include: 'JITSubStatusNotSpecified', 'JITSubStatusApproved', 'JITSubStatusDenied', 'JITSubStatusFailed', 'JITSubStatusExpired', 'JITSubStatusTimeout'

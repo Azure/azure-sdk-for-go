@@ -20,6 +20,7 @@ package managedapplicationsapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/managedapplications"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // ApplicationsClientAPI contains the set of methods on the ApplicationsClient type.
@@ -50,3 +51,21 @@ type ApplicationDefinitionsClientAPI interface {
 }
 
 var _ ApplicationDefinitionsClientAPI = (*managedapplications.ApplicationDefinitionsClient)(nil)
+
+// UpdateAccessClientAPI contains the set of methods on the UpdateAccessClient type.
+type UpdateAccessClientAPI interface {
+	Post(ctx context.Context, resourceGroupName string, applicationName string) (result managedapplications.UpdateAccessPostFuture, err error)
+}
+
+var _ UpdateAccessClientAPI = (*managedapplications.UpdateAccessClient)(nil)
+
+// JitRequestsClientAPI contains the set of methods on the JitRequestsClient type.
+type JitRequestsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string) (result managedapplications.JitRequestDefinition, err error)
+	Delete(ctx context.Context, resourceGroupName string, jitRequestName string) (result autorest.Response, err error)
+	GetByName(ctx context.Context, resourceGroupName string, jitRequestName string) (result managedapplications.JitRequestDefinition, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result managedapplications.JitRequestDefinitionListResult, err error)
+	ListBySubscription(ctx context.Context) (result managedapplications.JitRequestDefinitionListResult, err error)
+}
+
+var _ JitRequestsClientAPI = (*managedapplications.JitRequestsClient)(nil)

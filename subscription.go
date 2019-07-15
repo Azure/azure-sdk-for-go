@@ -28,7 +28,6 @@ import (
 	"sync"
 
 	"github.com/devigned/tab"
-	"pack.ag/amqp"
 )
 
 type (
@@ -36,7 +35,7 @@ type (
 	// subscription resembles a virtual queue that receives copies of the messages that are sent to the topic.
 	//Messages are received from a subscription identically to the way they are received from a queue.
 	Subscription struct {
-		*entity
+		*receivingEntity
 		Topic             *Topic
 		receiver          *Receiver
 		receiverMu        sync.Mutex
@@ -76,12 +75,10 @@ func SubscriptionWithPrefetchCount(prefetch uint32) SubscriptionOption {
 
 // NewSubscription creates a new Topic Subscription client
 func (t *Topic) NewSubscription(name string, opts ...SubscriptionOption) (*Subscription, error) {
+	entity := newEntity(name, subscriptionManagementPath(t.Name, name), t.namespace)
 	sub := &Subscription{
-		entity: &entity{
-			namespace: t.namespace,
-			Name:      name,
-		},
-		Topic: t,
+		receivingEntity: newReceivingEntity(entity),
+		Topic:           t,
 	}
 
 	for i := range opts {
@@ -90,50 +87,6 @@ func (t *Topic) NewSubscription(name string, opts ...SubscriptionOption) (*Subsc
 		}
 	}
 	return sub, nil
-}
-
-// Peek fetches a list of Messages from the Service Bus broker, with-out acquiring a lock or committing to a
-// disposition. The messages are delivered as close to sequence order as possible.
-//
-// The MessageIterator that is returned has the following properties:
-// - Messages are fetches from the server in pages. Page size is configurable with PeekOptions.
-// - The MessageIterator will always return "false" for Done().
-// - When Next() is called, it will return either: a slice of messages and no error, nil with an error related to being
-// unable to complete the operation, or an empty slice of messages and an instance of "ErrNoMessages" signifying that
-// there are currently no messages in the subscription with a sequence ID larger than previously viewed ones.
-func (s *Subscription) Peek(ctx context.Context, options ...PeekOption) (MessageIterator, error) {
-	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.Peek")
-	defer span.End()
-
-	err := s.ensureReceiver(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return newPeekIterator(s, options...)
-}
-
-// PeekOne fetches a single Message from the Service Bus broker without acquiring a lock or committing to a disposition.
-func (s *Subscription) PeekOne(ctx context.Context, options ...PeekOption) (*Message, error) {
-	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.PeekOne")
-	defer span.End()
-
-	err := s.ensureReceiver(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	// Adding PeekWithPageSize(1) as the last option assures that either:
-	// - creating the iterator will fail because two of the same option will be applied.
-	// - PeekWithPageSize(1) will be applied after all others, so we will not wastefully pull down messages destined to
-	//   be unread.
-	options = append(options, PeekWithPageSize(1))
-
-	it, err := newPeekIterator(s, options...)
-	if err != nil {
-		return nil, err
-	}
-	return it.Next(ctx)
 }
 
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
@@ -167,32 +120,6 @@ func (s *Subscription) Receive(ctx context.Context, handler Handler) error {
 	handle := s.receiver.Listen(ctx, handler)
 	<-handle.Done()
 	return handle.Err()
-}
-
-// ReceiveDeferred will receive and handle a set of deferred messages
-//
-// When a queue or subscription client receives a message that it is willing to process, but for which processing is
-// not currently possible due to special circumstances inside of the application, it has the option of "deferring"
-// retrieval of the message to a later point. The message remains in the queue or subscription, but it is set aside.
-//
-// Deferral is a feature specifically created for workflow processing scenarios. Workflow frameworks may require certain
-// operations to be processed in a particular order, and may have to postpone processing of some received messages
-// until prescribed prior work that is informed by other messages has been completed.
-//
-// A simple illustrative example is an order processing sequence in which a payment notification from an external
-// payment provider appears in a system before the matching purchase order has been propagated from the store front
-// to the fulfillment system. In that case, the fulfillment system might defer processing the payment notification
-// until there is an order with which to associate it. In rendezvous scenarios, where messages from different sources
-// drive a workflow forward, the real-time execution order may indeed be correct, but the messages reflecting the
-// outcomes may arrive out of order.
-//
-// Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
-// processed, while leaving those messages safely in the message store for which processing needs to be postponed.
-func (s *Subscription) ReceiveDeferred(ctx context.Context, handler Handler, sequenceNumbers ...int64) error {
-	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.ReceiveDeferred")
-	defer span.End()
-
-	return receiveDeferred(ctx, s, handler, sequenceNumbers...)
 }
 
 // NewSession will create a new session based receiver for the subscription
@@ -274,32 +201,29 @@ func (s *Subscription) NewTransferDeadLetterReceiver(ctx context.Context, opts .
 	return s.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
 }
 
-// RenewLocks renews the locks on messages provided
-func (s *Subscription) RenewLocks(ctx context.Context, messages ...*Message) error {
-	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.RenewLocks")
-	defer span.End()
-
-	return renewLocks(ctx, s, messages...)
-}
-
 // Close the underlying connection to Service Bus
 func (s *Subscription) Close(ctx context.Context) error {
 	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.Close")
 	defer span.End()
 
+	var lastErr error
 	if s.receiver != nil {
-		err := s.receiver.Close(ctx)
-		if err != nil && !isConnectionClosed(err) {
+		if err := s.receiver.Close(ctx); err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
-			return err
+			lastErr = err
 		}
+		s.receiver = nil
 	}
-	return nil
-}
 
-// ManagementPath is the relative uri to address the entity's management functionality
-func (s *Subscription) ManagementPath() string {
-	return strings.Join([]string{s.Topic.Name, "subscriptions", s.Name, "$management"}, "/")
+	if s.rpcClient != nil {
+		if err := s.rpcClient.Close(); err != nil && !isConnectionClosed(err) {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+		s.rpcClient = nil
+	}
+
+	return lastErr
 }
 
 func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOption) error {
@@ -324,12 +248,6 @@ func (s *Subscription) ensureReceiver(ctx context.Context, opts ...ReceiverOptio
 	return nil
 }
 
-func (s *Subscription) connection(ctx context.Context) (*amqp.Client, error) {
-	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.connection")
-	defer span.End()
-
-	if err := s.ensureReceiver(ctx); err != nil {
-		return nil, err
-	}
-	return s.receiver.connection, nil
+func subscriptionManagementPath(topicName, subscriptionName string) string {
+	return strings.Join([]string{topicName, "subscriptions", subscriptionName, "$management"}, "/")
 }

@@ -35,7 +35,7 @@ type (
 	// Receiver provides connection, session and link handling for a receiving to an entity path
 	Receiver struct {
 		namespace          *Namespace
-		connection         *amqp.Client
+		client             *amqp.Client
 		session            *session
 		receiver           *amqp.Receiver
 		entityPath         string
@@ -127,17 +127,17 @@ func (r *Receiver) Close(ctx context.Context) error {
 	err := r.receiver.Close(ctx)
 	if err != nil {
 		_ = r.session.Close(ctx)
-		_ = r.connection.Close()
+		_ = r.client.Close()
 		return err
 	}
 
 	err = r.session.Close(ctx)
 	if err != nil {
-		_ = r.connection.Close()
+		_ = r.client.Close()
 		return err
 	}
 
-	return r.connection.Close()
+	return r.client.Close()
 }
 
 // Recover will attempt to close the current session and link, then rebuild them
@@ -151,7 +151,7 @@ func (r *Receiver) Recover(ctx context.Context) error {
 	defer cancel()
 	_ = r.receiver.Close(closeCtx)
 	_ = r.session.Close(closeCtx)
-	_ = r.connection.Close()
+	_ = r.client.Close()
 	return r.newSessionAndLink(ctx)
 }
 
@@ -319,19 +319,20 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.newSessionAndLink")
 	defer span.End()
 
-	connection, err := r.namespace.newConnection()
+	client, err := r.namespace.newClient()
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
-	r.connection = connection
+	r.client = client
 
-	err = r.namespace.negotiateClaim(ctx, connection, r.entityPath)
+	err = r.namespace.negotiateClaim(ctx, client, r.entityPath)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
 
-	amqpSession, err := connection.NewSession()
+	amqpSession, err := client.NewSession()
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
@@ -358,23 +359,37 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 		opts = append(opts, amqp.LinkSenderSettle(amqp.ModeSettled))
 	}
 
-	if r.useSessions {
-		const name = "com.microsoft:session-filter"
-		const code = uint64(0x00000137000000C)
-		if r.sessionID == nil {
-			opts = append(opts, amqp.LinkSourceFilter(name, code, nil))
-		} else {
-			opts = append(opts, amqp.LinkSourceFilter(name, code, r.sessionID))
-		}
+	if opt, ok := r.getSessionFilterLinkOption(); ok {
+		opts = append(opts, opt)
 	}
 
 	amqpReceiver, err := amqpSession.NewReceiver(opts...)
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
 	r.receiver = amqpReceiver
 	return nil
+}
+
+func (r *Receiver) getSessionFilterLinkOption() (amqp.LinkOption, bool) {
+	const name = "com.microsoft:session-filter"
+	const code = uint64(0x00000137000000C)
+
+	if !r.useSessions {
+		return nil, false
+	}
+
+	if r.sessionID == nil {
+		return amqp.LinkSourceFilter(name, code, nil), true
+	}
+
+	return amqp.LinkSourceFilter(name, code, r.sessionID), true
+}
+
+func (r *Receiver) getSessionFilterID() (*string, bool) {
+	return r.sessionID, r.useSessions
 }
 
 func messageID(msg *amqp.Message) interface{} {

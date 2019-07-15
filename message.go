@@ -24,13 +24,11 @@ package servicebus
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"reflect"
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v2/rpc"
 	"github.com/Azure/azure-amqp-common-go/v2/uuid"
 	"github.com/devigned/tab"
 	"github.com/mitchellh/mapstructure"
@@ -57,7 +55,9 @@ type (
 		UserProperties   map[string]interface{}
 		Format           uint32
 		message          *amqp.Message
-		ec               entityConnector // if an entity connector is present, a message should send disposition via mgmt
+		ec               entityConnector // if an entityConnector is present, a message should send disposition via mgmt
+		useSession       bool
+		sessionID        *string
 	}
 
 	// DispositionAction represents the action to notify Azure Service Bus of the Message's disposition
@@ -315,50 +315,13 @@ func sendMgmtDisposition(ctx context.Context, m *Message, state disposition) err
 	ctx, span := startConsumerSpanFromContext(ctx, "sb.sendMgmtDisposition")
 	defer span.End()
 
-	if m.LockToken == nil {
-		return errors.New("lock token on the message is not set, thus cannot send disposition")
-	}
-
-	value := map[string]interface{}{
-		"disposition-status": string(state.Status),
-		"lock-tokens":        []amqp.UUID{amqp.UUID(*m.LockToken)},
-	}
-
-	if state.DeadLetterReason != nil {
-		value["deadletter-reason"] = state.DeadLetterReason
-	}
-
-	if state.DeadLetterDescription != nil {
-		value["deadletter-description"] = state.DeadLetterDescription
-	}
-
-	msg := &amqp.Message{
-		ApplicationProperties: map[string]interface{}{
-			operationFieldName: "com.microsoft:update-disposition",
-		},
-		Value: value,
-	}
-
-	conn, err := m.ec.connection(ctx)
+	client, err := m.ec.getEntity().GetRPCClient(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
 
-	link, err := rpc.NewLink(conn, m.ec.ManagementPath())
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	// no error, then it was successful
-	_, err = link.RetryableRPC(ctx, 5, 5*time.Second, msg)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	return nil
+	return client.SendDisposition(ctx, m, state)
 }
 
 func (m *Message) toMsg() (*amqp.Message, error) {

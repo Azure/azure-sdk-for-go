@@ -2,8 +2,9 @@ package servicebus
 
 import (
 	"fmt"
-	"github.com/Azure/azure-amqp-common-go/v2/rpc"
 	"reflect"
+
+	"github.com/Azure/azure-amqp-common-go/v2/rpc"
 )
 
 type (

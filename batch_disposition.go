@@ -68,35 +68,21 @@ func (bdi *BatchDispositionIterator) Next() (uuid *uuid.UUID) {
 func (bdi *BatchDispositionIterator) doUpdate(ctx context.Context, ec entityConnector) BatchDispositionError {
 	batchError := BatchDispositionError{}
 	for !bdi.Done() {
-		if uuid := bdi.Next(); uuid != nil {
+		if id := bdi.Next(); id != nil {
 			m := &Message{
-				LockToken: uuid,
+				LockToken: id,
 			}
 			m.ec = ec
 			err := m.sendDisposition(ctx, bdi.Status)
 			if err != nil {
 				batchError.Errors = append(batchError.Errors, DispositionError{
-					LockTokenID: uuid,
+					LockTokenID: id,
 					err:         err,
 				})
 			}
 		}
 	}
 	return batchError
-}
-
-// SendBatchDisposition updates the LockTokenIDs to the disposition status.
-func (q *Queue) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) error {
-	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.SendBatchDisposition")
-	defer span.End()
-	return iterator.doUpdate(ctx, q)
-}
-
-// SendBatchDisposition updates the LockTokenIDs to the desired disposition status.
-func (s *Subscription) SendBatchDisposition(ctx context.Context, iterator BatchDispositionIterator) error {
-	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.SendBatchDisposition")
-	defer span.End()
-	return iterator.doUpdate(ctx, s)
 }
 
 func (m *Message) sendDisposition(ctx context.Context, dispositionStatus MessageStatus) (err error) {

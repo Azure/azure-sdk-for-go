@@ -3,12 +3,8 @@ package servicebus
 import (
 	"context"
 	"errors"
-	"sort"
-	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v2/rpc"
 	"github.com/devigned/tab"
-	"pack.ag/amqp"
 )
 
 type (
@@ -25,7 +21,7 @@ type (
 	}
 
 	peekIterator struct {
-		entity             entityConnector
+		entity             *entity
 		buffer             chan *Message
 		lastSequenceNumber int64
 	}
@@ -62,9 +58,9 @@ func (ms *MessageSliceIterator) Next(_ context.Context) (*Message, error) {
 	return retval, nil
 }
 
-func newPeekIterator(entityConnector entityConnector, options ...PeekOption) (*peekIterator, error) {
+func newPeekIterator(entity *entity, options ...PeekOption) (*peekIterator, error) {
 	retval := &peekIterator{
-		entity: entityConnector,
+		entity: entity,
 	}
 
 	foundPageSize := false
@@ -139,117 +135,21 @@ func (pi *peekIterator) getNextPage(ctx context.Context) error {
 	ctx, span := startConsumerSpanFromContext(ctx, "sb.peekIterator.getNextPage")
 	defer span.End()
 
-	const messagesField, messageField = "messages", "message"
-
-	msg := &amqp.Message{
-		ApplicationProperties: map[string]interface{}{
-			operationFieldName: peekMessageOperationID,
-		},
-		Value: map[string]interface{}{
-			"from-sequence-number": pi.lastSequenceNumber,
-			"message-count":        int32(cap(pi.buffer)),
-		},
-	}
-
-	if deadline, ok := ctx.Deadline(); ok {
-		msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
-	}
-
-	conn, err := pi.entity.connection(ctx)
+	client, err := pi.entity.GetRPCClient(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
 
-	link, err := rpc.NewLink(conn, pi.entity.ManagementPath())
+	msgs, err := client.GetNextPage(ctx, pi.lastSequenceNumber, int32(cap(pi.buffer)))
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
 
-	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	if rsp.Code == 204 {
-		return ErrNoMessages{}
-	}
-
-	// Peeked messages come back in a relatively convoluted manner:
-	// a map (always with one key: "messages")
-	// 	of arrays
-	// 		of maps (always with one key: "message")
-	// 			of an array with raw encoded Service Bus messages
-	val, ok := rsp.Message.Value.(map[string]interface{})
-	if !ok {
-		err = newErrIncorrectType(messageField, map[string]interface{}{}, rsp.Message.Value)
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	rawMessages, ok := val[messagesField]
-	if !ok {
-		err = ErrMissingField(messagesField)
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	messages, ok := rawMessages.([]interface{})
-	if !ok {
-		err = newErrIncorrectType(messagesField, []interface{}{}, rawMessages)
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	transformedMessages := make([]*Message, len(messages))
-	for i := range messages {
-		rawEntry, ok := messages[i].(map[string]interface{})
-		if !ok {
-			err = newErrIncorrectType(messageField, map[string]interface{}{}, messages[i])
-			tab.For(ctx).Error(err)
-			return err
-		}
-
-		rawMessage, ok := rawEntry[messageField]
-		if !ok {
-			err = ErrMissingField(messageField)
-			tab.For(ctx).Error(err)
-			return err
-		}
-
-		marshaled, ok := rawMessage.([]byte)
-		if !ok {
-			err = new(ErrMalformedMessage)
-			tab.For(ctx).Error(err)
-			return err
-		}
-
-		var rehydrated amqp.Message
-		err = rehydrated.UnmarshalBinary(marshaled)
-		if err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
-
-		transformedMessages[i], err = messageFromAMQPMessage(&rehydrated)
-		if err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
-	}
-
-	// This sort is done to ensure that folks wanting to peek messages in sequence order may do so.
-	sort.Slice(transformedMessages, func(i, j int) bool {
-		iSeq := *transformedMessages[i].SystemProperties.SequenceNumber
-		jSeq := *transformedMessages[j].SystemProperties.SequenceNumber
-		return iSeq < jSeq
-	})
-
-	for i := range transformedMessages {
+	for i := range msgs {
 		select {
-		case pi.buffer <- transformedMessages[i]:
+		case pi.buffer <- msgs[i]:
 			// Intentionally Left Blank
 		case <-ctx.Done():
 			return ctx.Err()
@@ -257,6 +157,7 @@ func (pi *peekIterator) getNextPage(ctx context.Context) error {
 	}
 
 	// Update last seen sequence number so that the next read starts from where this ended.
-	pi.lastSequenceNumber = *transformedMessages[len(transformedMessages)-1].SystemProperties.SequenceNumber + 1
+	lastMsg := msgs[len(msgs)-1]
+	pi.lastSequenceNumber = *lastMsg.SystemProperties.SequenceNumber + 1
 	return nil
 }

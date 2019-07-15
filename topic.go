@@ -25,6 +25,7 @@ package servicebus
 import (
 	"context"
 	"encoding/xml"
+	"fmt"
 	"strings"
 	"sync"
 
@@ -44,7 +45,7 @@ type (
 	// subscription resembles a virtual queue that receives copies of the messages that are sent to the topic.
 	// Messages are received from a subscription identically to the way they are received from a queue.
 	Topic struct {
-		*entity
+		*sendingEntity
 		sender   *Sender
 		senderMu sync.Mutex
 	}
@@ -79,10 +80,7 @@ type (
 // NewTopic creates a new Topic Sender
 func (ns *Namespace) NewTopic(name string, opts ...TopicOption) (*Topic, error) {
 	topic := &Topic{
-		entity: &entity{
-			namespace: ns,
-			Name:      name,
-		},
+		sendingEntity: newSendingEntity(newEntity(name, topicManagementPath(name), ns)),
 	}
 
 	for i := range opts {
@@ -164,6 +162,7 @@ func (t *Topic) Close(ctx context.Context) error {
 
 	if t.sender != nil {
 		err := t.sender.Close(ctx)
+		t.sender = nil
 		if err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
 			return err
@@ -195,6 +194,10 @@ func (t *Topic) NewTransferDeadLetterReceiver(ctx context.Context, opts ...Recei
 
 	transferDeadLetterEntityPath := strings.Join([]string{t.Name, TransferDeadLetterQueueName}, "/")
 	return t.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
+}
+
+func topicManagementPath(name string) string {
+	return fmt.Sprintf("%s/$management", name)
 }
 
 func (t *Topic) ensureSender(ctx context.Context) error {

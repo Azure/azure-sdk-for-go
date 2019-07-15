@@ -715,6 +715,126 @@ func (suite *serviceBusSuite) TestQueue_NewSession() {
 	suite.Equal(sessionID, *qs.SessionID())
 }
 
+func (suite *serviceBusSuite) TestQueue_NewSessionWithNoRequiredSessions() {
+	tests := map[string]func(context.Context, *testing.T, *Queue){
+		"ReceiveOne": func(ctx context.Context, t *testing.T, queue *Queue) {
+			sessionID := "123"
+			qs := NewQueueSession(queue, &sessionID)
+			handler := HandlerFunc(func(hCtx context.Context, hMsg *Message) error {
+				return nil
+			})
+			err := qs.ReceiveOne(ctx, NewSessionHandler(handler, nil, nil))
+			suite.Error(err)
+			suite.Contains(err.Error(), "Ensure RequiresSession is set to true when creating a Queue or Subscription to enable sessionful behavior")
+		},
+	}
+
+	suite.queueMessageTestWithMgmtOptions(tests)
+}
+
+//func (suite *serviceBusSuite) TestIssue126QueueClient() {
+//	tests := map[string]func(context.Context, *testing.T, *Queue){
+//		"SendMessageToSessionQueueDeferAndThenReceiveDeferredMsgReceiveDelete": func(ctx context.Context, t *testing.T, queue *Queue) {
+//			sessionID := "123"
+//			qs := NewQueueSession(queue, &sessionID)
+//
+//			const msg string = "issue126"
+//			suite.Require().NoError(qs.Send(ctx, NewMessageFromString(msg)))
+//
+//			sequenceNumberChan := make(chan *int64, 1)
+//			rCtx, cancel := context.WithCancel(ctx)
+//			defer cancel()
+//			deferHandler := HandlerFunc(func(hCtx context.Context, hMsg *Message) error {
+//				defer func() {
+//					// send the signal after the Defer was completed
+//					sequenceNumberChan <- hMsg.SystemProperties.SequenceNumber
+//					cancel()
+//				}()
+//
+//				return hMsg.Defer(hCtx)
+//			})
+//			err := qs.ReceiveOne(rCtx, NewSessionHandler(deferHandler, nil, nil))
+//			if err != nil && err != context.Canceled {
+//				suite.Require().NoError(err)
+//			}
+//
+//			receiveDeferredHandler := HandlerFunc(func(dCtx context.Context, dMsg *Message) error {
+//				// noop. In ReceiveAndDeleteMode there should be no need to call complete on the message
+//				return nil
+//			})
+//			err = qs.ReceiveOne(rCtx, NewSessionHandler(deferHandler, nil, nil))
+//			if err != nil && err != context.Canceled {
+//				suite.Require().NoError(err)
+//			}
+//
+//			// wait until we get the sequence number for the message we sent to the deferral queue
+//			select {
+//			case <-ctx.Done():
+//				suite.Fail("failed to receive first message in time")
+//			case sequenceNumber := <-sequenceNumberChan:
+//				suite.Require().NoError(qs.ReceiveDeferred(ctx, receiveDeferredHandler, ReceiveAndDeleteMode, *sequenceNumber))
+//			}
+//		},
+//	}
+//	suite.queueMessageTestWithMgmtOptions(tests, QueueEntityWithRequiredSessions())
+//}
+
+func (suite *serviceBusSuite) TestIssue127QueueClient() {
+	tests := map[string]func(context.Context, *testing.T, *Queue){
+		"SendMessageToSessionQueueDeferAndThenReceiveDeferredMsg": func(ctx context.Context, t *testing.T, queue *Queue) {
+			sessionID := "123"
+			qs := NewQueueSession(queue, &sessionID)
+
+			const msg string = "issue127"
+			suite.Require().NoError(qs.Send(ctx, NewMessageFromString(msg)))
+
+			sequenceNumberChan := make(chan *int64, 1)
+			rCtx, cancel := context.WithCancel(ctx)
+			defer cancel()
+			deferHandler := HandlerFunc(func(hCtx context.Context, hMsg *Message) error {
+				defer func() {
+					// send the signal after the Defer was completed
+					sequenceNumberChan <- hMsg.SystemProperties.SequenceNumber
+					cancel()
+				}()
+
+				return hMsg.Defer(hCtx)
+			})
+			err := qs.ReceiveOne(rCtx, NewSessionHandler(deferHandler, nil, nil))
+			if err != nil && err != context.Canceled {
+				suite.Require().NoError(err)
+			}
+
+			receivedDeferredChan := make(chan *Message, 1)
+			receiveDeferredHandler := HandlerFunc(func(dCtx context.Context, dMsg *Message) error {
+				// send signal that the deferred message was received
+				defer func() {
+					receivedDeferredChan <- dMsg
+				}()
+				return dMsg.Complete(dCtx)
+			})
+
+			// wait until we get the sequence number for the message we sent to the deferral queue
+			select {
+			case <-ctx.Done():
+				suite.Fail("failed to receive first message in time")
+			case sequenceNumber := <-sequenceNumberChan:
+				suite.Require().NoError(qs.ReceiveDeferred(ctx, receiveDeferredHandler, PeekLockMode, *sequenceNumber))
+			}
+
+			// wait until we get the signal the deferred message was received
+			select {
+			case <-ctx.Done():
+				suite.Fail("failed to receive the deferred message in time")
+			case receivedMsg := <-receivedDeferredChan:
+				assert.Equal(t, msg, string(receivedMsg.Data))
+			}
+		},
+	}
+
+	suite.queueMessageTestWithMgmtOptions(tests, QueueEntityWithRequiredSessions())
+}
+
 func (suite *serviceBusSuite) TestQueue_NewDeadLetter() {
 	tests := map[string]func(context.Context, *testing.T, *Queue){
 		"ReceiveOneFromDeadLetter": testReceiveOneFromDeadLetter,
@@ -737,7 +857,6 @@ func testReceiveOneFromDeadLetter(ctx context.Context, t *testing.T, q *Queue) {
 	}
 	assert.NoError(t, q.Close(ctx))
 
-	fmt.Println("got here!!")
 	dl := q.NewDeadLetter()
 	called := false
 	err = dl.ReceiveOne(ctx, HandlerFunc(func(ctx context.Context, msg *Message) error {

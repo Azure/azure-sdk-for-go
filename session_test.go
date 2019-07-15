@@ -29,6 +29,16 @@ func (m *MockedBuilder) NewSender(ctx context.Context, opts ...SenderOption) (*S
 	return args.Get(0).(*Sender), args.Error(1)
 }
 
+func (m *MockedBuilder) Namespace() *Namespace {
+	args := m.Called()
+	return args.Get(0).(*Namespace)
+}
+
+func (m *MockedBuilder) getEntity() *entity {
+	args := m.Called()
+	return args.Get(0).(*entity)
+}
+
 func TestQueueSession_SessionID(t *testing.T) {
 	builder := new(MockedBuilder)
 	sessionID := "123"

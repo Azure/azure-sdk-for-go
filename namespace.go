@@ -136,7 +136,7 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	return ns, nil
 }
 
-func (ns *Namespace) newConnection() (*amqp.Client, error) {
+func (ns *Namespace) newClient() (*amqp.Client, error) {
 	defaultConnOptions := []amqp.ConnOption{
 		amqp.ConnSASLAnonymous(),
 		amqp.ConnMaxSessions(65535),
@@ -169,12 +169,12 @@ func (ns *Namespace) newConnection() (*amqp.Client, error) {
 	return amqp.Dial(ns.getAMQPHostURI(), defaultConnOptions...)
 }
 
-func (ns *Namespace) negotiateClaim(ctx context.Context, conn *amqp.Client, entityPath string) error {
+func (ns *Namespace) negotiateClaim(ctx context.Context, client *amqp.Client, entityPath string) error {
 	ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
 	defer span.End()
 
 	audience := ns.getEntityAudience(entityPath)
-	return cbs.NegotiateClaim(ctx, audience, conn, ns.TokenProvider)
+	return cbs.NegotiateClaim(ctx, audience, client, ns.TokenProvider)
 }
 
 func (ns *Namespace) getWSSHostURI() string {

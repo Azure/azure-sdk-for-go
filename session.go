@@ -44,9 +44,15 @@ type (
 		sessionID *string
 	}
 
+	lockedRPC struct {
+		rpcClient   *rpcClient
+		rpcClientMu sync.Mutex
+	}
+
 	// QueueSession wraps Service Bus session functionality over a Queue
 	QueueSession struct {
 		sessionIdentifiable
+		lockedRPC
 		builder   SendAndReceiveBuilder
 		builderMu sync.Mutex
 		receiver  *Receiver
@@ -56,6 +62,7 @@ type (
 	// SubscriptionSession wraps Service Bus session functionality over a Subscription
 	SubscriptionSession struct {
 		sessionIdentifiable
+		lockedRPC
 		builder   ReceiveBuilder
 		builderMu sync.Mutex
 		receiver  *Receiver
@@ -94,7 +101,7 @@ type (
 	// ReceiveBuilder is a ReceiverBuilder and EntityManagementAddresser
 	ReceiveBuilder interface {
 		ReceiverBuilder
-		EntityManagementAddresser
+		entityConnector
 	}
 )
 
@@ -137,7 +144,7 @@ func NewQueueSession(builder SendAndReceiveBuilder, sessionID *string) *QueueSes
 }
 
 // ReceiveOne waits for the lock on a particular session to become available, takes it, then process the session.
-// The session can contain multiple messages. ReceiveOneSession will receive all messages within that session.
+// The session can contain multiple messages. ReceiveOne will receive all messages within that session.
 //
 // Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
 // have a disposition set, the Queue's DefaultDisposition will be used.
@@ -172,6 +179,49 @@ func (qs *QueueSession) ReceiveOne(ctx context.Context, handler SessionHandler) 
 	}
 }
 
+// ReceiveDeferred will receive and handle a set of deferred messages
+//
+// When a queue or subscription client receives a message that it is willing to process, but for which processing is
+// not currently possible due to special circumstances inside of the application, it has the option of "deferring"
+// retrieval of the message to a later point. The message remains in the queue or subscription, but it is set aside.
+//
+// Deferral is a feature specifically created for workflow processing scenarios. Workflow frameworks may require certain
+// operations to be processed in a particular order, and may have to postpone processing of some received messages
+// until prescribed prior work that is informed by other messages has been completed.
+//
+// A simple illustrative example is an order processing sequence in which a payment notification from an external
+// payment provider appears in a system before the matching purchase order has been propagated from the store front
+// to the fulfillment system. In that case, the fulfillment system might defer processing the payment notification
+// until there is an order with which to associate it. In rendezvous scenarios, where messages from different sources
+// drive a workflow forward, the real-time execution order may indeed be correct, but the messages reflecting the
+// outcomes may arrive out of order.
+//
+// Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
+// processed, while leaving those messages safely in the message store for which processing needs to be postponed.
+func (qs *QueueSession) ReceiveDeferred(ctx context.Context, handler Handler, mode ReceiveMode, sequenceNumbers ...int64) error {
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.ReceiveDeferred")
+	defer span.End()
+
+	if err := qs.ensureRPCClient(ctx); err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	messages, err := qs.rpcClient.ReceiveDeferred(ctx, mode, sequenceNumbers...)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	for _, msg := range messages {
+		if err := handler.Handle(ctx, msg); err != nil {
+			tab.For(ctx).Error(err)
+			return err
+		}
+	}
+	return nil
+}
+
 // Send the message to the queue within a session
 func (qs *QueueSession) Send(ctx context.Context, msg *Message) error {
 	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.Send")
@@ -192,30 +242,60 @@ func (qs *QueueSession) Close(ctx context.Context) error {
 	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.Close")
 	defer span.End()
 
+	var lastErr error
 	if qs.receiver != nil {
-		if err := qs.receiver.Close(ctx); err != nil {
+		if err := qs.receiver.Close(ctx); err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
-			if qs.sender != nil {
-				if senderErr := qs.sender.Close(ctx); err != nil {
-					tab.For(ctx).Error(senderErr)
-				}
-			}
-			return err
+			lastErr = err
 		}
 	}
 
 	if qs.sender != nil {
-		if err := qs.sender.Close(ctx); err != nil {
+		if err := qs.sender.Close(ctx); err != nil && !isConnectionClosed(err) {
 			tab.For(ctx).Error(err)
-			return err
+			lastErr = err
 		}
 	}
-	return nil
+
+	if qs.rpcClient != nil {
+		if err := qs.rpcClient.Close(); err != nil && !isConnectionClosed(err) {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+	}
+
+	return lastErr
 }
 
 // SessionID is the identifier for the Service Bus session
 func (qs *QueueSession) SessionID() *string {
 	return qs.sessionID
+}
+
+// ManagementPath provides an addressable path to the Entity management endpoint
+func (qs *QueueSession) ManagementPath() string {
+	return qs.builder.ManagementPath()
+}
+
+func (qs *QueueSession) ensureRPCClient(ctx context.Context) error {
+	ctx, span := qs.startSpanFromContext(ctx, "sb.QueueSession.ensureRPCConn")
+	defer span.End()
+
+	qs.rpcClientMu.Lock()
+	defer qs.rpcClientMu.Unlock()
+
+	if qs.rpcClient != nil {
+		return nil
+	}
+
+	client, err := newRPCClient(ctx, qs.builder, rpcClientWithSession(qs.sessionID))
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	qs.rpcClient = client
+	return nil
 }
 
 func (qs *QueueSession) ensureSender(ctx context.Context) error {
@@ -225,8 +305,13 @@ func (qs *QueueSession) ensureSender(ctx context.Context) error {
 	qs.builderMu.Lock()
 	defer qs.builderMu.Unlock()
 
+	if qs.sender != nil {
+		return nil
+	}
+
 	s, err := qs.builder.NewSender(ctx, SenderWithSession(qs.sessionID))
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -240,6 +325,10 @@ func (qs *QueueSession) ensureReceiver(ctx context.Context) error {
 
 	qs.builderMu.Lock()
 	defer qs.builderMu.Unlock()
+
+	if qs.receiver != nil {
+		return nil
+	}
 
 	r, err := qs.builder.NewReceiver(ctx, ReceiverWithSession(qs.sessionID))
 	if err != nil {
@@ -295,10 +384,58 @@ func (ss *SubscriptionSession) ReceiveOne(ctx context.Context, handler SessionHa
 
 	select {
 	case <-handle.Done():
-		return handle.Err()
+		err := handle.Err()
+		if err != nil {
+			tab.For(ctx).Error(err)
+			_ = ss.receiver.Close(ctx)
+		}
+		return err
 	case <-ms.done:
 		return nil
 	}
+}
+
+// ReceiveDeferred will receive and handle a set of deferred messages
+//
+// When a queue or subscription client receives a message that it is willing to process, but for which processing is
+// not currently possible due to special circumstances inside of the application, it has the option of "deferring"
+// retrieval of the message to a later point. The message remains in the queue or subscription, but it is set aside.
+//
+// Deferral is a feature specifically created for workflow processing scenarios. Workflow frameworks may require certain
+// operations to be processed in a particular order, and may have to postpone processing of some received messages
+// until prescribed prior work that is informed by other messages has been completed.
+//
+// A simple illustrative example is an order processing sequence in which a payment notification from an external
+// payment provider appears in a system before the matching purchase order has been propagated from the store front
+// to the fulfillment system. In that case, the fulfillment system might defer processing the payment notification
+// until there is an order with which to associate it. In rendezvous scenarios, where messages from different sources
+// drive a workflow forward, the real-time execution order may indeed be correct, but the messages reflecting the
+// outcomes may arrive out of order.
+//
+// Ultimately, deferral aids in reordering messages from the arrival order into an order in which they can be
+// processed, while leaving those messages safely in the message store for which processing needs to be postponed.
+func (ss *SubscriptionSession) ReceiveDeferred(ctx context.Context, handler Handler, mode ReceiveMode, sequenceNumbers ...int64) error {
+	ctx, span := startConsumerSpanFromContext(ctx, "sb.Queue.ReceiveDeferred")
+	defer span.End()
+
+	if err := ss.ensureRPCClient(ctx); err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	messages, err := ss.rpcClient.ReceiveDeferred(ctx, mode, sequenceNumbers...)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	for _, msg := range messages {
+		if err := handler.Handle(ctx, msg); err != nil {
+			tab.For(ctx).Error(err)
+			return err
+		}
+	}
+	return nil
 }
 
 // Close the underlying connection to Service Bus
@@ -306,10 +443,22 @@ func (ss *SubscriptionSession) Close(ctx context.Context) error {
 	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.Close")
 	defer span.End()
 
+	var lastErr error
 	if ss.receiver != nil {
-		return ss.receiver.Close(ctx)
+		if err := ss.receiver.Close(ctx); err != nil && !isConnectionClosed(err) {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
 	}
-	return nil
+
+	if ss.rpcClient != nil {
+		if err := ss.rpcClient.Close(); err != nil && !isConnectionClosed(err) {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+	}
+
+	return lastErr
 }
 
 func (ss *SubscriptionSession) ensureReceiver(ctx context.Context) error {
@@ -331,6 +480,32 @@ func (ss *SubscriptionSession) ensureReceiver(ctx context.Context) error {
 // SessionID is the identifier for the Service Bus session
 func (ss *SubscriptionSession) SessionID() *string {
 	return ss.sessionID
+}
+
+// ManagementPath provides an addressable path to the Entity management endpoint
+func (ss *SubscriptionSession) ManagementPath() string {
+	return ss.builder.ManagementPath()
+}
+
+func (ss *SubscriptionSession) ensureRPCClient(ctx context.Context) error {
+	ctx, span := ss.startSpanFromContext(ctx, "sb.SubscriptionSession.ensureRpcConn")
+	defer span.End()
+
+	ss.rpcClientMu.Lock()
+	defer ss.rpcClientMu.Unlock()
+
+	if ss.rpcClient != nil {
+		return nil
+	}
+
+	client, err := newRPCClient(ctx, ss.builder, rpcClientWithSession(ss.sessionID))
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	ss.rpcClient = client
+	return nil
 }
 
 // NewTopicSession creates a new session receiver to receive from a Service Bus topic.

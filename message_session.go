@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v2/rpc"
+	"github.com/devigned/tab"
 	"pack.ag/amqp"
 )
 
@@ -60,6 +61,7 @@ func (ms *MessageSession) RenewLock(ctx context.Context) error {
 
 	link, err := rpc.NewLinkWithSession(ms.Receiver.session.Session, ms.entity.ManagementPath())
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -78,6 +80,7 @@ func (ms *MessageSession) RenewLock(ctx context.Context) error {
 
 	resp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return err
 	}
 
@@ -96,8 +99,9 @@ func (ms *MessageSession) RenewLock(ctx context.Context) error {
 
 // ListSessions will list all of the sessions available
 func (ms *MessageSession) ListSessions(ctx context.Context) ([]byte, error) {
-	link, err := rpc.NewLink(ms.Receiver.connection, ms.entity.ManagementPath())
+	link, err := rpc.NewLink(ms.Receiver.client, ms.entity.ManagementPath())
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
@@ -114,11 +118,14 @@ func (ms *MessageSession) ListSessions(ctx context.Context) ([]byte, error) {
 
 	rsp, err := link.RetryableRPC(ctx, 5, 5*time.Second, msg)
 	if err != nil {
+		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
 	if rsp.Code != 200 {
-		return nil, fmt.Errorf("amqp error (%d): %q", rsp.Code, rsp.Description)
+		err := fmt.Errorf("amqp error (%d): %q", rsp.Code, rsp.Description)
+		tab.For(ctx).Error(err)
+		return nil, err
 	}
 
 	return rsp.Message.Data[0], nil

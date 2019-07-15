@@ -72,6 +72,7 @@ func applyResponseInfo(span tab.Spanner, res *http.Response) {
 func (e *entity) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)
+	span.AddAttributes(tab.StringAttribute("message_bus.destination", e.ManagementPath()))
 	return ctx, span
 }
 
@@ -94,6 +95,12 @@ func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName
 func (r *Receiver) startConsumerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := startConsumerSpanFromContext(ctx, operationName)
 	span.AddAttributes(tab.StringAttribute("message_bus.destination", r.entityPath))
+	return ctx, span
+}
+
+func (r *rpcClient) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := startConsumerSpanFromContext(ctx, operationName)
+	span.AddAttributes(tab.StringAttribute("message_bus.destination", r.ec.ManagementPath()))
 	return ctx, span
 }
 

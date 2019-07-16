@@ -25,6 +25,7 @@ package servicebus
 import (
 	"context"
 	"math/rand"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v2/uuid"
@@ -37,6 +38,7 @@ type (
 	Sender struct {
 		namespace          *Namespace
 		client             *amqp.Client
+		clientMu           sync.RWMutex
 		session            *session
 		sender             *amqp.Sender
 		entityPath         string
@@ -79,6 +81,9 @@ func (ns *Namespace) NewSender(ctx context.Context, entityPath string, opts ...S
 	if err != nil {
 		tab.For(ctx).Error(err)
 	}
+
+	s.periodicallyRefreshAuth()
+
 	return s, err
 }
 
@@ -99,6 +104,9 @@ func (s *Sender) Recover(ctx context.Context) error {
 func (s *Sender) Close(ctx context.Context) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.Close")
 	defer span.End()
+
+	s.clientMu.Lock()
+	defer s.clientMu.Unlock()
 
 	if s.doneRefreshingAuth != nil {
 		s.doneRefreshingAuth()
@@ -235,6 +243,9 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.newSessionAndLink")
 	defer span.End()
 
+	s.clientMu.Lock()
+	defer s.clientMu.Unlock()
+
 	connection, err := s.namespace.newClient()
 	if err != nil {
 		tab.For(ctx).Error(err)
@@ -282,6 +293,17 @@ func (s *Sender) periodicallyRefreshAuth() {
 	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.periodicallyRefreshAuth")
 	defer span.End()
 
+	doNegotiateClaimLocked := func(ctx context.Context, r *Sender) {
+		r.clientMu.RLock()
+		defer r.clientMu.RUnlock()
+
+		if r.client != nil {
+			if err := r.namespace.negotiateClaim(ctx, r.client, r.entityPath); err != nil {
+				tab.For(ctx).Error(err)
+			}
+		}
+	}
+
 	go func() {
 		for {
 			select {
@@ -289,11 +311,7 @@ func (s *Sender) periodicallyRefreshAuth() {
 				return
 			default:
 				time.Sleep(5 * time.Minute)
-				if s.client != nil {
-					if err := s.namespace.negotiateClaim(ctx, s.client, s.entityPath); err != nil {
-						tab.For(ctx).Error(err)
-					}
-				}
+				doNegotiateClaimLocked(ctx, s)
 			}
 		}
 	}()

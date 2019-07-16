@@ -24,6 +24,7 @@ package servicebus
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v2"
@@ -36,6 +37,7 @@ type (
 	Receiver struct {
 		namespace          *Namespace
 		client             *amqp.Client
+		clientMu           sync.RWMutex
 		session            *session
 		receiver           *amqp.Receiver
 		entityPath         string
@@ -98,7 +100,7 @@ func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ..
 	ctx, span := ns.startSpanFromContext(ctx, "sb.Namespace.NewReceiver")
 	defer span.End()
 
-	receiver := &Receiver{
+	r := &Receiver{
 		namespace:  ns,
 		entityPath: entityPath,
 		mode:       PeekLockMode,
@@ -106,24 +108,29 @@ func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ..
 	}
 
 	for _, opt := range opts {
-		if err := opt(receiver); err != nil {
+		if err := opt(r); err != nil {
 			return nil, err
 		}
 	}
 
-	err := receiver.newSessionAndLink(ctx)
+	err := r.newSessionAndLink(ctx)
 	if err != nil {
-		_ = receiver.Close(ctx)
+		_ = r.Close(ctx)
 		return nil, err
 	}
 
-	return receiver, nil
+	r.periodicallyRefreshAuth()
+
+	return r, nil
 }
 
 // Close will close the AMQP session and link of the Receiver
 func (r *Receiver) Close(ctx context.Context) error {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.Close")
 	defer span.End()
+
+	r.clientMu.Lock()
+	defer r.clientMu.Unlock()
 
 	if r.doneListening != nil {
 		r.doneListening()
@@ -173,9 +180,7 @@ func (r *Receiver) Recover(ctx context.Context) error {
 	closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	closeCtx = tab.NewContext(closeCtx, span)
 	defer cancel()
-	_ = r.receiver.Close(closeCtx)
-	_ = r.session.Close(closeCtx)
-	_ = r.client.Close()
+	_ = r.Close(ctx)
 	return r.newSessionAndLink(ctx)
 }
 
@@ -343,6 +348,9 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.newSessionAndLink")
 	defer span.End()
 
+	r.clientMu.Lock()
+	defer r.clientMu.Unlock()
+
 	client, err := r.namespace.newClient()
 	if err != nil {
 		tab.For(ctx).Error(err)
@@ -419,6 +427,17 @@ func (r *Receiver) periodicallyRefreshAuth() {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.periodicallyRefreshAuth")
 	defer span.End()
 
+	doNegotiateClaimLocked := func(ctx context.Context, r *Receiver) {
+		r.clientMu.RLock()
+		defer r.clientMu.RUnlock()
+
+		if r.client != nil {
+			if err := r.namespace.negotiateClaim(ctx, r.client, r.entityPath); err != nil {
+				tab.For(ctx).Error(err)
+			}
+		}
+	}
+
 	go func() {
 		for {
 			select {
@@ -426,11 +445,7 @@ func (r *Receiver) periodicallyRefreshAuth() {
 				return
 			default:
 				time.Sleep(5 * time.Minute)
-				if r.client != nil {
-					if err := r.namespace.negotiateClaim(ctx, r.client, r.entityPath); err != nil {
-						tab.For(ctx).Error(err)
-					}
-				}
+				doNegotiateClaimLocked(ctx, r)
 			}
 		}
 	}()

@@ -88,7 +88,7 @@ var _ ListManagementImageClientAPI = (*contentmoderator.ListManagementImageClien
 
 // ListManagementTermClientAPI contains the set of methods on the ListManagementTermClient type.
 type ListManagementTermClientAPI interface {
-	AddTerm(ctx context.Context, listID string, term string, language string) (result contentmoderator.SetObject, err error)
+	AddTerm(ctx context.Context, listID string, term string, language string) (result autorest.Response, err error)
 	DeleteAllTerms(ctx context.Context, listID string, language string) (result contentmoderator.String, err error)
 	DeleteTerm(ctx context.Context, listID string, term string, language string) (result contentmoderator.String, err error)
 	GetAllTerms(ctx context.Context, listID string, language string, offset *int32, limit *int32) (result contentmoderator.Terms, err error)

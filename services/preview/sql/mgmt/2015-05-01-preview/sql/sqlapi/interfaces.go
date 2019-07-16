@@ -264,6 +264,7 @@ var _ CapabilitiesClientAPI = (*sql.CapabilitiesClient)(nil)
 type DatabaseBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.DatabaseBlobAuditingPolicy) (result sql.DatabaseBlobAuditingPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseBlobAuditingPolicy, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseBlobAuditingPolicyListResultPage, err error)
 }
 
 var _ DatabaseBlobAuditingPoliciesClientAPI = (*sql.DatabaseBlobAuditingPoliciesClient)(nil)

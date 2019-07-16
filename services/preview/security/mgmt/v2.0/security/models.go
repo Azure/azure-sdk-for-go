@@ -4839,7 +4839,7 @@ type PricingList struct {
 
 // PricingProperties pricing properties for the relevant scope
 type PricingProperties struct {
-	// PricingTier - The pricing tier value. Possible values include: 'Free', 'Standard'
+	// PricingTier - The pricing tier value. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. Possible values include: 'Free', 'Standard'
 	PricingTier PricingTier `json:"pricingTier,omitempty"`
 	// FreeTrialRemainingTime - READ-ONLY; The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
 	FreeTrialRemainingTime *string `json:"freeTrialRemainingTime,omitempty"`

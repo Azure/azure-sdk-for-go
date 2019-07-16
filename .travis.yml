@@ -22,7 +22,7 @@ jobs:
     - secure: eH38UIvLw2kDpvRuT6QkqB4GkJA0df3/Tba6Qy7HluLgIfsJYeq+xgok4oqx1EQlbv4UF5GmeLd5/3HTwB0ljh9XJjGKwQ9lZT5FyuCoM0ovPf+yX+KemhLUvgn7kyAOErvdc+vgzcuw8cAVy2HidVY3lCVEhwvJLimhq4srISAfJu0rtAQTFlzX1fIaDY5zB5tkE2u4VSBqJyLSQgzol7fYV3FGwzByTSmTcF/taxgW3wRtlFBD6v2rMYK+jDrCEYhmS6sy5povvEUwbNX/ouGsmA/2kyzh9NnbFiva1RLPytDCHjf7cJ1blFYBlZJHXKC2/UXwuWtQWlwGXh6ccziLmqn5W13k120hKHOhLxcU82so5eAUMp6mGbxhv4WUhUUfjUmLJDjtzjsTeuQMsamZE1wTbtED0Hj4tr8fXV9d/+IhBksK2WfSm/TjHKMja+aWxZMXJ+AGYsiyetqVc3qtXhWo3o/errIF2/wl6Z40NFMizzzSbT5VS8Xn1/eS/YtVhg99GLHL6a7kXS/sUsK7kedySSmaOoTNkwoKEGMU8egV4P6PqlR0MM8oR3nCZedew1CRkEN/JHKM2ZV+Wp6re9o345rguIhVSlZNP/DEVQ38KuQ9x6cDKFziQaT1LHg743tAGZGlRUfXeN7p9l5xRvtMavYt5zFHG/74d1Y=
     - secure: U5U8AaP0O/SQdWOfhpGsSCrTxGVi8g+VtyNILy37PEoWgG8dm36XUw7k213m4G6QjZJjhDTsfDkMa2Lfb9DF1yitI2sgECwMnn22XWoPvZUS8JLSbsnMe4kIfZhOqCXbD/SQdyX/oL/5hjJHNPkfJgPpUzfsKCMMrzd4NV6EjxvVuKs8cBecIMt3lIBeOnGEBfMUGQz/gfKXwZ8rMWmX752oVX4bQwQOEMs+stTeESfn2l11olqDyWlzy9Roqz/FEVPeq6d7RTVnJXcwP8BPnc6OM0UpZ2OZbFbVUfvlHywvfq8x31RQpmOidG2TrbbC8XVcEbDLDP78kyR4JgCr+aQz8FChI+aRmpVbNbKdNEHii6XArnygMuzHBqypZIDjDj4zAnODjFmTTuXRvV22691khbdryTDE5nlpilv8icq7HlSWIAdnx2gq9AqpOPYW/5/v1O2A7FSn4wFXKogx37azfDiKSMUIcxrn7rnPAW/M5JTec/k3aVrezLwegzrGOIv4UzLwDSCfd2AjBvAHdy2WZlx71I/awWl3BmSRJA23JaN84+1DkNxUAuRsyES5FOK440c3LZblLs62AThSG5Y1FNufsuRy2WRZV/kjKypuNl5drj2IsmF2+xA7bUmijRobMaq2CwFKXh9mnxmRtCGRnn2sxYibf+fgDn0aUy0=
     script:
-    - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip
+    - curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.4/terraform_0.12.4_linux_amd64.zip
     - unzip /tmp/terraform.zip -d /tmp
     - mkdir -p ~/bin
     - mv /tmp/terraform ~/bin

@@ -5394,6 +5394,160 @@ type AuthorizationPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// AutoApprovedPrivateLinkService the information of an AutoApprovedPrivateLinkService.
+type AutoApprovedPrivateLinkService struct {
+	// PrivateLinkService - The id of the private link service resource.
+	PrivateLinkService *string `json:"privateLinkService,omitempty"`
+}
+
+// AutoApprovedPrivateLinkServicesResult an array of private link service id that can be linked to a
+// private end point with auto approved.
+type AutoApprovedPrivateLinkServicesResult struct {
+	autorest.Response `json:"-"`
+	// Value - An array of auto approved private link service.
+	Value *[]AutoApprovedPrivateLinkService `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AutoApprovedPrivateLinkServicesResultIterator provides access to a complete listing of
+// AutoApprovedPrivateLinkService values.
+type AutoApprovedPrivateLinkServicesResultIterator struct {
+	i    int
+	page AutoApprovedPrivateLinkServicesResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AutoApprovedPrivateLinkServicesResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AutoApprovedPrivateLinkServicesResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AutoApprovedPrivateLinkServicesResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AutoApprovedPrivateLinkServicesResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AutoApprovedPrivateLinkServicesResultIterator) Response() AutoApprovedPrivateLinkServicesResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AutoApprovedPrivateLinkServicesResultIterator) Value() AutoApprovedPrivateLinkService {
+	if !iter.page.NotDone() {
+		return AutoApprovedPrivateLinkService{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AutoApprovedPrivateLinkServicesResultIterator type.
+func NewAutoApprovedPrivateLinkServicesResultIterator(page AutoApprovedPrivateLinkServicesResultPage) AutoApprovedPrivateLinkServicesResultIterator {
+	return AutoApprovedPrivateLinkServicesResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aaplsr AutoApprovedPrivateLinkServicesResult) IsEmpty() bool {
+	return aaplsr.Value == nil || len(*aaplsr.Value) == 0
+}
+
+// autoApprovedPrivateLinkServicesResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aaplsr AutoApprovedPrivateLinkServicesResult) autoApprovedPrivateLinkServicesResultPreparer(ctx context.Context) (*http.Request, error) {
+	if aaplsr.NextLink == nil || len(to.String(aaplsr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aaplsr.NextLink)))
+}
+
+// AutoApprovedPrivateLinkServicesResultPage contains a page of AutoApprovedPrivateLinkService values.
+type AutoApprovedPrivateLinkServicesResultPage struct {
+	fn     func(context.Context, AutoApprovedPrivateLinkServicesResult) (AutoApprovedPrivateLinkServicesResult, error)
+	aaplsr AutoApprovedPrivateLinkServicesResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AutoApprovedPrivateLinkServicesResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AutoApprovedPrivateLinkServicesResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.aaplsr)
+	if err != nil {
+		return err
+	}
+	page.aaplsr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AutoApprovedPrivateLinkServicesResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AutoApprovedPrivateLinkServicesResultPage) NotDone() bool {
+	return !page.aaplsr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AutoApprovedPrivateLinkServicesResultPage) Response() AutoApprovedPrivateLinkServicesResult {
+	return page.aaplsr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AutoApprovedPrivateLinkServicesResultPage) Values() []AutoApprovedPrivateLinkService {
+	if page.aaplsr.IsEmpty() {
+		return nil
+	}
+	return *page.aaplsr.Value
+}
+
+// Creates a new instance of the AutoApprovedPrivateLinkServicesResultPage type.
+func NewAutoApprovedPrivateLinkServicesResultPage(getNextPage func(context.Context, AutoApprovedPrivateLinkServicesResult) (AutoApprovedPrivateLinkServicesResult, error)) AutoApprovedPrivateLinkServicesResultPage {
+	return AutoApprovedPrivateLinkServicesResultPage{fn: getNextPage}
+}
+
 // Availability availability of the metric.
 type Availability struct {
 	// TimeGrain - The time grain of the availability.
@@ -5567,12 +5721,14 @@ func NewAvailableDelegationsResultPage(getNextPage func(context.Context, Availab
 
 // AvailablePrivateEndpointType the information of an AvailablePrivateEndpointType.
 type AvailablePrivateEndpointType struct {
+	// Name - The name of the service and resource.
+	Name *string `json:"name,omitempty"`
 	// ID - A unique identifier of the AvailablePrivateEndpoint Type resource.
 	ID *string `json:"id,omitempty"`
 	// Type - Resource type.
 	Type *string `json:"type,omitempty"`
-	// ServiceName - The name of the service and resource.
-	ServiceName *string `json:"serviceName,omitempty"`
+	// ResourceName - The name of the service and resource.
+	ResourceName *string `json:"resourceName,omitempty"`
 }
 
 // AvailablePrivateEndpointTypesResult an array of available PrivateEndpoint types.
@@ -7093,7 +7249,7 @@ func (bh *BastionHost) UnmarshalJSON(body []byte) error {
 type BastionHostIPConfiguration struct {
 	// BastionHostIPConfigurationPropertiesFormat - Represents the ip configuration associated with the resource.
 	*BastionHostIPConfigurationPropertiesFormat `json:"properties,omitempty"`
-	// Name - READ-ONLY; Name of the resource that is unique within a resource group. This name can be used to access the resource.
+	// Name - Name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -7108,6 +7264,9 @@ func (bhic BastionHostIPConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if bhic.BastionHostIPConfigurationPropertiesFormat != nil {
 		objectMap["properties"] = bhic.BastionHostIPConfigurationPropertiesFormat
+	}
+	if bhic.Name != nil {
+		objectMap["name"] = bhic.Name
 	}
 	if bhic.ID != nil {
 		objectMap["id"] = bhic.ID
@@ -7704,6 +7863,13 @@ type BgpSettings struct {
 	BgpPeeringAddress *string `json:"bgpPeeringAddress,omitempty"`
 	// PeerWeight - The weight added to routes learned from this BGP speaker.
 	PeerWeight *int32 `json:"peerWeight,omitempty"`
+}
+
+// CheckPrivateLinkServiceVisibilityRequest request body of the CheckPrivateLinkServiceVisibility API
+// service call.
+type CheckPrivateLinkServiceVisibilityRequest struct {
+	// PrivateLinkServiceAlias - The alias of the private link service.
+	PrivateLinkServiceAlias *string `json:"privateLinkServiceAlias,omitempty"`
 }
 
 // CloudError an error response from the Batch service.
@@ -20703,6 +20869,7 @@ func (peVar *PrivateEndpoint) UnmarshalJSON(body []byte) error {
 
 // PrivateEndpointConnection privateEndpointConnection resource.
 type PrivateEndpointConnection struct {
+	autorest.Response `json:"-"`
 	// PrivateEndpointConnectionProperties - Properties of the private end point connection.
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
@@ -21414,7 +21581,7 @@ func NewPrivateLinkServiceListResultPage(getNextPage func(context.Context, Priva
 // PrivateLinkServiceProperties properties of the private link service.
 type PrivateLinkServiceProperties struct {
 	// LoadBalancerFrontendIPConfigurations - An array of references to the load balancer IP configurations.
-	LoadBalancerFrontendIPConfigurations *[]FrontendIPConfiguration `json:"loadBalancerFrontendIPConfigurations,omitempty"`
+	LoadBalancerFrontendIPConfigurations *[]FrontendIPConfiguration `json:"loadBalancerFrontendIpConfigurations,omitempty"`
 	// IPConfigurations - An array of references to the private link service IP configuration.
 	IPConfigurations *[]PrivateLinkServiceIPConfiguration `json:"ipConfigurations,omitempty"`
 	// NetworkInterfaces - READ-ONLY; Gets an array of references to the network interfaces created for this private link service.
@@ -21518,6 +21685,13 @@ func (future *PrivateLinkServicesDeletePrivateEndpointConnectionFuture) Result(c
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// PrivateLinkServiceVisibility response for the CheckPrivateLinkServiceVisibility API service call.
+type PrivateLinkServiceVisibility struct {
+	autorest.Response `json:"-"`
+	// Visible - Private Link Service Visibility (True/False).
+	Visible *bool `json:"visible,omitempty"`
 }
 
 // Probe a load balancer probe.
@@ -26082,6 +26256,10 @@ type SubnetPropertiesFormat struct {
 	Purpose *string `json:"purpose,omitempty"`
 	// ProvisioningState - The provisioning state of the resource.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// PrivateEndpointNetworkPolicies - Enable or Disable private end point on the subnet.
+	PrivateEndpointNetworkPolicies *string `json:"privateEndpointNetworkPolicies,omitempty"`
+	// PrivateLinkServiceNetworkPolicies - Enable or Disable private link service on the subnet.
+	PrivateLinkServiceNetworkPolicies *string `json:"privateLinkServiceNetworkPolicies,omitempty"`
 }
 
 // SubnetsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

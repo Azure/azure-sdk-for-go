@@ -172,21 +172,6 @@ func PossibleConfidenceLevelValues() []ConfidenceLevel {
 	return []ConfidenceLevel{ConfidenceLevelHigh, ConfidenceLevelLow, ConfidenceLevelUnknown}
 }
 
-// ConfidenceReason enumerates the values for confidence reason.
-type ConfidenceReason string
-
-const (
-	// Reason The reason's description
-	Reason ConfidenceReason = "Reason"
-	// Type The type (category) of the reason
-	Type ConfidenceReason = "Type"
-)
-
-// PossibleConfidenceReasonValues returns an array of possible values for the ConfidenceReason const type.
-func PossibleConfidenceReasonValues() []ConfidenceReason {
-	return []ConfidenceReason{Reason, Type}
-}
-
 // ConfidenceScoreStatus enumerates the values for confidence score status.
 type ConfidenceScoreStatus string
 
@@ -669,25 +654,6 @@ const (
 // PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
 func PossibleSettingKindValues() []SettingKind {
 	return []SettingKind{SettingKindToggleSettings, SettingKindUebaSettings}
-}
-
-// Severity enumerates the values for severity.
-type Severity string
-
-const (
-	// SeverityHigh High severity
-	SeverityHigh Severity = "High"
-	// SeverityInformational Informational severity (aka Silent)
-	SeverityInformational Severity = "Informational"
-	// SeverityLow Low severity
-	SeverityLow Severity = "Low"
-	// SeverityMedium Medium severity
-	SeverityMedium Severity = "Medium"
-)
-
-// PossibleSeverityValues returns an array of possible values for the Severity const type.
-func PossibleSeverityValues() []Severity {
-	return []Severity{SeverityHigh, SeverityInformational, SeverityLow, SeverityMedium}
 }
 
 // StatusInMcas enumerates the values for status in mcas.
@@ -4205,6 +4171,184 @@ type EntityKind1 struct {
 	Kind EntityKind `json:"kind,omitempty"`
 }
 
+// EntityList list of all the entities.
+type EntityList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of entities.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of entities.
+	Value *[]BasicEntity `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for EntityList struct.
+func (el *EntityList) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				el.NextLink = &nextLink
+			}
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicEntityArray(*v)
+				if err != nil {
+					return err
+				}
+				el.Value = &value
+			}
+		}
+	}
+
+	return nil
+}
+
+// EntityListIterator provides access to a complete listing of Entity values.
+type EntityListIterator struct {
+	i    int
+	page EntityListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *EntityListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EntityListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *EntityListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter EntityListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter EntityListIterator) Response() EntityList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter EntityListIterator) Value() BasicEntity {
+	if !iter.page.NotDone() {
+		return Entity{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the EntityListIterator type.
+func NewEntityListIterator(page EntityListPage) EntityListIterator {
+	return EntityListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (el EntityList) IsEmpty() bool {
+	return el.Value == nil || len(*el.Value) == 0
+}
+
+// entityListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (el EntityList) entityListPreparer(ctx context.Context) (*http.Request, error) {
+	if el.NextLink == nil || len(to.String(el.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(el.NextLink)))
+}
+
+// EntityListPage contains a page of BasicEntity values.
+type EntityListPage struct {
+	fn func(context.Context, EntityList) (EntityList, error)
+	el EntityList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *EntityListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/EntityListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.el)
+	if err != nil {
+		return err
+	}
+	page.el = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *EntityListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page EntityListPage) NotDone() bool {
+	return !page.el.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page EntityListPage) Response() EntityList {
+	return page.el
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page EntityListPage) Values() []BasicEntity {
+	if page.el.IsEmpty() {
+		return nil
+	}
+	return *page.el.Value
+}
+
+// Creates a new instance of the EntityListPage type.
+func NewEntityListPage(getNextPage func(context.Context, EntityList) (EntityList, error)) EntityListPage {
+	return EntityListPage{fn: getNextPage}
+}
+
 // EntityModel ...
 type EntityModel struct {
 	autorest.Response `json:"-"`
@@ -7151,7 +7295,7 @@ type SecurityAlertProperties struct {
 	// SystemAlertID - READ-ONLY; Holds the product identifier of the alert for the product.
 	SystemAlertID *string `json:"systemAlertId,omitempty"`
 	// ConfidenceReasons - READ-ONLY; The confidence reasons
-	ConfidenceReasons *[]ConfidenceReason `json:"confidenceReasons,omitempty"`
+	ConfidenceReasons *[]SecurityAlertPropertiesConfidenceReasonsItem `json:"confidenceReasons,omitempty"`
 	// ConfidenceScoreStatus - READ-ONLY; The confidence score calculation status, i.e. indicating if score calculation is pending for this alert, not applicable or final. Possible values include: 'NotApplicable', 'InProcess', 'NotFinal', 'Final'
 	ConfidenceScoreStatus ConfidenceScoreStatus `json:"confidenceScoreStatus,omitempty"`
 	// Intent - READ-ONLY; Holds the alert intent stage(s) mapping for this alert. Possible values include: 'KillChainIntentUnknown', 'KillChainIntentProbing', 'KillChainIntentExploitation', 'KillChainIntentPersistence', 'KillChainIntentPrivilegeEscalation', 'KillChainIntentDefenseEvasion', 'KillChainIntentCredentialAccess', 'KillChainIntentDiscovery', 'KillChainIntentLateralMovement', 'KillChainIntentExecution', 'KillChainIntentCollection', 'KillChainIntentExfiltration', 'KillChainIntentCommandAndControl', 'KillChainIntentImpact'
@@ -7166,8 +7310,8 @@ type SecurityAlertProperties struct {
 	RemediationSteps *[]string `json:"remediationSteps,omitempty"`
 	// ConfidenceLevel - READ-ONLY; The confidence level of this alert. Possible values include: 'ConfidenceLevelUnknown', 'ConfidenceLevelLow', 'ConfidenceLevelHigh'
 	ConfidenceLevel ConfidenceLevel `json:"confidenceLevel,omitempty"`
-	// Severity - READ-ONLY; The severity of the alert. Possible values include: 'SeverityInformational', 'SeverityLow', 'SeverityMedium', 'SeverityHigh'
-	Severity Severity `json:"severity,omitempty"`
+	// Severity - The severity of the alert. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
 	// VendorName - READ-ONLY; The name of the vendor that raise the alert.
 	VendorName *string `json:"vendorName,omitempty"`
 	// ProductName - READ-ONLY; The name of the product which published this alert.
@@ -7199,7 +7343,18 @@ type SecurityAlertProperties struct {
 // MarshalJSON is the custom marshaler for SecurityAlertProperties.
 func (sap SecurityAlertProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if sap.Severity != "" {
+		objectMap["severity"] = sap.Severity
+	}
 	return json.Marshal(objectMap)
+}
+
+// SecurityAlertPropertiesConfidenceReasonsItem confidence reason item
+type SecurityAlertPropertiesConfidenceReasonsItem struct {
+	// ReasonType - READ-ONLY; The type (category) of the reason
+	ReasonType *string `json:"reasonType,omitempty"`
+	// Reason - READ-ONLY; The reason's description
+	Reason *string `json:"reason,omitempty"`
 }
 
 // SecurityGroupEntity represents a security group entity.

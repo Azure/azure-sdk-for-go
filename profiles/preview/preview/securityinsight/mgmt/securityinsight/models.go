@@ -95,13 +95,6 @@ const (
 	ConfidenceLevelUnknown ConfidenceLevel = original.ConfidenceLevelUnknown
 )
 
-type ConfidenceReason = original.ConfidenceReason
-
-const (
-	Reason ConfidenceReason = original.Reason
-	Type   ConfidenceReason = original.Type
-)
-
 type ConfidenceScoreStatus = original.ConfidenceScoreStatus
 
 const (
@@ -315,15 +308,6 @@ const (
 	SettingKindUebaSettings   SettingKind = original.SettingKindUebaSettings
 )
 
-type Severity = original.Severity
-
-const (
-	SeverityHigh          Severity = original.SeverityHigh
-	SeverityInformational Severity = original.SeverityInformational
-	SeverityLow           Severity = original.SeverityLow
-	SeverityMedium        Severity = original.SeverityMedium
-)
-
 type StatusInMcas = original.StatusInMcas
 
 const (
@@ -418,6 +402,9 @@ type EntityExpandParameters = original.EntityExpandParameters
 type EntityExpandResponse = original.EntityExpandResponse
 type EntityExpandResponseValue = original.EntityExpandResponseValue
 type EntityKind1 = original.EntityKind1
+type EntityList = original.EntityList
+type EntityListIterator = original.EntityListIterator
+type EntityListPage = original.EntityListPage
 type EntityModel = original.EntityModel
 type EntityQueriesClient = original.EntityQueriesClient
 type EntityQuery = original.EntityQuery
@@ -469,6 +456,7 @@ type ScheduledAlertRule = original.ScheduledAlertRule
 type ScheduledAlertRuleProperties = original.ScheduledAlertRuleProperties
 type SecurityAlert = original.SecurityAlert
 type SecurityAlertProperties = original.SecurityAlertProperties
+type SecurityAlertPropertiesConfidenceReasonsItem = original.SecurityAlertPropertiesConfidenceReasonsItem
 type SecurityGroupEntity = original.SecurityGroupEntity
 type SecurityGroupEntityProperties = original.SecurityGroupEntityProperties
 type Settings = original.Settings
@@ -562,6 +550,12 @@ func NewEntitiesClient(subscriptionID string) EntitiesClient {
 func NewEntitiesClientWithBaseURI(baseURI string, subscriptionID string) EntitiesClient {
 	return original.NewEntitiesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewEntityListIterator(page EntityListPage) EntityListIterator {
+	return original.NewEntityListIterator(page)
+}
+func NewEntityListPage(getNextPage func(context.Context, EntityList) (EntityList, error)) EntityListPage {
+	return original.NewEntityListPage(getNextPage)
+}
 func NewEntityQueriesClient(subscriptionID string) EntityQueriesClient {
 	return original.NewEntityQueriesClient(subscriptionID)
 }
@@ -631,9 +625,6 @@ func PossibleCloseReasonValues() []CloseReason {
 func PossibleConfidenceLevelValues() []ConfidenceLevel {
 	return original.PossibleConfidenceLevelValues()
 }
-func PossibleConfidenceReasonValues() []ConfidenceReason {
-	return original.PossibleConfidenceReasonValues()
-}
 func PossibleConfidenceScoreStatusValues() []ConfidenceScoreStatus {
 	return original.PossibleConfidenceScoreStatusValues()
 }
@@ -687,9 +678,6 @@ func PossibleRegistryValueKindValues() []RegistryValueKind {
 }
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()
-}
-func PossibleSeverityValues() []Severity {
-	return original.PossibleSeverityValues()
 }
 func PossibleStatusInMcasValues() []StatusInMcas {
 	return original.PossibleStatusInMcasValues()

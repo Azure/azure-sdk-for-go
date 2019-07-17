@@ -84,6 +84,7 @@ var _ DataConnectorsClientAPI = (*securityinsight.DataConnectorsClient)(nil)
 type EntitiesClientAPI interface {
 	Expand(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityExpandParameters) (result securityinsight.EntityExpandResponse, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result securityinsight.EntityModel, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListPage, err error)
 }
 
 var _ EntitiesClientAPI = (*securityinsight.EntitiesClient)(nil)

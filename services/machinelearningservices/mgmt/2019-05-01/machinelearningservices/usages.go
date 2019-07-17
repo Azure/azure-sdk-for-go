@@ -96,7 +96,7 @@ func (client UsagesClient) ListPreparer(ctx context.Context, location string, ex
 		"api-version": APIVersion,
 	}
 	if len(expandChildren) > 0 {
-		queryParameters["$expandChildren"] = autorest.Encode("query", expandChildren)
+		queryParameters["expandChildren"] = autorest.Encode("query", expandChildren)
 	}
 
 	preparer := autorest.CreatePreparer(

@@ -955,59 +955,11 @@ type DatabaseAccountListKeysResult struct {
 	// PrimaryMasterKey - READ-ONLY; Base 64 encoded value of the primary read-write key.
 	PrimaryMasterKey *string `json:"primaryMasterKey,omitempty"`
 	// SecondaryMasterKey - READ-ONLY; Base 64 encoded value of the secondary read-write key.
-	SecondaryMasterKey                     *string `json:"secondaryMasterKey,omitempty"`
-	*DatabaseAccountListReadOnlyKeysResult `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for DatabaseAccountListKeysResult.
-func (dalkr DatabaseAccountListKeysResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if dalkr.DatabaseAccountListReadOnlyKeysResult != nil {
-		objectMap["properties"] = dalkr.DatabaseAccountListReadOnlyKeysResult
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for DatabaseAccountListKeysResult struct.
-func (dalkr *DatabaseAccountListKeysResult) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "primaryMasterKey":
-			if v != nil {
-				var primaryMasterKey string
-				err = json.Unmarshal(*v, &primaryMasterKey)
-				if err != nil {
-					return err
-				}
-				dalkr.PrimaryMasterKey = &primaryMasterKey
-			}
-		case "secondaryMasterKey":
-			if v != nil {
-				var secondaryMasterKey string
-				err = json.Unmarshal(*v, &secondaryMasterKey)
-				if err != nil {
-					return err
-				}
-				dalkr.SecondaryMasterKey = &secondaryMasterKey
-			}
-		case "properties":
-			if v != nil {
-				var databaseAccountListReadOnlyKeysResult DatabaseAccountListReadOnlyKeysResult
-				err = json.Unmarshal(*v, &databaseAccountListReadOnlyKeysResult)
-				if err != nil {
-					return err
-				}
-				dalkr.DatabaseAccountListReadOnlyKeysResult = &databaseAccountListReadOnlyKeysResult
-			}
-		}
-	}
-
-	return nil
+	SecondaryMasterKey *string `json:"secondaryMasterKey,omitempty"`
+	// PrimaryReadonlyMasterKey - READ-ONLY; Base 64 encoded value of the primary read-only key.
+	PrimaryReadonlyMasterKey *string `json:"primaryReadonlyMasterKey,omitempty"`
+	// SecondaryReadonlyMasterKey - READ-ONLY; Base 64 encoded value of the secondary read-only key.
+	SecondaryReadonlyMasterKey *string `json:"secondaryReadonlyMasterKey,omitempty"`
 }
 
 // DatabaseAccountListReadOnlyKeysResult the read-only access keys for the given database account.

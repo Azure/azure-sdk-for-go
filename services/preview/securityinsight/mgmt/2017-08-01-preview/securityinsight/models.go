@@ -4658,8 +4658,8 @@ type FileEntityProperties struct {
 	Directory *string `json:"directory,omitempty"`
 	// FileName - READ-ONLY; The file name without path (some alerts might not include path).
 	FileName *string `json:"fileName,omitempty"`
-	// HostID - READ-ONLY; The Host which the file belongs to
-	HostID *string `json:"hostId,omitempty"`
+	// HostEntityID - READ-ONLY; The Host entity id which the file belongs to
+	HostEntityID *string `json:"hostEntityId,omitempty"`
 	// FileHashEntityIds - READ-ONLY; The file hash entity identifiers associated with this file
 	FileHashEntityIds *[]string `json:"fileHashEntityIds,omitempty"`
 	// FriendlyName - READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property is optional and might be system generated.

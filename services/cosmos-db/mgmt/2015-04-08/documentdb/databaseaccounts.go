@@ -1038,6 +1038,109 @@ func (client DatabaseAccountsClient) CreateUpdateSQLDatabaseResponder(resp *http
 	return
 }
 
+// CreateUpdateSQLStoredProcedure create or update an Azure Cosmos DB SQL StoredProcedure
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseName - cosmos DB database name.
+// containerName - cosmos DB container name.
+// storedProcedureName - cosmos DB SQL StoredProcedure name
+// createUpdateSQLStoredProcedureParameters - the parameters to provide for the current SQL StoredProcedure.
+func (client DatabaseAccountsClient) CreateUpdateSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters) (result DatabaseAccountsCreateUpdateSQLStoredProcedureFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateSQLStoredProcedure")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}},
+		{TargetValue: createUpdateSQLStoredProcedureParameters,
+			Constraints: []validation.Constraint{{Target: "createUpdateSQLStoredProcedureParameters.SQLStoredProcedureCreateUpdateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "createUpdateSQLStoredProcedureParameters.SQLStoredProcedureCreateUpdateProperties.Resource", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "createUpdateSQLStoredProcedureParameters.SQLStoredProcedureCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateUpdateSQLStoredProcedure", err.Error())
+	}
+
+	req, err := client.CreateUpdateSQLStoredProcedurePreparer(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSQLStoredProcedureParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateSQLStoredProcedure", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreateUpdateSQLStoredProcedureSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateUpdateSQLStoredProcedure", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreateUpdateSQLStoredProcedurePreparer prepares the CreateUpdateSQLStoredProcedure request.
+func (client DatabaseAccountsClient) CreateUpdateSQLStoredProcedurePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":         autorest.Encode("path", accountName),
+		"containerName":       autorest.Encode("path", containerName),
+		"databaseName":        autorest.Encode("path", databaseName),
+		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
+		"storedProcedureName": autorest.Encode("path", storedProcedureName),
+		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures/{storedProcedureName}", pathParameters),
+		autorest.WithJSON(createUpdateSQLStoredProcedureParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateUpdateSQLStoredProcedureSender sends the CreateUpdateSQLStoredProcedure request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) CreateUpdateSQLStoredProcedureSender(req *http.Request) (future DatabaseAccountsCreateUpdateSQLStoredProcedureFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CreateUpdateSQLStoredProcedureResponder handles the response to the CreateUpdateSQLStoredProcedure request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) CreateUpdateSQLStoredProcedureResponder(resp *http.Response) (result SQLStoredProcedure, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateUpdateTable create or update an Azure Cosmos DB Table
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
@@ -1945,6 +2048,100 @@ func (client DatabaseAccountsClient) DeleteSQLDatabaseSender(req *http.Request) 
 // DeleteSQLDatabaseResponder handles the response to the DeleteSQLDatabase request. The method always
 // closes the http.Response Body.
 func (client DatabaseAccountsClient) DeleteSQLDatabaseResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteSQLStoredProcedure deletes an existing Azure Cosmos DB SQL StoredProcedure.
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseName - cosmos DB database name.
+// containerName - cosmos DB container name.
+// storedProcedureName - cosmos DB SQL StoredProcedure name
+func (client DatabaseAccountsClient) DeleteSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string) (result DatabaseAccountsDeleteSQLStoredProcedureFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteSQLStoredProcedure")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "DeleteSQLStoredProcedure", err.Error())
+	}
+
+	req, err := client.DeleteSQLStoredProcedurePreparer(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteSQLStoredProcedure", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DeleteSQLStoredProcedureSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "DeleteSQLStoredProcedure", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DeleteSQLStoredProcedurePreparer prepares the DeleteSQLStoredProcedure request.
+func (client DatabaseAccountsClient) DeleteSQLStoredProcedurePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":         autorest.Encode("path", accountName),
+		"containerName":       autorest.Encode("path", containerName),
+		"databaseName":        autorest.Encode("path", databaseName),
+		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
+		"storedProcedureName": autorest.Encode("path", storedProcedureName),
+		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures/{storedProcedureName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSQLStoredProcedureSender sends the DeleteSQLStoredProcedure request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) DeleteSQLStoredProcedureSender(req *http.Request) (future DatabaseAccountsDeleteSQLStoredProcedureFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// DeleteSQLStoredProcedureResponder handles the response to the DeleteSQLStoredProcedure request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) DeleteSQLStoredProcedureResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -3800,6 +3997,101 @@ func (client DatabaseAccountsClient) GetSQLDatabaseThroughputResponder(resp *htt
 	return
 }
 
+// GetSQLStoredProcedure gets the SQL StoredProcedure under an existing Azure Cosmos DB database account.
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseName - cosmos DB database name.
+// containerName - cosmos DB container name.
+// storedProcedureName - cosmos DB SQL StoredProcedure name
+func (client DatabaseAccountsClient) GetSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string) (result SQLStoredProcedure, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.GetSQLStoredProcedure")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "GetSQLStoredProcedure", err.Error())
+	}
+
+	req, err := client.GetSQLStoredProcedurePreparer(ctx, resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetSQLStoredProcedure", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSQLStoredProcedureSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetSQLStoredProcedure", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetSQLStoredProcedureResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "GetSQLStoredProcedure", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetSQLStoredProcedurePreparer prepares the GetSQLStoredProcedure request.
+func (client DatabaseAccountsClient) GetSQLStoredProcedurePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":         autorest.Encode("path", accountName),
+		"containerName":       autorest.Encode("path", containerName),
+		"databaseName":        autorest.Encode("path", databaseName),
+		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
+		"storedProcedureName": autorest.Encode("path", storedProcedureName),
+		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures/{storedProcedureName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSQLStoredProcedureSender sends the GetSQLStoredProcedure request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) GetSQLStoredProcedureSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetSQLStoredProcedureResponder handles the response to the GetSQLStoredProcedure request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) GetSQLStoredProcedureResponder(resp *http.Response) (result SQLStoredProcedure, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetTable gets the Tables under an existing Azure Cosmos DB database account with the provided name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
@@ -5297,6 +5589,99 @@ func (client DatabaseAccountsClient) ListSQLDatabasesSender(req *http.Request) (
 // ListSQLDatabasesResponder handles the response to the ListSQLDatabases request. The method always
 // closes the http.Response Body.
 func (client DatabaseAccountsClient) ListSQLDatabasesResponder(resp *http.Response) (result SQLDatabaseListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListSQLStoredProcedures lists the SQL stored procedures under an existing Azure Cosmos DB database account.
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseName - cosmos DB database name.
+// containerName - cosmos DB container name.
+func (client DatabaseAccountsClient) ListSQLStoredProcedures(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string) (result SQLStoredProcedureListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.ListSQLStoredProcedures")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "ListSQLStoredProcedures", err.Error())
+	}
+
+	req, err := client.ListSQLStoredProceduresPreparer(ctx, resourceGroupName, accountName, databaseName, containerName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListSQLStoredProcedures", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSQLStoredProceduresSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListSQLStoredProcedures", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListSQLStoredProceduresResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "ListSQLStoredProcedures", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSQLStoredProceduresPreparer prepares the ListSQLStoredProcedures request.
+func (client DatabaseAccountsClient) ListSQLStoredProceduresPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"containerName":     autorest.Encode("path", containerName),
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2015-04-08"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/apis/sql/databases/{databaseName}/containers/{containerName}/storedprocedures", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSQLStoredProceduresSender sends the ListSQLStoredProcedures request. The method will close the
+// http.Response Body if it receives an error.
+func (client DatabaseAccountsClient) ListSQLStoredProceduresSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListSQLStoredProceduresResponder handles the response to the ListSQLStoredProcedures request. The method always
+// closes the http.Response Body.
+func (client DatabaseAccountsClient) ListSQLStoredProceduresResponder(resp *http.Response) (result SQLStoredProcedureListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

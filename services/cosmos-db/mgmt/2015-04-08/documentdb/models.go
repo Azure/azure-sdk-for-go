@@ -1328,6 +1328,35 @@ func (future *DatabaseAccountsCreateUpdateSQLDatabaseFuture) Result(client Datab
 	return
 }
 
+// DatabaseAccountsCreateUpdateSQLStoredProcedureFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type DatabaseAccountsCreateUpdateSQLStoredProcedureFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DatabaseAccountsCreateUpdateSQLStoredProcedureFuture) Result(client DatabaseAccountsClient) (ssp SQLStoredProcedure, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateSQLStoredProcedureFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateSQLStoredProcedureFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ssp.Response.Response, err = future.GetResult(sender); err == nil && ssp.Response.Response.StatusCode != http.StatusNoContent {
+		ssp, err = client.CreateUpdateSQLStoredProcedureResponder(ssp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateUpdateSQLStoredProcedureFuture", "Result", ssp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // DatabaseAccountsCreateUpdateTableFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DatabaseAccountsCreateUpdateTableFuture struct {
@@ -1558,6 +1587,29 @@ func (future *DatabaseAccountsDeleteSQLDatabaseFuture) Result(client DatabaseAcc
 	}
 	if !done {
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteSQLDatabaseFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// DatabaseAccountsDeleteSQLStoredProcedureFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type DatabaseAccountsDeleteSQLStoredProcedureFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DatabaseAccountsDeleteSQLStoredProcedureFuture) Result(client DatabaseAccountsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsDeleteSQLStoredProcedureFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteSQLStoredProcedureFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -3640,6 +3692,196 @@ type SQLDatabaseProperties struct {
 type SQLDatabaseResource struct {
 	// ID - Name of the Cosmos DB SQL database
 	ID *string `json:"id,omitempty"`
+}
+
+// SQLStoredProcedure an Azure Cosmos DB stored procedure.
+type SQLStoredProcedure struct {
+	autorest.Response `json:"-"`
+	// SQLStoredProcedureProperties - The properties of an Azure Cosmos DB stored procedure
+	*SQLStoredProcedureProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+	// Location - The location of the resource group to which the resource belongs.
+	Location *string            `json:"location,omitempty"`
+	Tags     map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for SQLStoredProcedure.
+func (ssp SQLStoredProcedure) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ssp.SQLStoredProcedureProperties != nil {
+		objectMap["properties"] = ssp.SQLStoredProcedureProperties
+	}
+	if ssp.Location != nil {
+		objectMap["location"] = ssp.Location
+	}
+	if ssp.Tags != nil {
+		objectMap["tags"] = ssp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLStoredProcedure struct.
+func (ssp *SQLStoredProcedure) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SQLStoredProcedureProperties SQLStoredProcedureProperties
+				err = json.Unmarshal(*v, &SQLStoredProcedureProperties)
+				if err != nil {
+					return err
+				}
+				ssp.SQLStoredProcedureProperties = &SQLStoredProcedureProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ssp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ssp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ssp.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ssp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ssp.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// SQLStoredProcedureCreateUpdateParameters parameters to create and update Cosmos DB stored procedure.
+type SQLStoredProcedureCreateUpdateParameters struct {
+	// SQLStoredProcedureCreateUpdateProperties - Properties to create and update Azure Cosmos DB stored procedure.
+	*SQLStoredProcedureCreateUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLStoredProcedureCreateUpdateParameters.
+func (sspcup SQLStoredProcedureCreateUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sspcup.SQLStoredProcedureCreateUpdateProperties != nil {
+		objectMap["properties"] = sspcup.SQLStoredProcedureCreateUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLStoredProcedureCreateUpdateParameters struct.
+func (sspcup *SQLStoredProcedureCreateUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SQLStoredProcedureCreateUpdateProperties SQLStoredProcedureCreateUpdateProperties
+				err = json.Unmarshal(*v, &SQLStoredProcedureCreateUpdateProperties)
+				if err != nil {
+					return err
+				}
+				sspcup.SQLStoredProcedureCreateUpdateProperties = &SQLStoredProcedureCreateUpdateProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// SQLStoredProcedureCreateUpdateProperties properties to create and update Azure Cosmos DB stored
+// procedure.
+type SQLStoredProcedureCreateUpdateProperties struct {
+	// Resource - The standard JSON format of a stored procedure
+	Resource *SQLStoredProcedureResource `json:"resource,omitempty"`
+	// Options - A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
+	Options map[string]*string `json:"options"`
+}
+
+// MarshalJSON is the custom marshaler for SQLStoredProcedureCreateUpdateProperties.
+func (sspcup SQLStoredProcedureCreateUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sspcup.Resource != nil {
+		objectMap["resource"] = sspcup.Resource
+	}
+	if sspcup.Options != nil {
+		objectMap["options"] = sspcup.Options
+	}
+	return json.Marshal(objectMap)
+}
+
+// SQLStoredProcedureListResult the List operation response, that contains the stored procedures and their
+// properties.
+type SQLStoredProcedureListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of stored procedures and their properties.
+	Value *[]SQLStoredProcedure `json:"value,omitempty"`
+}
+
+// SQLStoredProcedureProperties the properties of an Azure Cosmos DB stored procedure
+type SQLStoredProcedureProperties struct {
+	// ID - Name of the Sql Stored Procedure
+	ID *string `json:"id,omitempty"`
+	// Body - Body of the Stored Procedure
+	Body *string `json:"body,omitempty"`
+	// Rid - A system generated property. A unique identifier.
+	Rid *string `json:"_rid,omitempty"`
+	// Ts - A system generated property that denotes the last updated timestamp of the resource.
+	Ts interface{} `json:"_ts,omitempty"`
+	// Etag - A system generated property representing the resource etag required for optimistic concurrency control.
+	Etag *string `json:"_etag,omitempty"`
+}
+
+// SQLStoredProcedureResource cosmos DB Gremlin graph resource object
+type SQLStoredProcedureResource struct {
+	// ID - Name of the Sql Stored Procedure
+	ID *string `json:"id,omitempty"`
+	// Body - Body of the Stored Procedure
+	Body *string `json:"body,omitempty"`
 }
 
 // Table an Azure Cosmos DB Table.

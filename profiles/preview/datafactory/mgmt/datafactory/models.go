@@ -524,6 +524,13 @@ const (
 	Project     SsisObjectMetadataType = original.Project
 )
 
+type SsisPackageLocationType = original.SsisPackageLocationType
+
+const (
+	File   SsisPackageLocationType = original.File
+	SSISDB SsisPackageLocationType = original.SSISDB
+)
+
 type StoredProcedureParameterType = original.StoredProcedureParameterType
 
 const (
@@ -646,9 +653,12 @@ const (
 	TypeDynamicsCrmSink              TypeBasicCopySink = original.TypeDynamicsCrmSink
 	TypeDynamicsSink                 TypeBasicCopySink = original.TypeDynamicsSink
 	TypeFileSystemSink               TypeBasicCopySink = original.TypeFileSystemSink
+	TypeInformixSink                 TypeBasicCopySink = original.TypeInformixSink
+	TypeMicrosoftAccessSink          TypeBasicCopySink = original.TypeMicrosoftAccessSink
 	TypeOdbcSink                     TypeBasicCopySink = original.TypeOdbcSink
 	TypeOracleSink                   TypeBasicCopySink = original.TypeOracleSink
 	TypeParquetSink                  TypeBasicCopySink = original.TypeParquetSink
+	TypeSalesforceServiceCloudSink   TypeBasicCopySink = original.TypeSalesforceServiceCloudSink
 	TypeSalesforceSink               TypeBasicCopySink = original.TypeSalesforceSink
 	TypeSapCloudForCustomerSink      TypeBasicCopySink = original.TypeSapCloudForCustomerSink
 	TypeSQLDWSink                    TypeBasicCopySink = original.TypeSQLDWSink
@@ -693,10 +703,12 @@ const (
 	TypeHTTPSource                     TypeBasicCopySource = original.TypeHTTPSource
 	TypeHubspotSource                  TypeBasicCopySource = original.TypeHubspotSource
 	TypeImpalaSource                   TypeBasicCopySource = original.TypeImpalaSource
+	TypeInformixSource                 TypeBasicCopySource = original.TypeInformixSource
 	TypeJiraSource                     TypeBasicCopySource = original.TypeJiraSource
 	TypeMagentoSource                  TypeBasicCopySource = original.TypeMagentoSource
 	TypeMariaDBSource                  TypeBasicCopySource = original.TypeMariaDBSource
 	TypeMarketoSource                  TypeBasicCopySource = original.TypeMarketoSource
+	TypeMicrosoftAccessSource          TypeBasicCopySource = original.TypeMicrosoftAccessSource
 	TypeMongoDbSource                  TypeBasicCopySource = original.TypeMongoDbSource
 	TypeMongoDbV2Source                TypeBasicCopySource = original.TypeMongoDbV2Source
 	TypeNetezzaSource                  TypeBasicCopySource = original.TypeNetezzaSource
@@ -712,6 +724,7 @@ const (
 	TypeResponsysSource                TypeBasicCopySource = original.TypeResponsysSource
 	TypeRestSource                     TypeBasicCopySource = original.TypeRestSource
 	TypeSalesforceMarketingCloudSource TypeBasicCopySource = original.TypeSalesforceMarketingCloudSource
+	TypeSalesforceServiceCloudSource   TypeBasicCopySource = original.TypeSalesforceServiceCloudSource
 	TypeSalesforceSource               TypeBasicCopySource = original.TypeSalesforceSource
 	TypeSapCloudForCustomerSource      TypeBasicCopySource = original.TypeSapCloudForCustomerSource
 	TypeSapEccSource                   TypeBasicCopySource = original.TypeSapEccSource
@@ -772,10 +785,12 @@ const (
 	TypeHTTPFile                       TypeBasicDataset = original.TypeHTTPFile
 	TypeHubspotObject                  TypeBasicDataset = original.TypeHubspotObject
 	TypeImpalaObject                   TypeBasicDataset = original.TypeImpalaObject
+	TypeInformixTable                  TypeBasicDataset = original.TypeInformixTable
 	TypeJiraObject                     TypeBasicDataset = original.TypeJiraObject
 	TypeMagentoObject                  TypeBasicDataset = original.TypeMagentoObject
 	TypeMariaDBTable                   TypeBasicDataset = original.TypeMariaDBTable
 	TypeMarketoObject                  TypeBasicDataset = original.TypeMarketoObject
+	TypeMicrosoftAccessTable           TypeBasicDataset = original.TypeMicrosoftAccessTable
 	TypeMongoDbCollection              TypeBasicDataset = original.TypeMongoDbCollection
 	TypeMongoDbV2Collection            TypeBasicDataset = original.TypeMongoDbV2Collection
 	TypeNetezzaTable                   TypeBasicDataset = original.TypeNetezzaTable
@@ -793,6 +808,7 @@ const (
 	TypeRestResource                   TypeBasicDataset = original.TypeRestResource
 	TypeSalesforceMarketingCloudObject TypeBasicDataset = original.TypeSalesforceMarketingCloudObject
 	TypeSalesforceObject               TypeBasicDataset = original.TypeSalesforceObject
+	TypeSalesforceServiceCloudObject   TypeBasicDataset = original.TypeSalesforceServiceCloudObject
 	TypeSapCloudForCustomerResource    TypeBasicDataset = original.TypeSapCloudForCustomerResource
 	TypeSapEccResource                 TypeBasicDataset = original.TypeSapEccResource
 	TypeSapHanaTable                   TypeBasicDataset = original.TypeSapHanaTable
@@ -914,11 +930,13 @@ const (
 	TypeHTTPServer               TypeBasicLinkedService = original.TypeHTTPServer
 	TypeHubspot                  TypeBasicLinkedService = original.TypeHubspot
 	TypeImpala                   TypeBasicLinkedService = original.TypeImpala
+	TypeInformix                 TypeBasicLinkedService = original.TypeInformix
 	TypeJira                     TypeBasicLinkedService = original.TypeJira
 	TypeLinkedService            TypeBasicLinkedService = original.TypeLinkedService
 	TypeMagento                  TypeBasicLinkedService = original.TypeMagento
 	TypeMariaDB                  TypeBasicLinkedService = original.TypeMariaDB
 	TypeMarketo                  TypeBasicLinkedService = original.TypeMarketo
+	TypeMicrosoftAccess          TypeBasicLinkedService = original.TypeMicrosoftAccess
 	TypeMongoDb                  TypeBasicLinkedService = original.TypeMongoDb
 	TypeMongoDbV2                TypeBasicLinkedService = original.TypeMongoDbV2
 	TypeMySQL                    TypeBasicLinkedService = original.TypeMySQL
@@ -937,6 +955,7 @@ const (
 	TypeRestService              TypeBasicLinkedService = original.TypeRestService
 	TypeSalesforce               TypeBasicLinkedService = original.TypeSalesforce
 	TypeSalesforceMarketingCloud TypeBasicLinkedService = original.TypeSalesforceMarketingCloud
+	TypeSalesforceServiceCloud   TypeBasicLinkedService = original.TypeSalesforceServiceCloud
 	TypeSapBW                    TypeBasicLinkedService = original.TypeSapBW
 	TypeSapCloudForCustomer      TypeBasicLinkedService = original.TypeSapCloudForCustomer
 	TypeSapEcc                   TypeBasicLinkedService = original.TypeSapEcc
@@ -1347,6 +1366,12 @@ type ImpalaLinkedService = original.ImpalaLinkedService
 type ImpalaLinkedServiceTypeProperties = original.ImpalaLinkedServiceTypeProperties
 type ImpalaObjectDataset = original.ImpalaObjectDataset
 type ImpalaSource = original.ImpalaSource
+type InformixLinkedService = original.InformixLinkedService
+type InformixLinkedServiceTypeProperties = original.InformixLinkedServiceTypeProperties
+type InformixSink = original.InformixSink
+type InformixSource = original.InformixSource
+type InformixTableDataset = original.InformixTableDataset
+type InformixTableDatasetTypeProperties = original.InformixTableDatasetTypeProperties
 type IntegrationRuntime = original.IntegrationRuntime
 type IntegrationRuntimeAuthKeys = original.IntegrationRuntimeAuthKeys
 type IntegrationRuntimeComputeProperties = original.IntegrationRuntimeComputeProperties
@@ -1413,6 +1438,12 @@ type MarketoLinkedService = original.MarketoLinkedService
 type MarketoLinkedServiceTypeProperties = original.MarketoLinkedServiceTypeProperties
 type MarketoObjectDataset = original.MarketoObjectDataset
 type MarketoSource = original.MarketoSource
+type MicrosoftAccessLinkedService = original.MicrosoftAccessLinkedService
+type MicrosoftAccessLinkedServiceTypeProperties = original.MicrosoftAccessLinkedServiceTypeProperties
+type MicrosoftAccessSink = original.MicrosoftAccessSink
+type MicrosoftAccessSource = original.MicrosoftAccessSource
+type MicrosoftAccessTableDataset = original.MicrosoftAccessTableDataset
+type MicrosoftAccessTableDatasetTypeProperties = original.MicrosoftAccessTableDatasetTypeProperties
 type MongoDbCollectionDataset = original.MongoDbCollectionDataset
 type MongoDbCollectionDatasetTypeProperties = original.MongoDbCollectionDatasetTypeProperties
 type MongoDbCursorMethodsProperties = original.MongoDbCursorMethodsProperties
@@ -1549,9 +1580,13 @@ type SQLServerTableDataset = original.SQLServerTableDataset
 type SQLServerTableDatasetTypeProperties = original.SQLServerTableDatasetTypeProperties
 type SQLSink = original.SQLSink
 type SQLSource = original.SQLSource
+type SSISAccessCredential = original.SSISAccessCredential
 type SSISExecutionCredential = original.SSISExecutionCredential
 type SSISExecutionParameter = original.SSISExecutionParameter
+type SSISLogLocation = original.SSISLogLocation
+type SSISLogLocationTypeProperties = original.SSISLogLocationTypeProperties
 type SSISPackageLocation = original.SSISPackageLocation
+type SSISPackageLocationTypeProperties = original.SSISPackageLocationTypeProperties
 type SSISPropertyOverride = original.SSISPropertyOverride
 type SalesforceLinkedService = original.SalesforceLinkedService
 type SalesforceLinkedServiceTypeProperties = original.SalesforceLinkedServiceTypeProperties
@@ -1561,6 +1596,12 @@ type SalesforceMarketingCloudObjectDataset = original.SalesforceMarketingCloudOb
 type SalesforceMarketingCloudSource = original.SalesforceMarketingCloudSource
 type SalesforceObjectDataset = original.SalesforceObjectDataset
 type SalesforceObjectDatasetTypeProperties = original.SalesforceObjectDatasetTypeProperties
+type SalesforceServiceCloudLinkedService = original.SalesforceServiceCloudLinkedService
+type SalesforceServiceCloudLinkedServiceTypeProperties = original.SalesforceServiceCloudLinkedServiceTypeProperties
+type SalesforceServiceCloudObjectDataset = original.SalesforceServiceCloudObjectDataset
+type SalesforceServiceCloudObjectDatasetTypeProperties = original.SalesforceServiceCloudObjectDatasetTypeProperties
+type SalesforceServiceCloudSink = original.SalesforceServiceCloudSink
+type SalesforceServiceCloudSource = original.SalesforceServiceCloudSource
 type SalesforceSink = original.SalesforceSink
 type SalesforceSource = original.SalesforceSource
 type SapBWLinkedService = original.SapBWLinkedService
@@ -2011,6 +2052,9 @@ func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol
 }
 func PossibleSsisObjectMetadataTypeValues() []SsisObjectMetadataType {
 	return original.PossibleSsisObjectMetadataTypeValues()
+}
+func PossibleSsisPackageLocationTypeValues() []SsisPackageLocationType {
+	return original.PossibleSsisPackageLocationTypeValues()
 }
 func PossibleStoredProcedureParameterTypeValues() []StoredProcedureParameterType {
 	return original.PossibleStoredProcedureParameterTypeValues()

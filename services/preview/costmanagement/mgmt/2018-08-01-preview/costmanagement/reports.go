@@ -115,8 +115,8 @@ func (client ReportsClient) CreateOrUpdatePreparer(ctx context.Context, reportNa
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -207,8 +207,8 @@ func (client ReportsClient) CreateOrUpdateByBillingAccountPreparer(ctx context.C
 // CreateOrUpdateByBillingAccountSender sends the CreateOrUpdateByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) CreateOrUpdateByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateByBillingAccountResponder handles the response to the CreateOrUpdateByBillingAccount request. The method always
@@ -299,8 +299,8 @@ func (client ReportsClient) CreateOrUpdateByDepartmentPreparer(ctx context.Conte
 // CreateOrUpdateByDepartmentSender sends the CreateOrUpdateByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) CreateOrUpdateByDepartmentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateByDepartmentResponder handles the response to the CreateOrUpdateByDepartment request. The method always
@@ -392,8 +392,8 @@ func (client ReportsClient) CreateOrUpdateByResourceGroupNamePreparer(ctx contex
 // CreateOrUpdateByResourceGroupNameSender sends the CreateOrUpdateByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) CreateOrUpdateByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateByResourceGroupNameResponder handles the response to the CreateOrUpdateByResourceGroupName request. The method always
@@ -467,8 +467,8 @@ func (client ReportsClient) DeletePreparer(ctx context.Context, reportName strin
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -542,8 +542,8 @@ func (client ReportsClient) DeleteByBillingAccountPreparer(ctx context.Context, 
 // DeleteByBillingAccountSender sends the DeleteByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) DeleteByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteByBillingAccountResponder handles the response to the DeleteByBillingAccount request. The method always
@@ -617,8 +617,8 @@ func (client ReportsClient) DeleteByDepartmentPreparer(ctx context.Context, depa
 // DeleteByDepartmentSender sends the DeleteByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) DeleteByDepartmentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteByDepartmentResponder handles the response to the DeleteByDepartment request. The method always
@@ -693,8 +693,8 @@ func (client ReportsClient) DeleteByResourceGroupNamePreparer(ctx context.Contex
 // DeleteByResourceGroupNameSender sends the DeleteByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) DeleteByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteByResourceGroupNameResponder handles the response to the DeleteByResourceGroupName request. The method always
@@ -767,8 +767,8 @@ func (client ReportsClient) ExecutePreparer(ctx context.Context, reportName stri
 // ExecuteSender sends the Execute request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ExecuteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ExecuteResponder handles the response to the Execute request. The method always
@@ -842,8 +842,8 @@ func (client ReportsClient) ExecuteByBillingAccountPreparer(ctx context.Context,
 // ExecuteByBillingAccountSender sends the ExecuteByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ExecuteByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ExecuteByBillingAccountResponder handles the response to the ExecuteByBillingAccount request. The method always
@@ -917,8 +917,8 @@ func (client ReportsClient) ExecuteByDepartmentPreparer(ctx context.Context, dep
 // ExecuteByDepartmentSender sends the ExecuteByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ExecuteByDepartmentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ExecuteByDepartmentResponder handles the response to the ExecuteByDepartment request. The method always
@@ -993,8 +993,8 @@ func (client ReportsClient) ExecuteByResourceGroupNamePreparer(ctx context.Conte
 // ExecuteByResourceGroupNameSender sends the ExecuteByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ExecuteByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ExecuteByResourceGroupNameResponder handles the response to the ExecuteByResourceGroupName request. The method always
@@ -1067,8 +1067,8 @@ func (client ReportsClient) GetPreparer(ctx context.Context, reportName string) 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -1143,8 +1143,8 @@ func (client ReportsClient) GetByBillingAccountPreparer(ctx context.Context, bil
 // GetByBillingAccountSender sends the GetByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) GetByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByBillingAccountResponder handles the response to the GetByBillingAccount request. The method always
@@ -1219,8 +1219,8 @@ func (client ReportsClient) GetByDepartmentPreparer(ctx context.Context, departm
 // GetByDepartmentSender sends the GetByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) GetByDepartmentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByDepartmentResponder handles the response to the GetByDepartment request. The method always
@@ -1296,8 +1296,8 @@ func (client ReportsClient) GetByResourceGroupNamePreparer(ctx context.Context, 
 // GetByResourceGroupNameSender sends the GetByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) GetByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByResourceGroupNameResponder handles the response to the GetByResourceGroupName request. The method always
@@ -1371,8 +1371,8 @@ func (client ReportsClient) GetExecutionHistoryPreparer(ctx context.Context, rep
 // GetExecutionHistorySender sends the GetExecutionHistory request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) GetExecutionHistorySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetExecutionHistoryResponder handles the response to the GetExecutionHistory request. The method always
@@ -1447,8 +1447,8 @@ func (client ReportsClient) GetExecutionHistoryByBillingAccountPreparer(ctx cont
 // GetExecutionHistoryByBillingAccountSender sends the GetExecutionHistoryByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) GetExecutionHistoryByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetExecutionHistoryByBillingAccountResponder handles the response to the GetExecutionHistoryByBillingAccount request. The method always
@@ -1523,8 +1523,8 @@ func (client ReportsClient) GetExecutionHistoryByDepartmentPreparer(ctx context.
 // GetExecutionHistoryByDepartmentSender sends the GetExecutionHistoryByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) GetExecutionHistoryByDepartmentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetExecutionHistoryByDepartmentResponder handles the response to the GetExecutionHistoryByDepartment request. The method always
@@ -1600,8 +1600,8 @@ func (client ReportsClient) GetExecutionHistoryByResourceGroupNamePreparer(ctx c
 // GetExecutionHistoryByResourceGroupNameSender sends the GetExecutionHistoryByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) GetExecutionHistoryByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetExecutionHistoryByResourceGroupNameResponder handles the response to the GetExecutionHistoryByResourceGroupName request. The method always
@@ -1672,8 +1672,8 @@ func (client ReportsClient) ListPreparer(ctx context.Context) (*http.Request, er
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -1746,8 +1746,8 @@ func (client ReportsClient) ListByBillingAccountPreparer(ctx context.Context, bi
 // ListByBillingAccountSender sends the ListByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByBillingAccountResponder handles the response to the ListByBillingAccount request. The method always
@@ -1820,8 +1820,8 @@ func (client ReportsClient) ListByDepartmentPreparer(ctx context.Context, depart
 // ListByDepartmentSender sends the ListByDepartment request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByDepartmentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByDepartmentResponder handles the response to the ListByDepartment request. The method always
@@ -1895,8 +1895,8 @@ func (client ReportsClient) ListByResourceGroupNamePreparer(ctx context.Context,
 // ListByResourceGroupNameSender sends the ListByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReportsClient) ListByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupNameResponder handles the response to the ListByResourceGroupName request. The method always

@@ -97,8 +97,8 @@ func (client VersionsClient) ClonePreparer(ctx context.Context, appID uuid.UUID,
 // CloneSender sends the Clone request. The method will close the
 // http.Response Body if it receives an error.
 func (client VersionsClient) CloneSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CloneResponder handles the response to the Clone request. The method always
@@ -171,8 +171,8 @@ func (client VersionsClient) DeletePreparer(ctx context.Context, appID uuid.UUID
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client VersionsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -248,8 +248,8 @@ func (client VersionsClient) DeleteUnlabelledUtterancePreparer(ctx context.Conte
 // DeleteUnlabelledUtteranceSender sends the DeleteUnlabelledUtterance request. The method will close the
 // http.Response Body if it receives an error.
 func (client VersionsClient) DeleteUnlabelledUtteranceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteUnlabelledUtteranceResponder handles the response to the DeleteUnlabelledUtterance request. The method always
@@ -322,8 +322,8 @@ func (client VersionsClient) ExportPreparer(ctx context.Context, appID uuid.UUID
 // ExportSender sends the Export request. The method will close the
 // http.Response Body if it receives an error.
 func (client VersionsClient) ExportSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ExportResponder handles the response to the Export request. The method always
@@ -397,8 +397,8 @@ func (client VersionsClient) GetPreparer(ctx context.Context, appID uuid.UUID, v
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client VersionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -480,8 +480,8 @@ func (client VersionsClient) ImportPreparer(ctx context.Context, appID uuid.UUID
 // ImportSender sends the Import request. The method will close the
 // http.Response Body if it receives an error.
 func (client VersionsClient) ImportSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ImportResponder handles the response to the Import request. The method always
@@ -579,8 +579,8 @@ func (client VersionsClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client VersionsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -656,8 +656,8 @@ func (client VersionsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client VersionsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

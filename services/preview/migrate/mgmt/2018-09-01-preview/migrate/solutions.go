@@ -102,8 +102,8 @@ func (client SolutionsClient) CleanupSolutionDataPreparer(ctx context.Context, r
 // CleanupSolutionDataSender sends the CleanupSolutionData request. The method will close the
 // http.Response Body if it receives an error.
 func (client SolutionsClient) CleanupSolutionDataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CleanupSolutionDataResponder handles the response to the CleanupSolutionData request. The method always
@@ -184,8 +184,8 @@ func (client SolutionsClient) DeleteSolutionPreparer(ctx context.Context, resour
 // DeleteSolutionSender sends the DeleteSolution request. The method will close the
 // http.Response Body if it receives an error.
 func (client SolutionsClient) DeleteSolutionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSolutionResponder handles the response to the DeleteSolution request. The method always
@@ -260,8 +260,8 @@ func (client SolutionsClient) EnumerateSolutionsPreparer(ctx context.Context, re
 // EnumerateSolutionsSender sends the EnumerateSolutions request. The method will close the
 // http.Response Body if it receives an error.
 func (client SolutionsClient) EnumerateSolutionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // EnumerateSolutionsResponder handles the response to the EnumerateSolutions request. The method always
@@ -339,8 +339,8 @@ func (client SolutionsClient) GetConfigPreparer(ctx context.Context, resourceGro
 // GetConfigSender sends the GetConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client SolutionsClient) GetConfigSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetConfigResponder handles the response to the GetConfig request. The method always
@@ -418,8 +418,8 @@ func (client SolutionsClient) GetSolutionPreparer(ctx context.Context, resourceG
 // GetSolutionSender sends the GetSolution request. The method will close the
 // http.Response Body if it receives an error.
 func (client SolutionsClient) GetSolutionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSolutionResponder handles the response to the GetSolution request. The method always
@@ -504,8 +504,8 @@ func (client SolutionsClient) PatchSolutionPreparer(ctx context.Context, resourc
 // PatchSolutionSender sends the PatchSolution request. The method will close the
 // http.Response Body if it receives an error.
 func (client SolutionsClient) PatchSolutionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PatchSolutionResponder handles the response to the PatchSolution request. The method always
@@ -589,8 +589,8 @@ func (client SolutionsClient) PutSolutionPreparer(ctx context.Context, resourceG
 // PutSolutionSender sends the PutSolution request. The method will close the
 // http.Response Body if it receives an error.
 func (client SolutionsClient) PutSolutionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PutSolutionResponder handles the response to the PutSolution request. The method always

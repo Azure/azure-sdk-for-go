@@ -148,8 +148,8 @@ func (client BaseClient) QueryBillingAccountPreparer(ctx context.Context, billin
 // QueryBillingAccountSender sends the QueryBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) QueryBillingAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // QueryBillingAccountResponder handles the response to the QueryBillingAccount request. The method always
@@ -259,8 +259,8 @@ func (client BaseClient) QueryResourceGroupPreparer(ctx context.Context, resourc
 // QueryResourceGroupSender sends the QueryResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) QueryResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // QueryResourceGroupResponder handles the response to the QueryResourceGroup request. The method always
@@ -368,8 +368,8 @@ func (client BaseClient) QuerySubscriptionPreparer(ctx context.Context, paramete
 // QuerySubscriptionSender sends the QuerySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) QuerySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // QuerySubscriptionResponder handles the response to the QuerySubscription request. The method always

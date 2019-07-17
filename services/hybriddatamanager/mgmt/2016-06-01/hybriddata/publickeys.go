@@ -112,8 +112,8 @@ func (client PublicKeysClient) GetPreparer(ctx context.Context, publicKeyName st
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicKeysClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -199,8 +199,8 @@ func (client PublicKeysClient) ListByDataManagerPreparer(ctx context.Context, re
 // ListByDataManagerSender sends the ListByDataManager request. The method will close the
 // http.Response Body if it receives an error.
 func (client PublicKeysClient) ListByDataManagerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByDataManagerResponder handles the response to the ListByDataManager request. The method always

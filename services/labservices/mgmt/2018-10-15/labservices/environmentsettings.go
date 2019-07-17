@@ -105,8 +105,8 @@ func (client EnvironmentSettingsClient) ClaimAnyPreparer(ctx context.Context, re
 // ClaimAnySender sends the ClaimAny request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) ClaimAnySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ClaimAnyResponder handles the response to the ClaimAny request. The method always
@@ -194,9 +194,9 @@ func (client EnvironmentSettingsClient) CreateOrUpdatePreparer(ctx context.Conte
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) CreateOrUpdateSender(req *http.Request) (future EnvironmentSettingsCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -275,9 +275,9 @@ func (client EnvironmentSettingsClient) DeletePreparer(ctx context.Context, reso
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) DeleteSender(req *http.Request) (future EnvironmentSettingsDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -365,8 +365,8 @@ func (client EnvironmentSettingsClient) GetPreparer(ctx context.Context, resourc
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -461,8 +461,8 @@ func (client EnvironmentSettingsClient) ListPreparer(ctx context.Context, resour
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -583,8 +583,8 @@ func (client EnvironmentSettingsClient) PublishPreparer(ctx context.Context, res
 // PublishSender sends the Publish request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) PublishSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PublishResponder handles the response to the Publish request. The method always
@@ -657,9 +657,9 @@ func (client EnvironmentSettingsClient) StartPreparer(ctx context.Context, resou
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) StartSender(req *http.Request) (future EnvironmentSettingsStartFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -737,9 +737,9 @@ func (client EnvironmentSettingsClient) StopPreparer(ctx context.Context, resour
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) StopSender(req *http.Request) (future EnvironmentSettingsStopFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -827,8 +827,8 @@ func (client EnvironmentSettingsClient) UpdatePreparer(ctx context.Context, reso
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnvironmentSettingsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

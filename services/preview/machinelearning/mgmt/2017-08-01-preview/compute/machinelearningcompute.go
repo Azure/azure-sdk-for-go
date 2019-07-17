@@ -95,8 +95,8 @@ func (client MachineLearningComputeClient) ListAvailableOperationsPreparer(ctx c
 // ListAvailableOperationsSender sends the ListAvailableOperations request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachineLearningComputeClient) ListAvailableOperationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAvailableOperationsResponder handles the response to the ListAvailableOperations request. The method always

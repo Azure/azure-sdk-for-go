@@ -102,8 +102,8 @@ func (client CostInsightClient) GetResourcePreparer(ctx context.Context, resourc
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client CostInsightClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -190,8 +190,8 @@ func (client CostInsightClient) ListPreparer(ctx context.Context, resourceGroupN
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client CostInsightClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -300,9 +300,9 @@ func (client CostInsightClient) RefreshDataPreparer(ctx context.Context, resourc
 // RefreshDataSender sends the RefreshData request. The method will close the
 // http.Response Body if it receives an error.
 func (client CostInsightClient) RefreshDataSender(req *http.Request) (future CostInsightRefreshDataFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}

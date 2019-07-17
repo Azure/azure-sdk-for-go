@@ -94,9 +94,9 @@ func (client SupportPlanTypesClient) CreateOrUpdatePreparer(ctx context.Context,
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) CreateOrUpdateSender(req *http.Request) (future SupportPlanTypesCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -171,9 +171,9 @@ func (client SupportPlanTypesClient) DeletePreparer(ctx context.Context, provide
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) DeleteSender(req *http.Request) (future SupportPlanTypesDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -254,8 +254,8 @@ func (client SupportPlanTypesClient) GetPreparer(ctx context.Context, providerNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -326,8 +326,8 @@ func (client SupportPlanTypesClient) ListInfoPreparer(ctx context.Context) (*htt
 // ListInfoSender sends the ListInfo request. The method will close the
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) ListInfoSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListInfoResponder handles the response to the ListInfo request. The method always

@@ -99,8 +99,8 @@ func (client PoliciesClient) GetByBillingProfileNamePreparer(ctx context.Context
 // GetByBillingProfileNameSender sends the GetByBillingProfileName request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoliciesClient) GetByBillingProfileNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByBillingProfileNameResponder handles the response to the GetByBillingProfileName request. The method always
@@ -178,8 +178,8 @@ func (client PoliciesClient) UpdatePreparer(ctx context.Context, billingAccountN
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client PoliciesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

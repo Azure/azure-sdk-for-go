@@ -106,8 +106,8 @@ func (client PolicyClient) CreateOrUpdateResourcePreparer(ctx context.Context, r
 // CreateOrUpdateResourceSender sends the CreateOrUpdateResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyClient) CreateOrUpdateResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResourceResponder handles the response to the CreateOrUpdateResource request. The method always
@@ -187,8 +187,8 @@ func (client PolicyClient) DeleteResourcePreparer(ctx context.Context, resourceG
 // DeleteResourceSender sends the DeleteResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyClient) DeleteResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResourceResponder handles the response to the DeleteResource request. The method always
@@ -267,8 +267,8 @@ func (client PolicyClient) GetResourcePreparer(ctx context.Context, resourceGrou
 // GetResourceSender sends the GetResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyClient) GetResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResourceResponder handles the response to the GetResource request. The method always
@@ -357,8 +357,8 @@ func (client PolicyClient) ListPreparer(ctx context.Context, resourceGroupName s
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -477,8 +477,8 @@ func (client PolicyClient) PatchResourcePreparer(ctx context.Context, resourceGr
 // PatchResourceSender sends the PatchResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyClient) PatchResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PatchResourceResponder handles the response to the PatchResource request. The method always

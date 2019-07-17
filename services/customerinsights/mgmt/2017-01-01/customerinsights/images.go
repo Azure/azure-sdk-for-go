@@ -105,8 +105,8 @@ func (client ImagesClient) GetUploadURLForDataPreparer(ctx context.Context, reso
 // GetUploadURLForDataSender sends the GetUploadURLForData request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImagesClient) GetUploadURLForDataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetUploadURLForDataResponder handles the response to the GetUploadURLForData request. The method always
@@ -185,8 +185,8 @@ func (client ImagesClient) GetUploadURLForEntityTypePreparer(ctx context.Context
 // GetUploadURLForEntityTypeSender sends the GetUploadURLForEntityType request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImagesClient) GetUploadURLForEntityTypeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetUploadURLForEntityTypeResponder handles the response to the GetUploadURLForEntityType request. The method always

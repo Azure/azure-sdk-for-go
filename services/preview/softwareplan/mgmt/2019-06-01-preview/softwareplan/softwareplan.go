@@ -102,8 +102,8 @@ func (client Client) RegisterPreparer(ctx context.Context) (*http.Request, error
 // RegisterSender sends the Register request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) RegisterSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RegisterResponder handles the response to the Register request. The method always

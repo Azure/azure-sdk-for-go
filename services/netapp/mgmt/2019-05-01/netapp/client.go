@@ -56,8 +56,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 
 // CheckFilePathAvailability check if a file path is available.
 // Parameters:
+// body - file path availability request.
 // location - the location
-func (client BaseClient) CheckFilePathAvailability(ctx context.Context, location string) (result ResourceNameAvailability, err error) {
+func (client BaseClient) CheckFilePathAvailability(ctx context.Context, body interface{}, location string) (result ResourceNameAvailability, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckFilePathAvailability")
 		defer func() {
@@ -68,7 +69,7 @@ func (client BaseClient) CheckFilePathAvailability(ctx context.Context, location
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CheckFilePathAvailabilityPreparer(ctx, location)
+	req, err := client.CheckFilePathAvailabilityPreparer(ctx, body, location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.BaseClient", "CheckFilePathAvailability", nil, "Failure preparing request")
 		return
@@ -90,7 +91,7 @@ func (client BaseClient) CheckFilePathAvailability(ctx context.Context, location
 }
 
 // CheckFilePathAvailabilityPreparer prepares the CheckFilePathAvailability request.
-func (client BaseClient) CheckFilePathAvailabilityPreparer(ctx context.Context, location string) (*http.Request, error) {
+func (client BaseClient) CheckFilePathAvailabilityPreparer(ctx context.Context, body interface{}, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -102,9 +103,11 @@ func (client BaseClient) CheckFilePathAvailabilityPreparer(ctx context.Context, 
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkFilePathAvailability", pathParameters),
+		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -112,8 +115,8 @@ func (client BaseClient) CheckFilePathAvailabilityPreparer(ctx context.Context, 
 // CheckFilePathAvailabilitySender sends the CheckFilePathAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CheckFilePathAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CheckFilePathAvailabilityResponder handles the response to the CheckFilePathAvailability request. The method always
@@ -131,8 +134,9 @@ func (client BaseClient) CheckFilePathAvailabilityResponder(resp *http.Response)
 
 // CheckNameAvailability check if a resource name is available.
 // Parameters:
+// body - name availability request.
 // location - the location
-func (client BaseClient) CheckNameAvailability(ctx context.Context, location string) (result ResourceNameAvailability, err error) {
+func (client BaseClient) CheckNameAvailability(ctx context.Context, body interface{}, location string) (result ResourceNameAvailability, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckNameAvailability")
 		defer func() {
@@ -143,7 +147,7 @@ func (client BaseClient) CheckNameAvailability(ctx context.Context, location str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CheckNameAvailabilityPreparer(ctx, location)
+	req, err := client.CheckNameAvailabilityPreparer(ctx, body, location)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "netapp.BaseClient", "CheckNameAvailability", nil, "Failure preparing request")
 		return
@@ -165,7 +169,7 @@ func (client BaseClient) CheckNameAvailability(ctx context.Context, location str
 }
 
 // CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
-func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, location string) (*http.Request, error) {
+func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, body interface{}, location string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -177,9 +181,11 @@ func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, loca
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkNameAvailability", pathParameters),
+		autorest.WithJSON(body),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -187,8 +193,8 @@ func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, loca
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always

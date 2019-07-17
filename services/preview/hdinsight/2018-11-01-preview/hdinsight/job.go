@@ -98,8 +98,8 @@ func (client JobClient) GetPreparer(ctx context.Context, jobID string) (*http.Re
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -170,8 +170,8 @@ func (client JobClient) GetAppStatePreparer(ctx context.Context, appID string) (
 // GetAppStateSender sends the GetAppState request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) GetAppStateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAppStateResponder handles the response to the GetAppState request. The method always
@@ -253,8 +253,8 @@ func (client JobClient) KillPreparer(ctx context.Context, jobID string) (*http.R
 // KillSender sends the Kill request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) KillSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // KillResponder handles the response to the Kill request. The method always
@@ -326,8 +326,8 @@ func (client JobClient) ListPreparer(ctx context.Context) (*http.Request, error)
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -415,8 +415,8 @@ func (client JobClient) ListAfterJobIDPreparer(ctx context.Context, jobid string
 // ListAfterJobIDSender sends the ListAfterJobID request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) ListAfterJobIDSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAfterJobIDResponder handles the response to the ListAfterJobID request. The method always
@@ -490,8 +490,8 @@ func (client JobClient) SubmitHiveJobPreparer(ctx context.Context, content io.Re
 // SubmitHiveJobSender sends the SubmitHiveJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) SubmitHiveJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SubmitHiveJobResponder handles the response to the SubmitHiveJob request. The method always
@@ -565,8 +565,8 @@ func (client JobClient) SubmitMapReduceJobPreparer(ctx context.Context, content 
 // SubmitMapReduceJobSender sends the SubmitMapReduceJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) SubmitMapReduceJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SubmitMapReduceJobResponder handles the response to the SubmitMapReduceJob request. The method always
@@ -640,8 +640,8 @@ func (client JobClient) SubmitMapReduceStreamingJobPreparer(ctx context.Context,
 // SubmitMapReduceStreamingJobSender sends the SubmitMapReduceStreamingJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) SubmitMapReduceStreamingJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SubmitMapReduceStreamingJobResponder handles the response to the SubmitMapReduceStreamingJob request. The method always
@@ -715,8 +715,8 @@ func (client JobClient) SubmitPigJobPreparer(ctx context.Context, content io.Rea
 // SubmitPigJobSender sends the SubmitPigJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) SubmitPigJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SubmitPigJobResponder handles the response to the SubmitPigJob request. The method always
@@ -790,8 +790,8 @@ func (client JobClient) SubmitSqoopJobPreparer(ctx context.Context, content io.R
 // SubmitSqoopJobSender sends the SubmitSqoopJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client JobClient) SubmitSqoopJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SubmitSqoopJobResponder handles the response to the SubmitSqoopJob request. The method always

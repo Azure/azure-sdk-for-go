@@ -100,8 +100,8 @@ func (client DimensionsClient) ListAddsDimensionsPreparer(ctx context.Context, s
 // ListAddsDimensionsSender sends the ListAddsDimensions request. The method will close the
 // http.Response Body if it receives an error.
 func (client DimensionsClient) ListAddsDimensionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAddsDimensionsResponder handles the response to the ListAddsDimensions request. The method always

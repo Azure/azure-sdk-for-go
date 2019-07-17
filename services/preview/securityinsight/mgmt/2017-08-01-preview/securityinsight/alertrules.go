@@ -123,8 +123,8 @@ func (client AlertRulesClient) CreateOrUpdatePreparer(ctx context.Context, resou
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -224,8 +224,8 @@ func (client AlertRulesClient) CreateOrUpdateActionPreparer(ctx context.Context,
 // CreateOrUpdateActionSender sends the CreateOrUpdateAction request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) CreateOrUpdateActionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateActionResponder handles the response to the CreateOrUpdateAction request. The method always
@@ -320,8 +320,8 @@ func (client AlertRulesClient) DeletePreparer(ctx context.Context, resourceGroup
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -417,8 +417,8 @@ func (client AlertRulesClient) DeleteActionPreparer(ctx context.Context, resourc
 // DeleteActionSender sends the DeleteAction request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) DeleteActionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteActionResponder handles the response to the DeleteAction request. The method always
@@ -512,8 +512,8 @@ func (client AlertRulesClient) GetPreparer(ctx context.Context, resourceGroupNam
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -610,8 +610,8 @@ func (client AlertRulesClient) GetActionPreparer(ctx context.Context, resourceGr
 // GetActionSender sends the GetAction request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) GetActionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetActionResponder handles the response to the GetAction request. The method always
@@ -705,8 +705,8 @@ func (client AlertRulesClient) ListPreparer(ctx context.Context, resourceGroupNa
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertRulesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always

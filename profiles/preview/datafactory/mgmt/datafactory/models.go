@@ -577,6 +577,14 @@ const (
 	TeradataAuthenticationTypeWindows TeradataAuthenticationType = original.TeradataAuthenticationTypeWindows
 )
 
+type TeradataPartitionOption = original.TeradataPartitionOption
+
+const (
+	TeradataPartitionOptionDynamicRange TeradataPartitionOption = original.TeradataPartitionOptionDynamicRange
+	TeradataPartitionOptionHash         TeradataPartitionOption = original.TeradataPartitionOptionHash
+	TeradataPartitionOptionNone         TeradataPartitionOption = original.TeradataPartitionOptionNone
+)
+
 type TriggerRunStatus = original.TriggerRunStatus
 
 const (
@@ -753,6 +761,7 @@ const (
 	TypeSQLSource                      TypeBasicCopySource = original.TypeSQLSource
 	TypeSquareSource                   TypeBasicCopySource = original.TypeSquareSource
 	TypeSybaseSource                   TypeBasicCopySource = original.TypeSybaseSource
+	TypeTeradataSource                 TypeBasicCopySource = original.TypeTeradataSource
 	TypeVerticaSource                  TypeBasicCopySource = original.TypeVerticaSource
 	TypeWebSource                      TypeBasicCopySource = original.TypeWebSource
 	TypeXeroSource                     TypeBasicCopySource = original.TypeXeroSource
@@ -834,6 +843,7 @@ const (
 	TypeSQLServerTable                 TypeBasicDataset = original.TypeSQLServerTable
 	TypeSquareObject                   TypeBasicDataset = original.TypeSquareObject
 	TypeSybaseTable                    TypeBasicDataset = original.TypeSybaseTable
+	TypeTeradataTable                  TypeBasicDataset = original.TypeTeradataTable
 	TypeVerticaTable                   TypeBasicDataset = original.TypeVerticaTable
 	TypeWebTable                       TypeBasicDataset = original.TypeWebTable
 	TypeXeroObject                     TypeBasicDataset = original.TypeXeroObject
@@ -1695,6 +1705,10 @@ type SybaseTableDataset = original.SybaseTableDataset
 type SybaseTableDatasetTypeProperties = original.SybaseTableDatasetTypeProperties
 type TeradataLinkedService = original.TeradataLinkedService
 type TeradataLinkedServiceTypeProperties = original.TeradataLinkedServiceTypeProperties
+type TeradataPartitionSettings = original.TeradataPartitionSettings
+type TeradataSource = original.TeradataSource
+type TeradataTableDataset = original.TeradataTableDataset
+type TeradataTableDatasetTypeProperties = original.TeradataTableDatasetTypeProperties
 type TextFormat = original.TextFormat
 type Trigger = original.Trigger
 type TriggerDependencyReference = original.TriggerDependencyReference
@@ -2076,6 +2090,9 @@ func PossibleSybaseAuthenticationTypeValues() []SybaseAuthenticationType {
 }
 func PossibleTeradataAuthenticationTypeValues() []TeradataAuthenticationType {
 	return original.PossibleTeradataAuthenticationTypeValues()
+}
+func PossibleTeradataPartitionOptionValues() []TeradataPartitionOption {
+	return original.PossibleTeradataPartitionOptionValues()
 }
 func PossibleTriggerRunStatusValues() []TriggerRunStatus {
 	return original.PossibleTriggerRunStatusValues()

@@ -19,7 +19,7 @@
 
 package computeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-03-01/compute/computeapi"
+import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-07-01/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
 type ContainerServicesClientAPI = original.ContainerServicesClientAPI
@@ -27,8 +27,6 @@ type DedicatedHostGroupsClientAPI = original.DedicatedHostGroupsClientAPI
 type DedicatedHostsClientAPI = original.DedicatedHostsClientAPI
 type DisksClientAPI = original.DisksClientAPI
 type GalleriesClientAPI = original.GalleriesClientAPI
-type GalleryApplicationVersionsClientAPI = original.GalleryApplicationVersionsClientAPI
-type GalleryApplicationsClientAPI = original.GalleryApplicationsClientAPI
 type GalleryImageVersionsClientAPI = original.GalleryImageVersionsClientAPI
 type GalleryImagesClientAPI = original.GalleryImagesClientAPI
 type ImagesClientAPI = original.ImagesClientAPI

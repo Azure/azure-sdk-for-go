@@ -197,8 +197,8 @@ type WorkspacePropertiesUpdateParameters = original.WorkspacePropertiesUpdatePar
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type WorkspacesClient = original.WorkspacesClient
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, expandChildren string) BaseClient {
+	return original.New(subscriptionID, expandChildren)
 }
 func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIterator {
 	return original.NewListUsagesResultIterator(page)
@@ -206,17 +206,17 @@ func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIter
 func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
 	return original.NewListUsagesResultPage(getNextPage)
 }
-func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
-	return original.NewMachineLearningComputeClient(subscriptionID)
+func NewMachineLearningComputeClient(subscriptionID string, expandChildren string) MachineLearningComputeClient {
+	return original.NewMachineLearningComputeClient(subscriptionID, expandChildren)
 }
-func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
-	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
+func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string, expandChildren string) MachineLearningComputeClient {
+	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID, expandChildren)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string, expandChildren string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, expandChildren)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, expandChildren string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, expandChildren)
 }
 func NewPaginatedComputeResourcesListIterator(page PaginatedComputeResourcesListPage) PaginatedComputeResourcesListIterator {
 	return original.NewPaginatedComputeResourcesListIterator(page)
@@ -224,20 +224,20 @@ func NewPaginatedComputeResourcesListIterator(page PaginatedComputeResourcesList
 func NewPaginatedComputeResourcesListPage(getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
 	return original.NewPaginatedComputeResourcesListPage(getNextPage)
 }
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return original.NewUsagesClient(subscriptionID)
+func NewUsagesClient(subscriptionID string, expandChildren string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID, expandChildren)
 }
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string, expandChildren string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID, expandChildren)
 }
-func NewVirtualMachineSizesClient(subscriptionID string) VirtualMachineSizesClient {
-	return original.NewVirtualMachineSizesClient(subscriptionID)
+func NewVirtualMachineSizesClient(subscriptionID string, expandChildren string) VirtualMachineSizesClient {
+	return original.NewVirtualMachineSizesClient(subscriptionID, expandChildren)
 }
-func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSizesClient {
-	return original.NewVirtualMachineSizesClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string, expandChildren string) VirtualMachineSizesClient {
+	return original.NewVirtualMachineSizesClientWithBaseURI(baseURI, subscriptionID, expandChildren)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, expandChildren string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, expandChildren)
 }
 func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
 	return original.NewWorkspaceListResultIterator(page)
@@ -245,11 +245,11 @@ func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListR
 func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
 	return original.NewWorkspaceListResultPage(getNextPage)
 }
-func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
-	return original.NewWorkspacesClient(subscriptionID)
+func NewWorkspacesClient(subscriptionID string, expandChildren string) WorkspacesClient {
+	return original.NewWorkspacesClient(subscriptionID, expandChildren)
 }
-func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
-	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, expandChildren string) WorkspacesClient {
+	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID, expandChildren)
 }
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()

@@ -33,13 +33,13 @@ type VirtualMachineSizesClient struct {
 }
 
 // NewVirtualMachineSizesClient creates an instance of the VirtualMachineSizesClient client.
-func NewVirtualMachineSizesClient(subscriptionID string) VirtualMachineSizesClient {
-	return NewVirtualMachineSizesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineSizesClient(subscriptionID string, expandChildren string) VirtualMachineSizesClient {
+	return NewVirtualMachineSizesClientWithBaseURI(DefaultBaseURI, subscriptionID, expandChildren)
 }
 
 // NewVirtualMachineSizesClientWithBaseURI creates an instance of the VirtualMachineSizesClient client.
-func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSizesClient {
-	return VirtualMachineSizesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string, expandChildren string) VirtualMachineSizesClient {
+	return VirtualMachineSizesClient{NewWithBaseURI(baseURI, subscriptionID, expandChildren)}
 }
 
 // List returns supported VM Sizes in a location

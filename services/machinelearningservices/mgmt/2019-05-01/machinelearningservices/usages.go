@@ -32,13 +32,13 @@ type UsagesClient struct {
 }
 
 // NewUsagesClient creates an instance of the UsagesClient client.
-func NewUsagesClient(subscriptionID string) UsagesClient {
-	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewUsagesClient(subscriptionID string, expandChildren string) UsagesClient {
+	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID, expandChildren)
 }
 
 // NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
-func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
-	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string, expandChildren string) UsagesClient {
+	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID, expandChildren)}
 }
 
 // List gets the current usage information as well as limits for AML resources for given subscription and location.
@@ -93,6 +93,9 @@ func (client UsagesClient) ListPreparer(ctx context.Context, location string) (*
 	const APIVersion = "2019-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(client.ExpandChildren) > 0 {
+		queryParameters["expandChildren"] = autorest.Encode("query", client.ExpandChildren)
 	}
 
 	preparer := autorest.CreatePreparer(

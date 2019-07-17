@@ -37,6 +37,14 @@ const (
 	NotLicensed AadConnectivityState = original.NotLicensed
 )
 
+type Action = original.Action
+
+const (
+	Add         Action = original.Add
+	Recommended Action = original.Recommended
+	Remove      Action = original.Remove
+)
+
 type AlertNotifications = original.AlertNotifications
 
 const (
@@ -51,13 +59,6 @@ const (
 	AlertsToAdminsOn  AlertsToAdmins = original.AlertsToAdminsOn
 )
 
-type AssessmentType = original.AssessmentType
-
-const (
-	BuiltIn AssessmentType = original.BuiltIn
-	Custom  AssessmentType = original.Custom
-)
-
 type AutoProvision = original.AutoProvision
 
 const (
@@ -65,14 +66,34 @@ const (
 	AutoProvisionOn  AutoProvision = original.AutoProvisionOn
 )
 
-type Category = original.Category
+type ConfigurationStatus = original.ConfigurationStatus
 
 const (
-	Compute           Category = original.Compute
-	Data              Category = original.Data
-	IdentityAndAccess Category = original.IdentityAndAccess
-	IoT               Category = original.IoT
-	Network           Category = original.Network
+	Configured    ConfigurationStatus = original.Configured
+	Failed        ConfigurationStatus = original.Failed
+	InProgress    ConfigurationStatus = original.InProgress
+	NoStatus      ConfigurationStatus = original.NoStatus
+	NotConfigured ConfigurationStatus = original.NotConfigured
+)
+
+type ConfigurationStatus1 = original.ConfigurationStatus1
+
+const (
+	ConfigurationStatus1Configured    ConfigurationStatus1 = original.ConfigurationStatus1Configured
+	ConfigurationStatus1Failed        ConfigurationStatus1 = original.ConfigurationStatus1Failed
+	ConfigurationStatus1InProgress    ConfigurationStatus1 = original.ConfigurationStatus1InProgress
+	ConfigurationStatus1NoStatus      ConfigurationStatus1 = original.ConfigurationStatus1NoStatus
+	ConfigurationStatus1NotConfigured ConfigurationStatus1 = original.ConfigurationStatus1NotConfigured
+)
+
+type ConfigurationStatus2 = original.ConfigurationStatus2
+
+const (
+	ConfigurationStatus2Configured    ConfigurationStatus2 = original.ConfigurationStatus2Configured
+	ConfigurationStatus2Failed        ConfigurationStatus2 = original.ConfigurationStatus2Failed
+	ConfigurationStatus2InProgress    ConfigurationStatus2 = original.ConfigurationStatus2InProgress
+	ConfigurationStatus2NoStatus      ConfigurationStatus2 = original.ConfigurationStatus2NoStatus
+	ConfigurationStatus2NotConfigured ConfigurationStatus2 = original.ConfigurationStatus2NotConfigured
 )
 
 type ConnectionType = original.ConnectionType
@@ -86,6 +107,20 @@ type DataSource = original.DataSource
 
 const (
 	TwinData DataSource = original.TwinData
+)
+
+type EnforcementMode = original.EnforcementMode
+
+const (
+	Audit   EnforcementMode = original.Audit
+	Enforce EnforcementMode = original.Enforce
+)
+
+type EnforcementMode1 = original.EnforcementMode1
+
+const (
+	EnforcementMode1Audit   EnforcementMode1 = original.EnforcementMode1Audit
+	EnforcementMode1Enforce EnforcementMode1 = original.EnforcementMode1Enforce
 )
 
 type ExportData = original.ExportData
@@ -109,6 +144,28 @@ const (
 	SaasWaf Family = original.SaasWaf
 	Va      Family = original.Va
 	Waf     Family = original.Waf
+)
+
+type FileType = original.FileType
+
+const (
+	Dll        FileType = original.Dll
+	Exe        FileType = original.Exe
+	Executable FileType = original.Executable
+	Msi        FileType = original.Msi
+	Script     FileType = original.Script
+	Unknown    FileType = original.Unknown
+)
+
+type Issue = original.Issue
+
+const (
+	ExecutableViolationsAudited   Issue = original.ExecutableViolationsAudited
+	MsiAndScriptViolationsAudited Issue = original.MsiAndScriptViolationsAudited
+	MsiAndScriptViolationsBlocked Issue = original.MsiAndScriptViolationsBlocked
+	RulesViolatedManually         Issue = original.RulesViolatedManually
+	ViolationsAudited             Issue = original.ViolationsAudited
+	ViolationsBlocked             Issue = original.ViolationsBlocked
 )
 
 type KindEnum = original.KindEnum
@@ -138,35 +195,64 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled       ProvisioningState = original.Canceled
-	Deprovisioning ProvisioningState = original.Deprovisioning
-	Failed         ProvisioningState = original.Failed
-	Provisioning   ProvisioningState = original.Provisioning
-	Succeeded      ProvisioningState = original.Succeeded
+	ProvisioningStateCanceled       ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateDeprovisioning ProvisioningState = original.ProvisioningStateDeprovisioning
+	ProvisioningStateFailed         ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateProvisioning   ProvisioningState = original.ProvisioningStateProvisioning
+	ProvisioningStateSucceeded      ProvisioningState = original.ProvisioningStateSucceeded
+)
+
+type RecommendationAction = original.RecommendationAction
+
+const (
+	RecommendationActionAdd         RecommendationAction = original.RecommendationActionAdd
+	RecommendationActionRecommended RecommendationAction = original.RecommendationActionRecommended
+	RecommendationActionRemove      RecommendationAction = original.RecommendationActionRemove
+)
+
+type RecommendationAction1 = original.RecommendationAction1
+
+const (
+	RecommendationAction1Add         RecommendationAction1 = original.RecommendationAction1Add
+	RecommendationAction1Recommended RecommendationAction1 = original.RecommendationAction1Recommended
+	RecommendationAction1Remove      RecommendationAction1 = original.RecommendationAction1Remove
 )
 
 type RecommendationConfigStatus = original.RecommendationConfigStatus
 
 const (
-	TurnedOff RecommendationConfigStatus = original.TurnedOff
-	TurnedOn  RecommendationConfigStatus = original.TurnedOn
+	Disabled RecommendationConfigStatus = original.Disabled
+	Enabled  RecommendationConfigStatus = original.Enabled
+)
+
+type RecommendationStatus = original.RecommendationStatus
+
+const (
+	RecommendationStatusNoStatus       RecommendationStatus = original.RecommendationStatusNoStatus
+	RecommendationStatusNotAvailable   RecommendationStatus = original.RecommendationStatusNotAvailable
+	RecommendationStatusNotRecommended RecommendationStatus = original.RecommendationStatusNotRecommended
+	RecommendationStatusRecommended    RecommendationStatus = original.RecommendationStatusRecommended
 )
 
 type RecommendationType = original.RecommendationType
 
 const (
-	DenyDefaultIPPolicy                 RecommendationType = original.DenyDefaultIPPolicy
-	EnableDiagnosticsLog                RecommendationType = original.EnableDiagnosticsLog
-	IdenticalAuthenticationCredentials  RecommendationType = original.IdenticalAuthenticationCredentials
-	OpenPortsOnDevice                   RecommendationType = original.OpenPortsOnDevice
-	OperationSystemNotValid             RecommendationType = original.OperationSystemNotValid
-	PermissiveFirewallPolicy            RecommendationType = original.PermissiveFirewallPolicy
-	PermissiveFirewallRuleInput         RecommendationType = original.PermissiveFirewallRuleInput
-	PermissiveFirewallRuleOut           RecommendationType = original.PermissiveFirewallRuleOut
-	SecurityTwinConfigurationConflict   RecommendationType = original.SecurityTwinConfigurationConflict
-	SecurityTwinConfigurationNotOptimal RecommendationType = original.SecurityTwinConfigurationNotOptimal
-	TooLargeIPRange                     RecommendationType = original.TooLargeIPRange
-	UnutilizedMessagesFromAgent         RecommendationType = original.UnutilizedMessagesFromAgent
+	IoTACRAuthentication             RecommendationType = original.IoTACRAuthentication
+	IoTAgentSendsUnutilizedMessages  RecommendationType = original.IoTAgentSendsUnutilizedMessages
+	IoTBaseline                      RecommendationType = original.IoTBaseline
+	IoTEdgeHubMemOptimize            RecommendationType = original.IoTEdgeHubMemOptimize
+	IoTEdgeLoggingOptions            RecommendationType = original.IoTEdgeLoggingOptions
+	IoTInconsistentModuleSettings    RecommendationType = original.IoTInconsistentModuleSettings
+	IoTInstallAgent                  RecommendationType = original.IoTInstallAgent
+	IoTIPFilterDenyAll               RecommendationType = original.IoTIPFilterDenyAll
+	IoTIPFilterPermissiveRule        RecommendationType = original.IoTIPFilterPermissiveRule
+	IoTOpenPorts                     RecommendationType = original.IoTOpenPorts
+	IoTPermissiveFirewallPolicy      RecommendationType = original.IoTPermissiveFirewallPolicy
+	IoTPermissiveInputFirewallRules  RecommendationType = original.IoTPermissiveInputFirewallRules
+	IoTPermissiveOutputFirewallRules RecommendationType = original.IoTPermissiveOutputFirewallRules
+	IoTPrivilegedDockerOptions       RecommendationType = original.IoTPrivilegedDockerOptions
+	IoTSharedCredentials             RecommendationType = original.IoTSharedCredentials
+	IoTVulnerableTLSCipherSuite      RecommendationType = original.IoTVulnerableTLSCipherSuite
 )
 
 type ReportedSeverity = original.ReportedSeverity
@@ -176,15 +262,6 @@ const (
 	Informational ReportedSeverity = original.Informational
 	Low           ReportedSeverity = original.Low
 	Medium        ReportedSeverity = original.Medium
-)
-
-type RequiredPricingBundle = original.RequiredPricingBundle
-
-const (
-	AppServices     RequiredPricingBundle = original.AppServices
-	SQLServers      RequiredPricingBundle = original.SQLServers
-	StorageAccounts RequiredPricingBundle = original.StorageAccounts
-	VirtualMachines RequiredPricingBundle = original.VirtualMachines
 )
 
 type ResourceStatus = original.ResourceStatus
@@ -206,8 +283,18 @@ const (
 type SolutionStatus = original.SolutionStatus
 
 const (
-	Disabled SolutionStatus = original.Disabled
-	Enabled  SolutionStatus = original.Enabled
+	SolutionStatusDisabled SolutionStatus = original.SolutionStatusDisabled
+	SolutionStatusEnabled  SolutionStatus = original.SolutionStatusEnabled
+)
+
+type SourceSystem = original.SourceSystem
+
+const (
+	AzureAppLocker    SourceSystem = original.AzureAppLocker
+	AzureAuditD       SourceSystem = original.AzureAuditD
+	NonAzureAppLocker SourceSystem = original.NonAzureAppLocker
+	NonAzureAuditD    SourceSystem = original.NonAzureAuditD
+	None              SourceSystem = original.None
 )
 
 type State = original.State
@@ -234,9 +321,21 @@ const (
 	UserRequested         StatusReason = original.UserRequested
 )
 
+type Type = original.Type
+
+const (
+	BinarySignature          Type = original.BinarySignature
+	File                     Type = original.File
+	FileHash                 Type = original.FileHash
+	ProductSignature         Type = original.ProductSignature
+	PublisherSignature       Type = original.PublisherSignature
+	VersionAndAboveSignature Type = original.VersionAndAboveSignature
+)
+
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
+type AdaptiveApplicationControlsClient = original.AdaptiveApplicationControlsClient
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
 type AdvancedThreatProtectionSetting = original.AdvancedThreatProtectionSetting
@@ -254,17 +353,15 @@ type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
 type AllowedConnectionsListPage = original.AllowedConnectionsListPage
 type AllowedConnectionsResource = original.AllowedConnectionsResource
 type AllowedConnectionsResourceProperties = original.AllowedConnectionsResourceProperties
+type AppWhitelistingGroup = original.AppWhitelistingGroup
+type AppWhitelistingGroupData = original.AppWhitelistingGroupData
+type AppWhitelistingGroups = original.AppWhitelistingGroups
+type AppWhitelistingIssueSummary = original.AppWhitelistingIssueSummary
+type AppWhitelistingPutGroupData = original.AppWhitelistingPutGroupData
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
 type AscLocationListPage = original.AscLocationListPage
-type AssessmentMetadata = original.AssessmentMetadata
-type AssessmentMetadataList = original.AssessmentMetadataList
-type AssessmentMetadataListIterator = original.AssessmentMetadataListIterator
-type AssessmentMetadataListPage = original.AssessmentMetadataListPage
-type AssessmentMetadataProperties = original.AssessmentMetadataProperties
-type AssessmentsMetadataClient = original.AssessmentsMetadataClient
-type AssessmentsMetadataSubscriptionClient = original.AssessmentsMetadataSubscriptionClient
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
 type AtaSolutionProperties = original.AtaSolutionProperties
 type AutoProvisioningSetting = original.AutoProvisioningSetting
@@ -382,10 +479,12 @@ type OperationList = original.OperationList
 type OperationListIterator = original.OperationListIterator
 type OperationListPage = original.OperationListPage
 type OperationsClient = original.OperationsClient
+type PathRecommendation = original.PathRecommendation
 type Pricing = original.Pricing
 type PricingList = original.PricingList
 type PricingProperties = original.PricingProperties
 type PricingsClient = original.PricingsClient
+type PublisherInfo = original.PublisherInfo
 type RecommendationConfigurationProperties = original.RecommendationConfigurationProperties
 type RegulatoryComplianceAssessment = original.RegulatoryComplianceAssessment
 type RegulatoryComplianceAssessmentList = original.RegulatoryComplianceAssessmentList
@@ -436,6 +535,8 @@ type TopologySingleResourceChild = original.TopologySingleResourceChild
 type TopologySingleResourceParent = original.TopologySingleResourceParent
 type UpdateIotSecuritySolutionData = original.UpdateIotSecuritySolutionData
 type UserDefinedResourcesProperties = original.UserDefinedResourcesProperties
+type UserRecommendation = original.UserRecommendation
+type VMRecommendation = original.VMRecommendation
 type WorkspaceSetting = original.WorkspaceSetting
 type WorkspaceSettingList = original.WorkspaceSettingList
 type WorkspaceSettingListIterator = original.WorkspaceSettingListIterator
@@ -445,6 +546,12 @@ type WorkspaceSettingsClient = original.WorkspaceSettingsClient
 
 func New(subscriptionID string, ascLocation string) BaseClient {
 	return original.New(subscriptionID, ascLocation)
+}
+func NewAdaptiveApplicationControlsClient(subscriptionID string, ascLocation string) AdaptiveApplicationControlsClient {
+	return original.NewAdaptiveApplicationControlsClient(subscriptionID, ascLocation)
+}
+func NewAdaptiveApplicationControlsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveApplicationControlsClient {
+	return original.NewAdaptiveApplicationControlsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
 	return original.NewAdvancedThreatProtectionClient(subscriptionID, ascLocation)
@@ -481,24 +588,6 @@ func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterato
 }
 func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
 	return original.NewAscLocationListPage(getNextPage)
-}
-func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
-	return original.NewAssessmentMetadataListIterator(page)
-}
-func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
-	return original.NewAssessmentMetadataListPage(getNextPage)
-}
-func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) AssessmentsMetadataClient {
-	return original.NewAssessmentsMetadataClient(subscriptionID, ascLocation)
-}
-func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataClient {
-	return original.NewAssessmentsMetadataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewAssessmentsMetadataSubscriptionClient(subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
-	return original.NewAssessmentsMetadataSubscriptionClient(subscriptionID, ascLocation)
-}
-func NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
-	return original.NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)
@@ -782,26 +871,38 @@ func NewWorkspaceSettingsClientWithBaseURI(baseURI string, subscriptionID string
 func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return original.PossibleAadConnectivityStateValues()
 }
+func PossibleActionValues() []Action {
+	return original.PossibleActionValues()
+}
 func PossibleAlertNotificationsValues() []AlertNotifications {
 	return original.PossibleAlertNotificationsValues()
 }
 func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 	return original.PossibleAlertsToAdminsValues()
 }
-func PossibleAssessmentTypeValues() []AssessmentType {
-	return original.PossibleAssessmentTypeValues()
-}
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
 }
-func PossibleCategoryValues() []Category {
-	return original.PossibleCategoryValues()
+func PossibleConfigurationStatus1Values() []ConfigurationStatus1 {
+	return original.PossibleConfigurationStatus1Values()
+}
+func PossibleConfigurationStatus2Values() []ConfigurationStatus2 {
+	return original.PossibleConfigurationStatus2Values()
+}
+func PossibleConfigurationStatusValues() []ConfigurationStatus {
+	return original.PossibleConfigurationStatusValues()
 }
 func PossibleConnectionTypeValues() []ConnectionType {
 	return original.PossibleConnectionTypeValues()
 }
 func PossibleDataSourceValues() []DataSource {
 	return original.PossibleDataSourceValues()
+}
+func PossibleEnforcementMode1Values() []EnforcementMode1 {
+	return original.PossibleEnforcementMode1Values()
+}
+func PossibleEnforcementModeValues() []EnforcementMode {
+	return original.PossibleEnforcementModeValues()
 }
 func PossibleExportDataValues() []ExportData {
 	return original.PossibleExportDataValues()
@@ -811,6 +912,12 @@ func PossibleExternalSecuritySolutionKindValues() []ExternalSecuritySolutionKind
 }
 func PossibleFamilyValues() []Family {
 	return original.PossibleFamilyValues()
+}
+func PossibleFileTypeValues() []FileType {
+	return original.PossibleFileTypeValues()
+}
+func PossibleIssueValues() []Issue {
+	return original.PossibleIssueValues()
 }
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
@@ -824,17 +931,23 @@ func PossibleProtocolValues() []Protocol {
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
+func PossibleRecommendationAction1Values() []RecommendationAction1 {
+	return original.PossibleRecommendationAction1Values()
+}
+func PossibleRecommendationActionValues() []RecommendationAction {
+	return original.PossibleRecommendationActionValues()
+}
 func PossibleRecommendationConfigStatusValues() []RecommendationConfigStatus {
 	return original.PossibleRecommendationConfigStatusValues()
+}
+func PossibleRecommendationStatusValues() []RecommendationStatus {
+	return original.PossibleRecommendationStatusValues()
 }
 func PossibleRecommendationTypeValues() []RecommendationType {
 	return original.PossibleRecommendationTypeValues()
 }
 func PossibleReportedSeverityValues() []ReportedSeverity {
 	return original.PossibleReportedSeverityValues()
-}
-func PossibleRequiredPricingBundleValues() []RequiredPricingBundle {
-	return original.PossibleRequiredPricingBundleValues()
 }
 func PossibleResourceStatusValues() []ResourceStatus {
 	return original.PossibleResourceStatusValues()
@@ -845,6 +958,9 @@ func PossibleSettingKindValues() []SettingKind {
 func PossibleSolutionStatusValues() []SolutionStatus {
 	return original.PossibleSolutionStatusValues()
 }
+func PossibleSourceSystemValues() []SourceSystem {
+	return original.PossibleSourceSystemValues()
+}
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
 }
@@ -853,6 +969,9 @@ func PossibleStatusReasonValues() []StatusReason {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

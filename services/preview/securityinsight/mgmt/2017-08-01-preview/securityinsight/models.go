@@ -274,7 +274,7 @@ const (
 	EntityKindBookmark EntityKind = "Bookmark"
 	// EntityKindCloudApplication Entity represents cloud application in the system.
 	EntityKindCloudApplication EntityKind = "CloudApplication"
-	// EntityKindDNSResolution Entity represents dns resoultion in the system.
+	// EntityKindDNSResolution Entity represents dns resolution in the system.
 	EntityKindDNSResolution EntityKind = "DnsResolution"
 	// EntityKindFile Entity represents file in the system.
 	EntityKindFile EntityKind = "File"
@@ -3888,7 +3888,7 @@ func (de *DNSEntity) UnmarshalJSON(body []byte) error {
 type DNSEntityProperties struct {
 	// DomainName - READ-ONLY; The name of the dns record associated with the alert
 	DomainName *string `json:"domainName,omitempty"`
-	// IPAddressEntityIds - READ-ONLY; Ip Entitiy identifiers for the resolved ip address.
+	// IPAddressEntityIds - READ-ONLY; Ip entity identifiers for the resolved ip address.
 	IPAddressEntityIds *[]string `json:"ipAddressEntityIds,omitempty"`
 	// DNSServerIPEntityID - READ-ONLY; An ip entity id for the dns server resolving the request
 	DNSServerIPEntityID *string `json:"dnsServerIpEntityId,omitempty"`
@@ -4137,7 +4137,7 @@ func (e Entity) AsBasicEntity() (BasicEntity, bool) {
 	return &e, true
 }
 
-// EntityCommonProperties entity commom property bag.
+// EntityCommonProperties entity common property bag.
 type EntityCommonProperties struct {
 	// FriendlyName - READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property is optional and might be system generated.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -4153,7 +4153,7 @@ func (ecp EntityCommonProperties) MarshalJSON() ([]byte, error) {
 
 // EntityExpandParameters the parameters required to execute an expand operation on the given entity.
 type EntityExpandParameters struct {
-	// ExpansionID - The Id of the expnsion to perform.
+	// ExpansionID - The Id of the expansion to perform.
 	ExpansionID *uuid.UUID `json:"expansionId,omitempty"`
 	// StartTime - The start date filter, so the only expansion results returned are after this date.
 	StartTime *date.Time `json:"startTime,omitempty"`
@@ -5282,7 +5282,7 @@ type IPEntityProperties struct {
 	Address *string `json:"address,omitempty"`
 	// Location - The geo-location context attached to the ip entity
 	Location *GeoLocation `json:"location,omitempty"`
-	// ThreatIntelligence - READ-ONLY; Ip Entitiy identifiers for the resolved ip address.
+	// ThreatIntelligence - READ-ONLY; A list of TI contexts attached to the ip entity.
 	ThreatIntelligence *[]ThreatIntelligence `json:"threatIntelligence,omitempty"`
 	// FriendlyName - READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property is optional and might be system generated.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -5484,7 +5484,7 @@ type MalwareEntityProperties struct {
 	Category *string `json:"category,omitempty"`
 	// FileEntityIds - READ-ONLY; List of linked file entity identifiers on which the malware was found
 	FileEntityIds *[]string `json:"fileEntityIds,omitempty"`
-	// ProcessEntityIds - READ-ONLY; List of linked process entity identrifiers on which the malware was found.
+	// ProcessEntityIds - READ-ONLY; List of linked process entity identifiers on which the malware was found.
 	ProcessEntityIds *[]string `json:"processEntityIds,omitempty"`
 	// FriendlyName - READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property is optional and might be system generated.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -7518,7 +7518,7 @@ func (sm *SettingsModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ThreatIntelligence ip entity property bag.
+// ThreatIntelligence threatIntelligence property bag.
 type ThreatIntelligence struct {
 	// ProviderName - READ-ONLY; Name of the provider from whom this Threat Intelligence information was received
 	ProviderName *string `json:"providerName,omitempty"`

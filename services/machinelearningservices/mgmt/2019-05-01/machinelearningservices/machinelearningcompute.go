@@ -32,13 +32,13 @@ type MachineLearningComputeClient struct {
 }
 
 // NewMachineLearningComputeClient creates an instance of the MachineLearningComputeClient client.
-func NewMachineLearningComputeClient(subscriptionID string, expandChildren string) MachineLearningComputeClient {
-	return NewMachineLearningComputeClientWithBaseURI(DefaultBaseURI, subscriptionID, expandChildren)
+func NewMachineLearningComputeClient(subscriptionID string) MachineLearningComputeClient {
+	return NewMachineLearningComputeClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewMachineLearningComputeClientWithBaseURI creates an instance of the MachineLearningComputeClient client.
-func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string, expandChildren string) MachineLearningComputeClient {
-	return MachineLearningComputeClient{NewWithBaseURI(baseURI, subscriptionID, expandChildren)}
+func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
+	return MachineLearningComputeClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable

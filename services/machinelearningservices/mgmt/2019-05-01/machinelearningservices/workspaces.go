@@ -31,13 +31,13 @@ type WorkspacesClient struct {
 }
 
 // NewWorkspacesClient creates an instance of the WorkspacesClient client.
-func NewWorkspacesClient(subscriptionID string, expandChildren string) WorkspacesClient {
-	return NewWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID, expandChildren)
+func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
+	return NewWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWorkspacesClientWithBaseURI creates an instance of the WorkspacesClient client.
-func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, expandChildren string) WorkspacesClient {
-	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID, expandChildren)}
+func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
+	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a workspace with the specified parameters.

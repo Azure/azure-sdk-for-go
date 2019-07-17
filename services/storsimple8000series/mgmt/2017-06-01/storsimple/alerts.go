@@ -113,8 +113,8 @@ func (client AlertsClient) ClearPreparer(ctx context.Context, parameters ClearAl
 // ClearSender sends the Clear request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ClearSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ClearResponder handles the response to the Clear request. The method always
@@ -201,8 +201,8 @@ func (client AlertsClient) ListByManagerPreparer(ctx context.Context, resourceGr
 // ListByManagerSender sends the ListByManager request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) ListByManagerSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByManagerResponder handles the response to the ListByManager request. The method always
@@ -329,8 +329,8 @@ func (client AlertsClient) SendTestEmailPreparer(ctx context.Context, deviceName
 // SendTestEmailSender sends the SendTestEmail request. The method will close the
 // http.Response Body if it receives an error.
 func (client AlertsClient) SendTestEmailSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SendTestEmailResponder handles the response to the SendTestEmail request. The method always

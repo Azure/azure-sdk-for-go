@@ -113,8 +113,8 @@ func (client DatabaseInstancesClient) EnumerateDatabaseInstancesPreparer(ctx con
 // EnumerateDatabaseInstancesSender sends the EnumerateDatabaseInstances request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabaseInstancesClient) EnumerateDatabaseInstancesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // EnumerateDatabaseInstancesResponder handles the response to the EnumerateDatabaseInstances request. The method always
@@ -196,8 +196,8 @@ func (client DatabaseInstancesClient) GetDatabaseInstancePreparer(ctx context.Co
 // GetDatabaseInstanceSender sends the GetDatabaseInstance request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabaseInstancesClient) GetDatabaseInstanceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetDatabaseInstanceResponder handles the response to the GetDatabaseInstance request. The method always

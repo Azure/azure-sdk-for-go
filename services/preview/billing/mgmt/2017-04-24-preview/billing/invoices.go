@@ -102,8 +102,8 @@ func (client InvoicesClient) GetPreparer(ctx context.Context, invoiceName string
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoicesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -175,8 +175,8 @@ func (client InvoicesClient) GetLatestPreparer(ctx context.Context) (*http.Reque
 // GetLatestSender sends the GetLatest request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoicesClient) GetLatestSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetLatestResponder handles the response to the GetLatest request. The method always
@@ -281,8 +281,8 @@ func (client InvoicesClient) ListPreparer(ctx context.Context, expand string, fi
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client InvoicesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always

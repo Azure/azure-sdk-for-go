@@ -102,8 +102,8 @@ func (client ReservationsDetailsClient) ListByReservationOrderPreparer(ctx conte
 // ListByReservationOrderSender sends the ListByReservationOrder request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReservationsDetailsClient) ListByReservationOrderSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByReservationOrderResponder handles the response to the ListByReservationOrder request. The method always
@@ -219,8 +219,8 @@ func (client ReservationsDetailsClient) ListByReservationOrderAndReservationPrep
 // ListByReservationOrderAndReservationSender sends the ListByReservationOrderAndReservation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReservationsDetailsClient) ListByReservationOrderAndReservationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByReservationOrderAndReservationResponder handles the response to the ListByReservationOrderAndReservation request. The method always

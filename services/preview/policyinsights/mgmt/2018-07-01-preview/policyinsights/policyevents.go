@@ -100,8 +100,8 @@ func (client PolicyEventsClient) GetMetadataPreparer(ctx context.Context, scope 
 // GetMetadataSender sends the GetMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) GetMetadataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetMetadataResponder handles the response to the GetMetadata request. The method always
@@ -215,8 +215,8 @@ func (client PolicyEventsClient) ListQueryResultsForManagementGroupPreparer(ctx 
 // ListQueryResultsForManagementGroupSender sends the ListQueryResultsForManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForManagementGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForManagementGroupResponder handles the response to the ListQueryResultsForManagementGroup request. The method always
@@ -332,8 +332,8 @@ func (client PolicyEventsClient) ListQueryResultsForPolicyDefinitionPreparer(ctx
 // ListQueryResultsForPolicyDefinitionSender sends the ListQueryResultsForPolicyDefinition request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForPolicyDefinitionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForPolicyDefinitionResponder handles the response to the ListQueryResultsForPolicyDefinition request. The method always
@@ -449,8 +449,8 @@ func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinitionPreparer(
 // ListQueryResultsForPolicySetDefinitionSender sends the ListQueryResultsForPolicySetDefinition request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForPolicySetDefinitionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForPolicySetDefinitionResponder handles the response to the ListQueryResultsForPolicySetDefinition request. The method always
@@ -563,8 +563,8 @@ func (client PolicyEventsClient) ListQueryResultsForResourcePreparer(ctx context
 // ListQueryResultsForResourceSender sends the ListQueryResultsForResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForResourceResponder handles the response to the ListQueryResultsForResource request. The method always
@@ -679,8 +679,8 @@ func (client PolicyEventsClient) ListQueryResultsForResourceGroupPreparer(ctx co
 // ListQueryResultsForResourceGroupSender sends the ListQueryResultsForResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForResourceGroupResponder handles the response to the ListQueryResultsForResourceGroup request. The method always
@@ -799,8 +799,8 @@ func (client PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssi
 // ListQueryResultsForResourceGroupLevelPolicyAssignmentSender sends the ListQueryResultsForResourceGroupLevelPolicyAssignment request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForResourceGroupLevelPolicyAssignmentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForResourceGroupLevelPolicyAssignmentResponder handles the response to the ListQueryResultsForResourceGroupLevelPolicyAssignment request. The method always
@@ -913,8 +913,8 @@ func (client PolicyEventsClient) ListQueryResultsForSubscriptionPreparer(ctx con
 // ListQueryResultsForSubscriptionSender sends the ListQueryResultsForSubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForSubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForSubscriptionResponder handles the response to the ListQueryResultsForSubscription request. The method always
@@ -1031,8 +1031,8 @@ func (client PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssig
 // ListQueryResultsForSubscriptionLevelPolicyAssignmentSender sends the ListQueryResultsForSubscriptionLevelPolicyAssignment request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyEventsClient) ListQueryResultsForSubscriptionLevelPolicyAssignmentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForSubscriptionLevelPolicyAssignmentResponder handles the response to the ListQueryResultsForSubscriptionLevelPolicyAssignment request. The method always

@@ -108,8 +108,8 @@ func (client CloudAppliancesClient) ListSupportedConfigurationsPreparer(ctx cont
 // ListSupportedConfigurationsSender sends the ListSupportedConfigurations request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudAppliancesClient) ListSupportedConfigurationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSupportedConfigurationsResponder handles the response to the ListSupportedConfigurations request. The method always
@@ -192,9 +192,9 @@ func (client CloudAppliancesClient) ProvisionPreparer(ctx context.Context, param
 // ProvisionSender sends the Provision request. The method will close the
 // http.Response Body if it receives an error.
 func (client CloudAppliancesClient) ProvisionSender(req *http.Request) (future CloudAppliancesProvisionFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}

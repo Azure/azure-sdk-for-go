@@ -104,8 +104,8 @@ func (client ProviderShareSubscriptionsClient) GetBySharePreparer(ctx context.Co
 // GetByShareSender sends the GetByShare request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderShareSubscriptionsClient) GetByShareSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByShareResponder handles the response to the GetByShare request. The method always
@@ -188,8 +188,8 @@ func (client ProviderShareSubscriptionsClient) ListBySharePreparer(ctx context.C
 // ListByShareSender sends the ListByShare request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderShareSubscriptionsClient) ListByShareSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByShareResponder handles the response to the ListByShare request. The method always
@@ -306,8 +306,8 @@ func (client ProviderShareSubscriptionsClient) ReinstatePreparer(ctx context.Con
 // ReinstateSender sends the Reinstate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderShareSubscriptionsClient) ReinstateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ReinstateResponder handles the response to the Reinstate request. The method always
@@ -381,9 +381,9 @@ func (client ProviderShareSubscriptionsClient) RevokePreparer(ctx context.Contex
 // RevokeSender sends the Revoke request. The method will close the
 // http.Response Body if it receives an error.
 func (client ProviderShareSubscriptionsClient) RevokeSender(req *http.Request) (future ProviderShareSubscriptionsRevokeFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}

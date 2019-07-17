@@ -111,8 +111,8 @@ func (client ServiceClient) ListAvailableSkusPreparer(ctx context.Context, locat
 // ListAvailableSkusSender sends the ListAvailableSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceClient) ListAvailableSkusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAvailableSkusResponder handles the response to the ListAvailableSkus request. The method always
@@ -236,8 +236,8 @@ func (client ServiceClient) ValidateAddressMethodPreparer(ctx context.Context, l
 // ValidateAddressMethodSender sends the ValidateAddressMethod request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceClient) ValidateAddressMethodSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ValidateAddressMethodResponder handles the response to the ValidateAddressMethod request. The method always

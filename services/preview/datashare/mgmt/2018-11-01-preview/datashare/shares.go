@@ -105,8 +105,8 @@ func (client SharesClient) CreatePreparer(ctx context.Context, resourceGroupName
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -178,9 +178,9 @@ func (client SharesClient) DeletePreparer(ctx context.Context, resourceGroupName
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) DeleteSender(req *http.Request) (future SharesDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -263,8 +263,8 @@ func (client SharesClient) GetPreparer(ctx context.Context, resourceGroupName st
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -345,8 +345,8 @@ func (client SharesClient) ListByAccountPreparer(ctx context.Context, resourceGr
 // ListByAccountSender sends the ListByAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) ListByAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByAccountResponder handles the response to the ListByAccount request. The method always
@@ -469,8 +469,8 @@ func (client SharesClient) ListSynchronizationDetailsPreparer(ctx context.Contex
 // ListSynchronizationDetailsSender sends the ListSynchronizationDetails request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) ListSynchronizationDetailsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSynchronizationDetailsResponder handles the response to the ListSynchronizationDetails request. The method always
@@ -590,8 +590,8 @@ func (client SharesClient) ListSynchronizationsPreparer(ctx context.Context, res
 // ListSynchronizationsSender sends the ListSynchronizations request. The method will close the
 // http.Response Body if it receives an error.
 func (client SharesClient) ListSynchronizationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSynchronizationsResponder handles the response to the ListSynchronizations request. The method always

@@ -123,8 +123,8 @@ func (client BaseClient) ClassifyImagePreparer(ctx context.Context, projectID uu
 // ClassifyImageSender sends the ClassifyImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ClassifyImageSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ClassifyImageResponder handles the response to the ClassifyImage request. The method always
@@ -214,8 +214,8 @@ func (client BaseClient) ClassifyImageURLPreparer(ctx context.Context, projectID
 // ClassifyImageURLSender sends the ClassifyImageURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ClassifyImageURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ClassifyImageURLResponder handles the response to the ClassifyImageURL request. The method always
@@ -305,8 +305,8 @@ func (client BaseClient) ClassifyImageURLWithNoStorePreparer(ctx context.Context
 // ClassifyImageURLWithNoStoreSender sends the ClassifyImageURLWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ClassifyImageURLWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ClassifyImageURLWithNoStoreResponder handles the response to the ClassifyImageURLWithNoStore request. The method always
@@ -393,8 +393,8 @@ func (client BaseClient) ClassifyImageWithNoStorePreparer(ctx context.Context, p
 // ClassifyImageWithNoStoreSender sends the ClassifyImageWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ClassifyImageWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ClassifyImageWithNoStoreResponder handles the response to the ClassifyImageWithNoStore request. The method always
@@ -481,8 +481,8 @@ func (client BaseClient) DetectImagePreparer(ctx context.Context, projectID uuid
 // DetectImageSender sends the DetectImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DetectImageSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DetectImageResponder handles the response to the DetectImage request. The method always
@@ -572,8 +572,8 @@ func (client BaseClient) DetectImageURLPreparer(ctx context.Context, projectID u
 // DetectImageURLSender sends the DetectImageURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DetectImageURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DetectImageURLResponder handles the response to the DetectImageURL request. The method always
@@ -663,8 +663,8 @@ func (client BaseClient) DetectImageURLWithNoStorePreparer(ctx context.Context, 
 // DetectImageURLWithNoStoreSender sends the DetectImageURLWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DetectImageURLWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DetectImageURLWithNoStoreResponder handles the response to the DetectImageURLWithNoStore request. The method always
@@ -751,8 +751,8 @@ func (client BaseClient) DetectImageWithNoStorePreparer(ctx context.Context, pro
 // DetectImageWithNoStoreSender sends the DetectImageWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DetectImageWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DetectImageWithNoStoreResponder handles the response to the DetectImageWithNoStore request. The method always

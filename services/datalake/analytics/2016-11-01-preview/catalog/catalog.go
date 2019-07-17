@@ -113,8 +113,8 @@ func (client Client) CreateCredentialPreparer(ctx context.Context, accountName s
 // CreateCredentialSender sends the CreateCredential request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) CreateCredentialSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateCredentialResponder handles the response to the CreateCredential request. The method always
@@ -204,8 +204,8 @@ func (client Client) CreateSecretPreparer(ctx context.Context, accountName strin
 // CreateSecretSender sends the CreateSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) CreateSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateSecretResponder handles the response to the CreateSecret request. The method always
@@ -284,8 +284,8 @@ func (client Client) DeleteAllSecretsPreparer(ctx context.Context, accountName s
 // DeleteAllSecretsSender sends the DeleteAllSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) DeleteAllSecretsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteAllSecretsResponder handles the response to the DeleteAllSecrets request. The method always
@@ -379,8 +379,8 @@ func (client Client) DeleteCredentialPreparer(ctx context.Context, accountName s
 // DeleteCredentialSender sends the DeleteCredential request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) DeleteCredentialSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteCredentialResponder handles the response to the DeleteCredential request. The method always
@@ -461,8 +461,8 @@ func (client Client) DeleteSecretPreparer(ctx context.Context, accountName strin
 // DeleteSecretSender sends the DeleteSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) DeleteSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSecretResponder handles the response to the DeleteSecret request. The method always
@@ -542,8 +542,8 @@ func (client Client) GetAssemblyPreparer(ctx context.Context, accountName string
 // GetAssemblySender sends the GetAssembly request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetAssemblySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAssemblyResponder handles the response to the GetAssembly request. The method always
@@ -624,8 +624,8 @@ func (client Client) GetCredentialPreparer(ctx context.Context, accountName stri
 // GetCredentialSender sends the GetCredential request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetCredentialSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetCredentialResponder handles the response to the GetCredential request. The method always
@@ -704,8 +704,8 @@ func (client Client) GetDatabasePreparer(ctx context.Context, accountName string
 // GetDatabaseSender sends the GetDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetDatabaseResponder handles the response to the GetDatabase request. The method always
@@ -786,8 +786,8 @@ func (client Client) GetExternalDataSourcePreparer(ctx context.Context, accountN
 // GetExternalDataSourceSender sends the GetExternalDataSource request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetExternalDataSourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetExternalDataSourceResponder handles the response to the GetExternalDataSource request. The method always
@@ -870,8 +870,8 @@ func (client Client) GetPackagePreparer(ctx context.Context, accountName string,
 // GetPackageSender sends the GetPackage request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetPackageSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetPackageResponder handles the response to the GetPackage request. The method always
@@ -954,8 +954,8 @@ func (client Client) GetProcedurePreparer(ctx context.Context, accountName strin
 // GetProcedureSender sends the GetProcedure request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetProcedureSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetProcedureResponder handles the response to the GetProcedure request. The method always
@@ -1036,8 +1036,8 @@ func (client Client) GetSchemaPreparer(ctx context.Context, accountName string, 
 // GetSchemaSender sends the GetSchema request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetSchemaSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSchemaResponder handles the response to the GetSchema request. The method always
@@ -1119,8 +1119,8 @@ func (client Client) GetSecretPreparer(ctx context.Context, accountName string, 
 // GetSecretSender sends the GetSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSecretResponder handles the response to the GetSecret request. The method always
@@ -1203,8 +1203,8 @@ func (client Client) GetTablePreparer(ctx context.Context, accountName string, d
 // GetTableSender sends the GetTable request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetTableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetTableResponder handles the response to the GetTable request. The method always
@@ -1289,8 +1289,8 @@ func (client Client) GetTablePartitionPreparer(ctx context.Context, accountName 
 // GetTablePartitionSender sends the GetTablePartition request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetTablePartitionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetTablePartitionResponder handles the response to the GetTablePartition request. The method always
@@ -1375,8 +1375,8 @@ func (client Client) GetTableStatisticPreparer(ctx context.Context, accountName 
 // GetTableStatisticSender sends the GetTableStatistic request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetTableStatisticSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetTableStatisticResponder handles the response to the GetTableStatistic request. The method always
@@ -1459,8 +1459,8 @@ func (client Client) GetTableTypePreparer(ctx context.Context, accountName strin
 // GetTableTypeSender sends the GetTableType request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetTableTypeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetTableTypeResponder handles the response to the GetTableType request. The method always
@@ -1543,8 +1543,8 @@ func (client Client) GetTableValuedFunctionPreparer(ctx context.Context, account
 // GetTableValuedFunctionSender sends the GetTableValuedFunction request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetTableValuedFunctionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetTableValuedFunctionResponder handles the response to the GetTableValuedFunction request. The method always
@@ -1627,8 +1627,8 @@ func (client Client) GetViewPreparer(ctx context.Context, accountName string, da
 // GetViewSender sends the GetView request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GetViewSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetViewResponder handles the response to the GetView request. The method always
@@ -1713,8 +1713,8 @@ func (client Client) GrantACLPreparer(ctx context.Context, accountName string, p
 // GrantACLSender sends the GrantACL request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GrantACLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GrantACLResponder handles the response to the GrantACL request. The method always
@@ -1802,8 +1802,8 @@ func (client Client) GrantACLToDatabasePreparer(ctx context.Context, accountName
 // GrantACLToDatabaseSender sends the GrantACLToDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) GrantACLToDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GrantACLToDatabaseResponder handles the response to the GrantACLToDatabase request. The method always
@@ -1915,8 +1915,8 @@ func (client Client) ListAclsPreparer(ctx context.Context, accountName string, f
 // ListAclsSender sends the ListAcls request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListAclsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAclsResponder handles the response to the ListAcls request. The method always
@@ -2072,8 +2072,8 @@ func (client Client) ListAclsByDatabasePreparer(ctx context.Context, accountName
 // ListAclsByDatabaseSender sends the ListAclsByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListAclsByDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAclsByDatabaseResponder handles the response to the ListAclsByDatabase request. The method always
@@ -2228,8 +2228,8 @@ func (client Client) ListAssembliesPreparer(ctx context.Context, accountName str
 // ListAssembliesSender sends the ListAssemblies request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListAssembliesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAssembliesResponder handles the response to the ListAssemblies request. The method always
@@ -2384,8 +2384,8 @@ func (client Client) ListCredentialsPreparer(ctx context.Context, accountName st
 // ListCredentialsSender sends the ListCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListCredentialsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListCredentialsResponder handles the response to the ListCredentials request. The method always
@@ -2535,8 +2535,8 @@ func (client Client) ListDatabasesPreparer(ctx context.Context, accountName stri
 // ListDatabasesSender sends the ListDatabases request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListDatabasesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListDatabasesResponder handles the response to the ListDatabases request. The method always
@@ -2691,8 +2691,8 @@ func (client Client) ListExternalDataSourcesPreparer(ctx context.Context, accoun
 // ListExternalDataSourcesSender sends the ListExternalDataSources request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListExternalDataSourcesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListExternalDataSourcesResponder handles the response to the ListExternalDataSources request. The method always
@@ -2849,8 +2849,8 @@ func (client Client) ListPackagesPreparer(ctx context.Context, accountName strin
 // ListPackagesSender sends the ListPackages request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListPackagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListPackagesResponder handles the response to the ListPackages request. The method always
@@ -3007,8 +3007,8 @@ func (client Client) ListProceduresPreparer(ctx context.Context, accountName str
 // ListProceduresSender sends the ListProcedures request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListProceduresSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListProceduresResponder handles the response to the ListProcedures request. The method always
@@ -3163,8 +3163,8 @@ func (client Client) ListSchemasPreparer(ctx context.Context, accountName string
 // ListSchemasSender sends the ListSchemas request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListSchemasSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSchemasResponder handles the response to the ListSchemas request. The method always
@@ -3323,8 +3323,8 @@ func (client Client) ListTableFragmentsPreparer(ctx context.Context, accountName
 // ListTableFragmentsSender sends the ListTableFragments request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTableFragmentsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTableFragmentsResponder handles the response to the ListTableFragments request. The method always
@@ -3483,8 +3483,8 @@ func (client Client) ListTablePartitionsPreparer(ctx context.Context, accountNam
 // ListTablePartitionsSender sends the ListTablePartitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTablePartitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTablePartitionsResponder handles the response to the ListTablePartitions request. The method always
@@ -3649,8 +3649,8 @@ func (client Client) ListTablesPreparer(ctx context.Context, accountName string,
 // ListTablesSender sends the ListTables request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTablesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTablesResponder handles the response to the ListTables request. The method always
@@ -3813,8 +3813,8 @@ func (client Client) ListTablesByDatabasePreparer(ctx context.Context, accountNa
 // ListTablesByDatabaseSender sends the ListTablesByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTablesByDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTablesByDatabaseResponder handles the response to the ListTablesByDatabase request. The method always
@@ -3973,8 +3973,8 @@ func (client Client) ListTableStatisticsPreparer(ctx context.Context, accountNam
 // ListTableStatisticsSender sends the ListTableStatistics request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTableStatisticsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTableStatisticsResponder handles the response to the ListTableStatistics request. The method always
@@ -4130,8 +4130,8 @@ func (client Client) ListTableStatisticsByDatabasePreparer(ctx context.Context, 
 // ListTableStatisticsByDatabaseSender sends the ListTableStatisticsByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTableStatisticsByDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTableStatisticsByDatabaseResponder handles the response to the ListTableStatisticsByDatabase request. The method always
@@ -4289,8 +4289,8 @@ func (client Client) ListTableStatisticsByDatabaseAndSchemaPreparer(ctx context.
 // ListTableStatisticsByDatabaseAndSchemaSender sends the ListTableStatisticsByDatabaseAndSchema request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTableStatisticsByDatabaseAndSchemaSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTableStatisticsByDatabaseAndSchemaResponder handles the response to the ListTableStatisticsByDatabaseAndSchema request. The method always
@@ -4447,8 +4447,8 @@ func (client Client) ListTableTypesPreparer(ctx context.Context, accountName str
 // ListTableTypesSender sends the ListTableTypes request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTableTypesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTableTypesResponder handles the response to the ListTableTypes request. The method always
@@ -4605,8 +4605,8 @@ func (client Client) ListTableValuedFunctionsPreparer(ctx context.Context, accou
 // ListTableValuedFunctionsSender sends the ListTableValuedFunctions request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTableValuedFunctionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTableValuedFunctionsResponder handles the response to the ListTableValuedFunctions request. The method always
@@ -4762,8 +4762,8 @@ func (client Client) ListTableValuedFunctionsByDatabasePreparer(ctx context.Cont
 // ListTableValuedFunctionsByDatabaseSender sends the ListTableValuedFunctionsByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTableValuedFunctionsByDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTableValuedFunctionsByDatabaseResponder handles the response to the ListTableValuedFunctionsByDatabase request. The method always
@@ -4920,8 +4920,8 @@ func (client Client) ListTypesPreparer(ctx context.Context, accountName string, 
 // ListTypesSender sends the ListTypes request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListTypesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTypesResponder handles the response to the ListTypes request. The method always
@@ -5078,8 +5078,8 @@ func (client Client) ListViewsPreparer(ctx context.Context, accountName string, 
 // ListViewsSender sends the ListViews request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListViewsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListViewsResponder handles the response to the ListViews request. The method always
@@ -5234,8 +5234,8 @@ func (client Client) ListViewsByDatabasePreparer(ctx context.Context, accountNam
 // ListViewsByDatabaseSender sends the ListViewsByDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) ListViewsByDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListViewsByDatabaseResponder handles the response to the ListViewsByDatabase request. The method always
@@ -5364,8 +5364,8 @@ func (client Client) PreviewTablePreparer(ctx context.Context, accountName strin
 // PreviewTableSender sends the PreviewTable request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) PreviewTableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PreviewTableResponder handles the response to the PreviewTable request. The method always
@@ -5459,8 +5459,8 @@ func (client Client) PreviewTablePartitionPreparer(ctx context.Context, accountN
 // PreviewTablePartitionSender sends the PreviewTablePartition request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) PreviewTablePartitionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PreviewTablePartitionResponder handles the response to the PreviewTablePartition request. The method always
@@ -5545,8 +5545,8 @@ func (client Client) RevokeACLPreparer(ctx context.Context, accountName string, 
 // RevokeACLSender sends the RevokeACL request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) RevokeACLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RevokeACLResponder handles the response to the RevokeACL request. The method always
@@ -5635,8 +5635,8 @@ func (client Client) RevokeACLFromDatabasePreparer(ctx context.Context, accountN
 // RevokeACLFromDatabaseSender sends the RevokeACLFromDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) RevokeACLFromDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RevokeACLFromDatabaseResponder handles the response to the RevokeACLFromDatabase request. The method always
@@ -5719,8 +5719,8 @@ func (client Client) UpdateCredentialPreparer(ctx context.Context, accountName s
 // UpdateCredentialSender sends the UpdateCredential request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) UpdateCredentialSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateCredentialResponder handles the response to the UpdateCredential request. The method always
@@ -5804,8 +5804,8 @@ func (client Client) UpdateSecretPreparer(ctx context.Context, accountName strin
 // UpdateSecretSender sends the UpdateSecret request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) UpdateSecretSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSecretResponder handles the response to the UpdateSecret request. The method always

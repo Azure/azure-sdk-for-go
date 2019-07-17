@@ -97,8 +97,8 @@ func (client ListConsoleClient) DisabledPreparer(ctx context.Context) (*http.Req
 // DisabledSender sends the Disabled request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListConsoleClient) DisabledSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DisabledResponder handles the response to the Disabled request. The method always

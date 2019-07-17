@@ -113,8 +113,8 @@ func (client DatabasesClient) EnumerateDatabasesPreparer(ctx context.Context, re
 // EnumerateDatabasesSender sends the EnumerateDatabases request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) EnumerateDatabasesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // EnumerateDatabasesResponder handles the response to the EnumerateDatabases request. The method always
@@ -196,8 +196,8 @@ func (client DatabasesClient) GetDatabasePreparer(ctx context.Context, resourceG
 // GetDatabaseSender sends the GetDatabase request. The method will close the
 // http.Response Body if it receives an error.
 func (client DatabasesClient) GetDatabaseSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetDatabaseResponder handles the response to the GetDatabase request. The method always

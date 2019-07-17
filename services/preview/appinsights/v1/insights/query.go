@@ -105,8 +105,8 @@ func (client QueryClient) ExecutePreparer(ctx context.Context, appID string, bod
 // ExecuteSender sends the Execute request. The method will close the
 // http.Response Body if it receives an error.
 func (client QueryClient) ExecuteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ExecuteResponder handles the response to the Execute request. The method always

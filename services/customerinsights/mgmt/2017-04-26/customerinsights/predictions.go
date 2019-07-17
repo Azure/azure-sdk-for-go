@@ -123,9 +123,9 @@ func (client PredictionsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionsClient) CreateOrUpdateSender(req *http.Request) (future PredictionsCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -202,9 +202,9 @@ func (client PredictionsClient) DeletePreparer(ctx context.Context, resourceGrou
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionsClient) DeleteSender(req *http.Request) (future PredictionsDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -286,8 +286,8 @@ func (client PredictionsClient) GetPreparer(ctx context.Context, resourceGroupNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -365,8 +365,8 @@ func (client PredictionsClient) GetModelStatusPreparer(ctx context.Context, reso
 // GetModelStatusSender sends the GetModelStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionsClient) GetModelStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetModelStatusResponder handles the response to the GetModelStatus request. The method always
@@ -444,8 +444,8 @@ func (client PredictionsClient) GetTrainingResultsPreparer(ctx context.Context, 
 // GetTrainingResultsSender sends the GetTrainingResults request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionsClient) GetTrainingResultsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetTrainingResultsResponder handles the response to the GetTrainingResults request. The method always
@@ -522,8 +522,8 @@ func (client PredictionsClient) ListByHubPreparer(ctx context.Context, resourceG
 // ListByHubSender sends the ListByHub request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionsClient) ListByHubSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByHubResponder handles the response to the ListByHub request. The method always
@@ -651,8 +651,8 @@ func (client PredictionsClient) ModelStatusPreparer(ctx context.Context, resourc
 // ModelStatusSender sends the ModelStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client PredictionsClient) ModelStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ModelStatusResponder handles the response to the ModelStatus request. The method always

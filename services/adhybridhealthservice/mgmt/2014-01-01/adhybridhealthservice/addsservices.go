@@ -97,8 +97,8 @@ func (client AddsServicesClient) AddPreparer(ctx context.Context, service Servic
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) AddSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -177,8 +177,8 @@ func (client AddsServicesClient) DeletePreparer(ctx context.Context, serviceName
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -251,8 +251,8 @@ func (client AddsServicesClient) GetPreparer(ctx context.Context, serviceName st
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -326,8 +326,8 @@ func (client AddsServicesClient) GetForestSummaryPreparer(ctx context.Context, s
 // GetForestSummarySender sends the GetForestSummary request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) GetForestSummarySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetForestSummaryResponder handles the response to the GetForestSummary request. The method always
@@ -402,8 +402,8 @@ func (client AddsServicesClient) GetMetricMetadataPreparer(ctx context.Context, 
 // GetMetricMetadataSender sends the GetMetricMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) GetMetricMetadataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetMetricMetadataResponder handles the response to the GetMetricMetadata request. The method always
@@ -492,8 +492,8 @@ func (client AddsServicesClient) GetMetricMetadataForGroupPreparer(ctx context.C
 // GetMetricMetadataForGroupSender sends the GetMetricMetadataForGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) GetMetricMetadataForGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetMetricMetadataForGroupResponder handles the response to the GetMetricMetadataForGroup request. The method always
@@ -582,8 +582,8 @@ func (client AddsServicesClient) ListPreparer(ctx context.Context, filter string
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -702,8 +702,8 @@ func (client AddsServicesClient) ListMetricMetadataPreparer(ctx context.Context,
 // ListMetricMetadataSender sends the ListMetricMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) ListMetricMetadataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMetricMetadataResponder handles the response to the ListMetricMetadata request. The method always
@@ -818,8 +818,8 @@ func (client AddsServicesClient) ListMetricsAveragePreparer(ctx context.Context,
 // ListMetricsAverageSender sends the ListMetricsAverage request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) ListMetricsAverageSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMetricsAverageResponder handles the response to the ListMetricsAverage request. The method always
@@ -934,8 +934,8 @@ func (client AddsServicesClient) ListMetricsSumPreparer(ctx context.Context, ser
 // ListMetricsSumSender sends the ListMetricsSum request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) ListMetricsSumSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMetricsSumResponder handles the response to the ListMetricsSum request. The method always
@@ -1061,8 +1061,8 @@ func (client AddsServicesClient) ListPremiumServicesPreparer(ctx context.Context
 // ListPremiumServicesSender sends the ListPremiumServices request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) ListPremiumServicesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListPremiumServicesResponder handles the response to the ListPremiumServices request. The method always
@@ -1181,8 +1181,8 @@ func (client AddsServicesClient) ListReplicationDetailsPreparer(ctx context.Cont
 // ListReplicationDetailsSender sends the ListReplicationDetails request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) ListReplicationDetailsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListReplicationDetailsResponder handles the response to the ListReplicationDetails request. The method always
@@ -1270,8 +1270,8 @@ func (client AddsServicesClient) ListReplicationSummaryPreparer(ctx context.Cont
 // ListReplicationSummarySender sends the ListReplicationSummary request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) ListReplicationSummarySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListReplicationSummaryResponder handles the response to the ListReplicationSummary request. The method always
@@ -1364,8 +1364,8 @@ func (client AddsServicesClient) ListServerAlertsPreparer(ctx context.Context, s
 // ListServerAlertsSender sends the ListServerAlerts request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) ListServerAlertsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListServerAlertsResponder handles the response to the ListServerAlerts request. The method always
@@ -1478,8 +1478,8 @@ func (client AddsServicesClient) UpdatePreparer(ctx context.Context, serviceName
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddsServicesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

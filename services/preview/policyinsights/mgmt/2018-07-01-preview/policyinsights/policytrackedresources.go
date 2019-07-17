@@ -116,8 +116,8 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForManagementGroupPre
 // ListQueryResultsForManagementGroupSender sends the ListQueryResultsForManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyTrackedResourcesClient) ListQueryResultsForManagementGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForManagementGroupResponder handles the response to the ListQueryResultsForManagementGroup request. The method always
@@ -244,8 +244,8 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForResourcePreparer(c
 // ListQueryResultsForResourceSender sends the ListQueryResultsForResource request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForResourceResponder handles the response to the ListQueryResultsForResource request. The method always
@@ -374,8 +374,8 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroupPrepa
 // ListQueryResultsForResourceGroupSender sends the ListQueryResultsForResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyTrackedResourcesClient) ListQueryResultsForResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForResourceGroupResponder handles the response to the ListQueryResultsForResourceGroup request. The method always
@@ -502,8 +502,8 @@ func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscriptionPrepar
 // ListQueryResultsForSubscriptionSender sends the ListQueryResultsForSubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client PolicyTrackedResourcesClient) ListQueryResultsForSubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListQueryResultsForSubscriptionResponder handles the response to the ListQueryResultsForSubscription request. The method always

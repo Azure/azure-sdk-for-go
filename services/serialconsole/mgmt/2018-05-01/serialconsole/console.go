@@ -96,8 +96,8 @@ func (client ConsoleClient) DisableConsolePreparer(ctx context.Context) (*http.R
 // DisableConsoleSender sends the DisableConsole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsoleClient) DisableConsoleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DisableConsoleResponder handles the response to the DisableConsole request. The method always
@@ -169,8 +169,8 @@ func (client ConsoleClient) EnableConsolePreparer(ctx context.Context) (*http.Re
 // EnableConsoleSender sends the EnableConsole request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConsoleClient) EnableConsoleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // EnableConsoleResponder handles the response to the EnableConsole request. The method always

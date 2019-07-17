@@ -64,7 +64,13 @@ func (client GalleryImageVersionsClient) CreateOrUpdate(ctx context.Context, res
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: galleryImageVersion,
 			Constraints: []validation.Constraint{{Target: "galleryImageVersion.GalleryImageVersionProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "galleryImageVersion.GalleryImageVersionProperties.PublishingProfile", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "galleryImageVersion.GalleryImageVersionProperties.PublishingProfile", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "galleryImageVersion.GalleryImageVersionProperties.PublishingProfile.Source", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "galleryImageVersion.GalleryImageVersionProperties.PublishingProfile.Source.ManagedImage", Name: validation.Null, Rule: true,
+							Chain: []validation.Constraint{{Target: "galleryImageVersion.GalleryImageVersionProperties.PublishingProfile.Source.ManagedImage.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+						}},
+					}},
+				}}}}}); err != nil {
 		return result, validation.NewError("compute.GalleryImageVersionsClient", "CreateOrUpdate", err.Error())
 	}
 

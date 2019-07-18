@@ -43,6 +43,7 @@ type (
 		clientMu           sync.RWMutex
 		sessionID          *string
 		isSessionFilterSet bool
+		doneRefreshingAuth func()
 	}
 
 	rpcClientOption func(*rpcClient) error
@@ -600,6 +601,37 @@ func (r *rpcClient) CancelScheduled(ctx context.Context, seq ...int64) error {
 	}
 
 	return nil
+}
+
+func (r *rpcClient) periodicallyRefreshAuth() {
+	ctx, done := context.WithCancel(context.Background())
+	r.doneRefreshingAuth = done
+
+	ctx, span := r.startSpanFromContext(ctx, "sb.rpcClient.periodicallyRefreshAuth")
+	defer span.End()
+
+	doNegotiateClaimLocked := func(ctx context.Context, r *rpcClient) {
+		r.clientMu.RLock()
+		defer r.clientMu.RUnlock()
+
+		if r.client != nil {
+			if err := r.ec.Namespace().negotiateClaim(ctx, r.client, r.ec.ManagementPath()); err != nil {
+				tab.For(ctx).Error(err)
+			}
+		}
+	}
+
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				time.Sleep(5 * time.Minute)
+				doNegotiateClaimLocked(ctx, r)
+			}
+		}
+	}()
 }
 
 func rpcClientWithSession(sessionID *string) rpcClientOption {

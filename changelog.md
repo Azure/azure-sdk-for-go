@@ -1,6 +1,7 @@
 # Change Log
 
 ## `head`
+- periodically refresh claims based auth for connections to resolve [issue #116](https://github.com/Azure/azure-service-bus-go/issues/116)
 - refactor management functionality for entities into composition structs
 - fix session deferral for queues and subscriptions
 - add topic scheduled messages

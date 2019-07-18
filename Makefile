@@ -68,7 +68,7 @@ cyclo: ; $(info $(M) running gocyclo...) @ ## Run gocyclo on all source files
 
 terraform.tfstate: azuredeploy.tf $(wildcard terraform.tfvars) .terraform ; $(info $(M) running terraform...) @ ## Run terraform to provision infrastructure needed for testing
 	$Q TF_VAR_azure_client_secret="$${ARM_CLIENT_SECRET}" terraform apply -auto-approve
-	$Q terraform output > .env
+	$Q terraform output -json | jq -r 'keys[] as $$k | "\($$k) = \(.[$$k].value)"' > .env
 
 .terraform:
 	$Q terraform init

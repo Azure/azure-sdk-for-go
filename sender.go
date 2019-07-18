@@ -25,6 +25,7 @@ package servicebus
 import (
 	"context"
 	"math/rand"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v2/uuid"
@@ -35,13 +36,15 @@ import (
 type (
 	// Sender provides connection, session and link handling for an sending to an entity path
 	Sender struct {
-		namespace  *Namespace
-		client     *amqp.Client
-		session    *session
-		sender     *amqp.Sender
-		entityPath string
-		Name       string
-		sessionID  *string
+		namespace          *Namespace
+		client             *amqp.Client
+		clientMu           sync.RWMutex
+		session            *session
+		sender             *amqp.Sender
+		entityPath         string
+		Name               string
+		sessionID          *string
+		doneRefreshingAuth func()
 	}
 
 	// SendOption provides a way to customize a message on sending
@@ -78,6 +81,9 @@ func (ns *Namespace) NewSender(ctx context.Context, entityPath string, opts ...S
 	if err != nil {
 		tab.For(ctx).Error(err)
 	}
+
+	s.periodicallyRefreshAuth()
+
 	return s, err
 }
 
@@ -90,9 +96,7 @@ func (s *Sender) Recover(ctx context.Context) error {
 	closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	closeCtx = tab.NewContext(closeCtx, span)
 	defer cancel()
-	_ = s.sender.Close(closeCtx)
-	_ = s.session.Close(closeCtx)
-	_ = s.client.Close()
+	_ = s.Close(ctx)
 	return s.newSessionAndLink(ctx)
 }
 
@@ -101,20 +105,39 @@ func (s *Sender) Close(ctx context.Context) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.Close")
 	defer span.End()
 
-	err := s.sender.Close(ctx)
-	if err != nil {
-		_ = s.session.Close(ctx)
-		_ = s.client.Close()
-		return err
+	s.clientMu.Lock()
+	defer s.clientMu.Unlock()
+
+	if s.doneRefreshingAuth != nil {
+		s.doneRefreshingAuth()
 	}
 
-	err = s.session.Close(ctx)
-	if err != nil {
-		_ = s.client.Close()
-		return err
+	var lastErr error
+	if s.sender != nil {
+		if lastErr = s.sender.Close(ctx); lastErr != nil {
+			tab.For(ctx).Error(lastErr)
+		}
 	}
 
-	return s.client.Close()
+	if s.session != nil {
+		if err := s.session.Close(ctx); err != nil {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+	}
+
+	if s.client != nil {
+		if err := s.client.Close(); err != nil {
+			tab.For(ctx).Error(err)
+			lastErr = err
+		}
+	}
+
+	s.sender = nil
+	s.session = nil
+	s.client = nil
+
+	return lastErr
 }
 
 // Send will send a message to the entity path with options
@@ -220,6 +243,9 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.newSessionAndLink")
 	defer span.End()
 
+	s.clientMu.Lock()
+	defer s.clientMu.Unlock()
+
 	connection, err := s.namespace.newClient()
 	if err != nil {
 		tab.For(ctx).Error(err)
@@ -258,6 +284,37 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 
 	s.sender = amqpSender
 	return nil
+}
+
+func (s *Sender) periodicallyRefreshAuth() {
+	ctx, done := context.WithCancel(context.Background())
+	s.doneRefreshingAuth = done
+
+	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.periodicallyRefreshAuth")
+	defer span.End()
+
+	doNegotiateClaimLocked := func(ctx context.Context, r *Sender) {
+		r.clientMu.RLock()
+		defer r.clientMu.RUnlock()
+
+		if r.client != nil {
+			if err := r.namespace.negotiateClaim(ctx, r.client, r.entityPath); err != nil {
+				tab.For(ctx).Error(err)
+			}
+		}
+	}
+
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				time.Sleep(5 * time.Minute)
+				doNegotiateClaimLocked(ctx, s)
+			}
+		}
+	}()
 }
 
 // SenderWithSession configures the message to send with a specific session and sequence. By default, a Sender has a

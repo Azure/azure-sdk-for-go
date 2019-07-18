@@ -2,13 +2,13 @@ package servicebus
 
 import (
 	"context"
-	"fmt"
 	"math/rand"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-service-bus-go/internal/test"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/Azure/azure-service-bus-go/internal/test"
 )
 
 func (suite *serviceBusSuite) TestQueueSendReceiveWithLock() {
@@ -76,9 +76,6 @@ func testQueueSendAndReceiveWithRenewLock(ctx context.Context, t *testing.T, que
 		for runRenewal {
 			time.Sleep(renewEvery)
 			err := queue.RenewLocks(ctx, activeMessages...)
-			if err != nil {
-				fmt.Println(err.Error())
-			}
 			// If a renewal is taking place when the test ends
 			// it will fail and cause a panic without this check
 			if err != nil && runRenewal {

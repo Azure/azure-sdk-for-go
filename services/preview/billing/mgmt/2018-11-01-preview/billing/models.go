@@ -1791,8 +1791,8 @@ type PaymentMethodProperties struct {
 	PaymentMethodType PaymentMethodType `json:"paymentMethodType,omitempty"`
 	// Details - READ-ONLY; Details about the payment method.
 	Details *string `json:"details,omitempty"`
-	// Expiration - READ-ONLY; Expiration date.
-	Expiration *date.Time `json:"expiration,omitempty"`
+	// Expiration - READ-ONLY; Expiration month and year.
+	Expiration *string `json:"expiration,omitempty"`
 	// Currency - READ-ONLY; The currency associated with the payment method.
 	Currency *string `json:"currency,omitempty"`
 }

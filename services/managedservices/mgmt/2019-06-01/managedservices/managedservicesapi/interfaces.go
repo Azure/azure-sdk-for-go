@@ -19,13 +19,13 @@ package managedservicesapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/managedservices/mgmt/2018-06-01/managedservices"
+	"github.com/Azure/azure-sdk-for-go/services/managedservices/mgmt/2019-06-01/managedservices"
 	"github.com/Azure/go-autorest/autorest"
 )
 
 // RegistrationDefinitionsClientAPI contains the set of methods on the RegistrationDefinitionsClient type.
 type RegistrationDefinitionsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody managedservices.RegistrationDefinition) (result managedservices.RegistrationDefinition, err error)
+	CreateOrUpdate(ctx context.Context, registrationDefinitionID string, scope string, requestBody managedservices.RegistrationDefinition) (result managedservices.RegistrationDefinitionsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, registrationDefinitionID string, scope string) (result autorest.Response, err error)
 	Get(ctx context.Context, scope string, registrationDefinitionID string) (result managedservices.RegistrationDefinition, err error)
 	List(ctx context.Context, scope string) (result managedservices.RegistrationDefinitionListPage, err error)
@@ -35,8 +35,8 @@ var _ RegistrationDefinitionsClientAPI = (*managedservices.RegistrationDefinitio
 
 // RegistrationAssignmentsClientAPI contains the set of methods on the RegistrationAssignmentsClient type.
 type RegistrationAssignmentsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody managedservices.RegistrationAssignment) (result managedservices.RegistrationAssignment, err error)
-	Delete(ctx context.Context, scope string, registrationAssignmentID string) (result autorest.Response, err error)
+	CreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody managedservices.RegistrationAssignment) (result managedservices.RegistrationAssignmentsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, scope string, registrationAssignmentID string) (result managedservices.RegistrationAssignmentsDeleteFuture, err error)
 	Get(ctx context.Context, scope string, registrationAssignmentID string, expandRegistrationDefinition *bool) (result managedservices.RegistrationAssignment, err error)
 	List(ctx context.Context, scope string, expandRegistrationDefinition *bool) (result managedservices.RegistrationAssignmentListPage, err error)
 }

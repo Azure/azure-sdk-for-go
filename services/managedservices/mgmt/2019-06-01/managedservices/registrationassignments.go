@@ -46,13 +46,13 @@ func NewRegistrationAssignmentsClientWithBaseURI(baseURI string) RegistrationAss
 // scope - scope of the resource.
 // registrationAssignmentID - guid of the registration assignment.
 // requestBody - the parameters required to create new registration assignment.
-func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment) (result RegistrationAssignment, err error) {
+func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, scope string, registrationAssignmentID string, requestBody RegistrationAssignment) (result RegistrationAssignmentsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -79,16 +79,10 @@ func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, 
 		return
 	}
 
-	resp, err := client.CreateOrUpdateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateOrUpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
@@ -101,7 +95,7 @@ func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.C
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -121,9 +115,15 @@ func (client RegistrationAssignmentsClient) CreateOrUpdatePreparer(ctx context.C
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client RegistrationAssignmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client RegistrationAssignmentsClient) CreateOrUpdateSender(req *http.Request) (future RegistrationAssignmentsCreateOrUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -143,13 +143,13 @@ func (client RegistrationAssignmentsClient) CreateOrUpdateResponder(resp *http.R
 // Parameters:
 // scope - scope of the resource.
 // registrationAssignmentID - guid of the registration assignment.
-func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope string, registrationAssignmentID string) (result autorest.Response, err error) {
+func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope string, registrationAssignmentID string) (result RegistrationAssignmentsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -160,16 +160,10 @@ func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope st
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -182,7 +176,7 @@ func (client RegistrationAssignmentsClient) DeletePreparer(ctx context.Context, 
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -197,9 +191,15 @@ func (client RegistrationAssignmentsClient) DeletePreparer(ctx context.Context, 
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client RegistrationAssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client RegistrationAssignmentsClient) DeleteSender(req *http.Request) (future RegistrationAssignmentsDeleteFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -208,7 +208,7 @@ func (client RegistrationAssignmentsClient) DeleteResponder(resp *http.Response)
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -259,7 +259,7 @@ func (client RegistrationAssignmentsClient) GetPreparer(ctx context.Context, sco
 		"scope":                    scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -339,7 +339,7 @@ func (client RegistrationAssignmentsClient) ListPreparer(ctx context.Context, sc
 		"scope": scope,
 	}
 
-	const APIVersion = "2018-06-01-preview"
+	const APIVersion = "2019-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

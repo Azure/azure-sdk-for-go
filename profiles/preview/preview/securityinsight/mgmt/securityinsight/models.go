@@ -80,12 +80,14 @@ const (
 type DataConnectorKind = original.DataConnectorKind
 
 const (
-	AmazonWebServicesCloudTrail DataConnectorKind = original.AmazonWebServicesCloudTrail
-	AzureActiveDirectory        DataConnectorKind = original.AzureActiveDirectory
-	AzureSecurityCenter         DataConnectorKind = original.AzureSecurityCenter
-	MicrosoftCloudAppSecurity   DataConnectorKind = original.MicrosoftCloudAppSecurity
-	Office365                   DataConnectorKind = original.Office365
-	ThreatIntelligence          DataConnectorKind = original.ThreatIntelligence
+	AmazonWebServicesCloudTrail               DataConnectorKind = original.AmazonWebServicesCloudTrail
+	AzureActiveDirectory                      DataConnectorKind = original.AzureActiveDirectory
+	AzureAdvancedThreatProtection             DataConnectorKind = original.AzureAdvancedThreatProtection
+	AzureSecurityCenter                       DataConnectorKind = original.AzureSecurityCenter
+	MicrosoftCloudAppSecurity                 DataConnectorKind = original.MicrosoftCloudAppSecurity
+	MicrosoftDefenderAdvancedThreatProtection DataConnectorKind = original.MicrosoftDefenderAdvancedThreatProtection
+	Office365                                 DataConnectorKind = original.Office365
+	ThreatIntelligence                        DataConnectorKind = original.ThreatIntelligence
 )
 
 type DataTypeState = original.DataTypeState
@@ -120,13 +122,15 @@ const (
 type KindBasicDataConnector = original.KindBasicDataConnector
 
 const (
-	KindAmazonWebServicesCloudTrail KindBasicDataConnector = original.KindAmazonWebServicesCloudTrail
-	KindAzureActiveDirectory        KindBasicDataConnector = original.KindAzureActiveDirectory
-	KindAzureSecurityCenter         KindBasicDataConnector = original.KindAzureSecurityCenter
-	KindDataConnector               KindBasicDataConnector = original.KindDataConnector
-	KindMicrosoftCloudAppSecurity   KindBasicDataConnector = original.KindMicrosoftCloudAppSecurity
-	KindOffice365                   KindBasicDataConnector = original.KindOffice365
-	KindThreatIntelligence          KindBasicDataConnector = original.KindThreatIntelligence
+	KindAmazonWebServicesCloudTrail               KindBasicDataConnector = original.KindAmazonWebServicesCloudTrail
+	KindAzureActiveDirectory                      KindBasicDataConnector = original.KindAzureActiveDirectory
+	KindAzureAdvancedThreatProtection             KindBasicDataConnector = original.KindAzureAdvancedThreatProtection
+	KindAzureSecurityCenter                       KindBasicDataConnector = original.KindAzureSecurityCenter
+	KindDataConnector                             KindBasicDataConnector = original.KindDataConnector
+	KindMicrosoftCloudAppSecurity                 KindBasicDataConnector = original.KindMicrosoftCloudAppSecurity
+	KindMicrosoftDefenderAdvancedThreatProtection KindBasicDataConnector = original.KindMicrosoftDefenderAdvancedThreatProtection
+	KindOffice365                                 KindBasicDataConnector = original.KindOffice365
+	KindThreatIntelligence                        KindBasicDataConnector = original.KindThreatIntelligence
 )
 
 type KindBasicEntity = original.KindBasicEntity
@@ -187,6 +191,8 @@ const (
 
 type AADDataConnector = original.AADDataConnector
 type AADDataConnectorProperties = original.AADDataConnectorProperties
+type AATPDataConnector = original.AATPDataConnector
+type AATPDataConnectorProperties = original.AATPDataConnectorProperties
 type ASCDataConnector = original.ASCDataConnector
 type ASCDataConnectorProperties = original.ASCDataConnectorProperties
 type AccountEntity = original.AccountEntity
@@ -266,7 +272,11 @@ type FileEntityProperties = original.FileEntityProperties
 type HostEntity = original.HostEntity
 type HostEntityProperties = original.HostEntityProperties
 type MCASDataConnector = original.MCASDataConnector
+type MCASDataConnectorDataTypes = original.MCASDataConnectorDataTypes
+type MCASDataConnectorDataTypesDiscoveryLogs = original.MCASDataConnectorDataTypesDiscoveryLogs
 type MCASDataConnectorProperties = original.MCASDataConnectorProperties
+type MDATPDataConnector = original.MDATPDataConnector
+type MDATPDataConnectorProperties = original.MDATPDataConnectorProperties
 type OfficeConsent = original.OfficeConsent
 type OfficeConsentList = original.OfficeConsentList
 type OfficeConsentListIterator = original.OfficeConsentListIterator

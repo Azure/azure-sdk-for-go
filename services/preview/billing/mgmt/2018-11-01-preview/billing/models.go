@@ -269,6 +269,33 @@ func PossibleStatus1Values() []Status1 {
 	return []Status1{Status1Due, Status1Paid, Status1PastDue, Status1Void}
 }
 
+// StatusType enumerates the values for status type.
+type StatusType string
+
+const (
+	// StatusTypeActive ...
+	StatusTypeActive StatusType = "Active"
+	// StatusTypeAutoRenew ...
+	StatusTypeAutoRenew StatusType = "AutoRenew"
+	// StatusTypeCancelled ...
+	StatusTypeCancelled StatusType = "Cancelled"
+	// StatusTypeDeleted ...
+	StatusTypeDeleted StatusType = "Deleted"
+	// StatusTypeDisabled ...
+	StatusTypeDisabled StatusType = "Disabled"
+	// StatusTypeExpired ...
+	StatusTypeExpired StatusType = "Expired"
+	// StatusTypeExpiring ...
+	StatusTypeExpiring StatusType = "Expiring"
+	// StatusTypePastDue ...
+	StatusTypePastDue StatusType = "PastDue"
+)
+
+// PossibleStatusTypeValues returns an array of possible values for the StatusType const type.
+func PossibleStatusTypeValues() []StatusType {
+	return []StatusType{StatusTypeActive, StatusTypeAutoRenew, StatusTypeCancelled, StatusTypeDeleted, StatusTypeDisabled, StatusTypeExpired, StatusTypeExpiring, StatusTypePastDue}
+}
+
 // SubscriptionStatusType enumerates the values for subscription status type.
 type SubscriptionStatusType string
 
@@ -2831,6 +2858,270 @@ type RecipientTransferProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// DetailedTransferStatus - READ-ONLY; Detailed transfer status.
 	DetailedTransferStatus *[]DetailedTransferStatus `json:"detailedTransferStatus,omitempty"`
+}
+
+// RecurringProductsListResult result of listing recurring products. It contains a list of available
+// recurring products in reverse chronological order by charge date.
+type RecurringProductsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of recurring products.
+	Value *[]RecurringProductSummary `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// RecurringProductsListResultIterator provides access to a complete listing of RecurringProductSummary
+// values.
+type RecurringProductsListResultIterator struct {
+	i    int
+	page RecurringProductsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *RecurringProductsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecurringProductsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *RecurringProductsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter RecurringProductsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter RecurringProductsListResultIterator) Response() RecurringProductsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter RecurringProductsListResultIterator) Value() RecurringProductSummary {
+	if !iter.page.NotDone() {
+		return RecurringProductSummary{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the RecurringProductsListResultIterator type.
+func NewRecurringProductsListResultIterator(page RecurringProductsListResultPage) RecurringProductsListResultIterator {
+	return RecurringProductsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rplr RecurringProductsListResult) IsEmpty() bool {
+	return rplr.Value == nil || len(*rplr.Value) == 0
+}
+
+// recurringProductsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rplr RecurringProductsListResult) recurringProductsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if rplr.NextLink == nil || len(to.String(rplr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rplr.NextLink)))
+}
+
+// RecurringProductsListResultPage contains a page of RecurringProductSummary values.
+type RecurringProductsListResultPage struct {
+	fn   func(context.Context, RecurringProductsListResult) (RecurringProductsListResult, error)
+	rplr RecurringProductsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *RecurringProductsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/RecurringProductsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.rplr)
+	if err != nil {
+		return err
+	}
+	page.rplr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *RecurringProductsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page RecurringProductsListResultPage) NotDone() bool {
+	return !page.rplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page RecurringProductsListResultPage) Response() RecurringProductsListResult {
+	return page.rplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page RecurringProductsListResultPage) Values() []RecurringProductSummary {
+	if page.rplr.IsEmpty() {
+		return nil
+	}
+	return *page.rplr.Value
+}
+
+// Creates a new instance of the RecurringProductsListResultPage type.
+func NewRecurringProductsListResultPage(getNextPage func(context.Context, RecurringProductsListResult) (RecurringProductsListResult, error)) RecurringProductsListResultPage {
+	return RecurringProductsListResultPage{fn: getNextPage}
+}
+
+// RecurringProductSummary a recurring product resource.
+type RecurringProductSummary struct {
+	autorest.Response                  `json:"-"`
+	*RecurringProductSummaryProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecurringProductSummary.
+func (rps RecurringProductSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rps.RecurringProductSummaryProperties != nil {
+		objectMap["properties"] = rps.RecurringProductSummaryProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RecurringProductSummary struct.
+func (rps *RecurringProductSummary) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var recurringProductSummaryProperties RecurringProductSummaryProperties
+				err = json.Unmarshal(*v, &recurringProductSummaryProperties)
+				if err != nil {
+					return err
+				}
+				rps.RecurringProductSummaryProperties = &recurringProductSummaryProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rps.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rps.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rps.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RecurringProductSummaryProperties the properties of the recurring product.
+type RecurringProductSummaryProperties struct {
+	// AvailabilityID - READ-ONLY; Availability Id.
+	AvailabilityID *string `json:"availabilityId,omitempty"`
+	// BillingFrequency - READ-ONLY; Billing frequency ISO code.
+	BillingFrequency *string `json:"billingFrequency,omitempty"`
+	// BillingProfileID - READ-ONLY; Billing profile id to which this charge belongs.
+	BillingProfileID *string `json:"billingProfileId,omitempty"`
+	// BillingProfileName - READ-ONLY; Billing profile name to which this charge belongs.
+	BillingProfileName *string `json:"billingProfileName,omitempty"`
+	// DisplayName - READ-ONLY; The display name.
+	DisplayName *string `json:"displayName,omitempty"`
+	// EndDate - READ-ONLY; end date.
+	EndDate *date.Time `json:"endDate,omitempty"`
+	// InvoiceSectionID - READ-ONLY; Invoice section id to which this charge belongs.
+	InvoiceSectionID *string `json:"invoiceSectionId,omitempty"`
+	// InvoiceSectionName - READ-ONLY; Invoice section name to which this charge belongs.
+	InvoiceSectionName *string `json:"invoiceSectionName,omitempty"`
+	// LastCharge - READ-ONLY; Last charge.
+	LastCharge *Amount `json:"lastCharge,omitempty"`
+	// LastChargeDate - READ-ONLY; The date of the last charge.
+	LastChargeDate *date.Time `json:"lastChargeDate,omitempty"`
+	// NextCharge - READ-ONLY; Next charge.
+	NextCharge *Amount `json:"nextCharge,omitempty"`
+	// NextChargeDate - READ-ONLY; The date of the next charge.
+	NextChargeDate *date.Time `json:"nextChargeDate,omitempty"`
+	// ParentProductID - READ-ONLY; Parent product Id.
+	ParentProductID *string `json:"parentProductId,omitempty"`
+	// ProductType - READ-ONLY; The type of product.
+	ProductType *string `json:"productType,omitempty"`
+	// ProductTypeID - READ-ONLY; The product type id.
+	ProductTypeID *string `json:"productTypeId,omitempty"`
+	// SkuID - READ-ONLY; Sku Id.
+	SkuID *string `json:"skuId,omitempty"`
+	// SkuDescription - READ-ONLY; Sku description.
+	SkuDescription *string `json:"skuDescription,omitempty"`
+	// PurchaseDate - READ-ONLY; The date of purchase.
+	PurchaseDate *date.Time `json:"purchaseDate,omitempty"`
+	// Quantity - READ-ONLY; The purchased quantity.
+	Quantity *float64 `json:"quantity,omitempty"`
+	// Status - Latest status. Possible values include: 'StatusTypeActive', 'StatusTypeAutoRenew', 'StatusTypeCancelled', 'StatusTypeDeleted', 'StatusTypeDisabled', 'StatusTypeExpired', 'StatusTypeExpiring', 'StatusTypePastDue'
+	Status StatusType `json:"status,omitempty"`
 }
 
 // Resource the Resource model definition.

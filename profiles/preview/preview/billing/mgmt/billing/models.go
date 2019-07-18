@@ -141,6 +141,19 @@ const (
 	Status1Void    Status1 = original.Status1Void
 )
 
+type StatusType = original.StatusType
+
+const (
+	StatusTypeActive    StatusType = original.StatusTypeActive
+	StatusTypeAutoRenew StatusType = original.StatusTypeAutoRenew
+	StatusTypeCancelled StatusType = original.StatusTypeCancelled
+	StatusTypeDeleted   StatusType = original.StatusTypeDeleted
+	StatusTypeDisabled  StatusType = original.StatusTypeDisabled
+	StatusTypeExpired   StatusType = original.StatusTypeExpired
+	StatusTypeExpiring  StatusType = original.StatusTypeExpiring
+	StatusTypePastDue   StatusType = original.StatusTypePastDue
+)
+
 type SubscriptionStatusType = original.SubscriptionStatusType
 
 const (
@@ -290,6 +303,12 @@ type RecipientTransferDetailsListResultIterator = original.RecipientTransferDeta
 type RecipientTransferDetailsListResultPage = original.RecipientTransferDetailsListResultPage
 type RecipientTransferProperties = original.RecipientTransferProperties
 type RecipientTransfersClient = original.RecipientTransfersClient
+type RecurringProductSummary = original.RecurringProductSummary
+type RecurringProductSummaryProperties = original.RecurringProductSummaryProperties
+type RecurringProductsClient = original.RecurringProductsClient
+type RecurringProductsListResult = original.RecurringProductsListResult
+type RecurringProductsListResultIterator = original.RecurringProductsListResultIterator
+type RecurringProductsListResultPage = original.RecurringProductsListResultPage
 type Resource = original.Resource
 type RoleAssignment = original.RoleAssignment
 type RoleAssignmentListResult = original.RoleAssignmentListResult
@@ -468,6 +487,18 @@ func NewRecipientTransfersClient(subscriptionID string) RecipientTransfersClient
 func NewRecipientTransfersClientWithBaseURI(baseURI string, subscriptionID string) RecipientTransfersClient {
 	return original.NewRecipientTransfersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRecurringProductsClient(subscriptionID string) RecurringProductsClient {
+	return original.NewRecurringProductsClient(subscriptionID)
+}
+func NewRecurringProductsClientWithBaseURI(baseURI string, subscriptionID string) RecurringProductsClient {
+	return original.NewRecurringProductsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRecurringProductsListResultIterator(page RecurringProductsListResultPage) RecurringProductsListResultIterator {
+	return original.NewRecurringProductsListResultIterator(page)
+}
+func NewRecurringProductsListResultPage(getNextPage func(context.Context, RecurringProductsListResult) (RecurringProductsListResult, error)) RecurringProductsListResultPage {
+	return original.NewRecurringProductsListResultPage(getNextPage)
+}
 func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
 	return original.NewRoleAssignmentsClient(subscriptionID)
 }
@@ -554,6 +585,9 @@ func PossibleReservationTypeValues() []ReservationType {
 }
 func PossibleStatus1Values() []Status1 {
 	return original.PossibleStatus1Values()
+}
+func PossibleStatusTypeValues() []StatusType {
+	return original.PossibleStatusTypeValues()
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()

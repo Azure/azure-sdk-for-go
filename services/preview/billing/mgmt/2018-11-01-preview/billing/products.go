@@ -44,7 +44,7 @@ func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) Product
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-// productName - invoice Id.
+// productName - product Id.
 func (client ProductsClient) Get(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string) (result ProductSummary, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductsClient.Get")
@@ -322,7 +322,7 @@ func (client ProductsClient) ListByInvoiceSectionNameResponder(resp *http.Respon
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-// productName - invoice Id.
+// productName - product Id.
 // parameters - parameters supplied to the Transfer Product operation.
 func (client ProductsClient) Transfer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters TransferProductRequestProperties) (result ProductSummary, err error) {
 	if tracing.IsEnabled() {
@@ -402,7 +402,7 @@ func (client ProductsClient) TransferResponder(resp *http.Response) (result Prod
 // UpdateAutoRenewByBillingAccountName cancel auto renew for product by product id and billing account name
 // Parameters:
 // billingAccountName - billing Account Id.
-// productName - invoice Id.
+// productName - product Id.
 // body - update auto renew request parameters.
 func (client ProductsClient) UpdateAutoRenewByBillingAccountName(ctx context.Context, billingAccountName string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
 	if tracing.IsEnabled() {
@@ -482,7 +482,7 @@ func (client ProductsClient) UpdateAutoRenewByBillingAccountNameResponder(resp *
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-// productName - invoice Id.
+// productName - product Id.
 // body - update auto renew request parameters.
 func (client ProductsClient) UpdateAutoRenewByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, body UpdateAutoRenewRequest) (result UpdateAutoRenewOperationSummary, err error) {
 	if tracing.IsEnabled() {
@@ -563,7 +563,7 @@ func (client ProductsClient) UpdateAutoRenewByInvoiceSectionNameResponder(resp *
 // Parameters:
 // billingAccountName - billing Account Id.
 // invoiceSectionName - invoiceSection Id.
-// productName - invoice Id.
+// productName - product Id.
 // parameters - parameters supplied to the Transfer Products operation.
 func (client ProductsClient) ValidateTransfer(ctx context.Context, billingAccountName string, invoiceSectionName string, productName string, parameters TransferProductRequestProperties) (result ValidateProductTransferEligibilityResult, err error) {
 	if tracing.IsEnabled() {

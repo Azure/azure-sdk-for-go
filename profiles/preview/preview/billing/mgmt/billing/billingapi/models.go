@@ -39,6 +39,7 @@ type ProductsClientAPI = original.ProductsClientAPI
 type ProfilesClientAPI = original.ProfilesClientAPI
 type PropertyClientAPI = original.PropertyClientAPI
 type RecipientTransfersClientAPI = original.RecipientTransfersClientAPI
+type RecurringProductsClientAPI = original.RecurringProductsClientAPI
 type RoleAssignmentsClientAPI = original.RoleAssignmentsClientAPI
 type RoleDefinitionsClientAPI = original.RoleDefinitionsClientAPI
 type SubscriptionsClientAPI = original.SubscriptionsClientAPI

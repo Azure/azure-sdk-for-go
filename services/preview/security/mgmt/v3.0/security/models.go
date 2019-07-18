@@ -436,15 +436,15 @@ func PossibleRecommendationAction1Values() []RecommendationAction1 {
 type RecommendationConfigStatus string
 
 const (
-	// TurnedOff ...
-	TurnedOff RecommendationConfigStatus = "TurnedOff"
-	// TurnedOn ...
-	TurnedOn RecommendationConfigStatus = "TurnedOn"
+	// Disabled ...
+	Disabled RecommendationConfigStatus = "Disabled"
+	// Enabled ...
+	Enabled RecommendationConfigStatus = "Enabled"
 )
 
 // PossibleRecommendationConfigStatusValues returns an array of possible values for the RecommendationConfigStatus const type.
 func PossibleRecommendationConfigStatusValues() []RecommendationConfigStatus {
-	return []RecommendationConfigStatus{TurnedOff, TurnedOn}
+	return []RecommendationConfigStatus{Disabled, Enabled}
 }
 
 // RecommendationStatus enumerates the values for recommendation status.
@@ -470,45 +470,55 @@ func PossibleRecommendationStatusValues() []RecommendationStatus {
 type RecommendationType string
 
 const (
-	// DenyDefaultIPPolicy IP filter configuration should have rules defined for allowed traffic, and should by
-	// default, deny all other traffic by default.
-	DenyDefaultIPPolicy RecommendationType = "DenyDefaultIpPolicy"
-	// EnableDiagnosticsLog Enable logs and retain them for up to a year. Retaining logs enables you to
-	// recreate activity trails for investigation purposes when a security incident occurs or your network is
-	// compromised.
-	EnableDiagnosticsLog RecommendationType = "EnableDiagnosticsLog"
-	// IdenticalAuthenticationCredentials IoT Hub authentication credentials are used by multiple devices. This
-	// may indicate an illegitimate device impersonating a legitimate device. Duplicate credential use
-	// increases the risk of device impersonation by a malicious actor.
-	IdenticalAuthenticationCredentials RecommendationType = "IdenticalAuthenticationCredentials"
-	// OpenPortsOnDevice A listening endpoint was found on the device.
-	OpenPortsOnDevice RecommendationType = "OpenPortsOnDevice"
-	// OperationSystemNotValid Device doesn't comply with CIS Linux benchmarks.
-	OperationSystemNotValid RecommendationType = "OperationSystemNotValid"
-	// PermissiveFirewallPolicy Allowed firewall policy found (INPUT/OUTPUT). Firewall policy should deny all
-	// traffic by default, and define rules to allow necessary communication to/from the device.
-	PermissiveFirewallPolicy RecommendationType = "PermissiveFirewallPolicy"
-	// PermissiveFirewallRuleInput A rule in the firewall in the input chain has been found that contains a
-	// permissive pattern for a wide range of IP addresses or ports.
-	PermissiveFirewallRuleInput RecommendationType = "PermissiveFirewallRuleInput"
-	// PermissiveFirewallRuleOut A rule in the firewall in the output chain has been found that contains a
-	// permissive pattern for a wide range of IP addresses or ports.
-	PermissiveFirewallRuleOut RecommendationType = "PermissiveFirewallRuleOut"
-	// SecurityTwinConfigurationConflict Conflicts were identified in the security twin configuration.
-	SecurityTwinConfigurationConflict RecommendationType = "SecurityTwinConfigurationConflict"
-	// SecurityTwinConfigurationNotOptimal Security twin configuration is not optimal.
-	SecurityTwinConfigurationNotOptimal RecommendationType = "SecurityTwinConfigurationNotOptimal"
-	// TooLargeIPRange An allow IP filter rule source IP range is too large. Overly permissive rules can expose
-	// your IoT hub to malicious actors.
-	TooLargeIPRange RecommendationType = "TooLargeIPRange"
-	// UnutilizedMessagesFromAgent 10% or more of security messages were smaller than 4kb during the last 24
-	// hours.
-	UnutilizedMessagesFromAgent RecommendationType = "UnutilizedMessagesFromAgent"
+	// IoTACRAuthentication Authentication schema used for pull an edge module from an ACR repository does not
+	// use Service Principal Authentication.
+	IoTACRAuthentication RecommendationType = "IoT_ACRAuthentication"
+	// IoTAgentSendsUnutilizedMessages IoT agent message size capacity is currently underutilized, causing an
+	// increase in the number of sent messages. Adjust message intervals for better utilization.
+	IoTAgentSendsUnutilizedMessages RecommendationType = "IoT_AgentSendsUnutilizedMessages"
+	// IoTBaseline Identified security related system configuration issues.
+	IoTBaseline RecommendationType = "IoT_Baseline"
+	// IoTEdgeHubMemOptimize You can optimize Edge Hub memory usage by turning off protocol heads for any
+	// protocols not used by Edge modules in your solution.
+	IoTEdgeHubMemOptimize RecommendationType = "IoT_EdgeHubMemOptimize"
+	// IoTEdgeLoggingOptions Logging is disabled for this edge module.
+	IoTEdgeLoggingOptions RecommendationType = "IoT_EdgeLoggingOptions"
+	// IoTInconsistentModuleSettings A minority within a device security group has inconsistent Edge Module
+	// settings with the rest of their group.
+	IoTInconsistentModuleSettings RecommendationType = "IoT_InconsistentModuleSettings"
+	// IoTInstallAgent Install the Azure Security of Things Agent.
+	IoTInstallAgent RecommendationType = "IoT_InstallAgent"
+	// IoTIPFilterDenyAll IP Filter Configuration should have rules defined for allowed traffic and should deny
+	// all other traffic by default.
+	IoTIPFilterDenyAll RecommendationType = "IoT_IPFilter_DenyAll"
+	// IoTIPFilterPermissiveRule An Allow IP Filter rules source IP range is too large. Overly permissive rules
+	// might expose your IoT hub to malicious intenders.
+	IoTIPFilterPermissiveRule RecommendationType = "IoT_IPFilter_PermissiveRule"
+	// IoTOpenPorts A listening endpoint was found on the device.
+	IoTOpenPorts RecommendationType = "IoT_OpenPorts"
+	// IoTPermissiveFirewallPolicy An Allowed firewall policy was found (INPUT/OUTPUT). The policy should Deny
+	// all traffic by default and define rules to allow necessary communication to/from the device.
+	IoTPermissiveFirewallPolicy RecommendationType = "IoT_PermissiveFirewallPolicy"
+	// IoTPermissiveInputFirewallRules A rule in the firewall has been found that contains a permissive pattern
+	// for a wide range of IP addresses or Ports.
+	IoTPermissiveInputFirewallRules RecommendationType = "IoT_PermissiveInputFirewallRules"
+	// IoTPermissiveOutputFirewallRules A rule in the firewall has been found that contains a permissive
+	// pattern for a wide range of IP addresses or Ports.
+	IoTPermissiveOutputFirewallRules RecommendationType = "IoT_PermissiveOutputFirewallRules"
+	// IoTPrivilegedDockerOptions Edge module is configured to run in privileged mode, with extensive Linux
+	// capabilities or with host-level network access (send/receive data to host machine).
+	IoTPrivilegedDockerOptions RecommendationType = "IoT_PrivilegedDockerOptions"
+	// IoTSharedCredentials Same authentication credentials to the IoT Hub used by multiple devices. This could
+	// indicate an illegitimate device impersonating a legitimate device. It also exposes the risk of device
+	// impersonation by an attacker.
+	IoTSharedCredentials RecommendationType = "IoT_SharedCredentials"
+	// IoTVulnerableTLSCipherSuite Insecure TLS configurations detected. Immediate upgrade recommended.
+	IoTVulnerableTLSCipherSuite RecommendationType = "IoT_VulnerableTLSCipherSuite"
 )
 
 // PossibleRecommendationTypeValues returns an array of possible values for the RecommendationType const type.
 func PossibleRecommendationTypeValues() []RecommendationType {
-	return []RecommendationType{DenyDefaultIPPolicy, EnableDiagnosticsLog, IdenticalAuthenticationCredentials, OpenPortsOnDevice, OperationSystemNotValid, PermissiveFirewallPolicy, PermissiveFirewallRuleInput, PermissiveFirewallRuleOut, SecurityTwinConfigurationConflict, SecurityTwinConfigurationNotOptimal, TooLargeIPRange, UnutilizedMessagesFromAgent}
+	return []RecommendationType{IoTACRAuthentication, IoTAgentSendsUnutilizedMessages, IoTBaseline, IoTEdgeHubMemOptimize, IoTEdgeLoggingOptions, IoTInconsistentModuleSettings, IoTInstallAgent, IoTIPFilterDenyAll, IoTIPFilterPermissiveRule, IoTOpenPorts, IoTPermissiveFirewallPolicy, IoTPermissiveInputFirewallRules, IoTPermissiveOutputFirewallRules, IoTPrivilegedDockerOptions, IoTSharedCredentials, IoTVulnerableTLSCipherSuite}
 }
 
 // ReportedSeverity enumerates the values for reported severity.
@@ -568,15 +578,15 @@ func PossibleSettingKindValues() []SettingKind {
 type SolutionStatus string
 
 const (
-	// Disabled ...
-	Disabled SolutionStatus = "Disabled"
-	// Enabled ...
-	Enabled SolutionStatus = "Enabled"
+	// SolutionStatusDisabled ...
+	SolutionStatusDisabled SolutionStatus = "Disabled"
+	// SolutionStatusEnabled ...
+	SolutionStatusEnabled SolutionStatus = "Enabled"
 )
 
 // PossibleSolutionStatusValues returns an array of possible values for the SolutionStatus const type.
 func PossibleSolutionStatusValues() []SolutionStatus {
-	return []SolutionStatus{Disabled, Enabled}
+	return []SolutionStatus{SolutionStatusDisabled, SolutionStatusEnabled}
 }
 
 // SourceSystem enumerates the values for source system.
@@ -4774,7 +4784,7 @@ type IoTSecuritySolutionProperties struct {
 	Workspace *string `json:"workspace,omitempty"`
 	// DisplayName - Resource display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Status - Security solution status. Possible values include: 'Enabled', 'Disabled'
+	// Status - Security solution status. Possible values include: 'SolutionStatusEnabled', 'SolutionStatusDisabled'
 	Status SolutionStatus `json:"status,omitempty"`
 	// Export - List of additional export to workspace data options
 	Export *[]ExportData `json:"export,omitempty"`
@@ -5578,11 +5588,11 @@ type PublisherInfo struct {
 
 // RecommendationConfigurationProperties recommendation configuration
 type RecommendationConfigurationProperties struct {
-	// RecommendationType - The recommendation type. Possible values include: 'OpenPortsOnDevice', 'PermissiveFirewallPolicy', 'PermissiveFirewallRuleInput', 'PermissiveFirewallRuleOut', 'OperationSystemNotValid', 'UnutilizedMessagesFromAgent', 'SecurityTwinConfigurationNotOptimal', 'SecurityTwinConfigurationConflict', 'IdenticalAuthenticationCredentials', 'DenyDefaultIPPolicy', 'TooLargeIPRange', 'EnableDiagnosticsLog'
+	// RecommendationType - The recommendation type. Possible values include: 'IoTACRAuthentication', 'IoTAgentSendsUnutilizedMessages', 'IoTBaseline', 'IoTEdgeHubMemOptimize', 'IoTEdgeLoggingOptions', 'IoTInconsistentModuleSettings', 'IoTInstallAgent', 'IoTIPFilterDenyAll', 'IoTIPFilterPermissiveRule', 'IoTOpenPorts', 'IoTPermissiveFirewallPolicy', 'IoTPermissiveInputFirewallRules', 'IoTPermissiveOutputFirewallRules', 'IoTPrivilegedDockerOptions', 'IoTSharedCredentials', 'IoTVulnerableTLSCipherSuite'
 	RecommendationType RecommendationType `json:"recommendationType,omitempty"`
-	// Description - READ-ONLY
-	Description *string `json:"description,omitempty"`
-	// Status - Recommendation status. The recommendation is not generated when the status is turned off. Possible values include: 'TurnedOff', 'TurnedOn'
+	// Name - READ-ONLY
+	Name *string `json:"name,omitempty"`
+	// Status - Recommendation status. The recommendation is not generated when the status is disabled. Possible values include: 'Disabled', 'Enabled'
 	Status RecommendationConfigStatus `json:"status,omitempty"`
 }
 

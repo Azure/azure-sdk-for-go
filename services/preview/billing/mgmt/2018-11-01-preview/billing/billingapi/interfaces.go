@@ -239,13 +239,3 @@ type LineOfCreditsClientAPI interface {
 }
 
 var _ LineOfCreditsClientAPI = (*billing.LineOfCreditsClient)(nil)
-
-// RecurringProductsClientAPI contains the set of methods on the RecurringProductsClient type.
-type RecurringProductsClientAPI interface {
-	Get(ctx context.Context, billingAccountName string, invoiceSectionName string, recurringProductName string) (result billing.RecurringProductSummary, err error)
-	ListByBillingAccountName(ctx context.Context, billingAccountName string) (result billing.RecurringProductsListResultPage, err error)
-	ListByBillingProfileName(ctx context.Context, billingAccountName string, billingProfileName string) (result billing.RecurringProductsListResult, err error)
-	ListByInvoiceSectionName(ctx context.Context, billingAccountName string, invoiceSectionName string) (result billing.RecurringProductsListResult, err error)
-}
-
-var _ RecurringProductsClientAPI = (*billing.RecurringProductsClient)(nil)

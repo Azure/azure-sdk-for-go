@@ -30,6 +30,34 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2015-03-01-preview/hdinsight"
 
+// ApplicationHTTPSEndpointAccessMode enumerates the values for application https endpoint access mode.
+type ApplicationHTTPSEndpointAccessMode string
+
+const (
+	// WebPage ...
+	WebPage ApplicationHTTPSEndpointAccessMode = "WebPage"
+)
+
+// PossibleApplicationHTTPSEndpointAccessModeValues returns an array of possible values for the ApplicationHTTPSEndpointAccessMode const type.
+func PossibleApplicationHTTPSEndpointAccessModeValues() []ApplicationHTTPSEndpointAccessMode {
+	return []ApplicationHTTPSEndpointAccessMode{WebPage}
+}
+
+// ApplicationType enumerates the values for application type.
+type ApplicationType string
+
+const (
+	// CustomApplication ...
+	CustomApplication ApplicationType = "CustomApplication"
+	// RServer ...
+	RServer ApplicationType = "RServer"
+)
+
+// PossibleApplicationTypeValues returns an array of possible values for the ApplicationType const type.
+func PossibleApplicationTypeValues() []ApplicationType {
+	return []ApplicationType{CustomApplication, RServer}
+}
+
 // AsyncOperationState enumerates the values for async operation state.
 type AsyncOperationState string
 
@@ -232,13 +260,17 @@ type ApplicationGetEndpoint struct {
 // ApplicationGetHTTPSEndpoint gets the application HTTP endpoints.
 type ApplicationGetHTTPSEndpoint struct {
 	// AccessModes - The list of access modes for the application.
-	AccessModes *[]string `json:"accessModes,omitempty"`
+	AccessModes *[]ApplicationHTTPSEndpointAccessMode `json:"accessModes,omitempty"`
 	// Location - The location of the endpoint.
 	Location *string `json:"location,omitempty"`
 	// DestinationPort - The destination port to connect to.
 	DestinationPort *int32 `json:"destinationPort,omitempty"`
 	// PublicPort - The public port to connect to.
 	PublicPort *int32 `json:"publicPort,omitempty"`
+	// SubDomainSuffix - The subDomainSuffix of the application and can not greater than 3 characters.
+	SubDomainSuffix *string `json:"subDomainSuffix,omitempty"`
+	// DisableGatewayAuth - The value indicates whether to disable GatewayAuth.
+	DisableGatewayAuth *bool `json:"disableGatewayAuth,omitempty"`
 }
 
 // ApplicationListResult result of the request to list cluster Applications. It contains a list of
@@ -402,8 +434,8 @@ type ApplicationProperties struct {
 	SSHEndpoints *[]ApplicationGetEndpoint `json:"sshEndpoints,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the application.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// ApplicationType - The application type.
-	ApplicationType *string `json:"applicationType,omitempty"`
+	// ApplicationType - The application type. Possible values include: 'CustomApplication', 'RServer'
+	ApplicationType ApplicationType `json:"applicationType,omitempty"`
 	// ApplicationState - READ-ONLY; The application state.
 	ApplicationState *string `json:"applicationState,omitempty"`
 	// Errors - The list of errors.
@@ -1533,7 +1565,7 @@ type RegionalQuotaCapability struct {
 	RegionName *string `json:"region_name,omitempty"`
 	// CoresUsed - The number of cores used in the region.
 	CoresUsed *int64 `json:"cores_used,omitempty"`
-	// CoresAvailable - The number of courses available in the region.
+	// CoresAvailable - The number of cores available in the region.
 	CoresAvailable *int64 `json:"cores_available,omitempty"`
 }
 

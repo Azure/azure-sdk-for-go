@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-04-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-06-01/network"
 )
 
 const (
@@ -1393,6 +1393,12 @@ type ListVpnConnectionsResultPage = original.ListVpnConnectionsResultPage
 type ListVpnGatewaysResult = original.ListVpnGatewaysResult
 type ListVpnGatewaysResultIterator = original.ListVpnGatewaysResultIterator
 type ListVpnGatewaysResultPage = original.ListVpnGatewaysResultPage
+type ListVpnSiteLinkConnectionsResult = original.ListVpnSiteLinkConnectionsResult
+type ListVpnSiteLinkConnectionsResultIterator = original.ListVpnSiteLinkConnectionsResultIterator
+type ListVpnSiteLinkConnectionsResultPage = original.ListVpnSiteLinkConnectionsResultPage
+type ListVpnSiteLinksResult = original.ListVpnSiteLinksResult
+type ListVpnSiteLinksResultIterator = original.ListVpnSiteLinksResultIterator
+type ListVpnSiteLinksResultPage = original.ListVpnSiteLinksResultPage
 type ListVpnSitesResult = original.ListVpnSitesResult
 type ListVpnSitesResultIterator = original.ListVpnSitesResultIterator
 type ListVpnSitesResultPage = original.ListVpnSitesResultPage
@@ -1808,9 +1814,18 @@ type VpnGatewaysCreateOrUpdateFuture = original.VpnGatewaysCreateOrUpdateFuture
 type VpnGatewaysDeleteFuture = original.VpnGatewaysDeleteFuture
 type VpnGatewaysResetFuture = original.VpnGatewaysResetFuture
 type VpnGatewaysUpdateTagsFuture = original.VpnGatewaysUpdateTagsFuture
+type VpnLinkBgpSettings = original.VpnLinkBgpSettings
+type VpnLinkConnectionsClient = original.VpnLinkConnectionsClient
+type VpnLinkProviderProperties = original.VpnLinkProviderProperties
 type VpnProfileResponse = original.VpnProfileResponse
 type VpnSite = original.VpnSite
 type VpnSiteID = original.VpnSiteID
+type VpnSiteLink = original.VpnSiteLink
+type VpnSiteLinkConnection = original.VpnSiteLinkConnection
+type VpnSiteLinkConnectionProperties = original.VpnSiteLinkConnectionProperties
+type VpnSiteLinkConnectionsClient = original.VpnSiteLinkConnectionsClient
+type VpnSiteLinkProperties = original.VpnSiteLinkProperties
+type VpnSiteLinksClient = original.VpnSiteLinksClient
 type VpnSiteProperties = original.VpnSiteProperties
 type VpnSitesClient = original.VpnSitesClient
 type VpnSitesConfigurationClient = original.VpnSitesConfigurationClient
@@ -2241,6 +2256,18 @@ func NewListVpnGatewaysResultIterator(page ListVpnGatewaysResultPage) ListVpnGat
 }
 func NewListVpnGatewaysResultPage(getNextPage func(context.Context, ListVpnGatewaysResult) (ListVpnGatewaysResult, error)) ListVpnGatewaysResultPage {
 	return original.NewListVpnGatewaysResultPage(getNextPage)
+}
+func NewListVpnSiteLinkConnectionsResultIterator(page ListVpnSiteLinkConnectionsResultPage) ListVpnSiteLinkConnectionsResultIterator {
+	return original.NewListVpnSiteLinkConnectionsResultIterator(page)
+}
+func NewListVpnSiteLinkConnectionsResultPage(getNextPage func(context.Context, ListVpnSiteLinkConnectionsResult) (ListVpnSiteLinkConnectionsResult, error)) ListVpnSiteLinkConnectionsResultPage {
+	return original.NewListVpnSiteLinkConnectionsResultPage(getNextPage)
+}
+func NewListVpnSiteLinksResultIterator(page ListVpnSiteLinksResultPage) ListVpnSiteLinksResultIterator {
+	return original.NewListVpnSiteLinksResultIterator(page)
+}
+func NewListVpnSiteLinksResultPage(getNextPage func(context.Context, ListVpnSiteLinksResult) (ListVpnSiteLinksResult, error)) ListVpnSiteLinksResultPage {
+	return original.NewListVpnSiteLinksResultPage(getNextPage)
 }
 func NewListVpnSitesResultIterator(page ListVpnSitesResultPage) ListVpnSitesResultIterator {
 	return original.NewListVpnSitesResultIterator(page)
@@ -2685,6 +2712,24 @@ func NewVpnGatewaysClient(subscriptionID string) VpnGatewaysClient {
 }
 func NewVpnGatewaysClientWithBaseURI(baseURI string, subscriptionID string) VpnGatewaysClient {
 	return original.NewVpnGatewaysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVpnLinkConnectionsClient(subscriptionID string) VpnLinkConnectionsClient {
+	return original.NewVpnLinkConnectionsClient(subscriptionID)
+}
+func NewVpnLinkConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VpnLinkConnectionsClient {
+	return original.NewVpnLinkConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVpnSiteLinkConnectionsClient(subscriptionID string) VpnSiteLinkConnectionsClient {
+	return original.NewVpnSiteLinkConnectionsClient(subscriptionID)
+}
+func NewVpnSiteLinkConnectionsClientWithBaseURI(baseURI string, subscriptionID string) VpnSiteLinkConnectionsClient {
+	return original.NewVpnSiteLinkConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVpnSiteLinksClient(subscriptionID string) VpnSiteLinksClient {
+	return original.NewVpnSiteLinksClient(subscriptionID)
+}
+func NewVpnSiteLinksClientWithBaseURI(baseURI string, subscriptionID string) VpnSiteLinksClient {
+	return original.NewVpnSiteLinksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVpnSitesClient(subscriptionID string) VpnSitesClient {
 	return original.NewVpnSitesClient(subscriptionID)

@@ -761,7 +761,6 @@ const (
 	TypeSalesforceMarketingCloudSource TypeBasicCopySource = original.TypeSalesforceMarketingCloudSource
 	TypeSalesforceServiceCloudSource   TypeBasicCopySource = original.TypeSalesforceServiceCloudSource
 	TypeSalesforceSource               TypeBasicCopySource = original.TypeSalesforceSource
-	TypeSapBwSource                    TypeBasicCopySource = original.TypeSapBwSource
 	TypeSapCloudForCustomerSource      TypeBasicCopySource = original.TypeSapCloudForCustomerSource
 	TypeSapEccSource                   TypeBasicCopySource = original.TypeSapEccSource
 	TypeSapHanaSource                  TypeBasicCopySource = original.TypeSapHanaSource
@@ -1666,7 +1665,6 @@ type SalesforceSink = original.SalesforceSink
 type SalesforceSource = original.SalesforceSource
 type SapBWLinkedService = original.SapBWLinkedService
 type SapBWLinkedServiceTypeProperties = original.SapBWLinkedServiceTypeProperties
-type SapBwSource = original.SapBwSource
 type SapCloudForCustomerLinkedService = original.SapCloudForCustomerLinkedService
 type SapCloudForCustomerLinkedServiceTypeProperties = original.SapCloudForCustomerLinkedServiceTypeProperties
 type SapCloudForCustomerResourceDataset = original.SapCloudForCustomerResourceDataset

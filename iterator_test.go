@@ -41,7 +41,7 @@ func (suite *serviceBusSuite) TestMessageIterator() {
 
 			q, err := ns.NewQueue(queueName)
 			defer func() {
-				q.Close(context.Background())
+				_ = q.Close(context.Background())
 			}()
 			suite.NoError(err)
 
@@ -197,6 +197,7 @@ func testMessageIteratorLargePageSize(ctx context.Context, t *testing.T, queue *
 	}
 
 	require.NoError(t, queue.Send(ctx, NewMessageFromString(newPayload(pageSize+1))))
+	time.Sleep(1 * time.Second)
 
 	got := uint32(0)
 	for {

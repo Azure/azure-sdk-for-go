@@ -3,7 +3,7 @@ module github.com/Azure/azure-service-bus-go
 go 1.12
 
 require (
-	github.com/Azure/azure-amqp-common-go/v2 v2.0.1-0.20190619212702-9727f6e7bc50
+	github.com/Azure/azure-amqp-common-go/v2 v2.1.0
 	github.com/Azure/azure-sdk-for-go v30.1.0+incompatible
 	github.com/Azure/go-autorest v12.0.0+incompatible
 	github.com/devigned/tab v0.1.1

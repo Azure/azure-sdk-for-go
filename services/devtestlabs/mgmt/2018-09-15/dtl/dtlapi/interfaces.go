@@ -182,7 +182,6 @@ type ServiceRunnersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, name string, serviceRunner dtl.ServiceRunner) (result dtl.ServiceRunner, err error)
 	Delete(ctx context.Context, resourceGroupName string, labName string, name string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, labName string, name string) (result dtl.ServiceRunner, err error)
-	List(ctx context.Context, resourceGroupName string, labName string, filter string, top *int32, orderby string) (result dtl.ServiceRunnerListPage, err error)
 }
 
 var _ ServiceRunnersClientAPI = (*dtl.ServiceRunnersClient)(nil)

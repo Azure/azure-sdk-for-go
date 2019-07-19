@@ -429,7 +429,7 @@ func (client SecretsClient) ListComplete(ctx context.Context, resourceGroupName 
 	return
 }
 
-// Update modify properties of secrets.
+// Update allows modifying tags of secrets. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

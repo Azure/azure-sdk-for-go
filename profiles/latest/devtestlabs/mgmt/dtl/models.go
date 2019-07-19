@@ -196,8 +196,9 @@ const (
 type StorageType = original.StorageType
 
 const (
-	Premium  StorageType = original.Premium
-	Standard StorageType = original.Standard
+	Premium     StorageType = original.Premium
+	Standard    StorageType = original.Standard
+	StandardSSD StorageType = original.StandardSSD
 )
 
 type TargetCostStatus = original.TargetCostStatus
@@ -225,8 +226,9 @@ const (
 type VirtualMachineCreationSource = original.VirtualMachineCreationSource
 
 const (
-	FromCustomImage  VirtualMachineCreationSource = original.FromCustomImage
-	FromGalleryImage VirtualMachineCreationSource = original.FromGalleryImage
+	FromCustomImage        VirtualMachineCreationSource = original.FromCustomImage
+	FromGalleryImage       VirtualMachineCreationSource = original.FromGalleryImage
+	FromSharedGalleryImage VirtualMachineCreationSource = original.FromSharedGalleryImage
 )
 
 type WindowsOsState = original.WindowsOsState
@@ -493,9 +495,6 @@ type ServiceFabricsDeleteFuture = original.ServiceFabricsDeleteFuture
 type ServiceFabricsStartFuture = original.ServiceFabricsStartFuture
 type ServiceFabricsStopFuture = original.ServiceFabricsStopFuture
 type ServiceRunner = original.ServiceRunner
-type ServiceRunnerList = original.ServiceRunnerList
-type ServiceRunnerListIterator = original.ServiceRunnerListIterator
-type ServiceRunnerListPage = original.ServiceRunnerListPage
 type ServiceRunnersClient = original.ServiceRunnersClient
 type SharedPublicIPAddressConfiguration = original.SharedPublicIPAddressConfiguration
 type SharedPublicIPAddressConfigurationFragment = original.SharedPublicIPAddressConfigurationFragment
@@ -777,12 +776,6 @@ func NewServiceFabricsClient(subscriptionID string) ServiceFabricsClient {
 }
 func NewServiceFabricsClientWithBaseURI(baseURI string, subscriptionID string) ServiceFabricsClient {
 	return original.NewServiceFabricsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewServiceRunnerListIterator(page ServiceRunnerListPage) ServiceRunnerListIterator {
-	return original.NewServiceRunnerListIterator(page)
-}
-func NewServiceRunnerListPage(getNextPage func(context.Context, ServiceRunnerList) (ServiceRunnerList, error)) ServiceRunnerListPage {
-	return original.NewServiceRunnerListPage(getNextPage)
 }
 func NewServiceRunnersClient(subscriptionID string) ServiceRunnersClient {
 	return original.NewServiceRunnersClient(subscriptionID)

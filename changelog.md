@@ -2,6 +2,9 @@
 
 ## `head`
 
+## `v0.9.1`
+- bump common version to v2.1.0
+
 ## `v0.9.0`
 - periodically refresh claims based auth for connections to resolve [issue #116](https://github.com/Azure/azure-service-bus-go/issues/116)
 - refactor management functionality for entities into composition structs

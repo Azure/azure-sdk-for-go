@@ -1595,6 +1595,10 @@ type ProxyResource struct {
 
 // QuotaCapability the regional quota capability.
 type QuotaCapability struct {
+	// CoresUsed - The number of cores used in the subscription.
+	CoresUsed *int64 `json:"cores_used,omitempty"`
+	// MaxCoresAllowed - The number of cores that the subscription allowed.
+	MaxCoresAllowed *int64 `json:"max_cores_allowed,omitempty"`
 	// RegionalQuotas - The list of region quota capabilities.
 	RegionalQuotas *[]RegionalQuotaCapability `json:"regionalQuotas,omitempty"`
 }

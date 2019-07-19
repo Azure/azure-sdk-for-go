@@ -414,7 +414,7 @@ func (client VirtualNetworksClient) ListComplete(ctx context.Context, resourceGr
 	return
 }
 
-// Update modify properties of virtual networks.
+// Update allows modifying tags of virtual networks. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

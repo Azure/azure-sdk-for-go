@@ -281,7 +281,7 @@ func (client VirtualMachinesClient) ClaimResponder(resp *http.Response) (result 
 	return
 }
 
-// CreateOrUpdate create or replace an existing Virtual machine. This operation can take a while to complete.
+// CreateOrUpdate create or replace an existing virtual machine. This operation can take a while to complete.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
@@ -1461,7 +1461,7 @@ func (client VirtualMachinesClient) UnClaimResponder(resp *http.Response) (resul
 	return
 }
 
-// Update modify properties of virtual machines.
+// Update allows modifying tags of virtual machines. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

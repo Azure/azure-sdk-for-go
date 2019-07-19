@@ -421,7 +421,7 @@ func (client CustomImagesClient) ListComplete(ctx context.Context, resourceGroup
 	return
 }
 
-// Update modify properties of custom images.
+// Update allows modifying tags of custom images. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

@@ -317,6 +317,14 @@ const (
 	MongoDbAuthenticationTypeBasic     MongoDbAuthenticationType = original.MongoDbAuthenticationTypeBasic
 )
 
+type NetezzaPartitionOption = original.NetezzaPartitionOption
+
+const (
+	NetezzaPartitionOptionDataSlice    NetezzaPartitionOption = original.NetezzaPartitionOptionDataSlice
+	NetezzaPartitionOptionDynamicRange NetezzaPartitionOption = original.NetezzaPartitionOptionDynamicRange
+	NetezzaPartitionOptionNone         NetezzaPartitionOption = original.NetezzaPartitionOptionNone
+)
+
 type ODataAadServicePrincipalCredentialType = original.ODataAadServicePrincipalCredentialType
 
 const (
@@ -332,6 +340,14 @@ const (
 	ODataAuthenticationTypeBasic                  ODataAuthenticationType = original.ODataAuthenticationTypeBasic
 	ODataAuthenticationTypeManagedServiceIdentity ODataAuthenticationType = original.ODataAuthenticationTypeManagedServiceIdentity
 	ODataAuthenticationTypeWindows                ODataAuthenticationType = original.ODataAuthenticationTypeWindows
+)
+
+type OraclePartitionOption = original.OraclePartitionOption
+
+const (
+	OraclePartitionOptionDynamicRange              OraclePartitionOption = original.OraclePartitionOptionDynamicRange
+	OraclePartitionOptionNone                      OraclePartitionOption = original.OraclePartitionOptionNone
+	OraclePartitionOptionPhysicalPartitionsOfTable OraclePartitionOption = original.OraclePartitionOptionPhysicalPartitionsOfTable
 )
 
 type ParameterType = original.ParameterType
@@ -462,6 +478,17 @@ type SapHanaAuthenticationType = original.SapHanaAuthenticationType
 const (
 	SapHanaAuthenticationTypeBasic   SapHanaAuthenticationType = original.SapHanaAuthenticationTypeBasic
 	SapHanaAuthenticationTypeWindows SapHanaAuthenticationType = original.SapHanaAuthenticationTypeWindows
+)
+
+type SapTablePartitionOption = original.SapTablePartitionOption
+
+const (
+	SapTablePartitionOptionNone                     SapTablePartitionOption = original.SapTablePartitionOptionNone
+	SapTablePartitionOptionPartitionOnCalendarDate  SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnCalendarDate
+	SapTablePartitionOptionPartitionOnCalendarMonth SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnCalendarMonth
+	SapTablePartitionOptionPartitionOnCalendarYear  SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnCalendarYear
+	SapTablePartitionOptionPartitionOnInt           SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnInt
+	SapTablePartitionOptionPartitionOnTime          SapTablePartitionOption = original.SapTablePartitionOptionPartitionOnTime
 )
 
 type SelfHostedIntegrationRuntimeNodeStatus = original.SelfHostedIntegrationRuntimeNodeStatus
@@ -641,10 +668,12 @@ const (
 	TypeAzureBlobFSSink              TypeBasicCopySink = original.TypeAzureBlobFSSink
 	TypeAzureDataExplorerSink        TypeBasicCopySink = original.TypeAzureDataExplorerSink
 	TypeAzureDataLakeStoreSink       TypeBasicCopySink = original.TypeAzureDataLakeStoreSink
+	TypeAzurePostgreSQLSink          TypeBasicCopySink = original.TypeAzurePostgreSQLSink
 	TypeAzureQueueSink               TypeBasicCopySink = original.TypeAzureQueueSink
 	TypeAzureSearchIndexSink         TypeBasicCopySink = original.TypeAzureSearchIndexSink
 	TypeAzureSQLSink                 TypeBasicCopySink = original.TypeAzureSQLSink
 	TypeAzureTableSink               TypeBasicCopySink = original.TypeAzureTableSink
+	TypeBinarySink                   TypeBasicCopySink = original.TypeBinarySink
 	TypeBlobSink                     TypeBasicCopySink = original.TypeBlobSink
 	TypeCommonDataServiceForAppsSink TypeBasicCopySink = original.TypeCommonDataServiceForAppsSink
 	TypeCopySink                     TypeBasicCopySink = original.TypeCopySink
@@ -680,6 +709,7 @@ const (
 	TypeAzurePostgreSQLSource          TypeBasicCopySource = original.TypeAzurePostgreSQLSource
 	TypeAzureSQLSource                 TypeBasicCopySource = original.TypeAzureSQLSource
 	TypeAzureTableSource               TypeBasicCopySource = original.TypeAzureTableSource
+	TypeBinarySource                   TypeBasicCopySource = original.TypeBinarySource
 	TypeBlobSource                     TypeBasicCopySource = original.TypeBlobSource
 	TypeCassandraSource                TypeBasicCopySource = original.TypeCassandraSource
 	TypeCommonDataServiceForAppsSource TypeBasicCopySource = original.TypeCommonDataServiceForAppsSource
@@ -687,6 +717,7 @@ const (
 	TypeCopySource                     TypeBasicCopySource = original.TypeCopySource
 	TypeCosmosDbMongoDbAPISource       TypeBasicCopySource = original.TypeCosmosDbMongoDbAPISource
 	TypeCouchbaseSource                TypeBasicCopySource = original.TypeCouchbaseSource
+	TypeDb2Source                      TypeBasicCopySource = original.TypeDb2Source
 	TypeDelimitedTextSource            TypeBasicCopySource = original.TypeDelimitedTextSource
 	TypeDocumentDbCollectionSource     TypeBasicCopySource = original.TypeDocumentDbCollectionSource
 	TypeDrillSource                    TypeBasicCopySource = original.TypeDrillSource
@@ -712,13 +743,17 @@ const (
 	TypeMicrosoftAccessSource          TypeBasicCopySource = original.TypeMicrosoftAccessSource
 	TypeMongoDbSource                  TypeBasicCopySource = original.TypeMongoDbSource
 	TypeMongoDbV2Source                TypeBasicCopySource = original.TypeMongoDbV2Source
+	TypeMySQLSource                    TypeBasicCopySource = original.TypeMySQLSource
 	TypeNetezzaSource                  TypeBasicCopySource = original.TypeNetezzaSource
+	TypeODataSource                    TypeBasicCopySource = original.TypeODataSource
+	TypeOdbcSource                     TypeBasicCopySource = original.TypeOdbcSource
 	TypeOffice365Source                TypeBasicCopySource = original.TypeOffice365Source
 	TypeOracleServiceCloudSource       TypeBasicCopySource = original.TypeOracleServiceCloudSource
 	TypeOracleSource                   TypeBasicCopySource = original.TypeOracleSource
 	TypeParquetSource                  TypeBasicCopySource = original.TypeParquetSource
 	TypePaypalSource                   TypeBasicCopySource = original.TypePaypalSource
 	TypePhoenixSource                  TypeBasicCopySource = original.TypePhoenixSource
+	TypePostgreSQLSource               TypeBasicCopySource = original.TypePostgreSQLSource
 	TypePrestoSource                   TypeBasicCopySource = original.TypePrestoSource
 	TypeQuickBooksSource               TypeBasicCopySource = original.TypeQuickBooksSource
 	TypeRelationalSource               TypeBasicCopySource = original.TypeRelationalSource
@@ -740,6 +775,7 @@ const (
 	TypeSQLServerSource                TypeBasicCopySource = original.TypeSQLServerSource
 	TypeSQLSource                      TypeBasicCopySource = original.TypeSQLSource
 	TypeSquareSource                   TypeBasicCopySource = original.TypeSquareSource
+	TypeSybaseSource                   TypeBasicCopySource = original.TypeSybaseSource
 	TypeTeradataSource                 TypeBasicCopySource = original.TypeTeradataSource
 	TypeVerticaSource                  TypeBasicCopySource = original.TypeVerticaSource
 	TypeWebSource                      TypeBasicCopySource = original.TypeWebSource
@@ -763,6 +799,7 @@ const (
 	TypeAzureSQLMITable                TypeBasicDataset = original.TypeAzureSQLMITable
 	TypeAzureSQLTable                  TypeBasicDataset = original.TypeAzureSQLTable
 	TypeAzureTable                     TypeBasicDataset = original.TypeAzureTable
+	TypeBinary                         TypeBasicDataset = original.TypeBinary
 	TypeCassandraTable                 TypeBasicDataset = original.TypeCassandraTable
 	TypeCommonDataServiceForAppsEntity TypeBasicDataset = original.TypeCommonDataServiceForAppsEntity
 	TypeConcurObject                   TypeBasicDataset = original.TypeConcurObject
@@ -794,14 +831,17 @@ const (
 	TypeMicrosoftAccessTable           TypeBasicDataset = original.TypeMicrosoftAccessTable
 	TypeMongoDbCollection              TypeBasicDataset = original.TypeMongoDbCollection
 	TypeMongoDbV2Collection            TypeBasicDataset = original.TypeMongoDbV2Collection
+	TypeMySQLTable                     TypeBasicDataset = original.TypeMySQLTable
 	TypeNetezzaTable                   TypeBasicDataset = original.TypeNetezzaTable
 	TypeODataResource                  TypeBasicDataset = original.TypeODataResource
+	TypeOdbcTable                      TypeBasicDataset = original.TypeOdbcTable
 	TypeOffice365Table                 TypeBasicDataset = original.TypeOffice365Table
 	TypeOracleServiceCloudObject       TypeBasicDataset = original.TypeOracleServiceCloudObject
 	TypeOracleTable                    TypeBasicDataset = original.TypeOracleTable
 	TypeParquet                        TypeBasicDataset = original.TypeParquet
 	TypePaypalObject                   TypeBasicDataset = original.TypePaypalObject
 	TypePhoenixObject                  TypeBasicDataset = original.TypePhoenixObject
+	TypePostgreSQLTable                TypeBasicDataset = original.TypePostgreSQLTable
 	TypePrestoObject                   TypeBasicDataset = original.TypePrestoObject
 	TypeQuickBooksObject               TypeBasicDataset = original.TypeQuickBooksObject
 	TypeRelationalTable                TypeBasicDataset = original.TypeRelationalTable
@@ -1105,8 +1145,10 @@ type AzureMySQLTableDataset = original.AzureMySQLTableDataset
 type AzureMySQLTableDatasetTypeProperties = original.AzureMySQLTableDatasetTypeProperties
 type AzurePostgreSQLLinkedService = original.AzurePostgreSQLLinkedService
 type AzurePostgreSQLLinkedServiceTypeProperties = original.AzurePostgreSQLLinkedServiceTypeProperties
+type AzurePostgreSQLSink = original.AzurePostgreSQLSink
 type AzurePostgreSQLSource = original.AzurePostgreSQLSource
 type AzurePostgreSQLTableDataset = original.AzurePostgreSQLTableDataset
+type AzurePostgreSQLTableDatasetTypeProperties = original.AzurePostgreSQLTableDatasetTypeProperties
 type AzureQueueSink = original.AzureQueueSink
 type AzureSQLDWLinkedService = original.AzureSQLDWLinkedService
 type AzureSQLDWLinkedServiceTypeProperties = original.AzureSQLDWLinkedServiceTypeProperties
@@ -1155,6 +1197,10 @@ type BasicSsisObjectMetadata = original.BasicSsisObjectMetadata
 type BasicTrigger = original.BasicTrigger
 type BasicTriggerDependencyReference = original.BasicTriggerDependencyReference
 type BasicWebLinkedServiceTypeProperties = original.BasicWebLinkedServiceTypeProperties
+type BinaryDataset = original.BinaryDataset
+type BinaryDatasetTypeProperties = original.BinaryDatasetTypeProperties
+type BinarySink = original.BinarySink
+type BinarySource = original.BinarySource
 type BlobEventsTrigger = original.BlobEventsTrigger
 type BlobEventsTriggerTypeProperties = original.BlobEventsTriggerTypeProperties
 type BlobSink = original.BlobSink
@@ -1227,6 +1273,7 @@ type DatasetZipDeflateCompression = original.DatasetZipDeflateCompression
 type DatasetsClient = original.DatasetsClient
 type Db2LinkedService = original.Db2LinkedService
 type Db2LinkedServiceTypeProperties = original.Db2LinkedServiceTypeProperties
+type Db2Source = original.Db2Source
 type DeleteActivity = original.DeleteActivity
 type DeleteActivityTypeProperties = original.DeleteActivityTypeProperties
 type DelimitedTextDataset = original.DelimitedTextDataset
@@ -1461,17 +1508,25 @@ type MongoDbV2Source = original.MongoDbV2Source
 type MultiplePipelineTrigger = original.MultiplePipelineTrigger
 type MySQLLinkedService = original.MySQLLinkedService
 type MySQLLinkedServiceTypeProperties = original.MySQLLinkedServiceTypeProperties
+type MySQLSource = original.MySQLSource
+type MySQLTableDataset = original.MySQLTableDataset
+type MySQLTableDatasetTypeProperties = original.MySQLTableDatasetTypeProperties
 type NetezzaLinkedService = original.NetezzaLinkedService
 type NetezzaLinkedServiceTypeProperties = original.NetezzaLinkedServiceTypeProperties
+type NetezzaPartitionSettings = original.NetezzaPartitionSettings
 type NetezzaSource = original.NetezzaSource
 type NetezzaTableDataset = original.NetezzaTableDataset
 type ODataLinkedService = original.ODataLinkedService
 type ODataLinkedServiceTypeProperties = original.ODataLinkedServiceTypeProperties
 type ODataResourceDataset = original.ODataResourceDataset
 type ODataResourceDatasetTypeProperties = original.ODataResourceDatasetTypeProperties
+type ODataSource = original.ODataSource
 type OdbcLinkedService = original.OdbcLinkedService
 type OdbcLinkedServiceTypeProperties = original.OdbcLinkedServiceTypeProperties
 type OdbcSink = original.OdbcSink
+type OdbcSource = original.OdbcSource
+type OdbcTableDataset = original.OdbcTableDataset
+type OdbcTableDatasetTypeProperties = original.OdbcTableDatasetTypeProperties
 type Office365Dataset = original.Office365Dataset
 type Office365DatasetTypeProperties = original.Office365DatasetTypeProperties
 type Office365LinkedService = original.Office365LinkedService
@@ -1491,6 +1546,7 @@ type OperationServiceSpecification = original.OperationServiceSpecification
 type OperationsClient = original.OperationsClient
 type OracleLinkedService = original.OracleLinkedService
 type OracleLinkedServiceTypeProperties = original.OracleLinkedServiceTypeProperties
+type OraclePartitionSettings = original.OraclePartitionSettings
 type OracleServiceCloudLinkedService = original.OracleServiceCloudLinkedService
 type OracleServiceCloudLinkedServiceTypeProperties = original.OracleServiceCloudLinkedServiceTypeProperties
 type OracleServiceCloudObjectDataset = original.OracleServiceCloudObjectDataset
@@ -1529,6 +1585,9 @@ type PipelinesClient = original.PipelinesClient
 type PolybaseSettings = original.PolybaseSettings
 type PostgreSQLLinkedService = original.PostgreSQLLinkedService
 type PostgreSQLLinkedServiceTypeProperties = original.PostgreSQLLinkedServiceTypeProperties
+type PostgreSQLSource = original.PostgreSQLSource
+type PostgreSQLTableDataset = original.PostgreSQLTableDataset
+type PostgreSQLTableDatasetTypeProperties = original.PostgreSQLTableDatasetTypeProperties
 type PrestoLinkedService = original.PrestoLinkedService
 type PrestoLinkedServiceTypeProperties = original.PrestoLinkedServiceTypeProperties
 type PrestoObjectDataset = original.PrestoObjectDataset
@@ -1632,6 +1691,7 @@ type SapOpenHubTableDataset = original.SapOpenHubTableDataset
 type SapOpenHubTableDatasetTypeProperties = original.SapOpenHubTableDatasetTypeProperties
 type SapTableLinkedService = original.SapTableLinkedService
 type SapTableLinkedServiceTypeProperties = original.SapTableLinkedServiceTypeProperties
+type SapTablePartitionSettings = original.SapTablePartitionSettings
 type SapTableResourceDataset = original.SapTableResourceDataset
 type SapTableResourceDatasetTypeProperties = original.SapTableResourceDatasetTypeProperties
 type SapTableSource = original.SapTableSource
@@ -1686,6 +1746,7 @@ type StoredProcedureParameter = original.StoredProcedureParameter
 type SubResource = original.SubResource
 type SybaseLinkedService = original.SybaseLinkedService
 type SybaseLinkedServiceTypeProperties = original.SybaseLinkedServiceTypeProperties
+type SybaseSource = original.SybaseSource
 type TeradataLinkedService = original.TeradataLinkedService
 type TeradataLinkedServiceTypeProperties = original.TeradataLinkedServiceTypeProperties
 type TeradataPartitionSettings = original.TeradataPartitionSettings
@@ -1987,11 +2048,17 @@ func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRun
 func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
 	return original.PossibleMongoDbAuthenticationTypeValues()
 }
+func PossibleNetezzaPartitionOptionValues() []NetezzaPartitionOption {
+	return original.PossibleNetezzaPartitionOptionValues()
+}
 func PossibleODataAadServicePrincipalCredentialTypeValues() []ODataAadServicePrincipalCredentialType {
 	return original.PossibleODataAadServicePrincipalCredentialTypeValues()
 }
 func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
 	return original.PossibleODataAuthenticationTypeValues()
+}
+func PossibleOraclePartitionOptionValues() []OraclePartitionOption {
+	return original.PossibleOraclePartitionOptionValues()
 }
 func PossibleParameterTypeValues() []ParameterType {
 	return original.PossibleParameterTypeValues()
@@ -2034,6 +2101,9 @@ func PossibleSapCloudForCustomerSinkWriteBehaviorValues() []SapCloudForCustomerS
 }
 func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
 	return original.PossibleSapHanaAuthenticationTypeValues()
+}
+func PossibleSapTablePartitionOptionValues() []SapTablePartitionOption {
+	return original.PossibleSapTablePartitionOptionValues()
 }
 func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
 	return original.PossibleSelfHostedIntegrationRuntimeNodeStatusValues()

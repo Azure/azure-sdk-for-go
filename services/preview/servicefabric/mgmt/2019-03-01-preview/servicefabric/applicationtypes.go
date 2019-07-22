@@ -87,7 +87,7 @@ func (client ApplicationTypesClient) CreatePreparer(ctx context.Context, resourc
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -162,7 +162,7 @@ func (client ApplicationTypesClient) DeletePreparer(ctx context.Context, resourc
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -247,7 +247,7 @@ func (client ApplicationTypesClient) GetPreparer(ctx context.Context, resourceGr
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -325,7 +325,7 @@ func (client ApplicationTypesClient) ListPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

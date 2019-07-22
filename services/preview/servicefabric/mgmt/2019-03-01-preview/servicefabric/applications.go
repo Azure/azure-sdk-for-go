@@ -25,31 +25,30 @@ import (
 	"net/http"
 )
 
-// ServicesClient is the service Fabric Management Client
-type ServicesClient struct {
+// ApplicationsClient is the service Fabric Management Client
+type ApplicationsClient struct {
 	BaseClient
 }
 
-// NewServicesClient creates an instance of the ServicesClient client.
-func NewServicesClient(subscriptionID string) ServicesClient {
-	return NewServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewApplicationsClient creates an instance of the ApplicationsClient client.
+func NewApplicationsClient(subscriptionID string) ApplicationsClient {
+	return NewApplicationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServicesClientWithBaseURI creates an instance of the ServicesClient client.
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
-	return ServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewApplicationsClientWithBaseURI creates an instance of the ApplicationsClient client.
+func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationsClient {
+	return ApplicationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create create or update a Service Fabric service resource with the specified name.
+// Create create or update a Service Fabric application resource with the specified name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource.
 // applicationName - the name of the application resource.
-// serviceName - the name of the service resource in the format of {applicationName}~{serviceName}.
-// parameters - the service resource.
-func (client ServicesClient) Create(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResource) (result ServicesCreateFuture, err error) {
+// parameters - the application resource.
+func (client ApplicationsClient) Create(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResource) (result ApplicationsCreateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.Create")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -58,15 +57,15 @@ func (client ServicesClient) Create(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, applicationName, serviceName, parameters)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, applicationName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -74,16 +73,15 @@ func (client ServicesClient) Create(ctx context.Context, resourceGroupName strin
 }
 
 // CreatePreparer prepares the Create request.
-func (client ServicesClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResource) (*http.Request, error) {
+func (client ApplicationsClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationName":   autorest.Encode("path", applicationName),
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -92,7 +90,7 @@ func (client ServicesClient) CreatePreparer(ctx context.Context, resourceGroupNa
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -100,7 +98,7 @@ func (client ServicesClient) CreatePreparer(ctx context.Context, resourceGroupNa
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServicesClient) CreateSender(req *http.Request) (future ServicesCreateFuture, err error) {
+func (client ApplicationsClient) CreateSender(req *http.Request) (future ApplicationsCreateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -113,7 +111,7 @@ func (client ServicesClient) CreateSender(req *http.Request) (future ServicesCre
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) CreateResponder(resp *http.Response) (result ServiceResource, err error) {
+func (client ApplicationsClient) CreateResponder(resp *http.Response) (result ApplicationResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -124,15 +122,14 @@ func (client ServicesClient) CreateResponder(resp *http.Response) (result Servic
 	return
 }
 
-// Delete delete a Service Fabric service resource with the specified name.
+// Delete delete a Service Fabric application resource with the specified name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource.
 // applicationName - the name of the application resource.
-// serviceName - the name of the service resource in the format of {applicationName}~{serviceName}.
-func (client ServicesClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string) (result ServicesDeleteFuture, err error) {
+func (client ApplicationsClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (result ApplicationsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -141,15 +138,15 @@ func (client ServicesClient) Delete(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName, applicationName, serviceName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterName, applicationName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -157,16 +154,15 @@ func (client ServicesClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ServicesClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string) (*http.Request, error) {
+func (client ApplicationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationName":   autorest.Encode("path", applicationName),
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -174,14 +170,14 @@ func (client ServicesClient) DeletePreparer(ctx context.Context, resourceGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServicesClient) DeleteSender(req *http.Request) (future ServicesDeleteFuture, err error) {
+func (client ApplicationsClient) DeleteSender(req *http.Request) (future ApplicationsDeleteFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -194,7 +190,7 @@ func (client ServicesClient) DeleteSender(req *http.Request) (future ServicesDel
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ApplicationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -204,16 +200,15 @@ func (client ServicesClient) DeleteResponder(resp *http.Response) (result autore
 	return
 }
 
-// Get get a Service Fabric service resource created or in the process of being created in the Service Fabric
-// application resource.
+// Get get a Service Fabric application resource created or in the process of being created in the Service Fabric
+// cluster resource.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource.
 // applicationName - the name of the application resource.
-// serviceName - the name of the service resource in the format of {applicationName}~{serviceName}.
-func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string) (result ServiceResource, err error) {
+func (client ApplicationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (result ApplicationResource, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -222,38 +217,37 @@ func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName, applicationName, serviceName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, clusterName, applicationName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ServicesClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string) (*http.Request, error) {
+func (client ApplicationsClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationName":   autorest.Encode("path", applicationName),
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -261,21 +255,21 @@ func (client ServicesClient) GetPreparer(ctx context.Context, resourceGroupName 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServicesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ApplicationsClient) GetSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) GetResponder(resp *http.Response) (result ServiceResource, err error) {
+func (client ApplicationsClient) GetResponder(resp *http.Response) (result ApplicationResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -286,15 +280,14 @@ func (client ServicesClient) GetResponder(resp *http.Response) (result ServiceRe
 	return
 }
 
-// List gets all service resources created or in the process of being created in the Service Fabric application
+// List gets all application resources created or in the process of being created in the Service Fabric cluster
 // resource.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource.
-// applicationName - the name of the application resource.
-func (client ServicesClient) List(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (result ServiceResourceList, err error) {
+func (client ApplicationsClient) List(ctx context.Context, resourceGroupName string, clusterName string) (result ApplicationResourceList, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -303,37 +296,36 @@ func (client ServicesClient) List(ctx context.Context, resourceGroupName string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx, resourceGroupName, clusterName, applicationName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, clusterName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ServicesClient) ListPreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (*http.Request, error) {
+func (client ApplicationsClient) ListPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"applicationName":   autorest.Encode("path", applicationName),
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -341,21 +333,21 @@ func (client ServicesClient) ListPreparer(ctx context.Context, resourceGroupName
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServicesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ApplicationsClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) ListResponder(resp *http.Response) (result ServiceResourceList, err error) {
+func (client ApplicationsClient) ListResponder(resp *http.Response) (result ApplicationResourceList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -366,16 +358,15 @@ func (client ServicesClient) ListResponder(resp *http.Response) (result ServiceR
 	return
 }
 
-// Update update a Service Fabric service resource with the specified name.
+// Update update a Service Fabric application resource with the specified name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource.
 // applicationName - the name of the application resource.
-// serviceName - the name of the service resource in the format of {applicationName}~{serviceName}.
-// parameters - the service resource for patch operations.
-func (client ServicesClient) Update(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResourceUpdate) (result ServicesUpdateFuture, err error) {
+// parameters - the application resource for patch operations.
+func (client ApplicationsClient) Update(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResourceUpdate) (result ApplicationsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -384,15 +375,15 @@ func (client ServicesClient) Update(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, clusterName, applicationName, serviceName, parameters)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, clusterName, applicationName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -400,16 +391,15 @@ func (client ServicesClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResourceUpdate) (*http.Request, error) {
+func (client ApplicationsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResourceUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationName":   autorest.Encode("path", applicationName),
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"serviceName":       autorest.Encode("path", serviceName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -418,7 +408,7 @@ func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}/services/{serviceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applications/{applicationName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -426,7 +416,7 @@ func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServicesClient) UpdateSender(req *http.Request) (future ServicesUpdateFuture, err error) {
+func (client ApplicationsClient) UpdateSender(req *http.Request) (future ApplicationsUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -439,7 +429,7 @@ func (client ServicesClient) UpdateSender(req *http.Request) (future ServicesUpd
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client ServicesClient) UpdateResponder(resp *http.Response) (result ServiceResource, err error) {
+func (client ApplicationsClient) UpdateResponder(resp *http.Response) (result ApplicationResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

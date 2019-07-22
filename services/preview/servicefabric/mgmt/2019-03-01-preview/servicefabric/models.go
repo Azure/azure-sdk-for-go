@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2019-03-01/servicefabric"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2019-03-01-preview/servicefabric"
 
 // ArmServicePackageActivationMode enumerates the values for arm service package activation mode.
 type ArmServicePackageActivationMode string
@@ -558,6 +558,10 @@ type ApplicationResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
+	// Location - Azure resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
 	// Etag - READ-ONLY; Azure resource etag.
 	Etag *string `json:"etag,omitempty"`
 }
@@ -567,6 +571,12 @@ func (ar ApplicationResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ar.ApplicationResourceProperties != nil {
 		objectMap["properties"] = ar.ApplicationResourceProperties
+	}
+	if ar.Location != nil {
+		objectMap["location"] = ar.Location
+	}
+	if ar.Tags != nil {
+		objectMap["tags"] = ar.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -615,6 +625,24 @@ func (ar *ApplicationResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ar.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ar.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ar.Tags = tags
 			}
 		case "etag":
 			if v != nil {
@@ -701,6 +729,10 @@ type ApplicationResourceUpdate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
+	// Location - Azure resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
 	// Etag - READ-ONLY; Azure resource etag.
 	Etag *string `json:"etag,omitempty"`
 }
@@ -710,6 +742,12 @@ func (aru ApplicationResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if aru.ApplicationResourceUpdateProperties != nil {
 		objectMap["properties"] = aru.ApplicationResourceUpdateProperties
+	}
+	if aru.Location != nil {
+		objectMap["location"] = aru.Location
+	}
+	if aru.Tags != nil {
+		objectMap["tags"] = aru.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -758,6 +796,24 @@ func (aru *ApplicationResourceUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				aru.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				aru.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				aru.Tags = tags
 			}
 		case "etag":
 			if v != nil {
@@ -911,6 +967,10 @@ type ApplicationTypeResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
+	// Location - Azure resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
 	// Etag - READ-ONLY; Azure resource etag.
 	Etag *string `json:"etag,omitempty"`
 }
@@ -920,6 +980,12 @@ func (atr ApplicationTypeResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if atr.ApplicationTypeResourceProperties != nil {
 		objectMap["properties"] = atr.ApplicationTypeResourceProperties
+	}
+	if atr.Location != nil {
+		objectMap["location"] = atr.Location
+	}
+	if atr.Tags != nil {
+		objectMap["tags"] = atr.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -968,6 +1034,24 @@ func (atr *ApplicationTypeResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				atr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				atr.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				atr.Tags = tags
 			}
 		case "etag":
 			if v != nil {
@@ -1033,6 +1117,10 @@ type ApplicationTypeVersionResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
+	// Location - Azure resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
 	// Etag - READ-ONLY; Azure resource etag.
 	Etag *string `json:"etag,omitempty"`
 }
@@ -1042,6 +1130,12 @@ func (atvr ApplicationTypeVersionResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if atvr.ApplicationTypeVersionResourceProperties != nil {
 		objectMap["properties"] = atvr.ApplicationTypeVersionResourceProperties
+	}
+	if atvr.Location != nil {
+		objectMap["location"] = atvr.Location
+	}
+	if atvr.Tags != nil {
+		objectMap["tags"] = atvr.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -1090,6 +1184,24 @@ func (atvr *ApplicationTypeVersionResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				atvr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				atvr.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				atvr.Tags = tags
 			}
 		case "etag":
 			if v != nil {
@@ -2261,8 +2373,24 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
+	// Location - Azure resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
 	// Etag - READ-ONLY; Azure resource etag.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.Location != nil {
+		objectMap["location"] = pr.Location
+	}
+	if pr.Tags != nil {
+		objectMap["tags"] = pr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource the resource model definition.
@@ -2407,6 +2535,10 @@ type ServiceResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
+	// Location - Azure resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
 	// Etag - READ-ONLY; Azure resource etag.
 	Etag *string `json:"etag,omitempty"`
 }
@@ -2415,6 +2547,12 @@ type ServiceResource struct {
 func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = sr.BasicServiceResourceProperties
+	if sr.Location != nil {
+		objectMap["location"] = sr.Location
+	}
+	if sr.Tags != nil {
+		objectMap["tags"] = sr.Tags
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -2461,6 +2599,24 @@ func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sr.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sr.Tags = tags
 			}
 		case "etag":
 			if v != nil {
@@ -2795,6 +2951,10 @@ type ServiceResourceUpdate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
+	// Location - Azure resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Azure resource tags.
+	Tags map[string]*string `json:"tags"`
 	// Etag - READ-ONLY; Azure resource etag.
 	Etag *string `json:"etag,omitempty"`
 }
@@ -2803,6 +2963,12 @@ type ServiceResourceUpdate struct {
 func (sru ServiceResourceUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	objectMap["properties"] = sru.BasicServiceResourceUpdateProperties
+	if sru.Location != nil {
+		objectMap["location"] = sru.Location
+	}
+	if sru.Tags != nil {
+		objectMap["tags"] = sru.Tags
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -2849,6 +3015,24 @@ func (sru *ServiceResourceUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sru.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sru.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sru.Tags = tags
 			}
 		case "etag":
 			if v != nil {

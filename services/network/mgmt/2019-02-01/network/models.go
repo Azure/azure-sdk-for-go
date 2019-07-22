@@ -21451,17 +21451,19 @@ type PublicIPPrefixPropertiesFormat struct {
 	IPTags *[]IPTag `json:"ipTags,omitempty"`
 	// PrefixLength - The Length of the Public IP Prefix.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
-	// IPPrefix - The allocated Prefix
+	// IPPrefix - The allocated Prefix.
 	IPPrefix *string `json:"ipPrefix,omitempty"`
-	// PublicIPAddresses - The list of all referenced PublicIPAddresses
+	// PublicIPAddresses - The list of all referenced PublicIPAddresses.
 	PublicIPAddresses *[]ReferencedPublicIPAddress `json:"publicIPAddresses,omitempty"`
+	// LoadBalancerFrontendIPConfiguration - READ-ONLY; The reference to load balancer frontend IP configuration associated with the public IP prefix.
+	LoadBalancerFrontendIPConfiguration *SubResource `json:"loadBalancerFrontendIpConfiguration,omitempty"`
 	// ResourceGUID - The resource GUID property of the public IP prefix resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - The provisioning state of the Public IP prefix resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// PublicIPPrefixSku SKU of a public IP prefix
+// PublicIPPrefixSku SKU of a public IP prefix.
 type PublicIPPrefixSku struct {
 	// Name - Name of a public IP prefix SKU. Possible values include: 'PublicIPPrefixSkuNameStandard'
 	Name PublicIPPrefixSkuName `json:"name,omitempty"`
@@ -21475,7 +21477,7 @@ type QueryTroubleshootingParameters struct {
 
 // ReferencedPublicIPAddress reference to a public IP address.
 type ReferencedPublicIPAddress struct {
-	// ID - The PublicIPAddress Reference
+	// ID - The PublicIPAddress Reference.
 	ID *string `json:"id,omitempty"`
 }
 

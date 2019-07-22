@@ -1063,8 +1063,8 @@ func (ae AccountEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for AccountEntity.
+func (ae AccountEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -2249,8 +2249,8 @@ func (are AzureResourceEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for AzureResourceEntity.
+func (are AzureResourceEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -2529,8 +2529,8 @@ func (be BookmarkEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for BookmarkEntity.
+func (be BookmarkEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -3125,14 +3125,6 @@ type CaseProperties struct {
 	Status CaseStatus `json:"status,omitempty"`
 	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
 	CloseReason CloseReason `json:"closeReason,omitempty"`
-	// ClosedReasonText - the case close reason details
-	ClosedReasonText *string `json:"closedReasonText,omitempty"`
-	// RelatedAlertIds - List of related alert identifiers
-	RelatedAlertIds *[]string `json:"relatedAlertIds,omitempty"`
-	// CaseNumber - a sequential number
-	CaseNumber *int32 `json:"caseNumber,omitempty"`
-	// LastComment - the last comment in the case
-	LastComment *string `json:"lastComment,omitempty"`
 }
 
 // CasesAggregation represents aggregations results for cases.
@@ -3318,8 +3310,8 @@ func (cae CloudApplicationEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for CloudApplicationEntity.
+func (cae CloudApplicationEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -3937,8 +3929,8 @@ func (de DNSEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for DNSEntity.
+func (de DNSEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -4095,7 +4087,7 @@ type BasicEntity interface {
 	AsHostEntity() (*HostEntity, bool)
 	AsFileEntity() (*FileEntity, bool)
 	AsSecurityAlert() (*SecurityAlert, bool)
-	AsFileHash() (*FileHash, bool)
+	AsFileHashEntity() (*FileHashEntity, bool)
 	AsMalwareEntity() (*MalwareEntity, bool)
 	AsSecurityGroupEntity() (*SecurityGroupEntity, bool)
 	AsAzureResourceEntity() (*AzureResourceEntity, bool)
@@ -4148,9 +4140,9 @@ func unmarshalBasicEntity(body []byte) (BasicEntity, error) {
 		err := json.Unmarshal(body, &sa)
 		return sa, err
 	case string(KindFileHash):
-		var fh FileHash
-		err := json.Unmarshal(body, &fh)
-		return fh, err
+		var fhe FileHashEntity
+		err := json.Unmarshal(body, &fhe)
+		return fhe, err
 	case string(KindMalware):
 		var me MalwareEntity
 		err := json.Unmarshal(body, &me)
@@ -4250,8 +4242,8 @@ func (e Entity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for Entity.
-func (e Entity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for Entity.
+func (e Entity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -4883,8 +4875,8 @@ func (fe FileEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for FileEntity.
+func (fe FileEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -5035,8 +5027,8 @@ func (fep FileEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// FileHash represents a file hash entity.
-type FileHash struct {
+// FileHashEntity represents a file hash entity.
+type FileHashEntity struct {
 	// FileHashEntityProperties - FileHash entity properties
 	*FileHashEntityProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
@@ -5049,111 +5041,111 @@ type FileHash struct {
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for FileHash.
-func (fh FileHash) MarshalJSON() ([]byte, error) {
-	fh.Kind = KindFileHash
+// MarshalJSON is the custom marshaler for FileHashEntity.
+func (fhe FileHashEntity) MarshalJSON() ([]byte, error) {
+	fhe.Kind = KindFileHash
 	objectMap := make(map[string]interface{})
-	if fh.FileHashEntityProperties != nil {
-		objectMap["properties"] = fh.FileHashEntityProperties
+	if fhe.FileHashEntityProperties != nil {
+		objectMap["properties"] = fhe.FileHashEntityProperties
 	}
-	if fh.Kind != "" {
-		objectMap["kind"] = fh.Kind
+	if fhe.Kind != "" {
+		objectMap["kind"] = fhe.Kind
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsAccountEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsAccountEntity() (*AccountEntity, bool) {
+// AsAccountEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsAccountEntity() (*AccountEntity, bool) {
 	return nil, false
 }
 
-// AsHostEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsHostEntity() (*HostEntity, bool) {
+// AsHostEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsHostEntity() (*HostEntity, bool) {
 	return nil, false
 }
 
-// AsFileEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsFileEntity() (*FileEntity, bool) {
+// AsFileEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsFileEntity() (*FileEntity, bool) {
 	return nil, false
 }
 
-// AsSecurityAlert is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsSecurityAlert() (*SecurityAlert, bool) {
+// AsSecurityAlert is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsFileHash() (*FileHash, bool) {
-	return &fh, true
+// AsFileHashEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsFileHashEntity() (*FileHashEntity, bool) {
+	return &fhe, true
 }
 
-// AsMalwareEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsMalwareEntity() (*MalwareEntity, bool) {
+// AsMalwareEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsMalwareEntity() (*MalwareEntity, bool) {
 	return nil, false
 }
 
-// AsSecurityGroupEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
+// AsSecurityGroupEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
 	return nil, false
 }
 
-// AsAzureResourceEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
+// AsAzureResourceEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
 	return nil, false
 }
 
-// AsCloudApplicationEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
+// AsCloudApplicationEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
 	return nil, false
 }
 
-// AsProcessEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsProcessEntity() (*ProcessEntity, bool) {
+// AsProcessEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsProcessEntity() (*ProcessEntity, bool) {
 	return nil, false
 }
 
-// AsDNSEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsDNSEntity() (*DNSEntity, bool) {
+// AsDNSEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsDNSEntity() (*DNSEntity, bool) {
 	return nil, false
 }
 
-// AsIPEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsIPEntity() (*IPEntity, bool) {
+// AsIPEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsIPEntity() (*IPEntity, bool) {
 	return nil, false
 }
 
-// AsRegistryKeyEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
+// AsRegistryKeyEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
 	return nil, false
 }
 
-// AsRegistryValueEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
+// AsRegistryValueEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 	return nil, false
 }
 
-// AsURLEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsURLEntity() (*URLEntity, bool) {
+// AsURLEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsURLEntity() (*URLEntity, bool) {
 	return nil, false
 }
 
-// AsBookmarkEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsBookmarkEntity() (*BookmarkEntity, bool) {
+// AsBookmarkEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
-// AsEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsEntity() (*Entity, bool) {
+// AsEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsEntity() (*Entity, bool) {
 	return nil, false
 }
 
-// AsBasicEntity is the BasicEntity implementation for FileHash.
-func (fh FileHash) AsBasicEntity() (BasicEntity, bool) {
-	return &fh, true
+// AsBasicEntity is the BasicEntity implementation for FileHashEntity.
+func (fhe FileHashEntity) AsBasicEntity() (BasicEntity, bool) {
+	return &fhe, true
 }
 
-// UnmarshalJSON is the custom unmarshaler for FileHash struct.
-func (fh *FileHash) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for FileHashEntity struct.
+func (fhe *FileHashEntity) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -5168,7 +5160,7 @@ func (fh *FileHash) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fh.FileHashEntityProperties = &fileHashEntityProperties
+				fhe.FileHashEntityProperties = &fileHashEntityProperties
 			}
 		case "id":
 			if v != nil {
@@ -5177,7 +5169,7 @@ func (fh *FileHash) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fh.ID = &ID
+				fhe.ID = &ID
 			}
 		case "type":
 			if v != nil {
@@ -5186,7 +5178,7 @@ func (fh *FileHash) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fh.Type = &typeVar
+				fhe.Type = &typeVar
 			}
 		case "name":
 			if v != nil {
@@ -5195,7 +5187,7 @@ func (fh *FileHash) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fh.Name = &name
+				fhe.Name = &name
 			}
 		case "kind":
 			if v != nil {
@@ -5204,7 +5196,7 @@ func (fh *FileHash) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fh.Kind = kind
+				fhe.Kind = kind
 			}
 		}
 	}
@@ -5295,8 +5287,8 @@ func (he HostEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for HostEntity.
+func (he HostEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -5507,8 +5499,8 @@ func (ie IPEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for IPEntity.
+func (ie IPEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -5707,8 +5699,8 @@ func (me MalwareEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for MalwareEntity.
+func (me MalwareEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -6812,8 +6804,8 @@ func (peVar ProcessEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for ProcessEntity.
+func (peVar ProcessEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -7024,8 +7016,8 @@ func (rke RegistryKeyEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for RegistryKeyEntity.
+func (rke RegistryKeyEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -7219,8 +7211,8 @@ func (rve RegistryValueEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for RegistryValueEntity.
+func (rve RegistryValueEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -7572,8 +7564,8 @@ func (sa SecurityAlert) AsSecurityAlert() (*SecurityAlert, bool) {
 	return &sa, true
 }
 
-// AsFileHash is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for SecurityAlert.
+func (sa SecurityAlert) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -7816,8 +7808,8 @@ func (sge SecurityGroupEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for SecurityGroupEntity.
+func (sge SecurityGroupEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 
@@ -8577,8 +8569,8 @@ func (ue URLEntity) AsSecurityAlert() (*SecurityAlert, bool) {
 	return nil, false
 }
 
-// AsFileHash is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsFileHash() (*FileHash, bool) {
+// AsFileHashEntity is the BasicEntity implementation for URLEntity.
+func (ue URLEntity) AsFileHashEntity() (*FileHashEntity, bool) {
 	return nil, false
 }
 

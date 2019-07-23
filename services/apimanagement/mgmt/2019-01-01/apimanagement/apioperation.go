@@ -73,8 +73,7 @@ func (client APIOperationClient) CreateOrUpdate(ctx context.Context, resourceGro
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.OperationContractProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.OperationContractProperties.DisplayName", Name: validation.Null, Rule: true,
@@ -143,8 +142,8 @@ func (client APIOperationClient) CreateOrUpdatePreparer(ctx context.Context, res
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -192,8 +191,7 @@ func (client APIOperationClient) Delete(ctx context.Context, resourceGroupName s
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationClient", "Delete", err.Error())
 	}
 
@@ -245,8 +243,8 @@ func (client APIOperationClient) DeletePreparer(ctx context.Context, resourceGro
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -291,8 +289,7 @@ func (client APIOperationClient) Get(ctx context.Context, resourceGroupName stri
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationClient", "Get", err.Error())
 	}
 
@@ -343,8 +340,8 @@ func (client APIOperationClient) GetPreparer(ctx context.Context, resourceGroupN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -390,8 +387,7 @@ func (client APIOperationClient) GetEntityTag(ctx context.Context, resourceGroup
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationClient", "GetEntityTag", err.Error())
 	}
 
@@ -442,8 +438,8 @@ func (client APIOperationClient) GetEntityTagPreparer(ctx context.Context, resou
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
@@ -562,8 +558,8 @@ func (client APIOperationClient) ListByAPIPreparer(ctx context.Context, resource
 // ListByAPISender sends the ListByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationClient) ListByAPISender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByAPIResponder handles the response to the ListByAPI request. The method always
@@ -649,8 +645,7 @@ func (client APIOperationClient) Update(ctx context.Context, resourceGroupName s
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIOperationClient", "Update", err.Error())
 	}
 
@@ -704,8 +699,8 @@ func (client APIOperationClient) UpdatePreparer(ctx context.Context, resourceGro
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIOperationClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

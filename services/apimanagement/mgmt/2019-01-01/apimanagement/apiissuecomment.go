@@ -68,8 +68,7 @@ func (client APIIssueCommentClient) CreateOrUpdate(ctx context.Context, resource
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -140,8 +139,8 @@ func (client APIIssueCommentClient) CreateOrUpdatePreparer(ctx context.Context, 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueCommentClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -184,8 +183,7 @@ func (client APIIssueCommentClient) Delete(ctx context.Context, resourceGroupNam
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -246,8 +244,8 @@ func (client APIIssueCommentClient) DeletePreparer(ctx context.Context, resource
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueCommentClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -287,8 +285,7 @@ func (client APIIssueCommentClient) Get(ctx context.Context, resourceGroupName s
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -348,8 +345,8 @@ func (client APIIssueCommentClient) GetPreparer(ctx context.Context, resourceGro
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueCommentClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -390,8 +387,7 @@ func (client APIIssueCommentClient) GetEntityTag(ctx context.Context, resourceGr
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -451,8 +447,8 @@ func (client APIIssueCommentClient) GetEntityTagPreparer(ctx context.Context, re
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueCommentClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
@@ -497,8 +493,7 @@ func (client APIIssueCommentClient) ListByService(ctx context.Context, resourceG
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: issueID,
 			Constraints: []validation.Constraint{{Target: "issueID", Name: validation.MaxLength, Rule: 256, Chain: nil},
 				{Target: "issueID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -569,8 +564,8 @@ func (client APIIssueCommentClient) ListByServicePreparer(ctx context.Context, r
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssueCommentClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always

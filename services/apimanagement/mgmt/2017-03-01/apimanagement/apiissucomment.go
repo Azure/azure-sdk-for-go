@@ -127,8 +127,8 @@ func (client APIIssuCommentClient) HeadPreparer(ctx context.Context, resourceGro
 // HeadSender sends the Head request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIIssuCommentClient) HeadSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // HeadResponder handles the response to the Head request. The method always

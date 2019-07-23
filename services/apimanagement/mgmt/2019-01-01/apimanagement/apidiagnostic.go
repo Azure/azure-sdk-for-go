@@ -67,8 +67,7 @@ func (client APIDiagnosticClient) CreateOrUpdate(ctx context.Context, resourceGr
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -167,8 +166,8 @@ func (client APIDiagnosticClient) CreateOrUpdatePreparer(ctx context.Context, re
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIDiagnosticClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -210,8 +209,7 @@ func (client APIDiagnosticClient) Delete(ctx context.Context, resourceGroupName 
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -267,8 +265,8 @@ func (client APIDiagnosticClient) DeletePreparer(ctx context.Context, resourceGr
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIDiagnosticClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -307,8 +305,7 @@ func (client APIDiagnosticClient) Get(ctx context.Context, resourceGroupName str
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -363,8 +360,8 @@ func (client APIDiagnosticClient) GetPreparer(ctx context.Context, resourceGroup
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIDiagnosticClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -404,8 +401,7 @@ func (client APIDiagnosticClient) GetEntityTag(ctx context.Context, resourceGrou
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -460,8 +456,8 @@ func (client APIDiagnosticClient) GetEntityTagPreparer(ctx context.Context, reso
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIDiagnosticClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
@@ -504,8 +500,7 @@ func (client APIDiagnosticClient) ListByService(ctx context.Context, resourceGro
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
@@ -571,8 +566,8 @@ func (client APIDiagnosticClient) ListByServicePreparer(ctx context.Context, res
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIDiagnosticClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
@@ -652,8 +647,7 @@ func (client APIDiagnosticClient) Update(ctx context.Context, resourceGroupName 
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: apiid,
 			Constraints: []validation.Constraint{{Target: "apiid", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: diagnosticID,
 			Constraints: []validation.Constraint{{Target: "diagnosticID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "diagnosticID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -711,8 +705,8 @@ func (client APIDiagnosticClient) UpdatePreparer(ctx context.Context, resourceGr
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIDiagnosticClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

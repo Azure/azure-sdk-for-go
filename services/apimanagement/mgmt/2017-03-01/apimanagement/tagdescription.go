@@ -135,8 +135,8 @@ func (client TagDescriptionClient) CreateOrUpdatePreparer(ctx context.Context, r
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -235,8 +235,8 @@ func (client TagDescriptionClient) DeletePreparer(ctx context.Context, resourceG
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -331,8 +331,8 @@ func (client TagDescriptionClient) GetPreparer(ctx context.Context, resourceGrou
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -428,8 +428,8 @@ func (client TagDescriptionClient) GetEntityStatePreparer(ctx context.Context, r
 // GetEntityStateSender sends the GetEntityState request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) GetEntityStateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetEntityStateResponder handles the response to the GetEntityState request. The method always
@@ -541,8 +541,8 @@ func (client TagDescriptionClient) ListByAPIPreparer(ctx context.Context, resour
 // ListByAPISender sends the ListByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagDescriptionClient) ListByAPISender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByAPIResponder handles the response to the ListByAPI request. The method always

@@ -973,6 +973,12 @@ type ServerAdministratorResource struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of the server AAD administrator.
 	Properties *ServerAdministratorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
 }
 
 // ServerAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

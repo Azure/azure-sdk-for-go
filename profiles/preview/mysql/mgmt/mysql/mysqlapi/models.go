@@ -29,7 +29,6 @@ type LocationBasedPerformanceTierClientAPI = original.LocationBasedPerformanceTi
 type LogFilesClientAPI = original.LogFilesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ReplicasClientAPI = original.ReplicasClientAPI
-type ServerAdministratorsClientAPI = original.ServerAdministratorsClientAPI
 type ServerSecurityAlertPoliciesClientAPI = original.ServerSecurityAlertPoliciesClientAPI
 type ServersClientAPI = original.ServersClientAPI
 type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI

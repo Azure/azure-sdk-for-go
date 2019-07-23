@@ -93,6 +93,7 @@ type ServerAdministratorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters mysql.ServerAdministratorResource) (result mysql.ServerAdministratorsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerAdministratorsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerAdministratorResource, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerAdministratorResourceListResult, err error)
 }
 
 var _ ServerAdministratorsClientAPI = (*mysql.ServerAdministratorsClient)(nil)

@@ -63,7 +63,12 @@ func (client ServerAdministratorsClient) CreateOrUpdate(ctx context.Context, res
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.ServerAdministratorProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.ServerAdministratorProperties.AdministratorType", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.ServerAdministratorProperties.Login", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.ServerAdministratorProperties.Sid", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.ServerAdministratorProperties.TenantID", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("mysql.ServerAdministratorsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -198,13 +203,14 @@ func (client ServerAdministratorsClient) DeleteSender(req *http.Request) (future
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ServerAdministratorsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ServerAdministratorsClient) DeleteResponder(resp *http.Response) (result ServerAdministratorResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }
 
@@ -276,6 +282,84 @@ func (client ServerAdministratorsClient) GetSender(req *http.Request) (*http.Res
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client ServerAdministratorsClient) GetResponder(resp *http.Response) (result ServerAdministratorResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByServer returns a list of server Administrators.
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
+// from the Azure Resource Manager API or the portal.
+// serverName - the name of the server.
+func (client ServerAdministratorsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result ServerAdministratorResourceListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAdministratorsClient.ListByServer")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListByServerPreparer(ctx, resourceGroupName, serverName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "ListByServer", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByServerSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "ListByServer", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListByServerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "ListByServer", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByServerPreparer prepares the ListByServer request.
+func (client ServerAdministratorsClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-12-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/administrators", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByServerSender sends the ListByServer request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServerAdministratorsClient) ListByServerSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListByServerResponder handles the response to the ListByServer request. The method always
+// closes the http.Response Body.
+func (client ServerAdministratorsClient) ListByServerResponder(resp *http.Response) (result ServerAdministratorResourceListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

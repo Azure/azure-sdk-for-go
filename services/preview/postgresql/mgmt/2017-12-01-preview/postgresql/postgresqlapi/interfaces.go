@@ -93,6 +93,7 @@ type ServerAdministratorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerAdministratorResource) (result postgresql.ServerAdministratorsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerAdministratorsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerAdministratorResource, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerAdministratorResourceListResult, err error)
 }
 
 var _ ServerAdministratorsClientAPI = (*postgresql.ServerAdministratorsClient)(nil)

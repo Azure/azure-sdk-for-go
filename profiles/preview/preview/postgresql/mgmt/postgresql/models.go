@@ -154,6 +154,7 @@ type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
 type ServerAdministratorProperties = original.ServerAdministratorProperties
 type ServerAdministratorResource = original.ServerAdministratorResource
+type ServerAdministratorResourceListResult = original.ServerAdministratorResourceListResult
 type ServerAdministratorsClient = original.ServerAdministratorsClient
 type ServerAdministratorsCreateOrUpdateFuture = original.ServerAdministratorsCreateOrUpdateFuture
 type ServerAdministratorsDeleteFuture = original.ServerAdministratorsDeleteFuture

@@ -64,8 +64,7 @@ func (client UserConfirmationPasswordClient) Send(ctx context.Context, resourceG
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: userID,
 			Constraints: []validation.Constraint{{Target: "userID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "userID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "userID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}}}); err != nil {
+				{Target: "userID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("apimanagement.UserConfirmationPasswordClient", "Send", err.Error())
 	}
 
@@ -115,8 +114,8 @@ func (client UserConfirmationPasswordClient) SendPreparer(ctx context.Context, r
 // SendSender sends the Send request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserConfirmationPasswordClient) SendSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SendResponder handles the response to the Send request. The method always

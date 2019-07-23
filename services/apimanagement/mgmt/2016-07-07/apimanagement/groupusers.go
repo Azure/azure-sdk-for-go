@@ -121,8 +121,8 @@ func (client GroupUsersClient) AddPreparer(ctx context.Context, resourceGroupNam
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupUsersClient) AddSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -239,8 +239,8 @@ func (client GroupUsersClient) ListByGroupPreparer(ctx context.Context, resource
 // ListByGroupSender sends the ListByGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupUsersClient) ListByGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByGroupResponder handles the response to the ListByGroup request. The method always
@@ -373,8 +373,8 @@ func (client GroupUsersClient) RemovePreparer(ctx context.Context, resourceGroup
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupUsersClient) RemoveSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RemoveResponder handles the response to the Remove request. The method always

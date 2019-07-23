@@ -122,8 +122,8 @@ func (client TagClient) AssignToAPIPreparer(ctx context.Context, resourceGroupNa
 // AssignToAPISender sends the AssignToAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) AssignToAPISender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AssignToAPIResponder handles the response to the AssignToAPI request. The method always
@@ -170,8 +170,7 @@ func (client TagClient) AssignToOperation(ctx context.Context, resourceGroupName
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: tagID,
 			Constraints: []validation.Constraint{{Target: "tagID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "tagID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -227,8 +226,8 @@ func (client TagClient) AssignToOperationPreparer(ctx context.Context, resourceG
 // AssignToOperationSender sends the AssignToOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) AssignToOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AssignToOperationResponder handles the response to the AssignToOperation request. The method always
@@ -268,8 +267,7 @@ func (client TagClient) AssignToProduct(ctx context.Context, resourceGroupName s
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
 			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: tagID,
 			Constraints: []validation.Constraint{{Target: "tagID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "tagID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -324,8 +322,8 @@ func (client TagClient) AssignToProductPreparer(ctx context.Context, resourceGro
 // AssignToProductSender sends the AssignToProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) AssignToProductSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AssignToProductResponder handles the response to the AssignToProduct request. The method always
@@ -430,8 +428,8 @@ func (client TagClient) CreateOrUpdatePreparer(ctx context.Context, resourceGrou
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -524,8 +522,8 @@ func (client TagClient) DeletePreparer(ctx context.Context, resourceGroupName st
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -621,8 +619,8 @@ func (client TagClient) DetachFromAPIPreparer(ctx context.Context, resourceGroup
 // DetachFromAPISender sends the DetachFromAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) DetachFromAPISender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DetachFromAPIResponder handles the response to the DetachFromAPI request. The method always
@@ -668,8 +666,7 @@ func (client TagClient) DetachFromOperation(ctx context.Context, resourceGroupNa
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: tagID,
 			Constraints: []validation.Constraint{{Target: "tagID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "tagID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -725,8 +722,8 @@ func (client TagClient) DetachFromOperationPreparer(ctx context.Context, resourc
 // DetachFromOperationSender sends the DetachFromOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) DetachFromOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DetachFromOperationResponder handles the response to the DetachFromOperation request. The method always
@@ -765,8 +762,7 @@ func (client TagClient) DetachFromProduct(ctx context.Context, resourceGroupName
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
 			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: tagID,
 			Constraints: []validation.Constraint{{Target: "tagID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "tagID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -821,8 +817,8 @@ func (client TagClient) DetachFromProductPreparer(ctx context.Context, resourceG
 // DetachFromProductSender sends the DetachFromProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) DetachFromProductSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DetachFromProductResponder handles the response to the DetachFromProduct request. The method always
@@ -911,8 +907,8 @@ func (client TagClient) GetPreparer(ctx context.Context, resourceGroupName strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -1009,8 +1005,8 @@ func (client TagClient) GetByAPIPreparer(ctx context.Context, resourceGroupName 
 // GetByAPISender sends the GetByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetByAPISender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByAPIResponder handles the response to the GetByAPI request. The method always
@@ -1057,8 +1053,7 @@ func (client TagClient) GetByOperation(ctx context.Context, resourceGroupName st
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: tagID,
 			Constraints: []validation.Constraint{{Target: "tagID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "tagID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -1114,8 +1109,8 @@ func (client TagClient) GetByOperationPreparer(ctx context.Context, resourceGrou
 // GetByOperationSender sends the GetByOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetByOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByOperationResponder handles the response to the GetByOperation request. The method always
@@ -1155,8 +1150,7 @@ func (client TagClient) GetByProduct(ctx context.Context, resourceGroupName stri
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
 			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: tagID,
 			Constraints: []validation.Constraint{{Target: "tagID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "tagID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -1211,8 +1205,8 @@ func (client TagClient) GetByProductPreparer(ctx context.Context, resourceGroupN
 // GetByProductSender sends the GetByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetByProductSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByProductResponder handles the response to the GetByProduct request. The method always
@@ -1302,8 +1296,8 @@ func (client TagClient) GetEntityStatePreparer(ctx context.Context, resourceGrou
 // GetEntityStateSender sends the GetEntityState request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetEntityStateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetEntityStateResponder handles the response to the GetEntityState request. The method always
@@ -1399,8 +1393,8 @@ func (client TagClient) GetEntityStateByAPIPreparer(ctx context.Context, resourc
 // GetEntityStateByAPISender sends the GetEntityStateByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetEntityStateByAPISender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetEntityStateByAPIResponder handles the response to the GetEntityStateByAPI request. The method always
@@ -1446,8 +1440,7 @@ func (client TagClient) GetEntityStateByOperation(ctx context.Context, resourceG
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: tagID,
 			Constraints: []validation.Constraint{{Target: "tagID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "tagID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -1503,8 +1496,8 @@ func (client TagClient) GetEntityStateByOperationPreparer(ctx context.Context, r
 // GetEntityStateByOperationSender sends the GetEntityStateByOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetEntityStateByOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetEntityStateByOperationResponder handles the response to the GetEntityStateByOperation request. The method always
@@ -1543,8 +1536,7 @@ func (client TagClient) GetEntityStateByProduct(ctx context.Context, resourceGro
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
 			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: tagID,
 			Constraints: []validation.Constraint{{Target: "tagID", Name: validation.MaxLength, Rule: 80, Chain: nil},
 				{Target: "tagID", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -1599,8 +1591,8 @@ func (client TagClient) GetEntityStateByProductPreparer(ctx context.Context, res
 // GetEntityStateByProductSender sends the GetEntityStateByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetEntityStateByProductSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetEntityStateByProductResponder handles the response to the GetEntityStateByProduct request. The method always
@@ -1712,8 +1704,8 @@ func (client TagClient) ListByAPIPreparer(ctx context.Context, resourceGroupName
 // ListByAPISender sends the ListByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) ListByAPISender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByAPIResponder handles the response to the ListByAPI request. The method always
@@ -1802,8 +1794,7 @@ func (client TagClient) ListByOperation(ctx context.Context, resourceGroupName s
 				{Target: "apiid", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
 		{TargetValue: operationID,
 			Constraints: []validation.Constraint{{Target: "operationID", Name: validation.MaxLength, Rule: 80, Chain: nil},
-				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "operationID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "operationID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
@@ -1870,8 +1861,8 @@ func (client TagClient) ListByOperationPreparer(ctx context.Context, resourceGro
 // ListByOperationSender sends the ListByOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) ListByOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByOperationResponder handles the response to the ListByOperation request. The method always
@@ -1953,8 +1944,7 @@ func (client TagClient) ListByProduct(ctx context.Context, resourceGroupName str
 				{Target: "serviceName", Name: validation.Pattern, Rule: `^[a-zA-Z](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: productID,
 			Constraints: []validation.Constraint{{Target: "productID", Name: validation.MaxLength, Rule: 256, Chain: nil},
-				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "productID", Name: validation.Pattern, Rule: `^[^*#&+:<>?]+$`, Chain: nil}}},
+				{Target: "productID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
@@ -2020,8 +2010,8 @@ func (client TagClient) ListByProductPreparer(ctx context.Context, resourceGroup
 // ListByProductSender sends the ListByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) ListByProductSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByProductResponder handles the response to the ListByProduct request. The method always
@@ -2168,8 +2158,8 @@ func (client TagClient) ListByServicePreparer(ctx context.Context, resourceGroup
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
@@ -2302,8 +2292,8 @@ func (client TagClient) UpdatePreparer(ctx context.Context, resourceGroupName st
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

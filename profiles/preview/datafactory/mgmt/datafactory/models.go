@@ -628,6 +628,7 @@ type TypeBasicActivity = original.TypeBasicActivity
 const (
 	TypeActivity                 TypeBasicActivity = original.TypeActivity
 	TypeAppendVariable           TypeBasicActivity = original.TypeAppendVariable
+	TypeAzureDataExplorerCommand TypeBasicActivity = original.TypeAzureDataExplorerCommand
 	TypeAzureFunctionActivity    TypeBasicActivity = original.TypeAzureFunctionActivity
 	TypeAzureMLBatchExecution    TypeBasicActivity = original.TypeAzureMLBatchExecution
 	TypeAzureMLUpdateResource    TypeBasicActivity = original.TypeAzureMLUpdateResource
@@ -1102,6 +1103,8 @@ type AzureBlobStorageLinkedServiceTypeProperties = original.AzureBlobStorageLink
 type AzureBlobStorageLocation = original.AzureBlobStorageLocation
 type AzureBlobStorageReadSettings = original.AzureBlobStorageReadSettings
 type AzureBlobStorageWriteSettings = original.AzureBlobStorageWriteSettings
+type AzureDataExplorerCommand = original.AzureDataExplorerCommand
+type AzureDataExplorerCommandActivityTypeProperties = original.AzureDataExplorerCommandActivityTypeProperties
 type AzureDataExplorerDatasetTypeProperties = original.AzureDataExplorerDatasetTypeProperties
 type AzureDataExplorerLinkedService = original.AzureDataExplorerLinkedService
 type AzureDataExplorerLinkedServiceTypeProperties = original.AzureDataExplorerLinkedServiceTypeProperties

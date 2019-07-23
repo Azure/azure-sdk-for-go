@@ -19,7 +19,7 @@
 
 package portalapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/portal/mgmt/2015-11-01-preview/portal/portalapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/portal/mgmt/2019-01-01-preview/portal/portalapi"
 
 type DashboardsClientAPI = original.DashboardsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

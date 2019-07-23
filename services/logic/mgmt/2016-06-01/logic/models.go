@@ -57,13 +57,15 @@ const (
 	AgreementTypeEdifact AgreementType = "Edifact"
 	// AgreementTypeNotSpecified ...
 	AgreementTypeNotSpecified AgreementType = "NotSpecified"
+	// AgreementTypeRosettaNet ...
+	AgreementTypeRosettaNet AgreementType = "RosettaNet"
 	// AgreementTypeX12 ...
 	AgreementTypeX12 AgreementType = "X12"
 )
 
 // PossibleAgreementTypeValues returns an array of possible values for the AgreementType const type.
 func PossibleAgreementTypeValues() []AgreementType {
-	return []AgreementType{AgreementTypeAS2, AgreementTypeEdifact, AgreementTypeNotSpecified, AgreementTypeX12}
+	return []AgreementType{AgreementTypeAS2, AgreementTypeEdifact, AgreementTypeNotSpecified, AgreementTypeRosettaNet, AgreementTypeX12}
 }
 
 // DayOfWeek enumerates the values for day of week.
@@ -296,6 +298,25 @@ func PossibleMapTypeValues() []MapType {
 	return []MapType{MapTypeNotSpecified, MapTypeXslt}
 }
 
+// MessageEncoding enumerates the values for message encoding.
+type MessageEncoding string
+
+const (
+	// MessageEncodingBase64 ...
+	MessageEncodingBase64 MessageEncoding = "Base64"
+	// MessageEncodingEightBit ...
+	MessageEncodingEightBit MessageEncoding = "EightBit"
+	// MessageEncodingNotSpecified ...
+	MessageEncodingNotSpecified MessageEncoding = "NotSpecified"
+	// MessageEncodingQuotedPrintable ...
+	MessageEncodingQuotedPrintable MessageEncoding = "QuotedPrintable"
+)
+
+// PossibleMessageEncodingValues returns an array of possible values for the MessageEncoding const type.
+func PossibleMessageEncodingValues() []MessageEncoding {
+	return []MessageEncoding{MessageEncodingBase64, MessageEncodingEightBit, MessageEncodingNotSpecified, MessageEncodingQuotedPrintable}
+}
+
 // MessageFilterType enumerates the values for message filter type.
 type MessageFilterType string
 
@@ -382,6 +403,120 @@ const (
 // PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
 func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 	return []RecurrenceFrequency{RecurrenceFrequencyDay, RecurrenceFrequencyHour, RecurrenceFrequencyMinute, RecurrenceFrequencyMonth, RecurrenceFrequencyNotSpecified, RecurrenceFrequencySecond, RecurrenceFrequencyWeek, RecurrenceFrequencyYear}
+}
+
+// RosettaNetActionType enumerates the values for rosetta net action type.
+type RosettaNetActionType string
+
+const (
+	// RosettaNetActionTypeDoubleAction ...
+	RosettaNetActionTypeDoubleAction RosettaNetActionType = "DoubleAction"
+	// RosettaNetActionTypeNotSpecified ...
+	RosettaNetActionTypeNotSpecified RosettaNetActionType = "NotSpecified"
+	// RosettaNetActionTypeSingleAction ...
+	RosettaNetActionTypeSingleAction RosettaNetActionType = "SingleAction"
+)
+
+// PossibleRosettaNetActionTypeValues returns an array of possible values for the RosettaNetActionType const type.
+func PossibleRosettaNetActionTypeValues() []RosettaNetActionType {
+	return []RosettaNetActionType{RosettaNetActionTypeDoubleAction, RosettaNetActionTypeNotSpecified, RosettaNetActionTypeSingleAction}
+}
+
+// RosettaNetMessageEncodingFlags enumerates the values for rosetta net message encoding flags.
+type RosettaNetMessageEncodingFlags string
+
+const (
+	// RosettaNetMessageEncodingFlagsAllParts ...
+	RosettaNetMessageEncodingFlagsAllParts RosettaNetMessageEncodingFlags = "AllParts"
+	// RosettaNetMessageEncodingFlagsAttachments ...
+	RosettaNetMessageEncodingFlagsAttachments RosettaNetMessageEncodingFlags = "Attachments"
+	// RosettaNetMessageEncodingFlagsNotSpecified ...
+	RosettaNetMessageEncodingFlagsNotSpecified RosettaNetMessageEncodingFlags = "NotSpecified"
+)
+
+// PossibleRosettaNetMessageEncodingFlagsValues returns an array of possible values for the RosettaNetMessageEncodingFlags const type.
+func PossibleRosettaNetMessageEncodingFlagsValues() []RosettaNetMessageEncodingFlags {
+	return []RosettaNetMessageEncodingFlags{RosettaNetMessageEncodingFlagsAllParts, RosettaNetMessageEncodingFlagsAttachments, RosettaNetMessageEncodingFlagsNotSpecified}
+}
+
+// RosettaNetPipActivityType enumerates the values for rosetta net pip activity type.
+type RosettaNetPipActivityType string
+
+const (
+	// RosettaNetPipActivityTypeBusinessTransaction ...
+	RosettaNetPipActivityTypeBusinessTransaction RosettaNetPipActivityType = "BusinessTransaction"
+	// RosettaNetPipActivityTypeInformationDistribution ...
+	RosettaNetPipActivityTypeInformationDistribution RosettaNetPipActivityType = "InformationDistribution"
+	// RosettaNetPipActivityTypeNotification ...
+	RosettaNetPipActivityTypeNotification RosettaNetPipActivityType = "Notification"
+	// RosettaNetPipActivityTypeNotSpecified ...
+	RosettaNetPipActivityTypeNotSpecified RosettaNetPipActivityType = "NotSpecified"
+	// RosettaNetPipActivityTypeQueryResponse ...
+	RosettaNetPipActivityTypeQueryResponse RosettaNetPipActivityType = "QueryResponse"
+	// RosettaNetPipActivityTypeRequestConfirm ...
+	RosettaNetPipActivityTypeRequestConfirm RosettaNetPipActivityType = "RequestConfirm"
+	// RosettaNetPipActivityTypeRequestResponse ...
+	RosettaNetPipActivityTypeRequestResponse RosettaNetPipActivityType = "RequestResponse"
+)
+
+// PossibleRosettaNetPipActivityTypeValues returns an array of possible values for the RosettaNetPipActivityType const type.
+func PossibleRosettaNetPipActivityTypeValues() []RosettaNetPipActivityType {
+	return []RosettaNetPipActivityType{RosettaNetPipActivityTypeBusinessTransaction, RosettaNetPipActivityTypeInformationDistribution, RosettaNetPipActivityTypeNotification, RosettaNetPipActivityTypeNotSpecified, RosettaNetPipActivityTypeQueryResponse, RosettaNetPipActivityTypeRequestConfirm, RosettaNetPipActivityTypeRequestResponse}
+}
+
+// RosettaNetPipConfidentialityScope enumerates the values for rosetta net pip confidentiality scope.
+type RosettaNetPipConfidentialityScope string
+
+const (
+	// RosettaNetPipConfidentialityScopeNone ...
+	RosettaNetPipConfidentialityScopeNone RosettaNetPipConfidentialityScope = "None"
+	// RosettaNetPipConfidentialityScopeNotSpecified ...
+	RosettaNetPipConfidentialityScopeNotSpecified RosettaNetPipConfidentialityScope = "NotSpecified"
+	// RosettaNetPipConfidentialityScopePayload ...
+	RosettaNetPipConfidentialityScopePayload RosettaNetPipConfidentialityScope = "Payload"
+	// RosettaNetPipConfidentialityScopePayloadContainer ...
+	RosettaNetPipConfidentialityScopePayloadContainer RosettaNetPipConfidentialityScope = "PayloadContainer"
+)
+
+// PossibleRosettaNetPipConfidentialityScopeValues returns an array of possible values for the RosettaNetPipConfidentialityScope const type.
+func PossibleRosettaNetPipConfidentialityScopeValues() []RosettaNetPipConfidentialityScope {
+	return []RosettaNetPipConfidentialityScope{RosettaNetPipConfidentialityScopeNone, RosettaNetPipConfidentialityScopeNotSpecified, RosettaNetPipConfidentialityScopePayload, RosettaNetPipConfidentialityScopePayloadContainer}
+}
+
+// RosettaNetPipRoleType enumerates the values for rosetta net pip role type.
+type RosettaNetPipRoleType string
+
+const (
+	// RosettaNetPipRoleTypeEmployee ...
+	RosettaNetPipRoleTypeEmployee RosettaNetPipRoleType = "Employee"
+	// RosettaNetPipRoleTypeFunctional ...
+	RosettaNetPipRoleTypeFunctional RosettaNetPipRoleType = "Functional"
+	// RosettaNetPipRoleTypeNotSpecified ...
+	RosettaNetPipRoleTypeNotSpecified RosettaNetPipRoleType = "NotSpecified"
+	// RosettaNetPipRoleTypeOrganizational ...
+	RosettaNetPipRoleTypeOrganizational RosettaNetPipRoleType = "Organizational"
+)
+
+// PossibleRosettaNetPipRoleTypeValues returns an array of possible values for the RosettaNetPipRoleType const type.
+func PossibleRosettaNetPipRoleTypeValues() []RosettaNetPipRoleType {
+	return []RosettaNetPipRoleType{RosettaNetPipRoleTypeEmployee, RosettaNetPipRoleTypeFunctional, RosettaNetPipRoleTypeNotSpecified, RosettaNetPipRoleTypeOrganizational}
+}
+
+// RosettaNetResponseType enumerates the values for rosetta net response type.
+type RosettaNetResponseType string
+
+const (
+	// RosettaNetResponseTypeAsync ...
+	RosettaNetResponseTypeAsync RosettaNetResponseType = "Async"
+	// RosettaNetResponseTypeNotSpecified ...
+	RosettaNetResponseTypeNotSpecified RosettaNetResponseType = "NotSpecified"
+	// RosettaNetResponseTypeSync ...
+	RosettaNetResponseTypeSync RosettaNetResponseType = "Sync"
+)
+
+// PossibleRosettaNetResponseTypeValues returns an array of possible values for the RosettaNetResponseType const type.
+func PossibleRosettaNetResponseTypeValues() []RosettaNetResponseType {
+	return []RosettaNetResponseType{RosettaNetResponseTypeAsync, RosettaNetResponseTypeNotSpecified, RosettaNetResponseTypeSync}
 }
 
 // SchemaType enumerates the values for schema type.
@@ -787,6 +922,8 @@ type AgreementContent struct {
 	X12 *X12AgreementContent `json:"x12,omitempty"`
 	// Edifact - The EDIFACT agreement content.
 	Edifact *EdifactAgreementContent `json:"edifact,omitempty"`
+	// Rosettanet - The RosettaNet agreement content.
+	Rosettanet *RosettaNetAgreementContent `json:"rosettanet,omitempty"`
 }
 
 // ArtifactContentPropertiesDefinition the artifact content properties definition.
@@ -1674,7 +1811,7 @@ func (iaa *IntegrationAccountAgreement) UnmarshalJSON(body []byte) error {
 
 // IntegrationAccountAgreementFilter the integration account agreement filter for odata query.
 type IntegrationAccountAgreementFilter struct {
-	// AgreementType - The agreement type of integration account agreement. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact'
+	// AgreementType - The agreement type of integration account agreement. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact', 'AgreementTypeRosettaNet'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 }
 
@@ -1833,7 +1970,7 @@ type IntegrationAccountAgreementProperties struct {
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
-	// AgreementType - The agreement type. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact'
+	// AgreementType - The agreement type. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact', 'AgreementTypeRosettaNet'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 	// HostPartner - The integration account partner that is set as host partner for this agreement.
 	HostPartner *string `json:"hostPartner,omitempty"`
@@ -2801,6 +2938,282 @@ type IntegrationAccountPartnerProperties struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 	// Content - The partner content.
 	Content *PartnerContent `json:"content,omitempty"`
+}
+
+// IntegrationAccountRosettaNetProcessConfiguration the integration account RosettaNet process
+// configuration.
+type IntegrationAccountRosettaNetProcessConfiguration struct {
+	autorest.Response `json:"-"`
+	// IntegrationAccountRosettaNetProcessConfigurationProperties - The integration account RosettaNet process configuration properties.
+	*IntegrationAccountRosettaNetProcessConfigurationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Gets the resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Gets the resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - The resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - The resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountRosettaNetProcessConfiguration.
+func (iarnpc IntegrationAccountRosettaNetProcessConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iarnpc.IntegrationAccountRosettaNetProcessConfigurationProperties != nil {
+		objectMap["properties"] = iarnpc.IntegrationAccountRosettaNetProcessConfigurationProperties
+	}
+	if iarnpc.Location != nil {
+		objectMap["location"] = iarnpc.Location
+	}
+	if iarnpc.Tags != nil {
+		objectMap["tags"] = iarnpc.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IntegrationAccountRosettaNetProcessConfiguration struct.
+func (iarnpc *IntegrationAccountRosettaNetProcessConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var integrationAccountRosettaNetProcessConfigurationProperties IntegrationAccountRosettaNetProcessConfigurationProperties
+				err = json.Unmarshal(*v, &integrationAccountRosettaNetProcessConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				iarnpc.IntegrationAccountRosettaNetProcessConfigurationProperties = &integrationAccountRosettaNetProcessConfigurationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				iarnpc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				iarnpc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				iarnpc.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				iarnpc.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				iarnpc.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// IntegrationAccountRosettaNetProcessConfigurationListResult the list of integration account RosettaNet
+// process configuration.
+type IntegrationAccountRosettaNetProcessConfigurationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of integration account RosettaNet PIP configuration.
+	Value *[]IntegrationAccountRosettaNetProcessConfiguration `json:"value,omitempty"`
+	// NextLink - The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IntegrationAccountRosettaNetProcessConfigurationListResultIterator provides access to a complete listing
+// of IntegrationAccountRosettaNetProcessConfiguration values.
+type IntegrationAccountRosettaNetProcessConfigurationListResultIterator struct {
+	i    int
+	page IntegrationAccountRosettaNetProcessConfigurationListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IntegrationAccountRosettaNetProcessConfigurationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountRosettaNetProcessConfigurationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IntegrationAccountRosettaNetProcessConfigurationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IntegrationAccountRosettaNetProcessConfigurationListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IntegrationAccountRosettaNetProcessConfigurationListResultIterator) Response() IntegrationAccountRosettaNetProcessConfigurationListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IntegrationAccountRosettaNetProcessConfigurationListResultIterator) Value() IntegrationAccountRosettaNetProcessConfiguration {
+	if !iter.page.NotDone() {
+		return IntegrationAccountRosettaNetProcessConfiguration{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IntegrationAccountRosettaNetProcessConfigurationListResultIterator type.
+func NewIntegrationAccountRosettaNetProcessConfigurationListResultIterator(page IntegrationAccountRosettaNetProcessConfigurationListResultPage) IntegrationAccountRosettaNetProcessConfigurationListResultIterator {
+	return IntegrationAccountRosettaNetProcessConfigurationListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (iarnpclr IntegrationAccountRosettaNetProcessConfigurationListResult) IsEmpty() bool {
+	return iarnpclr.Value == nil || len(*iarnpclr.Value) == 0
+}
+
+// integrationAccountRosettaNetProcessConfigurationListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (iarnpclr IntegrationAccountRosettaNetProcessConfigurationListResult) integrationAccountRosettaNetProcessConfigurationListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if iarnpclr.NextLink == nil || len(to.String(iarnpclr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(iarnpclr.NextLink)))
+}
+
+// IntegrationAccountRosettaNetProcessConfigurationListResultPage contains a page of
+// IntegrationAccountRosettaNetProcessConfiguration values.
+type IntegrationAccountRosettaNetProcessConfigurationListResultPage struct {
+	fn       func(context.Context, IntegrationAccountRosettaNetProcessConfigurationListResult) (IntegrationAccountRosettaNetProcessConfigurationListResult, error)
+	iarnpclr IntegrationAccountRosettaNetProcessConfigurationListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IntegrationAccountRosettaNetProcessConfigurationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationAccountRosettaNetProcessConfigurationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iarnpclr)
+	if err != nil {
+		return err
+	}
+	page.iarnpclr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IntegrationAccountRosettaNetProcessConfigurationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IntegrationAccountRosettaNetProcessConfigurationListResultPage) NotDone() bool {
+	return !page.iarnpclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IntegrationAccountRosettaNetProcessConfigurationListResultPage) Response() IntegrationAccountRosettaNetProcessConfigurationListResult {
+	return page.iarnpclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IntegrationAccountRosettaNetProcessConfigurationListResultPage) Values() []IntegrationAccountRosettaNetProcessConfiguration {
+	if page.iarnpclr.IsEmpty() {
+		return nil
+	}
+	return *page.iarnpclr.Value
+}
+
+// Creates a new instance of the IntegrationAccountRosettaNetProcessConfigurationListResultPage type.
+func NewIntegrationAccountRosettaNetProcessConfigurationListResultPage(getNextPage func(context.Context, IntegrationAccountRosettaNetProcessConfigurationListResult) (IntegrationAccountRosettaNetProcessConfigurationListResult, error)) IntegrationAccountRosettaNetProcessConfigurationListResultPage {
+	return IntegrationAccountRosettaNetProcessConfigurationListResultPage{fn: getNextPage}
+}
+
+// IntegrationAccountRosettaNetProcessConfigurationProperties the integration account RosettaNet process
+// configuration properties.
+type IntegrationAccountRosettaNetProcessConfigurationProperties struct {
+	// CreatedTime - READ-ONLY; The created time.
+	CreatedTime *date.Time `json:"createdTime,omitempty"`
+	// ChangedTime - READ-ONLY; The changed time.
+	ChangedTime *date.Time `json:"changedTime,omitempty"`
+	// Metadata - The metadata.
+	Metadata interface{} `json:"metadata,omitempty"`
+	// ActivitySettings - The RosettaNet process configuration activity settings.
+	ActivitySettings *RosettaNetPipActivitySettings `json:"activitySettings,omitempty"`
+	// ProcessCode - The integration account RosettaNet process code.
+	ProcessCode *string `json:"processCode,omitempty"`
+	// ProcessVersion - The integration account RosettaNet process version.
+	ProcessVersion *string `json:"processVersion,omitempty"`
+	// ProcessName - The integration account RosettaNet process name.
+	ProcessName *string `json:"processName,omitempty"`
+	// InitiatorRoleSettings - The RosettaNet initiator role settings.
+	InitiatorRoleSettings *RosettaNetPipRoleSettings `json:"initiatorRoleSettings,omitempty"`
+	// ResponderRoleSettings - The RosettaNet responder role settings.
+	ResponderRoleSettings *RosettaNetPipRoleSettings `json:"responderRoleSettings,omitempty"`
+	// Description - The integration account RosettaNet ProcessConfiguration properties.
+	Description *string `json:"description,omitempty"`
 }
 
 // IntegrationAccountSchema the integration account schema.
@@ -3937,6 +4350,121 @@ type RetryHistory struct {
 	ServiceRequestID *string `json:"serviceRequestId,omitempty"`
 	// Error - Gets the error response.
 	Error *ErrorResponse `json:"error,omitempty"`
+}
+
+// RosettaNetAgreementContent the integration account RosettaNet agreement content.
+type RosettaNetAgreementContent struct {
+	// ReceiveAgreement - The RosettaNet one-way receive agreement.
+	ReceiveAgreement *RosettaNetOneWayAgreement `json:"receiveAgreement,omitempty"`
+	// SendAgreement - The RosettaNet one-way send agreement.
+	SendAgreement *RosettaNetOneWayAgreement `json:"sendAgreement,omitempty"`
+}
+
+// RosettaNetEndpoints the RosettaNet agreement endpoints.
+type RosettaNetEndpoints struct {
+	// ActionURI - The asynchronous action endpoint URL.
+	ActionURI *string `json:"actionUri,omitempty"`
+	// AcknowledgmentURI - The asynchronous acknowledgement endpoint URL.
+	AcknowledgmentURI *string `json:"acknowledgmentUri,omitempty"`
+	// SyncURI - The synchronous endpoint URL.
+	SyncURI *string `json:"syncUri,omitempty"`
+}
+
+// RosettaNetOneWayAgreement the integration account RosettaNet oneway agreement.
+type RosettaNetOneWayAgreement struct {
+	// SenderBusinessIdentity - The sender business identity
+	SenderBusinessIdentity *BusinessIdentity `json:"senderBusinessIdentity,omitempty"`
+	// ReceiverBusinessIdentity - The receiver business identity
+	ReceiverBusinessIdentity *BusinessIdentity `json:"receiverBusinessIdentity,omitempty"`
+	// ProtocolSettings - The RosettaNet protocol settings.
+	ProtocolSettings *RosettaNetProtocolSettings `json:"protocolSettings,omitempty"`
+}
+
+// RosettaNetPipAcknowledgmentOfReceiptSettings the integration account RosettaNet ProcessConfiguration
+// Acknowledgement settings.
+type RosettaNetPipAcknowledgmentOfReceiptSettings struct {
+	// IsNonRepudiationRequired - The non-repudiation is required or not.
+	IsNonRepudiationRequired *bool `json:"isNonRepudiationRequired,omitempty"`
+	// TimeToAcknowledgeInSeconds - The time to acknowledge in seconds.
+	TimeToAcknowledgeInSeconds *string `json:"timeToAcknowledgeInSeconds,omitempty"`
+}
+
+// RosettaNetPipActivityBehavior the integration account RosettaNet ProcessConfiguration activity behavior.
+type RosettaNetPipActivityBehavior struct {
+	// IsAuthorizationRequired - The value indicating whether authorization is required.
+	IsAuthorizationRequired *bool `json:"isAuthorizationRequired,omitempty"`
+	// PersistentConfidentialityScope - The persistent confidentiality encryption scope. Possible values include: 'RosettaNetPipConfidentialityScopeNotSpecified', 'RosettaNetPipConfidentialityScopeNone', 'RosettaNetPipConfidentialityScopePayload', 'RosettaNetPipConfidentialityScopePayloadContainer'
+	PersistentConfidentialityScope RosettaNetPipConfidentialityScope `json:"persistentConfidentialityScope,omitempty"`
+	// IsSecuredTransportRequired - The value indicating whether secured transport is required.
+	IsSecuredTransportRequired *bool `json:"isSecuredTransportRequired,omitempty"`
+	// ActionType - The value indicating whether the RosettaNet PIP is used for a single action. Possible values include: 'RosettaNetActionTypeNotSpecified', 'RosettaNetActionTypeSingleAction', 'RosettaNetActionTypeDoubleAction'
+	ActionType RosettaNetActionType `json:"actionType,omitempty"`
+	// ResponseType - The value indicating whether the RosettaNet PIP communication is synchronous. Possible values include: 'RosettaNetResponseTypeNotSpecified', 'RosettaNetResponseTypeSync', 'RosettaNetResponseTypeAsync'
+	ResponseType RosettaNetResponseType `json:"responseType,omitempty"`
+	// NonRepudiationOfOriginAndContent - The value indicating whether non-repudiation is for origin and content.
+	NonRepudiationOfOriginAndContent *bool `json:"nonRepudiationOfOriginAndContent,omitempty"`
+	// RetryCount - The value indicating retry count.
+	RetryCount *int32 `json:"retryCount,omitempty"`
+	// TimeToPerformInSeconds - The time to perform in seconds.
+	TimeToPerformInSeconds *int32 `json:"timeToPerformInSeconds,omitempty"`
+}
+
+// RosettaNetPipActivitySettings the integration account RosettaNet ProcessConfiguration activity settings.
+type RosettaNetPipActivitySettings struct {
+	// ActivityType - The RosettaNet ProcessConfiguration activity type. Possible values include: 'RosettaNetPipActivityTypeNotSpecified', 'RosettaNetPipActivityTypeInformationDistribution', 'RosettaNetPipActivityTypeBusinessTransaction', 'RosettaNetPipActivityTypeNotification', 'RosettaNetPipActivityTypeQueryResponse', 'RosettaNetPipActivityTypeRequestConfirm', 'RosettaNetPipActivityTypeRequestResponse'
+	ActivityType RosettaNetPipActivityType `json:"activityType,omitempty"`
+	// ActivityBehavior - The RosettaNet ProcessConfiguration activity behavior.
+	ActivityBehavior *RosettaNetPipActivityBehavior `json:"activityBehavior,omitempty"`
+	// AcknowledgmentOfReceiptSettings - The RosettaNet ProcessConfiguration acknowledgement settings.
+	AcknowledgmentOfReceiptSettings *RosettaNetPipAcknowledgmentOfReceiptSettings `json:"acknowledgmentOfReceiptSettings,omitempty"`
+}
+
+// RosettaNetPipBusinessDocument the RosettaNet ProcessConfiguration business document settings.
+type RosettaNetPipBusinessDocument struct {
+	// Name - The business document name.
+	Name *string `json:"name,omitempty"`
+	// Version - The business document version.
+	Version *string `json:"version,omitempty"`
+	// Description - The business document description.
+	Description *string `json:"description,omitempty"`
+}
+
+// RosettaNetPipRoleSettings the integration account RosettaNet ProcessConfiguration role settings.
+type RosettaNetPipRoleSettings struct {
+	// Action - The action name.
+	Action *string `json:"action,omitempty"`
+	// Role - The role name.
+	Role *string `json:"role,omitempty"`
+	// RoleType - The RosettaNet ProcessConfiguration role type. Possible values include: 'RosettaNetPipRoleTypeNotSpecified', 'RosettaNetPipRoleTypeFunctional', 'RosettaNetPipRoleTypeOrganizational', 'RosettaNetPipRoleTypeEmployee'
+	RoleType RosettaNetPipRoleType `json:"roleType,omitempty"`
+	// Service - The service name.
+	Service *string `json:"service,omitempty"`
+	// ServiceClassification - The service classification name.
+	ServiceClassification *string `json:"serviceClassification,omitempty"`
+	// BusinessDocument - The RosettaNet ProcessConfiguration business document.
+	BusinessDocument *RosettaNetPipBusinessDocument `json:"businessDocument,omitempty"`
+}
+
+// RosettaNetProtocolSettings the RosettaNet agreement protocol settings.
+type RosettaNetProtocolSettings struct {
+	// EncryptMessage - The value indicating whether the message has to be encrypted.
+	EncryptMessage *bool `json:"encryptMessage,omitempty"`
+	// SignMessage - The value indicating whether the message has to be signed.
+	SignMessage *bool `json:"signMessage,omitempty"`
+	// MessageEncodingFlags - The value indicating whether encoding is used. Possible values include: 'RosettaNetMessageEncodingFlagsNotSpecified', 'RosettaNetMessageEncodingFlagsAllParts', 'RosettaNetMessageEncodingFlagsAttachments'
+	MessageEncodingFlags RosettaNetMessageEncodingFlags `json:"messageEncodingFlags,omitempty"`
+	// Encoding - The message encoding. Possible values include: 'MessageEncodingNotSpecified', 'MessageEncodingBase64', 'MessageEncodingEightBit', 'MessageEncodingQuotedPrintable'
+	Encoding MessageEncoding `json:"encoding,omitempty"`
+	// EncryptionAlgorithm - The encryption algorithm. Possible values include: 'EncryptionAlgorithmNotSpecified', 'EncryptionAlgorithmNone', 'EncryptionAlgorithmDES3', 'EncryptionAlgorithmRC2', 'EncryptionAlgorithmAES128', 'EncryptionAlgorithmAES192', 'EncryptionAlgorithmAES256'
+	EncryptionAlgorithm EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
+	// SigningAlgorithm - The signing algorithm. Possible values include: 'SigningAlgorithmNotSpecified', 'SigningAlgorithmDefault', 'SigningAlgorithmSHA1', 'SigningAlgorithmSHA2256', 'SigningAlgorithmSHA2384', 'SigningAlgorithmSHA2512'
+	SigningAlgorithm SigningAlgorithm `json:"signingAlgorithm,omitempty"`
+	// Endpoints - The RosettaNet agreement endpoint settings.
+	Endpoints *RosettaNetEndpoints `json:"endpoints,omitempty"`
+	// EncryptionCertificateName - The name of the encryption certificate.
+	EncryptionCertificateName *string `json:"encryptionCertificateName,omitempty"`
+	// NonRepudiationOfOriginInDays - The non-repudiation of origin in days.
+	NonRepudiationOfOriginInDays *int32 `json:"nonRepudiationOfOriginInDays,omitempty"`
 }
 
 // RunActionCorrelation the workflow run action correlation properties.

@@ -4386,7 +4386,7 @@ type RosettaNetPipAcknowledgmentOfReceiptSettings struct {
 	// IsNonRepudiationRequired - The non-repudiation is required or not.
 	IsNonRepudiationRequired *bool `json:"isNonRepudiationRequired,omitempty"`
 	// TimeToAcknowledgeInSeconds - The time to acknowledge in seconds.
-	TimeToAcknowledgeInSeconds *string `json:"timeToAcknowledgeInSeconds,omitempty"`
+	TimeToAcknowledgeInSeconds *int32 `json:"timeToAcknowledgeInSeconds,omitempty"`
 }
 
 // RosettaNetPipActivityBehavior the integration account RosettaNet ProcessConfiguration activity behavior.
@@ -4443,6 +4443,8 @@ type RosettaNetPipRoleSettings struct {
 	ServiceClassification *string `json:"serviceClassification,omitempty"`
 	// BusinessDocument - The RosettaNet ProcessConfiguration business document.
 	BusinessDocument *RosettaNetPipBusinessDocument `json:"businessDocument,omitempty"`
+	// Description - The description.
+	Description *string `json:"description,omitempty"`
 }
 
 // RosettaNetProtocolSettings the RosettaNet agreement protocol settings.

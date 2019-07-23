@@ -46,8 +46,8 @@ func NewRosettaNetProcessConfigurationsClientWithBaseURI(baseURI string, subscri
 // Parameters:
 // resourceGroupName - the resource group name.
 // integrationAccountName - the integration account name.
-// rosettaNetProcessConfigurationName - the integration account RosettaNetProcessConfiguration name.
-// rosettaNetProcessConfiguration - the integration account RosettaNetProcessConfiguration.
+// rosettaNetProcessConfigurationName - the integration account RosettaNet ProcessConfiguration name.
+// rosettaNetProcessConfiguration - the integration account RosettaNet ProcessConfiguration.
 func (client RosettaNetProcessConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, integrationAccountName string, rosettaNetProcessConfigurationName string, rosettaNetProcessConfiguration IntegrationAccountRosettaNetProcessConfiguration) (result IntegrationAccountRosettaNetProcessConfiguration, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RosettaNetProcessConfigurationsClient.CreateOrUpdate")
@@ -128,7 +128,7 @@ func (client RosettaNetProcessConfigurationsClient) CreateOrUpdatePreparer(ctx c
 	pathParameters := map[string]interface{}{
 		"integrationAccountName":             autorest.Encode("path", integrationAccountName),
 		"resourceGroupName":                  autorest.Encode("path", resourceGroupName),
-		"RosettaNetProcessConfigurationName": autorest.Encode("path", rosettaNetProcessConfigurationName),
+		"rosettaNetProcessConfigurationName": autorest.Encode("path", rosettaNetProcessConfigurationName),
 		"subscriptionId":                     autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -209,7 +209,7 @@ func (client RosettaNetProcessConfigurationsClient) DeletePreparer(ctx context.C
 	pathParameters := map[string]interface{}{
 		"integrationAccountName":             autorest.Encode("path", integrationAccountName),
 		"resourceGroupName":                  autorest.Encode("path", resourceGroupName),
-		"RosettaNetProcessConfigurationName": autorest.Encode("path", rosettaNetProcessConfigurationName),
+		"rosettaNetProcessConfigurationName": autorest.Encode("path", rosettaNetProcessConfigurationName),
 		"subscriptionId":                     autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -287,7 +287,7 @@ func (client RosettaNetProcessConfigurationsClient) GetPreparer(ctx context.Cont
 	pathParameters := map[string]interface{}{
 		"integrationAccountName":             autorest.Encode("path", integrationAccountName),
 		"resourceGroupName":                  autorest.Encode("path", resourceGroupName),
-		"RosettaNetProcessConfigurationName": autorest.Encode("path", rosettaNetProcessConfigurationName),
+		"rosettaNetProcessConfigurationName": autorest.Encode("path", rosettaNetProcessConfigurationName),
 		"subscriptionId":                     autorest.Encode("path", client.SubscriptionID),
 	}
 

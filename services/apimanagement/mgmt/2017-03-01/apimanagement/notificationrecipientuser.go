@@ -117,8 +117,8 @@ func (client NotificationRecipientUserClient) CreateOrUpdatePreparer(ctx context
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationRecipientUserClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -210,8 +210,8 @@ func (client NotificationRecipientUserClient) DeletePreparer(ctx context.Context
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationRecipientUserClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -302,8 +302,8 @@ func (client NotificationRecipientUserClient) GetPreparer(ctx context.Context, r
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationRecipientUserClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -388,8 +388,8 @@ func (client NotificationRecipientUserClient) ListByNotificationPreparer(ctx con
 // ListByNotificationSender sends the ListByNotification request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationRecipientUserClient) ListByNotificationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByNotificationResponder handles the response to the ListByNotification request. The method always

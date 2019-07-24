@@ -26,8 +26,7 @@ import (
 )
 
 const (
-	DefaultBaseURI    = original.DefaultBaseURI
-	DefaultIdentifier = original.DefaultIdentifier
+	DefaultBaseURI = original.DefaultBaseURI
 )
 
 type ActionRuleStatus = original.ActionRuleStatus

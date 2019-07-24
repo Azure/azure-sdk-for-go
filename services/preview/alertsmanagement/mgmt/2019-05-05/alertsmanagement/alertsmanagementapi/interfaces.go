@@ -53,7 +53,7 @@ var _ SmartGroupsClientAPI = (*alertsmanagement.SmartGroupsClient)(nil)
 
 // ActionRulesClientAPI contains the set of methods on the ActionRulesClient type.
 type ActionRulesClientAPI interface {
-	CreateUpdate(ctx context.Context, resourceGroupName string, actionRuleName string, actionRule alertsmanagement.ActionRule) (result alertsmanagement.ActionRule, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, actionRuleName string, actionRule alertsmanagement.ActionRule) (result alertsmanagement.ActionRule, err error)
 	Delete(ctx context.Context, resourceGroupName string, actionRuleName string) (result alertsmanagement.Bool, err error)
 	Get(ctx context.Context, resourceGroupName string, actionRuleName string) (result alertsmanagement.ActionRule, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListPage, err error)

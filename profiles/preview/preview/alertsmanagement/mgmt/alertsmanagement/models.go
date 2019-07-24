@@ -231,6 +231,7 @@ type Diagnostics = original.Diagnostics
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseBody = original.ErrorResponseBody
 type Essentials = original.Essentials
+type ManagedResource = original.ManagedResource
 type MonitorServiceDetails = original.MonitorServiceDetails
 type MonitorServiceList = original.MonitorServiceList
 type Operation = original.Operation

@@ -197,13 +197,13 @@ func (client ActionRulesClient) DeleteResponder(resp *http.Response) (result Boo
 	return
 }
 
-// GetByName get a specific action rule
+// Get get a specific action rule
 // Parameters:
 // resourceGroupName - resource group name where the resource is created.
 // actionRuleName - the name of action rule that needs to be fetched
-func (client ActionRulesClient) GetByName(ctx context.Context, resourceGroupName string, actionRuleName string) (result ActionRule, err error) {
+func (client ActionRulesClient) Get(ctx context.Context, resourceGroupName string, actionRuleName string) (result ActionRule, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ActionRulesClient.GetByName")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ActionRulesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -212,29 +212,29 @@ func (client ActionRulesClient) GetByName(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByNamePreparer(ctx, resourceGroupName, actionRuleName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, actionRuleName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "alertsmanagement.ActionRulesClient", "GetByName", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "alertsmanagement.ActionRulesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetByNameSender(req)
+	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "alertsmanagement.ActionRulesClient", "GetByName", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "alertsmanagement.ActionRulesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetByNameResponder(resp)
+	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "alertsmanagement.ActionRulesClient", "GetByName", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "alertsmanagement.ActionRulesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetByNamePreparer prepares the GetByName request.
-func (client ActionRulesClient) GetByNamePreparer(ctx context.Context, resourceGroupName string, actionRuleName string) (*http.Request, error) {
+// GetPreparer prepares the Get request.
+func (client ActionRulesClient) GetPreparer(ctx context.Context, resourceGroupName string, actionRuleName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"actionRuleName":    autorest.Encode("path", actionRuleName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -254,16 +254,16 @@ func (client ActionRulesClient) GetByNamePreparer(ctx context.Context, resourceG
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetByNameSender sends the GetByName request. The method will close the
+// GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ActionRulesClient) GetByNameSender(req *http.Request) (*http.Response, error) {
+func (client ActionRulesClient) GetSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// GetByNameResponder handles the response to the GetByName request. The method always
+// GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ActionRulesClient) GetByNameResponder(resp *http.Response) (result ActionRule, err error) {
+func (client ActionRulesClient) GetResponder(resp *http.Response) (result ActionRule, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

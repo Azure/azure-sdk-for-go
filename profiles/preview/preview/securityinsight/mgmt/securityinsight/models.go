@@ -236,7 +236,6 @@ type KindBasicEntity = original.KindBasicEntity
 const (
 	KindAccount          KindBasicEntity = original.KindAccount
 	KindAzureResource    KindBasicEntity = original.KindAzureResource
-	KindBookmark         KindBasicEntity = original.KindBookmark
 	KindCloudApplication KindBasicEntity = original.KindCloudApplication
 	KindDNSResolution    KindBasicEntity = original.KindDNSResolution
 	KindEntity           KindBasicEntity = original.KindEntity
@@ -367,8 +366,6 @@ type BasicDataConnector = original.BasicDataConnector
 type BasicEntity = original.BasicEntity
 type BasicSettings = original.BasicSettings
 type Bookmark = original.Bookmark
-type BookmarkEntity = original.BookmarkEntity
-type BookmarkEntityProperties = original.BookmarkEntityProperties
 type BookmarkList = original.BookmarkList
 type BookmarkListIterator = original.BookmarkListIterator
 type BookmarkListPage = original.BookmarkListPage

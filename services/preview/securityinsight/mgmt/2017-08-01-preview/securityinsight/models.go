@@ -503,8 +503,6 @@ const (
 	KindAccount KindBasicEntity = "Account"
 	// KindAzureResource ...
 	KindAzureResource KindBasicEntity = "AzureResource"
-	// KindBookmark ...
-	KindBookmark KindBasicEntity = "Bookmark"
 	// KindCloudApplication ...
 	KindCloudApplication KindBasicEntity = "CloudApplication"
 	// KindDNSResolution ...
@@ -537,7 +535,7 @@ const (
 
 // PossibleKindBasicEntityValues returns an array of possible values for the KindBasicEntity const type.
 func PossibleKindBasicEntityValues() []KindBasicEntity {
-	return []KindBasicEntity{KindAccount, KindAzureResource, KindBookmark, KindCloudApplication, KindDNSResolution, KindEntity, KindFile, KindFileHash, KindHost, KindIP, KindMalware, KindProcess, KindRegistryKey, KindRegistryValue, KindSecurityAlert, KindSecurityGroup, KindURL}
+	return []KindBasicEntity{KindAccount, KindAzureResource, KindCloudApplication, KindDNSResolution, KindEntity, KindFile, KindFileHash, KindHost, KindIP, KindMalware, KindProcess, KindRegistryKey, KindRegistryValue, KindSecurityAlert, KindSecurityGroup, KindURL}
 }
 
 // KindBasicSettings enumerates the values for kind basic settings.
@@ -1026,7 +1024,7 @@ type AccountEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -1115,11 +1113,6 @@ func (ae AccountEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 
 // AsURLEntity is the BasicEntity implementation for AccountEntity.
 func (ae AccountEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for AccountEntity.
-func (ae AccountEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -2212,7 +2205,7 @@ type AzureResourceEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -2301,11 +2294,6 @@ func (are AzureResourceEntity) AsRegistryValueEntity() (*RegistryValueEntity, bo
 
 // AsURLEntity is the BasicEntity implementation for AzureResourceEntity.
 func (are AzureResourceEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for AzureResourceEntity.
-func (are AzureResourceEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -2480,226 +2468,6 @@ func (b *Bookmark) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// BookmarkEntity represents a bookmark entity.
-type BookmarkEntity struct {
-	// BookmarkEntityProperties - Bookmark entity properties
-	*BookmarkEntityProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
-	Kind KindBasicEntity `json:"kind,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BookmarkEntity.
-func (be BookmarkEntity) MarshalJSON() ([]byte, error) {
-	be.Kind = KindBookmark
-	objectMap := make(map[string]interface{})
-	if be.BookmarkEntityProperties != nil {
-		objectMap["properties"] = be.BookmarkEntityProperties
-	}
-	if be.Kind != "" {
-		objectMap["kind"] = be.Kind
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAccountEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsAccountEntity() (*AccountEntity, bool) {
-	return nil, false
-}
-
-// AsHostEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsHostEntity() (*HostEntity, bool) {
-	return nil, false
-}
-
-// AsFileEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsFileEntity() (*FileEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityAlert is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsSecurityAlert() (*SecurityAlert, bool) {
-	return nil, false
-}
-
-// AsFileHashEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsFileHashEntity() (*FileHashEntity, bool) {
-	return nil, false
-}
-
-// AsMalwareEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsMalwareEntity() (*MalwareEntity, bool) {
-	return nil, false
-}
-
-// AsSecurityGroupEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsSecurityGroupEntity() (*SecurityGroupEntity, bool) {
-	return nil, false
-}
-
-// AsAzureResourceEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsAzureResourceEntity() (*AzureResourceEntity, bool) {
-	return nil, false
-}
-
-// AsCloudApplicationEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsCloudApplicationEntity() (*CloudApplicationEntity, bool) {
-	return nil, false
-}
-
-// AsProcessEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsProcessEntity() (*ProcessEntity, bool) {
-	return nil, false
-}
-
-// AsDNSEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsDNSEntity() (*DNSEntity, bool) {
-	return nil, false
-}
-
-// AsIPEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsIPEntity() (*IPEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryKeyEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsRegistryKeyEntity() (*RegistryKeyEntity, bool) {
-	return nil, false
-}
-
-// AsRegistryValueEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
-	return nil, false
-}
-
-// AsURLEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
-	return &be, true
-}
-
-// AsEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsEntity() (*Entity, bool) {
-	return nil, false
-}
-
-// AsBasicEntity is the BasicEntity implementation for BookmarkEntity.
-func (be BookmarkEntity) AsBasicEntity() (BasicEntity, bool) {
-	return &be, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for BookmarkEntity struct.
-func (be *BookmarkEntity) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var bookmarkEntityProperties BookmarkEntityProperties
-				err = json.Unmarshal(*v, &bookmarkEntityProperties)
-				if err != nil {
-					return err
-				}
-				be.BookmarkEntityProperties = &bookmarkEntityProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				be.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				be.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				be.Name = &name
-			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicEntity
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				be.Kind = kind
-			}
-		}
-	}
-
-	return nil
-}
-
-// BookmarkEntityProperties bookmark entity property bag.
-type BookmarkEntityProperties struct {
-	// DisplayName - READ-ONLY; the display name
-	DisplayName *string `json:"displayName,omitempty"`
-	// Created - READ-ONLY; the created date/time
-	Created *date.Time `json:"created,omitempty"`
-	// Updated - READ-ONLY; the last updated date/time
-	Updated *date.Time `json:"updated,omitempty"`
-	// CreatedBy - information about the user that created this bookmark
-	CreatedBy *UserInfo `json:"createdBy,omitempty"`
-	// UpdatedBy - information about the user that last updated this bookmark
-	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
-	// EventTime - READ-ONLY; the last event date/time
-	EventTime *date.Time `json:"eventTime,omitempty"`
-	// Notes - READ-ONLY; the user-defined notes
-	Notes *string `json:"notes,omitempty"`
-	// Labels - the user-defined tags
-	Labels *[]string `json:"labels,omitempty"`
-	// Query - READ-ONLY; the query that produced the result
-	Query *string `json:"query,omitempty"`
-	// QueryResult - READ-ONLY; the result of the query (a single bookmarked result row)
-	QueryResult *string `json:"queryResult,omitempty"`
-	// FriendlyName - READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// AdditionalData - READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]interface{} `json:"additionalData"`
-}
-
-// MarshalJSON is the custom marshaler for BookmarkEntityProperties.
-func (bep BookmarkEntityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if bep.CreatedBy != nil {
-		objectMap["createdBy"] = bep.CreatedBy
-	}
-	if bep.UpdatedBy != nil {
-		objectMap["updatedBy"] = bep.UpdatedBy
-	}
-	if bep.Labels != nil {
-		objectMap["labels"] = bep.Labels
-	}
-	return json.Marshal(objectMap)
 }
 
 // BookmarkList list all the bookmarks.
@@ -3273,7 +3041,7 @@ type CloudApplicationEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -3362,11 +3130,6 @@ func (cae CloudApplicationEntity) AsRegistryValueEntity() (*RegistryValueEntity,
 
 // AsURLEntity is the BasicEntity implementation for CloudApplicationEntity.
 func (cae CloudApplicationEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for CloudApplicationEntity.
-func (cae CloudApplicationEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -3892,7 +3655,7 @@ type DNSEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -3981,11 +3744,6 @@ func (de DNSEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 
 // AsURLEntity is the BasicEntity implementation for DNSEntity.
 func (de DNSEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for DNSEntity.
-func (de DNSEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -4098,7 +3856,6 @@ type BasicEntity interface {
 	AsRegistryKeyEntity() (*RegistryKeyEntity, bool)
 	AsRegistryValueEntity() (*RegistryValueEntity, bool)
 	AsURLEntity() (*URLEntity, bool)
-	AsBookmarkEntity() (*BookmarkEntity, bool)
 	AsEntity() (*Entity, bool)
 }
 
@@ -4111,7 +3868,7 @@ type Entity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -4183,10 +3940,6 @@ func unmarshalBasicEntity(body []byte) (BasicEntity, error) {
 		var ue URLEntity
 		err := json.Unmarshal(body, &ue)
 		return ue, err
-	case string(KindBookmark):
-		var be BookmarkEntity
-		err := json.Unmarshal(body, &be)
-		return be, err
 	default:
 		var e Entity
 		err := json.Unmarshal(body, &e)
@@ -4294,11 +4047,6 @@ func (e Entity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 
 // AsURLEntity is the BasicEntity implementation for Entity.
 func (e Entity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for Entity.
-func (e Entity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -4838,7 +4586,7 @@ type FileEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -4927,11 +4675,6 @@ func (fe FileEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 
 // AsURLEntity is the BasicEntity implementation for FileEntity.
 func (fe FileEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for FileEntity.
-func (fe FileEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -5037,7 +4780,7 @@ type FileHashEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -5126,11 +4869,6 @@ func (fhe FileHashEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 
 // AsURLEntity is the BasicEntity implementation for FileHashEntity.
 func (fhe FileHashEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for FileHashEntity.
-func (fhe FileHashEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -5250,7 +4988,7 @@ type HostEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -5339,11 +5077,6 @@ func (he HostEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 
 // AsURLEntity is the BasicEntity implementation for HostEntity.
 func (he HostEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for HostEntity.
-func (he HostEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -5462,7 +5195,7 @@ type IPEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -5551,11 +5284,6 @@ func (ie IPEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 
 // AsURLEntity is the BasicEntity implementation for IPEntity.
 func (ie IPEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for IPEntity.
-func (ie IPEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -5662,7 +5390,7 @@ type MalwareEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -5751,11 +5479,6 @@ func (me MalwareEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 
 // AsURLEntity is the BasicEntity implementation for MalwareEntity.
 func (me MalwareEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for MalwareEntity.
-func (me MalwareEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -6767,7 +6490,7 @@ type ProcessEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -6856,11 +6579,6 @@ func (peVar ProcessEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) 
 
 // AsURLEntity is the BasicEntity implementation for ProcessEntity.
 func (peVar ProcessEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for ProcessEntity.
-func (peVar ProcessEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -6979,7 +6697,7 @@ type RegistryKeyEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -7068,11 +6786,6 @@ func (rke RegistryKeyEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool
 
 // AsURLEntity is the BasicEntity implementation for RegistryKeyEntity.
 func (rke RegistryKeyEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for RegistryKeyEntity.
-func (rke RegistryKeyEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -7174,7 +6887,7 @@ type RegistryValueEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -7263,11 +6976,6 @@ func (rve RegistryValueEntity) AsRegistryValueEntity() (*RegistryValueEntity, bo
 
 // AsURLEntity is the BasicEntity implementation for RegistryValueEntity.
 func (rve RegistryValueEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for RegistryValueEntity.
-func (rve RegistryValueEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -7527,7 +7235,7 @@ type SecurityAlert struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -7616,11 +7324,6 @@ func (sa SecurityAlert) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 
 // AsURLEntity is the BasicEntity implementation for SecurityAlert.
 func (sa SecurityAlert) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for SecurityAlert.
-func (sa SecurityAlert) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -7771,7 +7474,7 @@ type SecurityGroupEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -7860,11 +7563,6 @@ func (sge SecurityGroupEntity) AsRegistryValueEntity() (*RegistryValueEntity, bo
 
 // AsURLEntity is the BasicEntity implementation for SecurityGroupEntity.
 func (sge SecurityGroupEntity) AsURLEntity() (*URLEntity, bool) {
-	return nil, false
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for SecurityGroupEntity.
-func (sge SecurityGroupEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
 	return nil, false
 }
 
@@ -8532,7 +8230,7 @@ type URLEntity struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
-	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL', 'KindBookmark'
+	// Kind - Possible values include: 'KindEntity', 'KindAccount', 'KindHost', 'KindFile', 'KindSecurityAlert', 'KindFileHash', 'KindMalware', 'KindSecurityGroup', 'KindAzureResource', 'KindCloudApplication', 'KindProcess', 'KindDNSResolution', 'KindIP', 'KindRegistryKey', 'KindRegistryValue', 'KindURL'
 	Kind KindBasicEntity `json:"kind,omitempty"`
 }
 
@@ -8622,11 +8320,6 @@ func (ue URLEntity) AsRegistryValueEntity() (*RegistryValueEntity, bool) {
 // AsURLEntity is the BasicEntity implementation for URLEntity.
 func (ue URLEntity) AsURLEntity() (*URLEntity, bool) {
 	return &ue, true
-}
-
-// AsBookmarkEntity is the BasicEntity implementation for URLEntity.
-func (ue URLEntity) AsBookmarkEntity() (*BookmarkEntity, bool) {
-	return nil, false
 }
 
 // AsEntity is the BasicEntity implementation for URLEntity.

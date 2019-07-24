@@ -1329,32 +1329,6 @@ type Essentials struct {
 	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty"`
 }
 
-// ManagedResource an azure managed resource object
-type ManagedResource struct {
-	// Location - Resource location
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ManagedResource.
-func (mr ManagedResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mr.Location != nil {
-		objectMap["location"] = mr.Location
-	}
-	if mr.Tags != nil {
-		objectMap["tags"] = mr.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
 // MonitorServiceDetails details of a monitor service
 type MonitorServiceDetails struct {
 	// Name - Monitor service name

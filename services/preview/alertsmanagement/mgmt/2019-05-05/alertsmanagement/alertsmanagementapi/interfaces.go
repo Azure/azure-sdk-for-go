@@ -55,7 +55,7 @@ var _ SmartGroupsClientAPI = (*alertsmanagement.SmartGroupsClient)(nil)
 type ActionRulesClientAPI interface {
 	CreateUpdate(ctx context.Context, resourceGroupName string, actionRuleName string, actionRule alertsmanagement.ActionRule) (result alertsmanagement.ActionRule, err error)
 	Delete(ctx context.Context, resourceGroupName string, actionRuleName string) (result alertsmanagement.Bool, err error)
-	GetByName(ctx context.Context, resourceGroupName string, actionRuleName string) (result alertsmanagement.ActionRule, err error)
+	Get(ctx context.Context, resourceGroupName string, actionRuleName string) (result alertsmanagement.ActionRule, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListPage, err error)
 	ListBySubscription(ctx context.Context, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListPage, err error)
 	Update(ctx context.Context, resourceGroupName string, actionRuleName string, actionRulePatch alertsmanagement.PatchObject) (result alertsmanagement.ActionRule, err error)

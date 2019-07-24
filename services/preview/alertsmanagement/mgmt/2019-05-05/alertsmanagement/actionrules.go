@@ -21,7 +21,6 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -57,12 +56,6 @@ func (client ActionRulesClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: actionRule,
-			Constraints: []validation.Constraint{{Target: "actionRule.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("alertsmanagement.ActionRulesClient", "CreateOrUpdate", err.Error())
-	}
-
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, actionRuleName, actionRule)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "alertsmanagement.ActionRulesClient", "CreateOrUpdate", nil, "Failure preparing request")

@@ -49,8 +49,8 @@ func NewServerAdministratorsClientWithBaseURI(baseURI string, subscriptionID str
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
-// parameters - the required parameters for creating or updating an AAD server administrator.
-func (client ServerAdministratorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerAdministratorResource) (result ServerAdministratorsCreateOrUpdateFuture, err error) {
+// properties - the required parameters for creating or updating an AAD server administrator.
+func (client ServerAdministratorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource) (result ServerAdministratorsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAdministratorsClient.CreateOrUpdate")
 		defer func() {
@@ -62,17 +62,17 @@ func (client ServerAdministratorsClient) CreateOrUpdate(ctx context.Context, res
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.ServerAdministratorProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.ServerAdministratorProperties.AdministratorType", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.ServerAdministratorProperties.Login", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.ServerAdministratorProperties.Sid", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.ServerAdministratorProperties.TenantID", Name: validation.Null, Rule: true, Chain: nil},
+		{TargetValue: properties,
+			Constraints: []validation.Constraint{{Target: "properties.ServerAdministratorProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "properties.ServerAdministratorProperties.AdministratorType", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "properties.ServerAdministratorProperties.Login", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "properties.ServerAdministratorProperties.Sid", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "properties.ServerAdministratorProperties.TenantID", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("mysql.ServerAdministratorsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, properties)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "mysql.ServerAdministratorsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -88,7 +88,7 @@ func (client ServerAdministratorsClient) CreateOrUpdate(ctx context.Context, res
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ServerAdministratorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, parameters ServerAdministratorResource) (*http.Request, error) {
+func (client ServerAdministratorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, properties ServerAdministratorResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
@@ -105,7 +105,7 @@ func (client ServerAdministratorsClient) CreateOrUpdatePreparer(ctx context.Cont
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/Administrators/activeDirectory", pathParameters),
-		autorest.WithJSON(parameters),
+		autorest.WithJSON(properties),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

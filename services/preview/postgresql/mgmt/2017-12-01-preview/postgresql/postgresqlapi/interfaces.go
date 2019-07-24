@@ -90,7 +90,7 @@ var _ LogFilesClientAPI = (*postgresql.LogFilesClient)(nil)
 
 // ServerAdministratorsClientAPI contains the set of methods on the ServerAdministratorsClient type.
 type ServerAdministratorsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerAdministratorResource) (result postgresql.ServerAdministratorsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties postgresql.ServerAdministratorResource) (result postgresql.ServerAdministratorsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerAdministratorsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerAdministratorResource, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerAdministratorResourceListResult, err error)

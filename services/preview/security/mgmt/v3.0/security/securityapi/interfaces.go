@@ -206,6 +206,14 @@ type WorkspaceSettingsClientAPI interface {
 
 var _ WorkspaceSettingsClientAPI = (*security.WorkspaceSettingsClient)(nil)
 
+// SubAssessmentsClientAPI contains the set of methods on the SubAssessmentsClient type.
+type SubAssessmentsClientAPI interface {
+	Get(ctx context.Context, scope string, assessmentName string, subAssessmentName string) (result security.SubAssessment, err error)
+	List(ctx context.Context, scope string, assessmentName string) (result security.SubAssessmentListPage, err error)
+}
+
+var _ SubAssessmentsClientAPI = (*security.SubAssessmentsClient)(nil)
+
 // IoTSecuritySolutionsClientAPI contains the set of methods on the IoTSecuritySolutionsClient type.
 type IoTSecuritySolutionsClientAPI interface {
 	List(ctx context.Context, filter string) (result security.IoTSecuritySolutionsListPage, err error)

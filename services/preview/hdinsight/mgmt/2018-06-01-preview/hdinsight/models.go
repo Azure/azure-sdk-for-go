@@ -267,7 +267,7 @@ type ApplicationGetHTTPSEndpoint struct {
 	DestinationPort *int32 `json:"destinationPort,omitempty"`
 	// PublicPort - The public port to connect to.
 	PublicPort *int32 `json:"publicPort,omitempty"`
-	// SubDomainSuffix - The subDomainSuffix of the application.
+	// SubDomainSuffix - The subdomain suffix of the application.
 	SubDomainSuffix *string `json:"subDomainSuffix,omitempty"`
 	// DisableGatewayAuth - The value indicates whether to disable GatewayAuth.
 	DisableGatewayAuth *bool `json:"disableGatewayAuth,omitempty"`

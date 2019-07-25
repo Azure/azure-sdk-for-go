@@ -23,7 +23,7 @@
     "advanced_options": {
       "clone_dir": "./src/github.com/Azure/azure-sdk-for-go",
       "sdk_generation_pull_request_base": "integration_branch",
-      "create_sdk_pull_requests": false
+      "create_sdk_pull_requests": true
     },
     "version": "0.2.0"
   }

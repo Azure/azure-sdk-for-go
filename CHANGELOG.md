@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v31.2.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-01-01 |
+
 ## `v31.1.0`
 
 ### New Packages

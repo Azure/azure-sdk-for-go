@@ -4314,10 +4314,8 @@ type SubscriptionProperties struct {
 	SkuID *string `json:"skuId,omitempty"`
 	// SkuDescription - READ-ONLY; The sku description.
 	SkuDescription *string `json:"skuDescription,omitempty"`
-	// ResellerID - The reseller id.
-	ResellerID *string `json:"resellerId,omitempty"`
-	// Description - READ-ONLY; The name of the reseller.
-	Description *string `json:"description,omitempty"`
+	// Reseller - READ-ONLY; Reseller for this subscription.
+	Reseller *Reseller `json:"reseller,omitempty"`
 }
 
 // SubscriptionsListResult result of listing billing subscriptions summary.

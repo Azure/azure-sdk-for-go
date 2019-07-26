@@ -221,8 +221,8 @@ const (
 type RecommendationConfigStatus = original.RecommendationConfigStatus
 
 const (
-	TurnedOff RecommendationConfigStatus = original.TurnedOff
-	TurnedOn  RecommendationConfigStatus = original.TurnedOn
+	Disabled RecommendationConfigStatus = original.Disabled
+	Enabled  RecommendationConfigStatus = original.Enabled
 )
 
 type RecommendationStatus = original.RecommendationStatus
@@ -237,18 +237,22 @@ const (
 type RecommendationType = original.RecommendationType
 
 const (
-	DenyDefaultIPPolicy                 RecommendationType = original.DenyDefaultIPPolicy
-	EnableDiagnosticsLog                RecommendationType = original.EnableDiagnosticsLog
-	IdenticalAuthenticationCredentials  RecommendationType = original.IdenticalAuthenticationCredentials
-	OpenPortsOnDevice                   RecommendationType = original.OpenPortsOnDevice
-	OperationSystemNotValid             RecommendationType = original.OperationSystemNotValid
-	PermissiveFirewallPolicy            RecommendationType = original.PermissiveFirewallPolicy
-	PermissiveFirewallRuleInput         RecommendationType = original.PermissiveFirewallRuleInput
-	PermissiveFirewallRuleOut           RecommendationType = original.PermissiveFirewallRuleOut
-	SecurityTwinConfigurationConflict   RecommendationType = original.SecurityTwinConfigurationConflict
-	SecurityTwinConfigurationNotOptimal RecommendationType = original.SecurityTwinConfigurationNotOptimal
-	TooLargeIPRange                     RecommendationType = original.TooLargeIPRange
-	UnutilizedMessagesFromAgent         RecommendationType = original.UnutilizedMessagesFromAgent
+	IoTACRAuthentication             RecommendationType = original.IoTACRAuthentication
+	IoTAgentSendsUnutilizedMessages  RecommendationType = original.IoTAgentSendsUnutilizedMessages
+	IoTBaseline                      RecommendationType = original.IoTBaseline
+	IoTEdgeHubMemOptimize            RecommendationType = original.IoTEdgeHubMemOptimize
+	IoTEdgeLoggingOptions            RecommendationType = original.IoTEdgeLoggingOptions
+	IoTInconsistentModuleSettings    RecommendationType = original.IoTInconsistentModuleSettings
+	IoTInstallAgent                  RecommendationType = original.IoTInstallAgent
+	IoTIPFilterDenyAll               RecommendationType = original.IoTIPFilterDenyAll
+	IoTIPFilterPermissiveRule        RecommendationType = original.IoTIPFilterPermissiveRule
+	IoTOpenPorts                     RecommendationType = original.IoTOpenPorts
+	IoTPermissiveFirewallPolicy      RecommendationType = original.IoTPermissiveFirewallPolicy
+	IoTPermissiveInputFirewallRules  RecommendationType = original.IoTPermissiveInputFirewallRules
+	IoTPermissiveOutputFirewallRules RecommendationType = original.IoTPermissiveOutputFirewallRules
+	IoTPrivilegedDockerOptions       RecommendationType = original.IoTPrivilegedDockerOptions
+	IoTSharedCredentials             RecommendationType = original.IoTSharedCredentials
+	IoTVulnerableTLSCipherSuite      RecommendationType = original.IoTVulnerableTLSCipherSuite
 )
 
 type ReportedSeverity = original.ReportedSeverity
@@ -279,8 +283,8 @@ const (
 type SolutionStatus = original.SolutionStatus
 
 const (
-	Disabled SolutionStatus = original.Disabled
-	Enabled  SolutionStatus = original.Enabled
+	SolutionStatusDisabled SolutionStatus = original.SolutionStatusDisabled
+	SolutionStatusEnabled  SolutionStatus = original.SolutionStatusEnabled
 )
 
 type SourceSystem = original.SourceSystem

@@ -68,12 +68,8 @@ type Location = original.Location
 type LocationListResult = original.LocationListResult
 type Model = original.Model
 type Operation = original.Operation
-type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
-type OperationListResultType = original.OperationListResultType
-type OperationType = original.OperationType
 type OperationsClient = original.OperationsClient
-type OperationsGroupClient = original.OperationsGroupClient
 type Policies = original.Policies
 type SubscriptionsClient = original.SubscriptionsClient
 type TenantIDDescription = original.TenantIDDescription
@@ -102,12 +98,6 @@ func NewOperationsClient() OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI)
-}
-func NewOperationsGroupClient() OperationsGroupClient {
-	return original.NewOperationsGroupClient()
-}
-func NewOperationsGroupClientWithBaseURI(baseURI string) OperationsGroupClient {
-	return original.NewOperationsGroupClientWithBaseURI(baseURI)
 }
 func NewSubscriptionsClient() SubscriptionsClient {
 	return original.NewSubscriptionsClient()

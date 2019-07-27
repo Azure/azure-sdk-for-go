@@ -40,7 +40,7 @@ func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 	return OperationsClient{NewWithBaseURI(baseURI)}
 }
 
-// List lists all of the available Microsoft.Subscription API operations.
+// List lists all of the available pending Microsoft.Subscription API operations.
 func (client OperationsClient) List(ctx context.Context) (result OperationListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
@@ -83,7 +83,7 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.Subscription/operations"),
+		autorest.WithPath("/providers/Microsoft.Subscription/subscriptionOperations"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

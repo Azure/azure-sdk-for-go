@@ -917,6 +917,10 @@ type SapMonitorProperties struct {
 	HanaDbUsername *string `json:"hanaDbUsername,omitempty"`
 	// HanaDbPassword - Database password of the HANA instance.
 	HanaDbPassword *string `json:"hanaDbPassword,omitempty"`
+	// HanaDbPasswordKeyVaultURL - KeyVault URL link to the password for the HANA database.
+	HanaDbPasswordKeyVaultURL *string `json:"hanaDbPasswordKeyVaultUrl,omitempty"`
+	// HanaDbCredentialsMsiID - MSI ID passed by customer which has access to customer's KeyVault and to be assigned to the Collector VM.
+	HanaDbCredentialsMsiID *string `json:"hanaDbCredentialsMsiId,omitempty"`
 	// ProvisioningState - READ-ONLY; State of provisioning of the HanaInstance. Possible values include: 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting', 'Migrating'
 	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
 }

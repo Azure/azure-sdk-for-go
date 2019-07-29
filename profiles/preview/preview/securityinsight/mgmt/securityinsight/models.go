@@ -237,8 +237,6 @@ type CaseCommentList = original.CaseCommentList
 type CaseCommentListIterator = original.CaseCommentListIterator
 type CaseCommentListPage = original.CaseCommentListPage
 type CaseCommentProperties = original.CaseCommentProperties
-type CaseCommentRequestBody = original.CaseCommentRequestBody
-type CaseCommentRequestBodyProperties = original.CaseCommentRequestBodyProperties
 type CaseCommentsClient = original.CaseCommentsClient
 type CaseList = original.CaseList
 type CaseListIterator = original.CaseListIterator
@@ -252,6 +250,7 @@ type CasesAggregationsClient = original.CasesAggregationsClient
 type CasesClient = original.CasesClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type CommentsClient = original.CommentsClient
 type DataConnector = original.DataConnector
 type DataConnectorDataTypeCommon = original.DataConnectorDataTypeCommon
 type DataConnectorKind1 = original.DataConnectorKind1
@@ -387,6 +386,12 @@ func NewCasesClient(subscriptionID string) CasesClient {
 }
 func NewCasesClientWithBaseURI(baseURI string, subscriptionID string) CasesClient {
 	return original.NewCasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommentsClient(subscriptionID string) CommentsClient {
+	return original.NewCommentsClient(subscriptionID)
+}
+func NewCommentsClientWithBaseURI(baseURI string, subscriptionID string) CommentsClient {
+	return original.NewCommentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDataConnectorListIterator(page DataConnectorListPage) DataConnectorListIterator {
 	return original.NewDataConnectorListIterator(page)

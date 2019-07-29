@@ -75,6 +75,8 @@ func (client CasesClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "caseParameter.CaseProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.StartTimeUtc", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "caseParameter.CaseProperties.Title", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "caseParameter.CaseProperties.AssignedTo", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.AssignedTo.ObjectID", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("securityinsight.CasesClient", "CreateOrUpdate", err.Error())
 	}
@@ -326,6 +328,104 @@ func (client CasesClient) GetSender(req *http.Request) (*http.Response, error) {
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client CasesClient) GetResponder(resp *http.Response) (result Case, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetComment gets a case comment.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
+// Microsoft.OperationalInsights.
+// workspaceName - the name of the workspace.
+// caseID - case ID
+// caseCommentID - case comment ID
+func (client CasesClient) GetComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string) (result CaseComment, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CasesClient.GetComment")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("securityinsight.CasesClient", "GetComment", err.Error())
+	}
+
+	req, err := client.GetCommentPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, caseID, caseCommentID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.CasesClient", "GetComment", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetCommentSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "securityinsight.CasesClient", "GetComment", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetCommentResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.CasesClient", "GetComment", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetCommentPreparer prepares the GetComment request.
+func (client CasesClient) GetCommentPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"caseCommentId":                       autorest.Encode("path", caseCommentID),
+		"caseId":                              autorest.Encode("path", caseID),
+		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
+		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
+		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":                       autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2019-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/cases/{caseId}/comments/{caseCommentId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetCommentSender sends the GetComment request. The method will close the
+// http.Response Body if it receives an error.
+func (client CasesClient) GetCommentSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetCommentResponder handles the response to the GetComment request. The method always
+// closes the http.Response Body.
+func (client CasesClient) GetCommentResponder(resp *http.Response) (result CaseComment, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

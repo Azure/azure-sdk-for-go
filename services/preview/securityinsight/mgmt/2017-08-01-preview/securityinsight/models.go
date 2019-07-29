@@ -2358,88 +2358,10 @@ func NewCaseCommentListPage(getNextPage func(context.Context, CaseCommentList) (
 type CaseCommentProperties struct {
 	// Message - The comment message
 	Message *string `json:"message,omitempty"`
-	// CreatedTimeUtc - The time the comment was created
+	// CreatedTimeUtc - READ-ONLY; The time the comment was created
 	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
-	// UserInfo - Describes the user that created the comment
+	// UserInfo - READ-ONLY; Describes the user that created the comment
 	UserInfo *UserInfo `json:"userInfo,omitempty"`
-}
-
-// CaseCommentRequestBody represents a case comment request body
-type CaseCommentRequestBody struct {
-	// CaseCommentRequestBodyProperties - Case comment request body properties
-	*CaseCommentRequestBodyProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CaseCommentRequestBody.
-func (ccrb CaseCommentRequestBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ccrb.CaseCommentRequestBodyProperties != nil {
-		objectMap["properties"] = ccrb.CaseCommentRequestBodyProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for CaseCommentRequestBody struct.
-func (ccrb *CaseCommentRequestBody) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var caseCommentRequestBodyProperties CaseCommentRequestBodyProperties
-				err = json.Unmarshal(*v, &caseCommentRequestBodyProperties)
-				if err != nil {
-					return err
-				}
-				ccrb.CaseCommentRequestBodyProperties = &caseCommentRequestBodyProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				ccrb.ID = &ID
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ccrb.Type = &typeVar
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ccrb.Name = &name
-			}
-		}
-	}
-
-	return nil
-}
-
-// CaseCommentRequestBodyProperties case comment request body property bag.
-type CaseCommentRequestBodyProperties struct {
-	// Message - The comment message
-	Message *string `json:"message,omitempty"`
 }
 
 // CaseList list all the cases.
@@ -2590,9 +2512,9 @@ func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, erro
 
 // CaseProperties describes case properties
 type CaseProperties struct {
-	// LastUpdatedTimeUtc - The last time the case was updated
+	// LastUpdatedTimeUtc - READ-ONLY; The last time the case was updated
 	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
-	// CreatedTimeUtc - The time the case was created
+	// CreatedTimeUtc - READ-ONLY; The time the case was created
 	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
 	// EndTimeUtc - The end time of the case
 	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
@@ -2605,7 +2527,7 @@ type CaseProperties struct {
 	// Title - The title of the case
 	Title *string `json:"title,omitempty"`
 	// AssignedTo - Describes a user that the case is assigned to
-	AssignedTo *string `json:"assignedTo,omitempty"`
+	AssignedTo *UserInfo `json:"assignedTo,omitempty"`
 	// Severity - The severity of the case. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
 	Severity CaseSeverity `json:"severity,omitempty"`
 	// Status - The status of the case. Possible values include: 'CaseStatusDraft', 'CaseStatusNew', 'CaseStatusInProgress', 'CaseStatusClosed'
@@ -2614,13 +2536,13 @@ type CaseProperties struct {
 	CloseReason CloseReason `json:"closeReason,omitempty"`
 	// ClosedReasonText - the case close reason details
 	ClosedReasonText *string `json:"closedReasonText,omitempty"`
-	// RelatedAlertIds - List of related alert identifiers
+	// RelatedAlertIds - READ-ONLY; List of related alert identifiers
 	RelatedAlertIds *[]string `json:"relatedAlertIds,omitempty"`
-	// CaseNumber - a sequential number
+	// CaseNumber - READ-ONLY; a sequential number
 	CaseNumber *int32 `json:"caseNumber,omitempty"`
-	// LastComment - the last comment in the case
+	// LastComment - READ-ONLY; the last comment in the case
 	LastComment *string `json:"lastComment,omitempty"`
-	// TotalComments - the number of total comments in the case
+	// TotalComments - READ-ONLY; the number of total comments in the case
 	TotalComments *int32 `json:"totalComments,omitempty"`
 }
 
@@ -5585,8 +5507,8 @@ type UebaSettingsProperties struct {
 type UserInfo struct {
 	// ObjectID - The object id of the user.
 	ObjectID *uuid.UUID `json:"objectId,omitempty"`
-	// Email - The email of the user.
+	// Email - READ-ONLY; The email of the user.
 	Email *string `json:"email,omitempty"`
-	// Name - The name of the user.
+	// Name - READ-ONLY; The name of the user.
 	Name *string `json:"name,omitempty"`
 }

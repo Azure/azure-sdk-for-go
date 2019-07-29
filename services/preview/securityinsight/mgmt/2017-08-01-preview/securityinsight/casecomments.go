@@ -50,8 +50,8 @@ func NewCaseCommentsClientWithBaseURI(baseURI string, subscriptionID string) Cas
 // workspaceName - the name of the workspace.
 // caseID - case ID
 // caseCommentID - case comment ID
-// caseCommentRequestBody - the case comment request body
-func (client CaseCommentsClient) CreateComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string, caseCommentRequestBody CaseCommentRequestBody) (result CaseComment, err error) {
+// caseComment - the case comment
+func (client CaseCommentsClient) CreateComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string, caseComment CaseComment) (result CaseComment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CaseCommentsClient.CreateComment")
 		defer func() {
@@ -72,13 +72,16 @@ func (client CaseCommentsClient) CreateComment(ctx context.Context, resourceGrou
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: caseCommentRequestBody,
-			Constraints: []validation.Constraint{{Target: "caseCommentRequestBody.CaseCommentRequestBodyProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "caseCommentRequestBody.CaseCommentRequestBodyProperties.Message", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		{TargetValue: caseComment,
+			Constraints: []validation.Constraint{{Target: "caseComment.CaseCommentProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "caseComment.CaseCommentProperties.Message", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "caseComment.CaseCommentProperties.UserInfo", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "caseComment.CaseCommentProperties.UserInfo.ObjectID", Name: validation.Null, Rule: true, Chain: nil}}},
+				}}}}}); err != nil {
 		return result, validation.NewError("securityinsight.CaseCommentsClient", "CreateComment", err.Error())
 	}
 
-	req, err := client.CreateCommentPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, caseID, caseCommentID, caseCommentRequestBody)
+	req, err := client.CreateCommentPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, caseID, caseCommentID, caseComment)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "CreateComment", nil, "Failure preparing request")
 		return
@@ -100,7 +103,7 @@ func (client CaseCommentsClient) CreateComment(ctx context.Context, resourceGrou
 }
 
 // CreateCommentPreparer prepares the CreateComment request.
-func (client CaseCommentsClient) CreateCommentPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string, caseCommentRequestBody CaseCommentRequestBody) (*http.Request, error) {
+func (client CaseCommentsClient) CreateCommentPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string, caseComment CaseComment) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"caseCommentId":                       autorest.Encode("path", caseCommentID),
 		"caseId":                              autorest.Encode("path", caseID),
@@ -120,7 +123,7 @@ func (client CaseCommentsClient) CreateCommentPreparer(ctx context.Context, reso
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/cases/{caseId}/comments/{caseCommentId}", pathParameters),
-		autorest.WithJSON(caseCommentRequestBody),
+		autorest.WithJSON(caseComment),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -142,255 +145,5 @@ func (client CaseCommentsClient) CreateCommentResponder(resp *http.Response) (re
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetCommentByID gets a case comment.
-// Parameters:
-// resourceGroupName - the name of the resource group within the user's subscription. The name is case
-// insensitive.
-// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
-// Microsoft.OperationalInsights.
-// workspaceName - the name of the workspace.
-// caseID - case ID
-// caseCommentID - case comment ID
-func (client CaseCommentsClient) GetCommentByID(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string) (result CaseComment, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/CaseCommentsClient.GetCommentByID")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: workspaceName,
-			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.CaseCommentsClient", "GetCommentByID", err.Error())
-	}
-
-	req, err := client.GetCommentByIDPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, caseID, caseCommentID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "GetCommentByID", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetCommentByIDSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "GetCommentByID", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetCommentByIDResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "GetCommentByID", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetCommentByIDPreparer prepares the GetCommentByID request.
-func (client CaseCommentsClient) GetCommentByIDPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"caseCommentId":                       autorest.Encode("path", caseCommentID),
-		"caseId":                              autorest.Encode("path", caseID),
-		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":                       autorest.Encode("path", workspaceName),
-	}
-
-	const APIVersion = "2019-01-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/cases/{caseId}/comments/{caseCommentId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetCommentByIDSender sends the GetCommentByID request. The method will close the
-// http.Response Body if it receives an error.
-func (client CaseCommentsClient) GetCommentByIDSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetCommentByIDResponder handles the response to the GetCommentByID request. The method always
-// closes the http.Response Body.
-func (client CaseCommentsClient) GetCommentByIDResponder(resp *http.Response) (result CaseComment, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// List gets all case comments.
-// Parameters:
-// resourceGroupName - the name of the resource group within the user's subscription. The name is case
-// insensitive.
-// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
-// Microsoft.OperationalInsights.
-// workspaceName - the name of the workspace.
-// caseID - case ID
-// filter - filters the results, based on a Boolean condition. Optional.
-// orderby - sorts the results. Optional.
-// top - returns only the first n results. Optional.
-// skipToken - skiptoken is only used if a previous operation returned a partial result. If a previous response
-// contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-// specifies a starting point to use for subsequent calls. Optional.
-func (client CaseCommentsClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result CaseCommentListPage, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/CaseCommentsClient.List")
-		defer func() {
-			sc := -1
-			if result.ccl.Response.Response != nil {
-				sc = result.ccl.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: workspaceName,
-			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.CaseCommentsClient", "List", err.Error())
-	}
-
-	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, caseID, filter, orderby, top, skipToken)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "List", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.ccl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "List", resp, "Failure sending request")
-		return
-	}
-
-	result.ccl, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "List", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListPreparer prepares the List request.
-func (client CaseCommentsClient) ListPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"caseId":                              autorest.Encode("path", caseID),
-		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":                       autorest.Encode("path", workspaceName),
-	}
-
-	const APIVersion = "2019-01-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-	if len(orderby) > 0 {
-		queryParameters["$orderby"] = autorest.Encode("query", orderby)
-	}
-	if top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *top)
-	}
-	if len(skipToken) > 0 {
-		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/cases/{caseId}/comments", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListSender sends the List request. The method will close the
-// http.Response Body if it receives an error.
-func (client CaseCommentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListResponder handles the response to the List request. The method always
-// closes the http.Response Body.
-func (client CaseCommentsClient) ListResponder(resp *http.Response) (result CaseCommentList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client CaseCommentsClient) listNextResults(ctx context.Context, lastResults CaseCommentList) (result CaseCommentList, err error) {
-	req, err := lastResults.caseCommentListPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.CaseCommentsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client CaseCommentsClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result CaseCommentListIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/CaseCommentsClient.List")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.List(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, caseID, filter, orderby, top, skipToken)
 	return
 }

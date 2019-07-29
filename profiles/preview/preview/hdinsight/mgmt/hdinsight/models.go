@@ -29,6 +29,19 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ApplicationHTTPSEndpointAccessMode = original.ApplicationHTTPSEndpointAccessMode
+
+const (
+	WebPage ApplicationHTTPSEndpointAccessMode = original.WebPage
+)
+
+type ApplicationType = original.ApplicationType
+
+const (
+	CustomApplication ApplicationType = original.CustomApplication
+	RServer           ApplicationType = original.RServer
+)
+
 type AsyncOperationState = original.AsyncOperationState
 
 const (
@@ -122,6 +135,7 @@ type BaseClient = original.BaseClient
 type BillingMeters = original.BillingMeters
 type BillingResources = original.BillingResources
 type BillingResponseListResult = original.BillingResponseListResult
+type CapabilitiesResult = original.CapabilitiesResult
 type Cluster = original.Cluster
 type ClusterConfigurations = original.ClusterConfigurations
 type ClusterCreateParametersExtended = original.ClusterCreateParametersExtended
@@ -177,7 +191,10 @@ type OperationResource = original.OperationResource
 type OperationsClient = original.OperationsClient
 type OsProfile = original.OsProfile
 type ProxyResource = original.ProxyResource
+type QuotaCapability = original.QuotaCapability
 type QuotaInfo = original.QuotaInfo
+type RegionalQuotaCapability = original.RegionalQuotaCapability
+type RegionsCapability = original.RegionsCapability
 type Resource = original.Resource
 type Role = original.Role
 type RuntimeScriptAction = original.RuntimeScriptAction
@@ -203,7 +220,11 @@ type TrackedResource = original.TrackedResource
 type UpdateGatewaySettingsParameters = original.UpdateGatewaySettingsParameters
 type Usage = original.Usage
 type UsagesListResult = original.UsagesListResult
+type VMSizeCompatibilityFilter = original.VMSizeCompatibilityFilter
 type VMSizeCompatibilityFilterV2 = original.VMSizeCompatibilityFilterV2
+type VMSizesCapability = original.VMSizesCapability
+type VersionSpec = original.VersionSpec
+type VersionsCapability = original.VersionsCapability
 type VirtualNetworkProfile = original.VirtualNetworkProfile
 
 func New(subscriptionID string) BaseClient {
@@ -289,6 +310,12 @@ func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID s
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleApplicationHTTPSEndpointAccessModeValues() []ApplicationHTTPSEndpointAccessMode {
+	return original.PossibleApplicationHTTPSEndpointAccessModeValues()
+}
+func PossibleApplicationTypeValues() []ApplicationType {
+	return original.PossibleApplicationTypeValues()
 }
 func PossibleAsyncOperationStateValues() []AsyncOperationState {
 	return original.PossibleAsyncOperationStateValues()

@@ -138,8 +138,8 @@ func (client UserGroupsClient) ListByUserPreparer(ctx context.Context, resourceG
 // ListByUserSender sends the ListByUser request. The method will close the
 // http.Response Body if it receives an error.
 func (client UserGroupsClient) ListByUserSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByUserResponder handles the response to the ListByUser request. The method always

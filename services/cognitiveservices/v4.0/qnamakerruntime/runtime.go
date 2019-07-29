@@ -1,4 +1,4 @@
-package qnamaker
+package qnamakerruntime
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -52,20 +52,20 @@ func (client RuntimeClient) GenerateAnswer(ctx context.Context, kbID string, gen
 	}
 	req, err := client.GenerateAnswerPreparer(ctx, kbID, generateAnswerPayload)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "qnamaker.RuntimeClient", "GenerateAnswer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "qnamakerruntime.RuntimeClient", "GenerateAnswer", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GenerateAnswerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "qnamaker.RuntimeClient", "GenerateAnswer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "qnamakerruntime.RuntimeClient", "GenerateAnswer", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GenerateAnswerResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "qnamaker.RuntimeClient", "GenerateAnswer", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "qnamakerruntime.RuntimeClient", "GenerateAnswer", resp, "Failure responding to request")
 	}
 
 	return
@@ -127,20 +127,20 @@ func (client RuntimeClient) Train(ctx context.Context, kbID string, trainPayload
 	}
 	req, err := client.TrainPreparer(ctx, kbID, trainPayload)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "qnamaker.RuntimeClient", "Train", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "qnamakerruntime.RuntimeClient", "Train", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.TrainSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "qnamaker.RuntimeClient", "Train", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "qnamakerruntime.RuntimeClient", "Train", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.TrainResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "qnamaker.RuntimeClient", "Train", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "qnamakerruntime.RuntimeClient", "Train", resp, "Failure responding to request")
 	}
 
 	return

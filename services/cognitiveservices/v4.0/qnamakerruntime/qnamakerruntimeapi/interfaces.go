@@ -1,4 +1,4 @@
-package qnamakerapi
+package qnamakerruntimeapi
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,8 +25,8 @@ import (
 
 // RuntimeClientAPI contains the set of methods on the RuntimeClient type.
 type RuntimeClientAPI interface {
-	GenerateAnswer(ctx context.Context, kbID string, generateAnswerPayload qnamaker.QueryDTO) (result qnamaker.QnASearchResultList, err error)
-	Train(ctx context.Context, kbID string, trainPayload qnamaker.FeedbackRecordsDTO) (result autorest.Response, err error)
+	GenerateAnswer(ctx context.Context, kbID string, generateAnswerPayload qnamakerruntime.QueryDTO) (result qnamakerruntime.QnASearchResultList, err error)
+	Train(ctx context.Context, kbID string, trainPayload qnamakerruntime.FeedbackRecordsDTO) (result autorest.Response, err error)
 }
 
-var _ RuntimeClientAPI = (*qnamaker.RuntimeClient)(nil)
+var _ RuntimeClientAPI = (*qnamakerruntime.RuntimeClient)(nil)

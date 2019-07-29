@@ -1,7 +1,7 @@
-// Package qnamaker implements the Azure ARM Qnamaker service API version 4.0.
+// Package qnamakerruntime implements the Azure ARM Qnamakerruntime service API version 4.0.
 //
 // An API for QnAMaker runtime
-package qnamaker
+package qnamakerruntime
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -24,7 +24,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// BaseClient is the base client for Qnamaker.
+// BaseClient is the base client for Qnamakerruntime.
 type BaseClient struct {
 	autorest.Client
 	RuntimeEndpoint string

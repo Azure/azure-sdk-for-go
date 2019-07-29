@@ -1,4 +1,4 @@
-package qnamaker
+package qnamakerruntime
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //

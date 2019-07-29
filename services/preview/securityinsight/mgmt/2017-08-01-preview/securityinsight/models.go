@@ -2135,6 +2135,313 @@ func (c *Case) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// CaseComment represents a case comment
+type CaseComment struct {
+	autorest.Response `json:"-"`
+	// CaseCommentProperties - Case comment properties
+	*CaseCommentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CaseComment.
+func (cc CaseComment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cc.CaseCommentProperties != nil {
+		objectMap["properties"] = cc.CaseCommentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CaseComment struct.
+func (cc *CaseComment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var caseCommentProperties CaseCommentProperties
+				err = json.Unmarshal(*v, &caseCommentProperties)
+				if err != nil {
+					return err
+				}
+				cc.CaseCommentProperties = &caseCommentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cc.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cc.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// CaseCommentList list of case comments.
+type CaseCommentList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of comments.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of comments.
+	Value *[]CaseComment `json:"value,omitempty"`
+}
+
+// CaseCommentListIterator provides access to a complete listing of CaseComment values.
+type CaseCommentListIterator struct {
+	i    int
+	page CaseCommentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CaseCommentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CaseCommentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CaseCommentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CaseCommentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CaseCommentListIterator) Response() CaseCommentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CaseCommentListIterator) Value() CaseComment {
+	if !iter.page.NotDone() {
+		return CaseComment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CaseCommentListIterator type.
+func NewCaseCommentListIterator(page CaseCommentListPage) CaseCommentListIterator {
+	return CaseCommentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ccl CaseCommentList) IsEmpty() bool {
+	return ccl.Value == nil || len(*ccl.Value) == 0
+}
+
+// caseCommentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ccl CaseCommentList) caseCommentListPreparer(ctx context.Context) (*http.Request, error) {
+	if ccl.NextLink == nil || len(to.String(ccl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ccl.NextLink)))
+}
+
+// CaseCommentListPage contains a page of CaseComment values.
+type CaseCommentListPage struct {
+	fn  func(context.Context, CaseCommentList) (CaseCommentList, error)
+	ccl CaseCommentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CaseCommentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CaseCommentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ccl)
+	if err != nil {
+		return err
+	}
+	page.ccl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CaseCommentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CaseCommentListPage) NotDone() bool {
+	return !page.ccl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CaseCommentListPage) Response() CaseCommentList {
+	return page.ccl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CaseCommentListPage) Values() []CaseComment {
+	if page.ccl.IsEmpty() {
+		return nil
+	}
+	return *page.ccl.Value
+}
+
+// Creates a new instance of the CaseCommentListPage type.
+func NewCaseCommentListPage(getNextPage func(context.Context, CaseCommentList) (CaseCommentList, error)) CaseCommentListPage {
+	return CaseCommentListPage{fn: getNextPage}
+}
+
+// CaseCommentProperties case comment property bag.
+type CaseCommentProperties struct {
+	// Message - The comment message
+	Message *string `json:"message,omitempty"`
+	// CreatedTimeUtc - The time the comment was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// UserInfo - Describes the user that created the comment
+	UserInfo *UserInfo `json:"userInfo,omitempty"`
+}
+
+// CaseCommentRequestBody represents a case comment request body
+type CaseCommentRequestBody struct {
+	// CaseCommentRequestBodyProperties - Case comment request body properties
+	*CaseCommentRequestBodyProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CaseCommentRequestBody.
+func (ccrb CaseCommentRequestBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ccrb.CaseCommentRequestBodyProperties != nil {
+		objectMap["properties"] = ccrb.CaseCommentRequestBodyProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CaseCommentRequestBody struct.
+func (ccrb *CaseCommentRequestBody) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var caseCommentRequestBodyProperties CaseCommentRequestBodyProperties
+				err = json.Unmarshal(*v, &caseCommentRequestBodyProperties)
+				if err != nil {
+					return err
+				}
+				ccrb.CaseCommentRequestBodyProperties = &caseCommentRequestBodyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ccrb.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ccrb.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ccrb.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// CaseCommentRequestBodyProperties case comment request body property bag.
+type CaseCommentRequestBodyProperties struct {
+	// Message - The comment message
+	Message *string `json:"message,omitempty"`
+}
+
 // CaseList list all the cases.
 type CaseList struct {
 	autorest.Response `json:"-"`
@@ -2298,13 +2605,23 @@ type CaseProperties struct {
 	// Title - The title of the case
 	Title *string `json:"title,omitempty"`
 	// AssignedTo - Describes a user that the case is assigned to
-	AssignedTo *UserInfo `json:"assignedTo,omitempty"`
+	AssignedTo *string `json:"assignedTo,omitempty"`
 	// Severity - The severity of the case. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
 	Severity CaseSeverity `json:"severity,omitempty"`
 	// Status - The status of the case. Possible values include: 'CaseStatusDraft', 'CaseStatusNew', 'CaseStatusInProgress', 'CaseStatusClosed'
 	Status CaseStatus `json:"status,omitempty"`
 	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
 	CloseReason CloseReason `json:"closeReason,omitempty"`
+	// ClosedReasonText - the case close reason details
+	ClosedReasonText *string `json:"closedReasonText,omitempty"`
+	// RelatedAlertIds - List of related alert identifiers
+	RelatedAlertIds *[]string `json:"relatedAlertIds,omitempty"`
+	// CaseNumber - a sequential number
+	CaseNumber *int32 `json:"caseNumber,omitempty"`
+	// LastComment - the last comment in the case
+	LastComment *string `json:"lastComment,omitempty"`
+	// TotalComments - the number of total comments in the case
+	TotalComments *int32 `json:"totalComments,omitempty"`
 }
 
 // CasesAggregation represents aggregations results for cases.

@@ -55,10 +55,19 @@ type CasesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseParameter securityinsight.Case) (result securityinsight.Case, err error)
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string) (result securityinsight.Case, err error)
-	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.CaseListPage, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseListPage, err error)
 }
 
 var _ CasesClientAPI = (*securityinsight.CasesClient)(nil)
+
+// CaseCommentsClientAPI contains the set of methods on the CaseCommentsClient type.
+type CaseCommentsClientAPI interface {
+	CreateComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string, caseCommentRequestBody securityinsight.CaseCommentRequestBody) (result securityinsight.CaseComment, err error)
+	GetCommentByID(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string) (result securityinsight.CaseComment, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseCommentListPage, err error)
+}
+
+var _ CaseCommentsClientAPI = (*securityinsight.CaseCommentsClient)(nil)
 
 // BookmarksClientAPI contains the set of methods on the BookmarksClient type.
 type BookmarksClientAPI interface {

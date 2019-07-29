@@ -296,6 +296,7 @@ type AzureFilesIdentityBasedAuthentication = original.AzureFilesIdentityBasedAut
 type BaseClient = original.BaseClient
 type BlobContainer = original.BlobContainer
 type BlobContainersClient = original.BlobContainersClient
+type BlobServiceItems = original.BlobServiceItems
 type BlobServiceProperties = original.BlobServiceProperties
 type BlobServicePropertiesProperties = original.BlobServicePropertiesProperties
 type BlobServicesClient = original.BlobServicesClient

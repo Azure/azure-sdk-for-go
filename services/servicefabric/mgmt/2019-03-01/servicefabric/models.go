@@ -558,7 +558,7 @@ type ApplicationResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - Azure resource location.
+	// Location - It will be deprecated in New API, resource location depends on the parent resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -729,7 +729,7 @@ type ApplicationResourceUpdate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - Azure resource location.
+	// Location - It will be deprecated in New API, resource location depends on the parent resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -967,7 +967,7 @@ type ApplicationTypeResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - Azure resource location.
+	// Location - It will be deprecated in New API, resource location depends on the parent resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -1117,7 +1117,7 @@ type ApplicationTypeVersionResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - Azure resource location.
+	// Location - It will be deprecated in New API, resource location depends on the parent resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -2373,7 +2373,7 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - Azure resource location.
+	// Location - It will be deprecated in New API, resource location depends on the parent resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -2535,7 +2535,7 @@ type ServiceResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - Azure resource location.
+	// Location - It will be deprecated in New API, resource location depends on the parent resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -2951,7 +2951,7 @@ type ServiceResourceUpdate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - Azure resource location.
+	// Location - It will be deprecated in New API, resource location depends on the parent resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`

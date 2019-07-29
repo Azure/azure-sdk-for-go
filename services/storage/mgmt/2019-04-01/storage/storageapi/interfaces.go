@@ -75,6 +75,7 @@ var _ ManagementPoliciesClientAPI = (*storage.ManagementPoliciesClient)(nil)
 // BlobServicesClientAPI contains the set of methods on the BlobServicesClient type.
 type BlobServicesClientAPI interface {
 	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result storage.BlobServiceProperties, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.BlobServiceItems, err error)
 	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters storage.BlobServiceProperties) (result storage.BlobServiceProperties, err error)
 }
 

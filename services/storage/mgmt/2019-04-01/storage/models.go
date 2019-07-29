@@ -1184,6 +1184,13 @@ func (bc *BlobContainer) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BlobServiceItems ...
+type BlobServiceItems struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of blob services returned.
+	Value *[]BlobServiceProperties `json:"value,omitempty"`
+}
+
 // BlobServiceProperties the properties of a storage account’s Blob service.
 type BlobServiceProperties struct {
 	autorest.Response `json:"-"`

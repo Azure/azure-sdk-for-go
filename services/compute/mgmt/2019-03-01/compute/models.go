@@ -2332,7 +2332,7 @@ type DedicatedHostAvailableCapacity struct {
 type DedicatedHostGroup struct {
 	autorest.Response             `json:"-"`
 	*DedicatedHostGroupProperties `json:"properties,omitempty"`
-	// Zones - Availability Zone to use for this host group � only single zone is supported. The zone can be assigned only during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the group to be in the same zone.
+	// Zones - Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the group to be in the same zone.
 	Zones *[]string `json:"zones,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -2600,7 +2600,7 @@ type DedicatedHostGroupProperties struct {
 // should be assigned to. Only tags may be updated.
 type DedicatedHostGroupUpdate struct {
 	*DedicatedHostGroupProperties `json:"properties,omitempty"`
-	// Zones - Availability Zone to use for this host group � only single zone is supported. The zone can be assigned only during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the group to be in the same zone.
+	// Zones - Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the group to be in the same zone.
 	Zones *[]string `json:"zones,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
@@ -11239,6 +11239,8 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
 	// LicenseType - The license type, which is for bring your own license scenario.
 	LicenseType *string `json:"licenseType,omitempty"`
+	// ScheduledEventsProfile - Specifies Scheduled Event related configurations.
+	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }
 
 // VirtualMachineScaleSetVM describes a virtual machine scale set virtual machine.

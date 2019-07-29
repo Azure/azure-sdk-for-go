@@ -83,7 +83,7 @@ func PossibleStateValues() []State {
 	return []State{Deleted, Disabled, Enabled, PastDue, Warned}
 }
 
-// AdPrincipal active Directory Principal for subscription creation delegated permission
+// AdPrincipal active Directory Principal who’ll get owner access on the new subscription.
 type AdPrincipal struct {
 	// ObjectID - Object id of the Principal
 	ObjectID *string `json:"objectId,omitempty"`
@@ -122,7 +122,7 @@ func (cp CreationParameters) MarshalJSON() ([]byte, error) {
 // CreationResult the created subscription object.
 type CreationResult struct {
 	autorest.Response `json:"-"`
-	// SubscriptionLink - The link to the new subscription.
+	// SubscriptionLink - The link to the new subscription. Use this link to check the status of subscription creation operation.
 	SubscriptionLink *string `json:"subscriptionLink,omitempty"`
 }
 

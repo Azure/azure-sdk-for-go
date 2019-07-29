@@ -172,3 +172,25 @@ func (wt WorkingTree) ListTags(pattern string) ([]string, error) {
 	sort.Strings(tags)
 	return tags, nil
 }
+
+// Pull calls "git pull upstream branch" to update local working tree.
+func (wt WorkingTree) Pull(upstream string, branch string) error {
+	cmd := exec.Command("git", "pull", upstream, branch)
+	cmd.Dir = wt.dir
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return errors.New(string(output))
+	}
+	return nil
+}
+
+// CreateAndCheckout create and checkout to a new branch
+func (wt WorkingTree) CreateAndCheckout(branch string) error {
+	cmd := exec.Command("git", "checkout", "-b", branch)
+	cmd.Dir = wt.dir
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return errors.New(string(output))
+	}
+	return nil
+}

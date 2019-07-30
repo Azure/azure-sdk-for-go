@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -13,11 +14,11 @@ import (
 )
 
 const (
-	latest              = "latest"
-	master              = "master"
-	specUpstream        = "origin"
-	branchPattern       = "major-version-release-v%d.0.0"
-	autorestArgsPattern = "--use=@microsoft.azure/autorest.go@~2.1.99 %s --go --multiapi --go-sdk-folder=%s --use-onever"
+	latest        = "latest"
+	master        = "master"
+	specUpstream  = "origin"
+	branchPattern = "major-version-release-v%d.0.0"
+	readme        = "readme.md"
 )
 
 // flags
@@ -25,7 +26,7 @@ var upstream string
 var quietFlag bool
 var debugFlag bool
 var verboseFlag bool
-var skip []string
+var skip string
 var batch int
 
 // global variables
@@ -37,7 +38,7 @@ var absolutePathOfSDK string
 var absolutePathOfSpecs string
 
 var rootCmd = &cobra.Command{
-	Use:   "major-updater <SDK dir> <specs dir>",
+	Use:   "major-updater <SDK dir> <specification dir>",
 	Short: "Do a whole procedure of monthly regular major update",
 	Long:  `This tool will execute a procedure of releasing a new major update of the azure-sdk-for-go`,
 	Args: func(cmd *cobra.Command, args []string) error {
@@ -60,7 +61,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&quietFlag, "quiet", "q", false, "quiet output")
 	rootCmd.PersistentFlags().BoolVarP(&debugFlag, "debug", "d", false, "debug output")
 	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
-	rootCmd.PersistentFlags().StringArrayVarP(&skip, "skip", "s", []string{}, "skiped procedures")
+	rootCmd.PersistentFlags().StringVar(&skip, "skip", "", "skiped procedures, seprated by comma")
 }
 
 // Execute executes the specified command.
@@ -74,36 +75,46 @@ func theCommand(args []string) error {
 	sdkDir := args[0]
 	specsDir := args[1]
 	var err error
+	absolutePathOfSDK, err = filepath.Abs(sdkDir)
+	if err != nil {
+		return fmt.Errorf("failed to get the directory of SDK: %v", err)
+	}
+	absolutePathOfSpecs, err = filepath.Abs(specsDir)
+	if err != nil {
+		return fmt.Errorf("failed to get the directory of specs: %v", err)
+	}
+	vprintf("SDK directory: %s\nSpecifications directory: %s\n", absolutePathOfSDK, absolutePathOfSpecs)
 	initialDir, err = os.Getwd()
 	if err != nil {
-		return fmt.Errorf("failed to get the current working directory: %v", err)
+		return fmt.Errorf("failed to get the initial working directory: %v", err)
 	}
-	err = changeDir(sdkDir)
-	absolutePathOfSDK, _ = os.Getwd()
+	err = changeDir(absolutePathOfSDK)
 	if err != nil {
 		return fmt.Errorf("cannot change dir to SDK folder: %v", err)
 	}
-	if !contains(skip, "dep") {
+	skipArray := strings.Split(skip, ",")
+	if !contains(skipArray, "dep") {
 		println("Executing dep")
 		err = executeDep()
 		if err != nil {
 			return err
 		}
 	}
-	if !contains(skip, "sdk") {
+	if !contains(skipArray, "sdk") && !contains(skipArray, "SDK") {
 		println("Update SDK repo...")
 		err = updateSDKRepo()
 		if err != nil {
 			return err
 		}
 	}
-	if !contains(skip, "spec") && !contains(skip, "specs") {
+	if !contains(skipArray, "spec") && !contains(skipArray, "specs") {
 		println("Update specs repo...")
-		err = updateSpecsRepo(specsDir)
+		err = updateSpecsRepo()
 		if err != nil {
 			return err
 		}
 	}
+	println("Executing autorest...")
 	err = runAutorest()
 	return nil
 }
@@ -151,9 +162,15 @@ func updateSDKRepo() error {
 	return err
 }
 
-func updateSpecsRepo(cwd string) error {
-	err := changeDir(cwd)
-	absolutePathOfSpecs, _ = os.Getwd()
+func updateSpecsRepo() error {
+	err := changeDir(absolutePathOfSpecs)
+	if err != nil {
+		return fmt.Errorf("failed to change directory to %s: %v", absolutePathOfSpecs, err)
+	}
+	cwd, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("failed to get the current working directory: %v", err)
+	}
 	wt, err := repo.Get(cwd)
 	if err != nil {
 		return fmt.Errorf("failed to get the working tree: %v", err)
@@ -175,18 +192,38 @@ func runAutorest() error {
 	if err != nil {
 		return fmt.Errorf("failed to set environment variable: %v", err)
 	}
+	// get every single readme file in the directory
+	files, err := selectFilesWithName(absolutePathOfSpecs, readme)
+	vprintf("Found %d readme.md files\n", len(files))
+	jobs := make(chan string, 1000)
+	results := make(chan error, 1000)
+	for i := 0; i < batch; i++ {
+		go worker(i, jobs, results)
+	}
 	// call runAutorestSingle here in a loop
+	for _, file := range files {
+		jobs <- file
+	}
+	close(jobs)
+	for range files {
+		<-results
+	}
+	vprintln("autorest finished")
 	return nil
 }
 
-func runAutorestSingle(filename string) error {
-	autorestArgs := fmt.Sprintf(autorestArgsPattern, filename, absolutePathOfSDK)
-	c := exec.Command("autorest", strings.Split(autorestArgs, " ")...)
-	err := c.Start()
-	if err != nil {
-		return fmt.Errorf("failed to start autorest on %s: %v", filename, err)
+func worker(id int, jobs <-chan string, results chan<- error) {
+	for file := range jobs {
+		vprintf("worker %d is starting on file %s\n", id, file)
+		c := autorestCommand(file, absolutePathOfSDK)
+		err := c.Run()
+		if err == nil {
+			vprintf("worker %d is done with file %s\n", id, file)
+		} else {
+			printf("worker %d fails with file %s, error messages:\n%v\n", id, file, err)
+		}
+		results <- err
 	}
-	return nil
 }
 
 func createNewBranch(wt repo.WorkingTree) error {

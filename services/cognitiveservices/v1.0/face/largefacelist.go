@@ -162,8 +162,8 @@ func (client LargeFaceListClient) AddFaceFromStreamPreparer(ctx context.Context,
 // AddFaceFromStreamSender sends the AddFaceFromStream request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) AddFaceFromStreamSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddFaceFromStreamResponder handles the response to the AddFaceFromStream request. The method always
@@ -305,8 +305,8 @@ func (client LargeFaceListClient) AddFaceFromURLPreparer(ctx context.Context, la
 // AddFaceFromURLSender sends the AddFaceFromURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) AddFaceFromURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddFaceFromURLResponder handles the response to the AddFaceFromURL request. The method always
@@ -415,8 +415,8 @@ func (client LargeFaceListClient) CreatePreparer(ctx context.Context, largeFaceL
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -493,8 +493,8 @@ func (client LargeFaceListClient) DeletePreparer(ctx context.Context, largeFaceL
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -575,8 +575,8 @@ func (client LargeFaceListClient) DeleteFacePreparer(ctx context.Context, largeF
 // DeleteFaceSender sends the DeleteFace request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) DeleteFaceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteFaceResponder handles the response to the DeleteFace request. The method always
@@ -663,8 +663,8 @@ func (client LargeFaceListClient) GetPreparer(ctx context.Context, largeFaceList
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -745,8 +745,8 @@ func (client LargeFaceListClient) GetFacePreparer(ctx context.Context, largeFace
 // GetFaceSender sends the GetFace request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) GetFaceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetFaceResponder handles the response to the GetFace request. The method always
@@ -824,8 +824,8 @@ func (client LargeFaceListClient) GetTrainingStatusPreparer(ctx context.Context,
 // GetTrainingStatusSender sends the GetTrainingStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) GetTrainingStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetTrainingStatusResponder handles the response to the GetTrainingStatus request. The method always
@@ -913,8 +913,8 @@ func (client LargeFaceListClient) ListPreparer(ctx context.Context, returnRecogn
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -1009,8 +1009,8 @@ func (client LargeFaceListClient) ListFacesPreparer(ctx context.Context, largeFa
 // ListFacesSender sends the ListFaces request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) ListFacesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListFacesResponder handles the response to the ListFaces request. The method always
@@ -1088,8 +1088,8 @@ func (client LargeFaceListClient) TrainPreparer(ctx context.Context, largeFaceLi
 // TrainSender sends the Train request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) TrainSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // TrainResponder handles the response to the Train request. The method always
@@ -1169,8 +1169,8 @@ func (client LargeFaceListClient) UpdatePreparer(ctx context.Context, largeFaceL
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -1252,8 +1252,8 @@ func (client LargeFaceListClient) UpdateFacePreparer(ctx context.Context, largeF
 // UpdateFaceSender sends the UpdateFace request. The method will close the
 // http.Response Body if it receives an error.
 func (client LargeFaceListClient) UpdateFaceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateFaceResponder handles the response to the UpdateFace request. The method always

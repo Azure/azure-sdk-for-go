@@ -236,6 +236,23 @@ func PossibleContainerServiceVMSizeTypesValues() []ContainerServiceVMSizeTypes {
 	return []ContainerServiceVMSizeTypes{StandardA0, StandardA1, StandardA10, StandardA11, StandardA2, StandardA3, StandardA4, StandardA5, StandardA6, StandardA7, StandardA8, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD12, StandardD12V2, StandardD13, StandardD13V2, StandardD14, StandardD14V2, StandardD1V2, StandardD2, StandardD2V2, StandardD3, StandardD3V2, StandardD4, StandardD4V2, StandardD5V2, StandardDS1, StandardDS11, StandardDS12, StandardDS13, StandardDS14, StandardDS2, StandardDS3, StandardDS4, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5}
 }
 
+// DedicatedHostLicenseTypes enumerates the values for dedicated host license types.
+type DedicatedHostLicenseTypes string
+
+const (
+	// DedicatedHostLicenseTypesNone ...
+	DedicatedHostLicenseTypesNone DedicatedHostLicenseTypes = "None"
+	// DedicatedHostLicenseTypesWindowsServerHybrid ...
+	DedicatedHostLicenseTypesWindowsServerHybrid DedicatedHostLicenseTypes = "Windows_Server_Hybrid"
+	// DedicatedHostLicenseTypesWindowsServerPerpetual ...
+	DedicatedHostLicenseTypesWindowsServerPerpetual DedicatedHostLicenseTypes = "Windows_Server_Perpetual"
+)
+
+// PossibleDedicatedHostLicenseTypesValues returns an array of possible values for the DedicatedHostLicenseTypes const type.
+func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
+	return []DedicatedHostLicenseTypes{DedicatedHostLicenseTypesNone, DedicatedHostLicenseTypesWindowsServerHybrid, DedicatedHostLicenseTypesWindowsServerPerpetual}
+}
+
 // DiffDiskOptions enumerates the values for diff disk options.
 type DiffDiskOptions string
 
@@ -586,6 +603,29 @@ const (
 // PossibleProvisioningState2Values returns an array of possible values for the ProvisioningState2 const type.
 func PossibleProvisioningState2Values() []ProvisioningState2 {
 	return []ProvisioningState2{ProvisioningState2Creating, ProvisioningState2Deleting, ProvisioningState2Failed, ProvisioningState2Migrating, ProvisioningState2Succeeded, ProvisioningState2Updating}
+}
+
+// ProvisioningState3 enumerates the values for provisioning state 3.
+type ProvisioningState3 string
+
+const (
+	// ProvisioningState3Creating ...
+	ProvisioningState3Creating ProvisioningState3 = "Creating"
+	// ProvisioningState3Deleting ...
+	ProvisioningState3Deleting ProvisioningState3 = "Deleting"
+	// ProvisioningState3Failed ...
+	ProvisioningState3Failed ProvisioningState3 = "Failed"
+	// ProvisioningState3Migrating ...
+	ProvisioningState3Migrating ProvisioningState3 = "Migrating"
+	// ProvisioningState3Succeeded ...
+	ProvisioningState3Succeeded ProvisioningState3 = "Succeeded"
+	// ProvisioningState3Updating ...
+	ProvisioningState3Updating ProvisioningState3 = "Updating"
+)
+
+// PossibleProvisioningState3Values returns an array of possible values for the ProvisioningState3 const type.
+func PossibleProvisioningState3Values() []ProvisioningState3 {
+	return []ProvisioningState3{ProvisioningState3Creating, ProvisioningState3Deleting, ProvisioningState3Failed, ProvisioningState3Migrating, ProvisioningState3Succeeded, ProvisioningState3Updating}
 }
 
 // ProximityPlacementGroupType enumerates the values for proximity placement group type.
@@ -2157,6 +2197,782 @@ type DataDiskImage struct {
 	Lun *int32 `json:"lun,omitempty"`
 }
 
+// DedicatedHost specifies information about the Dedicated host.
+type DedicatedHost struct {
+	autorest.Response        `json:"-"`
+	*DedicatedHostProperties `json:"properties,omitempty"`
+	// Sku - SKU of the dedicated host for Hardware Generation and VM family. Only name is required to be set. List Microsoft.Compute SKUs for a list of possible values.
+	Sku *Sku `json:"sku,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedHost.
+func (dh DedicatedHost) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dh.DedicatedHostProperties != nil {
+		objectMap["properties"] = dh.DedicatedHostProperties
+	}
+	if dh.Sku != nil {
+		objectMap["sku"] = dh.Sku
+	}
+	if dh.Location != nil {
+		objectMap["location"] = dh.Location
+	}
+	if dh.Tags != nil {
+		objectMap["tags"] = dh.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DedicatedHost struct.
+func (dh *DedicatedHost) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dedicatedHostProperties DedicatedHostProperties
+				err = json.Unmarshal(*v, &dedicatedHostProperties)
+				if err != nil {
+					return err
+				}
+				dh.DedicatedHostProperties = &dedicatedHostProperties
+			}
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				dh.Sku = &sku
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dh.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dh.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dh.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				dh.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				dh.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// DedicatedHostAllocatableVM represents the dedicated host unutilized capacity in terms of a specific VM
+// size.
+type DedicatedHostAllocatableVM struct {
+	// VMSize - VM size in terms of which the unutilized capacity is represented.
+	VMSize *string `json:"vmSize,omitempty"`
+	// Count - Maximum number of VMs of size vmSize that can fit in the dedicated host's remaining capacity.
+	Count *float64 `json:"count,omitempty"`
+}
+
+// DedicatedHostAvailableCapacity dedicated host unutilized capacity.
+type DedicatedHostAvailableCapacity struct {
+	// AllocatableVMs - The unutilized capacity of the dedicated host represented in terms of each VM size that is allowed to be deployed to the dedicated host.
+	AllocatableVMs *[]DedicatedHostAllocatableVM `json:"allocatableVMs,omitempty"`
+}
+
+// DedicatedHostGroup specifies information about the dedicated host group that the dedicated hosts should
+// be assigned to. <br><br> Currently, a dedicated host can only be added to a dedicated host group at
+// creation time. An existing dedicated host cannot be added to another dedicated host group.
+type DedicatedHostGroup struct {
+	autorest.Response             `json:"-"`
+	*DedicatedHostGroupProperties `json:"properties,omitempty"`
+	// Zones - Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the group to be in the same zone.
+	Zones *[]string `json:"zones,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedHostGroup.
+func (dhg DedicatedHostGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dhg.DedicatedHostGroupProperties != nil {
+		objectMap["properties"] = dhg.DedicatedHostGroupProperties
+	}
+	if dhg.Zones != nil {
+		objectMap["zones"] = dhg.Zones
+	}
+	if dhg.Location != nil {
+		objectMap["location"] = dhg.Location
+	}
+	if dhg.Tags != nil {
+		objectMap["tags"] = dhg.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DedicatedHostGroup struct.
+func (dhg *DedicatedHostGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dedicatedHostGroupProperties DedicatedHostGroupProperties
+				err = json.Unmarshal(*v, &dedicatedHostGroupProperties)
+				if err != nil {
+					return err
+				}
+				dhg.DedicatedHostGroupProperties = &dedicatedHostGroupProperties
+			}
+		case "zones":
+			if v != nil {
+				var zones []string
+				err = json.Unmarshal(*v, &zones)
+				if err != nil {
+					return err
+				}
+				dhg.Zones = &zones
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dhg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dhg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dhg.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				dhg.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				dhg.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// DedicatedHostGroupListResult the List Dedicated Host Group with resource group response.
+type DedicatedHostGroupListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of dedicated host groups
+	Value *[]DedicatedHostGroup `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI to fetch the next page of Dedicated Host Groups.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DedicatedHostGroupListResultIterator provides access to a complete listing of DedicatedHostGroup values.
+type DedicatedHostGroupListResultIterator struct {
+	i    int
+	page DedicatedHostGroupListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DedicatedHostGroupListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedHostGroupListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DedicatedHostGroupListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DedicatedHostGroupListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DedicatedHostGroupListResultIterator) Response() DedicatedHostGroupListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DedicatedHostGroupListResultIterator) Value() DedicatedHostGroup {
+	if !iter.page.NotDone() {
+		return DedicatedHostGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DedicatedHostGroupListResultIterator type.
+func NewDedicatedHostGroupListResultIterator(page DedicatedHostGroupListResultPage) DedicatedHostGroupListResultIterator {
+	return DedicatedHostGroupListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dhglr DedicatedHostGroupListResult) IsEmpty() bool {
+	return dhglr.Value == nil || len(*dhglr.Value) == 0
+}
+
+// dedicatedHostGroupListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dhglr DedicatedHostGroupListResult) dedicatedHostGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if dhglr.NextLink == nil || len(to.String(dhglr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dhglr.NextLink)))
+}
+
+// DedicatedHostGroupListResultPage contains a page of DedicatedHostGroup values.
+type DedicatedHostGroupListResultPage struct {
+	fn    func(context.Context, DedicatedHostGroupListResult) (DedicatedHostGroupListResult, error)
+	dhglr DedicatedHostGroupListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DedicatedHostGroupListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedHostGroupListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dhglr)
+	if err != nil {
+		return err
+	}
+	page.dhglr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DedicatedHostGroupListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DedicatedHostGroupListResultPage) NotDone() bool {
+	return !page.dhglr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DedicatedHostGroupListResultPage) Response() DedicatedHostGroupListResult {
+	return page.dhglr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DedicatedHostGroupListResultPage) Values() []DedicatedHostGroup {
+	if page.dhglr.IsEmpty() {
+		return nil
+	}
+	return *page.dhglr.Value
+}
+
+// Creates a new instance of the DedicatedHostGroupListResultPage type.
+func NewDedicatedHostGroupListResultPage(getNextPage func(context.Context, DedicatedHostGroupListResult) (DedicatedHostGroupListResult, error)) DedicatedHostGroupListResultPage {
+	return DedicatedHostGroupListResultPage{fn: getNextPage}
+}
+
+// DedicatedHostGroupProperties dedicated Host Group Properties.
+type DedicatedHostGroupProperties struct {
+	// PlatformFaultDomainCount - Number of fault domains that the host group can span.
+	PlatformFaultDomainCount *int32 `json:"platformFaultDomainCount,omitempty"`
+	// Hosts - READ-ONLY; A list of references to all dedicated hosts in the dedicated host group.
+	Hosts *[]SubResourceReadOnly `json:"hosts,omitempty"`
+}
+
+// DedicatedHostGroupUpdate specifies information about the dedicated host group that the dedicated host
+// should be assigned to. Only tags may be updated.
+type DedicatedHostGroupUpdate struct {
+	*DedicatedHostGroupProperties `json:"properties,omitempty"`
+	// Zones - Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the group to be in the same zone.
+	Zones *[]string `json:"zones,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedHostGroupUpdate.
+func (dhgu DedicatedHostGroupUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dhgu.DedicatedHostGroupProperties != nil {
+		objectMap["properties"] = dhgu.DedicatedHostGroupProperties
+	}
+	if dhgu.Zones != nil {
+		objectMap["zones"] = dhgu.Zones
+	}
+	if dhgu.Tags != nil {
+		objectMap["tags"] = dhgu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DedicatedHostGroupUpdate struct.
+func (dhgu *DedicatedHostGroupUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dedicatedHostGroupProperties DedicatedHostGroupProperties
+				err = json.Unmarshal(*v, &dedicatedHostGroupProperties)
+				if err != nil {
+					return err
+				}
+				dhgu.DedicatedHostGroupProperties = &dedicatedHostGroupProperties
+			}
+		case "zones":
+			if v != nil {
+				var zones []string
+				err = json.Unmarshal(*v, &zones)
+				if err != nil {
+					return err
+				}
+				dhgu.Zones = &zones
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				dhgu.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// DedicatedHostInstanceView the instance view of a dedicated host.
+type DedicatedHostInstanceView struct {
+	// AssetID - READ-ONLY; Specifies the unique id of the dedicated physical machine on which the dedicated host resides.
+	AssetID *string `json:"assetId,omitempty"`
+	// AvailableCapacity - Unutilized capacity of the dedicated host.
+	AvailableCapacity *DedicatedHostAvailableCapacity `json:"availableCapacity,omitempty"`
+	// Statuses - The resource status information.
+	Statuses *[]InstanceViewStatus `json:"statuses,omitempty"`
+}
+
+// DedicatedHostListResult the list dedicated host operation response.
+type DedicatedHostListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of dedicated hosts
+	Value *[]DedicatedHost `json:"value,omitempty"`
+	// NextLink - The URI to fetch the next page of dedicated hosts. Call ListNext() with this URI to fetch the next page of dedicated hosts.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DedicatedHostListResultIterator provides access to a complete listing of DedicatedHost values.
+type DedicatedHostListResultIterator struct {
+	i    int
+	page DedicatedHostListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DedicatedHostListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedHostListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DedicatedHostListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DedicatedHostListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DedicatedHostListResultIterator) Response() DedicatedHostListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DedicatedHostListResultIterator) Value() DedicatedHost {
+	if !iter.page.NotDone() {
+		return DedicatedHost{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DedicatedHostListResultIterator type.
+func NewDedicatedHostListResultIterator(page DedicatedHostListResultPage) DedicatedHostListResultIterator {
+	return DedicatedHostListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dhlr DedicatedHostListResult) IsEmpty() bool {
+	return dhlr.Value == nil || len(*dhlr.Value) == 0
+}
+
+// dedicatedHostListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dhlr DedicatedHostListResult) dedicatedHostListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if dhlr.NextLink == nil || len(to.String(dhlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dhlr.NextLink)))
+}
+
+// DedicatedHostListResultPage contains a page of DedicatedHost values.
+type DedicatedHostListResultPage struct {
+	fn   func(context.Context, DedicatedHostListResult) (DedicatedHostListResult, error)
+	dhlr DedicatedHostListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DedicatedHostListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedHostListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dhlr)
+	if err != nil {
+		return err
+	}
+	page.dhlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DedicatedHostListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DedicatedHostListResultPage) NotDone() bool {
+	return !page.dhlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DedicatedHostListResultPage) Response() DedicatedHostListResult {
+	return page.dhlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DedicatedHostListResultPage) Values() []DedicatedHost {
+	if page.dhlr.IsEmpty() {
+		return nil
+	}
+	return *page.dhlr.Value
+}
+
+// Creates a new instance of the DedicatedHostListResultPage type.
+func NewDedicatedHostListResultPage(getNextPage func(context.Context, DedicatedHostListResult) (DedicatedHostListResult, error)) DedicatedHostListResultPage {
+	return DedicatedHostListResultPage{fn: getNextPage}
+}
+
+// DedicatedHostProperties properties of the dedicated host.
+type DedicatedHostProperties struct {
+	// PlatformFaultDomain - Fault domain of the dedicated host within a dedicated host group.
+	PlatformFaultDomain *int32 `json:"platformFaultDomain,omitempty"`
+	// AutoReplaceOnFailure - Specifies whether the dedicated host should be replaced automatically in case of a failure. The value is defaulted to 'true' when not provided.
+	AutoReplaceOnFailure *bool `json:"autoReplaceOnFailure,omitempty"`
+	// HostID - READ-ONLY; A unique id generated and assigned to the dedicated host by the platform. <br><br> Does not change throughout the lifetime of the host.
+	HostID *string `json:"hostId,omitempty"`
+	// VirtualMachines - READ-ONLY; A list of references to all virtual machines in the Dedicated Host.
+	VirtualMachines *[]SubResourceReadOnly `json:"virtualMachines,omitempty"`
+	// LicenseType - Specifies the software license type that will be applied to the VMs deployed on the dedicated host. <br><br> Possible values are: <br><br> **None** <br><br> **Windows_Server_Hybrid** <br><br> **Windows_Server_Perpetual** <br><br> Default: **None**. Possible values include: 'DedicatedHostLicenseTypesNone', 'DedicatedHostLicenseTypesWindowsServerHybrid', 'DedicatedHostLicenseTypesWindowsServerPerpetual'
+	LicenseType DedicatedHostLicenseTypes `json:"licenseType,omitempty"`
+	// ProvisioningTime - READ-ONLY; The date when the host was first provisioned.
+	ProvisioningTime *date.Time `json:"provisioningTime,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// InstanceView - READ-ONLY; The dedicated host instance view.
+	InstanceView *DedicatedHostInstanceView `json:"instanceView,omitempty"`
+}
+
+// DedicatedHostsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DedicatedHostsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DedicatedHostsCreateOrUpdateFuture) Result(client DedicatedHostsClient) (dh DedicatedHost, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.DedicatedHostsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dh.Response.Response, err = future.GetResult(sender); err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
+		dh, err = client.CreateOrUpdateResponder(dh.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DedicatedHostsCreateOrUpdateFuture", "Result", dh.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// DedicatedHostsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DedicatedHostsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DedicatedHostsDeleteFuture) Result(client DedicatedHostsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.DedicatedHostsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// DedicatedHostsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DedicatedHostsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DedicatedHostsUpdateFuture) Result(client DedicatedHostsClient) (dh DedicatedHost, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.DedicatedHostsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.DedicatedHostsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dh.Response.Response, err = future.GetResult(sender); err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
+		dh, err = client.UpdateResponder(dh.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DedicatedHostsUpdateFuture", "Result", dh.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// DedicatedHostUpdate specifies information about the dedicated host. Only tags, autoReplaceOnFailure and
+// licenseType may be updated.
+type DedicatedHostUpdate struct {
+	*DedicatedHostProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedHostUpdate.
+func (dhu DedicatedHostUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dhu.DedicatedHostProperties != nil {
+		objectMap["properties"] = dhu.DedicatedHostProperties
+	}
+	if dhu.Tags != nil {
+		objectMap["tags"] = dhu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DedicatedHostUpdate struct.
+func (dhu *DedicatedHostUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dedicatedHostProperties DedicatedHostProperties
+				err = json.Unmarshal(*v, &dedicatedHostProperties)
+				if err != nil {
+					return err
+				}
+				dhu.DedicatedHostProperties = &dedicatedHostProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				dhu.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // DiagnosticsProfile specifies the boot diagnostic settings state. <br><br>Minimum api-version:
 // 2015-06-15.
 type DiagnosticsProfile struct {
@@ -2891,11 +3707,665 @@ func (g *Gallery) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// GalleryApplication specifies information about the gallery Application Definition that you want to
+// create or update.
+type GalleryApplication struct {
+	autorest.Response             `json:"-"`
+	*GalleryApplicationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryApplication.
+func (ga GalleryApplication) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ga.GalleryApplicationProperties != nil {
+		objectMap["properties"] = ga.GalleryApplicationProperties
+	}
+	if ga.Location != nil {
+		objectMap["location"] = ga.Location
+	}
+	if ga.Tags != nil {
+		objectMap["tags"] = ga.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryApplication struct.
+func (ga *GalleryApplication) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryApplicationProperties GalleryApplicationProperties
+				err = json.Unmarshal(*v, &galleryApplicationProperties)
+				if err != nil {
+					return err
+				}
+				ga.GalleryApplicationProperties = &galleryApplicationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ga.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ga.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ga.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ga.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ga.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// GalleryApplicationList the List Gallery Applications operation response.
+type GalleryApplicationList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of Gallery Applications.
+	Value *[]GalleryApplication `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this to fetch the next page of gallery Application Definitions.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GalleryApplicationListIterator provides access to a complete listing of GalleryApplication values.
+type GalleryApplicationListIterator struct {
+	i    int
+	page GalleryApplicationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GalleryApplicationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *GalleryApplicationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GalleryApplicationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GalleryApplicationListIterator) Response() GalleryApplicationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GalleryApplicationListIterator) Value() GalleryApplication {
+	if !iter.page.NotDone() {
+		return GalleryApplication{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the GalleryApplicationListIterator type.
+func NewGalleryApplicationListIterator(page GalleryApplicationListPage) GalleryApplicationListIterator {
+	return GalleryApplicationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (gal GalleryApplicationList) IsEmpty() bool {
+	return gal.Value == nil || len(*gal.Value) == 0
+}
+
+// galleryApplicationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (gal GalleryApplicationList) galleryApplicationListPreparer(ctx context.Context) (*http.Request, error) {
+	if gal.NextLink == nil || len(to.String(gal.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(gal.NextLink)))
+}
+
+// GalleryApplicationListPage contains a page of GalleryApplication values.
+type GalleryApplicationListPage struct {
+	fn  func(context.Context, GalleryApplicationList) (GalleryApplicationList, error)
+	gal GalleryApplicationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GalleryApplicationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.gal)
+	if err != nil {
+		return err
+	}
+	page.gal = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *GalleryApplicationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GalleryApplicationListPage) NotDone() bool {
+	return !page.gal.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GalleryApplicationListPage) Response() GalleryApplicationList {
+	return page.gal
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GalleryApplicationListPage) Values() []GalleryApplication {
+	if page.gal.IsEmpty() {
+		return nil
+	}
+	return *page.gal.Value
+}
+
+// Creates a new instance of the GalleryApplicationListPage type.
+func NewGalleryApplicationListPage(getNextPage func(context.Context, GalleryApplicationList) (GalleryApplicationList, error)) GalleryApplicationListPage {
+	return GalleryApplicationListPage{fn: getNextPage}
+}
+
+// GalleryApplicationProperties describes the properties of a gallery Application Definition.
+type GalleryApplicationProperties struct {
+	// Description - The description of this gallery Application Definition resource. This property is updatable.
+	Description *string `json:"description,omitempty"`
+	// Eula - The Eula agreement for the gallery Application Definition.
+	Eula *string `json:"eula,omitempty"`
+	// PrivacyStatementURI - The privacy statement uri.
+	PrivacyStatementURI *string `json:"privacyStatementUri,omitempty"`
+	// ReleaseNoteURI - The release note uri.
+	ReleaseNoteURI *string `json:"releaseNoteUri,omitempty"`
+	// EndOfLifeDate - The end of life date of the gallery Application Definition. This property can be used for decommissioning purposes. This property is updatable.
+	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
+	// SupportedOSType - This property allows you to specify the supported type of the OS that application is built for. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
+	SupportedOSType OperatingSystemTypes `json:"supportedOSType,omitempty"`
+}
+
+// GalleryApplicationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type GalleryApplicationsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryApplicationsCreateOrUpdateFuture) Result(client GalleryApplicationsClient) (ga GalleryApplication, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryApplicationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryApplicationsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ga.Response.Response, err = future.GetResult(sender); err == nil && ga.Response.Response.StatusCode != http.StatusNoContent {
+		ga, err = client.CreateOrUpdateResponder(ga.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.GalleryApplicationsCreateOrUpdateFuture", "Result", ga.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// GalleryApplicationsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type GalleryApplicationsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryApplicationsDeleteFuture) Result(client GalleryApplicationsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryApplicationsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryApplicationsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// GalleryApplicationVersion specifies information about the gallery Application Version that you want to
+// create or update.
+type GalleryApplicationVersion struct {
+	autorest.Response                    `json:"-"`
+	*GalleryApplicationVersionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryApplicationVersion.
+func (gav GalleryApplicationVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gav.GalleryApplicationVersionProperties != nil {
+		objectMap["properties"] = gav.GalleryApplicationVersionProperties
+	}
+	if gav.Location != nil {
+		objectMap["location"] = gav.Location
+	}
+	if gav.Tags != nil {
+		objectMap["tags"] = gav.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryApplicationVersion struct.
+func (gav *GalleryApplicationVersion) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryApplicationVersionProperties GalleryApplicationVersionProperties
+				err = json.Unmarshal(*v, &galleryApplicationVersionProperties)
+				if err != nil {
+					return err
+				}
+				gav.GalleryApplicationVersionProperties = &galleryApplicationVersionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gav.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gav.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gav.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				gav.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				gav.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// GalleryApplicationVersionList the List Gallery Application version operation response.
+type GalleryApplicationVersionList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of gallery Application Versions.
+	Value *[]GalleryApplicationVersion `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of gallery Application Versions. Call ListNext() with this to fetch the next page of gallery Application Versions.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GalleryApplicationVersionListIterator provides access to a complete listing of GalleryApplicationVersion
+// values.
+type GalleryApplicationVersionListIterator struct {
+	i    int
+	page GalleryApplicationVersionListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GalleryApplicationVersionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationVersionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *GalleryApplicationVersionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GalleryApplicationVersionListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GalleryApplicationVersionListIterator) Response() GalleryApplicationVersionList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GalleryApplicationVersionListIterator) Value() GalleryApplicationVersion {
+	if !iter.page.NotDone() {
+		return GalleryApplicationVersion{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the GalleryApplicationVersionListIterator type.
+func NewGalleryApplicationVersionListIterator(page GalleryApplicationVersionListPage) GalleryApplicationVersionListIterator {
+	return GalleryApplicationVersionListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (gavl GalleryApplicationVersionList) IsEmpty() bool {
+	return gavl.Value == nil || len(*gavl.Value) == 0
+}
+
+// galleryApplicationVersionListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (gavl GalleryApplicationVersionList) galleryApplicationVersionListPreparer(ctx context.Context) (*http.Request, error) {
+	if gavl.NextLink == nil || len(to.String(gavl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(gavl.NextLink)))
+}
+
+// GalleryApplicationVersionListPage contains a page of GalleryApplicationVersion values.
+type GalleryApplicationVersionListPage struct {
+	fn   func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error)
+	gavl GalleryApplicationVersionList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GalleryApplicationVersionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationVersionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.gavl)
+	if err != nil {
+		return err
+	}
+	page.gavl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *GalleryApplicationVersionListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GalleryApplicationVersionListPage) NotDone() bool {
+	return !page.gavl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GalleryApplicationVersionListPage) Response() GalleryApplicationVersionList {
+	return page.gavl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GalleryApplicationVersionListPage) Values() []GalleryApplicationVersion {
+	if page.gavl.IsEmpty() {
+		return nil
+	}
+	return *page.gavl.Value
+}
+
+// Creates a new instance of the GalleryApplicationVersionListPage type.
+func NewGalleryApplicationVersionListPage(getNextPage func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error)) GalleryApplicationVersionListPage {
+	return GalleryApplicationVersionListPage{fn: getNextPage}
+}
+
+// GalleryApplicationVersionProperties describes the properties of a gallery Image Version.
+type GalleryApplicationVersionProperties struct {
+	PublishingProfile *GalleryApplicationVersionPublishingProfile `json:"publishingProfile,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Updating', 'ProvisioningState1Failed', 'ProvisioningState1Succeeded', 'ProvisioningState1Deleting', 'ProvisioningState1Migrating'
+	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
+	// ReplicationStatus - READ-ONLY
+	ReplicationStatus *ReplicationStatus `json:"replicationStatus,omitempty"`
+}
+
+// GalleryApplicationVersionPublishingProfile the publishing profile of a gallery Image Version.
+type GalleryApplicationVersionPublishingProfile struct {
+	Source *UserArtifactSource `json:"source,omitempty"`
+	// ContentType - Optional. May be used to help process this file. The type of file contained in the source, e.g. zip, json, etc.
+	ContentType *string `json:"contentType,omitempty"`
+	// EnableHealthCheck - Optional. Whether or not this application reports health.
+	EnableHealthCheck *bool `json:"enableHealthCheck,omitempty"`
+	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
+	TargetRegions *[]TargetRegion `json:"targetRegions,omitempty"`
+	// ReplicaCount - The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified. This property is updatable.
+	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+	// ExcludeFromLatest - If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
+	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
+	// PublishedDate - READ-ONLY; The timestamp for when the gallery Image Version is published.
+	PublishedDate *date.Time `json:"publishedDate,omitempty"`
+	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
+	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+}
+
+// GalleryApplicationVersionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type GalleryApplicationVersionsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryApplicationVersionsCreateOrUpdateFuture) Result(client GalleryApplicationVersionsClient) (gav GalleryApplicationVersion, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryApplicationVersionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryApplicationVersionsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if gav.Response.Response, err = future.GetResult(sender); err == nil && gav.Response.Response.StatusCode != http.StatusNoContent {
+		gav, err = client.CreateOrUpdateResponder(gav.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.GalleryApplicationVersionsCreateOrUpdateFuture", "Result", gav.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// GalleryApplicationVersionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type GalleryApplicationVersionsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryApplicationVersionsDeleteFuture) Result(client GalleryApplicationVersionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryApplicationVersionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryApplicationVersionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // GalleryArtifactPublishingProfileBase describes the basic gallery artifact publishing profile.
 type GalleryArtifactPublishingProfileBase struct {
 	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
-	TargetRegions *[]TargetRegion        `json:"targetRegions,omitempty"`
-	Source        *GalleryArtifactSource `json:"source,omitempty"`
+	TargetRegions *[]TargetRegion `json:"targetRegions,omitempty"`
+	// ReplicaCount - The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified. This property is updatable.
+	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+	// ExcludeFromLatest - If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
+	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
+	// PublishedDate - READ-ONLY; The timestamp for when the gallery Image Version is published.
+	PublishedDate *date.Time `json:"publishedDate,omitempty"`
+	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
+	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
 // GalleryArtifactSource the source image from which the Image Version is going to be created.
@@ -3203,8 +4673,8 @@ type GalleryImageProperties struct {
 	Recommended   *RecommendedMachineConfiguration `json:"recommended,omitempty"`
 	Disallowed    *Disallowed                      `json:"disallowed,omitempty"`
 	PurchasePlan  *ImagePurchasePlan               `json:"purchasePlan,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Updating', 'ProvisioningState1Failed', 'ProvisioningState1Succeeded', 'ProvisioningState1Deleting', 'ProvisioningState1Migrating'
-	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState2Creating', 'ProvisioningState2Updating', 'ProvisioningState2Failed', 'ProvisioningState2Succeeded', 'ProvisioningState2Deleting', 'ProvisioningState2Migrating'
+	ProvisioningState ProvisioningState2 `json:"provisioningState,omitempty"`
 }
 
 // GalleryImagesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -3509,8 +4979,8 @@ func NewGalleryImageVersionListPage(getNextPage func(context.Context, GalleryIma
 // GalleryImageVersionProperties describes the properties of a gallery Image Version.
 type GalleryImageVersionProperties struct {
 	PublishingProfile *GalleryImageVersionPublishingProfile `json:"publishingProfile,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState2Creating', 'ProvisioningState2Updating', 'ProvisioningState2Failed', 'ProvisioningState2Succeeded', 'ProvisioningState2Deleting', 'ProvisioningState2Migrating'
-	ProvisioningState ProvisioningState2 `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState3Creating', 'ProvisioningState3Updating', 'ProvisioningState3Failed', 'ProvisioningState3Succeeded', 'ProvisioningState3Deleting', 'ProvisioningState3Migrating'
+	ProvisioningState ProvisioningState3 `json:"provisioningState,omitempty"`
 	// StorageProfile - READ-ONLY
 	StorageProfile *GalleryImageVersionStorageProfile `json:"storageProfile,omitempty"`
 	// ReplicationStatus - READ-ONLY
@@ -3519,6 +4989,9 @@ type GalleryImageVersionProperties struct {
 
 // GalleryImageVersionPublishingProfile the publishing profile of a gallery Image Version.
 type GalleryImageVersionPublishingProfile struct {
+	Source *GalleryArtifactSource `json:"source,omitempty"`
+	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
+	TargetRegions *[]TargetRegion `json:"targetRegions,omitempty"`
 	// ReplicaCount - The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified. This property is updatable.
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// ExcludeFromLatest - If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
@@ -3529,9 +5002,6 @@ type GalleryImageVersionPublishingProfile struct {
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
 	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
-	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
-	TargetRegions *[]TargetRegion        `json:"targetRegions,omitempty"`
-	Source        *GalleryArtifactSource `json:"source,omitempty"`
 }
 
 // GalleryImageVersionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -6463,6 +7933,14 @@ type UsageName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// UserArtifactSource the source image from which the Image Version is going to be created.
+type UserArtifactSource struct {
+	// FileName - Required. The fileName of the artifact.
+	FileName *string `json:"fileName,omitempty"`
+	// MediaLink - Required. The mediaLink of the artifact, must be a readable storage blob.
+	MediaLink *string `json:"mediaLink,omitempty"`
+}
+
 // VaultCertificate describes a single certificate reference in a Key Vault, and where the certificate
 // should reside on the VM.
 type VaultCertificate struct {
@@ -7458,6 +8936,8 @@ type VirtualMachineProperties struct {
 	AvailabilitySet *SubResource `json:"availabilitySet,omitempty"`
 	// ProximityPlacementGroup - Specifies information about the proximity placement group that the virtual machine should be assigned to. <br><br>Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource `json:"proximityPlacementGroup,omitempty"`
+	// Host - Specifies information about the dedicated host that the virtual machine resides in. <br><br>Minimum api-version: 2018-10-01.
+	Host *SubResource `json:"host,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// InstanceView - READ-ONLY; The virtual machine instance view.

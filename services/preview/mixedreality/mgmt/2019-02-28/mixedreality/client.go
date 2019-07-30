@@ -127,8 +127,8 @@ func (client BaseClient) CheckNameAvailabilityLocalPreparer(ctx context.Context,
 // CheckNameAvailabilityLocalSender sends the CheckNameAvailabilityLocal request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) CheckNameAvailabilityLocalSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CheckNameAvailabilityLocalResponder handles the response to the CheckNameAvailabilityLocal request. The method always

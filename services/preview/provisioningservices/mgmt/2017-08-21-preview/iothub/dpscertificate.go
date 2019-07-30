@@ -119,8 +119,8 @@ func (client DpsCertificateClient) CreateOrUpdatePreparer(ctx context.Context, r
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DpsCertificateClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -233,8 +233,8 @@ func (client DpsCertificateClient) DeletePreparer(ctx context.Context, resourceG
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DpsCertificateClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -347,8 +347,8 @@ func (client DpsCertificateClient) GenerateVerificationCodePreparer(ctx context.
 // GenerateVerificationCodeSender sends the GenerateVerificationCode request. The method will close the
 // http.Response Body if it receives an error.
 func (client DpsCertificateClient) GenerateVerificationCodeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GenerateVerificationCodeResponder handles the response to the GenerateVerificationCode request. The method always
@@ -431,8 +431,8 @@ func (client DpsCertificateClient) GetPreparer(ctx context.Context, certificateN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DpsCertificateClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -547,8 +547,8 @@ func (client DpsCertificateClient) VerifyCertificatePreparer(ctx context.Context
 // VerifyCertificateSender sends the VerifyCertificate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DpsCertificateClient) VerifyCertificateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // VerifyCertificateResponder handles the response to the VerifyCertificate request. The method always

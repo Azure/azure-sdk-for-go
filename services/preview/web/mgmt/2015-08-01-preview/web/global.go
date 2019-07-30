@@ -99,8 +99,8 @@ func (client GlobalClient) CheckNameAvailabilityPreparer(ctx context.Context, re
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
@@ -172,8 +172,8 @@ func (client GlobalClient) GetAllCertificatesPreparer(ctx context.Context) (*htt
 // GetAllCertificatesSender sends the GetAllCertificates request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllCertificatesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAllCertificatesResponder handles the response to the GetAllCertificates request. The method always
@@ -282,8 +282,8 @@ func (client GlobalClient) GetAllClassicMobileServicesPreparer(ctx context.Conte
 // GetAllClassicMobileServicesSender sends the GetAllClassicMobileServices request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllClassicMobileServicesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAllClassicMobileServicesResponder handles the response to the GetAllClassicMobileServices request. The method always
@@ -392,8 +392,8 @@ func (client GlobalClient) GetAllHostingEnvironmentsPreparer(ctx context.Context
 // GetAllHostingEnvironmentsSender sends the GetAllHostingEnvironments request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllHostingEnvironmentsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAllHostingEnvironmentsResponder handles the response to the GetAllHostingEnvironments request. The method always
@@ -502,8 +502,8 @@ func (client GlobalClient) GetAllManagedHostingEnvironmentsPreparer(ctx context.
 // GetAllManagedHostingEnvironmentsSender sends the GetAllManagedHostingEnvironments request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllManagedHostingEnvironmentsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAllManagedHostingEnvironmentsResponder handles the response to the GetAllManagedHostingEnvironments request. The method always
@@ -618,8 +618,8 @@ func (client GlobalClient) GetAllServerFarmsPreparer(ctx context.Context, detail
 // GetAllServerFarmsSender sends the GetAllServerFarms request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllServerFarmsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAllServerFarmsResponder handles the response to the GetAllServerFarms request. The method always
@@ -728,8 +728,8 @@ func (client GlobalClient) GetAllSitesPreparer(ctx context.Context) (*http.Reque
 // GetAllSitesSender sends the GetAllSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetAllSitesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAllSitesResponder handles the response to the GetAllSites request. The method always
@@ -847,8 +847,8 @@ func (client GlobalClient) GetSubscriptionGeoRegionsPreparer(ctx context.Context
 // GetSubscriptionGeoRegionsSender sends the GetSubscriptionGeoRegions request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetSubscriptionGeoRegionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSubscriptionGeoRegionsResponder handles the response to the GetSubscriptionGeoRegions request. The method always
@@ -956,8 +956,8 @@ func (client GlobalClient) GetSubscriptionPublishingCredentialsPreparer(ctx cont
 // GetSubscriptionPublishingCredentialsSender sends the GetSubscriptionPublishingCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) GetSubscriptionPublishingCredentialsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSubscriptionPublishingCredentialsResponder handles the response to the GetSubscriptionPublishingCredentials request. The method always
@@ -1031,8 +1031,8 @@ func (client GlobalClient) IsHostingEnvironmentNameAvailablePreparer(ctx context
 // IsHostingEnvironmentNameAvailableSender sends the IsHostingEnvironmentNameAvailable request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) IsHostingEnvironmentNameAvailableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // IsHostingEnvironmentNameAvailableResponder handles the response to the IsHostingEnvironmentNameAvailable request. The method always
@@ -1106,8 +1106,8 @@ func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailablePreparer(c
 // IsHostingEnvironmentWithLegacyNameAvailableSender sends the IsHostingEnvironmentWithLegacyNameAvailable request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) IsHostingEnvironmentWithLegacyNameAvailableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // IsHostingEnvironmentWithLegacyNameAvailableResponder handles the response to the IsHostingEnvironmentWithLegacyNameAvailable request. The method always
@@ -1178,8 +1178,8 @@ func (client GlobalClient) ListPremierAddOnOffersPreparer(ctx context.Context) (
 // ListPremierAddOnOffersSender sends the ListPremierAddOnOffers request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) ListPremierAddOnOffersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListPremierAddOnOffersResponder handles the response to the ListPremierAddOnOffers request. The method always
@@ -1254,8 +1254,8 @@ func (client GlobalClient) UpdateSubscriptionPublishingCredentialsPreparer(ctx c
 // UpdateSubscriptionPublishingCredentialsSender sends the UpdateSubscriptionPublishingCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalClient) UpdateSubscriptionPublishingCredentialsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSubscriptionPublishingCredentialsResponder handles the response to the UpdateSubscriptionPublishingCredentials request. The method always

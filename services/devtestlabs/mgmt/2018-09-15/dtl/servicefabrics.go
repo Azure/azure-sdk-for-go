@@ -41,12 +41,12 @@ func NewServiceFabricsClientWithBaseURI(baseURI string, subscriptionID string) S
 	return ServiceFabricsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or replace an existing Service Fabric. This operation can take a while to complete.
+// CreateOrUpdate create or replace an existing service fabric. This operation can take a while to complete.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 // serviceFabric - a Service Fabric.
 func (client ServiceFabricsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabric) (result ServiceFabricsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -117,9 +117,9 @@ func (client ServiceFabricsClient) CreateOrUpdatePreparer(ctx context.Context, r
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricsClient) CreateOrUpdateSender(req *http.Request) (future ServiceFabricsCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -145,7 +145,7 @@ func (client ServiceFabricsClient) CreateOrUpdateResponder(resp *http.Response) 
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 func (client ServiceFabricsClient) Delete(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result ServiceFabricsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.Delete")
@@ -198,9 +198,9 @@ func (client ServiceFabricsClient) DeletePreparer(ctx context.Context, resourceG
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricsClient) DeleteSender(req *http.Request) (future ServiceFabricsDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -225,7 +225,7 @@ func (client ServiceFabricsClient) DeleteResponder(resp *http.Response) (result 
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 // expand - specify the $expand query. Example: 'properties($expand=applicableSchedule)'
 func (client ServiceFabricsClient) Get(ctx context.Context, resourceGroupName string, labName string, userName string, name string, expand string) (result ServiceFabric, err error) {
 	if tracing.IsEnabled() {
@@ -288,8 +288,8 @@ func (client ServiceFabricsClient) GetPreparer(ctx context.Context, resourceGrou
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -384,8 +384,8 @@ func (client ServiceFabricsClient) ListPreparer(ctx context.Context, resourceGro
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -443,7 +443,7 @@ func (client ServiceFabricsClient) ListComplete(ctx context.Context, resourceGro
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 func (client ServiceFabricsClient) ListApplicableSchedules(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result ApplicableSchedule, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.ListApplicableSchedules")
@@ -502,8 +502,8 @@ func (client ServiceFabricsClient) ListApplicableSchedulesPreparer(ctx context.C
 // ListApplicableSchedulesSender sends the ListApplicableSchedules request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricsClient) ListApplicableSchedulesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListApplicableSchedulesResponder handles the response to the ListApplicableSchedules request. The method always
@@ -524,7 +524,7 @@ func (client ServiceFabricsClient) ListApplicableSchedulesResponder(resp *http.R
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 func (client ServiceFabricsClient) Start(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result ServiceFabricsStartFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.Start")
@@ -577,9 +577,9 @@ func (client ServiceFabricsClient) StartPreparer(ctx context.Context, resourceGr
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricsClient) StartSender(req *http.Request) (future ServiceFabricsStartFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -604,7 +604,7 @@ func (client ServiceFabricsClient) StartResponder(resp *http.Response) (result a
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 func (client ServiceFabricsClient) Stop(ctx context.Context, resourceGroupName string, labName string, userName string, name string) (result ServiceFabricsStopFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.Stop")
@@ -657,9 +657,9 @@ func (client ServiceFabricsClient) StopPreparer(ctx context.Context, resourceGro
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricsClient) StopSender(req *http.Request) (future ServiceFabricsStopFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -679,12 +679,12 @@ func (client ServiceFabricsClient) StopResponder(resp *http.Response) (result au
 	return
 }
 
-// Update modify properties of service fabrics.
+// Update allows modifying tags of service fabrics. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // userName - the name of the user profile.
-// name - the name of the service Fabric.
+// name - the name of the service fabric.
 // serviceFabric - a Service Fabric.
 func (client ServiceFabricsClient) Update(ctx context.Context, resourceGroupName string, labName string, userName string, name string, serviceFabric ServiceFabricFragment) (result ServiceFabric, err error) {
 	if tracing.IsEnabled() {
@@ -746,8 +746,8 @@ func (client ServiceFabricsClient) UpdatePreparer(ctx context.Context, resourceG
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceFabricsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

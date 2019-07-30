@@ -106,8 +106,8 @@ func (client EventsClient) GetPreparer(ctx context.Context, appID string, eventT
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -224,8 +224,8 @@ func (client EventsClient) GetByTypePreparer(ctx context.Context, appID string, 
 // GetByTypeSender sends the GetByType request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) GetByTypeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByTypeResponder handles the response to the GetByType request. The method always
@@ -293,8 +293,8 @@ func (client EventsClient) GetOdataMetadataPreparer(ctx context.Context, appID s
 // GetOdataMetadataSender sends the GetOdataMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) GetOdataMetadataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetOdataMetadataResponder handles the response to the GetOdataMetadata request. The method always

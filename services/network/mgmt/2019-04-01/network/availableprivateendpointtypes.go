@@ -100,8 +100,8 @@ func (client AvailablePrivateEndpointTypesClient) ListPreparer(ctx context.Conte
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AvailablePrivateEndpointTypesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -151,5 +151,121 @@ func (client AvailablePrivateEndpointTypesClient) ListComplete(ctx context.Conte
 		}()
 	}
 	result.page, err = client.List(ctx, location)
+	return
+}
+
+// ListByResourceGroup returns all of the resource types that can be linked to a Private Endpoint in this subscription
+// in this region.
+// Parameters:
+// location - the location of the domain name.
+// resourceGroupName - the name of the resource group.
+func (client AvailablePrivateEndpointTypesClient) ListByResourceGroup(ctx context.Context, location string, resourceGroupName string) (result AvailablePrivateEndpointTypesResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AvailablePrivateEndpointTypesClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.apetr.Response.Response != nil {
+				sc = result.apetr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listByResourceGroupNextResults
+	req, err := client.ListByResourceGroupPreparer(ctx, location, resourceGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.AvailablePrivateEndpointTypesClient", "ListByResourceGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.apetr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.AvailablePrivateEndpointTypesClient", "ListByResourceGroup", resp, "Failure sending request")
+		return
+	}
+
+	result.apetr, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.AvailablePrivateEndpointTypesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListByResourceGroupPreparer prepares the ListByResourceGroup request.
+func (client AvailablePrivateEndpointTypesClient) ListByResourceGroupPreparer(ctx context.Context, location string, resourceGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":          autorest.Encode("path", location),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/availablePrivateEndpointTypes", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client AvailablePrivateEndpointTypesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
+// closes the http.Response Body.
+func (client AvailablePrivateEndpointTypesClient) ListByResourceGroupResponder(resp *http.Response) (result AvailablePrivateEndpointTypesResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listByResourceGroupNextResults retrieves the next set of results, if any.
+func (client AvailablePrivateEndpointTypesClient) listByResourceGroupNextResults(ctx context.Context, lastResults AvailablePrivateEndpointTypesResult) (result AvailablePrivateEndpointTypesResult, err error) {
+	req, err := lastResults.availablePrivateEndpointTypesResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network.AvailablePrivateEndpointTypesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network.AvailablePrivateEndpointTypesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.AvailablePrivateEndpointTypesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AvailablePrivateEndpointTypesClient) ListByResourceGroupComplete(ctx context.Context, location string, resourceGroupName string) (result AvailablePrivateEndpointTypesResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AvailablePrivateEndpointTypesClient.ListByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListByResourceGroup(ctx, location, resourceGroupName)
 	return
 }

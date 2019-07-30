@@ -36,6 +36,7 @@ type AlertsClientAPI interface {
 	GetByID(ctx context.Context, alertID string) (result alertsmanagement.Alert, err error)
 	GetHistory(ctx context.Context, alertID string) (result alertsmanagement.AlertModification, err error)
 	GetSummary(ctx context.Context, groupby alertsmanagement.AlertsSummaryGroupByFields, includeSmartGroupsCount *bool, targetResource string, targetResourceType string, targetResourceGroup string, monitorService alertsmanagement.MonitorService, monitorCondition alertsmanagement.MonitorCondition, severity alertsmanagement.Severity, alertState alertsmanagement.AlertState, alertRule string, timeRange alertsmanagement.TimeRange, customTimeRange string) (result alertsmanagement.AlertsSummary, err error)
+	MetaData(ctx context.Context) (result alertsmanagement.AlertsMetaData, err error)
 }
 
 var _ AlertsClientAPI = (*alertsmanagement.AlertsClient)(nil)

@@ -108,8 +108,8 @@ func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDPreparer(ctx cont
 // GetByEnrollmentAccountIDSender sends the GetByEnrollmentAccountID request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnrollmentAccountsClient) GetByEnrollmentAccountIDSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByEnrollmentAccountIDResponder handles the response to the GetByEnrollmentAccountID request. The method always
@@ -191,8 +191,8 @@ func (client EnrollmentAccountsClient) ListByBillingAccountNamePreparer(ctx cont
 // ListByBillingAccountNameSender sends the ListByBillingAccountName request. The method will close the
 // http.Response Body if it receives an error.
 func (client EnrollmentAccountsClient) ListByBillingAccountNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByBillingAccountNameResponder handles the response to the ListByBillingAccountName request. The method always

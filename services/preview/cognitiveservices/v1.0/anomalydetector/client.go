@@ -113,8 +113,8 @@ func (client BaseClient) EntireDetectPreparer(ctx context.Context, body Request)
 // EntireDetectSender sends the EntireDetect request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) EntireDetectSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // EntireDetectResponder handles the response to the EntireDetect request. The method always
@@ -191,8 +191,8 @@ func (client BaseClient) LastDetectPreparer(ctx context.Context, body Request) (
 // LastDetectSender sends the LastDetect request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) LastDetectSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // LastDetectResponder handles the response to the LastDetect request. The method always

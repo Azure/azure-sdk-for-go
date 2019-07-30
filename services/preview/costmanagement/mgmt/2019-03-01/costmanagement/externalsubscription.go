@@ -101,8 +101,8 @@ func (client ExternalSubscriptionClient) GetPreparer(ctx context.Context, extern
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExternalSubscriptionClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -169,8 +169,8 @@ func (client ExternalSubscriptionClient) ListPreparer(ctx context.Context) (*htt
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExternalSubscriptionClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -243,8 +243,8 @@ func (client ExternalSubscriptionClient) ListByExternalBillingAccountPreparer(ct
 // ListByExternalBillingAccountSender sends the ListByExternalBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExternalSubscriptionClient) ListByExternalBillingAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByExternalBillingAccountResponder handles the response to the ListByExternalBillingAccount request. The method always
@@ -322,8 +322,8 @@ func (client ExternalSubscriptionClient) ListByManagementGroupPreparer(ctx conte
 // ListByManagementGroupSender sends the ListByManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExternalSubscriptionClient) ListByManagementGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByManagementGroupResponder handles the response to the ListByManagementGroup request. The method always
@@ -398,8 +398,8 @@ func (client ExternalSubscriptionClient) UpdateManagementGroupPreparer(ctx conte
 // UpdateManagementGroupSender sends the UpdateManagementGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ExternalSubscriptionClient) UpdateManagementGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateManagementGroupResponder handles the response to the UpdateManagementGroup request. The method always

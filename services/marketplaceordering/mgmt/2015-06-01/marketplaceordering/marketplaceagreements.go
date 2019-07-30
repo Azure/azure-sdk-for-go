@@ -102,8 +102,8 @@ func (client MarketplaceAgreementsClient) CancelPreparer(ctx context.Context, pu
 // CancelSender sends the Cancel request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplaceAgreementsClient) CancelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CancelResponder handles the response to the Cancel request. The method always
@@ -185,8 +185,8 @@ func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, pu
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplaceAgreementsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -265,8 +265,8 @@ func (client MarketplaceAgreementsClient) GetPreparer(ctx context.Context, publi
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplaceAgreementsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -344,8 +344,8 @@ func (client MarketplaceAgreementsClient) GetAgreementPreparer(ctx context.Conte
 // GetAgreementSender sends the GetAgreement request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplaceAgreementsClient) GetAgreementSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAgreementResponder handles the response to the GetAgreement request. The method always
@@ -416,8 +416,8 @@ func (client MarketplaceAgreementsClient) ListPreparer(ctx context.Context) (*ht
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplaceAgreementsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -495,8 +495,8 @@ func (client MarketplaceAgreementsClient) SignPreparer(ctx context.Context, publ
 // SignSender sends the Sign request. The method will close the
 // http.Response Body if it receives an error.
 func (client MarketplaceAgreementsClient) SignSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SignResponder handles the response to the Sign request. The method always

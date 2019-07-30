@@ -21,6 +21,7 @@ package securityapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security/securityapi"
 
+type AdaptiveApplicationControlsClientAPI = original.AdaptiveApplicationControlsClientAPI
 type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClientAPI
 type AlertsClientAPI = original.AlertsClientAPI
 type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
@@ -31,6 +32,14 @@ type ContactsClientAPI = original.ContactsClientAPI
 type DiscoveredSecuritySolutionsClientAPI = original.DiscoveredSecuritySolutionsClientAPI
 type ExternalSecuritySolutionsClientAPI = original.ExternalSecuritySolutionsClientAPI
 type InformationProtectionPoliciesClientAPI = original.InformationProtectionPoliciesClientAPI
+type IoTSecuritySolutionsAnalyticsAggregatedAlertClientAPI = original.IoTSecuritySolutionsAnalyticsAggregatedAlertClientAPI
+type IoTSecuritySolutionsAnalyticsAggregatedAlertsClientAPI = original.IoTSecuritySolutionsAnalyticsAggregatedAlertsClientAPI
+type IoTSecuritySolutionsAnalyticsClientAPI = original.IoTSecuritySolutionsAnalyticsClientAPI
+type IoTSecuritySolutionsAnalyticsRecommendationClientAPI = original.IoTSecuritySolutionsAnalyticsRecommendationClientAPI
+type IoTSecuritySolutionsAnalyticsRecommendationsClientAPI = original.IoTSecuritySolutionsAnalyticsRecommendationsClientAPI
+type IoTSecuritySolutionsClientAPI = original.IoTSecuritySolutionsClientAPI
+type IoTSecuritySolutionsResourceGroupClientAPI = original.IoTSecuritySolutionsResourceGroupClientAPI
+type IotSecuritySolutionClientAPI = original.IotSecuritySolutionClientAPI
 type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
@@ -38,6 +47,7 @@ type PricingsClientAPI = original.PricingsClientAPI
 type RegulatoryComplianceAssessmentsClientAPI = original.RegulatoryComplianceAssessmentsClientAPI
 type RegulatoryComplianceControlsClientAPI = original.RegulatoryComplianceControlsClientAPI
 type RegulatoryComplianceStandardsClientAPI = original.RegulatoryComplianceStandardsClientAPI
+type ServerVulnerabilityAssessmentClientAPI = original.ServerVulnerabilityAssessmentClientAPI
 type SettingsClientAPI = original.SettingsClientAPI
 type TasksClientAPI = original.TasksClientAPI
 type TopologyClientAPI = original.TopologyClientAPI

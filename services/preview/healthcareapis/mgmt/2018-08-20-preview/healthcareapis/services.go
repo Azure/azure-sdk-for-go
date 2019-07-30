@@ -23,7 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
-	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -33,12 +32,12 @@ type ServicesClient struct {
 }
 
 // NewServicesClient creates an instance of the ServicesClient client.
-func NewServicesClient(subscriptionID uuid.UUID) ServicesClient {
+func NewServicesClient(subscriptionID string) ServicesClient {
 	return NewServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewServicesClientWithBaseURI creates an instance of the ServicesClient client.
-func NewServicesClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) ServicesClient {
+func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
 	return ServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
@@ -109,8 +108,8 @@ func (client ServicesClient) CheckNameAvailabilityPreparer(ctx context.Context, 
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServicesClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
@@ -152,7 +151,20 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: serviceDescription,
 			Constraints: []validation.Constraint{{Target: "serviceDescription.Properties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "serviceDescription.Properties.AccessPolicies", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "serviceDescription.Properties.AccessPolicies", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "serviceDescription.Properties.CosmosDbConfiguration", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "serviceDescription.Properties.CosmosDbConfiguration.OfferThroughput", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "serviceDescription.Properties.CosmosDbConfiguration.OfferThroughput", Name: validation.InclusiveMaximum, Rule: int64(10000), Chain: nil},
+								{Target: "serviceDescription.Properties.CosmosDbConfiguration.OfferThroughput", Name: validation.InclusiveMinimum, Rule: 400, Chain: nil},
+							}},
+						}},
+					{Target: "serviceDescription.Properties.CorsConfiguration", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "serviceDescription.Properties.CorsConfiguration.MaxAge", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "serviceDescription.Properties.CorsConfiguration.MaxAge", Name: validation.InclusiveMaximum, Rule: int64(99999), Chain: nil},
+								{Target: "serviceDescription.Properties.CorsConfiguration.MaxAge", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+							}},
+						}},
+				}}}}}); err != nil {
 		return result, validation.NewError("healthcareapis.ServicesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -197,9 +209,9 @@ func (client ServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServicesClient) CreateOrUpdateSender(req *http.Request) (future ServicesCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -285,9 +297,9 @@ func (client ServicesClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServicesClient) DeleteSender(req *http.Request) (future ServicesDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -378,8 +390,8 @@ func (client ServicesClient) GetPreparer(ctx context.Context, resourceGroupName 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServicesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -451,8 +463,8 @@ func (client ServicesClient) ListPreparer(ctx context.Context) (*http.Request, e
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServicesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -572,8 +584,8 @@ func (client ServicesClient) ListByResourceGroupPreparer(ctx context.Context, re
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServicesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -623,98 +635,6 @@ func (client ServicesClient) ListByResourceGroupComplete(ctx context.Context, re
 		}()
 	}
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
-	return
-}
-
-// MoveResources moves resources to another subscription and/or resource group.
-// Parameters:
-// resourceGroupName - the name of the resource group that contains the service instance.
-// moveResourcesInputs - set the move resource structure to the name of the service instance to check.
-func (client ServicesClient) MoveResources(ctx context.Context, resourceGroupName string, moveResourcesInputs MoveResourcesParameters) (result autorest.Response, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.MoveResources")
-		defer func() {
-			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: moveResourcesInputs,
-			Constraints: []validation.Constraint{{Target: "moveResourcesInputs.TargetSubscriptionID", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "moveResourcesInputs.TargetResourceGroupName", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "moveResourcesInputs.ResourceIdsToMove", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "moveResourcesInputs.ResourceIdsToMove", Name: validation.MaxItems, Rule: 250, Chain: nil},
-						{Target: "moveResourcesInputs.ResourceIdsToMove", Name: validation.MinItems, Rule: 1, Chain: nil},
-					}}}}}); err != nil {
-		return result, validation.NewError("healthcareapis.ServicesClient", "MoveResources", err.Error())
-	}
-
-	req, err := client.MoveResourcesPreparer(ctx, resourceGroupName, moveResourcesInputs)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesClient", "MoveResources", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.MoveResourcesSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesClient", "MoveResources", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.MoveResourcesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "healthcareapis.ServicesClient", "MoveResources", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// MoveResourcesPreparer prepares the MoveResources request.
-func (client ServicesClient) MoveResourcesPreparer(ctx context.Context, resourceGroupName string, moveResourcesInputs MoveResourcesParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-08-20-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/moveResources", pathParameters),
-		autorest.WithJSON(moveResourcesInputs),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// MoveResourcesSender sends the MoveResources request. The method will close the
-// http.Response Body if it receives an error.
-func (client ServicesClient) MoveResourcesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
-}
-
-// MoveResourcesResponder handles the response to the MoveResources request. The method always
-// closes the http.Response Body.
-func (client ServicesClient) MoveResourcesResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
-	result.Response = resp
 	return
 }
 
@@ -786,9 +706,9 @@ func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServicesClient) UpdateSender(req *http.Request) (future ServicesUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}

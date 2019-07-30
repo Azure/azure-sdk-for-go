@@ -123,8 +123,8 @@ func (client PriceSheetClient) GetPreparer(ctx context.Context, expand string, s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PriceSheetClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -223,8 +223,8 @@ func (client PriceSheetClient) GetByBillingPeriodPreparer(ctx context.Context, b
 // GetByBillingPeriodSender sends the GetByBillingPeriod request. The method will close the
 // http.Response Body if it receives an error.
 func (client PriceSheetClient) GetByBillingPeriodSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByBillingPeriodResponder handles the response to the GetByBillingPeriod request. The method always

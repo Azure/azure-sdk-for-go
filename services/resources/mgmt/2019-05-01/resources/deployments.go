@@ -115,8 +115,8 @@ func (client DeploymentsClient) CancelPreparer(ctx context.Context, resourceGrou
 // CancelSender sends the Cancel request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CancelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CancelResponder handles the response to the Cancel request. The method always
@@ -203,8 +203,8 @@ func (client DeploymentsClient) CancelAtManagementGroupScopePreparer(ctx context
 // CancelAtManagementGroupScopeSender sends the CancelAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CancelAtManagementGroupScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CancelAtManagementGroupScopeResponder handles the response to the CancelAtManagementGroupScope request. The method always
@@ -287,8 +287,8 @@ func (client DeploymentsClient) CancelAtSubscriptionScopePreparer(ctx context.Co
 // CancelAtSubscriptionScopeSender sends the CancelAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CancelAtSubscriptionScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CancelAtSubscriptionScopeResponder handles the response to the CancelAtSubscriptionScope request. The method always
@@ -376,8 +376,8 @@ func (client DeploymentsClient) CheckExistencePreparer(ctx context.Context, reso
 // CheckExistenceSender sends the CheckExistence request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CheckExistenceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CheckExistenceResponder handles the response to the CheckExistence request. The method always
@@ -462,8 +462,8 @@ func (client DeploymentsClient) CheckExistenceAtManagementGroupScopePreparer(ctx
 // CheckExistenceAtManagementGroupScopeSender sends the CheckExistenceAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CheckExistenceAtManagementGroupScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CheckExistenceAtManagementGroupScopeResponder handles the response to the CheckExistenceAtManagementGroupScope request. The method always
@@ -544,8 +544,8 @@ func (client DeploymentsClient) CheckExistenceAtSubscriptionScopePreparer(ctx co
 // CheckExistenceAtSubscriptionScopeSender sends the CheckExistenceAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CheckExistenceAtSubscriptionScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CheckExistenceAtSubscriptionScopeResponder handles the response to the CheckExistenceAtSubscriptionScope request. The method always
@@ -637,9 +637,9 @@ func (client DeploymentsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (future DeploymentsCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -735,9 +735,9 @@ func (client DeploymentsClient) CreateOrUpdateAtManagementGroupScopePreparer(ctx
 // CreateOrUpdateAtManagementGroupScopeSender sends the CreateOrUpdateAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CreateOrUpdateAtManagementGroupScopeSender(req *http.Request) (future DeploymentsCreateOrUpdateAtManagementGroupScopeFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -829,9 +829,9 @@ func (client DeploymentsClient) CreateOrUpdateAtSubscriptionScopePreparer(ctx co
 // CreateOrUpdateAtSubscriptionScopeSender sends the CreateOrUpdateAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CreateOrUpdateAtSubscriptionScopeSender(req *http.Request) (future DeploymentsCreateOrUpdateAtSubscriptionScopeFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -925,9 +925,9 @@ func (client DeploymentsClient) DeletePreparer(ctx context.Context, resourceGrou
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) DeleteSender(req *http.Request) (future DeploymentsDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1016,9 +1016,9 @@ func (client DeploymentsClient) DeleteAtManagementGroupScopePreparer(ctx context
 // DeleteAtManagementGroupScopeSender sends the DeleteAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) DeleteAtManagementGroupScopeSender(req *http.Request) (future DeploymentsDeleteAtManagementGroupScopeFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1103,9 +1103,9 @@ func (client DeploymentsClient) DeleteAtSubscriptionScopePreparer(ctx context.Co
 // DeleteAtSubscriptionScopeSender sends the DeleteAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) DeleteAtSubscriptionScopeSender(req *http.Request) (future DeploymentsDeleteAtSubscriptionScopeFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1197,8 +1197,8 @@ func (client DeploymentsClient) ExportTemplatePreparer(ctx context.Context, reso
 // ExportTemplateSender sends the ExportTemplate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ExportTemplateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ExportTemplateResponder handles the response to the ExportTemplate request. The method always
@@ -1284,8 +1284,8 @@ func (client DeploymentsClient) ExportTemplateAtManagementGroupScopePreparer(ctx
 // ExportTemplateAtManagementGroupScopeSender sends the ExportTemplateAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ExportTemplateAtManagementGroupScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ExportTemplateAtManagementGroupScopeResponder handles the response to the ExportTemplateAtManagementGroupScope request. The method always
@@ -1367,8 +1367,8 @@ func (client DeploymentsClient) ExportTemplateAtSubscriptionScopePreparer(ctx co
 // ExportTemplateAtSubscriptionScopeSender sends the ExportTemplateAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ExportTemplateAtSubscriptionScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ExportTemplateAtSubscriptionScopeResponder handles the response to the ExportTemplateAtSubscriptionScope request. The method always
@@ -1456,8 +1456,8 @@ func (client DeploymentsClient) GetPreparer(ctx context.Context, resourceGroupNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -1543,8 +1543,8 @@ func (client DeploymentsClient) GetAtManagementGroupScopePreparer(ctx context.Co
 // GetAtManagementGroupScopeSender sends the GetAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) GetAtManagementGroupScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAtManagementGroupScopeResponder handles the response to the GetAtManagementGroupScope request. The method always
@@ -1626,8 +1626,8 @@ func (client DeploymentsClient) GetAtSubscriptionScopePreparer(ctx context.Conte
 // GetAtSubscriptionScopeSender sends the GetAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) GetAtSubscriptionScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAtSubscriptionScopeResponder handles the response to the GetAtSubscriptionScope request. The method always
@@ -1717,8 +1717,8 @@ func (client DeploymentsClient) ListAtManagementGroupScopePreparer(ctx context.C
 // ListAtManagementGroupScopeSender sends the ListAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ListAtManagementGroupScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAtManagementGroupScopeResponder handles the response to the ListAtManagementGroupScope request. The method always
@@ -1837,8 +1837,8 @@ func (client DeploymentsClient) ListAtSubscriptionScopePreparer(ctx context.Cont
 // ListAtSubscriptionScopeSender sends the ListAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ListAtSubscriptionScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAtSubscriptionScopeResponder handles the response to the ListAtSubscriptionScope request. The method always
@@ -1968,8 +1968,8 @@ func (client DeploymentsClient) ListByResourceGroupPreparer(ctx context.Context,
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -2106,8 +2106,8 @@ func (client DeploymentsClient) ValidatePreparer(ctx context.Context, resourceGr
 // ValidateSender sends the Validate request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ValidateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ValidateResponder handles the response to the Validate request. The method always
@@ -2204,8 +2204,8 @@ func (client DeploymentsClient) ValidateAtManagementGroupScopePreparer(ctx conte
 // ValidateAtManagementGroupScopeSender sends the ValidateAtManagementGroupScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ValidateAtManagementGroupScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ValidateAtManagementGroupScopeResponder handles the response to the ValidateAtManagementGroupScope request. The method always
@@ -2298,8 +2298,8 @@ func (client DeploymentsClient) ValidateAtSubscriptionScopePreparer(ctx context.
 // ValidateAtSubscriptionScopeSender sends the ValidateAtSubscriptionScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) ValidateAtSubscriptionScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ValidateAtSubscriptionScopeResponder handles the response to the ValidateAtSubscriptionScope request. The method always

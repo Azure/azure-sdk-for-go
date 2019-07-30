@@ -203,17 +203,25 @@ type ReservedResourceType string
 const (
 	// CosmosDb ...
 	CosmosDb ReservedResourceType = "CosmosDb"
+	// RedHat ...
+	RedHat ReservedResourceType = "RedHat"
+	// RedHatOsa ...
+	RedHatOsa ReservedResourceType = "RedHatOsa"
 	// SQLDatabases ...
 	SQLDatabases ReservedResourceType = "SqlDatabases"
+	// SQLDataWarehouse ...
+	SQLDataWarehouse ReservedResourceType = "SqlDataWarehouse"
 	// SuseLinux ...
 	SuseLinux ReservedResourceType = "SuseLinux"
 	// VirtualMachines ...
 	VirtualMachines ReservedResourceType = "VirtualMachines"
+	// VMwareCloudSimple ...
+	VMwareCloudSimple ReservedResourceType = "VMwareCloudSimple"
 )
 
 // PossibleReservedResourceTypeValues returns an array of possible values for the ReservedResourceType const type.
 func PossibleReservedResourceTypeValues() []ReservedResourceType {
-	return []ReservedResourceType{CosmosDb, SQLDatabases, SuseLinux, VirtualMachines}
+	return []ReservedResourceType{CosmosDb, RedHat, RedHatOsa, SQLDatabases, SQLDataWarehouse, SuseLinux, VirtualMachines, VMwareCloudSimple}
 }
 
 // StatusCode enumerates the values for status code.
@@ -1105,7 +1113,7 @@ type PatchPropertiesRenewProperties struct {
 
 // Properties ...
 type Properties struct {
-	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb'
+	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa'
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
 	// InstanceFlexibility - Possible values include: 'On', 'Off'
 	InstanceFlexibility InstanceFlexibility `json:"instanceFlexibility,omitempty"`
@@ -1204,7 +1212,7 @@ func (pr *PurchaseRequest) UnmarshalJSON(body []byte) error {
 
 // PurchaseRequestProperties ...
 type PurchaseRequestProperties struct {
-	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb'
+	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa'
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
 	BillingScopeID       *string              `json:"billingScopeId,omitempty"`
 	// Term - Possible values include: 'P1Y', 'P3Y'
@@ -1230,15 +1238,24 @@ type PurchaseRequestPropertiesReservedResourceProperties struct {
 // RenewPropertiesResponse ...
 type RenewPropertiesResponse struct {
 	PurchaseProperties *PurchaseRequest `json:"purchaseProperties,omitempty"`
-	// LockedPriceTotal - Locked currency & amount for new reservation purchase at the time of renewal. Price is locked 30 days before expiry date time if renew is true.
-	LockedPriceTotal *RenewPropertiesResponseLockedPriceTotal `json:"lockedPriceTotal,omitempty"`
+	// PricingCurrencyTotal - Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included. This is locked price 30 days before expiry.
+	PricingCurrencyTotal *RenewPropertiesResponsePricingCurrencyTotal `json:"pricingCurrencyTotal,omitempty"`
+	// BillingCurrencyTotal - Currency and amount that customer will be charged in customer's local currency for renewal purchase. Tax is not included.
+	BillingCurrencyTotal *RenewPropertiesResponseBillingCurrencyTotal `json:"billingCurrencyTotal,omitempty"`
 }
 
-// RenewPropertiesResponseLockedPriceTotal locked currency & amount for new reservation purchase at the
-// time of renewal. Price is locked 30 days before expiry date time if renew is true.
-type RenewPropertiesResponseLockedPriceTotal struct {
-	CurrencyCode *string `json:"currencyCode,omitempty"`
-	Amount       *string `json:"amount,omitempty"`
+// RenewPropertiesResponseBillingCurrencyTotal currency and amount that customer will be charged in
+// customer's local currency for renewal purchase. Tax is not included.
+type RenewPropertiesResponseBillingCurrencyTotal struct {
+	CurrencyCode *string  `json:"currencyCode,omitempty"`
+	Amount       *float64 `json:"amount,omitempty"`
+}
+
+// RenewPropertiesResponsePricingCurrencyTotal amount that Microsoft uses for record. Used during refund
+// for calculating refund limit. Tax is not included. This is locked price 30 days before expiry.
+type RenewPropertiesResponsePricingCurrencyTotal struct {
+	CurrencyCode *string  `json:"currencyCode,omitempty"`
+	Amount       *float64 `json:"amount,omitempty"`
 }
 
 // ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running

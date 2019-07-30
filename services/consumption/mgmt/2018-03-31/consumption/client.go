@@ -112,8 +112,8 @@ func (client BaseClient) GetBalancesByBillingAccountPreparer(ctx context.Context
 // GetBalancesByBillingAccountSender sends the GetBalancesByBillingAccount request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetBalancesByBillingAccountSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetBalancesByBillingAccountResponder handles the response to the GetBalancesByBillingAccount request. The method always

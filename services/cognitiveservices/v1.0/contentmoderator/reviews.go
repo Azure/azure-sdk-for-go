@@ -132,8 +132,8 @@ func (client ReviewsClient) AddVideoFramePreparer(ctx context.Context, teamName 
 // AddVideoFrameSender sends the AddVideoFrame request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) AddVideoFrameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddVideoFrameResponder handles the response to the AddVideoFrame request. The method always
@@ -225,8 +225,8 @@ func (client ReviewsClient) AddVideoFrameStreamPreparer(ctx context.Context, con
 // AddVideoFrameStreamSender sends the AddVideoFrameStream request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) AddVideoFrameStreamSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddVideoFrameStreamResponder handles the response to the AddVideoFrameStream request. The method always
@@ -319,8 +319,8 @@ func (client ReviewsClient) AddVideoFrameURLPreparer(ctx context.Context, conten
 // AddVideoFrameURLSender sends the AddVideoFrameURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) AddVideoFrameURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddVideoFrameURLResponder handles the response to the AddVideoFrameURL request. The method always
@@ -397,8 +397,8 @@ func (client ReviewsClient) AddVideoTranscriptPreparer(ctx context.Context, team
 // AddVideoTranscriptSender sends the AddVideoTranscript request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) AddVideoTranscriptSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddVideoTranscriptResponder handles the response to the AddVideoTranscript request. The method always
@@ -483,8 +483,8 @@ func (client ReviewsClient) AddVideoTranscriptModerationResultPreparer(ctx conte
 // AddVideoTranscriptModerationResultSender sends the AddVideoTranscriptModerationResult request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) AddVideoTranscriptModerationResultSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddVideoTranscriptModerationResultResponder handles the response to the AddVideoTranscriptModerationResult request. The method always
@@ -627,8 +627,8 @@ func (client ReviewsClient) CreateJobPreparer(ctx context.Context, teamName stri
 // CreateJobSender sends the CreateJob request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) CreateJobSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateJobResponder handles the response to the CreateJob request. The method always
@@ -741,8 +741,8 @@ func (client ReviewsClient) CreateReviewsPreparer(ctx context.Context, URLConten
 // CreateReviewsSender sends the CreateReviews request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) CreateReviewsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateReviewsResponder handles the response to the CreateReviews request. The method always
@@ -855,8 +855,8 @@ func (client ReviewsClient) CreateVideoReviewsPreparer(ctx context.Context, cont
 // CreateVideoReviewsSender sends the CreateVideoReviews request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) CreateVideoReviewsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateVideoReviewsResponder handles the response to the CreateVideoReviews request. The method always
@@ -929,8 +929,8 @@ func (client ReviewsClient) GetJobDetailsPreparer(ctx context.Context, teamName 
 // GetJobDetailsSender sends the GetJobDetails request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) GetJobDetailsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetJobDetailsResponder handles the response to the GetJobDetails request. The method always
@@ -1003,8 +1003,8 @@ func (client ReviewsClient) GetReviewPreparer(ctx context.Context, teamName stri
 // GetReviewSender sends the GetReview request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) GetReviewSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetReviewResponder handles the response to the GetReview request. The method always
@@ -1116,8 +1116,8 @@ func (client ReviewsClient) GetVideoFramesPreparer(ctx context.Context, teamName
 // GetVideoFramesSender sends the GetVideoFrames request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) GetVideoFramesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetVideoFramesResponder handles the response to the GetVideoFrames request. The method always
@@ -1190,8 +1190,8 @@ func (client ReviewsClient) PublishVideoReviewPreparer(ctx context.Context, team
 // PublishVideoReviewSender sends the PublishVideoReview request. The method will close the
 // http.Response Body if it receives an error.
 func (client ReviewsClient) PublishVideoReviewSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PublishVideoReviewResponder handles the response to the PublishVideoReview request. The method always

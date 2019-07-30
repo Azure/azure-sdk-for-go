@@ -84,8 +84,8 @@ func (client EndpointKeysClient) GetKeysPreparer(ctx context.Context) (*http.Req
 // GetKeysSender sends the GetKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointKeysClient) GetKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetKeysResponder handles the response to the GetKeys request. The method always
@@ -156,8 +156,8 @@ func (client EndpointKeysClient) RefreshKeysPreparer(ctx context.Context, keyTyp
 // RefreshKeysSender sends the RefreshKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client EndpointKeysClient) RefreshKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RefreshKeysResponder handles the response to the RefreshKeys request. The method always

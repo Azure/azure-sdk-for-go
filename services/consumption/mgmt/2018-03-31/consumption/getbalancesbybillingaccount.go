@@ -101,8 +101,8 @@ func (client GetBalancesByBillingAccountClient) ByBillingPeriodPreparer(ctx cont
 // ByBillingPeriodSender sends the ByBillingPeriod request. The method will close the
 // http.Response Body if it receives an error.
 func (client GetBalancesByBillingAccountClient) ByBillingPeriodSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ByBillingPeriodResponder handles the response to the ByBillingPeriod request. The method always

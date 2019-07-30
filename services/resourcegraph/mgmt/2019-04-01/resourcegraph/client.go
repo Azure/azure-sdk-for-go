@@ -123,8 +123,8 @@ func (client BaseClient) ResourcesPreparer(ctx context.Context, query QueryReque
 // ResourcesSender sends the Resources request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) ResourcesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ResourcesResponder handles the response to the Resources request. The method always

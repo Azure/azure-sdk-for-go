@@ -124,8 +124,8 @@ func (client BaseClient) PredictImagePreparer(ctx context.Context, projectID uui
 // PredictImageSender sends the PredictImage request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) PredictImageSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PredictImageResponder handles the response to the PredictImage request. The method always
@@ -212,8 +212,8 @@ func (client BaseClient) PredictImageURLPreparer(ctx context.Context, projectID 
 // PredictImageURLSender sends the PredictImageURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) PredictImageURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PredictImageURLResponder handles the response to the PredictImageURL request. The method always
@@ -300,8 +300,8 @@ func (client BaseClient) PredictImageURLWithNoStorePreparer(ctx context.Context,
 // PredictImageURLWithNoStoreSender sends the PredictImageURLWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) PredictImageURLWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PredictImageURLWithNoStoreResponder handles the response to the PredictImageURLWithNoStore request. The method always
@@ -390,8 +390,8 @@ func (client BaseClient) PredictImageWithNoStorePreparer(ctx context.Context, pr
 // PredictImageWithNoStoreSender sends the PredictImageWithNoStore request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) PredictImageWithNoStoreSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PredictImageWithNoStoreResponder handles the response to the PredictImageWithNoStore request. The method always

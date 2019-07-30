@@ -34,7 +34,7 @@
         "globalMetadata": {
             "feedback_system": "GitHub",
             "feedback_github_repo": "MicrosoftDocs/azure-dev-docs",
-            "feedback_product_url": "https://github.com/azure/azure-sdk-for-go"
+            "feedback_product_url": "https://github.com/azure/azure-sdk-for-go/issues"
         },
         "fileMetadata": {},
         "template": [],

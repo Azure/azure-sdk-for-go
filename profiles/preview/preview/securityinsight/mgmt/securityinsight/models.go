@@ -72,9 +72,11 @@ const (
 type CloseReason = original.CloseReason
 
 const (
-	Dismissed CloseReason = original.Dismissed
-	Other     CloseReason = original.Other
-	Resolved  CloseReason = original.Resolved
+	Dismissed     CloseReason = original.Dismissed
+	FalsePositive CloseReason = original.FalsePositive
+	Other         CloseReason = original.Other
+	Resolved      CloseReason = original.Resolved
+	TruePositive  CloseReason = original.TruePositive
 )
 
 type DataConnectorKind = original.DataConnectorKind

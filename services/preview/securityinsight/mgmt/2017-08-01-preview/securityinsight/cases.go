@@ -75,8 +75,8 @@ func (client CasesClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "caseParameter.CaseProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.StartTimeUtc", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "caseParameter.CaseProperties.Title", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "caseParameter.CaseProperties.AssignedTo", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.AssignedTo.ObjectID", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "caseParameter.CaseProperties.Owner", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "caseParameter.CaseProperties.Owner.ObjectID", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("securityinsight.CasesClient", "CreateOrUpdate", err.Error())
 	}

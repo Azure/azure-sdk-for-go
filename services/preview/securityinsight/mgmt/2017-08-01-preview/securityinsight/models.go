@@ -122,15 +122,19 @@ type CloseReason string
 const (
 	// Dismissed Case was dismissed
 	Dismissed CloseReason = "Dismissed"
+	// FalsePositive Case was false positive
+	FalsePositive CloseReason = "FalsePositive"
 	// Other Case was closed for another reason
 	Other CloseReason = "Other"
 	// Resolved Case was resolved
 	Resolved CloseReason = "Resolved"
+	// TruePositive Case was true positive
+	TruePositive CloseReason = "TruePositive"
 )
 
 // PossibleCloseReasonValues returns an array of possible values for the CloseReason const type.
 func PossibleCloseReasonValues() []CloseReason {
-	return []CloseReason{Dismissed, Other, Resolved}
+	return []CloseReason{Dismissed, FalsePositive, Other, Resolved, TruePositive}
 }
 
 // DataConnectorKind enumerates the values for data connector kind.
@@ -2526,13 +2530,13 @@ type CaseProperties struct {
 	Description *string `json:"description,omitempty"`
 	// Title - The title of the case
 	Title *string `json:"title,omitempty"`
-	// AssignedTo - Describes a user that the case is assigned to
-	AssignedTo *UserInfo `json:"assignedTo,omitempty"`
+	// Owner - Describes a user that the case is assigned to
+	Owner *UserInfo `json:"owner,omitempty"`
 	// Severity - The severity of the case. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
 	Severity CaseSeverity `json:"severity,omitempty"`
 	// Status - The status of the case. Possible values include: 'CaseStatusDraft', 'CaseStatusNew', 'CaseStatusInProgress', 'CaseStatusClosed'
 	Status CaseStatus `json:"status,omitempty"`
-	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
+	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'TruePositive', 'FalsePositive', 'Other'
 	CloseReason CloseReason `json:"closeReason,omitempty"`
 	// ClosedReasonText - the case close reason details
 	ClosedReasonText *string `json:"closedReasonText,omitempty"`

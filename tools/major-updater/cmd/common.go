@@ -1,9 +1,11 @@
 package cmd
 
 import (
-	"fmt"
-	"os/exec"
 	"bufio"
+	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
 )
 
 func printf(format string, a ...interface{}) {
@@ -73,4 +75,15 @@ func startCmd(c *exec.Cmd) error {
 		}
 	}()
 	return c.Start()
+}
+
+func selectFilesWithName(path string, name string) ([]string, error) {
+	var files []string
+	err := filepath.Walk(path, func(p string, info os.FileInfo, err error) error {
+		if !info.IsDir() && info.Name() == name {
+			files = append(files, p)
+		}
+		return nil
+	})
+	return files, err
 }

@@ -29,13 +29,6 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*subscription.OperationsClient)(nil)
 
-// OperationsGroupClientAPI contains the set of methods on the OperationsGroupClient type.
-type OperationsGroupClientAPI interface {
-	List(ctx context.Context) (result subscription.OperationListResultType, err error)
-}
-
-var _ OperationsGroupClientAPI = (*subscription.OperationsGroupClient)(nil)
-
 // FactoryClientAPI contains the set of methods on the FactoryClient type.
 type FactoryClientAPI interface {
 	CreateSubscriptionInEnrollmentAccount(ctx context.Context, enrollmentAccountName string, body subscription.CreationParameters) (result subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture, err error)

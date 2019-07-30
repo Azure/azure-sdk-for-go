@@ -291,8 +291,8 @@ type AlternatePatternItem struct {
 type AnalysisRequest struct {
 	// ApplicationType - This describes the domain of the client application. Possible values include: 'Drawing', 'Writing', 'Mixed'
 	ApplicationType Application `json:"applicationType,omitempty"`
-	// InputDevicekind - This identifies the kind of device used as the writing instrument. Possible values include: 'Digitizer', 'Pen', 'LightPen', 'TouchScreen', 'TouchPad', 'WhiteBoard', 'ThreedDigitizer', 'StereoPlotter', 'ArticulatedArm', 'Armature'
-	InputDevicekind InputDevice `json:"inputDevicekind,omitempty"`
+	// InputDeviceKind - This identifies the kind of device used as the writing instrument. Possible values include: 'Digitizer', 'Pen', 'LightPen', 'TouchScreen', 'TouchPad', 'WhiteBoard', 'ThreedDigitizer', 'StereoPlotter', 'ArticulatedArm', 'Armature'
+	InputDeviceKind InputDevice `json:"inputDeviceKind,omitempty"`
 	// Unit - This is the physical unit of the ink strokes. It is up to the application developer to decide how to convert the device specific units to physical units before calling the service. The conversion factor can be different based on the type of the device used. Possible values include: 'Mm', 'Cm', 'In'
 	Unit Unit `json:"unit,omitempty"`
 	// UnitMultiple -  This is a scaling factor to be applied to the point coordinates when interpreting them in the physical units specified.
@@ -405,7 +405,7 @@ type InkPoint struct {
 	SecondaryTip *bool `json:"secondaryTip,omitempty"`
 }
 
-// InkPointValueAttribute a container for the attributes of a value contained in the inkpoint object.
+// InkPointValueAttribute a container for the attributes of a value contained in the ink point object.
 type InkPointValueAttribute struct {
 	// Name - The name of the point attribute.
 	Name *string `json:"name,omitempty"`
@@ -463,7 +463,7 @@ type RecognitionUnitItem struct {
 type RecognitionUnitItemBoundingRectangle struct {
 	// TopX - This is the top left x coordinate
 	TopX *float64 `json:"topX,omitempty"`
-	// TopY - This isthe top left y coordinate
+	// TopY - This is the top left y coordinate
 	TopY *float64 `json:"topY,omitempty"`
 	// Width - This is width of the bounding rectangle
 	Width *float64 `json:"width,omitempty"`

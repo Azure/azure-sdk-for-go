@@ -20,7 +20,6 @@ package networkapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-04-01/network"
-	"github.com/Azure/go-autorest/autorest"
 )
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
@@ -79,20 +78,6 @@ type AvailableResourceGroupDelegationsClientAPI interface {
 }
 
 var _ AvailableResourceGroupDelegationsClientAPI = (*network.AvailableResourceGroupDelegationsClient)(nil)
-
-// AvailablePrivateEndpointTypesClientAPI contains the set of methods on the AvailablePrivateEndpointTypesClient type.
-type AvailablePrivateEndpointTypesClientAPI interface {
-	List(ctx context.Context, location string) (result network.AvailablePrivateEndpointTypesResultPage, err error)
-}
-
-var _ AvailablePrivateEndpointTypesClientAPI = (*network.AvailablePrivateEndpointTypesClient)(nil)
-
-// AvailableResourceGroupPrivateEndpointTypesClientAPI contains the set of methods on the AvailableResourceGroupPrivateEndpointTypesClient type.
-type AvailableResourceGroupPrivateEndpointTypesClientAPI interface {
-	List(ctx context.Context, location string, resourceGroupName string) (result network.AvailablePrivateEndpointTypesResultPage, err error)
-}
-
-var _ AvailableResourceGroupPrivateEndpointTypesClientAPI = (*network.AvailableResourceGroupPrivateEndpointTypesClient)(nil)
 
 // AzureFirewallsClientAPI contains the set of methods on the AzureFirewallsClient type.
 type AzureFirewallsClientAPI interface {
@@ -298,15 +283,27 @@ type PrivateEndpointsClientAPI interface {
 
 var _ PrivateEndpointsClientAPI = (*network.PrivateEndpointsClient)(nil)
 
+// AvailablePrivateEndpointTypesClientAPI contains the set of methods on the AvailablePrivateEndpointTypesClient type.
+type AvailablePrivateEndpointTypesClientAPI interface {
+	List(ctx context.Context, location string) (result network.AvailablePrivateEndpointTypesResultPage, err error)
+	ListByResourceGroup(ctx context.Context, location string, resourceGroupName string) (result network.AvailablePrivateEndpointTypesResultPage, err error)
+}
+
+var _ AvailablePrivateEndpointTypesClientAPI = (*network.AvailablePrivateEndpointTypesClient)(nil)
+
 // PrivateLinkServicesClientAPI contains the set of methods on the PrivateLinkServicesClient type.
 type PrivateLinkServicesClientAPI interface {
+	CheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters network.CheckPrivateLinkServiceVisibilityRequest) (result network.PrivateLinkServiceVisibility, err error)
+	CheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters network.CheckPrivateLinkServiceVisibilityRequest) (result network.PrivateLinkServiceVisibility, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters network.PrivateLinkService) (result network.PrivateLinkServicesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string) (result network.PrivateLinkServicesDeleteFuture, err error)
 	DeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string) (result network.PrivateLinkServicesDeletePrivateEndpointConnectionFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, expand string) (result network.PrivateLinkService, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.PrivateLinkServiceListResultPage, err error)
+	ListAutoApprovedPrivateLinkServices(ctx context.Context, location string) (result network.AutoApprovedPrivateLinkServicesResultPage, err error)
+	ListAutoApprovedPrivateLinkServicesByResourceGroup(ctx context.Context, location string, resourceGroupName string) (result network.AutoApprovedPrivateLinkServicesResultPage, err error)
 	ListBySubscription(ctx context.Context) (result network.PrivateLinkServiceListResultPage, err error)
-	UpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, parameters network.PrivateEndpointConnection) (result autorest.Response, err error)
+	UpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, parameters network.PrivateEndpointConnection) (result network.PrivateEndpointConnection, err error)
 }
 
 var _ PrivateLinkServicesClientAPI = (*network.PrivateLinkServicesClient)(nil)

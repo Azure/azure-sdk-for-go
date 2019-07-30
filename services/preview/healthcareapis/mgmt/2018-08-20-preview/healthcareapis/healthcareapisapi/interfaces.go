@@ -20,7 +20,6 @@ package healthcareapisapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/healthcareapis/mgmt/2018-08-20-preview/healthcareapis"
-	"github.com/Azure/go-autorest/autorest"
 )
 
 // ServicesClientAPI contains the set of methods on the ServicesClient type.
@@ -31,7 +30,6 @@ type ServicesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result healthcareapis.ServicesDescription, err error)
 	List(ctx context.Context) (result healthcareapis.ServicesDescriptionListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result healthcareapis.ServicesDescriptionListResultPage, err error)
-	MoveResources(ctx context.Context, resourceGroupName string, moveResourcesInputs healthcareapis.MoveResourcesParameters) (result autorest.Response, err error)
 	Update(ctx context.Context, resourceGroupName string, resourceName string, servicePatchDescription healthcareapis.ServicesPatchDescription) (result healthcareapis.ServicesUpdateFuture, err error)
 }
 
@@ -50,10 +48,3 @@ type OperationResultsClientAPI interface {
 }
 
 var _ OperationResultsClientAPI = (*healthcareapis.OperationResultsClient)(nil)
-
-// MoveResourcesStatusClientAPI contains the set of methods on the MoveResourcesStatusClient type.
-type MoveResourcesStatusClientAPI interface {
-	Get(ctx context.Context, locationName string, operationResultID string) (result healthcareapis.SetObject, err error)
-}
-
-var _ MoveResourcesStatusClientAPI = (*healthcareapis.MoveResourcesStatusClient)(nil)

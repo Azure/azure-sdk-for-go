@@ -129,8 +129,8 @@ func (client BudgetsClient) CreateOrUpdatePreparer(ctx context.Context, budgetNa
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -235,8 +235,8 @@ func (client BudgetsClient) CreateOrUpdateByResourceGroupNamePreparer(ctx contex
 // CreateOrUpdateByResourceGroupNameSender sends the CreateOrUpdateByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) CreateOrUpdateByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateByResourceGroupNameResponder handles the response to the CreateOrUpdateByResourceGroupName request. The method always
@@ -310,8 +310,8 @@ func (client BudgetsClient) DeletePreparer(ctx context.Context, budgetName strin
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -386,8 +386,8 @@ func (client BudgetsClient) DeleteByResourceGroupNamePreparer(ctx context.Contex
 // DeleteByResourceGroupNameSender sends the DeleteByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) DeleteByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteByResourceGroupNameResponder handles the response to the DeleteByResourceGroupName request. The method always
@@ -460,8 +460,8 @@ func (client BudgetsClient) GetPreparer(ctx context.Context, budgetName string) 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -537,8 +537,8 @@ func (client BudgetsClient) GetByResourceGroupNamePreparer(ctx context.Context, 
 // GetByResourceGroupNameSender sends the GetByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) GetByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByResourceGroupNameResponder handles the response to the GetByResourceGroupName request. The method always
@@ -610,8 +610,8 @@ func (client BudgetsClient) ListPreparer(ctx context.Context) (*http.Request, er
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -723,8 +723,8 @@ func (client BudgetsClient) ListByResourceGroupNamePreparer(ctx context.Context,
 // ListByResourceGroupNameSender sends the ListByResourceGroupName request. The method will close the
 // http.Response Body if it receives an error.
 func (client BudgetsClient) ListByResourceGroupNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupNameResponder handles the response to the ListByResourceGroupName request. The method always

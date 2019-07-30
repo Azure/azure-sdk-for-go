@@ -110,8 +110,8 @@ func (client CodePackageClient) GetContainerLogPreparer(ctx context.Context, res
 // GetContainerLogSender sends the GetContainerLog request. The method will close the
 // http.Response Body if it receives an error.
 func (client CodePackageClient) GetContainerLogSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetContainerLogResponder handles the response to the GetContainerLog request. The method always

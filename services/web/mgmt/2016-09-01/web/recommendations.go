@@ -109,8 +109,8 @@ func (client RecommendationsClient) DisableAllForWebAppPreparer(ctx context.Cont
 // DisableAllForWebAppSender sends the DisableAllForWebApp request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) DisableAllForWebAppSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DisableAllForWebAppResponder handles the response to the DisableAllForWebApp request. The method always
@@ -195,8 +195,8 @@ func (client RecommendationsClient) DisableRecommendationForSitePreparer(ctx con
 // DisableRecommendationForSiteSender sends the DisableRecommendationForSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) DisableRecommendationForSiteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DisableRecommendationForSiteResponder handles the response to the DisableRecommendationForSite request. The method always
@@ -270,8 +270,8 @@ func (client RecommendationsClient) DisableRecommendationForSubscriptionPreparer
 // DisableRecommendationForSubscriptionSender sends the DisableRecommendationForSubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) DisableRecommendationForSubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DisableRecommendationForSubscriptionResponder handles the response to the DisableRecommendationForSubscription request. The method always
@@ -365,8 +365,8 @@ func (client RecommendationsClient) GetRuleDetailsByWebAppPreparer(ctx context.C
 // GetRuleDetailsByWebAppSender sends the GetRuleDetailsByWebApp request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) GetRuleDetailsByWebAppSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetRuleDetailsByWebAppResponder handles the response to the GetRuleDetailsByWebApp request. The method always
@@ -450,8 +450,8 @@ func (client RecommendationsClient) ListPreparer(ctx context.Context, featured *
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -579,8 +579,8 @@ func (client RecommendationsClient) ListHistoryForWebAppPreparer(ctx context.Con
 // ListHistoryForWebAppSender sends the ListHistoryForWebApp request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) ListHistoryForWebAppSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListHistoryForWebAppResponder handles the response to the ListHistoryForWebApp request. The method always
@@ -712,8 +712,8 @@ func (client RecommendationsClient) ListRecommendedRulesForWebAppPreparer(ctx co
 // ListRecommendedRulesForWebAppSender sends the ListRecommendedRulesForWebApp request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) ListRecommendedRulesForWebAppSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListRecommendedRulesForWebAppResponder handles the response to the ListRecommendedRulesForWebApp request. The method always
@@ -821,8 +821,8 @@ func (client RecommendationsClient) ResetAllFiltersPreparer(ctx context.Context)
 // ResetAllFiltersSender sends the ResetAllFilters request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) ResetAllFiltersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ResetAllFiltersResponder handles the response to the ResetAllFilters request. The method always
@@ -905,8 +905,8 @@ func (client RecommendationsClient) ResetAllFiltersForWebAppPreparer(ctx context
 // ResetAllFiltersForWebAppSender sends the ResetAllFiltersForWebApp request. The method will close the
 // http.Response Body if it receives an error.
 func (client RecommendationsClient) ResetAllFiltersForWebAppSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ResetAllFiltersForWebAppResponder handles the response to the ResetAllFiltersForWebApp request. The method always

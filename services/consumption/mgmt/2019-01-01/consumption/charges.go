@@ -111,8 +111,8 @@ func (client ChargesClient) ListByScopePreparer(ctx context.Context, scope strin
 // ListByScopeSender sends the ListByScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client ChargesClient) ListByScopeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByScopeResponder handles the response to the ListByScope request. The method always

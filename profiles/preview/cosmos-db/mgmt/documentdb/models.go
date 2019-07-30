@@ -36,6 +36,12 @@ const (
 	LastWriterWins ConflictResolutionMode = original.LastWriterWins
 )
 
+type ConnectorOffer = original.ConnectorOffer
+
+const (
+	Small ConnectorOffer = original.Small
+)
+
 type DataType = original.DataType
 
 const (
@@ -384,6 +390,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleConflictResolutionModeValues() []ConflictResolutionMode {
 	return original.PossibleConflictResolutionModeValues()
+}
+func PossibleConnectorOfferValues() []ConnectorOffer {
+	return original.PossibleConnectorOfferValues()
 }
 func PossibleDataTypeValues() []DataType {
 	return original.PossibleDataTypeValues()

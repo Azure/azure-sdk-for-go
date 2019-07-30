@@ -111,9 +111,9 @@ func (client BandwidthSchedulesClient) CreateOrUpdatePreparer(ctx context.Contex
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client BandwidthSchedulesClient) CreateOrUpdateSender(req *http.Request) (future BandwidthSchedulesCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -190,9 +190,9 @@ func (client BandwidthSchedulesClient) DeletePreparer(ctx context.Context, devic
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client BandwidthSchedulesClient) DeleteSender(req *http.Request) (future BandwidthSchedulesDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -274,8 +274,8 @@ func (client BandwidthSchedulesClient) GetPreparer(ctx context.Context, deviceNa
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client BandwidthSchedulesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -352,8 +352,8 @@ func (client BandwidthSchedulesClient) ListByDataBoxEdgeDevicePreparer(ctx conte
 // ListByDataBoxEdgeDeviceSender sends the ListByDataBoxEdgeDevice request. The method will close the
 // http.Response Body if it receives an error.
 func (client BandwidthSchedulesClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByDataBoxEdgeDeviceResponder handles the response to the ListByDataBoxEdgeDevice request. The method always

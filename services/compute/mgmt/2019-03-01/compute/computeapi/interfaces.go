@@ -55,6 +55,29 @@ type ProximityPlacementGroupsClientAPI interface {
 
 var _ ProximityPlacementGroupsClientAPI = (*compute.ProximityPlacementGroupsClient)(nil)
 
+// DedicatedHostGroupsClientAPI contains the set of methods on the DedicatedHostGroupsClient type.
+type DedicatedHostGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, parameters compute.DedicatedHostGroup) (result compute.DedicatedHostGroup, err error)
+	Delete(ctx context.Context, resourceGroupName string, hostGroupName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, hostGroupName string) (result compute.DedicatedHostGroup, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.DedicatedHostGroupListResultPage, err error)
+	ListBySubscription(ctx context.Context) (result compute.DedicatedHostGroupListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, hostGroupName string, parameters compute.DedicatedHostGroupUpdate) (result compute.DedicatedHostGroup, err error)
+}
+
+var _ DedicatedHostGroupsClientAPI = (*compute.DedicatedHostGroupsClient)(nil)
+
+// DedicatedHostsClientAPI contains the set of methods on the DedicatedHostsClient type.
+type DedicatedHostsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters compute.DedicatedHost) (result compute.DedicatedHostsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string) (result compute.DedicatedHostsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, expand compute.InstanceViewTypes) (result compute.DedicatedHost, err error)
+	ListByHostGroup(ctx context.Context, resourceGroupName string, hostGroupName string) (result compute.DedicatedHostListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters compute.DedicatedHostUpdate) (result compute.DedicatedHostsUpdateFuture, err error)
+}
+
+var _ DedicatedHostsClientAPI = (*compute.DedicatedHostsClient)(nil)
+
 // VirtualMachineExtensionImagesClientAPI contains the set of methods on the VirtualMachineExtensionImagesClient type.
 type VirtualMachineExtensionImagesClientAPI interface {
 	Get(ctx context.Context, location string, publisherName string, typeParameter string, version string) (result compute.VirtualMachineExtensionImage, err error)
@@ -286,6 +309,26 @@ type GalleryImageVersionsClientAPI interface {
 }
 
 var _ GalleryImageVersionsClientAPI = (*compute.GalleryImageVersionsClient)(nil)
+
+// GalleryApplicationsClientAPI contains the set of methods on the GalleryApplicationsClient type.
+type GalleryApplicationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication compute.GalleryApplication) (result compute.GalleryApplicationsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplicationsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplication, err error)
+	ListByGallery(ctx context.Context, resourceGroupName string, galleryName string) (result compute.GalleryApplicationListPage, err error)
+}
+
+var _ GalleryApplicationsClientAPI = (*compute.GalleryApplicationsClient)(nil)
+
+// GalleryApplicationVersionsClientAPI contains the set of methods on the GalleryApplicationVersionsClient type.
+type GalleryApplicationVersionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion compute.GalleryApplicationVersion) (result compute.GalleryApplicationVersionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string) (result compute.GalleryApplicationVersionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, expand compute.ReplicationStatusTypes) (result compute.GalleryApplicationVersion, err error)
+	ListByGalleryApplication(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplicationVersionListPage, err error)
+}
+
+var _ GalleryApplicationVersionsClientAPI = (*compute.GalleryApplicationVersionsClient)(nil)
 
 // ContainerServicesClientAPI contains the set of methods on the ContainerServicesClient type.
 type ContainerServicesClientAPI interface {

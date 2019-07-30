@@ -40,6 +40,164 @@ func NewPrivateLinkServicesClientWithBaseURI(baseURI string, subscriptionID stri
 	return PrivateLinkServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// CheckPrivateLinkServiceVisibility checks the subscription is visible to private link service
+// Parameters:
+// location - the location of the domain name.
+// parameters - the request body of CheckPrivateLinkService API call.
+func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibility(ctx context.Context, location string, parameters CheckPrivateLinkServiceVisibilityRequest) (result PrivateLinkServiceVisibility, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.CheckPrivateLinkServiceVisibility")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CheckPrivateLinkServiceVisibilityPreparer(ctx, location, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibility", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckPrivateLinkServiceVisibilitySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibility", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckPrivateLinkServiceVisibilityResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibility", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckPrivateLinkServiceVisibilityPreparer prepares the CheckPrivateLinkServiceVisibility request.
+func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityPreparer(ctx context.Context, location string, parameters CheckPrivateLinkServiceVisibilityRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/checkPrivateLinkServiceVisibility", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckPrivateLinkServiceVisibilitySender sends the CheckPrivateLinkServiceVisibility request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilitySender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CheckPrivateLinkServiceVisibilityResponder handles the response to the CheckPrivateLinkServiceVisibility request. The method always
+// closes the http.Response Body.
+func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityResponder(resp *http.Response) (result PrivateLinkServiceVisibility, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CheckPrivateLinkServiceVisibilityByResourceGroup checks the subscription is visible to private link service
+// Parameters:
+// location - the location of the domain name.
+// resourceGroupName - the name of the resource group.
+// parameters - the request body of CheckPrivateLinkService API call.
+func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest) (result PrivateLinkServiceVisibility, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.CheckPrivateLinkServiceVisibilityByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CheckPrivateLinkServiceVisibilityByResourceGroupPreparer(ctx, location, resourceGroupName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibilityByResourceGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckPrivateLinkServiceVisibilityByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibilityByResourceGroup", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckPrivateLinkServiceVisibilityByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibilityByResourceGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckPrivateLinkServiceVisibilityByResourceGroupPreparer prepares the CheckPrivateLinkServiceVisibilityByResourceGroup request.
+func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityByResourceGroupPreparer(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":          autorest.Encode("path", location),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/checkPrivateLinkServiceVisibility", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckPrivateLinkServiceVisibilityByResourceGroupSender sends the CheckPrivateLinkServiceVisibilityByResourceGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityByResourceGroupSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CheckPrivateLinkServiceVisibilityByResourceGroupResponder handles the response to the CheckPrivateLinkServiceVisibilityByResourceGroup request. The method always
+// closes the http.Response Body.
+func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityByResourceGroupResponder(resp *http.Response) (result PrivateLinkServiceVisibility, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateOrUpdate creates or updates an private link service in the specified resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -97,9 +255,9 @@ func (client PrivateLinkServicesClient) CreateOrUpdatePreparer(ctx context.Conte
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrivateLinkServicesClient) CreateOrUpdateSender(req *http.Request) (future PrivateLinkServicesCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -174,9 +332,9 @@ func (client PrivateLinkServicesClient) DeletePreparer(ctx context.Context, reso
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrivateLinkServicesClient) DeleteSender(req *http.Request) (future PrivateLinkServicesDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -252,9 +410,9 @@ func (client PrivateLinkServicesClient) DeletePrivateEndpointConnectionPreparer(
 // DeletePrivateEndpointConnectionSender sends the DeletePrivateEndpointConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrivateLinkServicesClient) DeletePrivateEndpointConnectionSender(req *http.Request) (future PrivateLinkServicesDeletePrivateEndpointConnectionFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -338,8 +496,8 @@ func (client PrivateLinkServicesClient) GetPreparer(ctx context.Context, resourc
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrivateLinkServicesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -414,8 +572,8 @@ func (client PrivateLinkServicesClient) ListPreparer(ctx context.Context, resour
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrivateLinkServicesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -465,6 +623,236 @@ func (client PrivateLinkServicesClient) ListComplete(ctx context.Context, resour
 		}()
 	}
 	result.page, err = client.List(ctx, resourceGroupName)
+	return
+}
+
+// ListAutoApprovedPrivateLinkServices returns all of the private link service ids that can be linked to a Private
+// Endpoint with auto approved in this subscription in this region.
+// Parameters:
+// location - the location of the domain name.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServices(ctx context.Context, location string) (result AutoApprovedPrivateLinkServicesResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServices")
+		defer func() {
+			sc := -1
+			if result.aaplsr.Response.Response != nil {
+				sc = result.aaplsr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listAutoApprovedPrivateLinkServicesNextResults
+	req, err := client.ListAutoApprovedPrivateLinkServicesPreparer(ctx, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServices", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAutoApprovedPrivateLinkServicesSender(req)
+	if err != nil {
+		result.aaplsr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServices", resp, "Failure sending request")
+		return
+	}
+
+	result.aaplsr, err = client.ListAutoApprovedPrivateLinkServicesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServices", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAutoApprovedPrivateLinkServicesPreparer prepares the ListAutoApprovedPrivateLinkServices request.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesPreparer(ctx context.Context, location string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":       autorest.Encode("path", location),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/autoApprovedPrivateLinkServices", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAutoApprovedPrivateLinkServicesSender sends the ListAutoApprovedPrivateLinkServices request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListAutoApprovedPrivateLinkServicesResponder handles the response to the ListAutoApprovedPrivateLinkServices request. The method always
+// closes the http.Response Body.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesResponder(resp *http.Response) (result AutoApprovedPrivateLinkServicesResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listAutoApprovedPrivateLinkServicesNextResults retrieves the next set of results, if any.
+func (client PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesNextResults(ctx context.Context, lastResults AutoApprovedPrivateLinkServicesResult) (result AutoApprovedPrivateLinkServicesResult, err error) {
+	req, err := lastResults.autoApprovedPrivateLinkServicesResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "listAutoApprovedPrivateLinkServicesNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAutoApprovedPrivateLinkServicesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "listAutoApprovedPrivateLinkServicesNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAutoApprovedPrivateLinkServicesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "listAutoApprovedPrivateLinkServicesNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAutoApprovedPrivateLinkServicesComplete enumerates all values, automatically crossing page boundaries as required.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesComplete(ctx context.Context, location string) (result AutoApprovedPrivateLinkServicesResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServices")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListAutoApprovedPrivateLinkServices(ctx, location)
+	return
+}
+
+// ListAutoApprovedPrivateLinkServicesByResourceGroup returns all of the private link service ids that can be linked to
+// a Private Endpoint with auto approved in this subscription in this region.
+// Parameters:
+// location - the location of the domain name.
+// resourceGroupName - the name of the resource group.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroup(ctx context.Context, location string, resourceGroupName string) (result AutoApprovedPrivateLinkServicesResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServicesByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.aaplsr.Response.Response != nil {
+				sc = result.aaplsr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listAutoApprovedPrivateLinkServicesByResourceGroupNextResults
+	req, err := client.ListAutoApprovedPrivateLinkServicesByResourceGroupPreparer(ctx, location, resourceGroupName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServicesByResourceGroup", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAutoApprovedPrivateLinkServicesByResourceGroupSender(req)
+	if err != nil {
+		result.aaplsr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServicesByResourceGroup", resp, "Failure sending request")
+		return
+	}
+
+	result.aaplsr, err = client.ListAutoApprovedPrivateLinkServicesByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServicesByResourceGroup", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListAutoApprovedPrivateLinkServicesByResourceGroupPreparer prepares the ListAutoApprovedPrivateLinkServicesByResourceGroup request.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroupPreparer(ctx context.Context, location string, resourceGroupName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"location":          autorest.Encode("path", location),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/autoApprovedPrivateLinkServices", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAutoApprovedPrivateLinkServicesByResourceGroupSender sends the ListAutoApprovedPrivateLinkServicesByResourceGroup request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroupSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListAutoApprovedPrivateLinkServicesByResourceGroupResponder handles the response to the ListAutoApprovedPrivateLinkServicesByResourceGroup request. The method always
+// closes the http.Response Body.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroupResponder(resp *http.Response) (result AutoApprovedPrivateLinkServicesResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listAutoApprovedPrivateLinkServicesByResourceGroupNextResults retrieves the next set of results, if any.
+func (client PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByResourceGroupNextResults(ctx context.Context, lastResults AutoApprovedPrivateLinkServicesResult) (result AutoApprovedPrivateLinkServicesResult, err error) {
+	req, err := lastResults.autoApprovedPrivateLinkServicesResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "listAutoApprovedPrivateLinkServicesByResourceGroupNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAutoApprovedPrivateLinkServicesByResourceGroupSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "listAutoApprovedPrivateLinkServicesByResourceGroupNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAutoApprovedPrivateLinkServicesByResourceGroupResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "listAutoApprovedPrivateLinkServicesByResourceGroupNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAutoApprovedPrivateLinkServicesByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
+func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroupComplete(ctx context.Context, location string, resourceGroupName string) (result AutoApprovedPrivateLinkServicesResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.ListAutoApprovedPrivateLinkServicesByResourceGroup")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListAutoApprovedPrivateLinkServicesByResourceGroup(ctx, location, resourceGroupName)
 	return
 }
 
@@ -524,8 +912,8 @@ func (client PrivateLinkServicesClient) ListBySubscriptionPreparer(ctx context.C
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrivateLinkServicesClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -585,13 +973,13 @@ func (client PrivateLinkServicesClient) ListBySubscriptionComplete(ctx context.C
 // serviceName - the name of the private link service.
 // peConnectionName - the name of the private end point connection.
 // parameters - parameters supplied to approve or reject the private end point connection.
-func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, parameters PrivateEndpointConnection) (result autorest.Response, err error) {
+func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, parameters PrivateEndpointConnection) (result PrivateEndpointConnection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.UpdatePrivateEndpointConnection")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -604,7 +992,7 @@ func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnection(ctx cont
 
 	resp, err := client.UpdatePrivateEndpointConnectionSender(req)
 	if err != nil {
-		result.Response = resp
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "UpdatePrivateEndpointConnection", resp, "Failure sending request")
 		return
 	}
@@ -644,18 +1032,19 @@ func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnectionPreparer(
 // UpdatePrivateEndpointConnectionSender sends the UpdatePrivateEndpointConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdatePrivateEndpointConnectionResponder handles the response to the UpdatePrivateEndpointConnection request. The method always
 // closes the http.Response Body.
-func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnectionResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnectionResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

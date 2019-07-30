@@ -103,8 +103,8 @@ func (client WorkspaceCollectionsClient) CheckNameAvailabilityPreparer(ctx conte
 // CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
@@ -193,8 +193,8 @@ func (client WorkspaceCollectionsClient) CreatePreparer(ctx context.Context, res
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -264,9 +264,9 @@ func (client WorkspaceCollectionsClient) DeletePreparer(ctx context.Context, res
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) DeleteSender(req *http.Request) (future WorkspaceCollectionsDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -346,8 +346,8 @@ func (client WorkspaceCollectionsClient) GetAccessKeysPreparer(ctx context.Conte
 // GetAccessKeysSender sends the GetAccessKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) GetAccessKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAccessKeysResponder handles the response to the GetAccessKeys request. The method always
@@ -423,8 +423,8 @@ func (client WorkspaceCollectionsClient) GetByNamePreparer(ctx context.Context, 
 // GetByNameSender sends the GetByName request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) GetByNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByNameResponder handles the response to the GetByName request. The method always
@@ -498,8 +498,8 @@ func (client WorkspaceCollectionsClient) ListByResourceGroupPreparer(ctx context
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -570,8 +570,8 @@ func (client WorkspaceCollectionsClient) ListBySubscriptionPreparer(ctx context.
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
@@ -648,8 +648,8 @@ func (client WorkspaceCollectionsClient) MigratePreparer(ctx context.Context, re
 // MigrateSender sends the Migrate request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) MigrateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // MigrateResponder handles the response to the Migrate request. The method always
@@ -727,8 +727,8 @@ func (client WorkspaceCollectionsClient) RegenerateKeyPreparer(ctx context.Conte
 // RegenerateKeySender sends the RegenerateKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) RegenerateKeySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RegenerateKeyResponder handles the response to the RegenerateKey request. The method always
@@ -807,8 +807,8 @@ func (client WorkspaceCollectionsClient) UpdatePreparer(ctx context.Context, res
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspaceCollectionsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

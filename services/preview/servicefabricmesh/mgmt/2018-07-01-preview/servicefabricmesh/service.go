@@ -102,8 +102,8 @@ func (client ServiceClient) GetPreparer(ctx context.Context, resourceGroupName s
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -181,8 +181,8 @@ func (client ServiceClient) ListByApplicationNamePreparer(ctx context.Context, r
 // ListByApplicationNameSender sends the ListByApplicationName request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServiceClient) ListByApplicationNameSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByApplicationNameResponder handles the response to the ListByApplicationName request. The method always

@@ -100,9 +100,9 @@ func (client VirtualMachinesClient) AddDataDiskPreparer(ctx context.Context, res
 // AddDataDiskSender sends the AddDataDisk request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) AddDataDiskSender(req *http.Request) (future VirtualMachinesAddDataDiskFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -181,9 +181,9 @@ func (client VirtualMachinesClient) ApplyArtifactsPreparer(ctx context.Context, 
 // ApplyArtifactsSender sends the ApplyArtifacts request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) ApplyArtifactsSender(req *http.Request) (future VirtualMachinesApplyArtifactsFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -259,9 +259,9 @@ func (client VirtualMachinesClient) ClaimPreparer(ctx context.Context, resourceG
 // ClaimSender sends the Claim request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) ClaimSender(req *http.Request) (future VirtualMachinesClaimFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -281,7 +281,7 @@ func (client VirtualMachinesClient) ClaimResponder(resp *http.Response) (result 
 	return
 }
 
-// CreateOrUpdate create or replace an existing Virtual machine. This operation can take a while to complete.
+// CreateOrUpdate create or replace an existing virtual machine. This operation can take a while to complete.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
@@ -355,9 +355,9 @@ func (client VirtualMachinesClient) CreateOrUpdatePreparer(ctx context.Context, 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) CreateOrUpdateSender(req *http.Request) (future VirtualMachinesCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -434,9 +434,9 @@ func (client VirtualMachinesClient) DeletePreparer(ctx context.Context, resource
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) DeleteSender(req *http.Request) (future VirtualMachinesDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -515,9 +515,9 @@ func (client VirtualMachinesClient) DetachDataDiskPreparer(ctx context.Context, 
 // DetachDataDiskSender sends the DetachDataDisk request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) DetachDataDiskSender(req *http.Request) (future VirtualMachinesDetachDataDiskFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -604,8 +604,8 @@ func (client VirtualMachinesClient) GetPreparer(ctx context.Context, resourceGro
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -683,8 +683,8 @@ func (client VirtualMachinesClient) GetRdpFileContentsPreparer(ctx context.Conte
 // GetRdpFileContentsSender sends the GetRdpFileContents request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) GetRdpFileContentsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetRdpFileContentsResponder handles the response to the GetRdpFileContents request. The method always
@@ -778,8 +778,8 @@ func (client VirtualMachinesClient) ListPreparer(ctx context.Context, resourceGr
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -894,8 +894,8 @@ func (client VirtualMachinesClient) ListApplicableSchedulesPreparer(ctx context.
 // ListApplicableSchedulesSender sends the ListApplicableSchedules request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) ListApplicableSchedulesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListApplicableSchedulesResponder handles the response to the ListApplicableSchedules request. The method always
@@ -967,9 +967,9 @@ func (client VirtualMachinesClient) RedeployPreparer(ctx context.Context, resour
 // RedeploySender sends the Redeploy request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) RedeploySender(req *http.Request) (future VirtualMachinesRedeployFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1048,9 +1048,9 @@ func (client VirtualMachinesClient) ResizePreparer(ctx context.Context, resource
 // ResizeSender sends the Resize request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) ResizeSender(req *http.Request) (future VirtualMachinesResizeFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1126,9 +1126,9 @@ func (client VirtualMachinesClient) RestartPreparer(ctx context.Context, resourc
 // RestartSender sends the Restart request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) RestartSender(req *http.Request) (future VirtualMachinesRestartFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1204,9 +1204,9 @@ func (client VirtualMachinesClient) StartPreparer(ctx context.Context, resourceG
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) StartSender(req *http.Request) (future VirtualMachinesStartFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1282,9 +1282,9 @@ func (client VirtualMachinesClient) StopPreparer(ctx context.Context, resourceGr
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) StopSender(req *http.Request) (future VirtualMachinesStopFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1361,9 +1361,9 @@ func (client VirtualMachinesClient) TransferDisksPreparer(ctx context.Context, r
 // TransferDisksSender sends the TransferDisks request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) TransferDisksSender(req *http.Request) (future VirtualMachinesTransferDisksFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1439,9 +1439,9 @@ func (client VirtualMachinesClient) UnClaimPreparer(ctx context.Context, resourc
 // UnClaimSender sends the UnClaim request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) UnClaimSender(req *http.Request) (future VirtualMachinesUnClaimFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1461,7 +1461,7 @@ func (client VirtualMachinesClient) UnClaimResponder(resp *http.Response) (resul
 	return
 }
 
-// Update modify properties of virtual machines.
+// Update allows modifying tags of virtual machines. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
@@ -1526,8 +1526,8 @@ func (client VirtualMachinesClient) UpdatePreparer(ctx context.Context, resource
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client VirtualMachinesClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always

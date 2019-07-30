@@ -93,8 +93,8 @@ func (client AddressesClient) ValidatePreparer(ctx context.Context, address Addr
 // ValidateSender sends the Validate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AddressesClient) ValidateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ValidateResponder handles the response to the Validate request. The method always

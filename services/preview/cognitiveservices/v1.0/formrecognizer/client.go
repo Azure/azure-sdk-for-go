@@ -119,8 +119,8 @@ func (client BaseClient) AnalyzeWithCustomModelPreparer(ctx context.Context, ID 
 // AnalyzeWithCustomModelSender sends the AnalyzeWithCustomModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) AnalyzeWithCustomModelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AnalyzeWithCustomModelResponder handles the response to the AnalyzeWithCustomModel request. The method always
@@ -196,8 +196,8 @@ func (client BaseClient) BatchReadReceiptPreparer(ctx context.Context, imageURL 
 // BatchReadReceiptSender sends the BatchReadReceipt request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) BatchReadReceiptSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // BatchReadReceiptResponder handles the response to the BatchReadReceipt request. The method always
@@ -267,8 +267,8 @@ func (client BaseClient) BatchReadReceiptInStreamPreparer(ctx context.Context, i
 // BatchReadReceiptInStreamSender sends the BatchReadReceiptInStream request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) BatchReadReceiptInStreamSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // BatchReadReceiptInStreamResponder handles the response to the BatchReadReceiptInStream request. The method always
@@ -338,8 +338,8 @@ func (client BaseClient) DeleteCustomModelPreparer(ctx context.Context, ID uuid.
 // DeleteCustomModelSender sends the DeleteCustomModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteCustomModelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteCustomModelResponder handles the response to the DeleteCustomModel request. The method always
@@ -409,8 +409,8 @@ func (client BaseClient) GetCustomModelPreparer(ctx context.Context, ID uuid.UUI
 // GetCustomModelSender sends the GetCustomModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCustomModelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetCustomModelResponder handles the response to the GetCustomModel request. The method always
@@ -475,8 +475,8 @@ func (client BaseClient) GetCustomModelsPreparer(ctx context.Context) (*http.Req
 // GetCustomModelsSender sends the GetCustomModels request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCustomModelsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetCustomModelsResponder handles the response to the GetCustomModels request. The method always
@@ -548,8 +548,8 @@ func (client BaseClient) GetExtractedKeysPreparer(ctx context.Context, ID uuid.U
 // GetExtractedKeysSender sends the GetExtractedKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetExtractedKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetExtractedKeysResponder handles the response to the GetExtractedKeys request. The method always
@@ -622,8 +622,8 @@ func (client BaseClient) GetReadReceiptResultPreparer(ctx context.Context, opera
 // GetReadReceiptResultSender sends the GetReadReceiptResult request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetReadReceiptResultSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetReadReceiptResultResponder handles the response to the GetReadReceiptResult request. The method always
@@ -715,8 +715,8 @@ func (client BaseClient) TrainCustomModelPreparer(ctx context.Context, trainRequ
 // TrainCustomModelSender sends the TrainCustomModel request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) TrainCustomModelSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // TrainCustomModelResponder handles the response to the TrainCustomModel request. The method always

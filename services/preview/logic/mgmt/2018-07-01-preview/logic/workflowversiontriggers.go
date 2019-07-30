@@ -110,8 +110,8 @@ func (client WorkflowVersionTriggersClient) ListCallbackURLPreparer(ctx context.
 // ListCallbackURLSender sends the ListCallbackURL request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkflowVersionTriggersClient) ListCallbackURLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListCallbackURLResponder handles the response to the ListCallbackURL request. The method always

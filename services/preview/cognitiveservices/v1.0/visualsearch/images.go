@@ -252,8 +252,8 @@ func (client ImagesClient) VisualSearchPreparer(ctx context.Context, acceptLangu
 // VisualSearchSender sends the VisualSearch request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImagesClient) VisualSearchSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // VisualSearchResponder handles the response to the VisualSearch request. The method always

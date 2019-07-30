@@ -1,5 +1,58 @@
 # CHANGELOG
 
+## `v32.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| aad | 2017-04-01 |
+| compute | 2019-07-01 |
+| datashare | 2018-11-01-preview |
+| devops | 2019-07-01-preview |
+| enterpriseknowledgegraphservice | 2018-12-03 |
+| managedservices | 2019-06-01 |
+| migrate | 2018-09-01-preview |
+| mysql | 2017-12-01-preview |
+| network | 2019-06-01 |
+| policy | 2019-01-01 |
+| portal | 2015-08-01-preview<br/>2019-01-01-preview |
+| postgresql | 2017-12-01-preview |
+| windowsiot | 2019-06-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| alertsmanagement | 2019-05-05 |
+| authoring | luis |
+| cdn | 2019-04-15 |
+| datafactory | 2017-09-01-preview |
+| datamigration | 2018-07-15-preview |
+| devices | 2019-03-22-preview |
+| hanaonazure | 2017-11-03-preview |
+| signalr | 2018-10-01 |
+| subscriptions | 2018-06-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| compute | 2019-03-01 |
+| contentmoderator | v1.0 |
+| datafactory | 2018-06-01 |
+| documentdb | 2015-04-08 |
+| dtl | 2018-09-15 |
+| healthcareapis | 2018-08-20-preview |
+| insights | 2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01<br/>2019-06-01 |
+| machinelearningservices | 2019-05-01 |
+| managedservices | 2018-06-01 |
+| network | 2019-04-01 |
+| reservations | 2019-04-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| securityinsight | 2017-08-01-preview |
+| storage | 2019-04-01 |
+
 ## `v31.2.0`
 
 ### Updated Packages

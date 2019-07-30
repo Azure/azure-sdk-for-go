@@ -349,8 +349,8 @@ func (client ImagesClient) DetailsPreparer(ctx context.Context, query string, ac
 // DetailsSender sends the Details request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImagesClient) DetailsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DetailsResponder handles the response to the Details request. The method always
@@ -716,8 +716,8 @@ func (client ImagesClient) SearchPreparer(ctx context.Context, query string, acc
 // SearchSender sends the Search request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImagesClient) SearchSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SearchResponder handles the response to the Search request. The method always
@@ -938,8 +938,8 @@ func (client ImagesClient) TrendingPreparer(ctx context.Context, acceptLanguage 
 // TrendingSender sends the Trending request. The method will close the
 // http.Response Body if it receives an error.
 func (client ImagesClient) TrendingSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // TrendingResponder handles the response to the Trending request. The method always

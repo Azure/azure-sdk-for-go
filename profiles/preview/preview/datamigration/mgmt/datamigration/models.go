@@ -448,6 +448,14 @@ const (
 	ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeSchemaErrorOutput                     ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput = original.ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputResultTypeSchemaErrorOutput
 )
 
+type ResultTypeBasicMigrateSsisTaskOutput = original.ResultTypeBasicMigrateSsisTaskOutput
+
+const (
+	ResultTypeMigrateSsisTaskOutput  ResultTypeBasicMigrateSsisTaskOutput = original.ResultTypeMigrateSsisTaskOutput
+	ResultTypeMigrationLevelOutput   ResultTypeBasicMigrateSsisTaskOutput = original.ResultTypeMigrationLevelOutput
+	ResultTypeSsisProjectLevelOutput ResultTypeBasicMigrateSsisTaskOutput = original.ResultTypeSsisProjectLevelOutput
+)
+
 type SQLSourcePlatform = original.SQLSourcePlatform
 
 const (
@@ -517,6 +525,28 @@ const (
 	SeverityWarning Severity = original.SeverityWarning
 )
 
+type SsisMigrationOverwriteOption = original.SsisMigrationOverwriteOption
+
+const (
+	Ignore    SsisMigrationOverwriteOption = original.Ignore
+	Overwrite SsisMigrationOverwriteOption = original.Overwrite
+)
+
+type SsisMigrationStage = original.SsisMigrationStage
+
+const (
+	SsisMigrationStageCompleted  SsisMigrationStage = original.SsisMigrationStageCompleted
+	SsisMigrationStageInitialize SsisMigrationStage = original.SsisMigrationStageInitialize
+	SsisMigrationStageInProgress SsisMigrationStage = original.SsisMigrationStageInProgress
+	SsisMigrationStageNone       SsisMigrationStage = original.SsisMigrationStageNone
+)
+
+type SsisStoreType = original.SsisStoreType
+
+const (
+	SsisCatalog SsisStoreType = original.SsisCatalog
+)
+
 type SyncDatabaseMigrationReportingState = original.SyncDatabaseMigrationReportingState
 
 const (
@@ -575,6 +605,8 @@ const (
 	TaskTypeConnectToTargetSQLDbSync                           TaskType = original.TaskTypeConnectToTargetSQLDbSync
 	TaskTypeGetTDECertificatesSQL                              TaskType = original.TaskTypeGetTDECertificatesSQL
 	TaskTypeGetUserTablesAzureSQLDbSync                        TaskType = original.TaskTypeGetUserTablesAzureSQLDbSync
+	TaskTypeGetUserTablesOracle                                TaskType = original.TaskTypeGetUserTablesOracle
+	TaskTypeGetUserTablesPostgreSQL                            TaskType = original.TaskTypeGetUserTablesPostgreSQL
 	TaskTypeGetUserTablesSQL                                   TaskType = original.TaskTypeGetUserTablesSQL
 	TaskTypeMigrateMongoDb                                     TaskType = original.TaskTypeMigrateMongoDb
 	TaskTypeMigrateMySQLAzureDbForMySQLSync                    TaskType = original.TaskTypeMigrateMySQLAzureDbForMySQLSync
@@ -585,6 +617,7 @@ const (
 	TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS                TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS
 	TaskTypeMigrateSQLServerAzureSQLDbSync                     TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbSync
 	TaskTypeMigrateSQLServerSQLDb                              TaskType = original.TaskTypeMigrateSQLServerSQLDb
+	TaskTypeMigrateSsis                                        TaskType = original.TaskTypeMigrateSsis
 	TaskTypeServiceCheckOCI                                    TaskType = original.TaskTypeServiceCheckOCI
 	TaskTypeServiceInstallOCI                                  TaskType = original.TaskTypeServiceInstallOCI
 	TaskTypeServiceUploadOCI                                   TaskType = original.TaskTypeServiceUploadOCI
@@ -648,6 +681,7 @@ type BasicMigrateSQLServerSQLDbTaskOutput = original.BasicMigrateSQLServerSQLDbT
 type BasicMigrateSQLServerSQLMISyncTaskOutput = original.BasicMigrateSQLServerSQLMISyncTaskOutput
 type BasicMigrateSQLServerSQLMITaskOutput = original.BasicMigrateSQLServerSQLMITaskOutput
 type BasicMigrateSchemaSQLServerSQLDbTaskOutput = original.BasicMigrateSchemaSQLServerSQLDbTaskOutput
+type BasicMigrateSsisTaskOutput = original.BasicMigrateSsisTaskOutput
 type BasicProjectTaskProperties = original.BasicProjectTaskProperties
 type BlobShare = original.BlobShare
 type CheckOCIDriverTaskInput = original.CheckOCIDriverTaskInput
@@ -681,6 +715,7 @@ type ConnectToTargetAzureDbForPostgreSQLSyncTaskOutput = original.ConnectToTarge
 type ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties = original.ConnectToTargetAzureDbForPostgreSQLSyncTaskProperties
 type ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskInput = original.ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskInput
 type ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskOutput = original.ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskOutput
+type ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskOutputDatabaseSchemaMapItem = original.ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskOutputDatabaseSchemaMapItem
 type ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskProperties = original.ConnectToTargetOracleAzureDbForPostgreSQLSyncTaskProperties
 type ConnectToTargetSQLDbTaskInput = original.ConnectToTargetSQLDbTaskInput
 type ConnectToTargetSQLDbTaskOutput = original.ConnectToTargetSQLDbTaskOutput
@@ -716,6 +751,12 @@ type GetProjectDetailsNonSQLTaskInput = original.GetProjectDetailsNonSQLTaskInpu
 type GetTdeCertificatesSQLTaskInput = original.GetTdeCertificatesSQLTaskInput
 type GetTdeCertificatesSQLTaskOutput = original.GetTdeCertificatesSQLTaskOutput
 type GetTdeCertificatesSQLTaskProperties = original.GetTdeCertificatesSQLTaskProperties
+type GetUserTablesOracleTaskInput = original.GetUserTablesOracleTaskInput
+type GetUserTablesOracleTaskOutput = original.GetUserTablesOracleTaskOutput
+type GetUserTablesOracleTaskProperties = original.GetUserTablesOracleTaskProperties
+type GetUserTablesPostgreSQLTaskInput = original.GetUserTablesPostgreSQLTaskInput
+type GetUserTablesPostgreSQLTaskOutput = original.GetUserTablesPostgreSQLTaskOutput
+type GetUserTablesPostgreSQLTaskProperties = original.GetUserTablesPostgreSQLTaskProperties
 type GetUserTablesSQLSyncTaskInput = original.GetUserTablesSQLSyncTaskInput
 type GetUserTablesSQLSyncTaskOutput = original.GetUserTablesSQLSyncTaskOutput
 type GetUserTablesSQLSyncTaskProperties = original.GetUserTablesSQLSyncTaskProperties
@@ -798,6 +839,11 @@ type MigrateSchemaSQLServerSQLDbTaskOutputError = original.MigrateSchemaSQLServe
 type MigrateSchemaSQLServerSQLDbTaskOutputMigrationLevel = original.MigrateSchemaSQLServerSQLDbTaskOutputMigrationLevel
 type MigrateSchemaSQLServerSQLDbTaskProperties = original.MigrateSchemaSQLServerSQLDbTaskProperties
 type MigrateSchemaSQLTaskOutputError = original.MigrateSchemaSQLTaskOutputError
+type MigrateSsisTaskInput = original.MigrateSsisTaskInput
+type MigrateSsisTaskOutput = original.MigrateSsisTaskOutput
+type MigrateSsisTaskOutputMigrationLevel = original.MigrateSsisTaskOutputMigrationLevel
+type MigrateSsisTaskOutputProjectLevel = original.MigrateSsisTaskOutputProjectLevel
+type MigrateSsisTaskProperties = original.MigrateSsisTaskProperties
 type MigrateSyncCompleteCommandInput = original.MigrateSyncCompleteCommandInput
 type MigrateSyncCompleteCommandOutput = original.MigrateSyncCompleteCommandOutput
 type MigrateSyncCompleteCommandProperties = original.MigrateSyncCompleteCommandProperties
@@ -902,6 +948,7 @@ type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServicesStartFuture = original.ServicesStartFuture
 type ServicesStopFuture = original.ServicesStopFuture
 type ServicesUpdateFuture = original.ServicesUpdateFuture
+type SsisMigrationInfo = original.SsisMigrationInfo
 type StartMigrationScenarioServerRoleResult = original.StartMigrationScenarioServerRoleResult
 type SyncMigrationDatabaseErrorEvent = original.SyncMigrationDatabaseErrorEvent
 type TaskList = original.TaskList
@@ -1150,6 +1197,9 @@ func PossibleResultTypeBasicMigrateSQLServerSQLMITaskOutputValues() []ResultType
 func PossibleResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputValues() []ResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutput {
 	return original.PossibleResultTypeBasicMigrateSchemaSQLServerSQLDbTaskOutputValues()
 }
+func PossibleResultTypeBasicMigrateSsisTaskOutputValues() []ResultTypeBasicMigrateSsisTaskOutput {
+	return original.PossibleResultTypeBasicMigrateSsisTaskOutputValues()
+}
 func PossibleResultTypeValues() []ResultType {
 	return original.PossibleResultTypeValues()
 }
@@ -1173,6 +1223,15 @@ func PossibleServiceScalabilityValues() []ServiceScalability {
 }
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()
+}
+func PossibleSsisMigrationOverwriteOptionValues() []SsisMigrationOverwriteOption {
+	return original.PossibleSsisMigrationOverwriteOptionValues()
+}
+func PossibleSsisMigrationStageValues() []SsisMigrationStage {
+	return original.PossibleSsisMigrationStageValues()
+}
+func PossibleSsisStoreTypeValues() []SsisStoreType {
+	return original.PossibleSsisStoreTypeValues()
 }
 func PossibleSyncDatabaseMigrationReportingStateValues() []SyncDatabaseMigrationReportingState {
 	return original.PossibleSyncDatabaseMigrationReportingStateValues()

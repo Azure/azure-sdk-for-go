@@ -22,7 +22,7 @@ package portal
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/portal/mgmt/2015-11-01-preview/portal"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/portal/mgmt/2019-01-01-preview/portal"
 )
 
 const (

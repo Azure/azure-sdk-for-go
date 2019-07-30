@@ -47,13 +47,13 @@ func NewListManagementTermClient(endpoint string) ListManagementTermClient {
 // listID - list Id of the image list.
 // term - term to be deleted
 // language - language of the terms.
-func (client ListManagementTermClient) AddTerm(ctx context.Context, listID string, term string, language string) (result SetObject, err error) {
+func (client ListManagementTermClient) AddTerm(ctx context.Context, listID string, term string, language string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListManagementTermClient.AddTerm")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -66,7 +66,7 @@ func (client ListManagementTermClient) AddTerm(ctx context.Context, listID strin
 
 	resp, err := client.AddTermSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermClient", "AddTerm", resp, "Failure sending request")
 		return
 	}
@@ -105,20 +105,19 @@ func (client ListManagementTermClient) AddTermPreparer(ctx context.Context, list
 // AddTermSender sends the AddTerm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementTermClient) AddTermSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddTermResponder handles the response to the AddTerm request. The method always
 // closes the http.Response Body.
-func (client ListManagementTermClient) AddTermResponder(resp *http.Response) (result SetObject, err error) {
+func (client ListManagementTermClient) AddTermResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
@@ -183,8 +182,8 @@ func (client ListManagementTermClient) DeleteAllTermsPreparer(ctx context.Contex
 // DeleteAllTermsSender sends the DeleteAllTerms request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementTermClient) DeleteAllTermsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteAllTermsResponder handles the response to the DeleteAllTerms request. The method always
@@ -263,8 +262,8 @@ func (client ListManagementTermClient) DeleteTermPreparer(ctx context.Context, l
 // DeleteTermSender sends the DeleteTerm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementTermClient) DeleteTermSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteTermResponder handles the response to the DeleteTerm request. The method always
@@ -349,8 +348,8 @@ func (client ListManagementTermClient) GetAllTermsPreparer(ctx context.Context, 
 // GetAllTermsSender sends the GetAllTerms request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListManagementTermClient) GetAllTermsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAllTermsResponder handles the response to the GetAllTerms request. The method always

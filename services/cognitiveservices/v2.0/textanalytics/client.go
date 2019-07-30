@@ -105,8 +105,8 @@ func (client BaseClient) DetectLanguagePreparer(ctx context.Context, input Batch
 // DetectLanguageSender sends the DetectLanguage request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) DetectLanguageSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DetectLanguageResponder handles the response to the DetectLanguage request. The method always
@@ -178,8 +178,8 @@ func (client BaseClient) EntitiesPreparer(ctx context.Context, input MultiLangua
 // EntitiesSender sends the Entities request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) EntitiesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // EntitiesResponder handles the response to the Entities request. The method always
@@ -251,8 +251,8 @@ func (client BaseClient) KeyPhrasesPreparer(ctx context.Context, input MultiLang
 // KeyPhrasesSender sends the KeyPhrases request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) KeyPhrasesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // KeyPhrasesResponder handles the response to the KeyPhrases request. The method always
@@ -324,8 +324,8 @@ func (client BaseClient) SentimentPreparer(ctx context.Context, input MultiLangu
 // SentimentSender sends the Sentiment request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) SentimentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SentimentResponder handles the response to the Sentiment request. The method always

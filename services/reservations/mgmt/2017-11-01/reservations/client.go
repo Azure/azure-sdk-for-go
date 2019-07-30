@@ -109,8 +109,8 @@ func (client BaseClient) GetAppliedReservationListPreparer(ctx context.Context, 
 // GetAppliedReservationListSender sends the GetAppliedReservationList request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetAppliedReservationListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAppliedReservationListResponder handles the response to the GetAppliedReservationList request. The method always
@@ -183,8 +183,8 @@ func (client BaseClient) GetCatalogPreparer(ctx context.Context, subscriptionID 
 // GetCatalogSender sends the GetCatalog request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetCatalogSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetCatalogResponder handles the response to the GetCatalog request. The method always

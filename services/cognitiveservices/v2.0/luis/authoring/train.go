@@ -95,8 +95,8 @@ func (client TrainClient) GetStatusPreparer(ctx context.Context, appID uuid.UUID
 // GetStatusSender sends the GetStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client TrainClient) GetStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetStatusResponder handles the response to the GetStatus request. The method always
@@ -173,8 +173,8 @@ func (client TrainClient) TrainVersionPreparer(ctx context.Context, appID uuid.U
 // TrainVersionSender sends the TrainVersion request. The method will close the
 // http.Response Body if it receives an error.
 func (client TrainClient) TrainVersionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // TrainVersionResponder handles the response to the TrainVersion request. The method always

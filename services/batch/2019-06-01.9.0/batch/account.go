@@ -142,8 +142,8 @@ func (client AccountClient) ListPoolNodeCountsPreparer(ctx context.Context, filt
 // ListPoolNodeCountsSender sends the ListPoolNodeCounts request. The method will close the
 // http.Response Body if it receives an error.
 func (client AccountClient) ListPoolNodeCountsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListPoolNodeCountsResponder handles the response to the ListPoolNodeCounts request. The method always
@@ -301,8 +301,8 @@ func (client AccountClient) ListSupportedImagesPreparer(ctx context.Context, fil
 // ListSupportedImagesSender sends the ListSupportedImages request. The method will close the
 // http.Response Body if it receives an error.
 func (client AccountClient) ListSupportedImagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSupportedImagesResponder handles the response to the ListSupportedImages request. The method always

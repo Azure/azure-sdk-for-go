@@ -118,8 +118,8 @@ func (client BaseClient) GetOperationResultByRegionPreparer(ctx context.Context,
 // GetOperationResultByRegionSender sends the GetOperationResultByRegion request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetOperationResultByRegionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetOperationResultByRegionResponder handles the response to the GetOperationResultByRegion request. The method always
@@ -194,8 +194,8 @@ func (client BaseClient) GetPrivateCloudPreparer(ctx context.Context, pcName str
 // GetPrivateCloudSender sends the GetPrivateCloud request. The method will close the
 // http.Response Body if it receives an error.
 func (client BaseClient) GetPrivateCloudSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetPrivateCloudResponder handles the response to the GetPrivateCloud request. The method always

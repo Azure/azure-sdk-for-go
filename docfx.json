@@ -1,0 +1,43 @@
+{
+    "build": {
+        "content": [{
+            "files": [
+                "**/*.md",
+                "**/*.yml"
+            ],
+            "exclude": [
+                "**/obj/**",
+                "**/includes/**",
+                "_themes/**",
+                "_themes.pdf/**",
+                "README.md",
+                "LICENSE",
+                "LICENSE-CODE",
+                "ThirdPartyNotices"
+            ]
+        }],
+        "resource": [{
+            "files": [
+                "**/*.png",
+                "**/*.svg",
+                "**/*.jpg"
+            ],
+            "exclude": [
+                "**/obj/**",
+                "**/includes/**",
+                "_themes/**",
+                "_themes.pdf/**"
+            ]
+        }],
+        "overwrite": [],
+        "externalReference": [],
+        "globalMetadata": {
+            "feedback_system": "GitHub",
+            "feedback_github_repo": "MicrosoftDocs/azure-dev-docs",
+            "feedback_product_url": "https://github.com/azure/azure-sdk-for-go"
+        },
+        "fileMetadata": {},
+        "template": [],
+        "dest": ""
+    }
+}

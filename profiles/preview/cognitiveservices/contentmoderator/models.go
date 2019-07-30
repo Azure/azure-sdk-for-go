@@ -91,7 +91,6 @@ type Review = original.Review
 type ReviewsClient = original.ReviewsClient
 type SSN = original.SSN
 type Screen = original.Screen
-type SetObject = original.SetObject
 type Status = original.Status
 type String = original.String
 type Tag = original.Tag

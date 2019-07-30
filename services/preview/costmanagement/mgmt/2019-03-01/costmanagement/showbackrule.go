@@ -105,8 +105,8 @@ func (client ShowbackRuleClient) CreateUpdateRulePreparer(ctx context.Context, b
 // CreateUpdateRuleSender sends the CreateUpdateRule request. The method will close the
 // http.Response Body if it receives an error.
 func (client ShowbackRuleClient) CreateUpdateRuleSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateUpdateRuleResponder handles the response to the CreateUpdateRule request. The method always
@@ -181,8 +181,8 @@ func (client ShowbackRuleClient) GetBillingAccountIDPreparer(ctx context.Context
 // GetBillingAccountIDSender sends the GetBillingAccountID request. The method will close the
 // http.Response Body if it receives an error.
 func (client ShowbackRuleClient) GetBillingAccountIDSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetBillingAccountIDResponder handles the response to the GetBillingAccountID request. The method always

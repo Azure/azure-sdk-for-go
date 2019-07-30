@@ -111,8 +111,8 @@ func (client WorkspacesClient) DeleteGatewaysPreparer(ctx context.Context, resou
 // DeleteGatewaysSender sends the DeleteGateways request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) DeleteGatewaysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteGatewaysResponder handles the response to the DeleteGateways request. The method always
@@ -196,8 +196,8 @@ func (client WorkspacesClient) GetPurgeStatusPreparer(ctx context.Context, resou
 // GetPurgeStatusSender sends the GetPurgeStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) GetPurgeStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetPurgeStatusResponder handles the response to the GetPurgeStatus request. The method always
@@ -281,8 +281,8 @@ func (client WorkspacesClient) GetSchemaPreparer(ctx context.Context, resourceGr
 // GetSchemaSender sends the GetSchema request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) GetSchemaSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSchemaResponder handles the response to the GetSchema request. The method always
@@ -367,9 +367,9 @@ func (client WorkspacesClient) GetSearchResultsPreparer(ctx context.Context, res
 // GetSearchResultsSender sends the GetSearchResults request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) GetSearchResultsSender(req *http.Request) (future WorkspacesGetSearchResultsFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -459,8 +459,8 @@ func (client WorkspacesClient) ListKeysPreparer(ctx context.Context, resourceGro
 // ListKeysSender sends the ListKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) ListKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListKeysResponder handles the response to the ListKeys request. The method always
@@ -532,8 +532,8 @@ func (client WorkspacesClient) ListLinkTargetsPreparer(ctx context.Context) (*ht
 // ListLinkTargetsSender sends the ListLinkTargets request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) ListLinkTargetsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListLinkTargetsResponder handles the response to the ListLinkTargets request. The method always
@@ -623,8 +623,8 @@ func (client WorkspacesClient) PurgePreparer(ctx context.Context, resourceGroupN
 // PurgeSender sends the Purge request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) PurgeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // PurgeResponder handles the response to the Purge request. The method always
@@ -709,8 +709,8 @@ func (client WorkspacesClient) RegenerateSharedKeysPreparer(ctx context.Context,
 // RegenerateSharedKeysSender sends the RegenerateSharedKeys request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) RegenerateSharedKeysSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RegenerateSharedKeysResponder handles the response to the RegenerateSharedKeys request. The method always
@@ -797,8 +797,8 @@ func (client WorkspacesClient) UpdateSearchResultsPreparer(ctx context.Context, 
 // UpdateSearchResultsSender sends the UpdateSearchResults request. The method will close the
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) UpdateSearchResultsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSearchResultsResponder handles the response to the UpdateSearchResults request. The method always

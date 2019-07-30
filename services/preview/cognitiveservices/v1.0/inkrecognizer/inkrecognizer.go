@@ -104,8 +104,8 @@ func (client Client) RecognizePreparer(ctx context.Context, body AnalysisRequest
 // RecognizeSender sends the Recognize request. The method will close the
 // http.Response Body if it receives an error.
 func (client Client) RecognizeSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RecognizeResponder handles the response to the Recognize request. The method always

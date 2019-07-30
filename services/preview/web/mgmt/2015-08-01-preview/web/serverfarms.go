@@ -101,9 +101,9 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmPreparer(ctx context.Con
 // CreateOrUpdateServerFarmSender sends the CreateOrUpdateServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request) (future ServerFarmsCreateOrUpdateServerFarmFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -191,8 +191,8 @@ func (client ServerFarmsClient) CreateOrUpdateVnetRoutePreparer(ctx context.Cont
 // CreateOrUpdateVnetRouteSender sends the CreateOrUpdateVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) CreateOrUpdateVnetRouteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateVnetRouteResponder handles the response to the CreateOrUpdateVnetRoute request. The method always
@@ -268,8 +268,8 @@ func (client ServerFarmsClient) DeleteServerFarmPreparer(ctx context.Context, re
 // DeleteServerFarmSender sends the DeleteServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) DeleteServerFarmSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteServerFarmResponder handles the response to the DeleteServerFarm request. The method always
@@ -349,8 +349,8 @@ func (client ServerFarmsClient) DeleteVnetRoutePreparer(ctx context.Context, res
 // DeleteVnetRouteSender sends the DeleteVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) DeleteVnetRouteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteVnetRouteResponder handles the response to the DeleteVnetRoute request. The method always
@@ -430,8 +430,8 @@ func (client ServerFarmsClient) GetRouteForVnetPreparer(ctx context.Context, res
 // GetRouteForVnetSender sends the GetRouteForVnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetRouteForVnetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetRouteForVnetResponder handles the response to the GetRouteForVnet request. The method always
@@ -509,8 +509,8 @@ func (client ServerFarmsClient) GetRoutesForVnetPreparer(ctx context.Context, re
 // GetRoutesForVnetSender sends the GetRoutesForVnet request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetRoutesForVnetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetRoutesForVnetResponder handles the response to the GetRoutesForVnet request. The method always
@@ -586,8 +586,8 @@ func (client ServerFarmsClient) GetServerFarmPreparer(ctx context.Context, resou
 // GetServerFarmSender sends the GetServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetServerFarmResponder handles the response to the GetServerFarm request. The method always
@@ -664,8 +664,8 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintionsPreparer(ctx contex
 // GetServerFarmMetricDefintionsSender sends the GetServerFarmMetricDefintions request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmMetricDefintionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetServerFarmMetricDefintionsResponder handles the response to the GetServerFarmMetricDefintions request. The method always
@@ -789,8 +789,8 @@ func (client ServerFarmsClient) GetServerFarmMetricsPreparer(ctx context.Context
 // GetServerFarmMetricsSender sends the GetServerFarmMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetServerFarmMetricsResponder handles the response to the GetServerFarmMetrics request. The method always
@@ -905,8 +905,8 @@ func (client ServerFarmsClient) GetServerFarmOperationPreparer(ctx context.Conte
 // GetServerFarmOperationSender sends the GetServerFarmOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetServerFarmOperationResponder handles the response to the GetServerFarmOperation request. The method always
@@ -981,8 +981,8 @@ func (client ServerFarmsClient) GetServerFarmsPreparer(ctx context.Context, reso
 // GetServerFarmsSender sends the GetServerFarms request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetServerFarmsResponder handles the response to the GetServerFarms request. The method always
@@ -1109,8 +1109,8 @@ func (client ServerFarmsClient) GetServerFarmSitesPreparer(ctx context.Context, 
 // GetServerFarmSitesSender sends the GetServerFarmSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmSitesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetServerFarmSitesResponder handles the response to the GetServerFarmSites request. The method always
@@ -1227,8 +1227,8 @@ func (client ServerFarmsClient) GetServerFarmVnetGatewayPreparer(ctx context.Con
 // GetServerFarmVnetGatewaySender sends the GetServerFarmVnetGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetServerFarmVnetGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetServerFarmVnetGatewayResponder handles the response to the GetServerFarmVnetGateway request. The method always
@@ -1306,8 +1306,8 @@ func (client ServerFarmsClient) GetVnetFromServerFarmPreparer(ctx context.Contex
 // GetVnetFromServerFarmSender sends the GetVnetFromServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetVnetFromServerFarmSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetVnetFromServerFarmResponder handles the response to the GetVnetFromServerFarm request. The method always
@@ -1383,8 +1383,8 @@ func (client ServerFarmsClient) GetVnetsForServerFarmPreparer(ctx context.Contex
 // GetVnetsForServerFarmSender sends the GetVnetsForServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) GetVnetsForServerFarmSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetVnetsForServerFarmResponder handles the response to the GetVnetsForServerFarm request. The method always
@@ -1462,8 +1462,8 @@ func (client ServerFarmsClient) RebootWorkerForServerFarmPreparer(ctx context.Co
 // RebootWorkerForServerFarmSender sends the RebootWorkerForServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) RebootWorkerForServerFarmSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RebootWorkerForServerFarmResponder handles the response to the RebootWorkerForServerFarm request. The method always
@@ -1544,8 +1544,8 @@ func (client ServerFarmsClient) RestartSitesForServerFarmPreparer(ctx context.Co
 // RestartSitesForServerFarmSender sends the RestartSitesForServerFarm request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) RestartSitesForServerFarmSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RestartSitesForServerFarmResponder handles the response to the RestartSitesForServerFarm request. The method always
@@ -1628,8 +1628,8 @@ func (client ServerFarmsClient) UpdateServerFarmVnetGatewayPreparer(ctx context.
 // UpdateServerFarmVnetGatewaySender sends the UpdateServerFarmVnetGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) UpdateServerFarmVnetGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateServerFarmVnetGatewayResponder handles the response to the UpdateServerFarmVnetGateway request. The method always
@@ -1712,8 +1712,8 @@ func (client ServerFarmsClient) UpdateVnetRoutePreparer(ctx context.Context, res
 // UpdateVnetRouteSender sends the UpdateVnetRoute request. The method will close the
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) UpdateVnetRouteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateVnetRouteResponder handles the response to the UpdateVnetRoute request. The method always

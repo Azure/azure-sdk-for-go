@@ -98,8 +98,8 @@ func (client LocationsClient) ListBillingSpecsPreparer(ctx context.Context, loca
 // ListBillingSpecsSender sends the ListBillingSpecs request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocationsClient) ListBillingSpecsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListBillingSpecsResponder handles the response to the ListBillingSpecs request. The method always
@@ -173,8 +173,8 @@ func (client LocationsClient) ListUsagesPreparer(ctx context.Context, location s
 // ListUsagesSender sends the ListUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client LocationsClient) ListUsagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListUsagesResponder handles the response to the ListUsages request. The method always

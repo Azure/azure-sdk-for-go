@@ -96,8 +96,8 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrdersPreparer(ctx c
 // GetAllCertificateOrdersSender sends the GetAllCertificateOrders request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalCertificateOrderClient) GetAllCertificateOrdersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetAllCertificateOrdersResponder handles the response to the GetAllCertificateOrders request. The method always
@@ -209,8 +209,8 @@ func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformatio
 // ValidateCertificatePurchaseInformationSender sends the ValidateCertificatePurchaseInformation request. The method will close the
 // http.Response Body if it receives an error.
 func (client GlobalCertificateOrderClient) ValidateCertificatePurchaseInformationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ValidateCertificatePurchaseInformationResponder handles the response to the ValidateCertificatePurchaseInformation request. The method always

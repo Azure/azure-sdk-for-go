@@ -100,8 +100,8 @@ func (client SitesClient) AddSitePremierAddOnPreparer(ctx context.Context, resou
 // AddSitePremierAddOnSender sends the AddSitePremierAddOn request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) AddSitePremierAddOnSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddSitePremierAddOnResponder handles the response to the AddSitePremierAddOn request. The method always
@@ -178,8 +178,8 @@ func (client SitesClient) AddSitePremierAddOnSlotPreparer(ctx context.Context, r
 // AddSitePremierAddOnSlotSender sends the AddSitePremierAddOnSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) AddSitePremierAddOnSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // AddSitePremierAddOnSlotResponder handles the response to the AddSitePremierAddOnSlot request. The method always
@@ -261,8 +261,8 @@ func (client SitesClient) ApplySlotConfigSlotPreparer(ctx context.Context, resou
 // ApplySlotConfigSlotSender sends the ApplySlotConfigSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ApplySlotConfigSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ApplySlotConfigSlotResponder handles the response to the ApplySlotConfigSlot request. The method always
@@ -342,8 +342,8 @@ func (client SitesClient) ApplySlotConfigToProductionPreparer(ctx context.Contex
 // ApplySlotConfigToProductionSender sends the ApplySlotConfigToProduction request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ApplySlotConfigToProductionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ApplySlotConfigToProductionResponder handles the response to the ApplySlotConfigToProduction request. The method always
@@ -422,8 +422,8 @@ func (client SitesClient) BackupSitePreparer(ctx context.Context, resourceGroupN
 // BackupSiteSender sends the BackupSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) BackupSiteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // BackupSiteResponder handles the response to the BackupSite request. The method always
@@ -504,8 +504,8 @@ func (client SitesClient) BackupSiteSlotPreparer(ctx context.Context, resourceGr
 // BackupSiteSlotSender sends the BackupSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) BackupSiteSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // BackupSiteSlotResponder handles the response to the BackupSiteSlot request. The method always
@@ -586,8 +586,8 @@ func (client SitesClient) CreateDeploymentPreparer(ctx context.Context, resource
 // CreateDeploymentSender sends the CreateDeployment request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateDeploymentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateDeploymentResponder handles the response to the CreateDeployment request. The method always
@@ -670,8 +670,8 @@ func (client SitesClient) CreateDeploymentSlotPreparer(ctx context.Context, reso
 // CreateDeploymentSlotSender sends the CreateDeploymentSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateDeploymentSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateDeploymentSlotResponder handles the response to the CreateDeploymentSlot request. The method always
@@ -754,8 +754,8 @@ func (client SitesClient) CreateInstanceDeploymentPreparer(ctx context.Context, 
 // CreateInstanceDeploymentSender sends the CreateInstanceDeployment request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateInstanceDeploymentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateInstanceDeploymentResponder handles the response to the CreateInstanceDeployment request. The method always
@@ -840,8 +840,8 @@ func (client SitesClient) CreateInstanceDeploymentSlotPreparer(ctx context.Conte
 // CreateInstanceDeploymentSlotSender sends the CreateInstanceDeploymentSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateInstanceDeploymentSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateInstanceDeploymentSlotResponder handles the response to the CreateInstanceDeploymentSlot request. The method always
@@ -932,9 +932,9 @@ func (client SitesClient) CreateOrUpdateSitePreparer(ctx context.Context, resour
 // CreateOrUpdateSiteSender sends the CreateOrUpdateSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (future SitesCreateOrUpdateSiteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1018,8 +1018,8 @@ func (client SitesClient) CreateOrUpdateSiteConfigPreparer(ctx context.Context, 
 // CreateOrUpdateSiteConfigSender sends the CreateOrUpdateSiteConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteConfigSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteConfigResponder handles the response to the CreateOrUpdateSiteConfig request. The method always
@@ -1100,8 +1100,8 @@ func (client SitesClient) CreateOrUpdateSiteConfigSlotPreparer(ctx context.Conte
 // CreateOrUpdateSiteConfigSlotSender sends the CreateOrUpdateSiteConfigSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteConfigSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteConfigSlotResponder handles the response to the CreateOrUpdateSiteConfigSlot request. The method always
@@ -1182,8 +1182,8 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBindingPreparer(ctx context.
 // CreateOrUpdateSiteHostNameBindingSender sends the CreateOrUpdateSiteHostNameBinding request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteHostNameBindingSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteHostNameBindingResponder handles the response to the CreateOrUpdateSiteHostNameBinding request. The method always
@@ -1266,8 +1266,8 @@ func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlotPreparer(ctx cont
 // CreateOrUpdateSiteHostNameBindingSlotSender sends the CreateOrUpdateSiteHostNameBindingSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteHostNameBindingSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteHostNameBindingSlotResponder handles the response to the CreateOrUpdateSiteHostNameBindingSlot request. The method always
@@ -1348,8 +1348,8 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionPreparer(ctx c
 // CreateOrUpdateSiteRelayServiceConnectionSender sends the CreateOrUpdateSiteRelayServiceConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteRelayServiceConnectionResponder handles the response to the CreateOrUpdateSiteRelayServiceConnection request. The method always
@@ -1432,8 +1432,8 @@ func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotPreparer(c
 // CreateOrUpdateSiteRelayServiceConnectionSlotSender sends the CreateOrUpdateSiteRelayServiceConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteRelayServiceConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteRelayServiceConnectionSlotResponder handles the response to the CreateOrUpdateSiteRelayServiceConnectionSlot request. The method always
@@ -1526,9 +1526,9 @@ func (client SitesClient) CreateOrUpdateSiteSlotPreparer(ctx context.Context, re
 // CreateOrUpdateSiteSlotSender sends the CreateOrUpdateSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (future SitesCreateOrUpdateSiteSlotFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -1612,8 +1612,8 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlPreparer(ctx context.Co
 // CreateOrUpdateSiteSourceControlSender sends the CreateOrUpdateSiteSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteSourceControlSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteSourceControlResponder handles the response to the CreateOrUpdateSiteSourceControl request. The method always
@@ -1694,8 +1694,8 @@ func (client SitesClient) CreateOrUpdateSiteSourceControlSlotPreparer(ctx contex
 // CreateOrUpdateSiteSourceControlSlotSender sends the CreateOrUpdateSiteSourceControlSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteSourceControlSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteSourceControlSlotResponder handles the response to the CreateOrUpdateSiteSourceControlSlot request. The method always
@@ -1776,8 +1776,8 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionPreparer(ctx context.C
 // CreateOrUpdateSiteVNETConnectionSender sends the CreateOrUpdateSiteVNETConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteVNETConnectionResponder handles the response to the CreateOrUpdateSiteVNETConnection request. The method always
@@ -1860,8 +1860,8 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewayPreparer(ctx co
 // CreateOrUpdateSiteVNETConnectionGatewaySender sends the CreateOrUpdateSiteVNETConnectionGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteVNETConnectionGatewayResponder handles the response to the CreateOrUpdateSiteVNETConnectionGateway request. The method always
@@ -1946,8 +1946,8 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlotPreparer(ct
 // CreateOrUpdateSiteVNETConnectionGatewaySlotSender sends the CreateOrUpdateSiteVNETConnectionGatewaySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionGatewaySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteVNETConnectionGatewaySlotResponder handles the response to the CreateOrUpdateSiteVNETConnectionGatewaySlot request. The method always
@@ -2030,8 +2030,8 @@ func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlotPreparer(ctx conte
 // CreateOrUpdateSiteVNETConnectionSlotSender sends the CreateOrUpdateSiteVNETConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteVNETConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateSiteVNETConnectionSlotResponder handles the response to the CreateOrUpdateSiteVNETConnectionSlot request. The method always
@@ -2109,8 +2109,8 @@ func (client SitesClient) DeleteBackupPreparer(ctx context.Context, resourceGrou
 // DeleteBackupSender sends the DeleteBackup request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteBackupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteBackupResponder handles the response to the DeleteBackup request. The method always
@@ -2190,8 +2190,8 @@ func (client SitesClient) DeleteBackupSlotPreparer(ctx context.Context, resource
 // DeleteBackupSlotSender sends the DeleteBackupSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteBackupSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteBackupSlotResponder handles the response to the DeleteBackupSlot request. The method always
@@ -2269,8 +2269,8 @@ func (client SitesClient) DeleteDeploymentPreparer(ctx context.Context, resource
 // DeleteDeploymentSender sends the DeleteDeployment request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteDeploymentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteDeploymentResponder handles the response to the DeleteDeployment request. The method always
@@ -2350,8 +2350,8 @@ func (client SitesClient) DeleteDeploymentSlotPreparer(ctx context.Context, reso
 // DeleteDeploymentSlotSender sends the DeleteDeploymentSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteDeploymentSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteDeploymentSlotResponder handles the response to the DeleteDeploymentSlot request. The method always
@@ -2431,8 +2431,8 @@ func (client SitesClient) DeleteInstanceDeploymentPreparer(ctx context.Context, 
 // DeleteInstanceDeploymentSender sends the DeleteInstanceDeployment request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteInstanceDeploymentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteInstanceDeploymentResponder handles the response to the DeleteInstanceDeployment request. The method always
@@ -2514,8 +2514,8 @@ func (client SitesClient) DeleteInstanceDeploymentSlotPreparer(ctx context.Conte
 // DeleteInstanceDeploymentSlotSender sends the DeleteInstanceDeploymentSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteInstanceDeploymentSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteInstanceDeploymentSlotResponder handles the response to the DeleteInstanceDeploymentSlot request. The method always
@@ -2608,8 +2608,8 @@ func (client SitesClient) DeleteSitePreparer(ctx context.Context, resourceGroupN
 // DeleteSiteSender sends the DeleteSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteResponder handles the response to the DeleteSite request. The method always
@@ -2687,8 +2687,8 @@ func (client SitesClient) DeleteSiteHostNameBindingPreparer(ctx context.Context,
 // DeleteSiteHostNameBindingSender sends the DeleteSiteHostNameBinding request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteHostNameBindingSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteHostNameBindingResponder handles the response to the DeleteSiteHostNameBinding request. The method always
@@ -2768,8 +2768,8 @@ func (client SitesClient) DeleteSiteHostNameBindingSlotPreparer(ctx context.Cont
 // DeleteSiteHostNameBindingSlotSender sends the DeleteSiteHostNameBindingSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteHostNameBindingSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteHostNameBindingSlotResponder handles the response to the DeleteSiteHostNameBindingSlot request. The method always
@@ -2843,8 +2843,8 @@ func (client SitesClient) DeleteSitePremierAddOnPreparer(ctx context.Context, re
 // DeleteSitePremierAddOnSender sends the DeleteSitePremierAddOn request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSitePremierAddOnSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSitePremierAddOnResponder handles the response to the DeleteSitePremierAddOn request. The method always
@@ -2919,8 +2919,8 @@ func (client SitesClient) DeleteSitePremierAddOnSlotPreparer(ctx context.Context
 // DeleteSitePremierAddOnSlotSender sends the DeleteSitePremierAddOnSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSitePremierAddOnSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSitePremierAddOnSlotResponder handles the response to the DeleteSitePremierAddOnSlot request. The method always
@@ -2998,8 +2998,8 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionPreparer(ctx context.C
 // DeleteSiteRelayServiceConnectionSender sends the DeleteSiteRelayServiceConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteRelayServiceConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteRelayServiceConnectionResponder handles the response to the DeleteSiteRelayServiceConnection request. The method always
@@ -3079,8 +3079,8 @@ func (client SitesClient) DeleteSiteRelayServiceConnectionSlotPreparer(ctx conte
 // DeleteSiteRelayServiceConnectionSlotSender sends the DeleteSiteRelayServiceConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteRelayServiceConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteRelayServiceConnectionSlotResponder handles the response to the DeleteSiteRelayServiceConnectionSlot request. The method always
@@ -3175,8 +3175,8 @@ func (client SitesClient) DeleteSiteSlotPreparer(ctx context.Context, resourceGr
 // DeleteSiteSlotSender sends the DeleteSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteSlotResponder handles the response to the DeleteSiteSlot request. The method always
@@ -3252,8 +3252,8 @@ func (client SitesClient) DeleteSiteSourceControlPreparer(ctx context.Context, r
 // DeleteSiteSourceControlSender sends the DeleteSiteSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteSourceControlSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteSourceControlResponder handles the response to the DeleteSiteSourceControl request. The method always
@@ -3331,8 +3331,8 @@ func (client SitesClient) DeleteSiteSourceControlSlotPreparer(ctx context.Contex
 // DeleteSiteSourceControlSlotSender sends the DeleteSiteSourceControlSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteSourceControlSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteSourceControlSlotResponder handles the response to the DeleteSiteSourceControlSlot request. The method always
@@ -3410,8 +3410,8 @@ func (client SitesClient) DeleteSiteVNETConnectionPreparer(ctx context.Context, 
 // DeleteSiteVNETConnectionSender sends the DeleteSiteVNETConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteVNETConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteVNETConnectionResponder handles the response to the DeleteSiteVNETConnection request. The method always
@@ -3491,8 +3491,8 @@ func (client SitesClient) DeleteSiteVNETConnectionSlotPreparer(ctx context.Conte
 // DeleteSiteVNETConnectionSlotSender sends the DeleteSiteVNETConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DeleteSiteVNETConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteSiteVNETConnectionSlotResponder handles the response to the DeleteSiteVNETConnectionSlot request. The method always
@@ -3571,8 +3571,8 @@ func (client SitesClient) DiscoverSiteRestorePreparer(ctx context.Context, resou
 // DiscoverSiteRestoreSender sends the DiscoverSiteRestore request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DiscoverSiteRestoreSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DiscoverSiteRestoreResponder handles the response to the DiscoverSiteRestore request. The method always
@@ -3653,8 +3653,8 @@ func (client SitesClient) DiscoverSiteRestoreSlotPreparer(ctx context.Context, r
 // DiscoverSiteRestoreSlotSender sends the DiscoverSiteRestoreSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) DiscoverSiteRestoreSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DiscoverSiteRestoreSlotResponder handles the response to the DiscoverSiteRestoreSlot request. The method always
@@ -3730,8 +3730,8 @@ func (client SitesClient) GenerateNewSitePublishingPasswordPreparer(ctx context.
 // GenerateNewSitePublishingPasswordSender sends the GenerateNewSitePublishingPassword request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GenerateNewSitePublishingPasswordSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GenerateNewSitePublishingPasswordResponder handles the response to the GenerateNewSitePublishingPassword request. The method always
@@ -3809,8 +3809,8 @@ func (client SitesClient) GenerateNewSitePublishingPasswordSlotPreparer(ctx cont
 // GenerateNewSitePublishingPasswordSlotSender sends the GenerateNewSitePublishingPasswordSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GenerateNewSitePublishingPasswordSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GenerateNewSitePublishingPasswordSlotResponder handles the response to the GenerateNewSitePublishingPasswordSlot request. The method always
@@ -3893,8 +3893,8 @@ func (client SitesClient) GetDeletedSitesPreparer(ctx context.Context, resourceG
 // GetDeletedSitesSender sends the GetDeletedSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetDeletedSitesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetDeletedSitesResponder handles the response to the GetDeletedSites request. The method always
@@ -4009,8 +4009,8 @@ func (client SitesClient) GetDeploymentPreparer(ctx context.Context, resourceGro
 // GetDeploymentSender sends the GetDeployment request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetDeploymentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetDeploymentResponder handles the response to the GetDeployment request. The method always
@@ -4087,8 +4087,8 @@ func (client SitesClient) GetDeploymentsPreparer(ctx context.Context, resourceGr
 // GetDeploymentsSender sends the GetDeployments request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetDeploymentsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetDeploymentsResponder handles the response to the GetDeployments request. The method always
@@ -4205,8 +4205,8 @@ func (client SitesClient) GetDeploymentSlotPreparer(ctx context.Context, resourc
 // GetDeploymentSlotSender sends the GetDeploymentSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetDeploymentSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetDeploymentSlotResponder handles the response to the GetDeploymentSlot request. The method always
@@ -4285,8 +4285,8 @@ func (client SitesClient) GetDeploymentsSlotPreparer(ctx context.Context, resour
 // GetDeploymentsSlotSender sends the GetDeploymentsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetDeploymentsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetDeploymentsSlotResponder handles the response to the GetDeploymentsSlot request. The method always
@@ -4403,8 +4403,8 @@ func (client SitesClient) GetInstanceDeploymentPreparer(ctx context.Context, res
 // GetInstanceDeploymentSender sends the GetInstanceDeployment request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetInstanceDeploymentSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetInstanceDeploymentResponder handles the response to the GetInstanceDeployment request. The method always
@@ -4483,8 +4483,8 @@ func (client SitesClient) GetInstanceDeploymentsPreparer(ctx context.Context, re
 // GetInstanceDeploymentsSender sends the GetInstanceDeployments request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetInstanceDeploymentsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetInstanceDeploymentsResponder handles the response to the GetInstanceDeployments request. The method always
@@ -4603,8 +4603,8 @@ func (client SitesClient) GetInstanceDeploymentSlotPreparer(ctx context.Context,
 // GetInstanceDeploymentSlotSender sends the GetInstanceDeploymentSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetInstanceDeploymentSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetInstanceDeploymentSlotResponder handles the response to the GetInstanceDeploymentSlot request. The method always
@@ -4685,8 +4685,8 @@ func (client SitesClient) GetInstanceDeploymentsSlotPreparer(ctx context.Context
 // GetInstanceDeploymentsSlotSender sends the GetInstanceDeploymentsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetInstanceDeploymentsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetInstanceDeploymentsSlotResponder handles the response to the GetInstanceDeploymentsSlot request. The method always
@@ -4803,8 +4803,8 @@ func (client SitesClient) GetSitePreparer(ctx context.Context, resourceGroupName
 // GetSiteSender sends the GetSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteResponder handles the response to the GetSite request. The method always
@@ -4880,8 +4880,8 @@ func (client SitesClient) GetSiteBackupConfigurationPreparer(ctx context.Context
 // GetSiteBackupConfigurationSender sends the GetSiteBackupConfiguration request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteBackupConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteBackupConfigurationResponder handles the response to the GetSiteBackupConfiguration request. The method always
@@ -4959,8 +4959,8 @@ func (client SitesClient) GetSiteBackupConfigurationSlotPreparer(ctx context.Con
 // GetSiteBackupConfigurationSlotSender sends the GetSiteBackupConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteBackupConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteBackupConfigurationSlotResponder handles the response to the GetSiteBackupConfigurationSlot request. The method always
@@ -5038,8 +5038,8 @@ func (client SitesClient) GetSiteBackupStatusPreparer(ctx context.Context, resou
 // GetSiteBackupStatusSender sends the GetSiteBackupStatus request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteBackupStatusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteBackupStatusResponder handles the response to the GetSiteBackupStatus request. The method always
@@ -5120,8 +5120,8 @@ func (client SitesClient) GetSiteBackupStatusSecretsPreparer(ctx context.Context
 // GetSiteBackupStatusSecretsSender sends the GetSiteBackupStatusSecrets request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteBackupStatusSecretsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteBackupStatusSecretsResponder handles the response to the GetSiteBackupStatusSecrets request. The method always
@@ -5204,8 +5204,8 @@ func (client SitesClient) GetSiteBackupStatusSecretsSlotPreparer(ctx context.Con
 // GetSiteBackupStatusSecretsSlotSender sends the GetSiteBackupStatusSecretsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteBackupStatusSecretsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteBackupStatusSecretsSlotResponder handles the response to the GetSiteBackupStatusSecretsSlot request. The method always
@@ -5285,8 +5285,8 @@ func (client SitesClient) GetSiteBackupStatusSlotPreparer(ctx context.Context, r
 // GetSiteBackupStatusSlotSender sends the GetSiteBackupStatusSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteBackupStatusSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteBackupStatusSlotResponder handles the response to the GetSiteBackupStatusSlot request. The method always
@@ -5362,8 +5362,8 @@ func (client SitesClient) GetSiteConfigPreparer(ctx context.Context, resourceGro
 // GetSiteConfigSender sends the GetSiteConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteConfigSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteConfigResponder handles the response to the GetSiteConfig request. The method always
@@ -5441,8 +5441,8 @@ func (client SitesClient) GetSiteConfigSlotPreparer(ctx context.Context, resourc
 // GetSiteConfigSlotSender sends the GetSiteConfigSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteConfigSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteConfigSlotResponder handles the response to the GetSiteConfigSlot request. The method always
@@ -5520,8 +5520,8 @@ func (client SitesClient) GetSiteHostNameBindingPreparer(ctx context.Context, re
 // GetSiteHostNameBindingSender sends the GetSiteHostNameBinding request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteHostNameBindingSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteHostNameBindingResponder handles the response to the GetSiteHostNameBinding request. The method always
@@ -5598,8 +5598,8 @@ func (client SitesClient) GetSiteHostNameBindingsPreparer(ctx context.Context, r
 // GetSiteHostNameBindingsSender sends the GetSiteHostNameBindings request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteHostNameBindingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteHostNameBindingsResponder handles the response to the GetSiteHostNameBindings request. The method always
@@ -5716,8 +5716,8 @@ func (client SitesClient) GetSiteHostNameBindingSlotPreparer(ctx context.Context
 // GetSiteHostNameBindingSlotSender sends the GetSiteHostNameBindingSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteHostNameBindingSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteHostNameBindingSlotResponder handles the response to the GetSiteHostNameBindingSlot request. The method always
@@ -5796,8 +5796,8 @@ func (client SitesClient) GetSiteHostNameBindingsSlotPreparer(ctx context.Contex
 // GetSiteHostNameBindingsSlotSender sends the GetSiteHostNameBindingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteHostNameBindingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteHostNameBindingsSlotResponder handles the response to the GetSiteHostNameBindingsSlot request. The method always
@@ -5911,8 +5911,8 @@ func (client SitesClient) GetSiteInstanceIdentifiersPreparer(ctx context.Context
 // GetSiteInstanceIdentifiersSender sends the GetSiteInstanceIdentifiers request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteInstanceIdentifiersSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteInstanceIdentifiersResponder handles the response to the GetSiteInstanceIdentifiers request. The method always
@@ -6028,8 +6028,8 @@ func (client SitesClient) GetSiteInstanceIdentifiersSlotPreparer(ctx context.Con
 // GetSiteInstanceIdentifiersSlotSender sends the GetSiteInstanceIdentifiersSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteInstanceIdentifiersSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteInstanceIdentifiersSlotResponder handles the response to the GetSiteInstanceIdentifiersSlot request. The method always
@@ -6142,8 +6142,8 @@ func (client SitesClient) GetSiteLogsConfigPreparer(ctx context.Context, resourc
 // GetSiteLogsConfigSender sends the GetSiteLogsConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteLogsConfigSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteLogsConfigResponder handles the response to the GetSiteLogsConfig request. The method always
@@ -6221,8 +6221,8 @@ func (client SitesClient) GetSiteLogsConfigSlotPreparer(ctx context.Context, res
 // GetSiteLogsConfigSlotSender sends the GetSiteLogsConfigSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteLogsConfigSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteLogsConfigSlotResponder handles the response to the GetSiteLogsConfigSlot request. The method always
@@ -6299,8 +6299,8 @@ func (client SitesClient) GetSiteMetricDefinitionsPreparer(ctx context.Context, 
 // GetSiteMetricDefinitionsSender sends the GetSiteMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteMetricDefinitionsResponder handles the response to the GetSiteMetricDefinitions request. The method always
@@ -6416,8 +6416,8 @@ func (client SitesClient) GetSiteMetricDefinitionsSlotPreparer(ctx context.Conte
 // GetSiteMetricDefinitionsSlotSender sends the GetSiteMetricDefinitionsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteMetricDefinitionsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteMetricDefinitionsSlotResponder handles the response to the GetSiteMetricDefinitionsSlot request. The method always
@@ -6541,8 +6541,8 @@ func (client SitesClient) GetSiteMetricsPreparer(ctx context.Context, resourceGr
 // GetSiteMetricsSender sends the GetSiteMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteMetricsResponder handles the response to the GetSiteMetrics request. The method always
@@ -6668,8 +6668,8 @@ func (client SitesClient) GetSiteMetricsSlotPreparer(ctx context.Context, resour
 // GetSiteMetricsSlotSender sends the GetSiteMetricsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteMetricsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteMetricsSlotResponder handles the response to the GetSiteMetricsSlot request. The method always
@@ -6784,8 +6784,8 @@ func (client SitesClient) GetSiteNetworkFeaturesPreparer(ctx context.Context, re
 // GetSiteNetworkFeaturesSender sends the GetSiteNetworkFeatures request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteNetworkFeaturesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteNetworkFeaturesResponder handles the response to the GetSiteNetworkFeatures request. The method always
@@ -6865,8 +6865,8 @@ func (client SitesClient) GetSiteNetworkFeaturesSlotPreparer(ctx context.Context
 // GetSiteNetworkFeaturesSlotSender sends the GetSiteNetworkFeaturesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteNetworkFeaturesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteNetworkFeaturesSlotResponder handles the response to the GetSiteNetworkFeaturesSlot request. The method always
@@ -6944,8 +6944,8 @@ func (client SitesClient) GetSiteOperationPreparer(ctx context.Context, resource
 // GetSiteOperationSender sends the GetSiteOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteOperationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteOperationResponder handles the response to the GetSiteOperation request. The method always
@@ -7025,8 +7025,8 @@ func (client SitesClient) GetSiteOperationSlotPreparer(ctx context.Context, reso
 // GetSiteOperationSlotSender sends the GetSiteOperationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteOperationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteOperationSlotResponder handles the response to the GetSiteOperationSlot request. The method always
@@ -7100,8 +7100,8 @@ func (client SitesClient) GetSitePremierAddOnPreparer(ctx context.Context, resou
 // GetSitePremierAddOnSender sends the GetSitePremierAddOn request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSitePremierAddOnSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSitePremierAddOnResponder handles the response to the GetSitePremierAddOn request. The method always
@@ -7176,8 +7176,8 @@ func (client SitesClient) GetSitePremierAddOnSlotPreparer(ctx context.Context, r
 // GetSitePremierAddOnSlotSender sends the GetSitePremierAddOnSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSitePremierAddOnSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSitePremierAddOnSlotResponder handles the response to the GetSitePremierAddOnSlot request. The method always
@@ -7255,8 +7255,8 @@ func (client SitesClient) GetSiteRelayServiceConnectionPreparer(ctx context.Cont
 // GetSiteRelayServiceConnectionSender sends the GetSiteRelayServiceConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteRelayServiceConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteRelayServiceConnectionResponder handles the response to the GetSiteRelayServiceConnection request. The method always
@@ -7336,8 +7336,8 @@ func (client SitesClient) GetSiteRelayServiceConnectionSlotPreparer(ctx context.
 // GetSiteRelayServiceConnectionSlotSender sends the GetSiteRelayServiceConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteRelayServiceConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteRelayServiceConnectionSlotResponder handles the response to the GetSiteRelayServiceConnectionSlot request. The method always
@@ -7424,8 +7424,8 @@ func (client SitesClient) GetSitesPreparer(ctx context.Context, resourceGroupNam
 // GetSitesSender sends the GetSites request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSitesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSitesResponder handles the response to the GetSites request. The method always
@@ -7544,8 +7544,8 @@ func (client SitesClient) GetSiteSlotPreparer(ctx context.Context, resourceGroup
 // GetSiteSlotSender sends the GetSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteSlotResponder handles the response to the GetSiteSlot request. The method always
@@ -7626,8 +7626,8 @@ func (client SitesClient) GetSiteSlotsPreparer(ctx context.Context, resourceGrou
 // GetSiteSlotsSender sends the GetSiteSlots request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteSlotsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteSlotsResponder handles the response to the GetSiteSlots request. The method always
@@ -7740,8 +7740,8 @@ func (client SitesClient) GetSiteSnapshotsPreparer(ctx context.Context, resource
 // GetSiteSnapshotsSender sends the GetSiteSnapshots request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteSnapshotsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteSnapshotsResponder handles the response to the GetSiteSnapshots request. The method always
@@ -7819,8 +7819,8 @@ func (client SitesClient) GetSiteSnapshotsSlotPreparer(ctx context.Context, reso
 // GetSiteSnapshotsSlotSender sends the GetSiteSnapshotsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteSnapshotsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteSnapshotsSlotResponder handles the response to the GetSiteSnapshotsSlot request. The method always
@@ -7896,8 +7896,8 @@ func (client SitesClient) GetSiteSourceControlPreparer(ctx context.Context, reso
 // GetSiteSourceControlSender sends the GetSiteSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteSourceControlSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteSourceControlResponder handles the response to the GetSiteSourceControl request. The method always
@@ -7975,8 +7975,8 @@ func (client SitesClient) GetSiteSourceControlSlotPreparer(ctx context.Context, 
 // GetSiteSourceControlSlotSender sends the GetSiteSourceControlSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteSourceControlSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteSourceControlSlotResponder handles the response to the GetSiteSourceControlSlot request. The method always
@@ -8059,8 +8059,8 @@ func (client SitesClient) GetSiteUsagesPreparer(ctx context.Context, resourceGro
 // GetSiteUsagesSender sends the GetSiteUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteUsagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteUsagesResponder handles the response to the GetSiteUsages request. The method always
@@ -8182,8 +8182,8 @@ func (client SitesClient) GetSiteUsagesSlotPreparer(ctx context.Context, resourc
 // GetSiteUsagesSlotSender sends the GetSiteUsagesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteUsagesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteUsagesSlotResponder handles the response to the GetSiteUsagesSlot request. The method always
@@ -8298,8 +8298,8 @@ func (client SitesClient) GetSiteVNETConnectionPreparer(ctx context.Context, res
 // GetSiteVNETConnectionSender sends the GetSiteVNETConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteVNETConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteVNETConnectionResponder handles the response to the GetSiteVNETConnection request. The method always
@@ -8375,8 +8375,8 @@ func (client SitesClient) GetSiteVNETConnectionsPreparer(ctx context.Context, re
 // GetSiteVNETConnectionsSender sends the GetSiteVNETConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteVNETConnectionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteVNETConnectionsResponder handles the response to the GetSiteVNETConnections request. The method always
@@ -8456,8 +8456,8 @@ func (client SitesClient) GetSiteVNETConnectionSlotPreparer(ctx context.Context,
 // GetSiteVNETConnectionSlotSender sends the GetSiteVNETConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteVNETConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteVNETConnectionSlotResponder handles the response to the GetSiteVNETConnectionSlot request. The method always
@@ -8535,8 +8535,8 @@ func (client SitesClient) GetSiteVNETConnectionsSlotPreparer(ctx context.Context
 // GetSiteVNETConnectionsSlotSender sends the GetSiteVNETConnectionsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteVNETConnectionsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteVNETConnectionsSlotResponder handles the response to the GetSiteVNETConnectionsSlot request. The method always
@@ -8616,8 +8616,8 @@ func (client SitesClient) GetSiteVnetGatewayPreparer(ctx context.Context, resour
 // GetSiteVnetGatewaySender sends the GetSiteVnetGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteVnetGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteVnetGatewayResponder handles the response to the GetSiteVnetGateway request. The method always
@@ -8699,8 +8699,8 @@ func (client SitesClient) GetSiteVnetGatewaySlotPreparer(ctx context.Context, re
 // GetSiteVnetGatewaySlotSender sends the GetSiteVnetGatewaySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSiteVnetGatewaySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSiteVnetGatewaySlotResponder handles the response to the GetSiteVnetGatewaySlot request. The method always
@@ -8776,8 +8776,8 @@ func (client SitesClient) GetSlotConfigNamesPreparer(ctx context.Context, resour
 // GetSlotConfigNamesSender sends the GetSlotConfigNames request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSlotConfigNamesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSlotConfigNamesResponder handles the response to the GetSlotConfigNames request. The method always
@@ -8857,8 +8857,8 @@ func (client SitesClient) GetSlotsDifferencesFromProductionPreparer(ctx context.
 // GetSlotsDifferencesFromProductionSender sends the GetSlotsDifferencesFromProduction request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSlotsDifferencesFromProductionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSlotsDifferencesFromProductionResponder handles the response to the GetSlotsDifferencesFromProduction request. The method always
@@ -8977,8 +8977,8 @@ func (client SitesClient) GetSlotsDifferencesSlotPreparer(ctx context.Context, r
 // GetSlotsDifferencesSlotSender sends the GetSlotsDifferencesSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) GetSlotsDifferencesSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetSlotsDifferencesSlotResponder handles the response to the GetSlotsDifferencesSlot request. The method always
@@ -9091,8 +9091,8 @@ func (client SitesClient) IsSiteCloneablePreparer(ctx context.Context, resourceG
 // IsSiteCloneableSender sends the IsSiteCloneable request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) IsSiteCloneableSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // IsSiteCloneableResponder handles the response to the IsSiteCloneable request. The method always
@@ -9170,8 +9170,8 @@ func (client SitesClient) IsSiteCloneableSlotPreparer(ctx context.Context, resou
 // IsSiteCloneableSlotSender sends the IsSiteCloneableSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) IsSiteCloneableSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // IsSiteCloneableSlotResponder handles the response to the IsSiteCloneableSlot request. The method always
@@ -9247,8 +9247,8 @@ func (client SitesClient) ListSiteAppSettingsPreparer(ctx context.Context, resou
 // ListSiteAppSettingsSender sends the ListSiteAppSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteAppSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteAppSettingsResponder handles the response to the ListSiteAppSettings request. The method always
@@ -9326,8 +9326,8 @@ func (client SitesClient) ListSiteAppSettingsSlotPreparer(ctx context.Context, r
 // ListSiteAppSettingsSlotSender sends the ListSiteAppSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteAppSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteAppSettingsSlotResponder handles the response to the ListSiteAppSettingsSlot request. The method always
@@ -9403,8 +9403,8 @@ func (client SitesClient) ListSiteAuthSettingsPreparer(ctx context.Context, reso
 // ListSiteAuthSettingsSender sends the ListSiteAuthSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteAuthSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteAuthSettingsResponder handles the response to the ListSiteAuthSettings request. The method always
@@ -9482,8 +9482,8 @@ func (client SitesClient) ListSiteAuthSettingsSlotPreparer(ctx context.Context, 
 // ListSiteAuthSettingsSlotSender sends the ListSiteAuthSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteAuthSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteAuthSettingsSlotResponder handles the response to the ListSiteAuthSettingsSlot request. The method always
@@ -9560,8 +9560,8 @@ func (client SitesClient) ListSiteBackupsPreparer(ctx context.Context, resourceG
 // ListSiteBackupsSender sends the ListSiteBackups request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteBackupsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteBackupsResponder handles the response to the ListSiteBackups request. The method always
@@ -9677,8 +9677,8 @@ func (client SitesClient) ListSiteBackupsSlotPreparer(ctx context.Context, resou
 // ListSiteBackupsSlotSender sends the ListSiteBackupsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteBackupsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteBackupsSlotResponder handles the response to the ListSiteBackupsSlot request. The method always
@@ -9791,8 +9791,8 @@ func (client SitesClient) ListSiteConnectionStringsPreparer(ctx context.Context,
 // ListSiteConnectionStringsSender sends the ListSiteConnectionStrings request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteConnectionStringsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteConnectionStringsResponder handles the response to the ListSiteConnectionStrings request. The method always
@@ -9870,8 +9870,8 @@ func (client SitesClient) ListSiteConnectionStringsSlotPreparer(ctx context.Cont
 // ListSiteConnectionStringsSlotSender sends the ListSiteConnectionStringsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteConnectionStringsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteConnectionStringsSlotResponder handles the response to the ListSiteConnectionStringsSlot request. The method always
@@ -9947,8 +9947,8 @@ func (client SitesClient) ListSiteMetadataPreparer(ctx context.Context, resource
 // ListSiteMetadataSender sends the ListSiteMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteMetadataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteMetadataResponder handles the response to the ListSiteMetadata request. The method always
@@ -10026,8 +10026,8 @@ func (client SitesClient) ListSiteMetadataSlotPreparer(ctx context.Context, reso
 // ListSiteMetadataSlotSender sends the ListSiteMetadataSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteMetadataSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteMetadataSlotResponder handles the response to the ListSiteMetadataSlot request. The method always
@@ -10100,8 +10100,8 @@ func (client SitesClient) ListSitePremierAddOnsPreparer(ctx context.Context, res
 // ListSitePremierAddOnsSender sends the ListSitePremierAddOns request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePremierAddOnsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSitePremierAddOnsResponder handles the response to the ListSitePremierAddOns request. The method always
@@ -10175,8 +10175,8 @@ func (client SitesClient) ListSitePremierAddOnsSlotPreparer(ctx context.Context,
 // ListSitePremierAddOnsSlotSender sends the ListSitePremierAddOnsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePremierAddOnsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSitePremierAddOnsSlotResponder handles the response to the ListSitePremierAddOnsSlot request. The method always
@@ -10246,9 +10246,9 @@ func (client SitesClient) ListSitePublishingCredentialsPreparer(ctx context.Cont
 // ListSitePublishingCredentialsSender sends the ListSitePublishingCredentials request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request) (future SitesListSitePublishingCredentialsFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -10325,9 +10325,9 @@ func (client SitesClient) ListSitePublishingCredentialsSlotPreparer(ctx context.
 // ListSitePublishingCredentialsSlotSender sends the ListSitePublishingCredentialsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Request) (future SitesListSitePublishingCredentialsSlotFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -10412,8 +10412,8 @@ func (client SitesClient) ListSitePublishingProfileXMLPreparer(ctx context.Conte
 // ListSitePublishingProfileXMLSender sends the ListSitePublishingProfileXML request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePublishingProfileXMLSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSitePublishingProfileXMLResponder handles the response to the ListSitePublishingProfileXML request. The method always
@@ -10494,8 +10494,8 @@ func (client SitesClient) ListSitePublishingProfileXMLSlotPreparer(ctx context.C
 // ListSitePublishingProfileXMLSlotSender sends the ListSitePublishingProfileXMLSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePublishingProfileXMLSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSitePublishingProfileXMLSlotResponder handles the response to the ListSitePublishingProfileXMLSlot request. The method always
@@ -10570,8 +10570,8 @@ func (client SitesClient) ListSiteRelayServiceConnectionsPreparer(ctx context.Co
 // ListSiteRelayServiceConnectionsSender sends the ListSiteRelayServiceConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteRelayServiceConnectionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteRelayServiceConnectionsResponder handles the response to the ListSiteRelayServiceConnections request. The method always
@@ -10649,8 +10649,8 @@ func (client SitesClient) ListSiteRelayServiceConnectionsSlotPreparer(ctx contex
 // ListSiteRelayServiceConnectionsSlotSender sends the ListSiteRelayServiceConnectionsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSiteRelayServiceConnectionsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListSiteRelayServiceConnectionsSlotResponder handles the response to the ListSiteRelayServiceConnectionsSlot request. The method always
@@ -10724,9 +10724,9 @@ func (client SitesClient) RecoverSitePreparer(ctx context.Context, resourceGroup
 // RecoverSiteSender sends the RecoverSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) RecoverSiteSender(req *http.Request) (future SitesRecoverSiteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -10807,9 +10807,9 @@ func (client SitesClient) RecoverSiteSlotPreparer(ctx context.Context, resourceG
 // RecoverSiteSlotSender sends the RecoverSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) RecoverSiteSlotSender(req *http.Request) (future SitesRecoverSiteSlotFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -10890,8 +10890,8 @@ func (client SitesClient) ResetProductionSlotConfigPreparer(ctx context.Context,
 // ResetProductionSlotConfigSender sends the ResetProductionSlotConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ResetProductionSlotConfigSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ResetProductionSlotConfigResponder handles the response to the ResetProductionSlotConfig request. The method always
@@ -10969,8 +10969,8 @@ func (client SitesClient) ResetSlotConfigSlotPreparer(ctx context.Context, resou
 // ResetSlotConfigSlotSender sends the ResetSlotConfigSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) ResetSlotConfigSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ResetSlotConfigSlotResponder handles the response to the ResetSlotConfigSlot request. The method always
@@ -11055,8 +11055,8 @@ func (client SitesClient) RestartSitePreparer(ctx context.Context, resourceGroup
 // RestartSiteSender sends the RestartSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) RestartSiteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RestartSiteResponder handles the response to the RestartSite request. The method always
@@ -11143,8 +11143,8 @@ func (client SitesClient) RestartSiteSlotPreparer(ctx context.Context, resourceG
 // RestartSiteSlotSender sends the RestartSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) RestartSiteSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RestartSiteSlotResponder handles the response to the RestartSiteSlot request. The method always
@@ -11219,9 +11219,9 @@ func (client SitesClient) RestoreSitePreparer(ctx context.Context, resourceGroup
 // RestoreSiteSender sends the RestoreSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) RestoreSiteSender(req *http.Request) (future SitesRestoreSiteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -11303,9 +11303,9 @@ func (client SitesClient) RestoreSiteSlotPreparer(ctx context.Context, resourceG
 // RestoreSiteSlotSender sends the RestoreSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) RestoreSiteSlotSender(req *http.Request) (future SitesRestoreSiteSlotFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -11386,8 +11386,8 @@ func (client SitesClient) StartSitePreparer(ctx context.Context, resourceGroupNa
 // StartSiteSender sends the StartSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) StartSiteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // StartSiteResponder handles the response to the StartSite request. The method always
@@ -11465,8 +11465,8 @@ func (client SitesClient) StartSiteSlotPreparer(ctx context.Context, resourceGro
 // StartSiteSlotSender sends the StartSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) StartSiteSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // StartSiteSlotResponder handles the response to the StartSiteSlot request. The method always
@@ -11542,8 +11542,8 @@ func (client SitesClient) StopSitePreparer(ctx context.Context, resourceGroupNam
 // StopSiteSender sends the StopSite request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) StopSiteSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // StopSiteResponder handles the response to the StopSite request. The method always
@@ -11621,8 +11621,8 @@ func (client SitesClient) StopSiteSlotPreparer(ctx context.Context, resourceGrou
 // StopSiteSlotSender sends the StopSiteSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) StopSiteSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // StopSiteSlotResponder handles the response to the StopSiteSlot request. The method always
@@ -11697,9 +11697,9 @@ func (client SitesClient) SwapSlotsSlotPreparer(ctx context.Context, resourceGro
 // SwapSlotsSlotSender sends the SwapSlotsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) SwapSlotsSlotSender(req *http.Request) (future SitesSwapSlotsSlotFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -11777,9 +11777,9 @@ func (client SitesClient) SwapSlotWithProductionPreparer(ctx context.Context, re
 // SwapSlotWithProductionSender sends the SwapSlotWithProduction request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) SwapSlotWithProductionSender(req *http.Request) (future SitesSwapSlotWithProductionFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -11857,8 +11857,8 @@ func (client SitesClient) SyncSiteRepositoryPreparer(ctx context.Context, resour
 // SyncSiteRepositorySender sends the SyncSiteRepository request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) SyncSiteRepositorySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SyncSiteRepositoryResponder handles the response to the SyncSiteRepository request. The method always
@@ -11932,8 +11932,8 @@ func (client SitesClient) SyncSiteRepositorySlotPreparer(ctx context.Context, re
 // SyncSiteRepositorySlotSender sends the SyncSiteRepositorySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) SyncSiteRepositorySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // SyncSiteRepositorySlotResponder handles the response to the SyncSiteRepositorySlot request. The method always
@@ -12012,8 +12012,8 @@ func (client SitesClient) UpdateSiteAppSettingsPreparer(ctx context.Context, res
 // UpdateSiteAppSettingsSender sends the UpdateSiteAppSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteAppSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteAppSettingsResponder handles the response to the UpdateSiteAppSettings request. The method always
@@ -12094,8 +12094,8 @@ func (client SitesClient) UpdateSiteAppSettingsSlotPreparer(ctx context.Context,
 // UpdateSiteAppSettingsSlotSender sends the UpdateSiteAppSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteAppSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteAppSettingsSlotResponder handles the response to the UpdateSiteAppSettingsSlot request. The method always
@@ -12174,8 +12174,8 @@ func (client SitesClient) UpdateSiteAuthSettingsPreparer(ctx context.Context, re
 // UpdateSiteAuthSettingsSender sends the UpdateSiteAuthSettings request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteAuthSettingsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteAuthSettingsResponder handles the response to the UpdateSiteAuthSettings request. The method always
@@ -12256,8 +12256,8 @@ func (client SitesClient) UpdateSiteAuthSettingsSlotPreparer(ctx context.Context
 // UpdateSiteAuthSettingsSlotSender sends the UpdateSiteAuthSettingsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteAuthSettingsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteAuthSettingsSlotResponder handles the response to the UpdateSiteAuthSettingsSlot request. The method always
@@ -12336,8 +12336,8 @@ func (client SitesClient) UpdateSiteBackupConfigurationPreparer(ctx context.Cont
 // UpdateSiteBackupConfigurationSender sends the UpdateSiteBackupConfiguration request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteBackupConfigurationSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteBackupConfigurationResponder handles the response to the UpdateSiteBackupConfiguration request. The method always
@@ -12418,8 +12418,8 @@ func (client SitesClient) UpdateSiteBackupConfigurationSlotPreparer(ctx context.
 // UpdateSiteBackupConfigurationSlotSender sends the UpdateSiteBackupConfigurationSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteBackupConfigurationSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteBackupConfigurationSlotResponder handles the response to the UpdateSiteBackupConfigurationSlot request. The method always
@@ -12498,8 +12498,8 @@ func (client SitesClient) UpdateSiteConfigPreparer(ctx context.Context, resource
 // UpdateSiteConfigSender sends the UpdateSiteConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteConfigSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteConfigResponder handles the response to the UpdateSiteConfig request. The method always
@@ -12580,8 +12580,8 @@ func (client SitesClient) UpdateSiteConfigSlotPreparer(ctx context.Context, reso
 // UpdateSiteConfigSlotSender sends the UpdateSiteConfigSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteConfigSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteConfigSlotResponder handles the response to the UpdateSiteConfigSlot request. The method always
@@ -12660,8 +12660,8 @@ func (client SitesClient) UpdateSiteConnectionStringsPreparer(ctx context.Contex
 // UpdateSiteConnectionStringsSender sends the UpdateSiteConnectionStrings request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteConnectionStringsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteConnectionStringsResponder handles the response to the UpdateSiteConnectionStrings request. The method always
@@ -12742,8 +12742,8 @@ func (client SitesClient) UpdateSiteConnectionStringsSlotPreparer(ctx context.Co
 // UpdateSiteConnectionStringsSlotSender sends the UpdateSiteConnectionStringsSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteConnectionStringsSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteConnectionStringsSlotResponder handles the response to the UpdateSiteConnectionStringsSlot request. The method always
@@ -12822,8 +12822,8 @@ func (client SitesClient) UpdateSiteLogsConfigPreparer(ctx context.Context, reso
 // UpdateSiteLogsConfigSender sends the UpdateSiteLogsConfig request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteLogsConfigSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteLogsConfigResponder handles the response to the UpdateSiteLogsConfig request. The method always
@@ -12904,8 +12904,8 @@ func (client SitesClient) UpdateSiteLogsConfigSlotPreparer(ctx context.Context, 
 // UpdateSiteLogsConfigSlotSender sends the UpdateSiteLogsConfigSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteLogsConfigSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteLogsConfigSlotResponder handles the response to the UpdateSiteLogsConfigSlot request. The method always
@@ -12984,8 +12984,8 @@ func (client SitesClient) UpdateSiteMetadataPreparer(ctx context.Context, resour
 // UpdateSiteMetadataSender sends the UpdateSiteMetadata request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteMetadataSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteMetadataResponder handles the response to the UpdateSiteMetadata request. The method always
@@ -13066,8 +13066,8 @@ func (client SitesClient) UpdateSiteMetadataSlotPreparer(ctx context.Context, re
 // UpdateSiteMetadataSlotSender sends the UpdateSiteMetadataSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteMetadataSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteMetadataSlotResponder handles the response to the UpdateSiteMetadataSlot request. The method always
@@ -13148,8 +13148,8 @@ func (client SitesClient) UpdateSiteRelayServiceConnectionPreparer(ctx context.C
 // UpdateSiteRelayServiceConnectionSender sends the UpdateSiteRelayServiceConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteRelayServiceConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteRelayServiceConnectionResponder handles the response to the UpdateSiteRelayServiceConnection request. The method always
@@ -13232,8 +13232,8 @@ func (client SitesClient) UpdateSiteRelayServiceConnectionSlotPreparer(ctx conte
 // UpdateSiteRelayServiceConnectionSlotSender sends the UpdateSiteRelayServiceConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteRelayServiceConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteRelayServiceConnectionSlotResponder handles the response to the UpdateSiteRelayServiceConnectionSlot request. The method always
@@ -13312,8 +13312,8 @@ func (client SitesClient) UpdateSiteSourceControlPreparer(ctx context.Context, r
 // UpdateSiteSourceControlSender sends the UpdateSiteSourceControl request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteSourceControlSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteSourceControlResponder handles the response to the UpdateSiteSourceControl request. The method always
@@ -13394,8 +13394,8 @@ func (client SitesClient) UpdateSiteSourceControlSlotPreparer(ctx context.Contex
 // UpdateSiteSourceControlSlotSender sends the UpdateSiteSourceControlSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteSourceControlSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteSourceControlSlotResponder handles the response to the UpdateSiteSourceControlSlot request. The method always
@@ -13476,8 +13476,8 @@ func (client SitesClient) UpdateSiteVNETConnectionPreparer(ctx context.Context, 
 // UpdateSiteVNETConnectionSender sends the UpdateSiteVNETConnection request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteVNETConnectionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteVNETConnectionResponder handles the response to the UpdateSiteVNETConnection request. The method always
@@ -13560,8 +13560,8 @@ func (client SitesClient) UpdateSiteVNETConnectionGatewayPreparer(ctx context.Co
 // UpdateSiteVNETConnectionGatewaySender sends the UpdateSiteVNETConnectionGateway request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteVNETConnectionGatewaySender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteVNETConnectionGatewayResponder handles the response to the UpdateSiteVNETConnectionGateway request. The method always
@@ -13646,8 +13646,8 @@ func (client SitesClient) UpdateSiteVNETConnectionGatewaySlotPreparer(ctx contex
 // UpdateSiteVNETConnectionGatewaySlotSender sends the UpdateSiteVNETConnectionGatewaySlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteVNETConnectionGatewaySlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteVNETConnectionGatewaySlotResponder handles the response to the UpdateSiteVNETConnectionGatewaySlot request. The method always
@@ -13730,8 +13730,8 @@ func (client SitesClient) UpdateSiteVNETConnectionSlotPreparer(ctx context.Conte
 // UpdateSiteVNETConnectionSlotSender sends the UpdateSiteVNETConnectionSlot request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSiteVNETConnectionSlotSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSiteVNETConnectionSlotResponder handles the response to the UpdateSiteVNETConnectionSlot request. The method always
@@ -13810,8 +13810,8 @@ func (client SitesClient) UpdateSlotConfigNamesPreparer(ctx context.Context, res
 // UpdateSlotConfigNamesSender sends the UpdateSlotConfigNames request. The method will close the
 // http.Response Body if it receives an error.
 func (client SitesClient) UpdateSlotConfigNamesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateSlotConfigNamesResponder handles the response to the UpdateSlotConfigNames request. The method always

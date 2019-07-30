@@ -618,12 +618,6 @@ type Screen struct {
 	TrackingID *string `json:"TrackingId,omitempty"`
 }
 
-// SetObject ...
-type SetObject struct {
-	autorest.Response `json:"-"`
-	Value             interface{} `json:"value,omitempty"`
-}
-
 // SSN detected SSN details.
 type SSN struct {
 	// Text - Detected SSN in the input text content.

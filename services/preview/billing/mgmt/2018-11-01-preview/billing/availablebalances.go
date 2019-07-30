@@ -99,8 +99,8 @@ func (client AvailableBalancesClient) GetByBillingProfilePreparer(ctx context.Co
 // GetByBillingProfileSender sends the GetByBillingProfile request. The method will close the
 // http.Response Body if it receives an error.
 func (client AvailableBalancesClient) GetByBillingProfileSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByBillingProfileResponder handles the response to the GetByBillingProfile request. The method always

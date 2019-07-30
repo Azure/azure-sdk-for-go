@@ -100,8 +100,8 @@ func (client EventsClient) ActivatePreparer(ctx context.Context, eventID string)
 // ActivateSender sends the Activate request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) ActivateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ActivateResponder handles the response to the Activate request. The method always
@@ -182,8 +182,8 @@ func (client EventsClient) RewardPreparer(ctx context.Context, eventID string, r
 // RewardSender sends the Reward request. The method will close the
 // http.Response Body if it receives an error.
 func (client EventsClient) RewardSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RewardResponder handles the response to the Reward request. The method always

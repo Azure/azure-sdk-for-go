@@ -104,9 +104,9 @@ func (client IotHubClient) ManualFailoverPreparer(ctx context.Context, iotHubNam
 // ManualFailoverSender sends the ManualFailover request. The method will close the
 // http.Response Body if it receives an error.
 func (client IotHubClient) ManualFailoverSender(req *http.Request) (future IotHubManualFailoverFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}

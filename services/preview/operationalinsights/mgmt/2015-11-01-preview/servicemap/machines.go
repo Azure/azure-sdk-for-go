@@ -124,8 +124,8 @@ func (client MachinesClient) GetPreparer(ctx context.Context, resourceGroupName 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -228,8 +228,8 @@ func (client MachinesClient) GetLivenessPreparer(ctx context.Context, resourceGr
 // GetLivenessSender sends the GetLiveness request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) GetLivenessSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetLivenessResponder handles the response to the GetLiveness request. The method always
@@ -355,8 +355,8 @@ func (client MachinesClient) ListByWorkspacePreparer(ctx context.Context, resour
 // ListByWorkspaceSender sends the ListByWorkspace request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByWorkspaceResponder handles the response to the ListByWorkspace request. The method always
@@ -497,8 +497,8 @@ func (client MachinesClient) ListConnectionsPreparer(ctx context.Context, resour
 // ListConnectionsSender sends the ListConnections request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) ListConnectionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListConnectionsResponder handles the response to the ListConnections request. The method always
@@ -640,8 +640,8 @@ func (client MachinesClient) ListMachineGroupMembershipPreparer(ctx context.Cont
 // ListMachineGroupMembershipSender sends the ListMachineGroupMembership request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) ListMachineGroupMembershipSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMachineGroupMembershipResponder handles the response to the ListMachineGroupMembership request. The method always
@@ -782,8 +782,8 @@ func (client MachinesClient) ListPortsPreparer(ctx context.Context, resourceGrou
 // ListPortsSender sends the ListPorts request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) ListPortsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListPortsResponder handles the response to the ListPorts request. The method always
@@ -942,8 +942,8 @@ func (client MachinesClient) ListProcessesPreparer(ctx context.Context, resource
 // ListProcessesSender sends the ListProcesses request. The method will close the
 // http.Response Body if it receives an error.
 func (client MachinesClient) ListProcessesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListProcessesResponder handles the response to the ListProcesses request. The method always

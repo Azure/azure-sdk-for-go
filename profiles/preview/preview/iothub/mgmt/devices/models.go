@@ -87,6 +87,13 @@ const (
 	Invalid       IotHubNameUnavailabilityReason = original.Invalid
 )
 
+type IotHubReplicaRoleType = original.IotHubReplicaRoleType
+
+const (
+	Primary   IotHubReplicaRoleType = original.Primary
+	Secondary IotHubReplicaRoleType = original.Secondary
+)
+
 type IotHubScaleType = original.IotHubScaleType
 
 const (
@@ -199,6 +206,7 @@ type IotHubDescription = original.IotHubDescription
 type IotHubDescriptionListResult = original.IotHubDescriptionListResult
 type IotHubDescriptionListResultIterator = original.IotHubDescriptionListResultIterator
 type IotHubDescriptionListResultPage = original.IotHubDescriptionListResultPage
+type IotHubLocationDescription = original.IotHubLocationDescription
 type IotHubManualFailoverFuture = original.IotHubManualFailoverFuture
 type IotHubNameAvailabilityInfo = original.IotHubNameAvailabilityInfo
 type IotHubProperties = original.IotHubProperties
@@ -362,6 +370,9 @@ func PossibleIPFilterActionTypeValues() []IPFilterActionType {
 }
 func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityReason {
 	return original.PossibleIotHubNameUnavailabilityReasonValues()
+}
+func PossibleIotHubReplicaRoleTypeValues() []IotHubReplicaRoleType {
+	return original.PossibleIotHubReplicaRoleTypeValues()
 }
 func PossibleIotHubScaleTypeValues() []IotHubScaleType {
 	return original.PossibleIotHubScaleTypeValues()

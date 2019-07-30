@@ -491,6 +491,35 @@ func doAzureCalls() {
 }
 ```
 
+## Request Retry Policy
+
+The SDK provides a baked in retry policy for failed requests with default values that can be configured.
+Each [client](https://godoc.org/github.com/Azure/go-autorest/autorest#Client) object contains the follow fields.
+- `RetryAttempts` - the number of times to retry a failed request
+- `RetryDuration` - the duration to wait between retries
+
+For async operations the follow values are also used.
+- `PollingDelay` - the duration to wait between polling requests
+- `PollingDuration` - the total time to poll an async request before timing out
+
+Please see the [documentation](https://godoc.org/github.com/Azure/go-autorest/autorest#pkg-constants) for the default values used.
+
+Changing one or more values will affect all subsequet API calls.
+
+The default policy is to call `autorest.DoRetryForStatusCodes()` from an API's `Sender` method.  Example:
+```go
+func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+    return autorest.SendWithSender(client, req,
+        autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+```
+
+Details on how `autorest.DoRetryforStatusCodes()` works can be found in the [documentation](https://godoc.org/github.com/Azure/go-autorest/autorest#DoRetryForStatusCodes).
+
+It is not possible to change the invoked retry policy without writing a custom `Sender` and its calling code.
+
+The `PollingDelay` and `PollingDuration` values are used exclusively by [WaitForCompletionRef()](https://godoc.org/github.com/Azure/go-autorest/autorest/azure#Future.WaitForCompletionRef) when blocking on an async call until it completes.
+
 # Resources
 
 - SDK docs are at [godoc.org](https://godoc.org/github.com/Azure/azure-sdk-for-go/).

@@ -106,8 +106,8 @@ func (client StartContainerClient) LaunchExecPreparer(ctx context.Context, resou
 // LaunchExecSender sends the LaunchExec request. The method will close the
 // http.Response Body if it receives an error.
 func (client StartContainerClient) LaunchExecSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // LaunchExecResponder handles the response to the LaunchExec request. The method always

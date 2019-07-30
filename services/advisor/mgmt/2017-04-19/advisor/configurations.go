@@ -101,8 +101,8 @@ func (client ConfigurationsClient) CreateInResourceGroupPreparer(ctx context.Con
 // CreateInResourceGroupSender sends the CreateInResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationsClient) CreateInResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateInResourceGroupResponder handles the response to the CreateInResourceGroup request. The method always
@@ -178,8 +178,8 @@ func (client ConfigurationsClient) CreateInSubscriptionPreparer(ctx context.Cont
 // CreateInSubscriptionSender sends the CreateInSubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationsClient) CreateInSubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateInSubscriptionResponder handles the response to the CreateInSubscription request. The method always
@@ -253,8 +253,8 @@ func (client ConfigurationsClient) ListByResourceGroupPreparer(ctx context.Conte
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -327,8 +327,8 @@ func (client ConfigurationsClient) ListBySubscriptionPreparer(ctx context.Contex
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
 func (client ConfigurationsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always

@@ -108,8 +108,8 @@ func (client MeshCodePackageClient) GetContainerLogsPreparer(ctx context.Context
 // GetContainerLogsSender sends the GetContainerLogs request. The method will close the
 // http.Response Body if it receives an error.
 func (client MeshCodePackageClient) GetContainerLogsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetContainerLogsResponder handles the response to the GetContainerLogs request. The method always

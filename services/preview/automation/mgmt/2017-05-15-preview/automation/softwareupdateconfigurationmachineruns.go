@@ -119,8 +119,8 @@ func (client SoftwareUpdateConfigurationMachineRunsClient) GetByIDPreparer(ctx c
 // GetByIDSender sends the GetByID request. The method will close the
 // http.Response Body if it receives an error.
 func (client SoftwareUpdateConfigurationMachineRunsClient) GetByIDSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetByIDResponder handles the response to the GetByID request. The method always
@@ -222,8 +222,8 @@ func (client SoftwareUpdateConfigurationMachineRunsClient) ListPreparer(ctx cont
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client SoftwareUpdateConfigurationMachineRunsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always

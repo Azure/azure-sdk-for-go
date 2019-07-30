@@ -95,8 +95,8 @@ func (client ListClient) OperationsPreparer(ctx context.Context) (*http.Request,
 // OperationsSender sends the Operations request. The method will close the
 // http.Response Body if it receives an error.
 func (client ListClient) OperationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // OperationsResponder handles the response to the Operations request. The method always

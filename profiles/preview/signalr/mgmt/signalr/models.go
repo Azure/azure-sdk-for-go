@@ -61,6 +61,7 @@ const (
 
 type BaseClient = original.BaseClient
 type Client = original.Client
+type CorsSettings = original.CorsSettings
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type CreateOrUpdateProperties = original.CreateOrUpdateProperties
 type CreateParameters = original.CreateParameters

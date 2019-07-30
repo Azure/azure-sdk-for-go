@@ -1,6 +1,7 @@
 # Change Log
 
 ## `head`
+- add retry when Sender fails to recover
 
 ## `v0.9.1`
 - bump common version to v2.1.0

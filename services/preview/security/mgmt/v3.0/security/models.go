@@ -4567,8 +4567,6 @@ type IoTSecurityDeviceRecommendation struct {
 type IoTSecurityDeviceRecommendationsList struct {
 	// Value - List of aggregated recommendation data
 	Value *[]IoTSecurityDeviceRecommendation `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // IoTSecuritySolutionAnalyticsModel security Analytics of a security solution

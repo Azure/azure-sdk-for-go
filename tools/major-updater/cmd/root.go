@@ -30,8 +30,6 @@ var initialDir string
 var pattern *regexp.Regexp
 var majorVersion int
 
-
-
 var rootCmd = &cobra.Command{
 	Use:   "major-updater <SDK dir> <specification dir>",
 	Short: "Do a whole procedure of monthly regular major update",
@@ -41,7 +39,7 @@ var rootCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		err := theCommand(args)
-		restoreDirAndBranch()
+		restoreDir()
 		return err
 	},
 }
@@ -91,13 +89,8 @@ func createNewBranch(wt repo.WorkingTree, name string) error {
 	return err
 }
 
-func restoreDirAndBranch() {
-	if err := changeDir(initialDir); err != nil {
-		return
-	}
-	if wt, err := repo.Get(initialDir); err == nil {
-		wt.Checkout(initialBranch)
-	}
+func restoreDir() {
+	changeDir(initialDir)
 }
 
 func changeDir(path string) error {

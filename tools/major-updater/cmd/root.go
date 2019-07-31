@@ -39,7 +39,6 @@ var rootCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		err := theCommand(args)
-		restoreDir()
 		return err
 	},
 }
@@ -87,10 +86,6 @@ func createNewBranch(wt repo.WorkingTree, name string) error {
 	vprintf("creating branch %s\n", name)
 	err := wt.CreateAndCheckout(name)
 	return err
-}
-
-func restoreDir() {
-	changeDir(initialDir)
 }
 
 func changeDir(path string) error {

@@ -10,7 +10,7 @@ import (
 )
 
 var updateSpecsCmd = &cobra.Command{
-	Use:   "updateSpec",
+	Use:   "updateSpec <spec dir>",
 	Short: "Update the specs repo on master branch",
 	Long: `This command will change the working directory to the specs folder,
 	checkout to master branch and update it`,
@@ -29,7 +29,7 @@ func init() {
 }
 
 func theUpdateSpecsCommand(spec string) error {
-	println("Updating specs repo...")
+	vprintln("Updating specs repo...")
 	absolutePathOfSpec, err := filepath.Abs(spec)
 	if err != nil {
 		return fmt.Errorf("failed to get the directory of specs: %v", err)
@@ -46,11 +46,12 @@ func theUpdateSpecsCommand(spec string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get the working tree: %v", err)
 	}
-	vprintf("Checking out to master branch in %s\n", cwd)
+	vprintf("Checking out to %s branch in %s\n", master, cwd)
 	err = wt.Checkout(master)
 	if err != nil {
 		return fmt.Errorf("checkout failed: %v", err)
 	}
+	vprintf("Pulling %s branch in %s\n", master, cwd)
 	err = wt.Pull(specUpstream, master)
 	if err != nil {
 		return fmt.Errorf("pull failed: %v", err)

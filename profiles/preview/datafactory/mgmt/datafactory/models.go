@@ -717,6 +717,7 @@ const (
 	TypeAzureBlobFSSource              TypeBasicCopySource = original.TypeAzureBlobFSSource
 	TypeAzureDataExplorerSource        TypeBasicCopySource = original.TypeAzureDataExplorerSource
 	TypeAzureDataLakeStoreSource       TypeBasicCopySource = original.TypeAzureDataLakeStoreSource
+	TypeAzureMariaDBSource             TypeBasicCopySource = original.TypeAzureMariaDBSource
 	TypeAzureMySQLSource               TypeBasicCopySource = original.TypeAzureMySQLSource
 	TypeAzurePostgreSQLSource          TypeBasicCopySource = original.TypeAzurePostgreSQLSource
 	TypeAzureSQLSource                 TypeBasicCopySource = original.TypeAzureSQLSource
@@ -806,6 +807,7 @@ const (
 	TypeAzureBlobFSFile                TypeBasicDataset = original.TypeAzureBlobFSFile
 	TypeAzureDataExplorerTable         TypeBasicDataset = original.TypeAzureDataExplorerTable
 	TypeAzureDataLakeStoreFile         TypeBasicDataset = original.TypeAzureDataLakeStoreFile
+	TypeAzureMariaDBTable              TypeBasicDataset = original.TypeAzureMariaDBTable
 	TypeAzureMySQLTable                TypeBasicDataset = original.TypeAzureMySQLTable
 	TypeAzurePostgreSQLTable           TypeBasicDataset = original.TypeAzurePostgreSQLTable
 	TypeAzureSearchIndex               TypeBasicDataset = original.TypeAzureSearchIndex
@@ -952,6 +954,7 @@ const (
 	TypeAzureDataLakeStore       TypeBasicLinkedService = original.TypeAzureDataLakeStore
 	TypeAzureFunction            TypeBasicLinkedService = original.TypeAzureFunction
 	TypeAzureKeyVault            TypeBasicLinkedService = original.TypeAzureKeyVault
+	TypeAzureMariaDB             TypeBasicLinkedService = original.TypeAzureMariaDB
 	TypeAzureML                  TypeBasicLinkedService = original.TypeAzureML
 	TypeAzureMySQL               TypeBasicLinkedService = original.TypeAzureMySQL
 	TypeAzurePostgreSQL          TypeBasicLinkedService = original.TypeAzurePostgreSQL
@@ -1159,6 +1162,10 @@ type AzureMLLinkedServiceTypeProperties = original.AzureMLLinkedServiceTypePrope
 type AzureMLUpdateResourceActivity = original.AzureMLUpdateResourceActivity
 type AzureMLUpdateResourceActivityTypeProperties = original.AzureMLUpdateResourceActivityTypeProperties
 type AzureMLWebServiceFile = original.AzureMLWebServiceFile
+type AzureMariaDBLinkedService = original.AzureMariaDBLinkedService
+type AzureMariaDBLinkedServiceTypeProperties = original.AzureMariaDBLinkedServiceTypeProperties
+type AzureMariaDBSource = original.AzureMariaDBSource
+type AzureMariaDBTableDataset = original.AzureMariaDBTableDataset
 type AzureMySQLLinkedService = original.AzureMySQLLinkedService
 type AzureMySQLLinkedServiceTypeProperties = original.AzureMySQLLinkedServiceTypeProperties
 type AzureMySQLSource = original.AzureMySQLSource

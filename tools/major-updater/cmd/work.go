@@ -30,11 +30,11 @@ func worker(id int, jobs <-chan work, results chan<- error) {
 		start := time.Now()
 		vprintf("worker %d is starting on file %s\n", id, work.filename)
 		c := autorestCommand(work.filename, work.sdkFolder)
-		err := c.Run()
+		output, err := c.CombinedOutput()
 		if err == nil {
 			vprintf("worker %d has done with file %s (%v)\n", id, work.filename, time.Since(start))
 		} else {
-			printf("worker %d fails with file %s (%v), error messages:\n%v\n", id, work.filename, time.Since(start), err)
+			printf("worker %d fails with file %s (%v), error messages:\n%v\n", id, work.filename, time.Since(start), string(output))
 		}
 		results <- err
 	}

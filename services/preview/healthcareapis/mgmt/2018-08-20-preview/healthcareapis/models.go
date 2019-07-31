@@ -327,7 +327,7 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
-	// Kind - The kind of the service. Valid values are: fhir. Possible values include: 'Fhir', 'FhirStu3', 'FhirR4'
+	// Kind - The kind of the service. Valid values are: fhir, fhir-Stu3 and fhir-R4. Possible values include: 'Fhir', 'FhirStu3', 'FhirR4'
 	Kind Kind `json:"kind,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`
@@ -454,7 +454,7 @@ type ServicesDescription struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
-	// Kind - The kind of the service. Valid values are: fhir. Possible values include: 'Fhir', 'FhirStu3', 'FhirR4'
+	// Kind - The kind of the service. Valid values are: fhir, fhir-Stu3 and fhir-R4. Possible values include: 'Fhir', 'FhirStu3', 'FhirR4'
 	Kind Kind `json:"kind,omitempty"`
 	// Location - The resource location.
 	Location *string `json:"location,omitempty"`

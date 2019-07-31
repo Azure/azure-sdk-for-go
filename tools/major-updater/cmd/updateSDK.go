@@ -30,7 +30,7 @@ func init() {
 }
 
 func theUpdateSDKCommand(sdk string) error {
-	vprintln("Updating SDK repo...")
+	println("Updating SDK repo...")
 	absolutePathOfSDK, err := filepath.Abs(sdk)
 	if err != nil {
 		return fmt.Errorf("failed to get the directory of SDK: %v", err)
@@ -64,7 +64,8 @@ func theUpdateSDKCommand(sdk string) error {
 		return fmt.Errorf("pull failed: %v", err)
 	}
 	vprintf("Checking out to new branch based on %s", latest)
-	err = createNewBranch(wt)
+	branchName := fmt.Sprintf(branchPattern, majorVersion)
+	err = createNewBranch(wt, branchName)
 	if err != nil {
 		return fmt.Errorf("checkout failed: %v", err)
 	}

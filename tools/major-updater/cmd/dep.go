@@ -23,7 +23,7 @@ func init() {
 }
 
 func theDepCommand() error {
-	vprintln("Executing dep...")
+	println("Executing dep ensure...")
 	depArgs := "ensure -update"
 	if verboseFlag {
 		depArgs += "-v"

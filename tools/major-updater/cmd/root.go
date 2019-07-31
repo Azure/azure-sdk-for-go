@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
@@ -30,8 +29,8 @@ var initialBranch string
 var initialDir string
 var pattern *regexp.Regexp
 var majorVersion int
-var absolutePathOfSDK string
-var absolutePathOfSpecs string
+// var absolutePathOfSDK string
+// var absolutePathOfSpecs string
 
 var rootCmd = &cobra.Command{
 	Use:   "major-updater <SDK dir> <specification dir>",
@@ -67,33 +66,33 @@ func theCommand(args []string) error {
 	sdkDir := args[0]
 	specsDir := args[1]
 	var err error
-	absolutePathOfSDK, err = filepath.Abs(sdkDir)
-	if err != nil {
-		return fmt.Errorf("failed to get the directory of SDK: %v", err)
-	}
-	absolutePathOfSpecs, err = filepath.Abs(specsDir)
-	if err != nil {
-		return fmt.Errorf("failed to get the directory of specs: %v", err)
-	}
-	vprintf("SDK directory: %s\nSpecifications directory: %s\n", absolutePathOfSDK, absolutePathOfSpecs)
+	// absolutePathOfSDK, err = filepath.Abs(sdkDir)
+	// if err != nil {
+	// 	return fmt.Errorf("failed to get the directory of SDK: %v", err)
+	// }
+	// absolutePathOfSpecs, err = filepath.Abs(specsDir)
+	// if err != nil {
+	// 	return fmt.Errorf("failed to get the directory of specs: %v", err)
+	// }
+	// vprintf("SDK directory: %s\nSpecifications directory: %s\n", absolutePathOfSDK, absolutePathOfSpecs)
 	initialDir, err = os.Getwd()
 	if err != nil {
 		return fmt.Errorf("failed to get the initial working directory: %v", err)
 	}
-	err = changeDir(absolutePathOfSDK)
-	if err != nil {
-		return fmt.Errorf("cannot change dir to SDK folder: %v", err)
-	}
+	// err = changeDir(absolutePathOfSDK)
+	// if err != nil {
+	// 	return fmt.Errorf("cannot change dir to SDK folder: %v", err)
+	// }
 	if err = theDepCommand(); err != nil {
 		return fmt.Errorf("failed to run dep: %v", err)
 	}
-	if err = theUpdateSDKCommand(absolutePathOfSDK); err != nil {
+	if err = theUpdateSDKCommand(sdkDir); err != nil {
 		return fmt.Errorf("failed to update SDK repo: %v", err)
 	}
-	if err = theUpdateSpecsCommand(absolutePathOfSpecs); err != nil {
+	if err = theUpdateSpecsCommand(specsDir); err != nil {
 		return fmt.Errorf("failed to update specs repo: %v", err)
 	}
-	if err = theAutorestCommand(absolutePathOfSDK, absolutePathOfSpecs); err != nil {
+	if err = theAutorestCommand(sdkDir, specsDir); err != nil {
 		return fmt.Errorf("failed to execute autorest: %v", err)
 	}
 	return nil

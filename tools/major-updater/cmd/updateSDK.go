@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"path/filepath"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 	"github.com/spf13/cobra"
@@ -30,6 +31,14 @@ func init() {
 
 func theUpdateSDKCommand(sdk string) error {
 	vprintln("Updating SDK repo...")
+	absolutePathOfSDK, err := filepath.Abs(sdk)
+	if err != nil {
+		return fmt.Errorf("failed to get the directory of SDK: %v", err)
+	}
+	err = changeDir(absolutePathOfSDK)
+	if err != nil {
+		return fmt.Errorf("failed to change directory to %s: %v", absolutePathOfSDK, err)
+	}
 	cwd, err := os.Getwd()
 	if err != nil {
 		return fmt.Errorf("failed to get the current working directory: %v", err)

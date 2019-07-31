@@ -4529,8 +4529,6 @@ type IoTSecurityAlertedDevice struct {
 type IoTSecurityAlertedDevicesList struct {
 	// Value - List of aggregated alerts data
 	Value *[]IoTSecurityAlertedDevice `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // IoTSecurityDeviceAlert statistic information about the number of alerts per alert type during the last
@@ -4567,8 +4565,6 @@ type IoTSecurityDeviceRecommendation struct {
 type IoTSecurityDeviceRecommendationsList struct {
 	// Value - List of aggregated recommendation data
 	Value *[]IoTSecurityDeviceRecommendation `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // IoTSecuritySolutionAnalyticsModel security Analytics of a security solution

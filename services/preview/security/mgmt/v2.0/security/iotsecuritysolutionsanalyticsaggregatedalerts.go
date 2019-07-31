@@ -26,22 +26,22 @@ import (
 	"net/http"
 )
 
-// IoTSecuritySolutionsAnalyticsRecommendationsClient is the API spec for Microsoft.Security (Azure Security Center)
+// IoTSecuritySolutionsAnalyticsAggregatedAlertsClient is the API spec for Microsoft.Security (Azure Security Center)
 // resource provider
-type IoTSecuritySolutionsAnalyticsRecommendationsClient struct {
+type IoTSecuritySolutionsAnalyticsAggregatedAlertsClient struct {
 	BaseClient
 }
 
-// NewIoTSecuritySolutionsAnalyticsRecommendationsClient creates an instance of the
-// IoTSecuritySolutionsAnalyticsRecommendationsClient client.
-func NewIoTSecuritySolutionsAnalyticsRecommendationsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationsClient {
-	return NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+// NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient creates an instance of the
+// IoTSecuritySolutionsAnalyticsAggregatedAlertsClient client.
+func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
+	return NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
-// NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI creates an instance of the
-// IoTSecuritySolutionsAnalyticsRecommendationsClient client.
-func NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationsClient {
-	return IoTSecuritySolutionsAnalyticsRecommendationsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+// NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI creates an instance of the
+// IoTSecuritySolutionsAnalyticsAggregatedAlertsClient client.
+func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
+	return IoTSecuritySolutionsAnalyticsAggregatedAlertsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // List security Analytics of a security solution
@@ -50,13 +50,13 @@ func NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(baseURI st
 // insensitive.
 // solutionName - the solution manager name
 // top - the number of results to retrieve.
-func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) List(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result IoTSecurityAggregatedRecommendationListPage, err error) {
+func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) List(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result IoTSecurityAggregatedAlertListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsAnalyticsRecommendationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsAnalyticsAggregatedAlertsClient.List")
 		defer func() {
 			sc := -1
-			if result.itsarl.Response.Response != nil {
-				sc = result.itsarl.Response.Response.StatusCode
+			if result.itsaal.Response.Response != nil {
+				sc = result.itsaal.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -68,40 +68,40 @@ func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) List(ctx contex
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.IoTSecuritySolutionsAnalyticsRecommendationsClient", "List", err.Error())
+		return result, validation.NewError("security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, solutionName, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsRecommendationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.itsarl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsRecommendationsClient", "List", resp, "Failure sending request")
+		result.itsaal.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.itsarl, err = client.ListResponder(resp)
+	result.itsaal, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsRecommendationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) ListPreparer(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (*http.Request, error) {
+func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) ListPreparer(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"solutionName":      autorest.Encode("path", solutionName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-08-01"
+	const APIVersion = "2017-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -112,21 +112,21 @@ func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) ListPreparer(ct
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedRecommendations", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default/aggregatedAlerts", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) ListResponder(resp *http.Response) (result IoTSecurityAggregatedRecommendationList, err error) {
+func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) ListResponder(resp *http.Response) (result IoTSecurityAggregatedAlertList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -138,10 +138,10 @@ func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) ListResponder(r
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) listNextResults(ctx context.Context, lastResults IoTSecurityAggregatedRecommendationList) (result IoTSecurityAggregatedRecommendationList, err error) {
-	req, err := lastResults.ioTSecurityAggregatedRecommendationListPreparer(ctx)
+func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) listNextResults(ctx context.Context, lastResults IoTSecurityAggregatedAlertList) (result IoTSecurityAggregatedAlertList, err error) {
+	req, err := lastResults.ioTSecurityAggregatedAlertListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsRecommendationsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -149,19 +149,19 @@ func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) listNextResults
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsRecommendationsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsRecommendationsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) ListComplete(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result IoTSecurityAggregatedRecommendationListIterator, err error) {
+func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) ListComplete(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result IoTSecurityAggregatedAlertListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsAnalyticsRecommendationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsAnalyticsAggregatedAlertsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

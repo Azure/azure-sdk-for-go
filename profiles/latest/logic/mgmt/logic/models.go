@@ -43,7 +43,6 @@ const (
 	AgreementTypeAS2          AgreementType = original.AgreementTypeAS2
 	AgreementTypeEdifact      AgreementType = original.AgreementTypeEdifact
 	AgreementTypeNotSpecified AgreementType = original.AgreementTypeNotSpecified
-	AgreementTypeRosettaNet   AgreementType = original.AgreementTypeRosettaNet
 	AgreementTypeX12          AgreementType = original.AgreementTypeX12
 )
 
@@ -214,14 +213,6 @@ const (
 	RosettaNetActionTypeDoubleAction RosettaNetActionType = original.RosettaNetActionTypeDoubleAction
 	RosettaNetActionTypeNotSpecified RosettaNetActionType = original.RosettaNetActionTypeNotSpecified
 	RosettaNetActionTypeSingleAction RosettaNetActionType = original.RosettaNetActionTypeSingleAction
-)
-
-type RosettaNetMessageEncodingFlags = original.RosettaNetMessageEncodingFlags
-
-const (
-	RosettaNetMessageEncodingFlagsAllParts     RosettaNetMessageEncodingFlags = original.RosettaNetMessageEncodingFlagsAllParts
-	RosettaNetMessageEncodingFlagsAttachments  RosettaNetMessageEncodingFlags = original.RosettaNetMessageEncodingFlagsAttachments
-	RosettaNetMessageEncodingFlagsNotSpecified RosettaNetMessageEncodingFlags = original.RosettaNetMessageEncodingFlagsNotSpecified
 )
 
 type RosettaNetPipActivityType = original.RosettaNetPipActivityType
@@ -583,16 +574,12 @@ type Resource = original.Resource
 type ResourceReference = original.ResourceReference
 type Response = original.Response
 type RetryHistory = original.RetryHistory
-type RosettaNetAgreementContent = original.RosettaNetAgreementContent
-type RosettaNetEndpoints = original.RosettaNetEndpoints
-type RosettaNetOneWayAgreement = original.RosettaNetOneWayAgreement
 type RosettaNetPipAcknowledgmentOfReceiptSettings = original.RosettaNetPipAcknowledgmentOfReceiptSettings
 type RosettaNetPipActivityBehavior = original.RosettaNetPipActivityBehavior
 type RosettaNetPipActivitySettings = original.RosettaNetPipActivitySettings
 type RosettaNetPipBusinessDocument = original.RosettaNetPipBusinessDocument
 type RosettaNetPipRoleSettings = original.RosettaNetPipRoleSettings
 type RosettaNetProcessConfigurationsClient = original.RosettaNetProcessConfigurationsClient
-type RosettaNetProtocolSettings = original.RosettaNetProtocolSettings
 type RunActionCorrelation = original.RunActionCorrelation
 type RunCorrelation = original.RunCorrelation
 type SchemasClient = original.SchemasClient
@@ -956,9 +943,6 @@ func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
 }
 func PossibleRosettaNetActionTypeValues() []RosettaNetActionType {
 	return original.PossibleRosettaNetActionTypeValues()
-}
-func PossibleRosettaNetMessageEncodingFlagsValues() []RosettaNetMessageEncodingFlags {
-	return original.PossibleRosettaNetMessageEncodingFlagsValues()
 }
 func PossibleRosettaNetPipActivityTypeValues() []RosettaNetPipActivityType {
 	return original.PossibleRosettaNetPipActivityTypeValues()

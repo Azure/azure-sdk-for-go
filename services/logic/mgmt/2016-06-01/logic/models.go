@@ -57,15 +57,13 @@ const (
 	AgreementTypeEdifact AgreementType = "Edifact"
 	// AgreementTypeNotSpecified ...
 	AgreementTypeNotSpecified AgreementType = "NotSpecified"
-	// AgreementTypeRosettaNet ...
-	AgreementTypeRosettaNet AgreementType = "RosettaNet"
 	// AgreementTypeX12 ...
 	AgreementTypeX12 AgreementType = "X12"
 )
 
 // PossibleAgreementTypeValues returns an array of possible values for the AgreementType const type.
 func PossibleAgreementTypeValues() []AgreementType {
-	return []AgreementType{AgreementTypeAS2, AgreementTypeEdifact, AgreementTypeNotSpecified, AgreementTypeRosettaNet, AgreementTypeX12}
+	return []AgreementType{AgreementTypeAS2, AgreementTypeEdifact, AgreementTypeNotSpecified, AgreementTypeX12}
 }
 
 // DayOfWeek enumerates the values for day of week.
@@ -420,23 +418,6 @@ const (
 // PossibleRosettaNetActionTypeValues returns an array of possible values for the RosettaNetActionType const type.
 func PossibleRosettaNetActionTypeValues() []RosettaNetActionType {
 	return []RosettaNetActionType{RosettaNetActionTypeDoubleAction, RosettaNetActionTypeNotSpecified, RosettaNetActionTypeSingleAction}
-}
-
-// RosettaNetMessageEncodingFlags enumerates the values for rosetta net message encoding flags.
-type RosettaNetMessageEncodingFlags string
-
-const (
-	// RosettaNetMessageEncodingFlagsAllParts ...
-	RosettaNetMessageEncodingFlagsAllParts RosettaNetMessageEncodingFlags = "AllParts"
-	// RosettaNetMessageEncodingFlagsAttachments ...
-	RosettaNetMessageEncodingFlagsAttachments RosettaNetMessageEncodingFlags = "Attachments"
-	// RosettaNetMessageEncodingFlagsNotSpecified ...
-	RosettaNetMessageEncodingFlagsNotSpecified RosettaNetMessageEncodingFlags = "NotSpecified"
-)
-
-// PossibleRosettaNetMessageEncodingFlagsValues returns an array of possible values for the RosettaNetMessageEncodingFlags const type.
-func PossibleRosettaNetMessageEncodingFlagsValues() []RosettaNetMessageEncodingFlags {
-	return []RosettaNetMessageEncodingFlags{RosettaNetMessageEncodingFlagsAllParts, RosettaNetMessageEncodingFlagsAttachments, RosettaNetMessageEncodingFlagsNotSpecified}
 }
 
 // RosettaNetPipActivityType enumerates the values for rosetta net pip activity type.
@@ -922,8 +903,6 @@ type AgreementContent struct {
 	X12 *X12AgreementContent `json:"x12,omitempty"`
 	// Edifact - The EDIFACT agreement content.
 	Edifact *EdifactAgreementContent `json:"edifact,omitempty"`
-	// Rosettanet - The RosettaNet agreement content.
-	Rosettanet *RosettaNetAgreementContent `json:"rosettanet,omitempty"`
 }
 
 // ArtifactContentPropertiesDefinition the artifact content properties definition.
@@ -1811,7 +1790,7 @@ func (iaa *IntegrationAccountAgreement) UnmarshalJSON(body []byte) error {
 
 // IntegrationAccountAgreementFilter the integration account agreement filter for odata query.
 type IntegrationAccountAgreementFilter struct {
-	// AgreementType - The agreement type of integration account agreement. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact', 'AgreementTypeRosettaNet'
+	// AgreementType - The agreement type of integration account agreement. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 }
 
@@ -1970,7 +1949,7 @@ type IntegrationAccountAgreementProperties struct {
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
-	// AgreementType - The agreement type. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact', 'AgreementTypeRosettaNet'
+	// AgreementType - The agreement type. Possible values include: 'AgreementTypeNotSpecified', 'AgreementTypeAS2', 'AgreementTypeX12', 'AgreementTypeEdifact'
 	AgreementType AgreementType `json:"agreementType,omitempty"`
 	// HostPartner - The integration account partner that is set as host partner for this agreement.
 	HostPartner *string `json:"hostPartner,omitempty"`
@@ -3199,7 +3178,7 @@ type IntegrationAccountRosettaNetProcessConfigurationProperties struct {
 	// ChangedTime - READ-ONLY; The changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
-	Metadata interface{} `json:"metadata,omitempty"`
+	Metadata *string `json:"metadata,omitempty"`
 	// ActivitySettings - The RosettaNet process configuration activity settings.
 	ActivitySettings *RosettaNetPipActivitySettings `json:"activitySettings,omitempty"`
 	// ProcessCode - The integration account RosettaNet process code.
@@ -4352,34 +4331,6 @@ type RetryHistory struct {
 	Error *ErrorResponse `json:"error,omitempty"`
 }
 
-// RosettaNetAgreementContent the integration account RosettaNet agreement content.
-type RosettaNetAgreementContent struct {
-	// ReceiveAgreement - The RosettaNet one-way receive agreement.
-	ReceiveAgreement *RosettaNetOneWayAgreement `json:"receiveAgreement,omitempty"`
-	// SendAgreement - The RosettaNet one-way send agreement.
-	SendAgreement *RosettaNetOneWayAgreement `json:"sendAgreement,omitempty"`
-}
-
-// RosettaNetEndpoints the RosettaNet agreement endpoints.
-type RosettaNetEndpoints struct {
-	// ActionURI - The asynchronous action endpoint URL.
-	ActionURI *string `json:"actionUri,omitempty"`
-	// AcknowledgmentURI - The asynchronous acknowledgement endpoint URL.
-	AcknowledgmentURI *string `json:"acknowledgmentUri,omitempty"`
-	// SyncURI - The synchronous endpoint URL.
-	SyncURI *string `json:"syncUri,omitempty"`
-}
-
-// RosettaNetOneWayAgreement the integration account RosettaNet oneway agreement.
-type RosettaNetOneWayAgreement struct {
-	// SenderBusinessIdentity - The sender business identity
-	SenderBusinessIdentity *BusinessIdentity `json:"senderBusinessIdentity,omitempty"`
-	// ReceiverBusinessIdentity - The receiver business identity
-	ReceiverBusinessIdentity *BusinessIdentity `json:"receiverBusinessIdentity,omitempty"`
-	// ProtocolSettings - The RosettaNet protocol settings.
-	ProtocolSettings *RosettaNetProtocolSettings `json:"protocolSettings,omitempty"`
-}
-
 // RosettaNetPipAcknowledgmentOfReceiptSettings the integration account RosettaNet ProcessConfiguration
 // Acknowledgement settings.
 type RosettaNetPipAcknowledgmentOfReceiptSettings struct {
@@ -4445,28 +4396,6 @@ type RosettaNetPipRoleSettings struct {
 	BusinessDocument *RosettaNetPipBusinessDocument `json:"businessDocument,omitempty"`
 	// Description - The description.
 	Description *string `json:"description,omitempty"`
-}
-
-// RosettaNetProtocolSettings the RosettaNet agreement protocol settings.
-type RosettaNetProtocolSettings struct {
-	// EncryptMessage - The value indicating whether the message has to be encrypted.
-	EncryptMessage *bool `json:"encryptMessage,omitempty"`
-	// SignMessage - The value indicating whether the message has to be signed.
-	SignMessage *bool `json:"signMessage,omitempty"`
-	// MessageEncodingFlags - The value indicating whether encoding is used. Possible values include: 'RosettaNetMessageEncodingFlagsNotSpecified', 'RosettaNetMessageEncodingFlagsAllParts', 'RosettaNetMessageEncodingFlagsAttachments'
-	MessageEncodingFlags RosettaNetMessageEncodingFlags `json:"messageEncodingFlags,omitempty"`
-	// Encoding - The message encoding. Possible values include: 'MessageEncodingNotSpecified', 'MessageEncodingBase64', 'MessageEncodingEightBit', 'MessageEncodingQuotedPrintable'
-	Encoding MessageEncoding `json:"encoding,omitempty"`
-	// EncryptionAlgorithm - The encryption algorithm. Possible values include: 'EncryptionAlgorithmNotSpecified', 'EncryptionAlgorithmNone', 'EncryptionAlgorithmDES3', 'EncryptionAlgorithmRC2', 'EncryptionAlgorithmAES128', 'EncryptionAlgorithmAES192', 'EncryptionAlgorithmAES256'
-	EncryptionAlgorithm EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
-	// SigningAlgorithm - The signing algorithm. Possible values include: 'SigningAlgorithmNotSpecified', 'SigningAlgorithmDefault', 'SigningAlgorithmSHA1', 'SigningAlgorithmSHA2256', 'SigningAlgorithmSHA2384', 'SigningAlgorithmSHA2512'
-	SigningAlgorithm SigningAlgorithm `json:"signingAlgorithm,omitempty"`
-	// Endpoints - The RosettaNet agreement endpoint settings.
-	Endpoints *RosettaNetEndpoints `json:"endpoints,omitempty"`
-	// EncryptionCertificateName - The name of the encryption certificate.
-	EncryptionCertificateName *string `json:"encryptionCertificateName,omitempty"`
-	// NonRepudiationOfOriginInDays - The non-repudiation of origin in days.
-	NonRepudiationOfOriginInDays *int32 `json:"nonRepudiationOfOriginInDays,omitempty"`
 }
 
 // RunActionCorrelation the workflow run action correlation properties.

@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
@@ -80,6 +81,14 @@ func theCommand(args []string) error {
 		return fmt.Errorf("failed to execute autorest: %v", err)
 	}
 	return nil
+}
+
+func verboseStatus(sdk, spec string) {
+	if verboseFlag {
+		absSdk, _ := filepath.Abs(sdk)
+		absSpec, _ := filepath.Abs(spec)
+		vprintf("SDK directory: %s\nSpecification directory: %s\n", absSdk, absSpec)
+	}
 }
 
 func createNewBranch(wt repo.WorkingTree, name string) error {

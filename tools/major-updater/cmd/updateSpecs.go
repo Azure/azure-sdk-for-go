@@ -29,7 +29,7 @@ func init() {
 }
 
 func theUpdateSpecsCommand(spec string) error {
-	vprintln("Updating specs repo...")
+	println("Updating specs repo...")
 	absolutePathOfSpec, err := filepath.Abs(spec)
 	if err != nil {
 		return fmt.Errorf("failed to get the directory of specs: %v", err)

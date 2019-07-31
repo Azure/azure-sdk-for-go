@@ -29,8 +29,8 @@ var initialBranch string
 var initialDir string
 var pattern *regexp.Regexp
 var majorVersion int
-// var absolutePathOfSDK string
-// var absolutePathOfSpecs string
+
+
 
 var rootCmd = &cobra.Command{
 	Use:   "major-updater <SDK dir> <specification dir>",
@@ -66,28 +66,15 @@ func theCommand(args []string) error {
 	sdkDir := args[0]
 	specsDir := args[1]
 	var err error
-	// absolutePathOfSDK, err = filepath.Abs(sdkDir)
-	// if err != nil {
-	// 	return fmt.Errorf("failed to get the directory of SDK: %v", err)
-	// }
-	// absolutePathOfSpecs, err = filepath.Abs(specsDir)
-	// if err != nil {
-	// 	return fmt.Errorf("failed to get the directory of specs: %v", err)
-	// }
-	// vprintf("SDK directory: %s\nSpecifications directory: %s\n", absolutePathOfSDK, absolutePathOfSpecs)
 	initialDir, err = os.Getwd()
 	if err != nil {
 		return fmt.Errorf("failed to get the initial working directory: %v", err)
 	}
-	// err = changeDir(absolutePathOfSDK)
-	// if err != nil {
-	// 	return fmt.Errorf("cannot change dir to SDK folder: %v", err)
-	// }
-	if err = theDepCommand(); err != nil {
-		return fmt.Errorf("failed to run dep: %v", err)
-	}
 	if err = theUpdateSDKCommand(sdkDir); err != nil {
 		return fmt.Errorf("failed to update SDK repo: %v", err)
+	}
+	if err = theDepCommand(); err != nil {
+		return fmt.Errorf("failed to run dep: %v", err)
 	}
 	if err = theUpdateSpecsCommand(specsDir); err != nil {
 		return fmt.Errorf("failed to update specs repo: %v", err)
@@ -98,10 +85,9 @@ func theCommand(args []string) error {
 	return nil
 }
 
-func createNewBranch(wt repo.WorkingTree) error {
-	branchName := fmt.Sprintf(branchPattern, majorVersion)
-	vprintf("creating branch %s\n", branchName)
-	err := wt.CreateAndCheckout(branchName)
+func createNewBranch(wt repo.WorkingTree, name string) error {
+	vprintf("creating branch %s\n", name)
+	err := wt.CreateAndCheckout(name)
 	return err
 }
 

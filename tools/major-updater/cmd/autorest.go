@@ -29,7 +29,7 @@ func init() {
 }
 
 func theAutorestCommand(sdk, spec string) error {
-	vprintf("Executing autorest (%d threads)\n", thread)
+	printf("Executing autorest (%d threads)\n", thread)
 	err := os.Setenv("NODE_OPTIONS", "--max-old-space-size=8192")
 	if err != nil {
 		return fmt.Errorf("failed to set environment variable: %v", err)

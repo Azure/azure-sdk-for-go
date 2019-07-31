@@ -29,7 +29,7 @@ func init() {
 }
 
 func theAfterscriptsCommand(sdk string) error {
-	vprintln("Generating profiles...")
+	println("Generating profiles...")
 	absolutePathOfSDK, err := filepath.Abs(sdk)
 	if err != nil {
 		return fmt.Errorf("failed to get the directory of SDK: %v", err)

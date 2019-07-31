@@ -66,7 +66,11 @@ func theAutorestCommand(sdk, spec string) error {
 		go worker(i, jobs, results)
 	}
 	for _, file := range files {
-		jobs <- work{filename: file, sdkFolder: absolutePathOfSDK}
+		w := work{
+			filename: file,
+			sdkFolder: absolutePathOfSDK,
+		}
+		jobs <- w
 	}
 	close(jobs)
 	for range files {

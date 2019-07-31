@@ -77,35 +77,48 @@ func Execute() {
 func theCommand(args []string) error {
 	sdkDir := args[0]
 	specsDir := args[1]
-	verboseStatus(sdkDir, specsDir)
-	var err error
+	absSDK, absSpec, err := absPaths(sdkDir, specsDir)
+	if err != nil {
+		return err
+	}
+	verboseStatus(absSDK, absSpec)
 	initialDir, err = os.Getwd()
 	if err != nil {
 		return fmt.Errorf("failed to get the initial working directory: %v", err)
 	}
-	if err = theUpdateSDKCommand(sdkDir); err != nil {
+	if err = theUpdateSDKCommand(absSDK); err != nil {
 		return fmt.Errorf("failed to update SDK repo: %v", err)
 	}
 	if err = theDepCommand(); err != nil {
 		return fmt.Errorf("failed to run dep: %v", err)
 	}
-	if err = theUpdateSpecsCommand(specsDir); err != nil {
+	if err = theUpdateSpecsCommand(absSpec); err != nil {
 		return fmt.Errorf("failed to update specs repo: %v", err)
 	}
-	if err = theAutorestCommand(sdkDir, specsDir); err != nil {
+	if err = theAutorestCommand(absSDK, absSpec); err != nil {
 		return fmt.Errorf("failed to execute autorest: %v", err)
 	}
-	if err = theAfterscriptsCommand(sdkDir); err != nil {
+	if err = theAfterscriptsCommand(absSDK); err != nil {
 		return fmt.Errorf("failed to execute afterscripts: %v", err)
 	}
 	return nil
 }
 
+func absPaths(sdk, spec string) (string, string, error) {
+	absSDK, err := filepath.Abs(sdk)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to get directory of SDK: %v", err)
+	}
+	absSpec, err := filepath.Abs(spec)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to get directory of specification: %v", err)
+	}
+	return absSDK, absSpec, nil
+}  
+
 func verboseStatus(sdk, spec string) {
 	if verboseFlag {
-		absSdk, _ := filepath.Abs(sdk)
-		absSpec, _ := filepath.Abs(spec)
-		vprintf("SDK directory: %s\nSpecification directory: %s\n", absSdk, absSpec)
+		vprintf("SDK directory: %s\nSpecification directory: %s\n", sdk, spec)
 	}
 }
 

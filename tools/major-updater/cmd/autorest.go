@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -33,16 +34,25 @@ func theAutorestCommand(sdk, spec string) error {
 	if err != nil {
 		return fmt.Errorf("failed to set environment variable: %v", err)
 	}
+	// get absolute path
+	absolutePathOfSDK, err := filepath.Abs(sdk)
+	if err != nil {
+		return fmt.Errorf("failed to get the directory of SDK: %v", err)
+	}
+	absolutePathOfSpec, err := filepath.Abs(spec)
+	if err != nil {
+		return fmt.Errorf("failed to get the directory of specs: %v", err)
+	}
 	// get every single readme.md file in the directory
-	files, err := selectFilesWithName(absolutePathOfSpecs, readme)
+	files, err := selectFilesWithName(absolutePathOfSpec, readme)
 	vprintf("Found %d readme.md files\n", len(files))
-	jobs := make(chan string, 1000)
+	jobs := make(chan work, 1000)
 	results := make(chan error, 1000)
 	for i := 0; i < thread; i++ {
 		go worker(i, jobs, results)
 	}
 	for _, file := range files {
-		jobs <- file
+		jobs <- work{filename: file, sdkFolder: absolutePathOfSDK}
 	}
 	close(jobs)
 	for range files {

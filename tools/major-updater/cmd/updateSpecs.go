@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 	"github.com/spf13/cobra"
@@ -29,9 +30,13 @@ func init() {
 
 func theUpdateSpecsCommand(spec string) error {
 	vprintln("Updating specs repo...")
-	err := changeDir(spec)
+	absolutePathOfSpec, err := filepath.Abs(spec)
 	if err != nil {
-		return fmt.Errorf("failed to change directory to %s: %v", spec, err)
+		return fmt.Errorf("failed to get the directory of specs: %v", err)
+	}
+	err = changeDir(absolutePathOfSpec)
+	if err != nil {
+		return fmt.Errorf("failed to change directory to %s: %v", absolutePathOfSpec, err)
 	}
 	cwd, err := os.Getwd()
 	if err != nil {

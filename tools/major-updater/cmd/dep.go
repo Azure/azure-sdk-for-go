@@ -26,7 +26,7 @@ func theDepCommand() error {
 	println("Executing dep ensure...")
 	depArgs := "ensure -update"
 	if verboseFlag {
-		depArgs += "-v"
+		depArgs += " -v"
 	}
 	c := exec.Command("dep", strings.Split(depArgs, " ")...)
 	err := startCmd(c)

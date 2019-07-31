@@ -270,19 +270,20 @@ func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 type DiskCreateOption string
 
 const (
-	// Attach ...
+	// Attach Disk will be attached to a VM.
 	Attach DiskCreateOption = "Attach"
-	// Copy ...
+	// Copy Create a new disk by copying from a customer's managed disk or snapshot.
 	Copy DiskCreateOption = "Copy"
-	// Empty ...
+	// Empty Create a new disk with a given size.
 	Empty DiskCreateOption = "Empty"
-	// FromImage ...
+	// FromImage Create a new disk by importing from a PIR image or a customer's user image.
 	FromImage DiskCreateOption = "FromImage"
-	// Import ...
+	// Import Create a new disk by importing from a customer's blob. The blob must be formatted as a VHD.
 	Import DiskCreateOption = "Import"
-	// Restore ...
+	// Restore Create a new disk by restoring from a restore point.
 	Restore DiskCreateOption = "Restore"
-	// Upload ...
+	// Upload Create a new disk by customer upload using a write SAS to drectly write the contents of their
+	// disk to the blob. The contents must be formatted as a VHD.
 	Upload DiskCreateOption = "Upload"
 )
 
@@ -312,17 +313,18 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 type DiskState string
 
 const (
-	// ActiveSAS ...
+	// ActiveSAS The disk currently has an Active SAS Uri associated with it.
 	ActiveSAS DiskState = "ActiveSAS"
-	// ActiveUpload ...
+	// ActiveUpload The upload disk has an active write SAS associated with it.
 	ActiveUpload DiskState = "ActiveUpload"
-	// Attached ...
+	// Attached The disk is currently mounted to a running VM.
 	Attached DiskState = "Attached"
-	// ReadyToUpload ...
+	// ReadyToUpload The upload disk does not have an active write SAS, but the customer can request on to
+	// upload the VHD.
 	ReadyToUpload DiskState = "ReadyToUpload"
-	// Reserved ...
+	// Reserved The disk is mounted to a stopped-deallocated VM
 	Reserved DiskState = "Reserved"
-	// Unattached ...
+	// Unattached The disk is not being used and can be attached to a VM.
 	Unattached DiskState = "Unattached"
 )
 
@@ -335,13 +337,17 @@ func PossibleDiskStateValues() []DiskState {
 type DiskStorageAccountTypes string
 
 const (
-	// PremiumLRS ...
+	// PremiumLRS Premium SSD locally redundant storage. Best for production and performance sensitive
+	// workloads.
 	PremiumLRS DiskStorageAccountTypes = "Premium_LRS"
-	// StandardLRS ...
+	// StandardLRS Standard HDD locally redundant storage. Best for backup, non-critical, and infrequent
+	// access.
 	StandardLRS DiskStorageAccountTypes = "Standard_LRS"
-	// StandardSSDLRS ...
+	// StandardSSDLRS Standard SSD locally redundant storage. Best for web servers, lightly used enterprise
+	// applications and dev/test.
 	StandardSSDLRS DiskStorageAccountTypes = "StandardSSD_LRS"
-	// UltraSSDLRS ...
+	// UltraSSDLRS Ultra SSD locally redundant storage. Best for IO-intensive workloads such as SAP HANA, top
+	// tier databases (for example, SQL, Oracle), and other transaction-heavy workloads.
 	UltraSSDLRS DiskStorageAccountTypes = "UltraSSD_LRS"
 )
 
@@ -794,11 +800,11 @@ func PossibleSettingNamesValues() []SettingNames {
 type SnapshotStorageAccountTypes string
 
 const (
-	// SnapshotStorageAccountTypesPremiumLRS ...
+	// SnapshotStorageAccountTypesPremiumLRS Premium SSD locally redundant storage
 	SnapshotStorageAccountTypesPremiumLRS SnapshotStorageAccountTypes = "Premium_LRS"
-	// SnapshotStorageAccountTypesStandardLRS ...
+	// SnapshotStorageAccountTypesStandardLRS Standard HDD locally redundant storage
 	SnapshotStorageAccountTypesStandardLRS SnapshotStorageAccountTypes = "Standard_LRS"
-	// SnapshotStorageAccountTypesStandardZRS ...
+	// SnapshotStorageAccountTypesStandardZRS Standard zone redundant storage
 	SnapshotStorageAccountTypesStandardZRS SnapshotStorageAccountTypes = "Standard_ZRS"
 )
 
@@ -2165,6 +2171,10 @@ type CreationData struct {
 	SourceURI *string `json:"sourceUri,omitempty"`
 	// SourceResourceID - If createOption is Copy, this is the ARM id of the source snapshot or disk.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	// SourceUniqueID - READ-ONLY; If this field is set, this is the unique id identifying the source of this resource.
+	SourceUniqueID *string `json:"sourceUniqueId,omitempty"`
+	// UploadSizeBytes - If createOption is Upload, this is the size of the contents of the upload including the VHD footer. This value should be between 1073741824 (1 GiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32 TiB + 512 bytes for the VHD footer).
+	UploadSizeBytes *int64 `json:"uploadSizeBytes,omitempty"`
 }
 
 // DataDisk describes a data disk.
@@ -3309,6 +3319,8 @@ type DiskProperties struct {
 	CreationData *CreationData `json:"creationData,omitempty"`
 	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	// DiskSizeBytes - READ-ONLY; The size of the disk in bytes. This field is read only.
+	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used for Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 	// ProvisioningState - READ-ONLY; The disk provisioning state.
@@ -3531,6 +3543,8 @@ type DiskUpdateProperties struct {
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
 	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	// DiskSizeBytes - READ-ONLY; The size of the disk in bytes. This field is read only.
+	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 	// DiskIOPSReadWrite - The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k and 256k bytes.
@@ -3545,6 +3559,8 @@ type EncryptionSettingsCollection struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// EncryptionSettings - A collection of encryption settings, one for each disk volume.
 	EncryptionSettings *[]EncryptionSettingsElement `json:"encryptionSettings,omitempty"`
+	// EncryptionSettingsVersion - Describes what type of encryption is used for the disks. Once this field is set, it cannot be overwritten. '1.0' or Null corresponds to extension based encryption with AAD app. '1.1' corresponds to extension based encryption without AAD app. '2.0' corresponds to host based encryption.
+	EncryptionSettingsVersion *string `json:"encryptionSettingsVersion,omitempty"`
 }
 
 // EncryptionSettingsElement encryption settings for one disk volume.
@@ -7559,10 +7575,16 @@ type SnapshotProperties struct {
 	CreationData *CreationData `json:"creationData,omitempty"`
 	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	// DiskSizeBytes - READ-ONLY; The size of the disk in bytes. This field is read only.
+	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty"`
+	// UniqueID - READ-ONLY; Unique Guid identifying the resource.
+	UniqueID *string `json:"uniqueId,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 	// ProvisioningState - READ-ONLY; The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// Incremental - Whether a snapshot is incremental. Incremental snapshots on the same disk occupy less space than full snapshots and can be diffed.
+	Incremental *bool `json:"incremental,omitempty"`
 }
 
 // SnapshotsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -7777,6 +7799,8 @@ type SnapshotUpdateProperties struct {
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
 	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	// DiskSizeBytes - READ-ONLY; The size of the disk in bytes. This field is read only.
+	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 }

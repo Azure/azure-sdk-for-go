@@ -4529,8 +4529,6 @@ type IoTSecurityAlertedDevice struct {
 type IoTSecurityAlertedDevicesList struct {
 	// Value - List of aggregated alerts data
 	Value *[]IoTSecurityAlertedDevice `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // IoTSecurityDeviceAlert statistic information about the number of alerts per alert type during the last

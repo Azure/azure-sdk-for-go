@@ -282,7 +282,7 @@ const (
 	Import DiskCreateOption = "Import"
 	// Restore Create a new disk by restoring from a restore point.
 	Restore DiskCreateOption = "Restore"
-	// Upload Create a new disk by customer upload using a write SAS to drectly write the contents of their
+	// Upload Create a new disk by customer upload using a write SAS to directly write the contents of their
 	// disk to the blob. The contents must be formatted as a VHD.
 	Upload DiskCreateOption = "Upload"
 )

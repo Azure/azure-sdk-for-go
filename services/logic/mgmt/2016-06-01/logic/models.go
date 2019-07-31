@@ -3178,7 +3178,7 @@ type IntegrationAccountRosettaNetProcessConfigurationProperties struct {
 	// ChangedTime - READ-ONLY; The changed time.
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Metadata - The metadata.
-	Metadata *string `json:"metadata,omitempty"`
+	Metadata map[string]*string `json:"metadata"`
 	// ActivitySettings - The RosettaNet process configuration activity settings.
 	ActivitySettings *RosettaNetPipActivitySettings `json:"activitySettings,omitempty"`
 	// ProcessCode - The integration account RosettaNet process code.
@@ -3193,6 +3193,36 @@ type IntegrationAccountRosettaNetProcessConfigurationProperties struct {
 	ResponderRoleSettings *RosettaNetPipRoleSettings `json:"responderRoleSettings,omitempty"`
 	// Description - The integration account RosettaNet ProcessConfiguration properties.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountRosettaNetProcessConfigurationProperties.
+func (iarnpcp IntegrationAccountRosettaNetProcessConfigurationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iarnpcp.Metadata != nil {
+		objectMap["metadata"] = iarnpcp.Metadata
+	}
+	if iarnpcp.ActivitySettings != nil {
+		objectMap["activitySettings"] = iarnpcp.ActivitySettings
+	}
+	if iarnpcp.ProcessCode != nil {
+		objectMap["processCode"] = iarnpcp.ProcessCode
+	}
+	if iarnpcp.ProcessVersion != nil {
+		objectMap["processVersion"] = iarnpcp.ProcessVersion
+	}
+	if iarnpcp.ProcessName != nil {
+		objectMap["processName"] = iarnpcp.ProcessName
+	}
+	if iarnpcp.InitiatorRoleSettings != nil {
+		objectMap["initiatorRoleSettings"] = iarnpcp.InitiatorRoleSettings
+	}
+	if iarnpcp.ResponderRoleSettings != nil {
+		objectMap["responderRoleSettings"] = iarnpcp.ResponderRoleSettings
+	}
+	if iarnpcp.Description != nil {
+		objectMap["description"] = iarnpcp.Description
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountSchema the integration account schema.

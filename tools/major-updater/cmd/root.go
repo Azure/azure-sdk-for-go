@@ -114,7 +114,7 @@ func absPaths(sdk, spec string) (string, string, error) {
 		return "", "", fmt.Errorf("failed to get directory of specification: %v", err)
 	}
 	return absSDK, absSpec, nil
-}  
+}
 
 func verboseStatus(sdk, spec string) {
 	if verboseFlag {

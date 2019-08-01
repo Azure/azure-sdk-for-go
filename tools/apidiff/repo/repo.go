@@ -168,6 +168,9 @@ func (wt WorkingTree) ListTags(pattern string) ([]string, error) {
 	if err != nil {
 		return nil, errors.New(string(output))
 	}
+	if len(output) == 0 {
+		return []string{}, nil
+	}
 	tags := strings.Split(strings.TrimSpace(string(output)), "\n")
 	sort.Strings(tags)
 	return tags, nil

@@ -1143,6 +1143,8 @@ type Properties struct {
 	// RenewDestination - Reservation Id of the reservation which is purchased because of renew. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
 	RenewDestination *string                  `json:"renewDestination,omitempty"`
 	RenewProperties  *RenewPropertiesResponse `json:"renewProperties,omitempty"`
+	// Term - Possible values include: 'P1Y', 'P3Y'
+	Term ReservationTerm `json:"term,omitempty"`
 }
 
 // PurchaseRequest ...

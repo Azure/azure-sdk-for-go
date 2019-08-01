@@ -1686,7 +1686,7 @@ type AzureFileshareProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -2514,7 +2514,7 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -2985,7 +2985,7 @@ type AzureIaaSComputeVMProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -3215,7 +3215,7 @@ type AzureIaaSVMProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -3874,7 +3874,7 @@ type AzureSQLProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -4999,7 +4999,7 @@ type AzureVMWorkloadProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -5516,7 +5516,7 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -6278,7 +6278,7 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -7198,7 +7198,7 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -10083,7 +10083,7 @@ type DPMProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -10951,7 +10951,7 @@ type GenericProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -12644,7 +12644,7 @@ type MabFileFolderProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
@@ -13700,7 +13700,7 @@ type ProtectedItem struct {
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
 	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be rehydrated into Pause state
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`

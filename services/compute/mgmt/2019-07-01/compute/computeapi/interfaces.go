@@ -310,6 +310,26 @@ type GalleryImageVersionsClientAPI interface {
 
 var _ GalleryImageVersionsClientAPI = (*compute.GalleryImageVersionsClient)(nil)
 
+// GalleryApplicationsClientAPI contains the set of methods on the GalleryApplicationsClient type.
+type GalleryApplicationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication compute.GalleryApplication) (result compute.GalleryApplicationsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplicationsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplication, err error)
+	ListByGallery(ctx context.Context, resourceGroupName string, galleryName string) (result compute.GalleryApplicationListPage, err error)
+}
+
+var _ GalleryApplicationsClientAPI = (*compute.GalleryApplicationsClient)(nil)
+
+// GalleryApplicationVersionsClientAPI contains the set of methods on the GalleryApplicationVersionsClient type.
+type GalleryApplicationVersionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion compute.GalleryApplicationVersion) (result compute.GalleryApplicationVersionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string) (result compute.GalleryApplicationVersionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, expand compute.ReplicationStatusTypes) (result compute.GalleryApplicationVersion, err error)
+	ListByGalleryApplication(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplicationVersionListPage, err error)
+}
+
+var _ GalleryApplicationVersionsClientAPI = (*compute.GalleryApplicationVersionsClient)(nil)
+
 // ContainerServicesClientAPI contains the set of methods on the ContainerServicesClient type.
 type ContainerServicesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters compute.ContainerService) (result compute.ContainerServicesCreateOrUpdateFuture, err error)

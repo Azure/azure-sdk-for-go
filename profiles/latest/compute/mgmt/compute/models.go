@@ -302,6 +302,17 @@ const (
 	ProvisioningState2Updating  ProvisioningState2 = original.ProvisioningState2Updating
 )
 
+type ProvisioningState3 = original.ProvisioningState3
+
+const (
+	ProvisioningState3Creating  ProvisioningState3 = original.ProvisioningState3Creating
+	ProvisioningState3Deleting  ProvisioningState3 = original.ProvisioningState3Deleting
+	ProvisioningState3Failed    ProvisioningState3 = original.ProvisioningState3Failed
+	ProvisioningState3Migrating ProvisioningState3 = original.ProvisioningState3Migrating
+	ProvisioningState3Succeeded ProvisioningState3 = original.ProvisioningState3Succeeded
+	ProvisioningState3Updating  ProvisioningState3 = original.ProvisioningState3Updating
+)
+
 type ProximityPlacementGroupType = original.ProximityPlacementGroupType
 
 const (
@@ -713,7 +724,25 @@ type GalleriesClient = original.GalleriesClient
 type GalleriesCreateOrUpdateFuture = original.GalleriesCreateOrUpdateFuture
 type GalleriesDeleteFuture = original.GalleriesDeleteFuture
 type Gallery = original.Gallery
+type GalleryApplication = original.GalleryApplication
+type GalleryApplicationList = original.GalleryApplicationList
+type GalleryApplicationListIterator = original.GalleryApplicationListIterator
+type GalleryApplicationListPage = original.GalleryApplicationListPage
+type GalleryApplicationProperties = original.GalleryApplicationProperties
+type GalleryApplicationVersion = original.GalleryApplicationVersion
+type GalleryApplicationVersionList = original.GalleryApplicationVersionList
+type GalleryApplicationVersionListIterator = original.GalleryApplicationVersionListIterator
+type GalleryApplicationVersionListPage = original.GalleryApplicationVersionListPage
+type GalleryApplicationVersionProperties = original.GalleryApplicationVersionProperties
+type GalleryApplicationVersionPublishingProfile = original.GalleryApplicationVersionPublishingProfile
+type GalleryApplicationVersionsClient = original.GalleryApplicationVersionsClient
+type GalleryApplicationVersionsCreateOrUpdateFuture = original.GalleryApplicationVersionsCreateOrUpdateFuture
+type GalleryApplicationVersionsDeleteFuture = original.GalleryApplicationVersionsDeleteFuture
+type GalleryApplicationsClient = original.GalleryApplicationsClient
+type GalleryApplicationsCreateOrUpdateFuture = original.GalleryApplicationsCreateOrUpdateFuture
+type GalleryApplicationsDeleteFuture = original.GalleryApplicationsDeleteFuture
 type GalleryArtifactPublishingProfileBase = original.GalleryArtifactPublishingProfileBase
+type GalleryArtifactSource = original.GalleryArtifactSource
 type GalleryArtifactVersionSource = original.GalleryArtifactVersionSource
 type GalleryDataDiskImage = original.GalleryDataDiskImage
 type GalleryDiskImage = original.GalleryDiskImage
@@ -779,6 +808,7 @@ type LogAnalyticsInputBase = original.LogAnalyticsInputBase
 type LogAnalyticsOperationResult = original.LogAnalyticsOperationResult
 type LogAnalyticsOutput = original.LogAnalyticsOutput
 type MaintenanceRedeployStatus = original.MaintenanceRedeployStatus
+type ManagedArtifact = original.ManagedArtifact
 type ManagedDiskParameters = original.ManagedDiskParameters
 type NetworkInterfaceReference = original.NetworkInterfaceReference
 type NetworkInterfaceReferenceProperties = original.NetworkInterfaceReferenceProperties
@@ -866,6 +896,7 @@ type UpgradePolicy = original.UpgradePolicy
 type Usage = original.Usage
 type UsageClient = original.UsageClient
 type UsageName = original.UsageName
+type UserArtifactSource = original.UserArtifactSource
 type VMScaleSetConvertToSinglePlacementGroupInput = original.VMScaleSetConvertToSinglePlacementGroupInput
 type VaultCertificate = original.VaultCertificate
 type VaultSecretGroup = original.VaultSecretGroup
@@ -1094,6 +1125,30 @@ func NewGalleriesClient(subscriptionID string) GalleriesClient {
 }
 func NewGalleriesClientWithBaseURI(baseURI string, subscriptionID string) GalleriesClient {
 	return original.NewGalleriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGalleryApplicationListIterator(page GalleryApplicationListPage) GalleryApplicationListIterator {
+	return original.NewGalleryApplicationListIterator(page)
+}
+func NewGalleryApplicationListPage(getNextPage func(context.Context, GalleryApplicationList) (GalleryApplicationList, error)) GalleryApplicationListPage {
+	return original.NewGalleryApplicationListPage(getNextPage)
+}
+func NewGalleryApplicationVersionListIterator(page GalleryApplicationVersionListPage) GalleryApplicationVersionListIterator {
+	return original.NewGalleryApplicationVersionListIterator(page)
+}
+func NewGalleryApplicationVersionListPage(getNextPage func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error)) GalleryApplicationVersionListPage {
+	return original.NewGalleryApplicationVersionListPage(getNextPage)
+}
+func NewGalleryApplicationVersionsClient(subscriptionID string) GalleryApplicationVersionsClient {
+	return original.NewGalleryApplicationVersionsClient(subscriptionID)
+}
+func NewGalleryApplicationVersionsClientWithBaseURI(baseURI string, subscriptionID string) GalleryApplicationVersionsClient {
+	return original.NewGalleryApplicationVersionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewGalleryApplicationsClient(subscriptionID string) GalleryApplicationsClient {
+	return original.NewGalleryApplicationsClient(subscriptionID)
+}
+func NewGalleryApplicationsClientWithBaseURI(baseURI string, subscriptionID string) GalleryApplicationsClient {
+	return original.NewGalleryApplicationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewGalleryImageListIterator(page GalleryImageListPage) GalleryImageListIterator {
 	return original.NewGalleryImageListIterator(page)
@@ -1388,6 +1443,9 @@ func PossibleProvisioningState1Values() []ProvisioningState1 {
 }
 func PossibleProvisioningState2Values() []ProvisioningState2 {
 	return original.PossibleProvisioningState2Values()
+}
+func PossibleProvisioningState3Values() []ProvisioningState3 {
+	return original.PossibleProvisioningState3Values()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

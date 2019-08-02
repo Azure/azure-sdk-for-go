@@ -83,6 +83,7 @@ func theUpdateSDKCommand(sdk string) error {
 	if err != nil {
 		return fmt.Errorf("checkout failed: %v", err)
 	}
+	majorBranchName = &branchName
 	return nil
 }
 

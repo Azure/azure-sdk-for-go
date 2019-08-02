@@ -177,7 +177,7 @@ func (wt WorkingTree) ListTags(pattern string) ([]string, error) {
 }
 
 // Pull calls "git pull upstream branch" to update local working tree.
-func (wt WorkingTree) Pull(upstream string, branch string) error {
+func (wt WorkingTree) Pull(upstream, branch string) error {
 	cmd := exec.Command("git", "pull", upstream, branch)
 	cmd.Dir = wt.dir
 	output, err := cmd.CombinedOutput()

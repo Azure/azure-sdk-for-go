@@ -17,6 +17,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"regexp"
 
@@ -41,9 +42,9 @@ var thread int
 
 // global variables
 var initialBranch string
-var initialDir string
 var pattern *regexp.Regexp
 var majorVersion int
+var majorBranchName *string
 
 var rootCmd = &cobra.Command{
 	Use:   "major-updater <SDK dir> <specification dir>",
@@ -53,7 +54,15 @@ var rootCmd = &cobra.Command{
 		return cobra.ExactArgs(2)(cmd, args)
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		err := theCommand(args)
+		absSDK, absSpec, err := absPaths(args[0], args[1])
+		captureSigInt(absSDK)
+		if err != nil {
+			return err
+		}
+		err = theCommand(absSDK, absSpec)
+		if err != nil {
+			deleteMajorBranch(absSDK)
+		}
 		return err
 	},
 }
@@ -67,6 +76,19 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
 }
 
+func captureSigInt(absSDK string) {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() {
+		for sig := range c {
+			// sig is a ^C, handle it
+			printf("Receiving %v signal, aborting...", sig)
+			deleteMajorBranch(absSDK)
+			os.Exit(1)
+		}
+	}()
+}
+
 // Execute executes the specified command.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
@@ -74,18 +96,9 @@ func Execute() {
 	}
 }
 
-func theCommand(args []string) error {
-	sdkDir := args[0]
-	specsDir := args[1]
-	absSDK, absSpec, err := absPaths(sdkDir, specsDir)
-	if err != nil {
-		return err
-	}
+func theCommand(absSDK, absSpec string) error {
 	verboseStatus(absSDK, absSpec)
-	initialDir, err = os.Getwd()
-	if err != nil {
-		return fmt.Errorf("failed to get the initial working directory: %v", err)
-	}
+	var err error
 	if err = theUpdateSDKCommand(absSDK); err != nil {
 		return fmt.Errorf("failed to update SDK repo: %v", err)
 	}
@@ -126,6 +139,19 @@ func createNewBranch(wt repo.WorkingTree, name string) error {
 	vprintf("creating branch %s\n", name)
 	err := wt.CreateAndCheckout(name)
 	return err
+}
+
+func deleteMajorBranch(sdk string) {
+	if majorBranchName == nil {
+		return
+	}
+	changeDir(sdk)
+	wt, err := repo.Get(sdk)
+	if err != nil {
+		return
+	}
+	wt.Checkout(latest)
+	wt.Delete(*majorBranchName)
 }
 
 func changeDir(path string) error {

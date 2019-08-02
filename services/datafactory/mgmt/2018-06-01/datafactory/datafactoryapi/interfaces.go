@@ -152,6 +152,14 @@ type TriggersClientAPI interface {
 
 var _ TriggersClientAPI = (*datafactory.TriggersClient)(nil)
 
+// TriggerRunsClientAPI contains the set of methods on the TriggerRunsClient type.
+type TriggerRunsClientAPI interface {
+	QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string, filterParameters datafactory.RunFilterParameters) (result datafactory.TriggerRunsQueryResponse, err error)
+	Rerun(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string) (result autorest.Response, err error)
+}
+
+var _ TriggerRunsClientAPI = (*datafactory.TriggerRunsClient)(nil)
+
 // RerunTriggersClientAPI contains the set of methods on the RerunTriggersClient type.
 type RerunTriggersClientAPI interface {
 	Cancel(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, rerunTriggerName string) (result datafactory.RerunTriggersCancelFuture, err error)
@@ -162,10 +170,3 @@ type RerunTriggersClientAPI interface {
 }
 
 var _ RerunTriggersClientAPI = (*datafactory.RerunTriggersClient)(nil)
-
-// TriggerRunsClientAPI contains the set of methods on the TriggerRunsClient type.
-type TriggerRunsClientAPI interface {
-	QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string, filterParameters datafactory.RunFilterParameters) (result datafactory.TriggerRunsQueryResponse, err error)
-}
-
-var _ TriggerRunsClientAPI = (*datafactory.TriggerRunsClient)(nil)

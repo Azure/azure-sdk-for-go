@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v32.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| qnamakerruntime | v4.0 |
+
 ## `v32.0.0`
 
 ### New Packages

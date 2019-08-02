@@ -24,7 +24,7 @@ package servicebus
 
 import (
 	"context"
-	"math/rand"
+	common "github.com/Azure/azure-amqp-common-go/v2"
 	"sync"
 	"time"
 
@@ -210,14 +210,32 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 
 			switch err.(type) {
 			case *amqp.Error, *amqp.DetachError:
-				tab.For(ctx).Debug("amqp error, delaying 4 seconds: " + err.Error())
-				skew := time.Duration(rand.Intn(1000)-500) * time.Millisecond
-				time.Sleep(4*time.Second + skew)
-				err := s.Recover(ctx)
-				if err != nil {
-					tab.For(ctx).Debug("failed to recover connection")
+				tab.For(ctx).Debug("recovering connection")
+				_, retryErr := common.Retry(10, 10*time.Second, func() (interface{}, error) {
+					ctx, sp := s.startProducerSpanFromContext(ctx, "sb.Sender.trySend.tryRecover")
+					defer sp.End()
+
+					err := s.Recover(ctx)
+					if err == nil {
+						tab.For(ctx).Debug("recovered connection")
+						return nil, nil
+					}
+
+					select {
+					case <-ctx.Done():
+						return nil, ctx.Err()
+					default:
+						return nil, common.Retryable(err.Error())
+					}
+				})
+
+				if retryErr != nil {
+					tab.For(ctx).Debug("sender recovering retried, but error was unrecoverable")
+					if err := s.Close(ctx); err != nil {
+						tab.For(ctx).Error(err)
+					}
+					return retryErr
 				}
-				tab.For(ctx).Debug("recovered connection")
 			default:
 				tab.For(ctx).Error(err)
 				return err

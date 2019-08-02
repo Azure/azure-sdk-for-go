@@ -878,7 +878,7 @@ type AccountProperties struct {
 type AccountPropertiesCreateParameters struct {
 	// CustomDomain - User domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty string for the custom domain name property.
 	CustomDomain *CustomDomain `json:"customDomain,omitempty"`
-	// Encryption - Provides the encryption settings on the account. If left unspecified the account encryption settings will remain the same. The default setting is unencrypted.
+	// Encryption - Not applicable. Azure Storage encryption is enabled for all storage accounts and cannot be disabled.
 	Encryption *Encryption `json:"encryption,omitempty"`
 	// NetworkRuleSet - Network rule set
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`

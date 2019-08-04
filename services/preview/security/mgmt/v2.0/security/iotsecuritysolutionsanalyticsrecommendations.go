@@ -101,7 +101,7 @@ func (client IoTSecuritySolutionsAnalyticsRecommendationsClient) ListPreparer(ct
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-08-01"
+	const APIVersion = "2017-08-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

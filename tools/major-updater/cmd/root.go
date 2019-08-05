@@ -151,7 +151,7 @@ func deleteMajorBranch(sdk string) {
 		return
 	}
 	wt.Checkout(latest)
-	wt.Delete(*majorBranchName)
+	wt.DeleteBranch(*majorBranchName)
 }
 
 func changeDir(path string) error {

@@ -78,8 +78,8 @@ func (wt WorkingTree) Branch() (string, error) {
 	return "", fmt.Errorf("failed to determine active branch: %s", strings.Join(branches, ","))
 }
 
-// Delete call "git branch -d branchname" to delete a local branch.
-func (wt WorkingTree) Delete(branchName string) error {
+// DeleteBranch call "git branch -d branchname" to delete a local branch.
+func (wt WorkingTree) DeleteBranch(branchName string) error {
 	cmd := exec.Command("git", "branch", "-d", branchName)
 	cmd.Dir = wt.dir
 	output, err := cmd.CombinedOutput()

@@ -8732,6 +8732,8 @@ type VirtualMachineImageProperties struct {
 	OsDiskImage                  *OSDiskImage                  `json:"osDiskImage,omitempty"`
 	DataDiskImages               *[]DataDiskImage              `json:"dataDiskImages,omitempty"`
 	AutomaticOSUpgradeProperties *AutomaticOSUpgradeProperties `json:"automaticOSUpgradeProperties,omitempty"`
+	// HyperVGeneration - Possible values include: 'HyperVGenerationTypesV1', 'HyperVGenerationTypesV2'
+	HyperVGeneration HyperVGenerationTypes `json:"hyperVGeneration,omitempty"`
 }
 
 // VirtualMachineImageResource virtual machine image resource information.

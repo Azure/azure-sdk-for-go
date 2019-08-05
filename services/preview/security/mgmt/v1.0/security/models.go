@@ -2723,6 +2723,14 @@ type ConnectedWorkspace struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// ConnectionDetails details of the actual traffic connections
+type ConnectionDetails struct {
+	// PortAndProtocol - READ-ONLY; The port and the protocol of the traffic
+	PortAndProtocol *string `json:"portAndProtocol,omitempty"`
+	// Volume - READ-ONLY; The volume of the traffic
+	Volume *string `json:"volume,omitempty"`
+}
+
 // Contact contact details for security issues
 type Contact struct {
 	autorest.Response `json:"-"`
@@ -4569,6 +4577,338 @@ type ListCustomAlertRule struct {
 type Location struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
+}
+
+// NetworkData network data on a resource
+type NetworkData struct {
+	autorest.Response      `json:"-"`
+	*NetworkDataProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NetworkData.
+func (nd NetworkData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nd.NetworkDataProperties != nil {
+		objectMap["properties"] = nd.NetworkDataProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NetworkData struct.
+func (nd *NetworkData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var networkDataProperties NetworkDataProperties
+				err = json.Unmarshal(*v, &networkDataProperties)
+				if err != nil {
+					return err
+				}
+				nd.NetworkDataProperties = &networkDataProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nd.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nd.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				nd.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// NetworkDataConnectableResource describes the allowed inbound and outbound traffic of an Azure resource
+type NetworkDataConnectableResource struct {
+	// ConnectedResourceID - READ-ONLY; The connectable resource id
+	ConnectedResourceID *string `json:"connectedResourceId,omitempty"`
+	// ConnectionType - READ-ONLY; The connection type
+	ConnectionType *string `json:"connectionType,omitempty"`
+	// AllowedTraffic - READ-ONLY; The allowed traffic details
+	AllowedTraffic *NetworkDataConnectableResourceAllowedTraffic `json:"allowedTraffic,omitempty"`
+	// ActualTraffic - READ-ONLY; The actual traffic details
+	ActualTraffic *NetworkDataConnectableResourceActualTraffic `json:"actualTraffic,omitempty"`
+	// UnusedPorts - READ-ONLY; The unused ports details
+	UnusedPorts *NetworkDataConnectableResourceUnusedPorts `json:"unusedPorts,omitempty"`
+}
+
+// NetworkDataConnectableResourceActualTraffic the actual traffic details
+type NetworkDataConnectableResourceActualTraffic struct {
+	// TimeRange - READ-ONLY; The actual traffic time range
+	TimeRange *string `json:"timeRange,omitempty"`
+	// TrafficDataState - READ-ONLY; The actual traffic state
+	TrafficDataState *string `json:"TrafficDataState,omitempty"`
+	// InboundConnectedResources - READ-ONLY; The actual traffic inbound details
+	InboundConnectedResources *NetworkDataConnectableResourceActualTrafficInboundConnectedResources `json:"inboundConnectedResources,omitempty"`
+	// OutboundConnectedResources - READ-ONLY; The actual traffic outbound details
+	OutboundConnectedResources *NetworkDataConnectableResourceActualTrafficOutboundConnectedResources `json:"outboundConnectedResources,omitempty"`
+}
+
+// NetworkDataConnectableResourceActualTrafficInboundConnectedResources the actual traffic inbound details
+type NetworkDataConnectableResourceActualTrafficInboundConnectedResources struct {
+	// ActualTrafficVolume - READ-ONLY; The actual traffic inbound volume
+	ActualTrafficVolume *string              `json:"actualTrafficVolume,omitempty"`
+	ConnectionsDetails  *[]ConnectionDetails `json:"connectionsDetails,omitempty"`
+}
+
+// NetworkDataConnectableResourceActualTrafficOutboundConnectedResources the actual traffic outbound
+// details
+type NetworkDataConnectableResourceActualTrafficOutboundConnectedResources struct {
+	// ActualTrafficVolume - READ-ONLY; The actual traffic outbound volume
+	ActualTrafficVolume *string              `json:"actualTrafficVolume,omitempty"`
+	ConnectionsDetails  *[]ConnectionDetails `json:"connectionsDetails,omitempty"`
+}
+
+// NetworkDataConnectableResourceAllowedTraffic the allowed traffic details
+type NetworkDataConnectableResourceAllowedTraffic struct {
+	// CalculatedDateTime - READ-ONLY; The UTC time on which the allowed traffic was calculated
+	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
+	// InboundConnectedResources - READ-ONLY; The allowed traffic inbound details
+	InboundConnectedResources *NetworkDataConnectableResourceAllowedTrafficInboundConnectedResources `json:"inboundConnectedResources,omitempty"`
+	// OutboundConnectedResources - READ-ONLY; The allowed traffic outbound details
+	OutboundConnectedResources *NetworkDataConnectableResourceAllowedTrafficOutboundConnectedResources `json:"outboundConnectedResources,omitempty"`
+}
+
+// NetworkDataConnectableResourceAllowedTrafficInboundConnectedResources the allowed traffic inbound
+// details
+type NetworkDataConnectableResourceAllowedTrafficInboundConnectedResources struct {
+	// TCPPortsSummary - READ-ONLY; The allowed traffic inbound tcp ports summary
+	TCPPortsSummary *int32 `json:"tcpPortsSummary,omitempty"`
+	// UDPPortsSummary - READ-ONLY; The allowed traffic inbound udp ports summary
+	UDPPortsSummary *int32 `json:"udpPortsSummary,omitempty"`
+	// TCPPorts - READ-ONLY; The allowed traffic inbound tcp ports
+	TCPPorts *string `json:"tcpPorts,omitempty"`
+	// UDPPorts - READ-ONLY; The allowed traffic inbound udp ports
+	UDPPorts *string `json:"udpPorts,omitempty"`
+}
+
+// NetworkDataConnectableResourceAllowedTrafficOutboundConnectedResources the allowed traffic outbound
+// details
+type NetworkDataConnectableResourceAllowedTrafficOutboundConnectedResources struct {
+	// TCPPortsSummary - READ-ONLY; The allowed traffic outbound tcp ports summary
+	TCPPortsSummary *int32 `json:"tcpPortsSummary,omitempty"`
+	// UDPPortsSummary - READ-ONLY; The allowed traffic outbound udp ports summary
+	UDPPortsSummary *int32 `json:"udpPortsSummary,omitempty"`
+	// TCPPorts - READ-ONLY; The allowed traffic outbound tcp ports
+	TCPPorts *string `json:"tcpPorts,omitempty"`
+	// UDPPorts - READ-ONLY; The allowed traffic outbound udp ports
+	UDPPorts *string `json:"udpPorts,omitempty"`
+}
+
+// NetworkDataConnectableResourceUnusedPorts the unused ports details
+type NetworkDataConnectableResourceUnusedPorts struct {
+	// InboundConnectedResources - READ-ONLY; The unused ports inbound details
+	InboundConnectedResources *NetworkDataConnectableResourceUnusedPortsInboundConnectedResources `json:"inboundConnectedResources,omitempty"`
+	// OutboundConnectedResources - READ-ONLY; The unused ports outbound details
+	OutboundConnectedResources *NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources `json:"outboundConnectedResources,omitempty"`
+}
+
+// NetworkDataConnectableResourceUnusedPortsInboundConnectedResources the unused ports inbound details
+type NetworkDataConnectableResourceUnusedPortsInboundConnectedResources struct {
+	// UnusedTCPPortsSummary - READ-ONLY; The unused inbound tcp ports summary
+	UnusedTCPPortsSummary *int32 `json:"unusedTcpPortsSummary,omitempty"`
+	// UnusedUDPPortsSummary - READ-ONLY; The unused inbound udp ports summary
+	UnusedUDPPortsSummary *int32 `json:"unusedUdpPortsSummary,omitempty"`
+	// TCPPorts - READ-ONLY; The unused inbound tcp ports
+	TCPPorts *string `json:"tcpPorts,omitempty"`
+	// UDPPorts - READ-ONLY; The unused inbound udp ports
+	UDPPorts *string `json:"udpPorts,omitempty"`
+}
+
+// NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources the unused ports outbound details
+type NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources struct {
+	// UnusedTCPPortsSummary - READ-ONLY; The unused outbound tcp ports summary
+	UnusedTCPPortsSummary *int32 `json:"unusedTcpPortsSummary,omitempty"`
+	// UnusedUDPPortsSummary - READ-ONLY; The unused outbound udp ports summary
+	UnusedUDPPortsSummary *int32 `json:"unusedUdpPortsSummary,omitempty"`
+	// TCPPorts - READ-ONLY; The unused outbound tcp ports
+	TCPPorts *string `json:"tcpPorts,omitempty"`
+	// UDPPorts - READ-ONLY; The unused outbound udp ports
+	UDPPorts *string `json:"udpPorts,omitempty"`
+}
+
+// NetworkDataList list of network data
+type NetworkDataList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY
+	Value *[]NetworkData `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// NetworkDataListIterator provides access to a complete listing of NetworkData values.
+type NetworkDataListIterator struct {
+	i    int
+	page NetworkDataListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *NetworkDataListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *NetworkDataListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter NetworkDataListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter NetworkDataListIterator) Response() NetworkDataList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter NetworkDataListIterator) Value() NetworkData {
+	if !iter.page.NotDone() {
+		return NetworkData{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the NetworkDataListIterator type.
+func NewNetworkDataListIterator(page NetworkDataListPage) NetworkDataListIterator {
+	return NetworkDataListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ndl NetworkDataList) IsEmpty() bool {
+	return ndl.Value == nil || len(*ndl.Value) == 0
+}
+
+// networkDataListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ndl NetworkDataList) networkDataListPreparer(ctx context.Context) (*http.Request, error) {
+	if ndl.NextLink == nil || len(to.String(ndl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ndl.NextLink)))
+}
+
+// NetworkDataListPage contains a page of NetworkData values.
+type NetworkDataListPage struct {
+	fn  func(context.Context, NetworkDataList) (NetworkDataList, error)
+	ndl NetworkDataList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *NetworkDataListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ndl)
+	if err != nil {
+		return err
+	}
+	page.ndl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *NetworkDataListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page NetworkDataListPage) NotDone() bool {
+	return !page.ndl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page NetworkDataListPage) Response() NetworkDataList {
+	return page.ndl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page NetworkDataListPage) Values() []NetworkData {
+	if page.ndl.IsEmpty() {
+		return nil
+	}
+	return *page.ndl.Value
+}
+
+// Creates a new instance of the NetworkDataListPage type.
+func NewNetworkDataListPage(getNextPage func(context.Context, NetworkDataList) (NetworkDataList, error)) NetworkDataListPage {
+	return NetworkDataListPage{fn: getNextPage}
+}
+
+// NetworkDataProperties describes the properties of the network data.
+type NetworkDataProperties struct {
+	ConnectableResources *[]NetworkDataConnectableResource `json:"connectableResources,omitempty"`
 }
 
 // Operation possible operation in the REST API of Microsoft.Security

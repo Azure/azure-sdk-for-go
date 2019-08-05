@@ -42,6 +42,7 @@ type IoTSecuritySolutionsResourceGroupClientAPI = original.IoTSecuritySolutionsR
 type IotSecuritySolutionClientAPI = original.IotSecuritySolutionClientAPI
 type JitNetworkAccessPoliciesClientAPI = original.JitNetworkAccessPoliciesClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
+type NetworkDataClientAPI = original.NetworkDataClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PricingsClientAPI = original.PricingsClientAPI
 type RegulatoryComplianceAssessmentsClientAPI = original.RegulatoryComplianceAssessmentsClientAPI

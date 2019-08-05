@@ -392,6 +392,7 @@ type CompliancesClient = original.CompliancesClient
 type ConnectableResource = original.ConnectableResource
 type ConnectedResource = original.ConnectedResource
 type ConnectedWorkspace = original.ConnectedWorkspace
+type ConnectionDetails = original.ConnectionDetails
 type Contact = original.Contact
 type ContactList = original.ContactList
 type ContactListIterator = original.ContactListIterator
@@ -473,6 +474,22 @@ type JitNetworkAccessRequestVirtualMachine = original.JitNetworkAccessRequestVir
 type Kind = original.Kind
 type Location = original.Location
 type LocationsClient = original.LocationsClient
+type NetworkData = original.NetworkData
+type NetworkDataClient = original.NetworkDataClient
+type NetworkDataConnectableResource = original.NetworkDataConnectableResource
+type NetworkDataConnectableResourceActualTraffic = original.NetworkDataConnectableResourceActualTraffic
+type NetworkDataConnectableResourceActualTrafficInboundConnectedResources = original.NetworkDataConnectableResourceActualTrafficInboundConnectedResources
+type NetworkDataConnectableResourceActualTrafficOutboundConnectedResources = original.NetworkDataConnectableResourceActualTrafficOutboundConnectedResources
+type NetworkDataConnectableResourceAllowedTraffic = original.NetworkDataConnectableResourceAllowedTraffic
+type NetworkDataConnectableResourceAllowedTrafficInboundConnectedResources = original.NetworkDataConnectableResourceAllowedTrafficInboundConnectedResources
+type NetworkDataConnectableResourceAllowedTrafficOutboundConnectedResources = original.NetworkDataConnectableResourceAllowedTrafficOutboundConnectedResources
+type NetworkDataConnectableResourceUnusedPorts = original.NetworkDataConnectableResourceUnusedPorts
+type NetworkDataConnectableResourceUnusedPortsInboundConnectedResources = original.NetworkDataConnectableResourceUnusedPortsInboundConnectedResources
+type NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources = original.NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources
+type NetworkDataList = original.NetworkDataList
+type NetworkDataListIterator = original.NetworkDataListIterator
+type NetworkDataListPage = original.NetworkDataListPage
+type NetworkDataProperties = original.NetworkDataProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -756,6 +773,18 @@ func NewLocationsClient(subscriptionID string, ascLocation string) LocationsClie
 }
 func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) LocationsClient {
 	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewNetworkDataClient(subscriptionID string, ascLocation string) NetworkDataClient {
+	return original.NewNetworkDataClient(subscriptionID, ascLocation)
+}
+func NewNetworkDataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) NetworkDataClient {
+	return original.NewNetworkDataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewNetworkDataListIterator(page NetworkDataListPage) NetworkDataListIterator {
+	return original.NewNetworkDataListIterator(page)
+}
+func NewNetworkDataListPage(getNextPage func(context.Context, NetworkDataList) (NetworkDataList, error)) NetworkDataListPage {
+	return original.NewNetworkDataListPage(getNextPage)
 }
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)

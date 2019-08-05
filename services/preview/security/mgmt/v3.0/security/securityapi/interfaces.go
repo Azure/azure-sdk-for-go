@@ -23,6 +23,14 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// NetworkDataClientAPI contains the set of methods on the NetworkDataClient type.
+type NetworkDataClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.NetworkData, err error)
+	List(ctx context.Context, expand string) (result security.NetworkDataListPage, err error)
+}
+
+var _ NetworkDataClientAPI = (*security.NetworkDataClient)(nil)
+
 // ComplianceResultsClientAPI contains the set of methods on the ComplianceResultsClient type.
 type ComplianceResultsClientAPI interface {
 	Get(ctx context.Context, resourceID string, complianceResultName string) (result security.ComplianceResult, err error)

@@ -40,15 +40,15 @@ func NewApplicationsClientWithBaseURI(baseURI string, subscriptionID string) App
 	return ApplicationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create create or update a Service Fabric application resource with the specified name.
+// CreateOrUpdate create or update a Service Fabric application resource with the specified name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource.
 // applicationName - the name of the application resource.
 // parameters - the application resource.
-func (client ApplicationsClient) Create(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResource) (result ApplicationsCreateFuture, err error) {
+func (client ApplicationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResource) (result ApplicationsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -57,23 +57,23 @@ func (client ApplicationsClient) Create(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, applicationName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, clusterName, applicationName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client ApplicationsClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResource) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ApplicationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationName":   autorest.Encode("path", applicationName),
 		"clusterName":       autorest.Encode("path", clusterName),
@@ -96,9 +96,9 @@ func (client ApplicationsClient) CreatePreparer(ctx context.Context, resourceGro
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ApplicationsClient) CreateSender(req *http.Request) (future ApplicationsCreateFuture, err error) {
+func (client ApplicationsClient) CreateOrUpdateSender(req *http.Request) (future ApplicationsCreateOrUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -109,9 +109,9 @@ func (client ApplicationsClient) CreateSender(req *http.Request) (future Applica
 	return
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ApplicationsClient) CreateResponder(resp *http.Response) (result ApplicationResource, err error) {
+func (client ApplicationsClient) CreateOrUpdateResponder(resp *http.Response) (result ApplicationResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

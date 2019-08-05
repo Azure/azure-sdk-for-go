@@ -41,14 +41,14 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 	return ClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create create or update a Service Fabric cluster resource with the specified name.
+// CreateOrUpdate create or update a Service Fabric cluster resource with the specified name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource.
 // parameters - the cluster resource.
-func (client ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (result ClustersCreateFuture, err error) {
+func (client ClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (result ClustersCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -106,26 +106,26 @@ func (client ClustersClient) Create(ctx context.Context, resourceGroupName strin
 								}},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewError("servicefabric.ClustersClient", "Create", err.Error())
+		return result, validation.NewError("servicefabric.ClustersClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, clusterName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client ClustersClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ClustersClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -147,9 +147,9 @@ func (client ClustersClient) CreatePreparer(ctx context.Context, resourceGroupNa
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ClustersClient) CreateSender(req *http.Request) (future ClustersCreateFuture, err error) {
+func (client ClustersClient) CreateOrUpdateSender(req *http.Request) (future ClustersCreateOrUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -160,9 +160,9 @@ func (client ClustersClient) CreateSender(req *http.Request) (future ClustersCre
 	return
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ClustersClient) CreateResponder(resp *http.Response) (result Cluster, err error) {
+func (client ClustersClient) CreateOrUpdateResponder(resp *http.Response) (result Cluster, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

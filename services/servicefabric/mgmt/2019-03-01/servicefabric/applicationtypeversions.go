@@ -41,16 +41,16 @@ func NewApplicationTypeVersionsClientWithBaseURI(baseURI string, subscriptionID 
 	return ApplicationTypeVersionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create create or update a Service Fabric application type version resource with the specified name.
+// CreateOrUpdate create or update a Service Fabric application type version resource with the specified name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource.
 // applicationTypeName - the name of the application type name resource.
 // version - the application type version.
 // parameters - the application type version resource.
-func (client ApplicationTypeVersionsClient) Create(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, version string, parameters ApplicationTypeVersionResource) (result ApplicationTypeVersionsCreateFuture, err error) {
+func (client ApplicationTypeVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, version string, parameters ApplicationTypeVersionResource) (result ApplicationTypeVersionsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationTypeVersionsClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationTypeVersionsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -63,26 +63,26 @@ func (client ApplicationTypeVersionsClient) Create(ctx context.Context, resource
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ApplicationTypeVersionResourceProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.ApplicationTypeVersionResourceProperties.AppPackageURL", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("servicefabric.ApplicationTypeVersionsClient", "Create", err.Error())
+		return result, validation.NewError("servicefabric.ApplicationTypeVersionsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, applicationTypeName, version, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, clusterName, applicationTypeName, version, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client ApplicationTypeVersionsClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, version string, parameters ApplicationTypeVersionResource) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client ApplicationTypeVersionsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, version string, parameters ApplicationTypeVersionResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationTypeName": autorest.Encode("path", applicationTypeName),
 		"clusterName":         autorest.Encode("path", clusterName),
@@ -106,9 +106,9 @@ func (client ApplicationTypeVersionsClient) CreatePreparer(ctx context.Context, 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ApplicationTypeVersionsClient) CreateSender(req *http.Request) (future ApplicationTypeVersionsCreateFuture, err error) {
+func (client ApplicationTypeVersionsClient) CreateOrUpdateSender(req *http.Request) (future ApplicationTypeVersionsCreateOrUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -119,9 +119,9 @@ func (client ApplicationTypeVersionsClient) CreateSender(req *http.Request) (fut
 	return
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ApplicationTypeVersionsClient) CreateResponder(resp *http.Response) (result ApplicationTypeVersionResource, err error) {
+func (client ApplicationTypeVersionsClient) CreateOrUpdateResponder(resp *http.Response) (result ApplicationTypeVersionResource, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

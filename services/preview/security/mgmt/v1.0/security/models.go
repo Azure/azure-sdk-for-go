@@ -4657,8 +4657,8 @@ type NetworkDataConnectableResource struct {
 	ConnectedResourceID *string `json:"connectedResourceId,omitempty"`
 	// ConnectionType - READ-ONLY; The connection type
 	ConnectionType *string `json:"connectionType,omitempty"`
-	// AllowedTraffic - READ-ONLY; The allowed traffic details
-	AllowedTraffic *NetworkDataConnectableResourceAllowedTraffic `json:"allowedTraffic,omitempty"`
+	// AllowedConnections - READ-ONLY; The allowed connections details
+	AllowedConnections *NetworkDataConnectableResourceAllowedConnections `json:"allowedConnections,omitempty"`
 	// ActualTraffic - READ-ONLY; The actual traffic details
 	ActualTraffic *NetworkDataConnectableResourceActualTraffic `json:"actualTraffic,omitempty"`
 	// UnusedPorts - READ-ONLY; The unused ports details
@@ -4692,39 +4692,39 @@ type NetworkDataConnectableResourceActualTrafficOutboundConnectedResources struc
 	ConnectionsDetails  *[]ConnectionDetails `json:"connectionsDetails,omitempty"`
 }
 
-// NetworkDataConnectableResourceAllowedTraffic the allowed traffic details
-type NetworkDataConnectableResourceAllowedTraffic struct {
-	// CalculatedDateTime - READ-ONLY; The UTC time on which the allowed traffic was calculated
+// NetworkDataConnectableResourceAllowedConnections the allowed connections details
+type NetworkDataConnectableResourceAllowedConnections struct {
+	// CalculatedDateTime - READ-ONLY; The UTC time on which the allowed connections was calculated
 	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
-	// InboundConnectedResources - READ-ONLY; The allowed traffic inbound details
-	InboundConnectedResources *NetworkDataConnectableResourceAllowedTrafficInboundConnectedResources `json:"inboundConnectedResources,omitempty"`
-	// OutboundConnectedResources - READ-ONLY; The allowed traffic outbound details
-	OutboundConnectedResources *NetworkDataConnectableResourceAllowedTrafficOutboundConnectedResources `json:"outboundConnectedResources,omitempty"`
+	// InboundConnectedResources - READ-ONLY; The allowed connections inbound details
+	InboundConnectedResources *NetworkDataConnectableResourceAllowedConnectionsInboundConnectedResources `json:"inboundConnectedResources,omitempty"`
+	// OutboundConnectedResources - READ-ONLY; The allowed connections outbound details
+	OutboundConnectedResources *NetworkDataConnectableResourceAllowedConnectionsOutboundConnectedResources `json:"outboundConnectedResources,omitempty"`
 }
 
-// NetworkDataConnectableResourceAllowedTrafficInboundConnectedResources the allowed traffic inbound
-// details
-type NetworkDataConnectableResourceAllowedTrafficInboundConnectedResources struct {
-	// TCPPortsSummary - READ-ONLY; The allowed traffic inbound tcp ports summary
+// NetworkDataConnectableResourceAllowedConnectionsInboundConnectedResources the allowed connections
+// inbound details
+type NetworkDataConnectableResourceAllowedConnectionsInboundConnectedResources struct {
+	// TCPPortsSummary - READ-ONLY; The allowed connections inbound tcp ports summary
 	TCPPortsSummary *int32 `json:"tcpPortsSummary,omitempty"`
-	// UDPPortsSummary - READ-ONLY; The allowed traffic inbound udp ports summary
+	// UDPPortsSummary - READ-ONLY; The allowed connections inbound udp ports summary
 	UDPPortsSummary *int32 `json:"udpPortsSummary,omitempty"`
-	// TCPPorts - READ-ONLY; The allowed traffic inbound tcp ports
+	// TCPPorts - READ-ONLY; The allowed connections inbound tcp ports
 	TCPPorts *string `json:"tcpPorts,omitempty"`
-	// UDPPorts - READ-ONLY; The allowed traffic inbound udp ports
+	// UDPPorts - READ-ONLY; The allowed connections inbound udp ports
 	UDPPorts *string `json:"udpPorts,omitempty"`
 }
 
-// NetworkDataConnectableResourceAllowedTrafficOutboundConnectedResources the allowed traffic outbound
-// details
-type NetworkDataConnectableResourceAllowedTrafficOutboundConnectedResources struct {
-	// TCPPortsSummary - READ-ONLY; The allowed traffic outbound tcp ports summary
+// NetworkDataConnectableResourceAllowedConnectionsOutboundConnectedResources the allowed connections
+// outbound details
+type NetworkDataConnectableResourceAllowedConnectionsOutboundConnectedResources struct {
+	// TCPPortsSummary - READ-ONLY; The allowed connections outbound tcp ports summary
 	TCPPortsSummary *int32 `json:"tcpPortsSummary,omitempty"`
-	// UDPPortsSummary - READ-ONLY; The allowed traffic outbound udp ports summary
+	// UDPPortsSummary - READ-ONLY; The allowed connections outbound udp ports summary
 	UDPPortsSummary *int32 `json:"udpPortsSummary,omitempty"`
-	// TCPPorts - READ-ONLY; The allowed traffic outbound tcp ports
+	// TCPPorts - READ-ONLY; The allowed connections outbound tcp ports
 	TCPPorts *string `json:"tcpPorts,omitempty"`
-	// UDPPorts - READ-ONLY; The allowed traffic outbound udp ports
+	// UDPPorts - READ-ONLY; The allowed connections outbound udp ports
 	UDPPorts *string `json:"udpPorts,omitempty"`
 }
 

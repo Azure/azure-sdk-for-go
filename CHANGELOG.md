@@ -8,6 +8,8 @@
 | -----------: | :---------: |
 | qnamakerruntime | v4.0 |
 
+### Fixed a bug with the table query continuation token in the ./storage package.
+
 ## `v32.0.0`
 
 ### New Packages

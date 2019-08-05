@@ -4665,7 +4665,7 @@ type GalleryImageProperties struct {
 	ReleaseNoteURI *string `json:"releaseNoteUri,omitempty"`
 	// OsType - This property allows you to specify the type of the OS that is included in the disk when creating a VM from a managed image. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
-	// OsState - The allowed values for OS State are 'Generalized'. Possible values include: 'Generalized', 'Specialized'
+	// OsState - This property allows the user to specify whether the virtual machines created under this image are 'Generalized' or 'Specialized'. Possible values include: 'Generalized', 'Specialized'
 	OsState OperatingSystemStateTypes `json:"osState,omitempty"`
 	// EndOfLifeDate - The end of life date of the gallery Image Definition. This property can be used for decommissioning purposes. This property is updatable.
 	EndOfLifeDate *date.Time                       `json:"endOfLifeDate,omitempty"`
@@ -5056,7 +5056,7 @@ func (future *GalleryImageVersionsDeleteFuture) Result(client GalleryImageVersio
 	return
 }
 
-// GalleryImageVersionStorageProfile this is the storage profile of a gallery Image Version.
+// GalleryImageVersionStorageProfile this is the storage profile of a Gallery Image Version.
 type GalleryImageVersionStorageProfile struct {
 	// OsDiskImage - READ-ONLY
 	OsDiskImage *GalleryOSDiskImage `json:"osDiskImage,omitempty"`
@@ -7267,6 +7267,12 @@ type RunCommandResult struct {
 	Value *[]InstanceViewStatus `json:"value,omitempty"`
 }
 
+// ScheduledEventsProfile ...
+type ScheduledEventsProfile struct {
+	// TerminateNotificationProfile - Specifies Terminate Scheduled Event related configurations.
+	TerminateNotificationProfile *TerminateNotificationProfile `json:"terminateNotificationProfile,omitempty"`
+}
+
 // Sku describes a virtual machine scale set sku.
 type Sku struct {
 	// Name - The sku name.
@@ -7833,6 +7839,14 @@ type TargetRegion struct {
 	RegionalReplicaCount *int32 `json:"regionalReplicaCount,omitempty"`
 	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+}
+
+// TerminateNotificationProfile ...
+type TerminateNotificationProfile struct {
+	// NotBeforeTimeout - Configurable length of time a Virtual Machine being deleted will have to potentially approve the Terminate Scheduled Event before the event is auto approved (timed out). The configuration must be specified in ISO 8601 format, the default value is 5 minutes (PT5M)
+	NotBeforeTimeout *string `json:"notBeforeTimeout,omitempty"`
+	// Enable - Specifies whether the Terminate Scheduled event is enabled or disabled.
+	Enable *bool `json:"enable,omitempty"`
 }
 
 // ThrottledRequestsInput api request input for LogAnalytics getThrottledRequests Api.
@@ -11227,6 +11241,8 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
 	// LicenseType - The license type, which is for bring your own license scenario.
 	LicenseType *string `json:"licenseType,omitempty"`
+	// ScheduledEventsProfile - Specifies Scheduled Event related configurations.
+	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }
 
 // VirtualMachineScaleSetVM describes a virtual machine scale set virtual machine.
@@ -11609,6 +11625,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
 	// EvictionPolicy - Specifies the eviction policy for virtual machines in a low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
 	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
+	// ScheduledEventsProfile - Specifies Scheduled Event related configurations.
+	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }
 
 // VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual

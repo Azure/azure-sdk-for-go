@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## `v32.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| qnamakerruntime | v4.0 |
+
+### Fixed a bug with the table query continuation token in the ./storage package.
+
 ## `v32.0.0`
 
 ### New Packages

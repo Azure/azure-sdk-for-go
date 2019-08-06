@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v32.2.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+
 ## `v32.1.0`
 
 ### New Packages

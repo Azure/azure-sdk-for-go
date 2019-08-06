@@ -610,7 +610,7 @@ const (
 	TaskTypeGetUserTablesSQL                                   TaskType = original.TaskTypeGetUserTablesSQL
 	TaskTypeMigrateMongoDb                                     TaskType = original.TaskTypeMigrateMongoDb
 	TaskTypeMigrateMySQLAzureDbForMySQLSync                    TaskType = original.TaskTypeMigrateMySQLAzureDbForMySQLSync
-	TaskTypeMigrateOracleSQLSync                               TaskType = original.TaskTypeMigrateOracleSQLSync
+	TaskTypeMigrateOracleAzureDbForPostgreSQLSync              TaskType = original.TaskTypeMigrateOracleAzureDbForPostgreSQLSync
 	TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync          TaskType = original.TaskTypeMigratePostgreSQLAzureDbForPostgreSQLSync
 	TaskTypeMigrateSchemaSQLServerSQLDb                        TaskType = original.TaskTypeMigrateSchemaSQLServerSQLDb
 	TaskTypeMigrateSQLServerAzureSQLDbMI                       TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMI

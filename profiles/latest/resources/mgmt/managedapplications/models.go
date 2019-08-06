@@ -22,7 +22,7 @@ package managedapplications
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/managedapplications"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-03-01/managedapplications"
 )
 
 const (
@@ -69,6 +69,7 @@ const (
 type Application = original.Application
 type ApplicationArtifact = original.ApplicationArtifact
 type ApplicationDefinition = original.ApplicationDefinition
+type ApplicationDefinitionArtifactClient = original.ApplicationDefinitionArtifactClient
 type ApplicationDefinitionListResult = original.ApplicationDefinitionListResult
 type ApplicationDefinitionListResultIterator = original.ApplicationDefinitionListResultIterator
 type ApplicationDefinitionListResultPage = original.ApplicationDefinitionListResultPage
@@ -98,9 +99,16 @@ type Plan = original.Plan
 type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
+type String = original.String
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewApplicationDefinitionArtifactClient(subscriptionID string) ApplicationDefinitionArtifactClient {
+	return original.NewApplicationDefinitionArtifactClient(subscriptionID)
+}
+func NewApplicationDefinitionArtifactClientWithBaseURI(baseURI string, subscriptionID string) ApplicationDefinitionArtifactClient {
+	return original.NewApplicationDefinitionArtifactClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewApplicationDefinitionListResultIterator(page ApplicationDefinitionListResultPage) ApplicationDefinitionListResultIterator {
 	return original.NewApplicationDefinitionListResultIterator(page)

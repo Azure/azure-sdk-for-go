@@ -2154,8 +2154,8 @@ type AzureFileshareProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -2217,8 +2217,8 @@ func (afpi AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	if afpi.CreateMode != "" {
 		objectMap["createMode"] = afpi.CreateMode
 	}
-	if afpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = afpi.DeferredDeleteSyncTimeInUTC
+	if afpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = afpi.DeferredDeleteTimeInUTC
 	}
 	if afpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = afpi.IsScheduledForDeferredDelete
@@ -2982,8 +2982,8 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -3054,8 +3054,8 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, er
 	if aisccvpi.CreateMode != "" {
 		objectMap["createMode"] = aisccvpi.CreateMode
 	}
-	if aisccvpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = aisccvpi.DeferredDeleteSyncTimeInUTC
+	if aisccvpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = aisccvpi.DeferredDeleteTimeInUTC
 	}
 	if aisccvpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = aisccvpi.IsScheduledForDeferredDelete
@@ -3453,8 +3453,8 @@ type AzureIaaSComputeVMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -3525,8 +3525,8 @@ func (aiscvpi AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	if aiscvpi.CreateMode != "" {
 		objectMap["createMode"] = aiscvpi.CreateMode
 	}
-	if aiscvpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = aiscvpi.DeferredDeleteSyncTimeInUTC
+	if aiscvpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = aiscvpi.DeferredDeleteTimeInUTC
 	}
 	if aiscvpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = aiscvpi.IsScheduledForDeferredDelete
@@ -3867,8 +3867,8 @@ type AzureIaaSVMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -3980,8 +3980,8 @@ func (aispi AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 	if aispi.CreateMode != "" {
 		objectMap["createMode"] = aispi.CreateMode
 	}
-	if aispi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = aispi.DeferredDeleteSyncTimeInUTC
+	if aispi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = aispi.DeferredDeleteTimeInUTC
 	}
 	if aispi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = aispi.IsScheduledForDeferredDelete
@@ -4742,8 +4742,8 @@ type AzureSQLProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -4793,8 +4793,8 @@ func (aspi AzureSQLProtectedItem) MarshalJSON() ([]byte, error) {
 	if aspi.CreateMode != "" {
 		objectMap["createMode"] = aspi.CreateMode
 	}
-	if aspi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = aspi.DeferredDeleteSyncTimeInUTC
+	if aspi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = aspi.DeferredDeleteTimeInUTC
 	}
 	if aspi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = aspi.IsScheduledForDeferredDelete
@@ -6079,8 +6079,8 @@ type AzureVMWorkloadProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -6202,8 +6202,8 @@ func (avwpi AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	if avwpi.CreateMode != "" {
 		objectMap["createMode"] = avwpi.CreateMode
 	}
-	if avwpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = avwpi.DeferredDeleteSyncTimeInUTC
+	if avwpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = avwpi.DeferredDeleteTimeInUTC
 	}
 	if avwpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = avwpi.IsScheduledForDeferredDelete
@@ -6596,8 +6596,8 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -6674,8 +6674,8 @@ func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte
 	if avwsadpi.CreateMode != "" {
 		objectMap["createMode"] = avwsadpi.CreateMode
 	}
-	if avwsadpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = avwsadpi.DeferredDeleteSyncTimeInUTC
+	if avwsadpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = avwsadpi.DeferredDeleteTimeInUTC
 	}
 	if avwsadpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = avwsadpi.IsScheduledForDeferredDelete
@@ -7358,8 +7358,8 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -7436,8 +7436,8 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byt
 	if avwshdpi.CreateMode != "" {
 		objectMap["createMode"] = avwshdpi.CreateMode
 	}
-	if avwshdpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = avwshdpi.DeferredDeleteSyncTimeInUTC
+	if avwshdpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = avwshdpi.DeferredDeleteTimeInUTC
 	}
 	if avwshdpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = avwshdpi.IsScheduledForDeferredDelete
@@ -8278,8 +8278,8 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -8356,8 +8356,8 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, er
 	if avwsdpi.CreateMode != "" {
 		objectMap["createMode"] = avwsdpi.CreateMode
 	}
-	if avwsdpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = avwsdpi.DeferredDeleteSyncTimeInUTC
+	if avwsdpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = avwsdpi.DeferredDeleteTimeInUTC
 	}
 	if avwsdpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = avwsdpi.IsScheduledForDeferredDelete
@@ -11905,8 +11905,8 @@ type DPMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -11959,8 +11959,8 @@ func (dpi DPMProtectedItem) MarshalJSON() ([]byte, error) {
 	if dpi.CreateMode != "" {
 		objectMap["createMode"] = dpi.CreateMode
 	}
-	if dpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = dpi.DeferredDeleteSyncTimeInUTC
+	if dpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = dpi.DeferredDeleteTimeInUTC
 	}
 	if dpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = dpi.IsScheduledForDeferredDelete
@@ -12903,8 +12903,8 @@ type GenericProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -12963,8 +12963,8 @@ func (gpi GenericProtectedItem) MarshalJSON() ([]byte, error) {
 	if gpi.CreateMode != "" {
 		objectMap["createMode"] = gpi.CreateMode
 	}
-	if gpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = gpi.DeferredDeleteSyncTimeInUTC
+	if gpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = gpi.DeferredDeleteTimeInUTC
 	}
 	if gpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = gpi.IsScheduledForDeferredDelete
@@ -15009,6 +15009,8 @@ type MabFileFolderProtectedItem struct {
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
 	// ProtectionState - Protected, ProtectionStopped, IRPending or ProtectionError
 	ProtectionState *string `json:"protectionState,omitempty"`
+	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
+	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
 	// ExtendedInfo - Additional information with this backup item.
 	ExtendedInfo *MabFileFolderProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
@@ -15027,8 +15029,8 @@ type MabFileFolderProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -15057,6 +15059,9 @@ func (mffpi MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	if mffpi.ProtectionState != nil {
 		objectMap["protectionState"] = mffpi.ProtectionState
 	}
+	if mffpi.DeferredDeleteSyncTimeInUTC != nil {
+		objectMap["deferredDeleteSyncTimeInUTC"] = mffpi.DeferredDeleteSyncTimeInUTC
+	}
 	if mffpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = mffpi.ExtendedInfo
 	}
@@ -15084,8 +15089,8 @@ func (mffpi MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	if mffpi.CreateMode != "" {
 		objectMap["createMode"] = mffpi.CreateMode
 	}
-	if mffpi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = mffpi.DeferredDeleteSyncTimeInUTC
+	if mffpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = mffpi.DeferredDeleteTimeInUTC
 	}
 	if mffpi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = mffpi.IsScheduledForDeferredDelete
@@ -16519,8 +16524,8 @@ type ProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
-	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
 	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
 	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
@@ -16642,8 +16647,8 @@ func (pi ProtectedItem) MarshalJSON() ([]byte, error) {
 	if pi.CreateMode != "" {
 		objectMap["createMode"] = pi.CreateMode
 	}
-	if pi.DeferredDeleteSyncTimeInUTC != nil {
-		objectMap["deferredDeleteSyncTimeInUTC"] = pi.DeferredDeleteSyncTimeInUTC
+	if pi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = pi.DeferredDeleteTimeInUTC
 	}
 	if pi.IsScheduledForDeferredDelete != nil {
 		objectMap["isScheduledForDeferredDelete"] = pi.IsScheduledForDeferredDelete

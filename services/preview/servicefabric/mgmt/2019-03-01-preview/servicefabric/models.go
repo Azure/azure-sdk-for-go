@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2019-03-01/servicefabric"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2019-03-01-preview/servicefabric"
 
 // ArmServicePackageActivationMode enumerates the values for arm service package activation mode.
 type ArmServicePackageActivationMode string
@@ -558,7 +558,7 @@ type ApplicationResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - It will be deprecated in New API, resource location depends on the parent resource.
+	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -729,7 +729,7 @@ type ApplicationResourceUpdate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - It will be deprecated in New API, resource location depends on the parent resource.
+	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -875,30 +875,30 @@ func (arup ApplicationResourceUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ApplicationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ApplicationsCreateOrUpdateFuture struct {
+// ApplicationsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ApplicationsCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ApplicationsCreateOrUpdateFuture) Result(client ApplicationsClient) (ar ApplicationResource, err error) {
+func (future *ApplicationsCreateFuture) Result(client ApplicationsClient) (ar ApplicationResource, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationsCreateOrUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationsCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if ar.Response.Response, err = future.GetResult(sender); err == nil && ar.Response.Response.StatusCode != http.StatusNoContent {
-		ar, err = client.CreateOrUpdateResponder(ar.Response.Response)
+		ar, err = client.CreateResponder(ar.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsCreateOrUpdateFuture", "Result", ar.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "servicefabric.ApplicationsCreateFuture", "Result", ar.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -967,7 +967,7 @@ type ApplicationTypeResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - It will be deprecated in New API, resource location depends on the parent resource.
+	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -1117,7 +1117,7 @@ type ApplicationTypeVersionResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - It will be deprecated in New API, resource location depends on the parent resource.
+	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -1246,30 +1246,30 @@ func (atvrp ApplicationTypeVersionResourceProperties) MarshalJSON() ([]byte, err
 	return json.Marshal(objectMap)
 }
 
-// ApplicationTypeVersionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
-type ApplicationTypeVersionsCreateOrUpdateFuture struct {
+// ApplicationTypeVersionsCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ApplicationTypeVersionsCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ApplicationTypeVersionsCreateOrUpdateFuture) Result(client ApplicationTypeVersionsClient) (atvr ApplicationTypeVersionResource, err error) {
+func (future *ApplicationTypeVersionsCreateFuture) Result(client ApplicationTypeVersionsClient) (atvr ApplicationTypeVersionResource, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationTypeVersionsCreateOrUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("servicefabric.ApplicationTypeVersionsCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if atvr.Response.Response, err = future.GetResult(sender); err == nil && atvr.Response.Response.StatusCode != http.StatusNoContent {
-		atvr, err = client.CreateOrUpdateResponder(atvr.Response.Response)
+		atvr, err = client.CreateResponder(atvr.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsCreateOrUpdateFuture", "Result", atvr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "servicefabric.ApplicationTypeVersionsCreateFuture", "Result", atvr.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1775,30 +1775,30 @@ type ClusterPropertiesUpdateParameters struct {
 	UpgradeMode UpgradeMode1 `json:"upgradeMode,omitempty"`
 }
 
-// ClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ClustersCreateOrUpdateFuture struct {
+type ClustersCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ClustersCreateOrUpdateFuture) Result(client ClustersClient) (c Cluster, err error) {
+func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ClustersCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "servicefabric.ClustersCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ClustersCreateOrUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("servicefabric.ClustersCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
-		c, err = client.CreateOrUpdateResponder(c.Response.Response)
+		c, err = client.CreateResponder(c.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ClustersCreateOrUpdateFuture", "Result", c.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "servicefabric.ClustersCreateFuture", "Result", c.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2373,7 +2373,7 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - It will be deprecated in New API, resource location depends on the parent resource.
+	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -2535,7 +2535,7 @@ type ServiceResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - It will be deprecated in New API, resource location depends on the parent resource.
+	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -2951,7 +2951,7 @@ type ServiceResourceUpdate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - It will be deprecated in New API, resource location depends on the parent resource.
+	// Location - Azure resource location.
 	Location *string `json:"location,omitempty"`
 	// Tags - Azure resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -3226,30 +3226,30 @@ func (srup *ServiceResourceUpdateProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ServicesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ServicesCreateOrUpdateFuture struct {
+type ServicesCreateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (sr ServiceResource, err error) {
+func (future *ServicesCreateFuture) Result(client ServicesClient) (sr ServiceResource, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ServicesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "servicefabric.ServicesCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("servicefabric.ServicesCreateOrUpdateFuture")
+		err = azure.NewAsyncOpIncompleteError("servicefabric.ServicesCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
-		sr, err = client.CreateOrUpdateResponder(sr.Response.Response)
+		sr, err = client.CreateResponder(sr.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "servicefabric.ServicesCreateOrUpdateFuture", "Result", sr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "servicefabric.ServicesCreateFuture", "Result", sr.Response.Response, "Failure responding to request")
 		}
 	}
 	return

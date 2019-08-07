@@ -10414,6 +10414,8 @@ func (moadfpsstp *MigrateOracleAzureDbForPostgreSQLSyncTaskProperties) Unmarshal
 // MigrateOracleAzureDbPostgreSQLSyncDatabaseInput database specific information for Oracle to Azure
 // Database for PostgreSQL migration task inputs
 type MigrateOracleAzureDbPostgreSQLSyncDatabaseInput struct {
+	// CaseManipulation - How to handle object name casing: either Preserve or ToLower
+	CaseManipulation *string `json:"caseManipulation,omitempty"`
 	// Name - Name of the migration pipeline
 	Name *string `json:"name,omitempty"`
 	// SchemaName - Name of the source schema
@@ -10433,6 +10435,9 @@ type MigrateOracleAzureDbPostgreSQLSyncDatabaseInput struct {
 // MarshalJSON is the custom marshaler for MigrateOracleAzureDbPostgreSQLSyncDatabaseInput.
 func (moadpssdi MigrateOracleAzureDbPostgreSQLSyncDatabaseInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if moadpssdi.CaseManipulation != nil {
+		objectMap["caseManipulation"] = moadpssdi.CaseManipulation
+	}
 	if moadpssdi.Name != nil {
 		objectMap["name"] = moadpssdi.Name
 	}

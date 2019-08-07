@@ -41,14 +41,14 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 	return ClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a Service Fabric cluster resource with the specified name.
+// Create create or update a Service Fabric cluster resource with the specified name.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster resource.
 // parameters - the cluster resource.
-func (client ClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (result ClustersCreateOrUpdateFuture, err error) {
+func (client ClustersClient) Create(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (result ClustersCreateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Create")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -106,33 +106,33 @@ func (client ClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 								}},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewError("servicefabric.ClustersClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("servicefabric.ClustersClient", "Create", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, clusterName, parameters)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, clusterName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateOrUpdateSender(req)
+	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "servicefabric.ClustersClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ClustersClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (*http.Request, error) {
+// CreatePreparer prepares the Create request.
+func (client ClustersClient) CreatePreparer(ctx context.Context, resourceGroupName string, clusterName string, parameters Cluster) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -147,9 +147,9 @@ func (client ClustersClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client ClustersClient) CreateOrUpdateSender(req *http.Request) (future ClustersCreateOrUpdateFuture, err error) {
+func (client ClustersClient) CreateSender(req *http.Request) (future ClustersCreateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -160,9 +160,9 @@ func (client ClustersClient) CreateOrUpdateSender(req *http.Request) (future Clu
 	return
 }
 
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client ClustersClient) CreateOrUpdateResponder(resp *http.Response) (result Cluster, err error) {
+func (client ClustersClient) CreateResponder(resp *http.Response) (result Cluster, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -217,7 +217,7 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -294,7 +294,7 @@ func (client ClustersClient) GetPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -366,7 +366,7 @@ func (client ClustersClient) ListPreparer(ctx context.Context) (*http.Request, e
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -442,7 +442,7 @@ func (client ClustersClient) ListByResourceGroupPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -515,7 +515,7 @@ func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-03-01"
+	const APIVersion = "2019-03-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

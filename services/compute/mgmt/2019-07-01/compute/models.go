@@ -605,6 +605,29 @@ func PossibleProvisioningState2Values() []ProvisioningState2 {
 	return []ProvisioningState2{ProvisioningState2Creating, ProvisioningState2Deleting, ProvisioningState2Failed, ProvisioningState2Migrating, ProvisioningState2Succeeded, ProvisioningState2Updating}
 }
 
+// ProvisioningState3 enumerates the values for provisioning state 3.
+type ProvisioningState3 string
+
+const (
+	// ProvisioningState3Creating ...
+	ProvisioningState3Creating ProvisioningState3 = "Creating"
+	// ProvisioningState3Deleting ...
+	ProvisioningState3Deleting ProvisioningState3 = "Deleting"
+	// ProvisioningState3Failed ...
+	ProvisioningState3Failed ProvisioningState3 = "Failed"
+	// ProvisioningState3Migrating ...
+	ProvisioningState3Migrating ProvisioningState3 = "Migrating"
+	// ProvisioningState3Succeeded ...
+	ProvisioningState3Succeeded ProvisioningState3 = "Succeeded"
+	// ProvisioningState3Updating ...
+	ProvisioningState3Updating ProvisioningState3 = "Updating"
+)
+
+// PossibleProvisioningState3Values returns an array of possible values for the ProvisioningState3 const type.
+func PossibleProvisioningState3Values() []ProvisioningState3 {
+	return []ProvisioningState3{ProvisioningState3Creating, ProvisioningState3Deleting, ProvisioningState3Failed, ProvisioningState3Migrating, ProvisioningState3Succeeded, ProvisioningState3Updating}
+}
+
 // ProximityPlacementGroupType enumerates the values for proximity placement group type.
 type ProximityPlacementGroupType string
 
@@ -3684,10 +3707,670 @@ func (g *Gallery) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// GalleryApplication specifies information about the gallery Application Definition that you want to
+// create or update.
+type GalleryApplication struct {
+	autorest.Response             `json:"-"`
+	*GalleryApplicationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryApplication.
+func (ga GalleryApplication) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ga.GalleryApplicationProperties != nil {
+		objectMap["properties"] = ga.GalleryApplicationProperties
+	}
+	if ga.Location != nil {
+		objectMap["location"] = ga.Location
+	}
+	if ga.Tags != nil {
+		objectMap["tags"] = ga.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryApplication struct.
+func (ga *GalleryApplication) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryApplicationProperties GalleryApplicationProperties
+				err = json.Unmarshal(*v, &galleryApplicationProperties)
+				if err != nil {
+					return err
+				}
+				ga.GalleryApplicationProperties = &galleryApplicationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ga.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ga.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ga.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ga.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ga.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// GalleryApplicationList the List Gallery Applications operation response.
+type GalleryApplicationList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of Gallery Applications.
+	Value *[]GalleryApplication `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this to fetch the next page of gallery Application Definitions.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GalleryApplicationListIterator provides access to a complete listing of GalleryApplication values.
+type GalleryApplicationListIterator struct {
+	i    int
+	page GalleryApplicationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GalleryApplicationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *GalleryApplicationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GalleryApplicationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GalleryApplicationListIterator) Response() GalleryApplicationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GalleryApplicationListIterator) Value() GalleryApplication {
+	if !iter.page.NotDone() {
+		return GalleryApplication{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the GalleryApplicationListIterator type.
+func NewGalleryApplicationListIterator(page GalleryApplicationListPage) GalleryApplicationListIterator {
+	return GalleryApplicationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (gal GalleryApplicationList) IsEmpty() bool {
+	return gal.Value == nil || len(*gal.Value) == 0
+}
+
+// galleryApplicationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (gal GalleryApplicationList) galleryApplicationListPreparer(ctx context.Context) (*http.Request, error) {
+	if gal.NextLink == nil || len(to.String(gal.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(gal.NextLink)))
+}
+
+// GalleryApplicationListPage contains a page of GalleryApplication values.
+type GalleryApplicationListPage struct {
+	fn  func(context.Context, GalleryApplicationList) (GalleryApplicationList, error)
+	gal GalleryApplicationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GalleryApplicationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.gal)
+	if err != nil {
+		return err
+	}
+	page.gal = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *GalleryApplicationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GalleryApplicationListPage) NotDone() bool {
+	return !page.gal.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GalleryApplicationListPage) Response() GalleryApplicationList {
+	return page.gal
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GalleryApplicationListPage) Values() []GalleryApplication {
+	if page.gal.IsEmpty() {
+		return nil
+	}
+	return *page.gal.Value
+}
+
+// Creates a new instance of the GalleryApplicationListPage type.
+func NewGalleryApplicationListPage(getNextPage func(context.Context, GalleryApplicationList) (GalleryApplicationList, error)) GalleryApplicationListPage {
+	return GalleryApplicationListPage{fn: getNextPage}
+}
+
+// GalleryApplicationProperties describes the properties of a gallery Application Definition.
+type GalleryApplicationProperties struct {
+	// Description - The description of this gallery Application Definition resource. This property is updatable.
+	Description *string `json:"description,omitempty"`
+	// Eula - The Eula agreement for the gallery Application Definition.
+	Eula *string `json:"eula,omitempty"`
+	// PrivacyStatementURI - The privacy statement uri.
+	PrivacyStatementURI *string `json:"privacyStatementUri,omitempty"`
+	// ReleaseNoteURI - The release note uri.
+	ReleaseNoteURI *string `json:"releaseNoteUri,omitempty"`
+	// EndOfLifeDate - The end of life date of the gallery Application Definition. This property can be used for decommissioning purposes. This property is updatable.
+	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
+	// SupportedOSType - This property allows you to specify the supported type of the OS that application is built for. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
+	SupportedOSType OperatingSystemTypes `json:"supportedOSType,omitempty"`
+}
+
+// GalleryApplicationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type GalleryApplicationsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryApplicationsCreateOrUpdateFuture) Result(client GalleryApplicationsClient) (ga GalleryApplication, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryApplicationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryApplicationsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ga.Response.Response, err = future.GetResult(sender); err == nil && ga.Response.Response.StatusCode != http.StatusNoContent {
+		ga, err = client.CreateOrUpdateResponder(ga.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.GalleryApplicationsCreateOrUpdateFuture", "Result", ga.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// GalleryApplicationsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type GalleryApplicationsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryApplicationsDeleteFuture) Result(client GalleryApplicationsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryApplicationsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryApplicationsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// GalleryApplicationVersion specifies information about the gallery Application Version that you want to
+// create or update.
+type GalleryApplicationVersion struct {
+	autorest.Response                    `json:"-"`
+	*GalleryApplicationVersionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryApplicationVersion.
+func (gav GalleryApplicationVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gav.GalleryApplicationVersionProperties != nil {
+		objectMap["properties"] = gav.GalleryApplicationVersionProperties
+	}
+	if gav.Location != nil {
+		objectMap["location"] = gav.Location
+	}
+	if gav.Tags != nil {
+		objectMap["tags"] = gav.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryApplicationVersion struct.
+func (gav *GalleryApplicationVersion) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryApplicationVersionProperties GalleryApplicationVersionProperties
+				err = json.Unmarshal(*v, &galleryApplicationVersionProperties)
+				if err != nil {
+					return err
+				}
+				gav.GalleryApplicationVersionProperties = &galleryApplicationVersionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gav.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gav.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gav.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				gav.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				gav.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// GalleryApplicationVersionList the List Gallery Application version operation response.
+type GalleryApplicationVersionList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of gallery Application Versions.
+	Value *[]GalleryApplicationVersion `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of gallery Application Versions. Call ListNext() with this to fetch the next page of gallery Application Versions.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// GalleryApplicationVersionListIterator provides access to a complete listing of GalleryApplicationVersion
+// values.
+type GalleryApplicationVersionListIterator struct {
+	i    int
+	page GalleryApplicationVersionListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *GalleryApplicationVersionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationVersionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *GalleryApplicationVersionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter GalleryApplicationVersionListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter GalleryApplicationVersionListIterator) Response() GalleryApplicationVersionList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter GalleryApplicationVersionListIterator) Value() GalleryApplicationVersion {
+	if !iter.page.NotDone() {
+		return GalleryApplicationVersion{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the GalleryApplicationVersionListIterator type.
+func NewGalleryApplicationVersionListIterator(page GalleryApplicationVersionListPage) GalleryApplicationVersionListIterator {
+	return GalleryApplicationVersionListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (gavl GalleryApplicationVersionList) IsEmpty() bool {
+	return gavl.Value == nil || len(*gavl.Value) == 0
+}
+
+// galleryApplicationVersionListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (gavl GalleryApplicationVersionList) galleryApplicationVersionListPreparer(ctx context.Context) (*http.Request, error) {
+	if gavl.NextLink == nil || len(to.String(gavl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(gavl.NextLink)))
+}
+
+// GalleryApplicationVersionListPage contains a page of GalleryApplicationVersion values.
+type GalleryApplicationVersionListPage struct {
+	fn   func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error)
+	gavl GalleryApplicationVersionList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *GalleryApplicationVersionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationVersionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.gavl)
+	if err != nil {
+		return err
+	}
+	page.gavl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *GalleryApplicationVersionListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page GalleryApplicationVersionListPage) NotDone() bool {
+	return !page.gavl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page GalleryApplicationVersionListPage) Response() GalleryApplicationVersionList {
+	return page.gavl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page GalleryApplicationVersionListPage) Values() []GalleryApplicationVersion {
+	if page.gavl.IsEmpty() {
+		return nil
+	}
+	return *page.gavl.Value
+}
+
+// Creates a new instance of the GalleryApplicationVersionListPage type.
+func NewGalleryApplicationVersionListPage(getNextPage func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error)) GalleryApplicationVersionListPage {
+	return GalleryApplicationVersionListPage{fn: getNextPage}
+}
+
+// GalleryApplicationVersionProperties describes the properties of a gallery Image Version.
+type GalleryApplicationVersionProperties struct {
+	PublishingProfile *GalleryApplicationVersionPublishingProfile `json:"publishingProfile,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Updating', 'ProvisioningState1Failed', 'ProvisioningState1Succeeded', 'ProvisioningState1Deleting', 'ProvisioningState1Migrating'
+	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
+	// ReplicationStatus - READ-ONLY
+	ReplicationStatus *ReplicationStatus `json:"replicationStatus,omitempty"`
+}
+
+// GalleryApplicationVersionPublishingProfile the publishing profile of a gallery Image Version.
+type GalleryApplicationVersionPublishingProfile struct {
+	Source *UserArtifactSource `json:"source,omitempty"`
+	// ContentType - Optional. May be used to help process this file. The type of file contained in the source, e.g. zip, json, etc.
+	ContentType *string `json:"contentType,omitempty"`
+	// EnableHealthCheck - Optional. Whether or not this application reports health.
+	EnableHealthCheck *bool `json:"enableHealthCheck,omitempty"`
+	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
+	TargetRegions *[]TargetRegion `json:"targetRegions,omitempty"`
+	// ReplicaCount - The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified. This property is updatable.
+	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+	// ExcludeFromLatest - If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
+	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
+	// PublishedDate - READ-ONLY; The timestamp for when the gallery Image Version is published.
+	PublishedDate *date.Time `json:"publishedDate,omitempty"`
+	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
+	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+}
+
+// GalleryApplicationVersionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type GalleryApplicationVersionsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryApplicationVersionsCreateOrUpdateFuture) Result(client GalleryApplicationVersionsClient) (gav GalleryApplicationVersion, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryApplicationVersionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryApplicationVersionsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if gav.Response.Response, err = future.GetResult(sender); err == nil && gav.Response.Response.StatusCode != http.StatusNoContent {
+		gav, err = client.CreateOrUpdateResponder(gav.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.GalleryApplicationVersionsCreateOrUpdateFuture", "Result", gav.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// GalleryApplicationVersionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type GalleryApplicationVersionsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GalleryApplicationVersionsDeleteFuture) Result(client GalleryApplicationVersionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.GalleryApplicationVersionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.GalleryApplicationVersionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // GalleryArtifactPublishingProfileBase describes the basic gallery artifact publishing profile.
 type GalleryArtifactPublishingProfileBase struct {
 	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
 	TargetRegions *[]TargetRegion `json:"targetRegions,omitempty"`
+	// ReplicaCount - The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified. This property is updatable.
+	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+	// ExcludeFromLatest - If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
+	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
+	// PublishedDate - READ-ONLY; The timestamp for when the gallery Image Version is published.
+	PublishedDate *date.Time `json:"publishedDate,omitempty"`
+	// EndOfLifeDate - The end of life date of the gallery Image Version. This property can be used for decommissioning purposes. This property is updatable.
+	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
+	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+}
+
+// GalleryArtifactSource the source image from which the Image Version is going to be created.
+type GalleryArtifactSource struct {
+	ManagedImage *ManagedArtifact `json:"managedImage,omitempty"`
 }
 
 // GalleryArtifactVersionSource the gallery artifact version source.
@@ -4000,8 +4683,8 @@ type GalleryImageProperties struct {
 	Recommended   *RecommendedMachineConfiguration `json:"recommended,omitempty"`
 	Disallowed    *Disallowed                      `json:"disallowed,omitempty"`
 	PurchasePlan  *ImagePurchasePlan               `json:"purchasePlan,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Updating', 'ProvisioningState1Failed', 'ProvisioningState1Succeeded', 'ProvisioningState1Deleting', 'ProvisioningState1Migrating'
-	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState2Creating', 'ProvisioningState2Updating', 'ProvisioningState2Failed', 'ProvisioningState2Succeeded', 'ProvisioningState2Deleting', 'ProvisioningState2Migrating'
+	ProvisioningState ProvisioningState2 `json:"provisioningState,omitempty"`
 }
 
 // GalleryImagesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -4306,8 +4989,8 @@ func NewGalleryImageVersionListPage(getNextPage func(context.Context, GalleryIma
 // GalleryImageVersionProperties describes the properties of a gallery Image Version.
 type GalleryImageVersionProperties struct {
 	PublishingProfile *GalleryImageVersionPublishingProfile `json:"publishingProfile,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState2Creating', 'ProvisioningState2Updating', 'ProvisioningState2Failed', 'ProvisioningState2Succeeded', 'ProvisioningState2Deleting', 'ProvisioningState2Migrating'
-	ProvisioningState ProvisioningState2                 `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningState3Creating', 'ProvisioningState3Updating', 'ProvisioningState3Failed', 'ProvisioningState3Succeeded', 'ProvisioningState3Deleting', 'ProvisioningState3Migrating'
+	ProvisioningState ProvisioningState3                 `json:"provisioningState,omitempty"`
 	StorageProfile    *GalleryImageVersionStorageProfile `json:"storageProfile,omitempty"`
 	// ReplicationStatus - READ-ONLY
 	ReplicationStatus *ReplicationStatus `json:"replicationStatus,omitempty"`
@@ -4315,6 +4998,8 @@ type GalleryImageVersionProperties struct {
 
 // GalleryImageVersionPublishingProfile the publishing profile of a gallery Image Version.
 type GalleryImageVersionPublishingProfile struct {
+	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
+	TargetRegions *[]TargetRegion `json:"targetRegions,omitempty"`
 	// ReplicaCount - The number of replicas of the Image Version to be created per region. This property would take effect for a region when regionalReplicaCount is not specified. This property is updatable.
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 	// ExcludeFromLatest - If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image Version.
@@ -4325,8 +5010,6 @@ type GalleryImageVersionPublishingProfile struct {
 	EndOfLifeDate *date.Time `json:"endOfLifeDate,omitempty"`
 	// StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable. Possible values include: 'StorageAccountTypeStandardLRS', 'StorageAccountTypeStandardZRS'
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
-	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
-	TargetRegions *[]TargetRegion `json:"targetRegions,omitempty"`
 }
 
 // GalleryImageVersionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -5372,6 +6055,12 @@ type MaintenanceRedeployStatus struct {
 	LastOperationResultCode MaintenanceOperationResultCodeTypes `json:"lastOperationResultCode,omitempty"`
 	// LastOperationMessage - Message returned for the last Maintenance Operation.
 	LastOperationMessage *string `json:"lastOperationMessage,omitempty"`
+}
+
+// ManagedArtifact the managed artifact.
+type ManagedArtifact struct {
+	// ID - The managed artifact id.
+	ID *string `json:"id,omitempty"`
 }
 
 // ManagedDiskParameters the parameters of a managed disk.
@@ -6587,6 +7276,12 @@ type RunCommandResult struct {
 	Value *[]InstanceViewStatus `json:"value,omitempty"`
 }
 
+// ScheduledEventsProfile ...
+type ScheduledEventsProfile struct {
+	// TerminateNotificationProfile - Specifies Terminate Scheduled Event related configurations.
+	TerminateNotificationProfile *TerminateNotificationProfile `json:"terminateNotificationProfile,omitempty"`
+}
+
 // Sku describes a virtual machine scale set sku.
 type Sku struct {
 	// Name - The sku name.
@@ -7155,6 +7850,14 @@ type TargetRegion struct {
 	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
+// TerminateNotificationProfile ...
+type TerminateNotificationProfile struct {
+	// NotBeforeTimeout - Configurable length of time a Virtual Machine being deleted will have to potentially approve the Terminate Scheduled Event before the event is auto approved (timed out). The configuration must be specified in ISO 8601 format, the default value is 5 minutes (PT5M)
+	NotBeforeTimeout *string `json:"notBeforeTimeout,omitempty"`
+	// Enable - Specifies whether the Terminate Scheduled event is enabled or disabled.
+	Enable *bool `json:"enable,omitempty"`
+}
+
 // ThrottledRequestsInput api request input for LogAnalytics getThrottledRequests Api.
 type ThrottledRequestsInput struct {
 	// BlobContainerSasURI - SAS Uri of the logging blob container to which LogAnalytics Api writes output logs to.
@@ -7251,6 +7954,14 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - The localized name of the resource.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// UserArtifactSource the source image from which the Image Version is going to be created.
+type UserArtifactSource struct {
+	// FileName - Required. The fileName of the artifact.
+	FileName *string `json:"fileName,omitempty"`
+	// MediaLink - Required. The mediaLink of the artifact, must be a readable storage blob.
+	MediaLink *string `json:"mediaLink,omitempty"`
 }
 
 // VaultCertificate describes a single certificate reference in a Key Vault, and where the certificate
@@ -8021,6 +8732,8 @@ type VirtualMachineImageProperties struct {
 	OsDiskImage                  *OSDiskImage                  `json:"osDiskImage,omitempty"`
 	DataDiskImages               *[]DataDiskImage              `json:"dataDiskImages,omitempty"`
 	AutomaticOSUpgradeProperties *AutomaticOSUpgradeProperties `json:"automaticOSUpgradeProperties,omitempty"`
+	// HyperVGeneration - Possible values include: 'HyperVGenerationTypesV1', 'HyperVGenerationTypesV2'
+	HyperVGeneration HyperVGenerationTypes `json:"hyperVGeneration,omitempty"`
 }
 
 // VirtualMachineImageResource virtual machine image resource information.
@@ -8246,7 +8959,7 @@ type VirtualMachineProperties struct {
 	DiagnosticsProfile *DiagnosticsProfile `json:"diagnosticsProfile,omitempty"`
 	// AvailabilitySet - Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes to maximize availability. For more information about availability sets, see [Manage the availability of virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json). <br><br> For more information on Azure planned maintenance, see [Planned maintenance for virtual machines in Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) <br><br> Currently, a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability set. <br><br>This property cannot exist along with a non-null properties.virtualMachineScaleSet reference.
 	AvailabilitySet *SubResource `json:"availabilitySet,omitempty"`
-	// VirtualMachineScaleSet - Specifies information about the virtual machine scale set that the virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale set at creation time. An existing VM cannot be added to a virtual machine scale set. <br><br>This property cannot exist along with a non-null properties.avalabilitySet reference. <br><br>Minimum api‐version: 2019‐03‐01
+	// VirtualMachineScaleSet - Specifies information about the virtual machine scale set that the virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale set at creation time. An existing VM cannot be added to a virtual machine scale set. <br><br>This property cannot exist along with a non-null properties.availabilitySet reference. <br><br>Minimum api‐version: 2019‐03‐01
 	VirtualMachineScaleSet *SubResource `json:"virtualMachineScaleSet,omitempty"`
 	// ProximityPlacementGroup - Specifies information about the proximity placement group that the virtual machine should be assigned to. <br><br>Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource `json:"proximityPlacementGroup,omitempty"`
@@ -10539,6 +11252,8 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
 	// LicenseType - The license type, which is for bring your own license scenario.
 	LicenseType *string `json:"licenseType,omitempty"`
+	// ScheduledEventsProfile - Specifies Scheduled Event related configurations.
+	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }
 
 // VirtualMachineScaleSetVM describes a virtual machine scale set virtual machine.
@@ -10921,6 +11636,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
 	// EvictionPolicy - Specifies the eviction policy for virtual machines in a low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
 	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
+	// ScheduledEventsProfile - Specifies Scheduled Event related configurations.
+	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }
 
 // VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual

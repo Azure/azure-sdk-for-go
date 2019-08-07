@@ -145,9 +145,12 @@ type TriggersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, trigger datafactory.TriggerResource, ifMatch string) (result datafactory.TriggerResource, err error)
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, ifNoneMatch string) (result datafactory.TriggerResource, err error)
+	GetEventSubscriptionStatus(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggersGetEventSubscriptionStatusFuture, err error)
 	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.TriggerListResponsePage, err error)
 	Start(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggersStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggersStopFuture, err error)
+	SubscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggersSubscribeToEventsFuture, err error)
+	UnsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggersUnsubscribeFromEventsFuture, err error)
 }
 
 var _ TriggersClientAPI = (*datafactory.TriggersClient)(nil)

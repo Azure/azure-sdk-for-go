@@ -202,25 +202,19 @@ type CassandraResourcesClientAPI interface {
 
 var _ CassandraResourcesClientAPI = (*documentdb.CassandraResourcesClient)(nil)
 
-// GremlinResourceClientAPI contains the set of methods on the GremlinResourceClient type.
-type GremlinResourceClientAPI interface {
-	CreateUpdateGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters documentdb.GremlinDatabaseCreateUpdateParameters) (result documentdb.GremlinResourceCreateUpdateGremlinDatabaseFuture, err error)
-	DeleteGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.GremlinResourceDeleteGremlinDatabaseFuture, err error)
-	GetGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.GremlinDatabase, err error)
-	GetGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.Throughput, err error)
-	ListGremlinDatabases(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.GremlinDatabaseListResult, err error)
-	UpdateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.GremlinResourceUpdateGremlinDatabaseThroughputFuture, err error)
-}
-
-var _ GremlinResourceClientAPI = (*documentdb.GremlinResourceClient)(nil)
-
 // GremlinResourcesClientAPI contains the set of methods on the GremlinResourcesClient type.
 type GremlinResourcesClientAPI interface {
+	CreateUpdateGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters documentdb.GremlinDatabaseCreateUpdateParameters) (result documentdb.GremlinResourcesCreateUpdateGremlinDatabaseFuture, err error)
 	CreateUpdateGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters documentdb.GremlinGraphCreateUpdateParameters) (result documentdb.GremlinResourcesCreateUpdateGremlinGraphFuture, err error)
+	DeleteGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.GremlinResourcesDeleteGremlinDatabaseFuture, err error)
 	DeleteGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result documentdb.GremlinResourcesDeleteGremlinGraphFuture, err error)
+	GetGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.GremlinDatabase, err error)
+	GetGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.Throughput, err error)
 	GetGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result documentdb.GremlinGraph, err error)
 	GetGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result documentdb.Throughput, err error)
+	ListGremlinDatabases(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.GremlinDatabaseListResult, err error)
 	ListGremlinGraphs(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.GremlinGraphListResult, err error)
+	UpdateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.GremlinResourcesUpdateGremlinDatabaseThroughputFuture, err error)
 	UpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters documentdb.ThroughputUpdateParameters) (result documentdb.GremlinResourcesUpdateGremlinGraphThroughputFuture, err error)
 }
 

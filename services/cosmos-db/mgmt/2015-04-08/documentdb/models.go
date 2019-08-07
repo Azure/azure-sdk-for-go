@@ -2080,55 +2080,32 @@ type GremlinGraphResource struct {
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 }
 
-// GremlinResourceCreateUpdateGremlinDatabaseFuture an abstraction for monitoring and retrieving the
+// GremlinResourcesCreateUpdateGremlinDatabaseFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
-type GremlinResourceCreateUpdateGremlinDatabaseFuture struct {
+type GremlinResourcesCreateUpdateGremlinDatabaseFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *GremlinResourceCreateUpdateGremlinDatabaseFuture) Result(client GremlinResourceClient) (gd GremlinDatabase, err error) {
+func (future *GremlinResourcesCreateUpdateGremlinDatabaseFuture) Result(client GremlinResourcesClient) (gd GremlinDatabase, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourceCreateUpdateGremlinDatabaseFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesCreateUpdateGremlinDatabaseFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourceCreateUpdateGremlinDatabaseFuture")
+		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesCreateUpdateGremlinDatabaseFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if gd.Response.Response, err = future.GetResult(sender); err == nil && gd.Response.Response.StatusCode != http.StatusNoContent {
 		gd, err = client.CreateUpdateGremlinDatabaseResponder(gd.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "documentdb.GremlinResourceCreateUpdateGremlinDatabaseFuture", "Result", gd.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesCreateUpdateGremlinDatabaseFuture", "Result", gd.Response.Response, "Failure responding to request")
 		}
 	}
-	return
-}
-
-// GremlinResourceDeleteGremlinDatabaseFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type GremlinResourceDeleteGremlinDatabaseFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *GremlinResourceDeleteGremlinDatabaseFuture) Result(client GremlinResourceClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourceDeleteGremlinDatabaseFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourceDeleteGremlinDatabaseFuture")
-		return
-	}
-	ar.Response = future.Response()
 	return
 }
 
@@ -2161,6 +2138,29 @@ func (future *GremlinResourcesCreateUpdateGremlinGraphFuture) Result(client Grem
 	return
 }
 
+// GremlinResourcesDeleteGremlinDatabaseFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type GremlinResourcesDeleteGremlinDatabaseFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GremlinResourcesDeleteGremlinDatabaseFuture) Result(client GremlinResourcesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesDeleteGremlinDatabaseFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesDeleteGremlinDatabaseFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // GremlinResourcesDeleteGremlinGraphFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type GremlinResourcesDeleteGremlinGraphFuture struct {
@@ -2181,6 +2181,35 @@ func (future *GremlinResourcesDeleteGremlinGraphFuture) Result(client GremlinRes
 		return
 	}
 	ar.Response = future.Response()
+	return
+}
+
+// GremlinResourcesUpdateGremlinDatabaseThroughputFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type GremlinResourcesUpdateGremlinDatabaseThroughputFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *GremlinResourcesUpdateGremlinDatabaseThroughputFuture) Result(client GremlinResourcesClient) (t Throughput, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesUpdateGremlinDatabaseThroughputFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesUpdateGremlinDatabaseThroughputFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
+		t, err = client.UpdateGremlinDatabaseThroughputResponder(t.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesUpdateGremlinDatabaseThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 
@@ -2208,35 +2237,6 @@ func (future *GremlinResourcesUpdateGremlinGraphThroughputFuture) Result(client 
 		t, err = client.UpdateGremlinGraphThroughputResponder(t.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesUpdateGremlinGraphThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// GremlinResourceUpdateGremlinDatabaseThroughputFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
-type GremlinResourceUpdateGremlinDatabaseThroughputFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *GremlinResourceUpdateGremlinDatabaseThroughputFuture) Result(client GremlinResourceClient) (t Throughput, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourceUpdateGremlinDatabaseThroughputFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourceUpdateGremlinDatabaseThroughputFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if t.Response.Response, err = future.GetResult(sender); err == nil && t.Response.Response.StatusCode != http.StatusNoContent {
-		t, err = client.UpdateGremlinDatabaseThroughputResponder(t.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "documentdb.GremlinResourceUpdateGremlinDatabaseThroughputFuture", "Result", t.Response.Response, "Failure responding to request")
 		}
 	}
 	return

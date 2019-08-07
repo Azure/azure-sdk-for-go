@@ -29,7 +29,6 @@ type CollectionRegionClientAPI = original.CollectionRegionClientAPI
 type DatabaseAccountRegionClientAPI = original.DatabaseAccountRegionClientAPI
 type DatabaseAccountsClientAPI = original.DatabaseAccountsClientAPI
 type DatabaseClientAPI = original.DatabaseClientAPI
-type GremlinResourceClientAPI = original.GremlinResourceClientAPI
 type GremlinResourcesClientAPI = original.GremlinResourcesClientAPI
 type MongoDBResourcesClientAPI = original.MongoDBResourcesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

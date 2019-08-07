@@ -203,13 +203,12 @@ type GremlinGraphCreateUpdateProperties = original.GremlinGraphCreateUpdatePrope
 type GremlinGraphListResult = original.GremlinGraphListResult
 type GremlinGraphProperties = original.GremlinGraphProperties
 type GremlinGraphResource = original.GremlinGraphResource
-type GremlinResourceClient = original.GremlinResourceClient
-type GremlinResourceCreateUpdateGremlinDatabaseFuture = original.GremlinResourceCreateUpdateGremlinDatabaseFuture
-type GremlinResourceDeleteGremlinDatabaseFuture = original.GremlinResourceDeleteGremlinDatabaseFuture
-type GremlinResourceUpdateGremlinDatabaseThroughputFuture = original.GremlinResourceUpdateGremlinDatabaseThroughputFuture
 type GremlinResourcesClient = original.GremlinResourcesClient
+type GremlinResourcesCreateUpdateGremlinDatabaseFuture = original.GremlinResourcesCreateUpdateGremlinDatabaseFuture
 type GremlinResourcesCreateUpdateGremlinGraphFuture = original.GremlinResourcesCreateUpdateGremlinGraphFuture
+type GremlinResourcesDeleteGremlinDatabaseFuture = original.GremlinResourcesDeleteGremlinDatabaseFuture
 type GremlinResourcesDeleteGremlinGraphFuture = original.GremlinResourcesDeleteGremlinGraphFuture
+type GremlinResourcesUpdateGremlinDatabaseThroughputFuture = original.GremlinResourcesUpdateGremlinDatabaseThroughputFuture
 type GremlinResourcesUpdateGremlinGraphThroughputFuture = original.GremlinResourcesUpdateGremlinGraphThroughputFuture
 type IncludedPath = original.IncludedPath
 type Indexes = original.Indexes
@@ -354,12 +353,6 @@ func NewDatabaseClient(subscriptionID string) DatabaseClient {
 }
 func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
 	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewGremlinResourceClient(subscriptionID string) GremlinResourceClient {
-	return original.NewGremlinResourceClient(subscriptionID)
-}
-func NewGremlinResourceClientWithBaseURI(baseURI string, subscriptionID string) GremlinResourceClient {
-	return original.NewGremlinResourceClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewGremlinResourcesClient(subscriptionID string) GremlinResourcesClient {
 	return original.NewGremlinResourcesClient(subscriptionID)

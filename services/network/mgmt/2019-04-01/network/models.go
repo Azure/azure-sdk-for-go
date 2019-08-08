@@ -7126,6 +7126,8 @@ type BackendAddressPoolPropertiesFormat struct {
 	LoadBalancingRules *[]SubResource `json:"loadBalancingRules,omitempty"`
 	// OutboundRule - READ-ONLY; Gets outbound rules that use this backend address pool.
 	OutboundRule *SubResource `json:"outboundRule,omitempty"`
+	// OutboundRules - READ-ONLY; Gets outbound rules that use this backend address pool.
+	OutboundRules *[]SubResource `json:"outboundRules,omitempty"`
 	// ProvisioningState - Get provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -19095,7 +19097,7 @@ type OperationPropertiesFormatServiceSpecification struct {
 	LogSpecifications *[]LogSpecification `json:"logSpecifications,omitempty"`
 }
 
-// OutboundRule outbound pool of the load balancer.
+// OutboundRule outbound rule of the load balancer.
 type OutboundRule struct {
 	autorest.Response `json:"-"`
 	// OutboundRulePropertiesFormat - Properties of load balancer outbound rule.
@@ -19177,7 +19179,7 @@ func (or *OutboundRule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// OutboundRulePropertiesFormat outbound pool of the load balancer.
+// OutboundRulePropertiesFormat outbound rule of the load balancer.
 type OutboundRulePropertiesFormat struct {
 	// AllocatedOutboundPorts - The number of outbound ports to be used for NAT.
 	AllocatedOutboundPorts *int32 `json:"allocatedOutboundPorts,omitempty"`

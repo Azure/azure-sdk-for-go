@@ -22,7 +22,7 @@ package frontdoor
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2019-04-01/frontdoor"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2019-05-01/frontdoor"
 )
 
 const (
@@ -126,6 +126,20 @@ const (
 	MatchRequest ForwardingProtocol = original.MatchRequest
 )
 
+type HealthProbeEnabled = original.HealthProbeEnabled
+
+const (
+	HealthProbeEnabledDisabled HealthProbeEnabled = original.HealthProbeEnabledDisabled
+	HealthProbeEnabledEnabled  HealthProbeEnabled = original.HealthProbeEnabledEnabled
+)
+
+type HealthProbeMethod = original.HealthProbeMethod
+
+const (
+	GET  HealthProbeMethod = original.GET
+	HEAD HealthProbeMethod = original.HEAD
+)
+
 type ManagedRuleEnabledState = original.ManagedRuleEnabledState
 
 const (
@@ -144,6 +158,13 @@ const (
 	RequestHeader MatchVariable = original.RequestHeader
 	RequestMethod MatchVariable = original.RequestMethod
 	RequestURI    MatchVariable = original.RequestURI
+)
+
+type MinimumTLSVersion = original.MinimumTLSVersion
+
+const (
+	OneFullStopTwo  MinimumTLSVersion = original.OneFullStopTwo
+	OneFullStopZero MinimumTLSVersion = original.OneFullStopZero
 )
 
 type NetworkOperationStatus = original.NetworkOperationStatus
@@ -272,12 +293,6 @@ type SessionAffinityEnabledState = original.SessionAffinityEnabledState
 const (
 	SessionAffinityEnabledStateDisabled SessionAffinityEnabledState = original.SessionAffinityEnabledStateDisabled
 	SessionAffinityEnabledStateEnabled  SessionAffinityEnabledState = original.SessionAffinityEnabledStateEnabled
-)
-
-type TLSProtocolType = original.TLSProtocolType
-
-const (
-	ServerNameIndication TLSProtocolType = original.ServerNameIndication
 )
 
 type TransformType = original.TransformType
@@ -544,11 +559,20 @@ func PossibleEnforceCertificateNameCheckEnabledStateValues() []EnforceCertificat
 func PossibleForwardingProtocolValues() []ForwardingProtocol {
 	return original.PossibleForwardingProtocolValues()
 }
+func PossibleHealthProbeEnabledValues() []HealthProbeEnabled {
+	return original.PossibleHealthProbeEnabledValues()
+}
+func PossibleHealthProbeMethodValues() []HealthProbeMethod {
+	return original.PossibleHealthProbeMethodValues()
+}
 func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 	return original.PossibleManagedRuleEnabledStateValues()
 }
 func PossibleMatchVariableValues() []MatchVariable {
 	return original.PossibleMatchVariableValues()
+}
+func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
+	return original.PossibleMinimumTLSVersionValues()
 }
 func PossibleNetworkOperationStatusValues() []NetworkOperationStatus {
 	return original.PossibleNetworkOperationStatusValues()
@@ -594,9 +618,6 @@ func PossibleRuleTypeValues() []RuleType {
 }
 func PossibleSessionAffinityEnabledStateValues() []SessionAffinityEnabledState {
 	return original.PossibleSessionAffinityEnabledStateValues()
-}
-func PossibleTLSProtocolTypeValues() []TLSProtocolType {
-	return original.PossibleTLSProtocolTypeValues()
 }
 func PossibleTransformTypeValues() []TransformType {
 	return original.PossibleTransformTypeValues()

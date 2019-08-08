@@ -1327,12 +1327,18 @@ type DatabaseProperties struct {
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
 	// ReadScale - The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'DatabaseReadScaleEnabled', 'DatabaseReadScaleDisabled'
 	ReadScale DatabaseReadScale `json:"readScale,omitempty"`
+	// ReadReplicaCount - The number of readonly secondary replicas associated with the database.
+	ReadReplicaCount *int32 `json:"readReplicaCount,omitempty"`
 	// CurrentSku - READ-ONLY; The name and tier of the SKU.
 	CurrentSku *Sku `json:"currentSku,omitempty"`
 	// AutoPauseDelay - Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
 	AutoPauseDelay *int32 `json:"autoPauseDelay,omitempty"`
 	// MinCapacity - Minimal capacity that database will always have allocated, if not paused
 	MinCapacity *float64 `json:"minCapacity,omitempty"`
+	// PausedDate - READ-ONLY; The date when database was paused by user configuration or action (ISO8601 format). Null if the database is ready.
+	PausedDate *date.Time `json:"pausedDate,omitempty"`
+	// ResumedDate - READ-ONLY; The date when database was resumed by user action or database login (ISO8601 format). Null if the database is paused.
+	ResumedDate *date.Time `json:"resumedDate,omitempty"`
 }
 
 // DatabasesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -4174,17 +4180,17 @@ type ServiceObjectiveCapability struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
-// Sku the resource model definition representing SKU
+// Sku an ARM Resource SKU.
 type Sku struct {
-	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
+	// Name - The name of the SKU, typically, a letter + Number code, e.g. P3.
 	Name *string `json:"name,omitempty"`
-	// Tier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+	// Tier - The tier or edition of the particular SKU, e.g. Basic, Premium.
 	Tier *string `json:"tier,omitempty"`
-	// Size - The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	// Size - Size of the particular SKU
 	Size *string `json:"size,omitempty"`
 	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
 	Family *string `json:"family,omitempty"`
-	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+	// Capacity - Capacity of the particular SKU.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 

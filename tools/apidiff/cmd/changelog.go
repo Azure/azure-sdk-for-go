@@ -82,28 +82,32 @@ func reportUpdatedPkgs(pr pkgsReport) {
 	if !pr.modPkgHasAdditions {
 		return
 	}
-	fmt.Printf("### Updated Packages\n\n")
 	updated := []string{}
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasAdditiveChanges() && !pkgRpt.HasBreakingChanges() {
 			updated = append(updated, pkgName)
 		}
 	}
-	createTable(createTableRows(updated))
+	if len(updated) > 0 {
+		fmt.Printf("### Updated Packages\n\n")
+		createTable(createTableRows(updated))
+	}
 }
 
 func reportBreakingPkgs(pr pkgsReport) {
 	if !pr.modPkgHasBreaking {
 		return
 	}
-	fmt.Printf("### BreakingChanges\n\n")
 	breaking := []string{}
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasBreakingChanges() {
 			breaking = append(breaking, pkgName)
 		}
 	}
-	createTable(createTableRows(breaking))
+	if len(breaking) > 0 {
+		fmt.Printf("### BreakingChanges\n\n")
+		createTable(createTableRows(breaking))
+	}
 }
 
 func reportRemovedPkgs(pr pkgsReport) {

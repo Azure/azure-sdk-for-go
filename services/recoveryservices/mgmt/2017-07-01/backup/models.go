@@ -6322,8 +6322,6 @@ type AzureVMWorkloadProtectionPolicy struct {
 	Settings *Settings `json:"settings,omitempty"`
 	// SubProtectionPolicy - List of sub-protection policies which includes schedule and retention
 	SubProtectionPolicy *[]SubProtectionPolicy `json:"subProtectionPolicy,omitempty"`
-	// MakePolicyConsistent - Fix the policy inconsistency
-	MakePolicyConsistent *bool `json:"makePolicyConsistent,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
 	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
@@ -6342,9 +6340,6 @@ func (avwpp AzureVMWorkloadProtectionPolicy) MarshalJSON() ([]byte, error) {
 	}
 	if avwpp.SubProtectionPolicy != nil {
 		objectMap["subProtectionPolicy"] = avwpp.SubProtectionPolicy
-	}
-	if avwpp.MakePolicyConsistent != nil {
-		objectMap["makePolicyConsistent"] = avwpp.MakePolicyConsistent
 	}
 	if avwpp.ProtectedItemsCount != nil {
 		objectMap["protectedItemsCount"] = avwpp.ProtectedItemsCount

@@ -2,11 +2,6 @@
 
 ## `v32.3.0`
 
-### Updated Packages
-
-| Package Name | API Version |
-| -----------: | :---------: |
-
 ### BreakingChanges
 
 | Package Name | API Version |
@@ -14,11 +9,6 @@
 | subscription | 2018-03-01-preview |
 
 ## `v32.2.0`
-
-### Updated Packages
-
-| Package Name | API Version |
-| -----------: | :---------: |
 
 ### BreakingChanges
 

@@ -32,6 +32,5 @@ type LinkedServicesClientAPI = original.LinkedServicesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PipelineRunsClientAPI = original.PipelineRunsClientAPI
 type PipelinesClientAPI = original.PipelinesClientAPI
-type RerunTriggersClientAPI = original.RerunTriggersClientAPI
 type TriggerRunsClientAPI = original.TriggerRunsClientAPI
 type TriggersClientAPI = original.TriggersClientAPI

@@ -1648,13 +1648,7 @@ type RelationalSource = original.RelationalSource
 type RelationalTableDataset = original.RelationalTableDataset
 type RelationalTableDatasetTypeProperties = original.RelationalTableDatasetTypeProperties
 type RerunTriggerListResponse = original.RerunTriggerListResponse
-type RerunTriggerListResponseIterator = original.RerunTriggerListResponseIterator
-type RerunTriggerListResponsePage = original.RerunTriggerListResponsePage
 type RerunTriggerResource = original.RerunTriggerResource
-type RerunTriggersCancelFuture = original.RerunTriggersCancelFuture
-type RerunTriggersClient = original.RerunTriggersClient
-type RerunTriggersStartFuture = original.RerunTriggersStartFuture
-type RerunTriggersStopFuture = original.RerunTriggersStopFuture
 type RerunTumblingWindowTrigger = original.RerunTumblingWindowTrigger
 type RerunTumblingWindowTriggerActionParameters = original.RerunTumblingWindowTriggerActionParameters
 type RerunTumblingWindowTriggerTypeProperties = original.RerunTumblingWindowTriggerTypeProperties
@@ -1962,18 +1956,6 @@ func NewPipelinesClient(subscriptionID string) PipelinesClient {
 }
 func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) PipelinesClient {
 	return original.NewPipelinesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRerunTriggerListResponseIterator(page RerunTriggerListResponsePage) RerunTriggerListResponseIterator {
-	return original.NewRerunTriggerListResponseIterator(page)
-}
-func NewRerunTriggerListResponsePage(getNextPage func(context.Context, RerunTriggerListResponse) (RerunTriggerListResponse, error)) RerunTriggerListResponsePage {
-	return original.NewRerunTriggerListResponsePage(getNextPage)
-}
-func NewRerunTriggersClient(subscriptionID string) RerunTriggersClient {
-	return original.NewRerunTriggersClient(subscriptionID)
-}
-func NewRerunTriggersClientWithBaseURI(baseURI string, subscriptionID string) RerunTriggersClient {
-	return original.NewRerunTriggersClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTriggerListResponseIterator(page TriggerListResponsePage) TriggerListResponseIterator {
 	return original.NewTriggerListResponseIterator(page)

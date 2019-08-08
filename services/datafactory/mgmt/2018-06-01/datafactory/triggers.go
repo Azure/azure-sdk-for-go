@@ -148,6 +148,117 @@ func (client TriggersClient) CreateOrUpdateResponder(resp *http.Response) (resul
 	return
 }
 
+// CreateRerunTrigger creates a rerun trigger for TumblingWindowTrigger
+// Parameters:
+// resourceGroupName - the resource group name.
+// factoryName - the factory name.
+// triggerName - the trigger name.
+// rerunTriggerName - the rerun trigger name.
+// rerunTumblingWindowTriggerActionParameters - rerun tumbling window trigger action parameters.
+func (client TriggersClient) CreateRerunTrigger(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, rerunTriggerName string, rerunTumblingWindowTriggerActionParameters RerunTumblingWindowTriggerActionParameters) (result TriggerResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.CreateRerunTrigger")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
+		{TargetValue: triggerName,
+			Constraints: []validation.Constraint{{Target: "triggerName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+				{Target: "triggerName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
+		{TargetValue: rerunTriggerName,
+			Constraints: []validation.Constraint{{Target: "rerunTriggerName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+				{Target: "rerunTriggerName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "rerunTriggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}},
+		{TargetValue: rerunTumblingWindowTriggerActionParameters,
+			Constraints: []validation.Constraint{{Target: "rerunTumblingWindowTriggerActionParameters.StartTime", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "rerunTumblingWindowTriggerActionParameters.EndTime", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "rerunTumblingWindowTriggerActionParameters.MaxConcurrency", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "rerunTumblingWindowTriggerActionParameters.MaxConcurrency", Name: validation.InclusiveMaximum, Rule: int64(50), Chain: nil},
+						{Target: "rerunTumblingWindowTriggerActionParameters.MaxConcurrency", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+					}}}}}); err != nil {
+		return result, validation.NewError("datafactory.TriggersClient", "CreateRerunTrigger", err.Error())
+	}
+
+	req, err := client.CreateRerunTriggerPreparer(ctx, resourceGroupName, factoryName, triggerName, rerunTriggerName, rerunTumblingWindowTriggerActionParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "CreateRerunTrigger", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateRerunTriggerSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "CreateRerunTrigger", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateRerunTriggerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "CreateRerunTrigger", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateRerunTriggerPreparer prepares the CreateRerunTrigger request.
+func (client TriggersClient) CreateRerunTriggerPreparer(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, rerunTriggerName string, rerunTumblingWindowTriggerActionParameters RerunTumblingWindowTriggerActionParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":       autorest.Encode("path", factoryName),
+		"rerunTriggerName":  autorest.Encode("path", rerunTriggerName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
+	}
+
+	const APIVersion = "2018-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/rerun/{rerunTriggerName}", pathParameters),
+		autorest.WithJSON(rerunTumblingWindowTriggerActionParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateRerunTriggerSender sends the CreateRerunTrigger request. The method will close the
+// http.Response Body if it receives an error.
+func (client TriggersClient) CreateRerunTriggerSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CreateRerunTriggerResponder handles the response to the CreateRerunTrigger request. The method always
+// closes the http.Response Body.
+func (client TriggersClient) CreateRerunTriggerResponder(resp *http.Response) (result TriggerResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Delete deletes a trigger.
 // Parameters:
 // resourceGroupName - the resource group name.
@@ -467,6 +578,139 @@ func (client TriggersClient) ListByFactoryComplete(ctx context.Context, resource
 		}()
 	}
 	result.page, err = client.ListByFactory(ctx, resourceGroupName, factoryName)
+	return
+}
+
+// ListRerunTriggers lists rerun triggers by an original trigger name for Tumbling Window Trigger
+// Parameters:
+// resourceGroupName - the resource group name.
+// factoryName - the factory name.
+// triggerName - the trigger name.
+func (client TriggersClient) ListRerunTriggers(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result TriggerListResponsePage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.ListRerunTriggers")
+		defer func() {
+			sc := -1
+			if result.tlr.Response.Response != nil {
+				sc = result.tlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: factoryName,
+			Constraints: []validation.Constraint{{Target: "factoryName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
+		{TargetValue: triggerName,
+			Constraints: []validation.Constraint{{Target: "triggerName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+				{Target: "triggerName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("datafactory.TriggersClient", "ListRerunTriggers", err.Error())
+	}
+
+	result.fn = client.listRerunTriggersNextResults
+	req, err := client.ListRerunTriggersPreparer(ctx, resourceGroupName, factoryName, triggerName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "ListRerunTriggers", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListRerunTriggersSender(req)
+	if err != nil {
+		result.tlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "ListRerunTriggers", resp, "Failure sending request")
+		return
+	}
+
+	result.tlr, err = client.ListRerunTriggersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "ListRerunTriggers", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListRerunTriggersPreparer prepares the ListRerunTriggers request.
+func (client TriggersClient) ListRerunTriggersPreparer(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"factoryName":       autorest.Encode("path", factoryName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"triggerName":       autorest.Encode("path", triggerName),
+	}
+
+	const APIVersion = "2018-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/rerunTriggers", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListRerunTriggersSender sends the ListRerunTriggers request. The method will close the
+// http.Response Body if it receives an error.
+func (client TriggersClient) ListRerunTriggersSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListRerunTriggersResponder handles the response to the ListRerunTriggers request. The method always
+// closes the http.Response Body.
+func (client TriggersClient) ListRerunTriggersResponder(resp *http.Response) (result TriggerListResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listRerunTriggersNextResults retrieves the next set of results, if any.
+func (client TriggersClient) listRerunTriggersNextResults(ctx context.Context, lastResults TriggerListResponse) (result TriggerListResponse, err error) {
+	req, err := lastResults.triggerListResponsePreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "datafactory.TriggersClient", "listRerunTriggersNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListRerunTriggersSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "datafactory.TriggersClient", "listRerunTriggersNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListRerunTriggersResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "listRerunTriggersNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListRerunTriggersComplete enumerates all values, automatically crossing page boundaries as required.
+func (client TriggersClient) ListRerunTriggersComplete(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result TriggerListResponseIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggersClient.ListRerunTriggers")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListRerunTriggers(ctx, resourceGroupName, factoryName, triggerName)
 	return
 }
 

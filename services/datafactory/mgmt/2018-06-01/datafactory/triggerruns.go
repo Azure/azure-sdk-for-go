@@ -137,7 +137,7 @@ func (client TriggerRunsClient) QueryByFactoryResponder(resp *http.Response) (re
 	return
 }
 
-// Rerun rerun single trigger instance by runId.
+// Rerun rerun single triggerRun instance by runId.
 // Parameters:
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.

@@ -143,9 +143,11 @@ var _ ActivityRunsClientAPI = (*datafactory.ActivityRunsClient)(nil)
 // TriggersClientAPI contains the set of methods on the TriggersClient type.
 type TriggersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, trigger datafactory.TriggerResource, ifMatch string) (result datafactory.TriggerResource, err error)
+	CreateRerunTrigger(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, rerunTriggerName string, rerunTumblingWindowTriggerActionParameters datafactory.RerunTumblingWindowTriggerActionParameters) (result datafactory.TriggerResource, err error)
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, ifNoneMatch string) (result datafactory.TriggerResource, err error)
 	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.TriggerListResponsePage, err error)
+	ListRerunTriggers(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggerListResponsePage, err error)
 	Start(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggersStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.TriggersStopFuture, err error)
 }
@@ -159,14 +161,3 @@ type TriggerRunsClientAPI interface {
 }
 
 var _ TriggerRunsClientAPI = (*datafactory.TriggerRunsClient)(nil)
-
-// RerunTriggersClientAPI contains the set of methods on the RerunTriggersClient type.
-type RerunTriggersClientAPI interface {
-	Cancel(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, rerunTriggerName string) (result datafactory.RerunTriggersCancelFuture, err error)
-	Create(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, rerunTriggerName string, rerunTumblingWindowTriggerActionParameters datafactory.RerunTumblingWindowTriggerActionParameters) (result datafactory.TriggerResource, err error)
-	ListByTrigger(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result datafactory.RerunTriggerListResponsePage, err error)
-	Start(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, rerunTriggerName string) (result datafactory.RerunTriggersStartFuture, err error)
-	Stop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, rerunTriggerName string) (result datafactory.RerunTriggersStopFuture, err error)
-}
-
-var _ RerunTriggersClientAPI = (*datafactory.RerunTriggersClient)(nil)

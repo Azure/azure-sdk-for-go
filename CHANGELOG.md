@@ -6,7 +6,6 @@
 
 | Package Name | API Version |
 | -----------: | :---------: |
-| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
 
 ### BreakingChanges
 

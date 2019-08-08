@@ -2038,22 +2038,6 @@ type ManagedClusterPoolUpgradeProfileUpgradesItem struct {
 	IsPreview *bool `json:"isPreview,omitempty"`
 }
 
-// ManagedClusterPrivateLinkResource properties related to private link cluster.
-type ManagedClusterPrivateLinkResource struct {
-	// ID - The fully qualified Azure resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - The private link resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - The private link resource type.
-	Type *string `json:"type,omitempty"`
-	// GroupID - The group ID of the private link resource.
-	GroupID *string `json:"groupId,omitempty"`
-	// RequiredMembers - The required members of the private link cluster.
-	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
-	// PrivateLinkServiceID - The fully qualified private link service Azure resource ID.
-	PrivateLinkServiceID *string `json:"privateLinkServiceID,omitempty"`
-}
-
 // ManagedClusterProperties properties of the managed cluster.
 type ManagedClusterProperties struct {
 	// ProvisioningState - READ-ONLY; The current deployment or provisioning state, which only appears in the response.
@@ -2086,8 +2070,6 @@ type ManagedClusterProperties struct {
 	NetworkProfile *NetworkProfileType `json:"networkProfile,omitempty"`
 	// AadProfile - Profile of Azure Active Directory configuration.
 	AadProfile *ManagedClusterAADProfile `json:"aadProfile,omitempty"`
-	// PrivateLinkResources - Properties related to private link cluster.
-	PrivateLinkResources *[]ManagedClusterPrivateLinkResource `json:"privateLinkResources,omitempty"`
 	// APIServerAccessProfile - Access profile for managed cluster API server.
 	APIServerAccessProfile *ManagedClusterAPIServerAccessProfile `json:"apiServerAccessProfile,omitempty"`
 }
@@ -2130,9 +2112,6 @@ func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mcp.AadProfile != nil {
 		objectMap["aadProfile"] = mcp.AadProfile
-	}
-	if mcp.PrivateLinkResources != nil {
-		objectMap["privateLinkResources"] = mcp.PrivateLinkResources
 	}
 	if mcp.APIServerAccessProfile != nil {
 		objectMap["apiServerAccessProfile"] = mcp.APIServerAccessProfile

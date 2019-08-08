@@ -19,7 +19,7 @@
 
 package frontdoorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2019-04-01/frontdoor/frontdoorapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2019-05-01/frontdoor/frontdoorapi"
 
 type BackendPoolsClientAPI = original.BackendPoolsClientAPI
 type BaseClientAPI = original.BaseClientAPI

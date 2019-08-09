@@ -143,7 +143,6 @@ var _ ActivityRunsClientAPI = (*datafactory.ActivityRunsClient)(nil)
 // TriggersClientAPI contains the set of methods on the TriggersClient type.
 type TriggersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, trigger datafactory.TriggerResource, ifMatch string) (result datafactory.TriggerResource, err error)
-	CreateRerunTrigger(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, rerunTriggerName string, rerunTumblingWindowTriggerActionParameters datafactory.RerunTumblingWindowTriggerActionParameters) (result datafactory.TriggerResource, err error)
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, triggerName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, ifNoneMatch string) (result datafactory.TriggerResource, err error)
 	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.TriggerListResponsePage, err error)

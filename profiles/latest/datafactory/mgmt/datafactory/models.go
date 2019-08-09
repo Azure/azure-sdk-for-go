@@ -1650,7 +1650,6 @@ type RelationalTableDatasetTypeProperties = original.RelationalTableDatasetTypeP
 type RerunTriggerListResponse = original.RerunTriggerListResponse
 type RerunTriggerResource = original.RerunTriggerResource
 type RerunTumblingWindowTrigger = original.RerunTumblingWindowTrigger
-type RerunTumblingWindowTriggerActionParameters = original.RerunTumblingWindowTriggerActionParameters
 type RerunTumblingWindowTriggerTypeProperties = original.RerunTumblingWindowTriggerTypeProperties
 type Resource = original.Resource
 type ResponsysLinkedService = original.ResponsysLinkedService

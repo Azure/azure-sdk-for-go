@@ -99,3 +99,23 @@ type BlobContainersClientAPI interface {
 }
 
 var _ BlobContainersClientAPI = (*storage.BlobContainersClient)(nil)
+
+// FileServicesClientAPI contains the set of methods on the FileServicesClient type.
+type FileServicesClientAPI interface {
+	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result storage.FileServiceProperties, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.FileServiceItems, err error)
+	PutServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters storage.FileServiceProperties) (result storage.FileServiceProperties, err error)
+}
+
+var _ FileServicesClientAPI = (*storage.FileServicesClient)(nil)
+
+// FileSharesClientAPI contains the set of methods on the FileSharesClient type.
+type FileSharesClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare storage.FileShare) (result storage.FileShare, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result storage.FileShare, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string, skipToken string, maxpagesize string, filter string) (result storage.FileShareItems, err error)
+	Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare storage.FileShare) (result storage.FileShare, err error)
+}
+
+var _ FileSharesClientAPI = (*storage.FileSharesClient)(nil)

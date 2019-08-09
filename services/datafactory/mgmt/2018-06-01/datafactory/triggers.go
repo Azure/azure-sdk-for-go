@@ -231,7 +231,7 @@ func (client TriggersClient) CreateRerunTriggerPreparer(ctx context.Context, res
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
+		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/rerun/{rerunTriggerName}", pathParameters),
 		autorest.WithJSON(rerunTumblingWindowTriggerActionParameters),

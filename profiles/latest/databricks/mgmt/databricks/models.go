@@ -59,6 +59,7 @@ type Resource = original.Resource
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type Workspace = original.Workspace
+type WorkspaceCustomParameters = original.WorkspaceCustomParameters
 type WorkspaceListResult = original.WorkspaceListResult
 type WorkspaceListResultIterator = original.WorkspaceListResultIterator
 type WorkspaceListResultPage = original.WorkspaceListResultPage

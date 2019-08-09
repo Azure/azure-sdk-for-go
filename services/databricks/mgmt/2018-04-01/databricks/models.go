@@ -416,6 +416,66 @@ func (w *Workspace) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// WorkspaceCustomParameters custom Parameters used for Cluster Creation.
+type WorkspaceCustomParameters struct {
+	// CustomVirtualNetworkID - The ID of a Virtual Network where this Databricks Cluster should be created
+	CustomVirtualNetworkID *string `json:"customVirtualNetworkId,omitempty"`
+	// CustomPublicSubnetName - The name of a Public Subnet within the Virtual Network
+	CustomPublicSubnetName *string `json:"customPublicSubnetName,omitempty"`
+	// CustomPrivateSubnetName - The name of the Private Subnet within the Virtual Network
+	CustomPrivateSubnetName *string `json:"customPrivateSubnetName,omitempty"`
+	// EnableNoPublicIP - Should the Public IP be Disabled?
+	EnableNoPublicIP *bool `json:"enableNoPublicIp,omitempty"`
+	// RelayNamespaceName - The name of an Azure Relay Namespace
+	RelayNamespaceName *string `json:"relayNamespaceName,omitempty"`
+	// StorageAccountName - The name which should be used for the Storage Account
+	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	// StorageAccountSkuName - The SKU which should be used for this Storage Account
+	StorageAccountSkuName *string `json:"storageAccountSkuName,omitempty"`
+	// VnetAddressPrefix - The first 2 octets of the virtual network /16 address range (e.g., '10.139' for the address range 10.139.0.0/16).
+	VnetAddressPrefix *string `json:"vnetAddressPrefix,omitempty"`
+	// ResourceTags - A map of Tags which should be applied to the resources used by this Databricks Cluster.
+	ResourceTags map[string]*string `json:"resourceTags"`
+	// AmlWorkspaceID - The Workspace ID of an Azure Machine Learning Workspace
+	AmlWorkspaceID *string `json:"amlWorkspaceId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkspaceCustomParameters.
+func (wcp WorkspaceCustomParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wcp.CustomVirtualNetworkID != nil {
+		objectMap["customVirtualNetworkId"] = wcp.CustomVirtualNetworkID
+	}
+	if wcp.CustomPublicSubnetName != nil {
+		objectMap["customPublicSubnetName"] = wcp.CustomPublicSubnetName
+	}
+	if wcp.CustomPrivateSubnetName != nil {
+		objectMap["customPrivateSubnetName"] = wcp.CustomPrivateSubnetName
+	}
+	if wcp.EnableNoPublicIP != nil {
+		objectMap["enableNoPublicIp"] = wcp.EnableNoPublicIP
+	}
+	if wcp.RelayNamespaceName != nil {
+		objectMap["relayNamespaceName"] = wcp.RelayNamespaceName
+	}
+	if wcp.StorageAccountName != nil {
+		objectMap["storageAccountName"] = wcp.StorageAccountName
+	}
+	if wcp.StorageAccountSkuName != nil {
+		objectMap["storageAccountSkuName"] = wcp.StorageAccountSkuName
+	}
+	if wcp.VnetAddressPrefix != nil {
+		objectMap["vnetAddressPrefix"] = wcp.VnetAddressPrefix
+	}
+	if wcp.ResourceTags != nil {
+		objectMap["resourceTags"] = wcp.ResourceTags
+	}
+	if wcp.AmlWorkspaceID != nil {
+		objectMap["amlWorkspaceId"] = wcp.AmlWorkspaceID
+	}
+	return json.Marshal(objectMap)
+}
+
 // WorkspaceListResult list of workspaces.
 type WorkspaceListResult struct {
 	autorest.Response `json:"-"`
@@ -566,8 +626,8 @@ func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListR
 type WorkspaceProperties struct {
 	// ManagedResourceGroupID - The managed resource group Id.
 	ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
-	// Parameters - Name and value pairs that define the workspace parameters.
-	Parameters interface{} `json:"parameters,omitempty"`
+	// Parameters - The workspace's custom parameters.
+	Parameters *WorkspaceCustomParameters `json:"parameters,omitempty"`
 	// ProvisioningState - READ-ONLY; The workspace provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// UIDefinitionURI - The blob URI where the UI definition file is located.

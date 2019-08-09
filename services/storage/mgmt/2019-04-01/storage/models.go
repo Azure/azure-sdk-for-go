@@ -1426,6 +1426,308 @@ type Endpoints struct {
 	Dfs *string `json:"dfs,omitempty"`
 }
 
+// ErrorResponse an error response from the Storage service.
+type ErrorResponse struct {
+	Error *ErrorResponseBody `json:"error,omitempty"`
+}
+
+// ErrorResponseBody an error response from the Storage service.
+type ErrorResponseBody struct {
+	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string `json:"code,omitempty"`
+	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	Message *string `json:"message,omitempty"`
+	// Target - The target of the particular error. For example, the name of the property in error.
+	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]ErrorResponseBody `json:"details,omitempty"`
+}
+
+// FileServiceItems ...
+type FileServiceItems struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of file services returned.
+	Value *[]FileServiceProperties `json:"value,omitempty"`
+}
+
+// FileServiceProperties the properties of File services in storage account.
+type FileServiceProperties struct {
+	autorest.Response `json:"-"`
+	// FileServicePropertiesProperties - The properties of File services in storage account.
+	*FileServicePropertiesProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileServiceProperties.
+func (fsp FileServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fsp.FileServicePropertiesProperties != nil {
+		objectMap["properties"] = fsp.FileServicePropertiesProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for FileServiceProperties struct.
+func (fsp *FileServiceProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var fileServiceProperties FileServicePropertiesProperties
+				err = json.Unmarshal(*v, &fileServiceProperties)
+				if err != nil {
+					return err
+				}
+				fsp.FileServicePropertiesProperties = &fileServiceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fsp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fsp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fsp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// FileServicePropertiesProperties the properties of File services in storage account.
+type FileServicePropertiesProperties struct {
+	// Cors - Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the File service.
+	Cors *CorsRules `json:"cors,omitempty"`
+}
+
+// FileShare properties of the file share, including Id, resource name, resource type, Etag.
+type FileShare struct {
+	autorest.Response `json:"-"`
+	// FileShareProperties - Properties of the file share.
+	*FileShareProperties `json:"properties,omitempty"`
+	// Etag - READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileShare.
+func (fs FileShare) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fs.FileShareProperties != nil {
+		objectMap["properties"] = fs.FileShareProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for FileShare struct.
+func (fs *FileShare) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var fileShareProperties FileShareProperties
+				err = json.Unmarshal(*v, &fileShareProperties)
+				if err != nil {
+					return err
+				}
+				fs.FileShareProperties = &fileShareProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				fs.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fs.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fs.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// FileShareItem the file share properties be listed out.
+type FileShareItem struct {
+	// FileShareProperties - The file share properties be listed out.
+	*FileShareProperties `json:"properties,omitempty"`
+	// Etag - READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileShareItem.
+func (fsi FileShareItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fsi.FileShareProperties != nil {
+		objectMap["properties"] = fsi.FileShareProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for FileShareItem struct.
+func (fsi *FileShareItem) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var fileShareProperties FileShareProperties
+				err = json.Unmarshal(*v, &fileShareProperties)
+				if err != nil {
+					return err
+				}
+				fsi.FileShareProperties = &fileShareProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				fsi.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fsi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fsi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fsi.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// FileShareItems response schema. Contains list of shares returned, and if paging is requested or
+// required, a URL to next page of shares.
+type FileShareItems struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of file shares returned.
+	Value *[]FileShareItem `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Request URL that can be used to query next page of shares. Returned when total number of requested shares exceed maximum page size.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// FileShareProperties the properties of the file share.
+type FileShareProperties struct {
+	// LastModifiedTime - READ-ONLY; Returns the date and time the share was last modified.
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+	// Metadata - A name-value pair to associate with the share as metadata.
+	Metadata map[string]*string `json:"metadata"`
+	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
+	ShareQuota *int32 `json:"shareQuota,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileShareProperties.
+func (fsp FileShareProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fsp.Metadata != nil {
+		objectMap["metadata"] = fsp.Metadata
+	}
+	if fsp.ShareQuota != nil {
+		objectMap["shareQuota"] = fsp.ShareQuota
+	}
+	return json.Marshal(objectMap)
+}
+
 // GeoReplicationStats statistics related to replication for storage account's Blob, Table, Queue and File
 // services. It is only available when geo-redundant replication is enabled for the storage account.
 type GeoReplicationStats struct {

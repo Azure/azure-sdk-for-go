@@ -82,9 +82,11 @@ const (
 type CloseReason = original.CloseReason
 
 const (
-	Dismissed CloseReason = original.Dismissed
-	Other     CloseReason = original.Other
-	Resolved  CloseReason = original.Resolved
+	Dismissed     CloseReason = original.Dismissed
+	FalsePositive CloseReason = original.FalsePositive
+	Other         CloseReason = original.Other
+	Resolved      CloseReason = original.Resolved
+	TruePositive  CloseReason = original.TruePositive
 )
 
 type ConfidenceLevel = original.ConfidenceLevel
@@ -372,6 +374,12 @@ type BookmarkListPage = original.BookmarkListPage
 type BookmarkProperties = original.BookmarkProperties
 type BookmarksClient = original.BookmarksClient
 type Case = original.Case
+type CaseComment = original.CaseComment
+type CaseCommentList = original.CaseCommentList
+type CaseCommentListIterator = original.CaseCommentListIterator
+type CaseCommentListPage = original.CaseCommentListPage
+type CaseCommentProperties = original.CaseCommentProperties
+type CaseCommentsClient = original.CaseCommentsClient
 type CaseList = original.CaseList
 type CaseListIterator = original.CaseListIterator
 type CaseListPage = original.CaseListPage
@@ -386,6 +394,7 @@ type CloudApplicationEntity = original.CloudApplicationEntity
 type CloudApplicationEntityProperties = original.CloudApplicationEntityProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type CommentsClient = original.CommentsClient
 type DNSEntity = original.DNSEntity
 type DNSEntityProperties = original.DNSEntityProperties
 type DataConnector = original.DataConnector
@@ -521,6 +530,18 @@ func NewBookmarksClient(subscriptionID string) BookmarksClient {
 func NewBookmarksClientWithBaseURI(baseURI string, subscriptionID string) BookmarksClient {
 	return original.NewBookmarksClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewCaseCommentListIterator(page CaseCommentListPage) CaseCommentListIterator {
+	return original.NewCaseCommentListIterator(page)
+}
+func NewCaseCommentListPage(getNextPage func(context.Context, CaseCommentList) (CaseCommentList, error)) CaseCommentListPage {
+	return original.NewCaseCommentListPage(getNextPage)
+}
+func NewCaseCommentsClient(subscriptionID string) CaseCommentsClient {
+	return original.NewCaseCommentsClient(subscriptionID)
+}
+func NewCaseCommentsClientWithBaseURI(baseURI string, subscriptionID string) CaseCommentsClient {
+	return original.NewCaseCommentsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewCaseListIterator(page CaseListPage) CaseListIterator {
 	return original.NewCaseListIterator(page)
 }
@@ -538,6 +559,12 @@ func NewCasesClient(subscriptionID string) CasesClient {
 }
 func NewCasesClientWithBaseURI(baseURI string, subscriptionID string) CasesClient {
 	return original.NewCasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommentsClient(subscriptionID string) CommentsClient {
+	return original.NewCommentsClient(subscriptionID)
+}
+func NewCommentsClientWithBaseURI(baseURI string, subscriptionID string) CommentsClient {
+	return original.NewCommentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDataConnectorListIterator(page DataConnectorListPage) DataConnectorListIterator {
 	return original.NewDataConnectorListIterator(page)

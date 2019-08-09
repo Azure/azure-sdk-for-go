@@ -48,7 +48,7 @@ func NewProductSettingsClientWithBaseURI(baseURI string, subscriptionID string) 
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// settingsName - the setting name. Supports- Fusion, UEBA
+// settingsName - the setting name. Supports- UEBA
 func (client ProductSettingsClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string) (result SettingsModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProductSettingsClient.Get")
@@ -144,7 +144,7 @@ func (client ProductSettingsClient) GetResponder(resp *http.Response) (result Se
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// settingsName - the setting name. Supports- Fusion, UEBA
+// settingsName - the setting name. Supports- UEBA
 // settings - the setting
 func (client ProductSettingsClient) Update(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string, settings BasicSettings) (result SettingsModel, err error) {
 	if tracing.IsEnabled() {

@@ -150,14 +150,24 @@ const (
 	OnPremisesWithIfd DynamicsDeploymentType = original.OnPremisesWithIfd
 )
 
+type EventSubscriptionStatus = original.EventSubscriptionStatus
+
+const (
+	Deprovisioning EventSubscriptionStatus = original.Deprovisioning
+	Disabled       EventSubscriptionStatus = original.Disabled
+	Enabled        EventSubscriptionStatus = original.Enabled
+	Provisioning   EventSubscriptionStatus = original.Provisioning
+	Unknown        EventSubscriptionStatus = original.Unknown
+)
+
 type EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypes
 
 const (
-	Deprovisioning EventSubscriptionStatusTypes = original.Deprovisioning
-	Disabled       EventSubscriptionStatusTypes = original.Disabled
-	Enabled        EventSubscriptionStatusTypes = original.Enabled
-	Provisioning   EventSubscriptionStatusTypes = original.Provisioning
-	Unknown        EventSubscriptionStatusTypes = original.Unknown
+	EventSubscriptionStatusTypesDeprovisioning EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesDeprovisioning
+	EventSubscriptionStatusTypesDisabled       EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesDisabled
+	EventSubscriptionStatusTypesEnabled        EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesEnabled
+	EventSubscriptionStatusTypesProvisioning   EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesProvisioning
+	EventSubscriptionStatusTypesUnknown        EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesUnknown
 )
 
 type FtpAuthenticationType = original.FtpAuthenticationType
@@ -2050,6 +2060,9 @@ func PossibleDynamicsDeploymentTypeValues() []DynamicsDeploymentType {
 }
 func PossibleEventSubscriptionStatusTypesValues() []EventSubscriptionStatusTypes {
 	return original.PossibleEventSubscriptionStatusTypesValues()
+}
+func PossibleEventSubscriptionStatusValues() []EventSubscriptionStatus {
+	return original.PossibleEventSubscriptionStatusValues()
 }
 func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
 	return original.PossibleFtpAuthenticationTypeValues()

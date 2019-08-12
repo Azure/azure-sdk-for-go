@@ -160,16 +160,6 @@ const (
 	Unknown        EventSubscriptionStatus = original.Unknown
 )
 
-type EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypes
-
-const (
-	EventSubscriptionStatusTypesDeprovisioning EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesDeprovisioning
-	EventSubscriptionStatusTypesDisabled       EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesDisabled
-	EventSubscriptionStatusTypesEnabled        EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesEnabled
-	EventSubscriptionStatusTypesProvisioning   EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesProvisioning
-	EventSubscriptionStatusTypesUnknown        EventSubscriptionStatusTypes = original.EventSubscriptionStatusTypesUnknown
-)
-
 type FtpAuthenticationType = original.FtpAuthenticationType
 
 const (
@@ -2057,9 +2047,6 @@ func PossibleDynamicsAuthenticationTypeValues() []DynamicsAuthenticationType {
 }
 func PossibleDynamicsDeploymentTypeValues() []DynamicsDeploymentType {
 	return original.PossibleDynamicsDeploymentTypeValues()
-}
-func PossibleEventSubscriptionStatusTypesValues() []EventSubscriptionStatusTypes {
-	return original.PossibleEventSubscriptionStatusTypesValues()
 }
 func PossibleEventSubscriptionStatusValues() []EventSubscriptionStatus {
 	return original.PossibleEventSubscriptionStatusValues()

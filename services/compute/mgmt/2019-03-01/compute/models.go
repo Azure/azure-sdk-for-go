@@ -272,18 +272,20 @@ type DiskCreateOption string
 const (
 	// Attach Disk will be attached to a VM.
 	Attach DiskCreateOption = "Attach"
-	// Copy Create a new disk by copying from a customer's managed disk or snapshot.
+	// Copy Create a new disk or snapshot by copying from a disk or snapshot specified by the given
+	// sourceResourceId.
 	Copy DiskCreateOption = "Copy"
-	// Empty Create a new disk with a given size.
+	// Empty Create an empty data disk of a size given by diskSizeGB.
 	Empty DiskCreateOption = "Empty"
-	// FromImage Create a new disk by importing from a PIR image or a customer's user image.
+	// FromImage Create a new disk from a platform image specified by the given imageReference.
 	FromImage DiskCreateOption = "FromImage"
-	// Import Create a new disk by importing from a customer's blob. The blob must be formatted as a VHD.
+	// Import Create a disk by importing from a blob specified by a sourceUri in a storage account specified by
+	// storageAccountId.
 	Import DiskCreateOption = "Import"
-	// Restore Create a new disk by restoring from a restore point.
+	// Restore Create a new disk by copying from a backup recovery point.
 	Restore DiskCreateOption = "Restore"
-	// Upload Create a new disk by customer upload using a write SAS to directly write the contents of their
-	// disk to the blob. The contents must be formatted as a VHD.
+	// Upload Create a new disk by obtaining a write token and using it to directly upload the contents of the
+	// disk.
 	Upload DiskCreateOption = "Upload"
 )
 
@@ -315,12 +317,11 @@ type DiskState string
 const (
 	// ActiveSAS The disk currently has an Active SAS Uri associated with it.
 	ActiveSAS DiskState = "ActiveSAS"
-	// ActiveUpload The upload disk has an active write SAS associated with it.
+	// ActiveUpload A disk is created for upload and a write token has been issued for uploading to it.
 	ActiveUpload DiskState = "ActiveUpload"
 	// Attached The disk is currently mounted to a running VM.
 	Attached DiskState = "Attached"
-	// ReadyToUpload The upload disk does not have an active write SAS, but the customer can request on to
-	// upload the VHD.
+	// ReadyToUpload A disk is ready to be created by upload by requesting a write token.
 	ReadyToUpload DiskState = "ReadyToUpload"
 	// Reserved The disk is mounted to a stopped-deallocated VM
 	Reserved DiskState = "Reserved"
@@ -3317,7 +3318,7 @@ type DiskProperties struct {
 	HyperVGeneration HyperVGeneration `json:"hyperVGeneration,omitempty"`
 	// CreationData - Disk source information. CreationData information cannot be changed after the disk has been created.
 	CreationData *CreationData `json:"creationData,omitempty"`
-	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// DiskSizeBytes - READ-ONLY; The size of the disk in bytes. This field is read only.
 	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty"`
@@ -3543,7 +3544,7 @@ func (du *DiskUpdate) UnmarshalJSON(body []byte) error {
 type DiskUpdateProperties struct {
 	// OsType - the Operating System type. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
-	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
@@ -7579,7 +7580,7 @@ type SnapshotProperties struct {
 	HyperVGeneration HyperVGeneration `json:"hyperVGeneration,omitempty"`
 	// CreationData - Disk source information. CreationData information cannot be changed after the disk has been created.
 	CreationData *CreationData `json:"creationData,omitempty"`
-	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// DiskSizeBytes - READ-ONLY; The size of the disk in bytes. This field is read only.
 	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty"`
@@ -7803,7 +7804,7 @@ func (su *SnapshotUpdate) UnmarshalJSON(body []byte) error {
 type SnapshotUpdateProperties struct {
 	// OsType - the Operating System type. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
-	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`

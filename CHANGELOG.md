@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v32.4.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| datamigration | 2018-07-15-preview |
+
 ## `v32.3.0`
 
 ### BreakingChanges

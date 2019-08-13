@@ -5774,7 +5774,7 @@ type FilterAlertRuleTemplateProperties struct {
 	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
-	// FilterProduct - The filter prodact name for this template rule.
+	// FilterProduct - The filter product name for this template rule.
 	FilterProduct *string `json:"filterProduct,omitempty"`
 	// FilterSeverities - the alert’s severities on which the cases will be generated
 	FilterSeverities *[]AlertSeverity `json:"filterSeverities,omitempty"`
@@ -5784,7 +5784,7 @@ type FilterAlertRuleTemplateProperties struct {
 
 // FilterAlertRuleTemplatePropertiesModel filter alert rule template property bag.
 type FilterAlertRuleTemplatePropertiesModel struct {
-	// FilterProduct - The filter prodact name for this template rule.
+	// FilterProduct - The filter product name for this template rule.
 	FilterProduct *string `json:"filterProduct,omitempty"`
 	// FilterSeverities - the alert’s severities on which the cases will be generated
 	FilterSeverities *[]AlertSeverity `json:"filterSeverities,omitempty"`

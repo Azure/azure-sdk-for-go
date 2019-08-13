@@ -3031,10 +3031,10 @@ func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (Bookma
 type BookmarkProperties struct {
 	// DisplayName - The display name of the bookmark
 	DisplayName *string `json:"displayName,omitempty"`
-	// LastUpdatedTimeUtc - The last time the bookmark was updated
-	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
-	// CreatedTimeUtc - The time the bookmark was created
-	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// Updated - The last time the bookmark was updated
+	Updated *date.Time `json:"updated,omitempty"`
+	// Created - The time the bookmark was created
+	Created *date.Time `json:"created,omitempty"`
 	// CreatedBy - Describes a user that created the bookmark
 	CreatedBy *UserInfo `json:"createdBy,omitempty"`
 	// UpdatedBy - Describes a user that updated the bookmark
@@ -3045,6 +3045,8 @@ type BookmarkProperties struct {
 	Labels *[]string `json:"labels,omitempty"`
 	// Query - The query of the bookmark.
 	Query *string `json:"query,omitempty"`
+	// QueryResult - The query result of the bookmark.
+	QueryResult *string `json:"queryResult,omitempty"`
 }
 
 // Case represents a case in Azure Security Insights.

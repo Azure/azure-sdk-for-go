@@ -758,7 +758,7 @@ type TemplateStatus string
 const (
 	// Available Alert rule template is available.
 	Available TemplateStatus = "Available"
-	// Installed Alert rule template installed. and cann't use more then once
+	// Installed Alert rule template installed. and can not use more then once
 	Installed TemplateStatus = "Installed"
 	// NotAvailable Alert rule template is not available
 	NotAvailable TemplateStatus = "NotAvailable"
@@ -5794,8 +5794,8 @@ type FilterAlertRuleTemplatePropertiesModel struct {
 
 // FusionAlertRuleTemplate represents fusion alert rule template.
 type FusionAlertRuleTemplate struct {
-	// BaseAlertRuleTemplateProperties - Fusion alert rule template properties
-	*BaseAlertRuleTemplateProperties `json:"properties,omitempty"`
+	// FusionAlertRuleTemplateProperties - Fusion alert rule template properties
+	*FusionAlertRuleTemplateProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
@@ -5812,8 +5812,8 @@ type FusionAlertRuleTemplate struct {
 func (fart FusionAlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	fart.Kind = KindBasicAlertRuleTemplateKindFusion
 	objectMap := make(map[string]interface{})
-	if fart.BaseAlertRuleTemplateProperties != nil {
-		objectMap["properties"] = fart.BaseAlertRuleTemplateProperties
+	if fart.FusionAlertRuleTemplateProperties != nil {
+		objectMap["properties"] = fart.FusionAlertRuleTemplateProperties
 	}
 	if fart.Etag != nil {
 		objectMap["etag"] = fart.Etag
@@ -5860,12 +5860,12 @@ func (fart *FusionAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var baseAlertRuleTemplateProperties BaseAlertRuleTemplateProperties
-				err = json.Unmarshal(*v, &baseAlertRuleTemplateProperties)
+				var fusionAlertRuleTemplateProperties FusionAlertRuleTemplateProperties
+				err = json.Unmarshal(*v, &fusionAlertRuleTemplateProperties)
 				if err != nil {
 					return err
 				}
-				fart.BaseAlertRuleTemplateProperties = &baseAlertRuleTemplateProperties
+				fart.FusionAlertRuleTemplateProperties = &fusionAlertRuleTemplateProperties
 			}
 		case "id":
 			if v != nil {
@@ -5916,6 +5916,32 @@ func (fart *FusionAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// FusionAlertRuleTemplateProperties fusion alert rule template properties
+type FusionAlertRuleTemplateProperties struct {
+	// DisplayName - The display name for alert rule template.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the alert rule template.
+	Description *string `json:"description,omitempty"`
+	// Tactics - The tactics of the alert rule template
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
+	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
+	Status TemplateStatus `json:"status,omitempty"`
+	// RequiredDataConnectors - The required data connectors for this template
+	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
+	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
+	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
+}
+
+// FusionAlertRuleTemplatePropertiesModel filter alert rule template property bag.
+type FusionAlertRuleTemplatePropertiesModel struct {
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
 }
 
 // GeoLocation the geo-location context attached to the ip entity

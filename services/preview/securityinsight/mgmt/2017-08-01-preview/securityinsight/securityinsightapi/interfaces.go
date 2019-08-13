@@ -63,10 +63,25 @@ type CasesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseParameter securityinsight.Case) (result securityinsight.Case, err error)
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string) (result securityinsight.Case, err error)
-	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.CaseListPage, err error)
+	GetComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string) (result securityinsight.CaseComment, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseListPage, err error)
 }
 
 var _ CasesClientAPI = (*securityinsight.CasesClient)(nil)
+
+// CommentsClientAPI contains the set of methods on the CommentsClient type.
+type CommentsClientAPI interface {
+	ListByCase(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseCommentListPage, err error)
+}
+
+var _ CommentsClientAPI = (*securityinsight.CommentsClient)(nil)
+
+// CaseCommentsClientAPI contains the set of methods on the CaseCommentsClient type.
+type CaseCommentsClientAPI interface {
+	CreateComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseCommentID string, caseComment securityinsight.CaseComment) (result securityinsight.CaseComment, err error)
+}
+
+var _ CaseCommentsClientAPI = (*securityinsight.CaseCommentsClient)(nil)
 
 // BookmarksClientAPI contains the set of methods on the BookmarksClient type.
 type BookmarksClientAPI interface {
@@ -90,6 +105,7 @@ var _ DataConnectorsClientAPI = (*securityinsight.DataConnectorsClient)(nil)
 
 // EntitiesClientAPI contains the set of methods on the EntitiesClient type.
 type EntitiesClientAPI interface {
+	Expand(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityExpandParameters) (result securityinsight.EntityExpandResponse, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result securityinsight.EntityModel, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListPage, err error)
 }

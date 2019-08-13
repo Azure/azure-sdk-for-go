@@ -26,32 +26,32 @@ import (
 	"net/http"
 )
 
-// EntitiesClient is the API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider
-type EntitiesClient struct {
+// AlertRuleTemplatesClient is the API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider
+type AlertRuleTemplatesClient struct {
 	BaseClient
 }
 
-// NewEntitiesClient creates an instance of the EntitiesClient client.
-func NewEntitiesClient(subscriptionID string) EntitiesClient {
-	return NewEntitiesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAlertRuleTemplatesClient creates an instance of the AlertRuleTemplatesClient client.
+func NewAlertRuleTemplatesClient(subscriptionID string) AlertRuleTemplatesClient {
+	return NewAlertRuleTemplatesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewEntitiesClientWithBaseURI creates an instance of the EntitiesClient client.
-func NewEntitiesClientWithBaseURI(baseURI string, subscriptionID string) EntitiesClient {
-	return EntitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAlertRuleTemplatesClientWithBaseURI creates an instance of the AlertRuleTemplatesClient client.
+func NewAlertRuleTemplatesClientWithBaseURI(baseURI string, subscriptionID string) AlertRuleTemplatesClient {
+	return AlertRuleTemplatesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get gets an entity.
+// Get gets the alert rule template.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// entityID - entity ID
-func (client EntitiesClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result EntityModel, err error) {
+// alertRuleTemplateID - alert rule template ID
+func (client AlertRuleTemplatesClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, alertRuleTemplateID string) (result AlertRuleTemplateModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EntitiesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRuleTemplatesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -70,34 +70,34 @@ func (client EntitiesClient) Get(ctx context.Context, resourceGroupName string, 
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.EntitiesClient", "Get", err.Error())
+		return result, validation.NewError("securityinsight.AlertRuleTemplatesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, entityID)
+	req, err := client.GetPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, alertRuleTemplateID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.EntitiesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRuleTemplatesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.EntitiesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRuleTemplatesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.EntitiesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRuleTemplatesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client EntitiesClient) GetPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (*http.Request, error) {
+func (client AlertRuleTemplatesClient) GetPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, alertRuleTemplateID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"entityId":                            autorest.Encode("path", entityID),
+		"alertRuleTemplateId":                 autorest.Encode("path", alertRuleTemplateID),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
 		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
@@ -112,21 +112,21 @@ func (client EntitiesClient) GetPreparer(ctx context.Context, resourceGroupName 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities/{entityId}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRuleTemplates/{alertRuleTemplateId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client EntitiesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AlertRuleTemplatesClient) GetSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client EntitiesClient) GetResponder(resp *http.Response) (result EntityModel, err error) {
+func (client AlertRuleTemplatesClient) GetResponder(resp *http.Response) (result AlertRuleTemplateModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -137,20 +137,20 @@ func (client EntitiesClient) GetResponder(resp *http.Response) (result EntityMod
 	return
 }
 
-// List gets all entities.
+// List gets all alert rule templates.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-func (client EntitiesClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result EntityListPage, err error) {
+func (client AlertRuleTemplatesClient) List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result AlertRuleTemplatesListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EntitiesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRuleTemplatesClient.List")
 		defer func() {
 			sc := -1
-			if result.el.Response.Response != nil {
-				sc = result.el.Response.Response.StatusCode
+			if result.artl.Response.Response != nil {
+				sc = result.artl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -165,33 +165,33 @@ func (client EntitiesClient) List(ctx context.Context, resourceGroupName string,
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.EntitiesClient", "List", err.Error())
+		return result, validation.NewError("securityinsight.AlertRuleTemplatesClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.EntitiesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRuleTemplatesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.el.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.EntitiesClient", "List", resp, "Failure sending request")
+		result.artl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRuleTemplatesClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.el, err = client.ListResponder(resp)
+	result.artl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.EntitiesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRuleTemplatesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client EntitiesClient) ListPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (*http.Request, error) {
+func (client AlertRuleTemplatesClient) ListPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
@@ -207,21 +207,21 @@ func (client EntitiesClient) ListPreparer(ctx context.Context, resourceGroupName
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRuleTemplates", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client EntitiesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client AlertRuleTemplatesClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client EntitiesClient) ListResponder(resp *http.Response) (result EntityList, err error) {
+func (client AlertRuleTemplatesClient) ListResponder(resp *http.Response) (result AlertRuleTemplatesList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -233,10 +233,10 @@ func (client EntitiesClient) ListResponder(resp *http.Response) (result EntityLi
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client EntitiesClient) listNextResults(ctx context.Context, lastResults EntityList) (result EntityList, err error) {
-	req, err := lastResults.entityListPreparer(ctx)
+func (client AlertRuleTemplatesClient) listNextResults(ctx context.Context, lastResults AlertRuleTemplatesList) (result AlertRuleTemplatesList, err error) {
+	req, err := lastResults.alertRuleTemplatesListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "securityinsight.EntitiesClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "securityinsight.AlertRuleTemplatesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -244,19 +244,19 @@ func (client EntitiesClient) listNextResults(ctx context.Context, lastResults En
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "securityinsight.EntitiesClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "securityinsight.AlertRuleTemplatesClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.EntitiesClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "securityinsight.AlertRuleTemplatesClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client EntitiesClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result EntityListIterator, err error) {
+func (client AlertRuleTemplatesClient) ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result AlertRuleTemplatesListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/EntitiesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRuleTemplatesClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

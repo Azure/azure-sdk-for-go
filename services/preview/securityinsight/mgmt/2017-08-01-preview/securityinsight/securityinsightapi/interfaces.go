@@ -50,6 +50,14 @@ type ActionsClientAPI interface {
 
 var _ ActionsClientAPI = (*securityinsight.ActionsClient)(nil)
 
+// AlertRuleTemplatesClientAPI contains the set of methods on the AlertRuleTemplatesClient type.
+type AlertRuleTemplatesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, alertRuleTemplateID string) (result securityinsight.AlertRuleTemplateModel, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AlertRuleTemplatesListPage, err error)
+}
+
+var _ AlertRuleTemplatesClientAPI = (*securityinsight.AlertRuleTemplatesClient)(nil)
+
 // CasesClientAPI contains the set of methods on the CasesClient type.
 type CasesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseParameter securityinsight.Case) (result securityinsight.Case, err error)
@@ -82,7 +90,6 @@ var _ DataConnectorsClientAPI = (*securityinsight.DataConnectorsClient)(nil)
 
 // EntitiesClientAPI contains the set of methods on the EntitiesClient type.
 type EntitiesClientAPI interface {
-	Expand(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityExpandParameters) (result securityinsight.EntityExpandResponse, err error)
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string) (result securityinsight.EntityModel, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.EntityListPage, err error)
 }

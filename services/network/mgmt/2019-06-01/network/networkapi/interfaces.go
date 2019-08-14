@@ -273,6 +273,28 @@ type ExpressRouteLinksClientAPI interface {
 
 var _ ExpressRouteLinksClientAPI = (*network.ExpressRouteLinksClient)(nil)
 
+// FirewallPoliciesClientAPI contains the set of methods on the FirewallPoliciesClient type.
+type FirewallPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters network.FirewallPolicy) (result network.FirewallPoliciesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, firewallPolicyName string) (result network.FirewallPoliciesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, expand string) (result network.FirewallPolicy, err error)
+	List(ctx context.Context, resourceGroupName string) (result network.FirewallPolicyListResultPage, err error)
+	ListAll(ctx context.Context) (result network.FirewallPolicyListResultPage, err error)
+	UpdateTags(ctx context.Context, resourceGroupName string, firewallPolicyName string, firewallPolicyParameters network.TagsObject) (result network.FirewallPolicy, err error)
+}
+
+var _ FirewallPoliciesClientAPI = (*network.FirewallPoliciesClient)(nil)
+
+// FirewallPolicyRuleGroupsClientAPI contains the set of methods on the FirewallPolicyRuleGroupsClient type.
+type FirewallPolicyRuleGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters network.FirewallPolicyRuleGroup) (result network.FirewallPolicyRuleGroupsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (result network.FirewallPolicyRuleGroupsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (result network.FirewallPolicyRuleGroup, err error)
+	List(ctx context.Context, resourceGroupName string, firewallPolicyName string) (result network.FirewallPolicyRuleGroupListResultPage, err error)
+}
+
+var _ FirewallPolicyRuleGroupsClientAPI = (*network.FirewallPolicyRuleGroupsClient)(nil)
+
 // LoadBalancersClientAPI contains the set of methods on the LoadBalancersClient type.
 type LoadBalancersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters network.LoadBalancer) (result network.LoadBalancersCreateOrUpdateFuture, err error)

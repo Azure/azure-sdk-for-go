@@ -150,6 +150,16 @@ const (
 	OnPremisesWithIfd DynamicsDeploymentType = original.OnPremisesWithIfd
 )
 
+type EventSubscriptionStatus = original.EventSubscriptionStatus
+
+const (
+	Deprovisioning EventSubscriptionStatus = original.Deprovisioning
+	Disabled       EventSubscriptionStatus = original.Disabled
+	Enabled        EventSubscriptionStatus = original.Enabled
+	Provisioning   EventSubscriptionStatus = original.Provisioning
+	Unknown        EventSubscriptionStatus = original.Unknown
+)
+
 type FtpAuthenticationType = original.FtpAuthenticationType
 
 const (
@@ -613,9 +623,9 @@ const (
 type TriggerRuntimeState = original.TriggerRuntimeState
 
 const (
-	Disabled TriggerRuntimeState = original.Disabled
-	Started  TriggerRuntimeState = original.Started
-	Stopped  TriggerRuntimeState = original.Stopped
+	TriggerRuntimeStateDisabled TriggerRuntimeState = original.TriggerRuntimeStateDisabled
+	TriggerRuntimeStateStarted  TriggerRuntimeState = original.TriggerRuntimeStateStarted
+	TriggerRuntimeStateStopped  TriggerRuntimeState = original.TriggerRuntimeStateStopped
 )
 
 type TumblingWindowFrequency = original.TumblingWindowFrequency
@@ -1814,9 +1824,12 @@ type TriggerResource = original.TriggerResource
 type TriggerRun = original.TriggerRun
 type TriggerRunsClient = original.TriggerRunsClient
 type TriggerRunsQueryResponse = original.TriggerRunsQueryResponse
+type TriggerSubscriptionOperationStatus = original.TriggerSubscriptionOperationStatus
 type TriggersClient = original.TriggersClient
 type TriggersStartFuture = original.TriggersStartFuture
 type TriggersStopFuture = original.TriggersStopFuture
+type TriggersSubscribeToEventsFuture = original.TriggersSubscribeToEventsFuture
+type TriggersUnsubscribeFromEventsFuture = original.TriggersUnsubscribeFromEventsFuture
 type TumblingWindowTrigger = original.TumblingWindowTrigger
 type TumblingWindowTriggerDependencyReference = original.TumblingWindowTriggerDependencyReference
 type TumblingWindowTriggerTypeProperties = original.TumblingWindowTriggerTypeProperties
@@ -2034,6 +2047,9 @@ func PossibleDynamicsAuthenticationTypeValues() []DynamicsAuthenticationType {
 }
 func PossibleDynamicsDeploymentTypeValues() []DynamicsDeploymentType {
 	return original.PossibleDynamicsDeploymentTypeValues()
+}
+func PossibleEventSubscriptionStatusValues() []EventSubscriptionStatus {
+	return original.PossibleEventSubscriptionStatusValues()
 }
 func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
 	return original.PossibleFtpAuthenticationTypeValues()

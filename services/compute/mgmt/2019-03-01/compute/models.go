@@ -1721,6 +1721,13 @@ func (asu *AvailabilitySetUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BillingProfile specifies the billing related details of a low priority VM or VMSS. <br><br>Minimum
+// api-version: 2019-03-01.
+type BillingProfile struct {
+	// MaxPrice - Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. <br><br> This price will be compared with the current low priority price for the VM size. Also, the prices are compared at the time of create/update of low priority VM/VMSS and the operation will only succeed if  the maxPrice is greater than the current low priority price. <br><br> The maxPrice will also be used for evicting a low priority VM/VMSS if the current low priority price goes beyond the maxPrice after creation of VM/VMSS. <br><br> Possible values are: <br><br> - Any decimal value greater than zero. Example: $0.01538 <br><br> -1 – indicates default price to be up-to on-demand. <br><br> You can set the maxPrice to -1 to indicate that the low priority VM/VMSS should not be evicted for price reasons. Also, the default max price is -1 if it is not provided by you. <br><br>Minimum api-version: 2019-03-01.
+	MaxPrice *float64 `json:"maxPrice,omitempty"`
+}
+
 // BootDiagnostics boot Diagnostics is a debugging feature which allows you to view Console Output and
 // Screenshot to diagnose VM status. <br><br> You can easily view the output of your console log. <br><br>
 // Azure also enables you to see a screenshot of the VM from the hypervisor.
@@ -8952,6 +8959,12 @@ type VirtualMachineProperties struct {
 	AvailabilitySet *SubResource `json:"availabilitySet,omitempty"`
 	// ProximityPlacementGroup - Specifies information about the proximity placement group that the virtual machine should be assigned to. <br><br>Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource `json:"proximityPlacementGroup,omitempty"`
+	// Priority - Specifies the priority for the virtual machine. <br><br>Minimum api-version: 2019-03-01. Possible values include: 'Regular', 'Low'
+	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
+	// EvictionPolicy - Specifies the eviction policy for the low priority virtual machine. Only supported value is 'Deallocate'. <br><br>Minimum api-version: 2019-03-01. Possible values include: 'Deallocate', 'Delete'
+	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
+	// BillingProfile - Specifies the billing related details of a low priority virtual machine. <br><br>Minimum api-version: 2019-03-01.
+	BillingProfile *BillingProfile `json:"billingProfile,omitempty"`
 	// Host - Specifies information about the dedicated host that the virtual machine resides in. <br><br>Minimum api-version: 2018-10-01.
 	Host *SubResource `json:"host,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response.
@@ -11241,6 +11254,8 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
 	// LicenseType - The license type, which is for bring your own license scenario.
 	LicenseType *string `json:"licenseType,omitempty"`
+	// BillingProfile - Specifies the billing related details of a low priority VMSS. <br><br>Minimum api-version: 2019-03-01.
+	BillingProfile *BillingProfile `json:"billingProfile,omitempty"`
 	// ScheduledEventsProfile - Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }
@@ -11625,6 +11640,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
 	// EvictionPolicy - Specifies the eviction policy for virtual machines in a low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
 	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
+	// BillingProfile - Specifies the billing related details of a low priority VMSS. <br><br>Minimum api-version: 2019-03-01.
+	BillingProfile *BillingProfile `json:"billingProfile,omitempty"`
 	// ScheduledEventsProfile - Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }

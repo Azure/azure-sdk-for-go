@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v32.5.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| servicebus | 2018-01-01-preview |
+
 ## `v32.4.0`
 
 ### Updated Packages

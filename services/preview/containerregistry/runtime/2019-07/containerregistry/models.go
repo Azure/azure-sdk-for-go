@@ -19,6 +19,7 @@ package containerregistry
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"io"
 )
 
 // The package's fully qualified name.
@@ -63,7 +64,7 @@ type AcrManifestAttributesBase struct {
 	// Digest - Manifest
 	Digest *string `json:"digest,omitempty"`
 	// ImageSize - Image size
-	ImageSize *int32 `json:"imageSize,omitempty"`
+	ImageSize *int64 `json:"imageSize,omitempty"`
 	// CreatedTime - Created time
 	CreatedTime *string `json:"createdTime,omitempty"`
 	// LastUpdateTime - Last update time
@@ -254,6 +255,12 @@ type ManifestChangeableAttributes struct {
 	QuarantineDetails *string `json:"quarantineDetails,omitempty"`
 }
 
+// ReadCloser ...
+type ReadCloser struct {
+	autorest.Response `json:"-"`
+	Value             *io.ReadCloser `json:"value,omitempty"`
+}
+
 // RefreshToken ...
 type RefreshToken struct {
 	autorest.Response `json:"-"`
@@ -323,7 +330,7 @@ type V2Descriptor struct {
 	// MediaType - Layer media type
 	MediaType *string `json:"mediaType,omitempty"`
 	// Size - Layer size
-	Size *int32 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 	// Digest - Layer digest
 	Digest *string `json:"digest,omitempty"`
 }

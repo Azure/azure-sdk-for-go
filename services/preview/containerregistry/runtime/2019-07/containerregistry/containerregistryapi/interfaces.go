@@ -21,14 +21,21 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/runtime/2019-07/containerregistry"
 	"github.com/Azure/go-autorest/autorest"
+	"io"
 )
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
+	CancelBlobUpload(ctx context.Context, name string, UUID string) (result autorest.Response, err error)
+	CheckBlobExistence(ctx context.Context, name string, digest string) (result autorest.Response, err error)
+	CheckBlobPartExistence(ctx context.Context, name string, digest string, rangeParameter string, part string) (result autorest.Response, err error)
 	CreateManifest(ctx context.Context, name string, reference string, payload containerregistry.Manifest) (result containerregistry.SetObject, err error)
 	DeleteAcrRepository(ctx context.Context, name string) (result containerregistry.DeletedRepository, err error)
 	DeleteAcrTag(ctx context.Context, name string, reference string) (result autorest.Response, err error)
+	DeleteBlob(ctx context.Context, name string, digest string) (result containerregistry.ReadCloser, err error)
 	DeleteManifest(ctx context.Context, name string, reference string) (result autorest.Response, err error)
+	EndBlobUploadFromNext(ctx context.Context, digest string, location string, value io.ReadCloser) (result autorest.Response, err error)
+	EndBlobUploadSpecified(ctx context.Context, digest string, name string, UUID string, _state string, _nouploadcache *bool, value io.ReadCloser) (result autorest.Response, err error)
 	GetAcrAccessToken(ctx context.Context, service string, scope string, refreshToken string) (result containerregistry.AccessToken, err error)
 	GetAcrAccessTokenFromLogin(ctx context.Context, service string, scope string) (result containerregistry.AccessToken, err error)
 	GetAcrManifestAttributes(ctx context.Context, name string, reference string) (result containerregistry.AcrManifestAttributes, err error)
@@ -38,13 +45,22 @@ type BaseClientAPI interface {
 	GetAcrRepositoryAttributes(ctx context.Context, name string) (result containerregistry.RepositoryAttributes, err error)
 	GetAcrTagAttributes(ctx context.Context, name string, reference string) (result containerregistry.AcrTagAttributes, err error)
 	GetAcrTags(ctx context.Context, name string, last string, n *int32, orderby string, digest string) (result containerregistry.AcrRepositoryTags, err error)
+	GetBlob(ctx context.Context, name string, digest string) (result containerregistry.ReadCloser, err error)
+	GetBlobPart(ctx context.Context, name string, digest string, rangeParameter string, part string) (result containerregistry.ReadCloser, err error)
+	GetBlobUploadStatusFromNext(ctx context.Context, location string, _state string, _nouploadcache *bool) (result autorest.Response, err error)
+	GetBlobUploadStatusSpecified(ctx context.Context, name string, UUID string, _state string, _nouploadcache *bool) (result autorest.Response, err error)
 	GetDockerRegistryV2Support(ctx context.Context) (result autorest.Response, err error)
 	GetManifest(ctx context.Context, name string, reference string, accept string) (result containerregistry.Manifest, err error)
 	GetRepositories(ctx context.Context, last string, n *int32) (result containerregistry.Repositories, err error)
 	GetTagList(ctx context.Context, name string) (result containerregistry.RepositoryTags, err error)
+	StartBlobUpload(ctx context.Context, name string, from string, mount string) (result autorest.Response, err error)
+	StartEmptyResumableBlobUpload(ctx context.Context, name string, resumable string) (result autorest.Response, err error)
 	UpdateAcrManifestAttributes(ctx context.Context, name string, reference string, value *containerregistry.ChangeableAttributes) (result autorest.Response, err error)
 	UpdateAcrRepositoryAttributes(ctx context.Context, name string, value *containerregistry.ChangeableAttributes) (result autorest.Response, err error)
 	UpdateAcrTagAttributes(ctx context.Context, name string, reference string, value *containerregistry.ChangeableAttributes) (result autorest.Response, err error)
+	UploadBlobContentChunk(ctx context.Context, value io.ReadCloser, contentRange string, name string, UUID string, chunk string) (result autorest.Response, err error)
+	UploadBlobContentFromNext(ctx context.Context, value io.ReadCloser, location string) (result autorest.Response, err error)
+	UploadBlobContentSpecified(ctx context.Context, value io.ReadCloser, name string, UUID string, _state string, _nouploadcache *bool) (result autorest.Response, err error)
 }
 
 var _ BaseClientAPI = (*containerregistry.BaseClient)(nil)

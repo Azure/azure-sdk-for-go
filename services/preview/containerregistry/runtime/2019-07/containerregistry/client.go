@@ -25,6 +25,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
+	"io"
 	"net/http"
 )
 
@@ -45,6 +46,237 @@ func NewWithoutDefaults(loginURI string) BaseClient {
 		Client:   autorest.NewClientWithUserAgent(UserAgent()),
 		LoginURI: loginURI,
 	}
+}
+
+// CancelBlobUpload cancel outstanding upload processes, releasing associated resources. If this is not called, the
+// unfinished uploads will eventually timeout.
+// Parameters:
+// name - name of the image (including the namespace)
+// UUID - a uuid identifying the upload.
+func (client BaseClient) CancelBlobUpload(ctx context.Context, name string, UUID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CancelBlobUpload")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CancelBlobUploadPreparer(ctx, name, UUID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CancelBlobUpload", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CancelBlobUploadSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CancelBlobUpload", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CancelBlobUploadResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CancelBlobUpload", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CancelBlobUploadPreparer prepares the CancelBlobUpload request.
+func (client BaseClient) CancelBlobUploadPreparer(ctx context.Context, name string, UUID string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+		"uuid": autorest.Encode("path", UUID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/uploads/{uuid}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CancelBlobUploadSender sends the CancelBlobUpload request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) CancelBlobUploadSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CancelBlobUploadResponder handles the response to the CancelBlobUpload request. The method always
+// closes the http.Response Body.
+func (client BaseClient) CancelBlobUploadResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// CheckBlobExistence same as GET, except only the headers are returned.
+// Parameters:
+// name - name of the image (including the namespace)
+// digest - digest of a BLOB
+func (client BaseClient) CheckBlobExistence(ctx context.Context, name string, digest string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckBlobExistence")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CheckBlobExistencePreparer(ctx, name, digest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CheckBlobExistence", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckBlobExistenceSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CheckBlobExistence", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckBlobExistenceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CheckBlobExistence", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckBlobExistencePreparer prepares the CheckBlobExistence request.
+func (client BaseClient) CheckBlobExistencePreparer(ctx context.Context, name string, digest string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"digest": autorest.Encode("path", digest),
+		"name":   autorest.Encode("path", name),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsHead(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/{digest}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckBlobExistenceSender sends the CheckBlobExistence request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) CheckBlobExistenceSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CheckBlobExistenceResponder handles the response to the CheckBlobExistence request. The method always
+// closes the http.Response Body.
+func (client BaseClient) CheckBlobExistenceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusTemporaryRedirect),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// CheckBlobPartExistence same as GET, except only the headers are returned.
+// Parameters:
+// name - name of the image (including the namespace)
+// digest - digest of a BLOB
+// rangeParameter - format : bytes=<start>-<end>,  HTTP Range header specifying blob chunk.
+// part - acquire only part of a blob. This endpoint may also support RFC7233 compliant range requests. Support
+// can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is returned, range requests
+// can be used to fetch partial content
+func (client BaseClient) CheckBlobPartExistence(ctx context.Context, name string, digest string, rangeParameter string, part string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckBlobPartExistence")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CheckBlobPartExistencePreparer(ctx, name, digest, rangeParameter, part)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CheckBlobPartExistence", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckBlobPartExistenceSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CheckBlobPartExistence", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckBlobPartExistenceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CheckBlobPartExistence", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckBlobPartExistencePreparer prepares the CheckBlobPartExistence request.
+func (client BaseClient) CheckBlobPartExistencePreparer(ctx context.Context, name string, digest string, rangeParameter string, part string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"digest": autorest.Encode("path", digest),
+		"name":   autorest.Encode("path", name),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(part) > 0 {
+		queryParameters["part"] = autorest.Encode("query", part)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsHead(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/{digest}", pathParameters),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Range", autorest.String(rangeParameter)))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckBlobPartExistenceSender sends the CheckBlobPartExistence request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) CheckBlobPartExistenceSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CheckBlobPartExistenceResponder handles the response to the CheckBlobPartExistence request. The method always
+// closes the http.Response Body.
+func (client BaseClient) CheckBlobPartExistenceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusPartialContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
 }
 
 // CreateManifest put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
@@ -269,6 +501,79 @@ func (client BaseClient) DeleteAcrTagResponder(resp *http.Response) (result auto
 	return
 }
 
+// DeleteBlob sends the delete blob request.
+// Parameters:
+// name - name of the image (including the namespace)
+// digest - digest of a BLOB
+func (client BaseClient) DeleteBlob(ctx context.Context, name string, digest string) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteBlob")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeleteBlobPreparer(ctx, name, digest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteBlob", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteBlobSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteBlob", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteBlobResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteBlob", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteBlobPreparer prepares the DeleteBlob request.
+func (client BaseClient) DeleteBlobPreparer(ctx context.Context, name string, digest string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"digest": autorest.Encode("path", digest),
+		"name":   autorest.Encode("path", name),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/{digest}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteBlobSender sends the DeleteBlob request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) DeleteBlobSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteBlobResponder handles the response to the DeleteBlob request. The method always
+// closes the http.Response Body.
+func (client BaseClient) DeleteBlobResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // DeleteManifest delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted
 // by `digest`.
 // Parameters:
@@ -338,6 +643,183 @@ func (client BaseClient) DeleteManifestResponder(resp *http.Response) (result au
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// EndBlobUploadFromNext complete the upload, providing all the data in the body, if necessary. A request without a
+// body will just complete the upload with previously uploaded content.
+// Parameters:
+// digest - digest of a BLOB
+// location - link acquired from upload start or previous chunk. Note, do not include initial / (must do
+// substring(1) )
+func (client BaseClient) EndBlobUploadFromNext(ctx context.Context, digest string, location string, value io.ReadCloser) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.EndBlobUploadFromNext")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.EndBlobUploadFromNextPreparer(ctx, digest, location, value)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "EndBlobUploadFromNext", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.EndBlobUploadFromNextSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "EndBlobUploadFromNext", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.EndBlobUploadFromNextResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "EndBlobUploadFromNext", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// EndBlobUploadFromNextPreparer prepares the EndBlobUploadFromNext request.
+func (client BaseClient) EndBlobUploadFromNextPreparer(ctx context.Context, digest string, location string, value io.ReadCloser) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"nextBlobUuidLink": location,
+	}
+
+	queryParameters := map[string]interface{}{
+		"digest": autorest.Encode("query", digest),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/octet-stream"),
+		autorest.AsPut(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/{nextBlobUuidLink}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if value != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithFile(value))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// EndBlobUploadFromNextSender sends the EndBlobUploadFromNext request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) EndBlobUploadFromNextSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// EndBlobUploadFromNextResponder handles the response to the EndBlobUploadFromNext request. The method always
+// closes the http.Response Body.
+func (client BaseClient) EndBlobUploadFromNextResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// EndBlobUploadSpecified complete the upload, providing all the data in the body, if necessary. A request without a
+// body will just complete the upload with previously uploaded content.
+// Parameters:
+// digest - digest of a BLOB
+// name - name of the image (including the namespace)
+// UUID - a uuid identifying the upload.
+// _state - acquired from NextLink
+// _nouploadcache - acquired from NextLink
+func (client BaseClient) EndBlobUploadSpecified(ctx context.Context, digest string, name string, UUID string, _state string, _nouploadcache *bool, value io.ReadCloser) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.EndBlobUploadSpecified")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.EndBlobUploadSpecifiedPreparer(ctx, digest, name, UUID, _state, _nouploadcache, value)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "EndBlobUploadSpecified", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.EndBlobUploadSpecifiedSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "EndBlobUploadSpecified", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.EndBlobUploadSpecifiedResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "EndBlobUploadSpecified", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// EndBlobUploadSpecifiedPreparer prepares the EndBlobUploadSpecified request.
+func (client BaseClient) EndBlobUploadSpecifiedPreparer(ctx context.Context, digest string, name string, UUID string, _state string, _nouploadcache *bool, value io.ReadCloser) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+		"uuid": autorest.Encode("path", UUID),
+	}
+
+	queryParameters := map[string]interface{}{
+		"digest": autorest.Encode("query", digest),
+	}
+	if len(_state) > 0 {
+		queryParameters["_state"] = autorest.Encode("query", _state)
+	}
+	if _nouploadcache != nil {
+		queryParameters["_nouploadcache"] = autorest.Encode("query", *_nouploadcache)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/octet-stream"),
+		autorest.AsPut(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/uploads/{uuid}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if value != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithFile(value))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// EndBlobUploadSpecifiedSender sends the EndBlobUploadSpecified request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) EndBlobUploadSpecifiedSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// EndBlobUploadSpecifiedResponder handles the response to the EndBlobUploadSpecified request. The method always
+// closes the http.Response Body.
+func (client BaseClient) EndBlobUploadSpecifiedResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -1064,6 +1546,334 @@ func (client BaseClient) GetAcrTagsResponder(resp *http.Response) (result AcrRep
 	return
 }
 
+// GetBlob retrieve the blob from the registry identified by digest.
+// Parameters:
+// name - name of the image (including the namespace)
+// digest - digest of a BLOB
+func (client BaseClient) GetBlob(ctx context.Context, name string, digest string) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetBlob")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetBlobPreparer(ctx, name, digest)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlob", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetBlobSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlob", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetBlobResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlob", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetBlobPreparer prepares the GetBlob request.
+func (client BaseClient) GetBlobPreparer(ctx context.Context, name string, digest string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"digest": autorest.Encode("path", digest),
+		"name":   autorest.Encode("path", name),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/{digest}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetBlobSender sends the GetBlob request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetBlobSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetBlobResponder handles the response to the GetBlob request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetBlobResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusTemporaryRedirect))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetBlobPart retrieve the blob from the registry identified by `digest`. This endpoint may also support RFC7233
+// compliant range requests. Support can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is
+// returned, range requests can be used to fetch partial content.
+// Parameters:
+// name - name of the image (including the namespace)
+// digest - digest of a BLOB
+// rangeParameter - format : bytes=<start>-<end>,  HTTP Range header specifying blob chunk.
+// part - acquire only part of a blob. This endpoint may also support RFC7233 compliant range requests. Support
+// can be detected by issuing a HEAD request. If the header `Accept-Range: bytes` is returned, range requests
+// can be used to fetch partial content
+func (client BaseClient) GetBlobPart(ctx context.Context, name string, digest string, rangeParameter string, part string) (result ReadCloser, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetBlobPart")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetBlobPartPreparer(ctx, name, digest, rangeParameter, part)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlobPart", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetBlobPartSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlobPart", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetBlobPartResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlobPart", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetBlobPartPreparer prepares the GetBlobPart request.
+func (client BaseClient) GetBlobPartPreparer(ctx context.Context, name string, digest string, rangeParameter string, part string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"digest": autorest.Encode("path", digest),
+		"name":   autorest.Encode("path", name),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(part) > 0 {
+		queryParameters["part"] = autorest.Encode("query", part)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/{digest}", pathParameters),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Range", autorest.String(rangeParameter)))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetBlobPartSender sends the GetBlobPart request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetBlobPartSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetBlobPartResponder handles the response to the GetBlobPart request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetBlobPartResponder(resp *http.Response) (result ReadCloser, err error) {
+	result.Value = &resp.Body
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusPartialContent))
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetBlobUploadStatusFromNext retrieve status of upload identified by uuid. The primary purpose of this endpoint is to
+// resolve the current status of a resumable upload.
+// Parameters:
+// location - link acquired from upload start or previous chunk. Note, do not include initial / (must do
+// substring(1) )
+// _state - acquired from NextLink
+// _nouploadcache - acquired from NextLink
+func (client BaseClient) GetBlobUploadStatusFromNext(ctx context.Context, location string, _state string, _nouploadcache *bool) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetBlobUploadStatusFromNext")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetBlobUploadStatusFromNextPreparer(ctx, location, _state, _nouploadcache)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlobUploadStatusFromNext", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetBlobUploadStatusFromNextSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlobUploadStatusFromNext", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetBlobUploadStatusFromNextResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlobUploadStatusFromNext", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetBlobUploadStatusFromNextPreparer prepares the GetBlobUploadStatusFromNext request.
+func (client BaseClient) GetBlobUploadStatusFromNextPreparer(ctx context.Context, location string, _state string, _nouploadcache *bool) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"nextBlobUuidLink": location,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(_state) > 0 {
+		queryParameters["_state"] = autorest.Encode("query", _state)
+	}
+	if _nouploadcache != nil {
+		queryParameters["_nouploadcache"] = autorest.Encode("query", *_nouploadcache)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/{nextBlobUuidLink}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetBlobUploadStatusFromNextSender sends the GetBlobUploadStatusFromNext request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetBlobUploadStatusFromNextSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetBlobUploadStatusFromNextResponder handles the response to the GetBlobUploadStatusFromNext request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetBlobUploadStatusFromNextResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// GetBlobUploadStatusSpecified retrieve status of upload identified by uuid. The primary purpose of this endpoint is
+// to resolve the current status of a resumable upload.
+// Parameters:
+// name - name of the image (including the namespace)
+// UUID - a uuid identifying the upload.
+// _state - acquired from NextLink
+// _nouploadcache - acquired from NextLink
+func (client BaseClient) GetBlobUploadStatusSpecified(ctx context.Context, name string, UUID string, _state string, _nouploadcache *bool) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetBlobUploadStatusSpecified")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetBlobUploadStatusSpecifiedPreparer(ctx, name, UUID, _state, _nouploadcache)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlobUploadStatusSpecified", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetBlobUploadStatusSpecifiedSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlobUploadStatusSpecified", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetBlobUploadStatusSpecifiedResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetBlobUploadStatusSpecified", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetBlobUploadStatusSpecifiedPreparer prepares the GetBlobUploadStatusSpecified request.
+func (client BaseClient) GetBlobUploadStatusSpecifiedPreparer(ctx context.Context, name string, UUID string, _state string, _nouploadcache *bool) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+		"uuid": autorest.Encode("path", UUID),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(_state) > 0 {
+		queryParameters["_state"] = autorest.Encode("query", _state)
+	}
+	if _nouploadcache != nil {
+		queryParameters["_nouploadcache"] = autorest.Encode("query", *_nouploadcache)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/uploads/{uuid}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetBlobUploadStatusSpecifiedSender sends the GetBlobUploadStatusSpecified request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetBlobUploadStatusSpecifiedSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetBlobUploadStatusSpecifiedResponder handles the response to the GetBlobUploadStatusSpecified request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetBlobUploadStatusSpecifiedResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // GetDockerRegistryV2Support tells whether this Docker Registry instance supports Docker Registry HTTP API v2
 func (client BaseClient) GetDockerRegistryV2Support(ctx context.Context) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -1361,6 +2171,163 @@ func (client BaseClient) GetTagListResponder(resp *http.Response) (result Reposi
 	return
 }
 
+// StartBlobUpload mount a blob identified by the `mount` parameter from another repository.
+// Parameters:
+// name - name of the image (including the namespace)
+// from - name of the source repository.
+// mount - digest of blob to mount from the source repository.
+func (client BaseClient) StartBlobUpload(ctx context.Context, name string, from string, mount string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.StartBlobUpload")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.StartBlobUploadPreparer(ctx, name, from, mount)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "StartBlobUpload", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.StartBlobUploadSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "StartBlobUpload", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.StartBlobUploadResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "StartBlobUpload", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// StartBlobUploadPreparer prepares the StartBlobUpload request.
+func (client BaseClient) StartBlobUploadPreparer(ctx context.Context, name string, from string, mount string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+	}
+
+	queryParameters := map[string]interface{}{
+		"from":  autorest.Encode("query", from),
+		"mount": autorest.Encode("query", mount),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/uploads/", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StartBlobUploadSender sends the StartBlobUpload request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) StartBlobUploadSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// StartBlobUploadResponder handles the response to the StartBlobUpload request. The method always
+// closes the http.Response Body.
+func (client BaseClient) StartBlobUploadResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// StartEmptyResumableBlobUpload initiate a resumable blob upload with an empty request body.
+// Parameters:
+// name - name of the image (including the namespace)
+// resumable - initiate Resumable Blob Upload
+func (client BaseClient) StartEmptyResumableBlobUpload(ctx context.Context, name string, resumable string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.StartEmptyResumableBlobUpload")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.StartEmptyResumableBlobUploadPreparer(ctx, name, resumable)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "StartEmptyResumableBlobUpload", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.StartEmptyResumableBlobUploadSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "StartEmptyResumableBlobUpload", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.StartEmptyResumableBlobUploadResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "StartEmptyResumableBlobUpload", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// StartEmptyResumableBlobUploadPreparer prepares the StartEmptyResumableBlobUpload request.
+func (client BaseClient) StartEmptyResumableBlobUploadPreparer(ctx context.Context, name string, resumable string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(resumable) > 0 {
+		queryParameters["resumable"] = autorest.Encode("query", resumable)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/uploads/", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StartEmptyResumableBlobUploadSender sends the StartEmptyResumableBlobUpload request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) StartEmptyResumableBlobUploadSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// StartEmptyResumableBlobUploadResponder handles the response to the StartEmptyResumableBlobUpload request. The method always
+// closes the http.Response Body.
+func (client BaseClient) StartEmptyResumableBlobUploadResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // UpdateAcrManifestAttributes update attributes of a manifest
 // Parameters:
 // name - name of the image (including the namespace)
@@ -1592,6 +2559,253 @@ func (client BaseClient) UpdateAcrTagAttributesResponder(resp *http.Response) (r
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// UploadBlobContentChunk upload a chunk of data to specified upload without completing the upload. The data will be
+// uploaded to the specified Content Range.
+// Parameters:
+// contentRange - range of bytes identifying the desired block of content represented by the body. Start must
+// the end offset retrieved via status check plus one. Note that this is a non-standard use of the
+// `Content-Range` header.
+// name - name of the image (including the namespace)
+// UUID - a uuid identifying the upload.
+// chunk - initiate Chunk Blob Upload
+func (client BaseClient) UploadBlobContentChunk(ctx context.Context, value io.ReadCloser, contentRange string, name string, UUID string, chunk string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UploadBlobContentChunk")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UploadBlobContentChunkPreparer(ctx, value, contentRange, name, UUID, chunk)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UploadBlobContentChunk", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UploadBlobContentChunkSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UploadBlobContentChunk", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UploadBlobContentChunkResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UploadBlobContentChunk", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UploadBlobContentChunkPreparer prepares the UploadBlobContentChunk request.
+func (client BaseClient) UploadBlobContentChunkPreparer(ctx context.Context, value io.ReadCloser, contentRange string, name string, UUID string, chunk string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+		"uuid": autorest.Encode("path", UUID),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(chunk) > 0 {
+		queryParameters["chunk"] = autorest.Encode("query", chunk)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/octet-stream"),
+		autorest.AsPatch(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/uploads/{uuid}", pathParameters),
+		autorest.WithFile(value),
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Content-Range", autorest.String(contentRange)))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UploadBlobContentChunkSender sends the UploadBlobContentChunk request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) UploadBlobContentChunkSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// UploadBlobContentChunkResponder handles the response to the UploadBlobContentChunk request. The method always
+// closes the http.Response Body.
+func (client BaseClient) UploadBlobContentChunkResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// UploadBlobContentFromNext upload a stream of data without completing the upload.
+// Parameters:
+// location - link acquired from upload start or previous chunk. Note, do not include initial / (must do
+// substring(1) )
+func (client BaseClient) UploadBlobContentFromNext(ctx context.Context, value io.ReadCloser, location string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UploadBlobContentFromNext")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UploadBlobContentFromNextPreparer(ctx, value, location)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UploadBlobContentFromNext", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UploadBlobContentFromNextSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UploadBlobContentFromNext", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UploadBlobContentFromNextResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UploadBlobContentFromNext", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UploadBlobContentFromNextPreparer prepares the UploadBlobContentFromNext request.
+func (client BaseClient) UploadBlobContentFromNextPreparer(ctx context.Context, value io.ReadCloser, location string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"nextBlobUuidLink": location,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/octet-stream"),
+		autorest.AsPatch(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/{nextBlobUuidLink}", pathParameters),
+		autorest.WithFile(value))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UploadBlobContentFromNextSender sends the UploadBlobContentFromNext request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) UploadBlobContentFromNextSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// UploadBlobContentFromNextResponder handles the response to the UploadBlobContentFromNext request. The method always
+// closes the http.Response Body.
+func (client BaseClient) UploadBlobContentFromNextResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// UploadBlobContentSpecified upload a stream of data without completing the upload. (Complete path definition)
+// Parameters:
+// name - name of the image (including the namespace)
+// UUID - a uuid identifying the upload.
+// _state - acquired from NextLink
+// _nouploadcache - acquired from NextLink
+func (client BaseClient) UploadBlobContentSpecified(ctx context.Context, value io.ReadCloser, name string, UUID string, _state string, _nouploadcache *bool) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UploadBlobContentSpecified")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.UploadBlobContentSpecifiedPreparer(ctx, value, name, UUID, _state, _nouploadcache)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UploadBlobContentSpecified", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UploadBlobContentSpecifiedSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UploadBlobContentSpecified", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UploadBlobContentSpecifiedResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UploadBlobContentSpecified", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UploadBlobContentSpecifiedPreparer prepares the UploadBlobContentSpecified request.
+func (client BaseClient) UploadBlobContentSpecifiedPreparer(ctx context.Context, value io.ReadCloser, name string, UUID string, _state string, _nouploadcache *bool) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+		"uuid": autorest.Encode("path", UUID),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(_state) > 0 {
+		queryParameters["_state"] = autorest.Encode("query", _state)
+	}
+	if _nouploadcache != nil {
+		queryParameters["_nouploadcache"] = autorest.Encode("query", *_nouploadcache)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/octet-stream"),
+		autorest.AsPatch(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/v2/{name}/blobs/uploads/{uuid}", pathParameters),
+		autorest.WithFile(value),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UploadBlobContentSpecifiedSender sends the UploadBlobContentSpecified request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) UploadBlobContentSpecifiedSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// UploadBlobContentSpecifiedResponder handles the response to the UploadBlobContentSpecified request. The method always
+// closes the http.Response Body.
+func (client BaseClient) UploadBlobContentSpecifiedResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
 	return

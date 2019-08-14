@@ -42,6 +42,7 @@ type Manifest = original.Manifest
 type ManifestAttributesManifest = original.ManifestAttributesManifest
 type ManifestAttributesManifestReferences = original.ManifestAttributesManifestReferences
 type ManifestChangeableAttributes = original.ManifestChangeableAttributes
+type ReadCloser = original.ReadCloser
 type RefreshToken = original.RefreshToken
 type Repositories = original.Repositories
 type RepositoryAttributes = original.RepositoryAttributes

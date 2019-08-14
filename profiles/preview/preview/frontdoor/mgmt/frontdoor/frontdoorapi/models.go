@@ -19,7 +19,7 @@
 
 package frontdoorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2019-05-01/frontdoor/frontdoorapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2019-08-01/frontdoor/frontdoorapi"
 
 type BackendPoolsClientAPI = original.BackendPoolsClientAPI
 type BaseClientAPI = original.BaseClientAPI
@@ -31,3 +31,4 @@ type LoadBalancingSettingsClientAPI = original.LoadBalancingSettingsClientAPI
 type ManagedRuleSetsClientAPI = original.ManagedRuleSetsClientAPI
 type PoliciesClientAPI = original.PoliciesClientAPI
 type RoutingRulesClientAPI = original.RoutingRulesClientAPI
+type RulesEnginesClientAPI = original.RulesEnginesClientAPI

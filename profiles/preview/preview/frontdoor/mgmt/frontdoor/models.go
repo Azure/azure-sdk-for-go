@@ -22,7 +22,7 @@ package frontdoor
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2019-05-01/frontdoor"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2019-08-01/frontdoor"
 )
 
 const (
@@ -126,6 +126,14 @@ const (
 	MatchRequest ForwardingProtocol = original.MatchRequest
 )
 
+type HeaderActionType = original.HeaderActionType
+
+const (
+	Append    HeaderActionType = original.Append
+	Delete    HeaderActionType = original.Delete
+	Overwrite HeaderActionType = original.Overwrite
+)
+
 type HealthProbeEnabled = original.HealthProbeEnabled
 
 const (
@@ -145,6 +153,13 @@ type ManagedRuleEnabledState = original.ManagedRuleEnabledState
 const (
 	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = original.ManagedRuleEnabledStateDisabled
 	ManagedRuleEnabledStateEnabled  ManagedRuleEnabledState = original.ManagedRuleEnabledStateEnabled
+)
+
+type MatchProcessingBehavior = original.MatchProcessingBehavior
+
+const (
+	Continue MatchProcessingBehavior = original.Continue
+	Stop     MatchProcessingBehavior = original.Stop
 )
 
 type MatchVariable = original.MatchVariable
@@ -288,6 +303,39 @@ const (
 	RateLimitRule RuleType = original.RateLimitRule
 )
 
+type RulesEngineMatchVariable = original.RulesEngineMatchVariable
+
+const (
+	RulesEngineMatchVariableIsMobile                 RulesEngineMatchVariable = original.RulesEngineMatchVariableIsMobile
+	RulesEngineMatchVariablePostArgs                 RulesEngineMatchVariable = original.RulesEngineMatchVariablePostArgs
+	RulesEngineMatchVariableQueryString              RulesEngineMatchVariable = original.RulesEngineMatchVariableQueryString
+	RulesEngineMatchVariableRemoteAddr               RulesEngineMatchVariable = original.RulesEngineMatchVariableRemoteAddr
+	RulesEngineMatchVariableRequestBody              RulesEngineMatchVariable = original.RulesEngineMatchVariableRequestBody
+	RulesEngineMatchVariableRequestFilename          RulesEngineMatchVariable = original.RulesEngineMatchVariableRequestFilename
+	RulesEngineMatchVariableRequestFilenameExtension RulesEngineMatchVariable = original.RulesEngineMatchVariableRequestFilenameExtension
+	RulesEngineMatchVariableRequestHeader            RulesEngineMatchVariable = original.RulesEngineMatchVariableRequestHeader
+	RulesEngineMatchVariableRequestMethod            RulesEngineMatchVariable = original.RulesEngineMatchVariableRequestMethod
+	RulesEngineMatchVariableRequestPath              RulesEngineMatchVariable = original.RulesEngineMatchVariableRequestPath
+	RulesEngineMatchVariableRequestScheme            RulesEngineMatchVariable = original.RulesEngineMatchVariableRequestScheme
+	RulesEngineMatchVariableRequestURI               RulesEngineMatchVariable = original.RulesEngineMatchVariableRequestURI
+)
+
+type RulesEngineOperator = original.RulesEngineOperator
+
+const (
+	RulesEngineOperatorAny                RulesEngineOperator = original.RulesEngineOperatorAny
+	RulesEngineOperatorBeginsWith         RulesEngineOperator = original.RulesEngineOperatorBeginsWith
+	RulesEngineOperatorContains           RulesEngineOperator = original.RulesEngineOperatorContains
+	RulesEngineOperatorEndsWith           RulesEngineOperator = original.RulesEngineOperatorEndsWith
+	RulesEngineOperatorEqual              RulesEngineOperator = original.RulesEngineOperatorEqual
+	RulesEngineOperatorGeoMatch           RulesEngineOperator = original.RulesEngineOperatorGeoMatch
+	RulesEngineOperatorGreaterThan        RulesEngineOperator = original.RulesEngineOperatorGreaterThan
+	RulesEngineOperatorGreaterThanOrEqual RulesEngineOperator = original.RulesEngineOperatorGreaterThanOrEqual
+	RulesEngineOperatorIPMatch            RulesEngineOperator = original.RulesEngineOperatorIPMatch
+	RulesEngineOperatorLessThan           RulesEngineOperator = original.RulesEngineOperatorLessThan
+	RulesEngineOperatorLessThanOrEqual    RulesEngineOperator = original.RulesEngineOperatorLessThanOrEqual
+)
+
 type SessionAffinityEnabledState = original.SessionAffinityEnabledState
 
 const (
@@ -295,15 +343,26 @@ const (
 	SessionAffinityEnabledStateEnabled  SessionAffinityEnabledState = original.SessionAffinityEnabledStateEnabled
 )
 
+type Transform = original.Transform
+
+const (
+	Lowercase   Transform = original.Lowercase
+	RemoveNulls Transform = original.RemoveNulls
+	Trim        Transform = original.Trim
+	Uppercase   Transform = original.Uppercase
+	URLDecode   Transform = original.URLDecode
+	URLEncode   Transform = original.URLEncode
+)
+
 type TransformType = original.TransformType
 
 const (
-	Lowercase   TransformType = original.Lowercase
-	RemoveNulls TransformType = original.RemoveNulls
-	Trim        TransformType = original.Trim
-	Uppercase   TransformType = original.Uppercase
-	URLDecode   TransformType = original.URLDecode
-	URLEncode   TransformType = original.URLEncode
+	TransformTypeLowercase   TransformType = original.TransformTypeLowercase
+	TransformTypeRemoveNulls TransformType = original.TransformTypeRemoveNulls
+	TransformTypeTrim        TransformType = original.TransformTypeTrim
+	TransformTypeUppercase   TransformType = original.TransformTypeUppercase
+	TransformTypeURLDecode   TransformType = original.TransformTypeURLDecode
+	TransformTypeURLEncode   TransformType = original.TransformTypeURLEncode
 )
 
 type AzureAsyncOperationResult = original.AzureAsyncOperationResult
@@ -350,6 +409,7 @@ type FrontendEndpointsEnableHTTPSFuture = original.FrontendEndpointsEnableHTTPSF
 type FrontendEndpointsListResult = original.FrontendEndpointsListResult
 type FrontendEndpointsListResultIterator = original.FrontendEndpointsListResultIterator
 type FrontendEndpointsListResultPage = original.FrontendEndpointsListResultPage
+type HeaderAction = original.HeaderAction
 type HealthProbeSettingsClient = original.HealthProbeSettingsClient
 type HealthProbeSettingsCreateOrUpdateFuture = original.HealthProbeSettingsCreateOrUpdateFuture
 type HealthProbeSettingsDeleteFuture = original.HealthProbeSettingsDeleteFuture
@@ -404,6 +464,18 @@ type RoutingRuleUpdateParameters = original.RoutingRuleUpdateParameters
 type RoutingRulesClient = original.RoutingRulesClient
 type RoutingRulesCreateOrUpdateFuture = original.RoutingRulesCreateOrUpdateFuture
 type RoutingRulesDeleteFuture = original.RoutingRulesDeleteFuture
+type RulesEngine = original.RulesEngine
+type RulesEngineAction = original.RulesEngineAction
+type RulesEngineListResult = original.RulesEngineListResult
+type RulesEngineListResultIterator = original.RulesEngineListResultIterator
+type RulesEngineListResultPage = original.RulesEngineListResultPage
+type RulesEngineMatchCondition = original.RulesEngineMatchCondition
+type RulesEngineProperties = original.RulesEngineProperties
+type RulesEngineRule = original.RulesEngineRule
+type RulesEngineUpdateParameters = original.RulesEngineUpdateParameters
+type RulesEnginesClient = original.RulesEnginesClient
+type RulesEnginesCreateOrUpdateFuture = original.RulesEnginesCreateOrUpdateFuture
+type RulesEnginesDeleteFuture = original.RulesEnginesDeleteFuture
 type SubResource = original.SubResource
 type TagsObject = original.TagsObject
 type UpdateParameters = original.UpdateParameters
@@ -514,6 +586,18 @@ func NewRoutingRulesClient(subscriptionID string) RoutingRulesClient {
 func NewRoutingRulesClientWithBaseURI(baseURI string, subscriptionID string) RoutingRulesClient {
 	return original.NewRoutingRulesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRulesEngineListResultIterator(page RulesEngineListResultPage) RulesEngineListResultIterator {
+	return original.NewRulesEngineListResultIterator(page)
+}
+func NewRulesEngineListResultPage(getNextPage func(context.Context, RulesEngineListResult) (RulesEngineListResult, error)) RulesEngineListResultPage {
+	return original.NewRulesEngineListResultPage(getNextPage)
+}
+func NewRulesEnginesClient(subscriptionID string) RulesEnginesClient {
+	return original.NewRulesEnginesClient(subscriptionID)
+}
+func NewRulesEnginesClientWithBaseURI(baseURI string, subscriptionID string) RulesEnginesClient {
+	return original.NewRulesEnginesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWebApplicationFirewallPolicyListIterator(page WebApplicationFirewallPolicyListPage) WebApplicationFirewallPolicyListIterator {
 	return original.NewWebApplicationFirewallPolicyListIterator(page)
 }
@@ -559,6 +643,9 @@ func PossibleEnforceCertificateNameCheckEnabledStateValues() []EnforceCertificat
 func PossibleForwardingProtocolValues() []ForwardingProtocol {
 	return original.PossibleForwardingProtocolValues()
 }
+func PossibleHeaderActionTypeValues() []HeaderActionType {
+	return original.PossibleHeaderActionTypeValues()
+}
 func PossibleHealthProbeEnabledValues() []HealthProbeEnabled {
 	return original.PossibleHealthProbeEnabledValues()
 }
@@ -567,6 +654,9 @@ func PossibleHealthProbeMethodValues() []HealthProbeMethod {
 }
 func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 	return original.PossibleManagedRuleEnabledStateValues()
+}
+func PossibleMatchProcessingBehaviorValues() []MatchProcessingBehavior {
+	return original.PossibleMatchProcessingBehaviorValues()
 }
 func PossibleMatchVariableValues() []MatchVariable {
 	return original.PossibleMatchVariableValues()
@@ -616,11 +706,20 @@ func PossibleRoutingRuleEnabledStateValues() []RoutingRuleEnabledState {
 func PossibleRuleTypeValues() []RuleType {
 	return original.PossibleRuleTypeValues()
 }
+func PossibleRulesEngineMatchVariableValues() []RulesEngineMatchVariable {
+	return original.PossibleRulesEngineMatchVariableValues()
+}
+func PossibleRulesEngineOperatorValues() []RulesEngineOperator {
+	return original.PossibleRulesEngineOperatorValues()
+}
 func PossibleSessionAffinityEnabledStateValues() []SessionAffinityEnabledState {
 	return original.PossibleSessionAffinityEnabledStateValues()
 }
 func PossibleTransformTypeValues() []TransformType {
 	return original.PossibleTransformTypeValues()
+}
+func PossibleTransformValues() []Transform {
+	return original.PossibleTransformValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

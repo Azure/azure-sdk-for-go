@@ -586,14 +586,6 @@ const (
 	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = original.ManagedRuleEnabledStateDisabled
 )
 
-type MatchVariableEnum = original.MatchVariableEnum
-
-const (
-	RequestArgNames    MatchVariableEnum = original.RequestArgNames
-	RequestCookieNames MatchVariableEnum = original.RequestCookieNames
-	RequestHeaderNames MatchVariableEnum = original.RequestHeaderNames
-)
-
 type NatGatewaySkuName = original.NatGatewaySkuName
 
 const (
@@ -634,6 +626,24 @@ const (
 	OriginInbound  Origin = original.OriginInbound
 	OriginLocal    Origin = original.OriginLocal
 	OriginOutbound Origin = original.OriginOutbound
+)
+
+type OwaspCrsExclusionEntryMatchVariable = original.OwaspCrsExclusionEntryMatchVariable
+
+const (
+	RequestArgNames    OwaspCrsExclusionEntryMatchVariable = original.RequestArgNames
+	RequestCookieNames OwaspCrsExclusionEntryMatchVariable = original.RequestCookieNames
+	RequestHeaderNames OwaspCrsExclusionEntryMatchVariable = original.RequestHeaderNames
+)
+
+type OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperator
+
+const (
+	OwaspCrsExclusionEntrySelectorMatchOperatorContains   OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorContains
+	OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith   OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith
+	OwaspCrsExclusionEntrySelectorMatchOperatorEquals     OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorEquals
+	OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny  OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny
+	OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith
 )
 
 type PcError = original.PcError
@@ -781,16 +791,6 @@ const (
 	SecurityRuleProtocolIcmp     SecurityRuleProtocol = original.SecurityRuleProtocolIcmp
 	SecurityRuleProtocolTCP      SecurityRuleProtocol = original.SecurityRuleProtocolTCP
 	SecurityRuleProtocolUDP      SecurityRuleProtocol = original.SecurityRuleProtocolUDP
-)
-
-type SelectorMatchOperator = original.SelectorMatchOperator
-
-const (
-	SelectorMatchOperatorContains   SelectorMatchOperator = original.SelectorMatchOperatorContains
-	SelectorMatchOperatorEndsWith   SelectorMatchOperator = original.SelectorMatchOperatorEndsWith
-	SelectorMatchOperatorEquals     SelectorMatchOperator = original.SelectorMatchOperatorEquals
-	SelectorMatchOperatorEqualsAny  SelectorMatchOperator = original.SelectorMatchOperatorEqualsAny
-	SelectorMatchOperatorStartsWith SelectorMatchOperator = original.SelectorMatchOperatorStartsWith
 )
 
 type ServiceProviderProvisioningState = original.ServiceProviderProvisioningState
@@ -1787,6 +1787,7 @@ type SubnetsClient = original.SubnetsClient
 type SubnetsCreateOrUpdateFuture = original.SubnetsCreateOrUpdateFuture
 type SubnetsDeleteFuture = original.SubnetsDeleteFuture
 type SubnetsPrepareNetworkPoliciesFuture = original.SubnetsPrepareNetworkPoliciesFuture
+type SubnetsUnprepareNetworkPoliciesFuture = original.SubnetsUnprepareNetworkPoliciesFuture
 type TagsObject = original.TagsObject
 type Topology = original.Topology
 type TopologyAssociation = original.TopologyAssociation
@@ -1800,6 +1801,7 @@ type TroubleshootingProperties = original.TroubleshootingProperties
 type TroubleshootingRecommendedActions = original.TroubleshootingRecommendedActions
 type TroubleshootingResult = original.TroubleshootingResult
 type TunnelConnectionHealth = original.TunnelConnectionHealth
+type UnprepareNetworkPoliciesRequest = original.UnprepareNetworkPoliciesRequest
 type Usage = original.Usage
 type UsageName = original.UsageName
 type UsagesClient = original.UsagesClient
@@ -3088,9 +3090,6 @@ func PossibleLoadDistributionValues() []LoadDistribution {
 func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 	return original.PossibleManagedRuleEnabledStateValues()
 }
-func PossibleMatchVariableEnumValues() []MatchVariableEnum {
-	return original.PossibleMatchVariableEnumValues()
-}
 func PossibleNatGatewaySkuNameValues() []NatGatewaySkuName {
 	return original.PossibleNatGatewaySkuNameValues()
 }
@@ -3105,6 +3104,12 @@ func PossibleOperationStatusValues() []OperationStatus {
 }
 func PossibleOriginValues() []Origin {
 	return original.PossibleOriginValues()
+}
+func PossibleOwaspCrsExclusionEntryMatchVariableValues() []OwaspCrsExclusionEntryMatchVariable {
+	return original.PossibleOwaspCrsExclusionEntryMatchVariableValues()
+}
+func PossibleOwaspCrsExclusionEntrySelectorMatchOperatorValues() []OwaspCrsExclusionEntrySelectorMatchOperator {
+	return original.PossibleOwaspCrsExclusionEntrySelectorMatchOperatorValues()
 }
 func PossiblePcErrorValues() []PcError {
 	return original.PossiblePcErrorValues()
@@ -3156,9 +3161,6 @@ func PossibleSecurityRuleDirectionValues() []SecurityRuleDirection {
 }
 func PossibleSecurityRuleProtocolValues() []SecurityRuleProtocol {
 	return original.PossibleSecurityRuleProtocolValues()
-}
-func PossibleSelectorMatchOperatorValues() []SelectorMatchOperator {
-	return original.PossibleSelectorMatchOperatorValues()
 }
 func PossibleServiceProviderProvisioningStateValues() []ServiceProviderProvisioningState {
 	return original.PossibleServiceProviderProvisioningStateValues()

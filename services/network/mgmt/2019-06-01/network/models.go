@@ -3812,6 +3812,8 @@ type ApplicationGatewayPathRulePropertiesFormat struct {
 	RewriteRuleSet *SubResource `json:"rewriteRuleSet,omitempty"`
 	// ProvisioningState - Path rule of URL path map resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// FirewallPolicy - Reference of the FirewallPolicy resource.
+	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
 }
 
 // ApplicationGatewayProbe probe of the application gateway.
@@ -4225,6 +4227,8 @@ type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
 	RewriteRuleSet *SubResource `json:"rewriteRuleSet,omitempty"`
 	// RedirectConfiguration - Redirect configuration resource of the application gateway.
 	RedirectConfiguration *SubResource `json:"redirectConfiguration,omitempty"`
+	// FirewallPolicy - FirewallPolicy referred for Routing Rule.
+	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
 	// ProvisioningState - Provisioning state of the request routing rule resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -28187,6 +28191,29 @@ func (future *SubnetsPrepareNetworkPoliciesFuture) Result(client SubnetsClient) 
 	return
 }
 
+// SubnetsUnprepareNetworkPoliciesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SubnetsUnprepareNetworkPoliciesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SubnetsUnprepareNetworkPoliciesFuture) Result(client SubnetsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SubnetsUnprepareNetworkPoliciesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.SubnetsUnprepareNetworkPoliciesFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // SubResource reference to another subresource.
 type SubResource struct {
 	// ID - Resource ID.
@@ -28385,6 +28412,12 @@ type TunnelConnectionHealth struct {
 	EgressBytesTransferred *int64 `json:"egressBytesTransferred,omitempty"`
 	// LastConnectionEstablishedUtcTime - READ-ONLY; The time at which connection was established in Utc format.
 	LastConnectionEstablishedUtcTime *string `json:"lastConnectionEstablishedUtcTime,omitempty"`
+}
+
+// UnprepareNetworkPoliciesRequest details of UnprepareNetworkPolicies for Subnet.
+type UnprepareNetworkPoliciesRequest struct {
+	// ServiceName - The name of the service for which subnet is being unprepared for.
+	ServiceName *string `json:"serviceName,omitempty"`
 }
 
 // Usage describes network resource usage.

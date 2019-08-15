@@ -632,13 +632,13 @@ const (
 type Type = original.Type
 
 const (
+	TypeConnectionInfo           Type = original.TypeConnectionInfo
 	TypeMiSQLConnectionInfo      Type = original.TypeMiSQLConnectionInfo
 	TypeMongoDbConnectionInfo    Type = original.TypeMongoDbConnectionInfo
 	TypeMySQLConnectionInfo      Type = original.TypeMySQLConnectionInfo
 	TypeOracleConnectionInfo     Type = original.TypeOracleConnectionInfo
 	TypePostgreSQLConnectionInfo Type = original.TypePostgreSQLConnectionInfo
 	TypeSQLConnectionInfo        Type = original.TypeSQLConnectionInfo
-	TypeUnknown                  Type = original.TypeUnknown
 )
 
 type UpdateActionType = original.UpdateActionType

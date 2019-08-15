@@ -38,6 +38,8 @@ const (
 type AlertRuleKind = original.AlertRuleKind
 
 const (
+	Filter    AlertRuleKind = original.Filter
+	Fusion    AlertRuleKind = original.Fusion
 	Scheduled AlertRuleKind = original.Scheduled
 )
 
@@ -58,6 +60,22 @@ const (
 	AlertStatusNew        AlertStatus = original.AlertStatusNew
 	AlertStatusResolved   AlertStatus = original.AlertStatusResolved
 	AlertStatusUnknown    AlertStatus = original.AlertStatusUnknown
+)
+
+type AttackTactic = original.AttackTactic
+
+const (
+	Collection          AttackTactic = original.Collection
+	CommandAndControl   AttackTactic = original.CommandAndControl
+	CredentialAccess    AttackTactic = original.CredentialAccess
+	DefenseEvasion      AttackTactic = original.DefenseEvasion
+	Discovery           AttackTactic = original.Discovery
+	Execution           AttackTactic = original.Execution
+	Exfiltration        AttackTactic = original.Exfiltration
+	InitialAccess       AttackTactic = original.InitialAccess
+	LateralMovement     AttackTactic = original.LateralMovement
+	Persistence         AttackTactic = original.Persistence
+	PrivilegeEscalation AttackTactic = original.PrivilegeEscalation
 )
 
 type CaseSeverity = original.CaseSeverity
@@ -82,9 +100,11 @@ const (
 type CloseReason = original.CloseReason
 
 const (
-	Dismissed CloseReason = original.Dismissed
-	Other     CloseReason = original.Other
-	Resolved  CloseReason = original.Resolved
+	Dismissed     CloseReason = original.Dismissed
+	FalsePositive CloseReason = original.FalsePositive
+	Other         CloseReason = original.Other
+	Resolved      CloseReason = original.Resolved
+	TruePositive  CloseReason = original.TruePositive
 )
 
 type ConfidenceLevel = original.ConfidenceLevel
@@ -122,6 +142,13 @@ type DataTypeState = original.DataTypeState
 const (
 	Disabled DataTypeState = original.Disabled
 	Enabled  DataTypeState = original.Enabled
+)
+
+type DataTypeStatus = original.DataTypeStatus
+
+const (
+	Exist    DataTypeStatus = original.Exist
+	NotExist DataTypeStatus = original.NotExist
 )
 
 type ElevationToken = original.ElevationToken
@@ -215,6 +242,15 @@ type KindBasicAggregations = original.KindBasicAggregations
 const (
 	KindAggregations     KindBasicAggregations = original.KindAggregations
 	KindCasesAggregation KindBasicAggregations = original.KindCasesAggregation
+)
+
+type KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplate
+
+const (
+	KindBasicAlertRuleTemplateKindAlertRuleTemplate KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindAlertRuleTemplate
+	KindBasicAlertRuleTemplateKindFilter            KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindFilter
+	KindBasicAlertRuleTemplateKindFusion            KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindFusion
+	KindBasicAlertRuleTemplateKindScheduled         KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindScheduled
 )
 
 type KindBasicDataConnector = original.KindBasicDataConnector
@@ -318,6 +354,14 @@ const (
 	StatusInMcasEnabled  StatusInMcas = original.StatusInMcasEnabled
 )
 
+type TemplateStatus = original.TemplateStatus
+
+const (
+	Available    TemplateStatus = original.Available
+	Installed    TemplateStatus = original.Installed
+	NotAvailable TemplateStatus = original.NotAvailable
+)
+
 type TriggerOperator = original.TriggerOperator
 
 const (
@@ -347,6 +391,12 @@ type AggregationsModel = original.AggregationsModel
 type AlertRule = original.AlertRule
 type AlertRuleKind1 = original.AlertRuleKind1
 type AlertRuleModel = original.AlertRuleModel
+type AlertRuleTemplate = original.AlertRuleTemplate
+type AlertRuleTemplateModel = original.AlertRuleTemplateModel
+type AlertRuleTemplatesClient = original.AlertRuleTemplatesClient
+type AlertRuleTemplatesList = original.AlertRuleTemplatesList
+type AlertRuleTemplatesListIterator = original.AlertRuleTemplatesListIterator
+type AlertRuleTemplatesListPage = original.AlertRuleTemplatesListPage
 type AlertRulesClient = original.AlertRulesClient
 type AlertRulesList = original.AlertRulesList
 type AlertRulesListIterator = original.AlertRulesListIterator
@@ -359,9 +409,11 @@ type AwsCloudTrailDataConnectorDataTypesLogs = original.AwsCloudTrailDataConnect
 type AwsCloudTrailDataConnectorProperties = original.AwsCloudTrailDataConnectorProperties
 type AzureResourceEntity = original.AzureResourceEntity
 type AzureResourceEntityProperties = original.AzureResourceEntityProperties
+type BaseAlertRuleTemplateProperties = original.BaseAlertRuleTemplateProperties
 type BaseClient = original.BaseClient
 type BasicAggregations = original.BasicAggregations
 type BasicAlertRule = original.BasicAlertRule
+type BasicAlertRuleTemplate = original.BasicAlertRuleTemplate
 type BasicDataConnector = original.BasicDataConnector
 type BasicEntity = original.BasicEntity
 type BasicSettings = original.BasicSettings
@@ -372,6 +424,12 @@ type BookmarkListPage = original.BookmarkListPage
 type BookmarkProperties = original.BookmarkProperties
 type BookmarksClient = original.BookmarksClient
 type Case = original.Case
+type CaseComment = original.CaseComment
+type CaseCommentList = original.CaseCommentList
+type CaseCommentListIterator = original.CaseCommentListIterator
+type CaseCommentListPage = original.CaseCommentListPage
+type CaseCommentProperties = original.CaseCommentProperties
+type CaseCommentsClient = original.CaseCommentsClient
 type CaseList = original.CaseList
 type CaseListIterator = original.CaseListIterator
 type CaseListPage = original.CaseListPage
@@ -386,6 +444,7 @@ type CloudApplicationEntity = original.CloudApplicationEntity
 type CloudApplicationEntityProperties = original.CloudApplicationEntityProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type CommentsClient = original.CommentsClient
 type DNSEntity = original.DNSEntity
 type DNSEntityProperties = original.DNSEntityProperties
 type DataConnector = original.DataConnector
@@ -395,6 +454,7 @@ type DataConnectorList = original.DataConnectorList
 type DataConnectorListIterator = original.DataConnectorListIterator
 type DataConnectorListPage = original.DataConnectorListPage
 type DataConnectorModel = original.DataConnectorModel
+type DataConnectorStatus = original.DataConnectorStatus
 type DataConnectorTenantID = original.DataConnectorTenantID
 type DataConnectorWithAlertsProperties = original.DataConnectorWithAlertsProperties
 type DataConnectorsClient = original.DataConnectorsClient
@@ -421,6 +481,12 @@ type FileEntity = original.FileEntity
 type FileEntityProperties = original.FileEntityProperties
 type FileHashEntity = original.FileHashEntity
 type FileHashEntityProperties = original.FileHashEntityProperties
+type FilterAlertRuleTemplate = original.FilterAlertRuleTemplate
+type FilterAlertRuleTemplateProperties = original.FilterAlertRuleTemplateProperties
+type FilterAlertRuleTemplatePropertiesModel = original.FilterAlertRuleTemplatePropertiesModel
+type FusionAlertRuleTemplate = original.FusionAlertRuleTemplate
+type FusionAlertRuleTemplateProperties = original.FusionAlertRuleTemplateProperties
+type FusionAlertRuleTemplatePropertiesModel = original.FusionAlertRuleTemplatePropertiesModel
 type GeoLocation = original.GeoLocation
 type HostEntity = original.HostEntity
 type HostEntityProperties = original.HostEntityProperties
@@ -461,6 +527,9 @@ type RegistryValueEntityProperties = original.RegistryValueEntityProperties
 type Resource = original.Resource
 type ScheduledAlertRule = original.ScheduledAlertRule
 type ScheduledAlertRuleProperties = original.ScheduledAlertRuleProperties
+type ScheduledAlertRuleTemplate = original.ScheduledAlertRuleTemplate
+type ScheduledAlertRuleTemplateProperties = original.ScheduledAlertRuleTemplateProperties
+type ScheduledAlertRuleTemplatePropertiesModel = original.ScheduledAlertRuleTemplatePropertiesModel
 type SecurityAlert = original.SecurityAlert
 type SecurityAlertProperties = original.SecurityAlertProperties
 type SecurityAlertPropertiesConfidenceReasonsItem = original.SecurityAlertPropertiesConfidenceReasonsItem
@@ -497,6 +566,18 @@ func NewActionsListIterator(page ActionsListPage) ActionsListIterator {
 func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
 	return original.NewActionsListPage(getNextPage)
 }
+func NewAlertRuleTemplatesClient(subscriptionID string) AlertRuleTemplatesClient {
+	return original.NewAlertRuleTemplatesClient(subscriptionID)
+}
+func NewAlertRuleTemplatesClientWithBaseURI(baseURI string, subscriptionID string) AlertRuleTemplatesClient {
+	return original.NewAlertRuleTemplatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAlertRuleTemplatesListIterator(page AlertRuleTemplatesListPage) AlertRuleTemplatesListIterator {
+	return original.NewAlertRuleTemplatesListIterator(page)
+}
+func NewAlertRuleTemplatesListPage(getNextPage func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)) AlertRuleTemplatesListPage {
+	return original.NewAlertRuleTemplatesListPage(getNextPage)
+}
 func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
 	return original.NewAlertRulesClient(subscriptionID)
 }
@@ -521,6 +602,18 @@ func NewBookmarksClient(subscriptionID string) BookmarksClient {
 func NewBookmarksClientWithBaseURI(baseURI string, subscriptionID string) BookmarksClient {
 	return original.NewBookmarksClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewCaseCommentListIterator(page CaseCommentListPage) CaseCommentListIterator {
+	return original.NewCaseCommentListIterator(page)
+}
+func NewCaseCommentListPage(getNextPage func(context.Context, CaseCommentList) (CaseCommentList, error)) CaseCommentListPage {
+	return original.NewCaseCommentListPage(getNextPage)
+}
+func NewCaseCommentsClient(subscriptionID string) CaseCommentsClient {
+	return original.NewCaseCommentsClient(subscriptionID)
+}
+func NewCaseCommentsClientWithBaseURI(baseURI string, subscriptionID string) CaseCommentsClient {
+	return original.NewCaseCommentsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewCaseListIterator(page CaseListPage) CaseListIterator {
 	return original.NewCaseListIterator(page)
 }
@@ -538,6 +631,12 @@ func NewCasesClient(subscriptionID string) CasesClient {
 }
 func NewCasesClientWithBaseURI(baseURI string, subscriptionID string) CasesClient {
 	return original.NewCasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommentsClient(subscriptionID string) CommentsClient {
+	return original.NewCommentsClient(subscriptionID)
+}
+func NewCommentsClientWithBaseURI(baseURI string, subscriptionID string) CommentsClient {
+	return original.NewCommentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDataConnectorListIterator(page DataConnectorListPage) DataConnectorListIterator {
 	return original.NewDataConnectorListIterator(page)
@@ -620,6 +719,9 @@ func PossibleAlertSeverityValues() []AlertSeverity {
 func PossibleAlertStatusValues() []AlertStatus {
 	return original.PossibleAlertStatusValues()
 }
+func PossibleAttackTacticValues() []AttackTactic {
+	return original.PossibleAttackTacticValues()
+}
 func PossibleCaseSeverityValues() []CaseSeverity {
 	return original.PossibleCaseSeverityValues()
 }
@@ -641,6 +743,9 @@ func PossibleDataConnectorKindValues() []DataConnectorKind {
 func PossibleDataTypeStateValues() []DataTypeState {
 	return original.PossibleDataTypeStateValues()
 }
+func PossibleDataTypeStatusValues() []DataTypeStatus {
+	return original.PossibleDataTypeStatusValues()
+}
 func PossibleElevationTokenValues() []ElevationToken {
 	return original.PossibleElevationTokenValues()
 }
@@ -658,6 +763,9 @@ func PossibleKillChainIntentValues() []KillChainIntent {
 }
 func PossibleKindBasicAggregationsValues() []KindBasicAggregations {
 	return original.PossibleKindBasicAggregationsValues()
+}
+func PossibleKindBasicAlertRuleTemplateValues() []KindBasicAlertRuleTemplate {
+	return original.PossibleKindBasicAlertRuleTemplateValues()
 }
 func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
 	return original.PossibleKindBasicDataConnectorValues()
@@ -688,6 +796,9 @@ func PossibleSettingKindValues() []SettingKind {
 }
 func PossibleStatusInMcasValues() []StatusInMcas {
 	return original.PossibleStatusInMcasValues()
+}
+func PossibleTemplateStatusValues() []TemplateStatus {
+	return original.PossibleTemplateStatusValues()
 }
 func PossibleTriggerOperatorValues() []TriggerOperator {
 	return original.PossibleTriggerOperatorValues()

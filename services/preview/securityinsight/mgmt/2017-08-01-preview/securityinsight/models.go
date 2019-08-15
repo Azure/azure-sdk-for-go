@@ -48,13 +48,17 @@ func PossibleAggregationsKindValues() []AggregationsKind {
 type AlertRuleKind string
 
 const (
+	// Filter ...
+	Filter AlertRuleKind = "Filter"
+	// Fusion ...
+	Fusion AlertRuleKind = "Fusion"
 	// Scheduled ...
 	Scheduled AlertRuleKind = "Scheduled"
 )
 
 // PossibleAlertRuleKindValues returns an array of possible values for the AlertRuleKind const type.
 func PossibleAlertRuleKindValues() []AlertRuleKind {
-	return []AlertRuleKind{Scheduled}
+	return []AlertRuleKind{Filter, Fusion, Scheduled}
 }
 
 // AlertSeverity enumerates the values for alert severity.
@@ -95,6 +99,39 @@ const (
 // PossibleAlertStatusValues returns an array of possible values for the AlertStatus const type.
 func PossibleAlertStatusValues() []AlertStatus {
 	return []AlertStatus{AlertStatusDismissed, AlertStatusInProgress, AlertStatusNew, AlertStatusResolved, AlertStatusUnknown}
+}
+
+// AttackTactic enumerates the values for attack tactic.
+type AttackTactic string
+
+const (
+	// Collection ...
+	Collection AttackTactic = "Collection"
+	// CommandAndControl ...
+	CommandAndControl AttackTactic = "CommandAndControl"
+	// CredentialAccess ...
+	CredentialAccess AttackTactic = "CredentialAccess"
+	// DefenseEvasion ...
+	DefenseEvasion AttackTactic = "DefenseEvasion"
+	// Discovery ...
+	Discovery AttackTactic = "Discovery"
+	// Execution ...
+	Execution AttackTactic = "Execution"
+	// Exfiltration ...
+	Exfiltration AttackTactic = "Exfiltration"
+	// InitialAccess ...
+	InitialAccess AttackTactic = "InitialAccess"
+	// LateralMovement ...
+	LateralMovement AttackTactic = "LateralMovement"
+	// Persistence ...
+	Persistence AttackTactic = "Persistence"
+	// PrivilegeEscalation ...
+	PrivilegeEscalation AttackTactic = "PrivilegeEscalation"
+)
+
+// PossibleAttackTacticValues returns an array of possible values for the AttackTactic const type.
+func PossibleAttackTacticValues() []AttackTactic {
+	return []AttackTactic{Collection, CommandAndControl, CredentialAccess, DefenseEvasion, Discovery, Execution, Exfiltration, InitialAccess, LateralMovement, Persistence, PrivilegeEscalation}
 }
 
 // CaseSeverity enumerates the values for case severity.
@@ -143,15 +180,19 @@ type CloseReason string
 const (
 	// Dismissed Case was dismissed
 	Dismissed CloseReason = "Dismissed"
+	// FalsePositive Case was false positive
+	FalsePositive CloseReason = "FalsePositive"
 	// Other Case was closed for another reason
 	Other CloseReason = "Other"
 	// Resolved Case was resolved
 	Resolved CloseReason = "Resolved"
+	// TruePositive Case was true positive
+	TruePositive CloseReason = "TruePositive"
 )
 
 // PossibleCloseReasonValues returns an array of possible values for the CloseReason const type.
 func PossibleCloseReasonValues() []CloseReason {
-	return []CloseReason{Dismissed, Other, Resolved}
+	return []CloseReason{Dismissed, FalsePositive, Other, Resolved, TruePositive}
 }
 
 // ConfidenceLevel enumerates the values for confidence level.
@@ -232,6 +273,21 @@ const (
 // PossibleDataTypeStateValues returns an array of possible values for the DataTypeState const type.
 func PossibleDataTypeStateValues() []DataTypeState {
 	return []DataTypeState{Disabled, Enabled}
+}
+
+// DataTypeStatus enumerates the values for data type status.
+type DataTypeStatus string
+
+const (
+	// Exist ...
+	Exist DataTypeStatus = "Exist"
+	// NotExist ...
+	NotExist DataTypeStatus = "NotExist"
+)
+
+// PossibleDataTypeStatusValues returns an array of possible values for the DataTypeStatus const type.
+func PossibleDataTypeStatusValues() []DataTypeStatus {
+	return []DataTypeStatus{Exist, NotExist}
 }
 
 // ElevationToken enumerates the values for elevation token.
@@ -466,6 +522,25 @@ func PossibleKindBasicAggregationsValues() []KindBasicAggregations {
 	return []KindBasicAggregations{KindAggregations, KindCasesAggregation}
 }
 
+// KindBasicAlertRuleTemplate enumerates the values for kind basic alert rule template.
+type KindBasicAlertRuleTemplate string
+
+const (
+	// KindBasicAlertRuleTemplateKindAlertRuleTemplate ...
+	KindBasicAlertRuleTemplateKindAlertRuleTemplate KindBasicAlertRuleTemplate = "AlertRuleTemplate"
+	// KindBasicAlertRuleTemplateKindFilter ...
+	KindBasicAlertRuleTemplateKindFilter KindBasicAlertRuleTemplate = "Filter"
+	// KindBasicAlertRuleTemplateKindFusion ...
+	KindBasicAlertRuleTemplateKindFusion KindBasicAlertRuleTemplate = "Fusion"
+	// KindBasicAlertRuleTemplateKindScheduled ...
+	KindBasicAlertRuleTemplateKindScheduled KindBasicAlertRuleTemplate = "Scheduled"
+)
+
+// PossibleKindBasicAlertRuleTemplateValues returns an array of possible values for the KindBasicAlertRuleTemplate const type.
+func PossibleKindBasicAlertRuleTemplateValues() []KindBasicAlertRuleTemplate {
+	return []KindBasicAlertRuleTemplate{KindBasicAlertRuleTemplateKindAlertRuleTemplate, KindBasicAlertRuleTemplateKindFilter, KindBasicAlertRuleTemplateKindFusion, KindBasicAlertRuleTemplateKindScheduled}
+}
+
 // KindBasicDataConnector enumerates the values for kind basic data connector.
 type KindBasicDataConnector string
 
@@ -675,6 +750,23 @@ const (
 // PossibleStatusInMcasValues returns an array of possible values for the StatusInMcas const type.
 func PossibleStatusInMcasValues() []StatusInMcas {
 	return []StatusInMcas{StatusInMcasDisabled, StatusInMcasEnabled}
+}
+
+// TemplateStatus enumerates the values for template status.
+type TemplateStatus string
+
+const (
+	// Available Alert rule template is available.
+	Available TemplateStatus = "Available"
+	// Installed Alert rule template installed. and can not use more then once
+	Installed TemplateStatus = "Installed"
+	// NotAvailable Alert rule template is not available
+	NotAvailable TemplateStatus = "NotAvailable"
+)
+
+// PossibleTemplateStatusValues returns an array of possible values for the TemplateStatus const type.
+func PossibleTemplateStatusValues() []TemplateStatus {
+	return []TemplateStatus{Available, Installed, NotAvailable}
 }
 
 // TriggerOperator enumerates the values for trigger operator.
@@ -1653,7 +1745,7 @@ func (ar AlertRule) AsBasicAlertRule() (BasicAlertRule, bool) {
 
 // AlertRuleKind1 describes an Azure resource with kind.
 type AlertRuleKind1 struct {
-	// Kind - The kind of the alert rule. Possible values include: 'Scheduled'
+	// Kind - The kind of the alert rule. Possible values include: 'Scheduled', 'Filter', 'Fusion'
 	Kind AlertRuleKind `json:"kind,omitempty"`
 }
 
@@ -1850,6 +1942,307 @@ func (page AlertRulesListPage) Values() []BasicAlertRule {
 // Creates a new instance of the AlertRulesListPage type.
 func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
 	return AlertRulesListPage{fn: getNextPage}
+}
+
+// BasicAlertRuleTemplate alert rule template.
+type BasicAlertRuleTemplate interface {
+	AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool)
+	AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool)
+	AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool)
+	AsAlertRuleTemplate() (*AlertRuleTemplate, bool)
+}
+
+// AlertRuleTemplate alert rule template.
+type AlertRuleTemplate struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindFilter', 'KindBasicAlertRuleTemplateKindFusion'
+	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
+}
+
+func unmarshalBasicAlertRuleTemplate(body []byte) (BasicAlertRuleTemplate, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindBasicAlertRuleTemplateKindScheduled):
+		var sart ScheduledAlertRuleTemplate
+		err := json.Unmarshal(body, &sart)
+		return sart, err
+	case string(KindBasicAlertRuleTemplateKindFilter):
+		var fart FilterAlertRuleTemplate
+		err := json.Unmarshal(body, &fart)
+		return fart, err
+	case string(KindBasicAlertRuleTemplateKindFusion):
+		var fart FusionAlertRuleTemplate
+		err := json.Unmarshal(body, &fart)
+		return fart, err
+	default:
+		var art AlertRuleTemplate
+		err := json.Unmarshal(body, &art)
+		return art, err
+	}
+}
+func unmarshalBasicAlertRuleTemplateArray(body []byte) ([]BasicAlertRuleTemplate, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	artArray := make([]BasicAlertRuleTemplate, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		art, err := unmarshalBasicAlertRuleTemplate(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		artArray[index] = art
+	}
+	return artArray, nil
+}
+
+// MarshalJSON is the custom marshaler for AlertRuleTemplate.
+func (art AlertRuleTemplate) MarshalJSON() ([]byte, error) {
+	art.Kind = KindBasicAlertRuleTemplateKindAlertRuleTemplate
+	objectMap := make(map[string]interface{})
+	if art.Etag != nil {
+		objectMap["etag"] = art.Etag
+	}
+	if art.Kind != "" {
+		objectMap["kind"] = art.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsFilterAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsAlertRuleTemplate() (*AlertRuleTemplate, bool) {
+	return &art, true
+}
+
+// AsBasicAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsBasicAlertRuleTemplate() (BasicAlertRuleTemplate, bool) {
+	return &art, true
+}
+
+// AlertRuleTemplateModel ...
+type AlertRuleTemplateModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicAlertRuleTemplate `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRuleTemplateModel struct.
+func (artm *AlertRuleTemplateModel) UnmarshalJSON(body []byte) error {
+	art, err := unmarshalBasicAlertRuleTemplate(body)
+	if err != nil {
+		return err
+	}
+	artm.Value = art
+
+	return nil
+}
+
+// AlertRuleTemplatesList list all the alert rule templates.
+type AlertRuleTemplatesList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of alert rule templates.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of alert rule templates.
+	Value *[]BasicAlertRuleTemplate `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRuleTemplatesList struct.
+func (artl *AlertRuleTemplatesList) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				artl.NextLink = &nextLink
+			}
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicAlertRuleTemplateArray(*v)
+				if err != nil {
+					return err
+				}
+				artl.Value = &value
+			}
+		}
+	}
+
+	return nil
+}
+
+// AlertRuleTemplatesListIterator provides access to a complete listing of AlertRuleTemplate values.
+type AlertRuleTemplatesListIterator struct {
+	i    int
+	page AlertRuleTemplatesListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AlertRuleTemplatesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRuleTemplatesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AlertRuleTemplatesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AlertRuleTemplatesListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AlertRuleTemplatesListIterator) Response() AlertRuleTemplatesList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AlertRuleTemplatesListIterator) Value() BasicAlertRuleTemplate {
+	if !iter.page.NotDone() {
+		return AlertRuleTemplate{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AlertRuleTemplatesListIterator type.
+func NewAlertRuleTemplatesListIterator(page AlertRuleTemplatesListPage) AlertRuleTemplatesListIterator {
+	return AlertRuleTemplatesListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (artl AlertRuleTemplatesList) IsEmpty() bool {
+	return artl.Value == nil || len(*artl.Value) == 0
+}
+
+// alertRuleTemplatesListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (artl AlertRuleTemplatesList) alertRuleTemplatesListPreparer(ctx context.Context) (*http.Request, error) {
+	if artl.NextLink == nil || len(to.String(artl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(artl.NextLink)))
+}
+
+// AlertRuleTemplatesListPage contains a page of BasicAlertRuleTemplate values.
+type AlertRuleTemplatesListPage struct {
+	fn   func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)
+	artl AlertRuleTemplatesList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AlertRuleTemplatesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRuleTemplatesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.artl)
+	if err != nil {
+		return err
+	}
+	page.artl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AlertRuleTemplatesListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AlertRuleTemplatesListPage) NotDone() bool {
+	return !page.artl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AlertRuleTemplatesListPage) Response() AlertRuleTemplatesList {
+	return page.artl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AlertRuleTemplatesListPage) Values() []BasicAlertRuleTemplate {
+	if page.artl.IsEmpty() {
+		return nil
+	}
+	return *page.artl.Value
+}
+
+// Creates a new instance of the AlertRuleTemplatesListPage type.
+func NewAlertRuleTemplatesListPage(getNextPage func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)) AlertRuleTemplatesListPage {
+	return AlertRuleTemplatesListPage{fn: getNextPage}
 }
 
 // AlertsDataTypeOfDataConnector alerts data type for data connectors.
@@ -2383,6 +2776,24 @@ func (arep AzureResourceEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// BaseAlertRuleTemplateProperties base alert rule template property bag.
+type BaseAlertRuleTemplateProperties struct {
+	// DisplayName - The display name for alert rule template.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the alert rule template.
+	Description *string `json:"description,omitempty"`
+	// Tactics - The tactics of the alert rule template
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
+	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
+	Status TemplateStatus `json:"status,omitempty"`
+	// RequiredDataConnectors - The required data connectors for this template
+	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
+	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
+	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+}
+
 // Bookmark represents a bookmark in Azure Security Insights.
 type Bookmark struct {
 	autorest.Response `json:"-"`
@@ -2620,10 +3031,10 @@ func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (Bookma
 type BookmarkProperties struct {
 	// DisplayName - The display name of the bookmark
 	DisplayName *string `json:"displayName,omitempty"`
-	// LastUpdatedTimeUtc - The last time the bookmark was updated
-	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
-	// CreatedTimeUtc - The time the bookmark was created
-	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// Updated - The last time the bookmark was updated
+	Updated *date.Time `json:"updated,omitempty"`
+	// Created - The time the bookmark was created
+	Created *date.Time `json:"created,omitempty"`
 	// CreatedBy - Describes a user that created the bookmark
 	CreatedBy *UserInfo `json:"createdBy,omitempty"`
 	// UpdatedBy - Describes a user that updated the bookmark
@@ -2634,6 +3045,8 @@ type BookmarkProperties struct {
 	Labels *[]string `json:"labels,omitempty"`
 	// Query - The query of the bookmark.
 	Query *string `json:"query,omitempty"`
+	// QueryResult - The query result of the bookmark.
+	QueryResult *string `json:"queryResult,omitempty"`
 }
 
 // Case represents a case in Azure Security Insights.
@@ -2721,6 +3134,235 @@ func (c *Case) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// CaseComment represents a case comment
+type CaseComment struct {
+	autorest.Response `json:"-"`
+	// CaseCommentProperties - Case comment properties
+	*CaseCommentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CaseComment.
+func (cc CaseComment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cc.CaseCommentProperties != nil {
+		objectMap["properties"] = cc.CaseCommentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CaseComment struct.
+func (cc *CaseComment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var caseCommentProperties CaseCommentProperties
+				err = json.Unmarshal(*v, &caseCommentProperties)
+				if err != nil {
+					return err
+				}
+				cc.CaseCommentProperties = &caseCommentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cc.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cc.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cc.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// CaseCommentList list of case comments.
+type CaseCommentList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of comments.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of comments.
+	Value *[]CaseComment `json:"value,omitempty"`
+}
+
+// CaseCommentListIterator provides access to a complete listing of CaseComment values.
+type CaseCommentListIterator struct {
+	i    int
+	page CaseCommentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CaseCommentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CaseCommentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CaseCommentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CaseCommentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CaseCommentListIterator) Response() CaseCommentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CaseCommentListIterator) Value() CaseComment {
+	if !iter.page.NotDone() {
+		return CaseComment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CaseCommentListIterator type.
+func NewCaseCommentListIterator(page CaseCommentListPage) CaseCommentListIterator {
+	return CaseCommentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ccl CaseCommentList) IsEmpty() bool {
+	return ccl.Value == nil || len(*ccl.Value) == 0
+}
+
+// caseCommentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ccl CaseCommentList) caseCommentListPreparer(ctx context.Context) (*http.Request, error) {
+	if ccl.NextLink == nil || len(to.String(ccl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ccl.NextLink)))
+}
+
+// CaseCommentListPage contains a page of CaseComment values.
+type CaseCommentListPage struct {
+	fn  func(context.Context, CaseCommentList) (CaseCommentList, error)
+	ccl CaseCommentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CaseCommentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CaseCommentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.ccl)
+	if err != nil {
+		return err
+	}
+	page.ccl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CaseCommentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CaseCommentListPage) NotDone() bool {
+	return !page.ccl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CaseCommentListPage) Response() CaseCommentList {
+	return page.ccl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CaseCommentListPage) Values() []CaseComment {
+	if page.ccl.IsEmpty() {
+		return nil
+	}
+	return *page.ccl.Value
+}
+
+// Creates a new instance of the CaseCommentListPage type.
+func NewCaseCommentListPage(getNextPage func(context.Context, CaseCommentList) (CaseCommentList, error)) CaseCommentListPage {
+	return CaseCommentListPage{fn: getNextPage}
+}
+
+// CaseCommentProperties case comment property bag.
+type CaseCommentProperties struct {
+	// Message - The comment message
+	Message *string `json:"message,omitempty"`
+	// CreatedTimeUtc - READ-ONLY; The time the comment was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// UserInfo - READ-ONLY; Describes the user that created the comment
+	UserInfo *UserInfo `json:"userInfo,omitempty"`
 }
 
 // CaseList list all the cases.
@@ -2871,9 +3513,9 @@ func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, erro
 
 // CaseProperties describes case properties
 type CaseProperties struct {
-	// LastUpdatedTimeUtc - The last time the case was updated
+	// LastUpdatedTimeUtc - READ-ONLY; The last time the case was updated
 	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
-	// CreatedTimeUtc - The time the case was created
+	// CreatedTimeUtc - READ-ONLY; The time the case was created
 	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
 	// EndTimeUtc - The end time of the case
 	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
@@ -2885,14 +3527,24 @@ type CaseProperties struct {
 	Description *string `json:"description,omitempty"`
 	// Title - The title of the case
 	Title *string `json:"title,omitempty"`
-	// AssignedTo - Describes a user that the case is assigned to
-	AssignedTo *UserInfo `json:"assignedTo,omitempty"`
+	// Owner - Describes a user that the case is assigned to
+	Owner *UserInfo `json:"owner,omitempty"`
 	// Severity - The severity of the case. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
 	Severity CaseSeverity `json:"severity,omitempty"`
 	// Status - The status of the case. Possible values include: 'CaseStatusDraft', 'CaseStatusNew', 'CaseStatusInProgress', 'CaseStatusClosed'
 	Status CaseStatus `json:"status,omitempty"`
-	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'Other'
+	// CloseReason - The reason the case was closed. Possible values include: 'Resolved', 'Dismissed', 'TruePositive', 'FalsePositive', 'Other'
 	CloseReason CloseReason `json:"closeReason,omitempty"`
+	// ClosedReasonText - the case close reason details
+	ClosedReasonText *string `json:"closedReasonText,omitempty"`
+	// RelatedAlertIds - READ-ONLY; List of related alert identifiers
+	RelatedAlertIds *[]string `json:"relatedAlertIds,omitempty"`
+	// CaseNumber - READ-ONLY; a sequential number
+	CaseNumber *int32 `json:"caseNumber,omitempty"`
+	// LastComment - READ-ONLY; the last comment in the case
+	LastComment *string `json:"lastComment,omitempty"`
+	// TotalComments - READ-ONLY; the number of total comments in the case
+	TotalComments *int32 `json:"totalComments,omitempty"`
 }
 
 // CasesAggregation represents aggregations results for cases.
@@ -3631,6 +4283,26 @@ func (dcm *DataConnectorModel) UnmarshalJSON(body []byte) error {
 	dcm.Value = dc
 
 	return nil
+}
+
+// DataConnectorStatus alert rule template data connector status
+type DataConnectorStatus struct {
+	// ConnectorID - the connector id
+	ConnectorID *string `json:"connectorId,omitempty"`
+	// DataTypes - The data types availability map
+	DataTypes map[string]*DataTypeStatus `json:"dataTypes"`
+}
+
+// MarshalJSON is the custom marshaler for DataConnectorStatus.
+func (dcs DataConnectorStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcs.ConnectorID != nil {
+		objectMap["connectorId"] = dcs.ConnectorID
+	}
+	if dcs.DataTypes != nil {
+		objectMap["dataTypes"] = dcs.DataTypes
+	}
+	return json.Marshal(objectMap)
 }
 
 // DataConnectorTenantID properties data connector on tenant level.
@@ -4958,6 +5630,318 @@ type FileHashEntityProperties struct {
 func (fhep FileHashEntityProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// FilterAlertRuleTemplate represents filter alert rule template.
+type FilterAlertRuleTemplate struct {
+	// FilterAlertRuleTemplateProperties - Filter alert rule template properties
+	*FilterAlertRuleTemplateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindFilter', 'KindBasicAlertRuleTemplateKindFusion'
+	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FilterAlertRuleTemplate.
+func (fart FilterAlertRuleTemplate) MarshalJSON() ([]byte, error) {
+	fart.Kind = KindBasicAlertRuleTemplateKindFilter
+	objectMap := make(map[string]interface{})
+	if fart.FilterAlertRuleTemplateProperties != nil {
+		objectMap["properties"] = fart.FilterAlertRuleTemplateProperties
+	}
+	if fart.Etag != nil {
+		objectMap["etag"] = fart.Etag
+	}
+	if fart.Kind != "" {
+		objectMap["kind"] = fart.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
+func (fart FilterAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsFilterAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
+func (fart FilterAlertRuleTemplate) AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool) {
+	return &fart, true
+}
+
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
+func (fart FilterAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
+func (fart FilterAlertRuleTemplate) AsAlertRuleTemplate() (*AlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsBasicAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
+func (fart FilterAlertRuleTemplate) AsBasicAlertRuleTemplate() (BasicAlertRuleTemplate, bool) {
+	return &fart, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for FilterAlertRuleTemplate struct.
+func (fart *FilterAlertRuleTemplate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var filterAlertRuleTemplateProperties FilterAlertRuleTemplateProperties
+				err = json.Unmarshal(*v, &filterAlertRuleTemplateProperties)
+				if err != nil {
+					return err
+				}
+				fart.FilterAlertRuleTemplateProperties = &filterAlertRuleTemplateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fart.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fart.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fart.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				fart.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAlertRuleTemplate
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				fart.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// FilterAlertRuleTemplateProperties filter alert rule template properties
+type FilterAlertRuleTemplateProperties struct {
+	// DisplayName - The display name for alert rule template.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the alert rule template.
+	Description *string `json:"description,omitempty"`
+	// Tactics - The tactics of the alert rule template
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
+	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
+	Status TemplateStatus `json:"status,omitempty"`
+	// RequiredDataConnectors - The required data connectors for this template
+	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
+	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
+	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+	// FilterProduct - The filter product name for this template rule.
+	FilterProduct *string `json:"filterProduct,omitempty"`
+	// FilterSeverities - the alert’s severities on which the cases will be generated
+	FilterSeverities *[]AlertSeverity `json:"filterSeverities,omitempty"`
+	// FilterTitles - the alert’s titles on which the cases will be generated
+	FilterTitles *[]string `json:"filterTitles,omitempty"`
+}
+
+// FilterAlertRuleTemplatePropertiesModel filter alert rule template property bag.
+type FilterAlertRuleTemplatePropertiesModel struct {
+	// FilterProduct - The filter product name for this template rule.
+	FilterProduct *string `json:"filterProduct,omitempty"`
+	// FilterSeverities - the alert’s severities on which the cases will be generated
+	FilterSeverities *[]AlertSeverity `json:"filterSeverities,omitempty"`
+	// FilterTitles - the alert’s titles on which the cases will be generated
+	FilterTitles *[]string `json:"filterTitles,omitempty"`
+}
+
+// FusionAlertRuleTemplate represents fusion alert rule template.
+type FusionAlertRuleTemplate struct {
+	// FusionAlertRuleTemplateProperties - Fusion alert rule template properties
+	*FusionAlertRuleTemplateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindFilter', 'KindBasicAlertRuleTemplateKindFusion'
+	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) MarshalJSON() ([]byte, error) {
+	fart.Kind = KindBasicAlertRuleTemplateKindFusion
+	objectMap := make(map[string]interface{})
+	if fart.FusionAlertRuleTemplateProperties != nil {
+		objectMap["properties"] = fart.FusionAlertRuleTemplateProperties
+	}
+	if fart.Etag != nil {
+		objectMap["etag"] = fart.Etag
+	}
+	if fart.Kind != "" {
+		objectMap["kind"] = fart.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsFilterAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+	return &fart, true
+}
+
+// AsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsAlertRuleTemplate() (*AlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsBasicAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsBasicAlertRuleTemplate() (BasicAlertRuleTemplate, bool) {
+	return &fart, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for FusionAlertRuleTemplate struct.
+func (fart *FusionAlertRuleTemplate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var fusionAlertRuleTemplateProperties FusionAlertRuleTemplateProperties
+				err = json.Unmarshal(*v, &fusionAlertRuleTemplateProperties)
+				if err != nil {
+					return err
+				}
+				fart.FusionAlertRuleTemplateProperties = &fusionAlertRuleTemplateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fart.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fart.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fart.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				fart.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAlertRuleTemplate
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				fart.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// FusionAlertRuleTemplateProperties fusion alert rule template properties
+type FusionAlertRuleTemplateProperties struct {
+	// DisplayName - The display name for alert rule template.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the alert rule template.
+	Description *string `json:"description,omitempty"`
+	// Tactics - The tactics of the alert rule template
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
+	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
+	Status TemplateStatus `json:"status,omitempty"`
+	// RequiredDataConnectors - The required data connectors for this template
+	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
+	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
+	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
+}
+
+// FusionAlertRuleTemplatePropertiesModel filter alert rule template property bag.
+type FusionAlertRuleTemplatePropertiesModel struct {
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
 }
 
 // GeoLocation the geo-location context attached to the ip entity
@@ -7225,6 +8209,178 @@ type ScheduledAlertRuleProperties struct {
 	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
 }
 
+// ScheduledAlertRuleTemplate represents scheduled alert rule template.
+type ScheduledAlertRuleTemplate struct {
+	// ScheduledAlertRuleTemplateProperties - Scheduled alert rule template properties
+	*ScheduledAlertRuleTemplateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Etag - Etag of the alert rule.
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindScheduled', 'KindBasicAlertRuleTemplateKindFilter', 'KindBasicAlertRuleTemplateKindFusion'
+	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) MarshalJSON() ([]byte, error) {
+	sart.Kind = KindBasicAlertRuleTemplateKindScheduled
+	objectMap := make(map[string]interface{})
+	if sart.ScheduledAlertRuleTemplateProperties != nil {
+		objectMap["properties"] = sart.ScheduledAlertRuleTemplateProperties
+	}
+	if sart.Etag != nil {
+		objectMap["etag"] = sart.Etag
+	}
+	if sart.Kind != "" {
+		objectMap["kind"] = sart.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+	return &sart, true
+}
+
+// AsFilterAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsAlertRuleTemplate() (*AlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsBasicAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsBasicAlertRuleTemplate() (BasicAlertRuleTemplate, bool) {
+	return &sart, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScheduledAlertRuleTemplate struct.
+func (sart *ScheduledAlertRuleTemplate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scheduledAlertRuleTemplateProperties ScheduledAlertRuleTemplateProperties
+				err = json.Unmarshal(*v, &scheduledAlertRuleTemplateProperties)
+				if err != nil {
+					return err
+				}
+				sart.ScheduledAlertRuleTemplateProperties = &scheduledAlertRuleTemplateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sart.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sart.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sart.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				sart.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAlertRuleTemplate
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				sart.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// ScheduledAlertRuleTemplateProperties scheduled alert rule template properties
+type ScheduledAlertRuleTemplateProperties struct {
+	// DisplayName - The display name for alert rule template.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the alert rule template.
+	Description *string `json:"description,omitempty"`
+	// Tactics - The tactics of the alert rule template
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
+	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
+	Status TemplateStatus `json:"status,omitempty"`
+	// RequiredDataConnectors - The required data connectors for this template
+	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
+	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
+	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
+	// Query - The query that creates alerts for this rule.
+	Query *string `json:"query,omitempty"`
+	// QueryFrequency - The frequency (in ISO 8601 duration format) for this alert rule to run.
+	QueryFrequency *string `json:"queryFrequency,omitempty"`
+	// QueryPeriod - The period (in ISO 8601 duration format) that this alert rule looks at.
+	QueryPeriod *string `json:"queryPeriod,omitempty"`
+	// TriggerOperator - The operation against the threshold that triggers alert rule. Possible values include: 'GreaterThan', 'LessThan', 'Equal', 'NotEqual'
+	TriggerOperator TriggerOperator `json:"triggerOperator,omitempty"`
+	// TriggerThreshold - The threshold triggers this alert rule.
+	TriggerThreshold *int32 `json:"triggerThreshold,omitempty"`
+}
+
+// ScheduledAlertRuleTemplatePropertiesModel schedule alert rule template property bag.
+type ScheduledAlertRuleTemplatePropertiesModel struct {
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
+	// Query - The query that creates alerts for this rule.
+	Query *string `json:"query,omitempty"`
+	// QueryFrequency - The frequency (in ISO 8601 duration format) for this alert rule to run.
+	QueryFrequency *string `json:"queryFrequency,omitempty"`
+	// QueryPeriod - The period (in ISO 8601 duration format) that this alert rule looks at.
+	QueryPeriod *string `json:"queryPeriod,omitempty"`
+	// TriggerOperator - The operation against the threshold that triggers alert rule. Possible values include: 'GreaterThan', 'LessThan', 'Equal', 'NotEqual'
+	TriggerOperator TriggerOperator `json:"triggerOperator,omitempty"`
+	// TriggerThreshold - The threshold triggers this alert rule.
+	TriggerThreshold *int32 `json:"triggerThreshold,omitempty"`
+}
+
 // SecurityAlert represents a security alert entity.
 type SecurityAlert struct {
 	// SecurityAlertProperties - SecurityAlert entity properties
@@ -8412,8 +9568,8 @@ func (uep URLEntityProperties) MarshalJSON() ([]byte, error) {
 type UserInfo struct {
 	// ObjectID - The object id of the user.
 	ObjectID *uuid.UUID `json:"objectId,omitempty"`
-	// Email - The email of the user.
+	// Email - READ-ONLY; The email of the user.
 	Email *string `json:"email,omitempty"`
-	// Name - The name of the user.
+	// Name - READ-ONLY; The name of the user.
 	Name *string `json:"name,omitempty"`
 }

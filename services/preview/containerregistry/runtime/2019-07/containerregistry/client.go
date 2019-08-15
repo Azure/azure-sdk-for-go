@@ -279,6 +279,72 @@ func (client BaseClient) CheckBlobPartExistenceResponder(resp *http.Response) (r
 	return
 }
 
+// CheckV2Support tells whether this Docker Registry instance supports Docker Registry HTTP API v2
+func (client BaseClient) CheckV2Support(ctx context.Context) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckV2Support")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CheckV2SupportPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CheckV2Support", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckV2SupportSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CheckV2Support", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckV2SupportResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "CheckV2Support", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckV2SupportPreparer prepares the CheckV2Support request.
+func (client BaseClient) CheckV2SupportPreparer(ctx context.Context) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPath("/v2/"))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckV2SupportSender sends the CheckV2Support request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) CheckV2SupportSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CheckV2SupportResponder handles the response to the CheckV2Support request. The method always
+// closes the http.Response Body.
+func (client BaseClient) CheckV2SupportResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateManifest put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
 // Parameters:
 // name - name of the image (including the namespace)
@@ -353,151 +419,6 @@ func (client BaseClient) CreateManifestResponder(resp *http.Response) (result Se
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// DeleteAcrRepository delete the repository identified by `name`
-// Parameters:
-// name - name of the image (including the namespace)
-func (client BaseClient) DeleteAcrRepository(ctx context.Context, name string) (result DeletedRepository, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteAcrRepository")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.DeleteAcrRepositoryPreparer(ctx, name)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteAcrRepository", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.DeleteAcrRepositorySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteAcrRepository", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteAcrRepositoryResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteAcrRepository", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteAcrRepositoryPreparer prepares the DeleteAcrRepository request.
-func (client BaseClient) DeleteAcrRepositoryPreparer(ctx context.Context, name string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"url": client.LoginURI,
-	}
-
-	pathParameters := map[string]interface{}{
-		"name": autorest.Encode("path", name),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPathParameters("/acr/v1/{name}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteAcrRepositorySender sends the DeleteAcrRepository request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) DeleteAcrRepositorySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// DeleteAcrRepositoryResponder handles the response to the DeleteAcrRepository request. The method always
-// closes the http.Response Body.
-func (client BaseClient) DeleteAcrRepositoryResponder(resp *http.Response) (result DeletedRepository, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// DeleteAcrTag delete tag
-// Parameters:
-// name - name of the image (including the namespace)
-// reference - tag or digest of the target manifest
-func (client BaseClient) DeleteAcrTag(ctx context.Context, name string, reference string) (result autorest.Response, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteAcrTag")
-		defer func() {
-			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.DeleteAcrTagPreparer(ctx, name, reference)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteAcrTag", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.DeleteAcrTagSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteAcrTag", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteAcrTagResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteAcrTag", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeleteAcrTagPreparer prepares the DeleteAcrTag request.
-func (client BaseClient) DeleteAcrTagPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"url": client.LoginURI,
-	}
-
-	pathParameters := map[string]interface{}{
-		"name":      autorest.Encode("path", name),
-		"reference": autorest.Encode("path", reference),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPathParameters("/acr/v1/{name}/_tags/{reference}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteAcrTagSender sends the DeleteAcrTag request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) DeleteAcrTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// DeleteAcrTagResponder handles the response to the DeleteAcrTag request. The method always
-// closes the http.Response Body.
-func (client BaseClient) DeleteAcrTagResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByClosing())
-	result.Response = resp
 	return
 }
 
@@ -639,6 +560,151 @@ func (client BaseClient) DeleteManifestSender(req *http.Request) (*http.Response
 // DeleteManifestResponder handles the response to the DeleteManifest request. The method always
 // closes the http.Response Body.
 func (client BaseClient) DeleteManifestResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteRepository delete the repository identified by `name`
+// Parameters:
+// name - name of the image (including the namespace)
+func (client BaseClient) DeleteRepository(ctx context.Context, name string) (result DeletedRepository, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteRepository")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeleteRepositoryPreparer(ctx, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteRepository", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteRepositorySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteRepository", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteRepositoryResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteRepository", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteRepositoryPreparer prepares the DeleteRepository request.
+func (client BaseClient) DeleteRepositoryPreparer(ctx context.Context, name string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/acr/v1/{name}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteRepositorySender sends the DeleteRepository request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) DeleteRepositorySender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteRepositoryResponder handles the response to the DeleteRepository request. The method always
+// closes the http.Response Body.
+func (client BaseClient) DeleteRepositoryResponder(resp *http.Response) (result DeletedRepository, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// DeleteTag delete tag
+// Parameters:
+// name - name of the image (including the namespace)
+// reference - tag or digest of the target manifest
+func (client BaseClient) DeleteTag(ctx context.Context, name string, reference string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DeleteTag")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeleteTagPreparer(ctx, name, reference)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteTag", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteTagSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteTag", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteTagResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "DeleteTag", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteTagPreparer prepares the DeleteTag request.
+func (client BaseClient) DeleteTagPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name":      autorest.Encode("path", name),
+		"reference": autorest.Encode("path", reference),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/acr/v1/{name}/_tags/{reference}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteTagSender sends the DeleteTag request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) DeleteTagSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteTagResponder handles the response to the DeleteTag request. The method always
+// closes the http.Response Body.
+func (client BaseClient) DeleteTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -825,15 +891,15 @@ func (client BaseClient) EndBlobUploadSpecifiedResponder(resp *http.Response) (r
 	return
 }
 
-// GetAcrAccessToken exchange ACR Refresh token for an ACR Access Token
+// GetAccessToken exchange ACR Refresh token for an ACR Access Token
 // Parameters:
 // service - indicates the name of your Azure container registry.
 // scope - which is expected to be a valid scope, and can be specified more than once for multiple scope
 // requests. You obtained this from the Www-Authenticate response header from the challenge.
 // refreshToken - must be a valid ACR refresh token
-func (client BaseClient) GetAcrAccessToken(ctx context.Context, service string, scope string, refreshToken string) (result AccessToken, err error) {
+func (client BaseClient) GetAccessToken(ctx context.Context, service string, scope string, refreshToken string) (result AccessToken, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrAccessToken")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAccessToken")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -842,29 +908,29 @@ func (client BaseClient) GetAcrAccessToken(ctx context.Context, service string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetAcrAccessTokenPreparer(ctx, service, scope, refreshToken)
+	req, err := client.GetAccessTokenPreparer(ctx, service, scope, refreshToken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrAccessToken", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAccessToken", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetAcrAccessTokenSender(req)
+	resp, err := client.GetAccessTokenSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrAccessToken", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAccessToken", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetAcrAccessTokenResponder(resp)
+	result, err = client.GetAccessTokenResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrAccessToken", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAccessToken", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetAcrAccessTokenPreparer prepares the GetAcrAccessToken request.
-func (client BaseClient) GetAcrAccessTokenPreparer(ctx context.Context, service string, scope string, refreshToken string) (*http.Request, error) {
+// GetAccessTokenPreparer prepares the GetAccessToken request.
+func (client BaseClient) GetAccessTokenPreparer(ctx context.Context, service string, scope string, refreshToken string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}
@@ -884,16 +950,16 @@ func (client BaseClient) GetAcrAccessTokenPreparer(ctx context.Context, service 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetAcrAccessTokenSender sends the GetAcrAccessToken request. The method will close the
+// GetAccessTokenSender sends the GetAccessToken request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) GetAcrAccessTokenSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) GetAccessTokenSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// GetAcrAccessTokenResponder handles the response to the GetAcrAccessToken request. The method always
+// GetAccessTokenResponder handles the response to the GetAccessToken request. The method always
 // closes the http.Response Body.
-func (client BaseClient) GetAcrAccessTokenResponder(resp *http.Response) (result AccessToken, err error) {
+func (client BaseClient) GetAccessTokenResponder(resp *http.Response) (result AccessToken, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -904,14 +970,14 @@ func (client BaseClient) GetAcrAccessTokenResponder(resp *http.Response) (result
 	return
 }
 
-// GetAcrAccessTokenFromLogin exchange Username, Password and Scope an ACR Access Token
+// GetAccessTokenFromLogin exchange Username, Password and Scope an ACR Access Token
 // Parameters:
 // service - indicates the name of your Azure container registry.
 // scope - expected to be a valid scope, and can be specified more than once for multiple scope requests. You
 // can obtain this from the Www-Authenticate response header from the challenge.
-func (client BaseClient) GetAcrAccessTokenFromLogin(ctx context.Context, service string, scope string) (result AccessToken, err error) {
+func (client BaseClient) GetAccessTokenFromLogin(ctx context.Context, service string, scope string) (result AccessToken, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrAccessTokenFromLogin")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAccessTokenFromLogin")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -920,29 +986,29 @@ func (client BaseClient) GetAcrAccessTokenFromLogin(ctx context.Context, service
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetAcrAccessTokenFromLoginPreparer(ctx, service, scope)
+	req, err := client.GetAccessTokenFromLoginPreparer(ctx, service, scope)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrAccessTokenFromLogin", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAccessTokenFromLogin", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetAcrAccessTokenFromLoginSender(req)
+	resp, err := client.GetAccessTokenFromLoginSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrAccessTokenFromLogin", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAccessTokenFromLogin", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetAcrAccessTokenFromLoginResponder(resp)
+	result, err = client.GetAccessTokenFromLoginResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrAccessTokenFromLogin", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAccessTokenFromLogin", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetAcrAccessTokenFromLoginPreparer prepares the GetAcrAccessTokenFromLogin request.
-func (client BaseClient) GetAcrAccessTokenFromLoginPreparer(ctx context.Context, service string, scope string) (*http.Request, error) {
+// GetAccessTokenFromLoginPreparer prepares the GetAccessTokenFromLogin request.
+func (client BaseClient) GetAccessTokenFromLoginPreparer(ctx context.Context, service string, scope string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}
@@ -960,16 +1026,16 @@ func (client BaseClient) GetAcrAccessTokenFromLoginPreparer(ctx context.Context,
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetAcrAccessTokenFromLoginSender sends the GetAcrAccessTokenFromLogin request. The method will close the
+// GetAccessTokenFromLoginSender sends the GetAccessTokenFromLogin request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) GetAcrAccessTokenFromLoginSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) GetAccessTokenFromLoginSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// GetAcrAccessTokenFromLoginResponder handles the response to the GetAcrAccessTokenFromLogin request. The method always
+// GetAccessTokenFromLoginResponder handles the response to the GetAccessTokenFromLogin request. The method always
 // closes the http.Response Body.
-func (client BaseClient) GetAcrAccessTokenFromLoginResponder(resp *http.Response) (result AccessToken, err error) {
+func (client BaseClient) GetAccessTokenFromLoginResponder(resp *http.Response) (result AccessToken, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -980,481 +1046,7 @@ func (client BaseClient) GetAcrAccessTokenFromLoginResponder(resp *http.Response
 	return
 }
 
-// GetAcrManifestAttributes get manifest attributes
-// Parameters:
-// name - name of the image (including the namespace)
-// reference - a tag or a digest, pointing to a specific image
-func (client BaseClient) GetAcrManifestAttributes(ctx context.Context, name string, reference string) (result AcrManifestAttributes, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrManifestAttributes")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetAcrManifestAttributesPreparer(ctx, name, reference)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrManifestAttributes", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetAcrManifestAttributesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrManifestAttributes", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetAcrManifestAttributesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrManifestAttributes", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetAcrManifestAttributesPreparer prepares the GetAcrManifestAttributes request.
-func (client BaseClient) GetAcrManifestAttributesPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"url": client.LoginURI,
-	}
-
-	pathParameters := map[string]interface{}{
-		"name":      autorest.Encode("path", name),
-		"reference": autorest.Encode("path", reference),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPathParameters("/acr/v1/{name}/_manifests/{reference}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAcrManifestAttributesSender sends the GetAcrManifestAttributes request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GetAcrManifestAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetAcrManifestAttributesResponder handles the response to the GetAcrManifestAttributes request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GetAcrManifestAttributesResponder(resp *http.Response) (result AcrManifestAttributes, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetAcrManifests list manifests of a repository
-// Parameters:
-// name - name of the image (including the namespace)
-// last - query parameter for the last item in previous query. Result set will include values lexically after
-// last.
-// n - query parameter for max number of items
-// orderby - orderby query parameter
-func (client BaseClient) GetAcrManifests(ctx context.Context, name string, last string, n *int32, orderby string) (result AcrManifests, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrManifests")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetAcrManifestsPreparer(ctx, name, last, n, orderby)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrManifests", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetAcrManifestsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrManifests", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetAcrManifestsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrManifests", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetAcrManifestsPreparer prepares the GetAcrManifests request.
-func (client BaseClient) GetAcrManifestsPreparer(ctx context.Context, name string, last string, n *int32, orderby string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"url": client.LoginURI,
-	}
-
-	pathParameters := map[string]interface{}{
-		"name": autorest.Encode("path", name),
-	}
-
-	queryParameters := map[string]interface{}{}
-	if len(last) > 0 {
-		queryParameters["last"] = autorest.Encode("query", last)
-	}
-	if n != nil {
-		queryParameters["n"] = autorest.Encode("query", *n)
-	}
-	if len(orderby) > 0 {
-		queryParameters["orderby"] = autorest.Encode("query", orderby)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPathParameters("/acr/v1/{name}/_manifests", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAcrManifestsSender sends the GetAcrManifests request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GetAcrManifestsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetAcrManifestsResponder handles the response to the GetAcrManifests request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GetAcrManifestsResponder(resp *http.Response) (result AcrManifests, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetAcrRefreshTokenFromExchange exchange AAD tokens for an ACR refresh Token
-// Parameters:
-// grantType - can take a value of access_token_refresh_token, or access_token, or refresh_token
-// service - indicates the name of your Azure container registry.
-// tenant - AAD tenant associated to the AAD credentials.
-// refreshToken - AAD refresh token, mandatory when grant_type is access_token_refresh_token or refresh_token
-// accessToken - AAD access token, mandatory when grant_type is access_token_refresh_token or access_token.
-func (client BaseClient) GetAcrRefreshTokenFromExchange(ctx context.Context, grantType string, service string, tenant string, refreshToken string, accessToken string) (result RefreshToken, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrRefreshTokenFromExchange")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetAcrRefreshTokenFromExchangePreparer(ctx, grantType, service, tenant, refreshToken, accessToken)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRefreshTokenFromExchange", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetAcrRefreshTokenFromExchangeSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRefreshTokenFromExchange", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetAcrRefreshTokenFromExchangeResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRefreshTokenFromExchange", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetAcrRefreshTokenFromExchangePreparer prepares the GetAcrRefreshTokenFromExchange request.
-func (client BaseClient) GetAcrRefreshTokenFromExchangePreparer(ctx context.Context, grantType string, service string, tenant string, refreshToken string, accessToken string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"url": client.LoginURI,
-	}
-
-	formDataParameters := map[string]interface{}{
-		"grant_type": grantType,
-		"service":    service,
-	}
-	if len(tenant) > 0 {
-		formDataParameters["tenant"] = tenant
-	}
-	if len(refreshToken) > 0 {
-		formDataParameters["refresh_token"] = refreshToken
-	}
-	if len(accessToken) > 0 {
-		formDataParameters["access_token"] = accessToken
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPath("/oauth2/exchange"),
-		autorest.WithFormData(autorest.MapToValues(formDataParameters)))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAcrRefreshTokenFromExchangeSender sends the GetAcrRefreshTokenFromExchange request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GetAcrRefreshTokenFromExchangeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetAcrRefreshTokenFromExchangeResponder handles the response to the GetAcrRefreshTokenFromExchange request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GetAcrRefreshTokenFromExchangeResponder(resp *http.Response) (result RefreshToken, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetAcrRepositories list repositories
-// Parameters:
-// last - query parameter for the last item in previous query. Result set will include values lexically after
-// last.
-// n - query parameter for max number of items
-func (client BaseClient) GetAcrRepositories(ctx context.Context, last string, n *int32) (result Repositories, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrRepositories")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetAcrRepositoriesPreparer(ctx, last, n)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRepositories", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetAcrRepositoriesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRepositories", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetAcrRepositoriesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRepositories", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetAcrRepositoriesPreparer prepares the GetAcrRepositories request.
-func (client BaseClient) GetAcrRepositoriesPreparer(ctx context.Context, last string, n *int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"url": client.LoginURI,
-	}
-
-	queryParameters := map[string]interface{}{}
-	if len(last) > 0 {
-		queryParameters["last"] = autorest.Encode("query", last)
-	}
-	if n != nil {
-		queryParameters["n"] = autorest.Encode("query", *n)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPath("/acr/v1/_catalog"),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAcrRepositoriesSender sends the GetAcrRepositories request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GetAcrRepositoriesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetAcrRepositoriesResponder handles the response to the GetAcrRepositories request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GetAcrRepositoriesResponder(resp *http.Response) (result Repositories, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetAcrRepositoryAttributes get repository attributes
-// Parameters:
-// name - name of the image (including the namespace)
-func (client BaseClient) GetAcrRepositoryAttributes(ctx context.Context, name string) (result RepositoryAttributes, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrRepositoryAttributes")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetAcrRepositoryAttributesPreparer(ctx, name)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRepositoryAttributes", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetAcrRepositoryAttributesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRepositoryAttributes", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetAcrRepositoryAttributesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrRepositoryAttributes", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetAcrRepositoryAttributesPreparer prepares the GetAcrRepositoryAttributes request.
-func (client BaseClient) GetAcrRepositoryAttributesPreparer(ctx context.Context, name string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"url": client.LoginURI,
-	}
-
-	pathParameters := map[string]interface{}{
-		"name": autorest.Encode("path", name),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPathParameters("/acr/v1/{name}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAcrRepositoryAttributesSender sends the GetAcrRepositoryAttributes request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GetAcrRepositoryAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetAcrRepositoryAttributesResponder handles the response to the GetAcrRepositoryAttributes request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GetAcrRepositoryAttributesResponder(resp *http.Response) (result RepositoryAttributes, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetAcrTagAttributes get tag attributes by tag
-// Parameters:
-// name - name of the image (including the namespace)
-// reference - tag or digest of the target manifest
-func (client BaseClient) GetAcrTagAttributes(ctx context.Context, name string, reference string) (result AcrTagAttributes, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrTagAttributes")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetAcrTagAttributesPreparer(ctx, name, reference)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTagAttributes", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetAcrTagAttributesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTagAttributes", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetAcrTagAttributesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTagAttributes", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetAcrTagAttributesPreparer prepares the GetAcrTagAttributes request.
-func (client BaseClient) GetAcrTagAttributesPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"url": client.LoginURI,
-	}
-
-	pathParameters := map[string]interface{}{
-		"name":      autorest.Encode("path", name),
-		"reference": autorest.Encode("path", reference),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPathParameters("/acr/v1/{name}/_tags/{reference}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAcrTagAttributesSender sends the GetAcrTagAttributes request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GetAcrTagAttributesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetAcrTagAttributesResponder handles the response to the GetAcrTagAttributes request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GetAcrTagAttributesResponder(resp *http.Response) (result AcrTagAttributes, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetAcrTags list tags of a repository
+// GetAcrTagList list tags of a repository
 // Parameters:
 // name - name of the image (including the namespace)
 // last - query parameter for the last item in previous query. Result set will include values lexically after
@@ -1462,9 +1054,9 @@ func (client BaseClient) GetAcrTagAttributesResponder(resp *http.Response) (resu
 // n - query parameter for max number of items
 // orderby - orderby query parameter
 // digest - filter by digest
-func (client BaseClient) GetAcrTags(ctx context.Context, name string, last string, n *int32, orderby string, digest string) (result AcrRepositoryTags, err error) {
+func (client BaseClient) GetAcrTagList(ctx context.Context, name string, last string, n *int32, orderby string, digest string) (result TagList, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrTags")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetAcrTagList")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -1473,29 +1065,29 @@ func (client BaseClient) GetAcrTags(ctx context.Context, name string, last strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetAcrTagsPreparer(ctx, name, last, n, orderby, digest)
+	req, err := client.GetAcrTagListPreparer(ctx, name, last, n, orderby, digest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTags", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTagList", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetAcrTagsSender(req)
+	resp, err := client.GetAcrTagListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTags", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTagList", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetAcrTagsResponder(resp)
+	result, err = client.GetAcrTagListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTags", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetAcrTagList", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetAcrTagsPreparer prepares the GetAcrTags request.
-func (client BaseClient) GetAcrTagsPreparer(ctx context.Context, name string, last string, n *int32, orderby string, digest string) (*http.Request, error) {
+// GetAcrTagListPreparer prepares the GetAcrTagList request.
+func (client BaseClient) GetAcrTagListPreparer(ctx context.Context, name string, last string, n *int32, orderby string, digest string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}
@@ -1526,16 +1118,16 @@ func (client BaseClient) GetAcrTagsPreparer(ctx context.Context, name string, la
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetAcrTagsSender sends the GetAcrTags request. The method will close the
+// GetAcrTagListSender sends the GetAcrTagList request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) GetAcrTagsSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) GetAcrTagListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// GetAcrTagsResponder handles the response to the GetAcrTags request. The method always
+// GetAcrTagListResponder handles the response to the GetAcrTagList request. The method always
 // closes the http.Response Body.
-func (client BaseClient) GetAcrTagsResponder(resp *http.Response) (result AcrRepositoryTags, err error) {
+func (client BaseClient) GetAcrTagListResponder(resp *http.Response) (result TagList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1874,71 +1466,6 @@ func (client BaseClient) GetBlobUploadStatusSpecifiedResponder(resp *http.Respon
 	return
 }
 
-// GetDockerRegistryV2Support tells whether this Docker Registry instance supports Docker Registry HTTP API v2
-func (client BaseClient) GetDockerRegistryV2Support(ctx context.Context) (result autorest.Response, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetDockerRegistryV2Support")
-		defer func() {
-			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetDockerRegistryV2SupportPreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetDockerRegistryV2Support", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetDockerRegistryV2SupportSender(req)
-	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetDockerRegistryV2Support", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetDockerRegistryV2SupportResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetDockerRegistryV2Support", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetDockerRegistryV2SupportPreparer prepares the GetDockerRegistryV2Support request.
-func (client BaseClient) GetDockerRegistryV2SupportPreparer(ctx context.Context) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"url": client.LoginURI,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPath("/v2/"))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetDockerRegistryV2SupportSender sends the GetDockerRegistryV2Support request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) GetDockerRegistryV2SupportSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetDockerRegistryV2SupportResponder handles the response to the GetDockerRegistryV2Support request. The method always
-// closes the http.Response Body.
-func (client BaseClient) GetDockerRegistryV2SupportResponder(resp *http.Response) (result autorest.Response, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByClosing())
-	result.Response = resp
-	return
-}
-
 // GetManifest pulls the image manifest file associated with the specified name and reference. Reference may be a tag
 // or a digest
 // Parameters:
@@ -2020,14 +1547,13 @@ func (client BaseClient) GetManifestResponder(resp *http.Response) (result Manif
 	return
 }
 
-// GetRepositories list repositories
+// GetManifestAttributes get manifest attributes
 // Parameters:
-// last - query parameter for the last item in previous query. Result set will include values lexically after
-// last.
-// n - query parameter for max number of items
-func (client BaseClient) GetRepositories(ctx context.Context, last string, n *int32) (result Repositories, err error) {
+// name - name of the image (including the namespace)
+// reference - a tag or a digest, pointing to a specific image
+func (client BaseClient) GetManifestAttributes(ctx context.Context, name string, reference string) (result ManifestAttributes, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetRepositories")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetManifestAttributes")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -2036,29 +1562,351 @@ func (client BaseClient) GetRepositories(ctx context.Context, last string, n *in
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetRepositoriesPreparer(ctx, last, n)
+	req, err := client.GetManifestAttributesPreparer(ctx, name, reference)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositories", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetManifestAttributes", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetRepositoriesSender(req)
+	resp, err := client.GetManifestAttributesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositories", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetManifestAttributes", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetRepositoriesResponder(resp)
+	result, err = client.GetManifestAttributesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositories", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetManifestAttributes", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetRepositoriesPreparer prepares the GetRepositories request.
-func (client BaseClient) GetRepositoriesPreparer(ctx context.Context, last string, n *int32) (*http.Request, error) {
+// GetManifestAttributesPreparer prepares the GetManifestAttributes request.
+func (client BaseClient) GetManifestAttributesPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name":      autorest.Encode("path", name),
+		"reference": autorest.Encode("path", reference),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/acr/v1/{name}/_manifests/{reference}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetManifestAttributesSender sends the GetManifestAttributes request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetManifestAttributesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetManifestAttributesResponder handles the response to the GetManifestAttributes request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetManifestAttributesResponder(resp *http.Response) (result ManifestAttributes, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetManifestList list manifests of a repository
+// Parameters:
+// name - name of the image (including the namespace)
+// last - query parameter for the last item in previous query. Result set will include values lexically after
+// last.
+// n - query parameter for max number of items
+// orderby - orderby query parameter
+func (client BaseClient) GetManifestList(ctx context.Context, name string, last string, n *int32, orderby string) (result AcrManifests, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetManifestList")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetManifestListPreparer(ctx, name, last, n, orderby)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetManifestList", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetManifestListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetManifestList", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetManifestListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetManifestList", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetManifestListPreparer prepares the GetManifestList request.
+func (client BaseClient) GetManifestListPreparer(ctx context.Context, name string, last string, n *int32, orderby string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(last) > 0 {
+		queryParameters["last"] = autorest.Encode("query", last)
+	}
+	if n != nil {
+		queryParameters["n"] = autorest.Encode("query", *n)
+	}
+	if len(orderby) > 0 {
+		queryParameters["orderby"] = autorest.Encode("query", orderby)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/acr/v1/{name}/_manifests", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetManifestListSender sends the GetManifestList request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetManifestListSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetManifestListResponder handles the response to the GetManifestList request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetManifestListResponder(resp *http.Response) (result AcrManifests, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetRefreshTokenFromExchange exchange AAD tokens for an ACR refresh Token
+// Parameters:
+// grantType - can take a value of access_token_refresh_token, or access_token, or refresh_token
+// service - indicates the name of your Azure container registry.
+// tenant - AAD tenant associated to the AAD credentials.
+// refreshToken - AAD refresh token, mandatory when grant_type is access_token_refresh_token or refresh_token
+// accessToken - AAD access token, mandatory when grant_type is access_token_refresh_token or access_token.
+func (client BaseClient) GetRefreshTokenFromExchange(ctx context.Context, grantType string, service string, tenant string, refreshToken string, accessToken string) (result RefreshToken, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetRefreshTokenFromExchange")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetRefreshTokenFromExchangePreparer(ctx, grantType, service, tenant, refreshToken, accessToken)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRefreshTokenFromExchange", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetRefreshTokenFromExchangeSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRefreshTokenFromExchange", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetRefreshTokenFromExchangeResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRefreshTokenFromExchange", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetRefreshTokenFromExchangePreparer prepares the GetRefreshTokenFromExchange request.
+func (client BaseClient) GetRefreshTokenFromExchangePreparer(ctx context.Context, grantType string, service string, tenant string, refreshToken string, accessToken string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	formDataParameters := map[string]interface{}{
+		"grant_type": grantType,
+		"service":    service,
+	}
+	if len(tenant) > 0 {
+		formDataParameters["tenant"] = tenant
+	}
+	if len(refreshToken) > 0 {
+		formDataParameters["refresh_token"] = refreshToken
+	}
+	if len(accessToken) > 0 {
+		formDataParameters["access_token"] = accessToken
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPath("/oauth2/exchange"),
+		autorest.WithFormData(autorest.MapToValues(formDataParameters)))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetRefreshTokenFromExchangeSender sends the GetRefreshTokenFromExchange request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetRefreshTokenFromExchangeSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetRefreshTokenFromExchangeResponder handles the response to the GetRefreshTokenFromExchange request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetRefreshTokenFromExchangeResponder(resp *http.Response) (result RefreshToken, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetRepositoryAttributes get repository attributes
+// Parameters:
+// name - name of the image (including the namespace)
+func (client BaseClient) GetRepositoryAttributes(ctx context.Context, name string) (result RepositoryAttributes, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetRepositoryAttributes")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetRepositoryAttributesPreparer(ctx, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositoryAttributes", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetRepositoryAttributesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositoryAttributes", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetRepositoryAttributesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositoryAttributes", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetRepositoryAttributesPreparer prepares the GetRepositoryAttributes request.
+func (client BaseClient) GetRepositoryAttributesPreparer(ctx context.Context, name string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"url": client.LoginURI,
+	}
+
+	pathParameters := map[string]interface{}{
+		"name": autorest.Encode("path", name),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{url}", urlParameters),
+		autorest.WithPathParameters("/acr/v1/{name}", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetRepositoryAttributesSender sends the GetRepositoryAttributes request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) GetRepositoryAttributesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetRepositoryAttributesResponder handles the response to the GetRepositoryAttributes request. The method always
+// closes the http.Response Body.
+func (client BaseClient) GetRepositoryAttributesResponder(resp *http.Response) (result RepositoryAttributes, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetRepositoryList list repositories
+// Parameters:
+// last - query parameter for the last item in previous query. Result set will include values lexically after
+// last.
+// n - query parameter for max number of items
+func (client BaseClient) GetRepositoryList(ctx context.Context, last string, n *int32) (result Repositories, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetRepositoryList")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetRepositoryListPreparer(ctx, last, n)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositoryList", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetRepositoryListSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositoryList", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetRepositoryListResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetRepositoryList", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetRepositoryListPreparer prepares the GetRepositoryList request.
+func (client BaseClient) GetRepositoryListPreparer(ctx context.Context, last string, n *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}
@@ -2074,21 +1922,21 @@ func (client BaseClient) GetRepositoriesPreparer(ctx context.Context, last strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPath("/v2/_catalog"),
+		autorest.WithPath("/acr/v1/_catalog"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetRepositoriesSender sends the GetRepositories request. The method will close the
+// GetRepositoryListSender sends the GetRepositoryList request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) GetRepositoriesSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) GetRepositoryListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// GetRepositoriesResponder handles the response to the GetRepositories request. The method always
+// GetRepositoryListResponder handles the response to the GetRepositoryList request. The method always
 // closes the http.Response Body.
-func (client BaseClient) GetRepositoriesResponder(resp *http.Response) (result Repositories, err error) {
+func (client BaseClient) GetRepositoryListResponder(resp *http.Response) (result Repositories, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2099,12 +1947,13 @@ func (client BaseClient) GetRepositoriesResponder(resp *http.Response) (result R
 	return
 }
 
-// GetTagList fetch the tags under the repository identified by name
+// GetTagAttributes get tag attributes by tag
 // Parameters:
 // name - name of the image (including the namespace)
-func (client BaseClient) GetTagList(ctx context.Context, name string) (result RepositoryTags, err error) {
+// reference - tag or digest of the target manifest
+func (client BaseClient) GetTagAttributes(ctx context.Context, name string, reference string) (result TagAttributes, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetTagList")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetTagAttributes")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -2113,54 +1962,55 @@ func (client BaseClient) GetTagList(ctx context.Context, name string) (result Re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetTagListPreparer(ctx, name)
+	req, err := client.GetTagAttributesPreparer(ctx, name, reference)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetTagList", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetTagAttributes", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetTagListSender(req)
+	resp, err := client.GetTagAttributesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetTagList", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetTagAttributes", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetTagListResponder(resp)
+	result, err = client.GetTagAttributesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetTagList", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "GetTagAttributes", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetTagListPreparer prepares the GetTagList request.
-func (client BaseClient) GetTagListPreparer(ctx context.Context, name string) (*http.Request, error) {
+// GetTagAttributesPreparer prepares the GetTagAttributes request.
+func (client BaseClient) GetTagAttributesPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}
 
 	pathParameters := map[string]interface{}{
-		"name": autorest.Encode("path", name),
+		"name":      autorest.Encode("path", name),
+		"reference": autorest.Encode("path", reference),
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{url}", urlParameters),
-		autorest.WithPathParameters("/v2/{name}/tags/list", pathParameters))
+		autorest.WithPathParameters("/acr/v1/{name}/_tags/{reference}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetTagListSender sends the GetTagList request. The method will close the
+// GetTagAttributesSender sends the GetTagAttributes request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) GetTagListSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) GetTagAttributesSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// GetTagListResponder handles the response to the GetTagList request. The method always
+// GetTagAttributesResponder handles the response to the GetTagAttributes request. The method always
 // closes the http.Response Body.
-func (client BaseClient) GetTagListResponder(resp *http.Response) (result RepositoryTags, err error) {
+func (client BaseClient) GetTagAttributesResponder(resp *http.Response) (result TagAttributes, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2328,14 +2178,14 @@ func (client BaseClient) StartEmptyResumableBlobUploadResponder(resp *http.Respo
 	return
 }
 
-// UpdateAcrManifestAttributes update attributes of a manifest
+// UpdateManifestAttributes update attributes of a manifest
 // Parameters:
 // name - name of the image (including the namespace)
 // reference - a tag or a digest, pointing to a specific image
 // value - repository attribute value
-func (client BaseClient) UpdateAcrManifestAttributes(ctx context.Context, name string, reference string, value *ChangeableAttributes) (result autorest.Response, err error) {
+func (client BaseClient) UpdateManifestAttributes(ctx context.Context, name string, reference string, value *ChangeableAttributes) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UpdateAcrManifestAttributes")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UpdateManifestAttributes")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -2344,29 +2194,29 @@ func (client BaseClient) UpdateAcrManifestAttributes(ctx context.Context, name s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateAcrManifestAttributesPreparer(ctx, name, reference, value)
+	req, err := client.UpdateManifestAttributesPreparer(ctx, name, reference, value)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrManifestAttributes", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateManifestAttributes", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.UpdateAcrManifestAttributesSender(req)
+	resp, err := client.UpdateManifestAttributesSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrManifestAttributes", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateManifestAttributes", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.UpdateAcrManifestAttributesResponder(resp)
+	result, err = client.UpdateManifestAttributesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrManifestAttributes", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateManifestAttributes", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdateAcrManifestAttributesPreparer prepares the UpdateAcrManifestAttributes request.
-func (client BaseClient) UpdateAcrManifestAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
+// UpdateManifestAttributesPreparer prepares the UpdateManifestAttributes request.
+func (client BaseClient) UpdateManifestAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}
@@ -2388,16 +2238,16 @@ func (client BaseClient) UpdateAcrManifestAttributesPreparer(ctx context.Context
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateAcrManifestAttributesSender sends the UpdateAcrManifestAttributes request. The method will close the
+// UpdateManifestAttributesSender sends the UpdateManifestAttributes request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) UpdateAcrManifestAttributesSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) UpdateManifestAttributesSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// UpdateAcrManifestAttributesResponder handles the response to the UpdateAcrManifestAttributes request. The method always
+// UpdateManifestAttributesResponder handles the response to the UpdateManifestAttributes request. The method always
 // closes the http.Response Body.
-func (client BaseClient) UpdateAcrManifestAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BaseClient) UpdateManifestAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2407,14 +2257,14 @@ func (client BaseClient) UpdateAcrManifestAttributesResponder(resp *http.Respons
 	return
 }
 
-// UpdateAcrRepositoryAttributes update the attribute identified by `name` where `reference` is the name of the
+// UpdateRepositoryAttributes update the attribute identified by `name` where `reference` is the name of the
 // repository.
 // Parameters:
 // name - name of the image (including the namespace)
 // value - repository attribute value
-func (client BaseClient) UpdateAcrRepositoryAttributes(ctx context.Context, name string, value *ChangeableAttributes) (result autorest.Response, err error) {
+func (client BaseClient) UpdateRepositoryAttributes(ctx context.Context, name string, value *ChangeableAttributes) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UpdateAcrRepositoryAttributes")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UpdateRepositoryAttributes")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -2423,29 +2273,29 @@ func (client BaseClient) UpdateAcrRepositoryAttributes(ctx context.Context, name
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateAcrRepositoryAttributesPreparer(ctx, name, value)
+	req, err := client.UpdateRepositoryAttributesPreparer(ctx, name, value)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrRepositoryAttributes", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateRepositoryAttributes", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.UpdateAcrRepositoryAttributesSender(req)
+	resp, err := client.UpdateRepositoryAttributesSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrRepositoryAttributes", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateRepositoryAttributes", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.UpdateAcrRepositoryAttributesResponder(resp)
+	result, err = client.UpdateRepositoryAttributesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrRepositoryAttributes", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateRepositoryAttributes", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdateAcrRepositoryAttributesPreparer prepares the UpdateAcrRepositoryAttributes request.
-func (client BaseClient) UpdateAcrRepositoryAttributesPreparer(ctx context.Context, name string, value *ChangeableAttributes) (*http.Request, error) {
+// UpdateRepositoryAttributesPreparer prepares the UpdateRepositoryAttributes request.
+func (client BaseClient) UpdateRepositoryAttributesPreparer(ctx context.Context, name string, value *ChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}
@@ -2466,16 +2316,16 @@ func (client BaseClient) UpdateAcrRepositoryAttributesPreparer(ctx context.Conte
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateAcrRepositoryAttributesSender sends the UpdateAcrRepositoryAttributes request. The method will close the
+// UpdateRepositoryAttributesSender sends the UpdateRepositoryAttributes request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) UpdateAcrRepositoryAttributesSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) UpdateRepositoryAttributesSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// UpdateAcrRepositoryAttributesResponder handles the response to the UpdateAcrRepositoryAttributes request. The method always
+// UpdateRepositoryAttributesResponder handles the response to the UpdateRepositoryAttributes request. The method always
 // closes the http.Response Body.
-func (client BaseClient) UpdateAcrRepositoryAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BaseClient) UpdateRepositoryAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -2485,14 +2335,14 @@ func (client BaseClient) UpdateAcrRepositoryAttributesResponder(resp *http.Respo
 	return
 }
 
-// UpdateAcrTagAttributes update tag attributes
+// UpdateTagAttributes update tag attributes
 // Parameters:
 // name - name of the image (including the namespace)
 // reference - tag or digest of the target manifest
 // value - repository attribute value
-func (client BaseClient) UpdateAcrTagAttributes(ctx context.Context, name string, reference string, value *ChangeableAttributes) (result autorest.Response, err error) {
+func (client BaseClient) UpdateTagAttributes(ctx context.Context, name string, reference string, value *ChangeableAttributes) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UpdateAcrTagAttributes")
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.UpdateTagAttributes")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -2501,29 +2351,29 @@ func (client BaseClient) UpdateAcrTagAttributes(ctx context.Context, name string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateAcrTagAttributesPreparer(ctx, name, reference, value)
+	req, err := client.UpdateTagAttributesPreparer(ctx, name, reference, value)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrTagAttributes", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateTagAttributes", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.UpdateAcrTagAttributesSender(req)
+	resp, err := client.UpdateTagAttributesSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrTagAttributes", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateTagAttributes", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.UpdateAcrTagAttributesResponder(resp)
+	result, err = client.UpdateTagAttributesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateAcrTagAttributes", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BaseClient", "UpdateTagAttributes", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdateAcrTagAttributesPreparer prepares the UpdateAcrTagAttributes request.
-func (client BaseClient) UpdateAcrTagAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
+// UpdateTagAttributesPreparer prepares the UpdateTagAttributes request.
+func (client BaseClient) UpdateTagAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}
@@ -2545,16 +2395,16 @@ func (client BaseClient) UpdateAcrTagAttributesPreparer(ctx context.Context, nam
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateAcrTagAttributesSender sends the UpdateAcrTagAttributes request. The method will close the
+// UpdateTagAttributesSender sends the UpdateTagAttributes request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) UpdateAcrTagAttributesSender(req *http.Request) (*http.Response, error) {
+func (client BaseClient) UpdateTagAttributesSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// UpdateAcrTagAttributesResponder handles the response to the UpdateAcrTagAttributes request. The method always
+// UpdateTagAttributesResponder handles the response to the UpdateTagAttributes request. The method always
 // closes the http.Response Body.
-func (client BaseClient) UpdateAcrTagAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client BaseClient) UpdateTagAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

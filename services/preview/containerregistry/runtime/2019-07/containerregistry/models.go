@@ -48,41 +48,6 @@ type AcrErrors struct {
 	Errors *[]AcrErrorInfo `json:"errors,omitempty"`
 }
 
-// AcrManifestAttributes manifest attributes details
-type AcrManifestAttributes struct {
-	autorest.Response `json:"-"`
-	// Registry - Registry name
-	Registry *string `json:"registry,omitempty"`
-	// ImageName - Image name
-	ImageName *string `json:"imageName,omitempty"`
-	// ManifestAttributes - Manifest attributes
-	ManifestAttributes *AcrManifestAttributesBase `json:"manifest,omitempty"`
-}
-
-// AcrManifestAttributesBase manifest details
-type AcrManifestAttributesBase struct {
-	// Digest - Manifest
-	Digest *string `json:"digest,omitempty"`
-	// ImageSize - Image size
-	ImageSize *int64 `json:"imageSize,omitempty"`
-	// CreatedTime - Created time
-	CreatedTime *string `json:"createdTime,omitempty"`
-	// LastUpdateTime - Last update time
-	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
-	// Architecture - CPU architecture
-	Architecture *string `json:"architecture,omitempty"`
-	// Os - Operating system
-	Os *string `json:"os,omitempty"`
-	// MediaType - Media type
-	MediaType *string `json:"mediaType,omitempty"`
-	// ConfigMediaType - Config blob media type
-	ConfigMediaType *string `json:"configMediaType,omitempty"`
-	// Tags - List of tags
-	Tags *[]string `json:"tags,omitempty"`
-	// ChangeableAttributes - Changeable attributes
-	ChangeableAttributes *ChangeableAttributes `json:"changeableAttributes,omitempty"`
-}
-
 // AcrManifests manifest attributes
 type AcrManifests struct {
 	autorest.Response `json:"-"`
@@ -91,45 +56,7 @@ type AcrManifests struct {
 	// ImageName - Image name
 	ImageName *string `json:"imageName,omitempty"`
 	// ManifestsAttributes - List of manifests
-	ManifestsAttributes *[]AcrManifestAttributesBase `json:"manifests,omitempty"`
-}
-
-// AcrRepositoryTags list of tag details
-type AcrRepositoryTags struct {
-	autorest.Response `json:"-"`
-	// Registry - Registry name
-	Registry *string `json:"registry,omitempty"`
-	// ImageName - Image name
-	ImageName *string `json:"imageName,omitempty"`
-	// TagsAttributes - List of tag attribute details
-	TagsAttributes *[]AcrTagAttributesBase `json:"tags,omitempty"`
-}
-
-// AcrTagAttributes tag attributes
-type AcrTagAttributes struct {
-	autorest.Response `json:"-"`
-	// Registry - Registry name
-	Registry *string `json:"registry,omitempty"`
-	// ImageName - Image name
-	ImageName *string `json:"imageName,omitempty"`
-	// TagAttributes - List of tag attribute details
-	TagAttributes *AcrTagAttributesBase `json:"tag,omitempty"`
-}
-
-// AcrTagAttributesBase tag attribute details
-type AcrTagAttributesBase struct {
-	// Name - Tag name
-	Name *string `json:"name,omitempty"`
-	// Digest - Tag digest
-	Digest *string `json:"digest,omitempty"`
-	// CreatedTime - Tag created time
-	CreatedTime *string `json:"createdTime,omitempty"`
-	// LastUpdateTime - Tag last update time
-	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
-	// Signed - Is signed
-	Signed *bool `json:"signed,omitempty"`
-	// ChangeableAttributes - Changeable attributes
-	ChangeableAttributes *ChangeableAttributes `json:"changeableAttributes,omitempty"`
+	ManifestsAttributes *[]ManifestAttributesBase `json:"manifests,omitempty"`
 }
 
 // ChangeableAttributes ...
@@ -221,6 +148,41 @@ type Manifest struct {
 	Signatures *[]ImageSignature `json:"signatures,omitempty"`
 }
 
+// ManifestAttributes manifest attributes details
+type ManifestAttributes struct {
+	autorest.Response `json:"-"`
+	// Registry - Registry name
+	Registry *string `json:"registry,omitempty"`
+	// ImageName - Image name
+	ImageName *string `json:"imageName,omitempty"`
+	// ManifestAttributes - Manifest attributes
+	ManifestAttributes *ManifestAttributesBase `json:"manifest,omitempty"`
+}
+
+// ManifestAttributesBase manifest details
+type ManifestAttributesBase struct {
+	// Digest - Manifest
+	Digest *string `json:"digest,omitempty"`
+	// ImageSize - Image size
+	ImageSize *int64 `json:"imageSize,omitempty"`
+	// CreatedTime - Created time
+	CreatedTime *string `json:"createdTime,omitempty"`
+	// LastUpdateTime - Last update time
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+	// Architecture - CPU architecture
+	Architecture *string `json:"architecture,omitempty"`
+	// Os - Operating system
+	Os *string `json:"os,omitempty"`
+	// MediaType - Media type
+	MediaType *string `json:"mediaType,omitempty"`
+	// ConfigMediaType - Config blob media type
+	ConfigMediaType *string `json:"configMediaType,omitempty"`
+	// Tags - List of tags
+	Tags *[]string `json:"tags,omitempty"`
+	// ChangeableAttributes - Changeable attributes
+	ChangeableAttributes *ChangeableAttributes `json:"changeableAttributes,omitempty"`
+}
+
 // ManifestAttributesManifest list of manifest attributes
 type ManifestAttributesManifest struct {
 	// References - List of manifest attributes details
@@ -296,7 +258,6 @@ type RepositoryAttributes struct {
 
 // RepositoryTags result of the request to list tags of the image
 type RepositoryTags struct {
-	autorest.Response `json:"-"`
 	// Name - Name of the image
 	Name *string `json:"name,omitempty"`
 	// Tags - List of tags
@@ -311,18 +272,46 @@ type SetObject struct {
 
 // TagAttributes tag attributes
 type TagAttributes struct {
+	autorest.Response `json:"-"`
 	// Registry - Registry name
 	Registry *string `json:"registry,omitempty"`
 	// ImageName - Image name
 	ImageName *string `json:"imageName,omitempty"`
-	// Tag - Tag attributes
-	Tag *TagAttributesTag `json:"tag,omitempty"`
+	// TagAttributes - List of tag attribute details
+	TagAttributes *TagAttributesBase `json:"tag,omitempty"`
+}
+
+// TagAttributesBase tag attribute details
+type TagAttributesBase struct {
+	// Name - Tag name
+	Name *string `json:"name,omitempty"`
+	// Digest - Tag digest
+	Digest *string `json:"digest,omitempty"`
+	// CreatedTime - Tag created time
+	CreatedTime *string `json:"createdTime,omitempty"`
+	// LastUpdateTime - Tag last update time
+	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
+	// Signed - Is signed
+	Signed *bool `json:"signed,omitempty"`
+	// ChangeableAttributes - Changeable attributes
+	ChangeableAttributes *ChangeableAttributes `json:"changeableAttributes,omitempty"`
 }
 
 // TagAttributesTag tag
 type TagAttributesTag struct {
 	// SignatureRecord - SignatureRecord value
 	SignatureRecord *string `json:"signatureRecord,omitempty"`
+}
+
+// TagList list of tag details
+type TagList struct {
+	autorest.Response `json:"-"`
+	// Registry - Registry name
+	Registry *string `json:"registry,omitempty"`
+	// ImageName - Image name
+	ImageName *string `json:"imageName,omitempty"`
+	// TagsAttributes - List of tag attribute details
+	TagsAttributes *[]TagAttributesBase `json:"tags,omitempty"`
 }
 
 // V2Descriptor docker V2 image layer descriptor including config and layers

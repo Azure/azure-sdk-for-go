@@ -24,12 +24,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/containerreg
 type AccessToken = original.AccessToken
 type AcrErrorInfo = original.AcrErrorInfo
 type AcrErrors = original.AcrErrors
-type AcrManifestAttributes = original.AcrManifestAttributes
-type AcrManifestAttributesBase = original.AcrManifestAttributesBase
 type AcrManifests = original.AcrManifests
-type AcrRepositoryTags = original.AcrRepositoryTags
-type AcrTagAttributes = original.AcrTagAttributes
-type AcrTagAttributesBase = original.AcrTagAttributesBase
 type BaseClient = original.BaseClient
 type ChangeableAttributes = original.ChangeableAttributes
 type DeletedRepository = original.DeletedRepository
@@ -39,6 +34,8 @@ type ImageSignature = original.ImageSignature
 type JWK = original.JWK
 type JWKHeader = original.JWKHeader
 type Manifest = original.Manifest
+type ManifestAttributes = original.ManifestAttributes
+type ManifestAttributesBase = original.ManifestAttributesBase
 type ManifestAttributesManifest = original.ManifestAttributesManifest
 type ManifestAttributesManifestReferences = original.ManifestAttributesManifestReferences
 type ManifestChangeableAttributes = original.ManifestChangeableAttributes
@@ -49,7 +46,9 @@ type RepositoryAttributes = original.RepositoryAttributes
 type RepositoryTags = original.RepositoryTags
 type SetObject = original.SetObject
 type TagAttributes = original.TagAttributes
+type TagAttributesBase = original.TagAttributesBase
 type TagAttributesTag = original.TagAttributesTag
+type TagList = original.TagList
 type V2Descriptor = original.V2Descriptor
 
 func New(loginURI string) BaseClient {

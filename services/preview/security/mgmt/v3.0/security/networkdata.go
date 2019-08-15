@@ -48,9 +48,7 @@ func NewNetworkDataClientWithBaseURI(baseURI string, subscriptionID string, ascL
 // resourceNamespace - the Namespace of the resource.
 // resourceType - the type of the resource.
 // resourceName - name of the resource.
-// scope - scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-// management group (/providers/Microsoft.Management/managementGroups/mgName).
-func (client NetworkDataClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, scope string) (result NetworkData, err error) {
+func (client NetworkDataClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result NetworkData, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.Get")
 		defer func() {
@@ -71,7 +69,7 @@ func (client NetworkDataClient) Get(ctx context.Context, resourceGroupName strin
 		return result, validation.NewError("security.NetworkDataClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, scope)
+	req, err := client.GetPreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "Get", nil, "Failure preparing request")
 		return
@@ -93,13 +91,12 @@ func (client NetworkDataClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetPreparer prepares the Get request.
-func (client NetworkDataClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, scope string) (*http.Request, error) {
+func (client NetworkDataClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
 		"resourceNamespace": autorest.Encode("path", resourceNamespace),
 		"resourceType":      autorest.Encode("path", resourceType),
-		"scope":             autorest.Encode("path", scope),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -138,10 +135,8 @@ func (client NetworkDataClient) GetResponder(resp *http.Response) (result Networ
 
 // List get the network data on all your scanned resources inside a scope
 // Parameters:
-// scope - scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-// management group (/providers/Microsoft.Management/managementGroups/mgName).
 // expand - the expand expression to apply on the operation.
-func (client NetworkDataClient) List(ctx context.Context, scope string, expand string) (result NetworkDataListPage, err error) {
+func (client NetworkDataClient) List(ctx context.Context, expand string) (result NetworkDataListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.List")
 		defer func() {
@@ -159,7 +154,7 @@ func (client NetworkDataClient) List(ctx context.Context, scope string, expand s
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, scope, expand)
+	req, err := client.ListPreparer(ctx, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "List", nil, "Failure preparing request")
 		return
@@ -181,9 +176,8 @@ func (client NetworkDataClient) List(ctx context.Context, scope string, expand s
 }
 
 // ListPreparer prepares the List request.
-func (client NetworkDataClient) ListPreparer(ctx context.Context, scope string, expand string) (*http.Request, error) {
+func (client NetworkDataClient) ListPreparer(ctx context.Context, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"scope":          autorest.Encode("path", scope),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -245,7 +239,7 @@ func (client NetworkDataClient) listNextResults(ctx context.Context, lastResults
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client NetworkDataClient) ListComplete(ctx context.Context, scope string, expand string) (result NetworkDataListIterator, err error) {
+func (client NetworkDataClient) ListComplete(ctx context.Context, expand string) (result NetworkDataListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.List")
 		defer func() {
@@ -256,6 +250,6 @@ func (client NetworkDataClient) ListComplete(ctx context.Context, scope string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, scope, expand)
+	result.page, err = client.List(ctx, expand)
 	return
 }

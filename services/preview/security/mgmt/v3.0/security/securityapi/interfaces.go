@@ -25,8 +25,8 @@ import (
 
 // NetworkDataClientAPI contains the set of methods on the NetworkDataClient type.
 type NetworkDataClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, scope string) (result security.NetworkData, err error)
-	List(ctx context.Context, scope string, expand string) (result security.NetworkDataListPage, err error)
+	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.NetworkData, err error)
+	List(ctx context.Context, expand string) (result security.NetworkDataListPage, err error)
 }
 
 var _ NetworkDataClientAPI = (*security.NetworkDataClient)(nil)

@@ -690,6 +690,7 @@ type SubnetsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, expand string) (result network.Subnet, err error)
 	List(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.SubnetListResultPage, err error)
 	PrepareNetworkPolicies(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, prepareNetworkPoliciesRequestParameters network.PrepareNetworkPoliciesRequest) (result network.SubnetsPrepareNetworkPoliciesFuture, err error)
+	UnprepareNetworkPolicies(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, unprepareNetworkPoliciesRequestParameters network.UnprepareNetworkPoliciesRequest) (result network.SubnetsUnprepareNetworkPoliciesFuture, err error)
 }
 
 var _ SubnetsClientAPI = (*network.SubnetsClient)(nil)

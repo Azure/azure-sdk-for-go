@@ -1678,6 +1678,16 @@ type AzureFileshareProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -1730,6 +1740,21 @@ func (afpi AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if afpi.CreateMode != "" {
 		objectMap["createMode"] = afpi.CreateMode
+	}
+	if afpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = afpi.DeferredDeleteTimeInUTC
+	}
+	if afpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = afpi.IsScheduledForDeferredDelete
+	}
+	if afpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = afpi.DeferredDeleteTimeRemaining
+	}
+	if afpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = afpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if afpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = afpi.IsRehydrate
 	}
 	if afpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = afpi.ProtectedItemType
@@ -2481,6 +2506,16 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -2542,6 +2577,21 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, er
 	}
 	if aisccvpi.CreateMode != "" {
 		objectMap["createMode"] = aisccvpi.CreateMode
+	}
+	if aisccvpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = aisccvpi.DeferredDeleteTimeInUTC
+	}
+	if aisccvpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = aisccvpi.IsScheduledForDeferredDelete
+	}
+	if aisccvpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = aisccvpi.DeferredDeleteTimeRemaining
+	}
+	if aisccvpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = aisccvpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if aisccvpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = aisccvpi.IsRehydrate
 	}
 	if aisccvpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aisccvpi.ProtectedItemType
@@ -2927,6 +2977,16 @@ type AzureIaaSComputeVMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -2988,6 +3048,21 @@ func (aiscvpi AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aiscvpi.CreateMode != "" {
 		objectMap["createMode"] = aiscvpi.CreateMode
+	}
+	if aiscvpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = aiscvpi.DeferredDeleteTimeInUTC
+	}
+	if aiscvpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = aiscvpi.IsScheduledForDeferredDelete
+	}
+	if aiscvpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = aiscvpi.DeferredDeleteTimeRemaining
+	}
+	if aiscvpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = aiscvpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if aiscvpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = aiscvpi.IsRehydrate
 	}
 	if aiscvpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aiscvpi.ProtectedItemType
@@ -3132,6 +3207,16 @@ type AzureIaaSVMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -3234,6 +3319,21 @@ func (aispi AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aispi.CreateMode != "" {
 		objectMap["createMode"] = aispi.CreateMode
+	}
+	if aispi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = aispi.DeferredDeleteTimeInUTC
+	}
+	if aispi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = aispi.IsScheduledForDeferredDelete
+	}
+	if aispi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = aispi.DeferredDeleteTimeRemaining
+	}
+	if aispi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = aispi.IsDeferredDeleteScheduleUpcoming
+	}
+	if aispi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = aispi.IsRehydrate
 	}
 	if aispi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aispi.ProtectedItemType
@@ -3766,6 +3866,16 @@ type AzureSQLProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -3806,6 +3916,21 @@ func (aspi AzureSQLProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if aspi.CreateMode != "" {
 		objectMap["createMode"] = aspi.CreateMode
+	}
+	if aspi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = aspi.DeferredDeleteTimeInUTC
+	}
+	if aspi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = aspi.IsScheduledForDeferredDelete
+	}
+	if aspi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = aspi.DeferredDeleteTimeRemaining
+	}
+	if aspi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = aspi.IsDeferredDeleteScheduleUpcoming
+	}
+	if aspi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = aspi.IsRehydrate
 	}
 	if aspi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = aspi.ProtectedItemType
@@ -4866,6 +4991,16 @@ type AzureVMWorkloadProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -4978,6 +5113,21 @@ func (avwpi AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if avwpi.CreateMode != "" {
 		objectMap["createMode"] = avwpi.CreateMode
+	}
+	if avwpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = avwpi.DeferredDeleteTimeInUTC
+	}
+	if avwpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = avwpi.IsScheduledForDeferredDelete
+	}
+	if avwpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = avwpi.DeferredDeleteTimeRemaining
+	}
+	if avwpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = avwpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if avwpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = avwpi.IsRehydrate
 	}
 	if avwpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwpi.ProtectedItemType
@@ -5353,6 +5503,16 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -5420,6 +5580,21 @@ func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte
 	}
 	if avwsadpi.CreateMode != "" {
 		objectMap["createMode"] = avwsadpi.CreateMode
+	}
+	if avwsadpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = avwsadpi.DeferredDeleteTimeInUTC
+	}
+	if avwsadpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = avwsadpi.IsScheduledForDeferredDelete
+	}
+	if avwsadpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = avwsadpi.DeferredDeleteTimeRemaining
+	}
+	if avwsadpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = avwsadpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if avwsadpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = avwsadpi.IsRehydrate
 	}
 	if avwsadpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwsadpi.ProtectedItemType
@@ -6090,6 +6265,16 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -6157,6 +6342,21 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byt
 	}
 	if avwshdpi.CreateMode != "" {
 		objectMap["createMode"] = avwshdpi.CreateMode
+	}
+	if avwshdpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = avwshdpi.DeferredDeleteTimeInUTC
+	}
+	if avwshdpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = avwshdpi.IsScheduledForDeferredDelete
+	}
+	if avwshdpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = avwshdpi.DeferredDeleteTimeRemaining
+	}
+	if avwshdpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = avwshdpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if avwshdpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = avwshdpi.IsRehydrate
 	}
 	if avwshdpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwshdpi.ProtectedItemType
@@ -6985,6 +7185,16 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -7052,6 +7262,21 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, er
 	}
 	if avwsdpi.CreateMode != "" {
 		objectMap["createMode"] = avwsdpi.CreateMode
+	}
+	if avwsdpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = avwsdpi.DeferredDeleteTimeInUTC
+	}
+	if avwsdpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = avwsdpi.IsScheduledForDeferredDelete
+	}
+	if avwsdpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = avwsdpi.DeferredDeleteTimeRemaining
+	}
+	if avwsdpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = avwsdpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if avwsdpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = avwsdpi.IsRehydrate
 	}
 	if avwsdpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = avwsdpi.ProtectedItemType
@@ -9827,8 +10052,6 @@ type DPMProtectedItem struct {
 	BackupEngineName *string `json:"backupEngineName,omitempty"`
 	// ProtectionState - Protection state of the backup engine. Possible values include: 'ProtectedItemStateInvalid', 'ProtectedItemStateIRPending', 'ProtectedItemStateProtected', 'ProtectedItemStateProtectionError', 'ProtectedItemStateProtectionStopped', 'ProtectedItemStateProtectionPaused'
 	ProtectionState ProtectedItemState `json:"protectionState,omitempty"`
-	// IsScheduledForDeferredDelete - To check if backup item is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// ExtendedInfo - Extended info of the backup item.
 	ExtendedInfo *DPMProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
@@ -9847,6 +10070,16 @@ type DPMProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -9863,9 +10096,6 @@ func (dpi DPMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if dpi.ProtectionState != "" {
 		objectMap["protectionState"] = dpi.ProtectionState
-	}
-	if dpi.IsScheduledForDeferredDelete != nil {
-		objectMap["isScheduledForDeferredDelete"] = dpi.IsScheduledForDeferredDelete
 	}
 	if dpi.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = dpi.ExtendedInfo
@@ -9893,6 +10123,21 @@ func (dpi DPMProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if dpi.CreateMode != "" {
 		objectMap["createMode"] = dpi.CreateMode
+	}
+	if dpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = dpi.DeferredDeleteTimeInUTC
+	}
+	if dpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = dpi.IsScheduledForDeferredDelete
+	}
+	if dpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = dpi.DeferredDeleteTimeRemaining
+	}
+	if dpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = dpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if dpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = dpi.IsRehydrate
 	}
 	if dpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = dpi.ProtectedItemType
@@ -10693,6 +10938,16 @@ type GenericProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -10742,6 +10997,21 @@ func (gpi GenericProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if gpi.CreateMode != "" {
 		objectMap["createMode"] = gpi.CreateMode
+	}
+	if gpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = gpi.DeferredDeleteTimeInUTC
+	}
+	if gpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = gpi.IsScheduledForDeferredDelete
+	}
+	if gpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = gpi.DeferredDeleteTimeRemaining
+	}
+	if gpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = gpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if gpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = gpi.IsRehydrate
 	}
 	if gpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = gpi.ProtectedItemType
@@ -12343,8 +12613,6 @@ type MabFileFolderProtectedItem struct {
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
 	// ProtectionState - Protected, ProtectionStopped, IRPending or ProtectionError
 	ProtectionState *string `json:"protectionState,omitempty"`
-	// IsScheduledForDeferredDelete - Specifies if the item is scheduled for deferred deletion.
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
 	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
 	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
 	// ExtendedInfo - Additional information with this backup item.
@@ -12365,6 +12633,16 @@ type MabFileFolderProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -12384,9 +12662,6 @@ func (mffpi MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if mffpi.ProtectionState != nil {
 		objectMap["protectionState"] = mffpi.ProtectionState
-	}
-	if mffpi.IsScheduledForDeferredDelete != nil {
-		objectMap["isScheduledForDeferredDelete"] = mffpi.IsScheduledForDeferredDelete
 	}
 	if mffpi.DeferredDeleteSyncTimeInUTC != nil {
 		objectMap["deferredDeleteSyncTimeInUTC"] = mffpi.DeferredDeleteSyncTimeInUTC
@@ -12417,6 +12692,21 @@ func (mffpi MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if mffpi.CreateMode != "" {
 		objectMap["createMode"] = mffpi.CreateMode
+	}
+	if mffpi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = mffpi.DeferredDeleteTimeInUTC
+	}
+	if mffpi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = mffpi.IsScheduledForDeferredDelete
+	}
+	if mffpi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = mffpi.DeferredDeleteTimeRemaining
+	}
+	if mffpi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = mffpi.IsDeferredDeleteScheduleUpcoming
+	}
+	if mffpi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = mffpi.IsRehydrate
 	}
 	if mffpi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = mffpi.ProtectedItemType
@@ -13402,6 +13692,16 @@ type ProtectedItem struct {
 	BackupSetName *string `json:"backupSetName,omitempty"`
 	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
 	CreateMode CreateMode `json:"createMode,omitempty"`
+	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
+	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
+	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
+	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
+	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
+	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
+	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
+	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
+	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
@@ -13514,6 +13814,21 @@ func (pi ProtectedItem) MarshalJSON() ([]byte, error) {
 	}
 	if pi.CreateMode != "" {
 		objectMap["createMode"] = pi.CreateMode
+	}
+	if pi.DeferredDeleteTimeInUTC != nil {
+		objectMap["deferredDeleteTimeInUTC"] = pi.DeferredDeleteTimeInUTC
+	}
+	if pi.IsScheduledForDeferredDelete != nil {
+		objectMap["isScheduledForDeferredDelete"] = pi.IsScheduledForDeferredDelete
+	}
+	if pi.DeferredDeleteTimeRemaining != nil {
+		objectMap["deferredDeleteTimeRemaining"] = pi.DeferredDeleteTimeRemaining
+	}
+	if pi.IsDeferredDeleteScheduleUpcoming != nil {
+		objectMap["isDeferredDeleteScheduleUpcoming"] = pi.IsDeferredDeleteScheduleUpcoming
+	}
+	if pi.IsRehydrate != nil {
+		objectMap["isRehydrate"] = pi.IsRehydrate
 	}
 	if pi.ProtectedItemType != "" {
 		objectMap["protectedItemType"] = pi.ProtectedItemType

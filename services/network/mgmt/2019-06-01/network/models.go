@@ -13726,13 +13726,13 @@ func (fp *FirewallPolicy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// FirewallPolicyFilterRule firewall Policy Filter Rule
+// FirewallPolicyFilterRule firewall Policy Filter Rule.
 type FirewallPolicyFilterRule struct {
-	// Action - The action type of a Filter rule
+	// Action - The action type of a Filter rule.
 	Action *FirewallPolicyFilterRuleAction `json:"action,omitempty"`
 	// RuleConditions - Collection of rule conditions used by a rule.
 	RuleConditions *[]BasicFirewallPolicyRuleCondition `json:"ruleConditions,omitempty"`
-	// Name - Name of the Rule
+	// Name - The name of the rule.
 	Name *string `json:"name,omitempty"`
 	// Priority - Priority of the Firewall Policy Rule resource.
 	Priority *int32 `json:"priority,omitempty"`
@@ -13993,17 +13993,17 @@ func NewFirewallPolicyListResultPage(getNextPage func(context.Context, FirewallP
 	return FirewallPolicyListResultPage{fn: getNextPage}
 }
 
-// FirewallPolicyNatRule firewall Policy NAT Rule
+// FirewallPolicyNatRule firewall Policy NAT Rule.
 type FirewallPolicyNatRule struct {
-	// Action - The action type of a Nat rule, SNAT or DNAT
+	// Action - The action type of a Nat rule.
 	Action *FirewallPolicyNatRuleAction `json:"action,omitempty"`
 	// TranslatedAddress - The translated address for this NAT rule.
 	TranslatedAddress *string `json:"translatedAddress,omitempty"`
 	// TranslatedPort - The translated port for this NAT rule.
 	TranslatedPort *string `json:"translatedPort,omitempty"`
-	// RuleCondition - The match conditions for incoming traffic
+	// RuleCondition - The match conditions for incoming traffic.
 	RuleCondition BasicFirewallPolicyRuleCondition `json:"ruleCondition,omitempty"`
-	// Name - Name of the Rule
+	// Name - The name of the rule.
 	Name *string `json:"name,omitempty"`
 	// Priority - Priority of the Firewall Policy Rule resource.
 	Priority *int32 `json:"priority,omitempty"`
@@ -14140,17 +14140,17 @@ type FirewallPolicyNatRuleAction struct {
 	Type FirewallPolicyNatRuleActionType `json:"type,omitempty"`
 }
 
-// FirewallPolicyPropertiesFormat firewall Policy definition
+// FirewallPolicyPropertiesFormat firewall Policy definition.
 type FirewallPolicyPropertiesFormat struct {
-	// RuleGroups - READ-ONLY; List of references to FirewallPolicyRuleGroups
+	// RuleGroups - READ-ONLY; List of references to FirewallPolicyRuleGroups.
 	RuleGroups *[]SubResource `json:"ruleGroups,omitempty"`
 	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// BasePolicy - The parent firewall policy from which rules are inherited.
 	BasePolicy *SubResource `json:"basePolicy,omitempty"`
-	// Firewalls - READ-ONLY; List of references to Azure Firewalls that this Firewall Policy is associated with
+	// Firewalls - READ-ONLY; List of references to Azure Firewalls that this Firewall Policy is associated with.
 	Firewalls *[]SubResource `json:"firewalls,omitempty"`
-	// ChildPolicies - READ-ONLY; List of references to Child Firewall Policies
+	// ChildPolicies - READ-ONLY; List of references to Child Firewall Policies.
 	ChildPolicies *[]SubResource `json:"childPolicies,omitempty"`
 	// ThreatIntelMode - The operation mode for Threat Intelligence. Possible values include: 'AzureFirewallThreatIntelModeAlert', 'AzureFirewallThreatIntelModeDeny', 'AzureFirewallThreatIntelModeOff'
 	ThreatIntelMode AzureFirewallThreatIntelMode `json:"threatIntelMode,omitempty"`
@@ -14165,7 +14165,7 @@ type BasicFirewallPolicyRule interface {
 
 // FirewallPolicyRule properties of the rule.
 type FirewallPolicyRule struct {
-	// Name - Name of the Rule
+	// Name - The name of the rule.
 	Name *string `json:"name,omitempty"`
 	// Priority - Priority of the Firewall Policy Rule resource.
 	Priority *int32 `json:"priority,omitempty"`
@@ -14352,7 +14352,7 @@ type FirewallPolicyRuleConditionApplicationProtocol struct {
 	Port *int32 `json:"port,omitempty"`
 }
 
-// FirewallPolicyRuleGroup rule Group resource
+// FirewallPolicyRuleGroup rule Group resource.
 type FirewallPolicyRuleGroup struct {
 	autorest.Response `json:"-"`
 	// FirewallPolicyRuleGroupProperties - The properties of the firewall policy rule group.
@@ -26204,7 +26204,7 @@ func (future *RouteTablesUpdateTagsFuture) Result(client RouteTablesClient) (rt 
 	return
 }
 
-// RuleCondition rule condition of type network
+// RuleCondition rule condition of type network.
 type RuleCondition struct {
 	// IPProtocols - Array of FirewallPolicyRuleConditionNetworkProtocols.
 	IPProtocols *[]FirewallPolicyRuleConditionNetworkProtocol `json:"ipProtocols,omitempty"`
@@ -32920,7 +32920,7 @@ type VpnSiteProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IsSecuritySite - IsSecuritySite flag.
 	IsSecuritySite *bool `json:"isSecuritySite,omitempty"`
-	// VpnSiteLinks - List of all vpn site links
+	// VpnSiteLinks - List of all vpn site links.
 	VpnSiteLinks *[]VpnSiteLink `json:"vpnSiteLinks,omitempty"`
 }
 

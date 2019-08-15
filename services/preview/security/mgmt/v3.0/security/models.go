@@ -5822,7 +5822,9 @@ type PathRecommendation struct {
 	ConfigurationStatus ConfigurationStatus1 `json:"configurationStatus,omitempty"`
 }
 
-// Pricing pricing tier will be applied for the scope based on the resource ID
+// Pricing azure Security Center is provided in two pricing tiers: free and standard, with the standard
+// tier available with a trial period. The standard tier offers advanced security capabilities, while the
+// free tier offers basic security features.
 type Pricing struct {
 	autorest.Response `json:"-"`
 	// PricingProperties - Pricing data
@@ -5895,7 +5897,7 @@ func (p *Pricing) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PricingList list of pricing configurations response
+// PricingList list of pricing configurations response.
 type PricingList struct {
 	autorest.Response `json:"-"`
 	// Value - List of pricing configurations

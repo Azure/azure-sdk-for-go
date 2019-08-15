@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -42,10 +43,14 @@ func NewNetworkDataClientWithBaseURI(baseURI string, subscriptionID string, ascL
 
 // Get get the network data on your scanned resource
 // Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// resourceNamespace - the Namespace of the resource.
+// resourceType - the type of the resource.
+// resourceName - name of the resource.
 // scope - scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
 // management group (/providers/Microsoft.Management/managementGroups/mgName).
-// resourceType - the resource type
-func (client NetworkDataClient) Get(ctx context.Context, scope string, resourceType string) (result NetworkData, err error) {
+func (client NetworkDataClient) Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, scope string) (result NetworkData, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.Get")
 		defer func() {
@@ -56,7 +61,17 @@ func (client NetworkDataClient) Get(ctx context.Context, scope string, resourceT
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, scope, resourceType)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.NetworkDataClient", "Get", err.Error())
+	}
+
+	req, err := client.GetPreparer(ctx, resourceGroupName, resourceNamespace, resourceType, resourceName, scope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "Get", nil, "Failure preparing request")
 		return
@@ -78,10 +93,14 @@ func (client NetworkDataClient) Get(ctx context.Context, scope string, resourceT
 }
 
 // GetPreparer prepares the Get request.
-func (client NetworkDataClient) GetPreparer(ctx context.Context, scope string, resourceType string) (*http.Request, error) {
+func (client NetworkDataClient) GetPreparer(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceType": autorest.Encode("path", resourceType),
-		"scope":        autorest.Encode("path", scope),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"resourceName":      autorest.Encode("path", resourceName),
+		"resourceNamespace": autorest.Encode("path", resourceNamespace),
+		"resourceType":      autorest.Encode("path", resourceType),
+		"scope":             autorest.Encode("path", scope),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-01-01-preview"
@@ -92,7 +111,7 @@ func (client NetworkDataClient) GetPreparer(ctx context.Context, scope string, r
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Security/NetworkData/{resourceType}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.Security/NetworkData/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -100,7 +119,7 @@ func (client NetworkDataClient) GetPreparer(ctx context.Context, scope string, r
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkDataClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
@@ -133,6 +152,12 @@ func (client NetworkDataClient) List(ctx context.Context, scope string, expand s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.NetworkDataClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, scope, expand)
 	if err != nil {
@@ -158,7 +183,8 @@ func (client NetworkDataClient) List(ctx context.Context, scope string, expand s
 // ListPreparer prepares the List request.
 func (client NetworkDataClient) ListPreparer(ctx context.Context, scope string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"scope": autorest.Encode("path", scope),
+		"scope":          autorest.Encode("path", scope),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-01-01-preview"
@@ -172,7 +198,7 @@ func (client NetworkDataClient) ListPreparer(ctx context.Context, scope string, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Security/NetworkData", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/NetworkData", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -180,7 +206,7 @@ func (client NetworkDataClient) ListPreparer(ctx context.Context, scope string, 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client NetworkDataClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 

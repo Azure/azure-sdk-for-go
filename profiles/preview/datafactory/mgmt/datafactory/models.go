@@ -321,6 +321,13 @@ const (
 	IntegrationRuntimeUpdateResultSucceed IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultSucceed
 )
 
+type JSONWriteFilePattern = original.JSONWriteFilePattern
+
+const (
+	ArrayOfObjects JSONWriteFilePattern = original.ArrayOfObjects
+	SetOfObjects   JSONWriteFilePattern = original.SetOfObjects
+)
+
 type ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatus
 
 const (
@@ -706,6 +713,7 @@ const (
 	TypeDynamicsSink                 TypeBasicCopySink = original.TypeDynamicsSink
 	TypeFileSystemSink               TypeBasicCopySink = original.TypeFileSystemSink
 	TypeInformixSink                 TypeBasicCopySink = original.TypeInformixSink
+	TypeJSONSink                     TypeBasicCopySink = original.TypeJSONSink
 	TypeMicrosoftAccessSink          TypeBasicCopySink = original.TypeMicrosoftAccessSink
 	TypeOdbcSink                     TypeBasicCopySink = original.TypeOdbcSink
 	TypeOracleSink                   TypeBasicCopySink = original.TypeOracleSink
@@ -761,6 +769,7 @@ const (
 	TypeImpalaSource                   TypeBasicCopySource = original.TypeImpalaSource
 	TypeInformixSource                 TypeBasicCopySource = original.TypeInformixSource
 	TypeJiraSource                     TypeBasicCopySource = original.TypeJiraSource
+	TypeJSONSource                     TypeBasicCopySource = original.TypeJSONSource
 	TypeMagentoSource                  TypeBasicCopySource = original.TypeMagentoSource
 	TypeMariaDBSource                  TypeBasicCopySource = original.TypeMariaDBSource
 	TypeMarketoSource                  TypeBasicCopySource = original.TypeMarketoSource
@@ -854,6 +863,7 @@ const (
 	TypeImpalaObject                   TypeBasicDataset = original.TypeImpalaObject
 	TypeInformixTable                  TypeBasicDataset = original.TypeInformixTable
 	TypeJiraObject                     TypeBasicDataset = original.TypeJiraObject
+	TypeJSON                           TypeBasicDataset = original.TypeJSON
 	TypeMagentoObject                  TypeBasicDataset = original.TypeMagentoObject
 	TypeMariaDBTable                   TypeBasicDataset = original.TypeMariaDBTable
 	TypeMarketoObject                  TypeBasicDataset = original.TypeMarketoObject
@@ -1500,7 +1510,12 @@ type IntegrationRuntimeVNetProperties = original.IntegrationRuntimeVNetPropertie
 type IntegrationRuntimesClient = original.IntegrationRuntimesClient
 type IntegrationRuntimesStartFuture = original.IntegrationRuntimesStartFuture
 type IntegrationRuntimesStopFuture = original.IntegrationRuntimesStopFuture
+type JSONDataset = original.JSONDataset
+type JSONDatasetTypeProperties = original.JSONDatasetTypeProperties
 type JSONFormat = original.JSONFormat
+type JSONSink = original.JSONSink
+type JSONSource = original.JSONSource
+type JSONWriteSettings = original.JSONWriteSettings
 type JiraLinkedService = original.JiraLinkedService
 type JiraLinkedServiceTypeProperties = original.JiraLinkedServiceTypeProperties
 type JiraObjectDataset = original.JiraObjectDataset
@@ -2110,6 +2125,9 @@ func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
 }
 func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
 	return original.PossibleIntegrationRuntimeUpdateResultValues()
+}
+func PossibleJSONWriteFilePatternValues() []JSONWriteFilePattern {
+	return original.PossibleJSONWriteFilePatternValues()
 }
 func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRuntimeNodeStatus {
 	return original.PossibleManagedIntegrationRuntimeNodeStatusValues()

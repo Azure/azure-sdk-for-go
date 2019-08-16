@@ -22441,7 +22441,7 @@ type PrivateEndpoint struct {
 	autorest.Response `json:"-"`
 	// PrivateEndpointProperties - Properties of the private endpoint.
 	*PrivateEndpointProperties `json:"properties,omitempty"`
-	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -22561,6 +22561,10 @@ type PrivateEndpointConnection struct {
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 }
@@ -22607,6 +22611,24 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 				}
 				pec.Name = &name
 			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pec.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				pec.Etag = &etag
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -22628,6 +22650,8 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	// ProvisioningState - The provisioning state of the private endpoint connection. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
 // PrivateEndpointListResult response for the ListPrivateEndpoints API service call.
@@ -22782,8 +22806,8 @@ type PrivateEndpointProperties struct {
 	Subnet *Subnet `json:"subnet,omitempty"`
 	// NetworkInterfaces - READ-ONLY; Gets an array of references to the network interfaces created for this private endpoint.
 	NetworkInterfaces *[]Interface `json:"networkInterfaces,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint. Possible values are: 'Updating', 'Deleting', and 'Failed'.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ProvisioningState - The provisioning state of the private endpoint. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkServiceConnections - A grouping of information about the connection to the remote resource.
 	PrivateLinkServiceConnections *[]PrivateLinkServiceConnection `json:"privateLinkServiceConnections,omitempty"`
 	// ManualPrivateLinkServiceConnections - A grouping of information about the connection to the remote resource. Used when the network admin does not have access to approve connections to the remote resource.
@@ -22847,7 +22871,7 @@ type PrivateLinkService struct {
 	autorest.Response `json:"-"`
 	// PrivateLinkServiceProperties - Properties of the private link service.
 	*PrivateLinkServiceProperties `json:"properties,omitempty"`
-	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
+	// Etag - A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -22966,6 +22990,10 @@ type PrivateLinkServiceConnection struct {
 	*PrivateLinkServiceConnectionProperties `json:"properties,omitempty"`
 	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
 	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 }
@@ -23012,6 +23040,24 @@ func (plsc *PrivateLinkServiceConnection) UnmarshalJSON(body []byte) error {
 				}
 				plsc.Name = &name
 			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				plsc.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				plsc.Etag = &etag
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -23029,6 +23075,8 @@ func (plsc *PrivateLinkServiceConnection) UnmarshalJSON(body []byte) error {
 
 // PrivateLinkServiceConnectionProperties properties of the PrivateLinkServiceConnection.
 type PrivateLinkServiceConnectionProperties struct {
+	// ProvisioningState - The provisioning state of the private link service connection. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkServiceID - The resource id of private link service.
 	PrivateLinkServiceID *string `json:"privateLinkServiceId,omitempty"`
 	// GroupIds - The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to.
@@ -23056,6 +23104,12 @@ type PrivateLinkServiceIPConfiguration struct {
 	*PrivateLinkServiceIPConfigurationProperties `json:"properties,omitempty"`
 	// Name - The name of private link service ip configuration.
 	Name *string `json:"name,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// Type - READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PrivateLinkServiceIPConfiguration.
@@ -23066,6 +23120,9 @@ func (plsic PrivateLinkServiceIPConfiguration) MarshalJSON() ([]byte, error) {
 	}
 	if plsic.Name != nil {
 		objectMap["name"] = plsic.Name
+	}
+	if plsic.ID != nil {
+		objectMap["id"] = plsic.ID
 	}
 	return json.Marshal(objectMap)
 }
@@ -23097,6 +23154,33 @@ func (plsic *PrivateLinkServiceIPConfiguration) UnmarshalJSON(body []byte) error
 				}
 				plsic.Name = &name
 			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				plsic.Etag = &etag
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				plsic.Type = &typeVar
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				plsic.ID = &ID
+			}
 		}
 	}
 
@@ -23111,10 +23195,10 @@ type PrivateLinkServiceIPConfigurationProperties struct {
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	// Subnet - The reference of the subnet resource.
 	Subnet *Subnet `json:"subnet,omitempty"`
-	// PublicIPAddress - The reference of the public IP resource.
-	PublicIPAddress *PublicIPAddress `json:"publicIPAddress,omitempty"`
-	// ProvisioningState - Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// Primary - Whether the ip configuration is primary or not.
+	Primary *bool `json:"primary,omitempty"`
+	// ProvisioningState - The provisioning state of the private link service ip configuration. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateIPAddressVersion - Available from Api-Version 2016-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values include: 'IPv4', 'IPv6'
 	PrivateIPAddressVersion IPVersion `json:"privateIPAddressVersion,omitempty"`
 }
@@ -23273,8 +23357,8 @@ type PrivateLinkServiceProperties struct {
 	IPConfigurations *[]PrivateLinkServiceIPConfiguration `json:"ipConfigurations,omitempty"`
 	// NetworkInterfaces - READ-ONLY; Gets an array of references to the network interfaces created for this private link service.
 	NetworkInterfaces *[]Interface `json:"networkInterfaces,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the private link service. Possible values are: 'Updating', 'Succeeded', and 'Failed'.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ProvisioningState - The provisioning state of the private link service. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateEndpointConnections - An array of list about connections to the private endpoint.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// Visibility - The visibility list of the private link service.
@@ -28103,6 +28187,29 @@ func (future *SubnetsPrepareNetworkPoliciesFuture) Result(client SubnetsClient) 
 	return
 }
 
+// SubnetsUnprepareNetworkPoliciesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SubnetsUnprepareNetworkPoliciesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SubnetsUnprepareNetworkPoliciesFuture) Result(client SubnetsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.SubnetsUnprepareNetworkPoliciesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.SubnetsUnprepareNetworkPoliciesFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // SubResource reference to another subresource.
 type SubResource struct {
 	// ID - Resource ID.
@@ -28301,6 +28408,12 @@ type TunnelConnectionHealth struct {
 	EgressBytesTransferred *int64 `json:"egressBytesTransferred,omitempty"`
 	// LastConnectionEstablishedUtcTime - READ-ONLY; The time at which connection was established in Utc format.
 	LastConnectionEstablishedUtcTime *string `json:"lastConnectionEstablishedUtcTime,omitempty"`
+}
+
+// UnprepareNetworkPoliciesRequest details of UnprepareNetworkPolicies for Subnet.
+type UnprepareNetworkPoliciesRequest struct {
+	// ServiceName - The name of the service for which subnet is being unprepared for.
+	ServiceName *string `json:"serviceName,omitempty"`
 }
 
 // Usage describes network resource usage.

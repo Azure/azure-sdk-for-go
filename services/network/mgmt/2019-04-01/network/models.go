@@ -3595,10 +3595,10 @@ type ApplicationGatewayOnDemandProbe struct {
 	PickHostNameFromBackendHTTPSettings *bool `json:"pickHostNameFromBackendHttpSettings,omitempty"`
 	// Match - Criterion for classifying a healthy probe response.
 	Match *ApplicationGatewayProbeHealthResponseMatch `json:"match,omitempty"`
-	// BackendPoolName - Name of backend pool of application gateway to which probe request will be sent.
-	BackendPoolName *string `json:"backendPoolName,omitempty"`
-	// BackendHTTPSettingName - Name of backend http setting of application gateway to be used for test probe.
-	BackendHTTPSettingName *string `json:"backendHttpSettingName,omitempty"`
+	// BackendAddressPool - Reference of backend pool of application gateway to which probe request will be sent.
+	BackendAddressPool *SubResource `json:"backendAddressPool,omitempty"`
+	// BackendHTTPSettings - Reference of backend http setting of application gateway to be used for test probe.
+	BackendHTTPSettings *SubResource `json:"backendHttpSettings,omitempty"`
 }
 
 // ApplicationGatewayPathRule path rule of URL path map of an application gateway.
@@ -22911,6 +22911,8 @@ type PublicIPPrefixPropertiesFormat struct {
 	IPPrefix *string `json:"ipPrefix,omitempty"`
 	// PublicIPAddresses - The list of all referenced PublicIPAddresses.
 	PublicIPAddresses *[]ReferencedPublicIPAddress `json:"publicIPAddresses,omitempty"`
+	// LoadBalancerFrontendIPConfiguration - READ-ONLY; The reference to load balancer frontend IP configuration associated with the public IP prefix.
+	LoadBalancerFrontendIPConfiguration *SubResource `json:"loadBalancerFrontendIpConfiguration,omitempty"`
 	// ResourceGUID - The resource GUID property of the public IP prefix resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - The provisioning state of the Public IP prefix resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.

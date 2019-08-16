@@ -1287,7 +1287,6 @@ type CommonDataServiceForAppsLinkedServiceTypeProperties = original.CommonDataSe
 type CommonDataServiceForAppsSink = original.CommonDataServiceForAppsSink
 type CommonDataServiceForAppsSource = original.CommonDataServiceForAppsSource
 type ComponentSetup = original.ComponentSetup
-type ComponentSetupTypeProperties = original.ComponentSetupTypeProperties
 type ConcurLinkedService = original.ConcurLinkedService
 type ConcurLinkedServiceTypeProperties = original.ConcurLinkedServiceTypeProperties
 type ConcurObjectDataset = original.ConcurObjectDataset

@@ -610,15 +610,15 @@ func PossibleTaskTypeValues() []TaskType {
 type Type string
 
 const (
+	// TypeConnectionInfo ...
+	TypeConnectionInfo Type = "ConnectionInfo"
 	// TypeSQLConnectionInfo ...
 	TypeSQLConnectionInfo Type = "SqlConnectionInfo"
-	// TypeUnknown ...
-	TypeUnknown Type = "Unknown"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeSQLConnectionInfo, TypeUnknown}
+	return []Type{TypeConnectionInfo, TypeSQLConnectionInfo}
 }
 
 // UpdateActionType enumerates the values for update action type.
@@ -723,7 +723,7 @@ type ConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -766,7 +766,7 @@ func unmarshalBasicConnectionInfoArray(body []byte) ([]BasicConnectionInfo, erro
 
 // MarshalJSON is the custom marshaler for ConnectionInfo.
 func (ci ConnectionInfo) MarshalJSON() ([]byte, error) {
-	ci.Type = TypeUnknown
+	ci.Type = TypeConnectionInfo
 	objectMap := make(map[string]interface{})
 	if ci.UserName != nil {
 		objectMap["userName"] = ci.UserName
@@ -4941,7 +4941,7 @@ type SQLConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 

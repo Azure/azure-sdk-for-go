@@ -495,11 +495,11 @@ const (
 type Type = original.Type
 
 const (
+	TypeConnectionInfo           Type = original.TypeConnectionInfo
 	TypeMiSQLConnectionInfo      Type = original.TypeMiSQLConnectionInfo
 	TypeMySQLConnectionInfo      Type = original.TypeMySQLConnectionInfo
 	TypePostgreSQLConnectionInfo Type = original.TypePostgreSQLConnectionInfo
 	TypeSQLConnectionInfo        Type = original.TypeSQLConnectionInfo
-	TypeUnknown                  Type = original.TypeUnknown
 )
 
 type UpdateActionType = original.UpdateActionType

@@ -1010,6 +1010,8 @@ func PossibleTaskTypeValues() []TaskType {
 type Type string
 
 const (
+	// TypeConnectionInfo ...
+	TypeConnectionInfo Type = "ConnectionInfo"
 	// TypeMiSQLConnectionInfo ...
 	TypeMiSQLConnectionInfo Type = "MiSqlConnectionInfo"
 	// TypeMySQLConnectionInfo ...
@@ -1018,13 +1020,11 @@ const (
 	TypePostgreSQLConnectionInfo Type = "PostgreSqlConnectionInfo"
 	// TypeSQLConnectionInfo ...
 	TypeSQLConnectionInfo Type = "SqlConnectionInfo"
-	// TypeUnknown ...
-	TypeUnknown Type = "Unknown"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeMiSQLConnectionInfo, TypeMySQLConnectionInfo, TypePostgreSQLConnectionInfo, TypeSQLConnectionInfo, TypeUnknown}
+	return []Type{TypeConnectionInfo, TypeMiSQLConnectionInfo, TypeMySQLConnectionInfo, TypePostgreSQLConnectionInfo, TypeSQLConnectionInfo}
 }
 
 // UpdateActionType enumerates the values for update action type.
@@ -1266,7 +1266,7 @@ type ConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeConnectionInfo', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -1321,7 +1321,7 @@ func unmarshalBasicConnectionInfoArray(body []byte) ([]BasicConnectionInfo, erro
 
 // MarshalJSON is the custom marshaler for ConnectionInfo.
 func (ci ConnectionInfo) MarshalJSON() ([]byte, error) {
-	ci.Type = TypeUnknown
+	ci.Type = TypeConnectionInfo
 	objectMap := make(map[string]interface{})
 	if ci.UserName != nil {
 		objectMap["userName"] = ci.UserName
@@ -9500,7 +9500,7 @@ type MiSQLConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeConnectionInfo', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -9563,7 +9563,7 @@ type MySQLConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeConnectionInfo', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -9732,7 +9732,7 @@ type PostgreSQLConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeConnectionInfo', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -11837,7 +11837,7 @@ type SQLConnectionInfo struct {
 	UserName *string `json:"userName,omitempty"`
 	// Password - Password credential.
 	Password *string `json:"password,omitempty"`
-	// Type - Possible values include: 'TypeUnknown', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
+	// Type - Possible values include: 'TypeConnectionInfo', 'TypeMiSQLConnectionInfo', 'TypePostgreSQLConnectionInfo', 'TypeMySQLConnectionInfo', 'TypeSQLConnectionInfo'
 	Type Type `json:"type,omitempty"`
 }
 

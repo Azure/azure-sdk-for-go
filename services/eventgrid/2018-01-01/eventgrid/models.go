@@ -163,6 +163,62 @@ type AppConfigurationKeyValueModifiedEventData struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// CertificateExpired schema of the Data property of an EventGridEvent for an CertificateExpired event.
+type CertificateExpired struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
+}
+
+// CertificateNearExpiry schema of the Data property of an EventGridEvent for an CertificateNearExpiry
+// event.
+type CertificateNearExpiry struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
+}
+
+// CertificateNewVersionCreated schema of the Data property of an EventGridEvent for an
+// CertificateNewVersionCreated event.
+type CertificateNewVersionCreated struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
+}
+
 // ContainerRegistryArtifactEventData the content of the event request message.
 type ContainerRegistryArtifactEventData struct {
 	// ID - The event ID.
@@ -549,6 +605,60 @@ func (ihdted IotHubDeviceTelemetryEventData) MarshalJSON() ([]byte, error) {
 		objectMap["systemProperties"] = ihdted.SystemProperties
 	}
 	return json.Marshal(objectMap)
+}
+
+// KeyExpired schema of the Data property of an EventGridEvent for an KeyExpired event.
+type KeyExpired struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
+}
+
+// KeyNearExpiry schema of the Data property of an EventGridEvent for an KeyNearExpiry event.
+type KeyNearExpiry struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
+}
+
+// KeyNewVersionCreated schema of the Data property of an EventGridEvent for an KeyNewVersionCreated event.
+type KeyNewVersionCreated struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
 }
 
 // MapsGeofenceEnteredEventData schema of the Data property of an EventGridEvent for a
@@ -1945,6 +2055,61 @@ type ResourceWriteSuccessData struct {
 	CorrelationID *string `json:"correlationId,omitempty"`
 	// HTTPRequest - The details of the operation.
 	HTTPRequest *string `json:"httpRequest,omitempty"`
+}
+
+// SecretExpired schema of the Data property of an EventGridEvent for an SecretExpired event.
+type SecretExpired struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
+}
+
+// SecretNearExpiry schema of the Data property of an EventGridEvent for an SecretNearExpiry event.
+type SecretNearExpiry struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
+}
+
+// SecretNewVersionCreated schema of the Data property of an EventGridEvent for an SecretNewVersionCreated
+// event.
+type SecretNewVersionCreated struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
 }
 
 // ServiceBusActiveMessagesAvailableWithNoListenersEventData schema of the Data property of an

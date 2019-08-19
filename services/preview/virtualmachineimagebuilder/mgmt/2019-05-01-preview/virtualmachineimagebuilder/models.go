@@ -87,27 +87,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Creating, Deleting, Failed, Succeeded, Updating}
 }
 
-// ProvisioningState1 enumerates the values for provisioning state 1.
-type ProvisioningState1 string
-
-const (
-	// ProvisioningState1Creating ...
-	ProvisioningState1Creating ProvisioningState1 = "Creating"
-	// ProvisioningState1Deleting ...
-	ProvisioningState1Deleting ProvisioningState1 = "Deleting"
-	// ProvisioningState1Failed ...
-	ProvisioningState1Failed ProvisioningState1 = "Failed"
-	// ProvisioningState1Succeeded ...
-	ProvisioningState1Succeeded ProvisioningState1 = "Succeeded"
-	// ProvisioningState1Updating ...
-	ProvisioningState1Updating ProvisioningState1 = "Updating"
-)
-
-// PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
-func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return []ProvisioningState1{ProvisioningState1Creating, ProvisioningState1Deleting, ProvisioningState1Failed, ProvisioningState1Succeeded, ProvisioningState1Updating}
-}
-
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
@@ -246,9 +225,10 @@ type APIErrorBase struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ImageTemplate ...
+// ImageTemplate image template is an ARM resource managed by Microsoft.VirtualMachineImages provider
 type ImageTemplate struct {
-	autorest.Response        `json:"-"`
+	autorest.Response `json:"-"`
+	// ImageTemplateProperties - The properties of the image template
 	*ImageTemplateProperties `json:"properties,omitempty"`
 	// Identity - The identity of the image template, if configured.
 	Identity *ImageTemplateIdentity `json:"identity,omitempty"`
@@ -360,7 +340,7 @@ func (it *ImageTemplate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BasicImageTemplateCustomizer ...
+// BasicImageTemplateCustomizer describes a unit of image customization
 type BasicImageTemplateCustomizer interface {
 	AsImageTemplateShellCustomizer() (*ImageTemplateShellCustomizer, bool)
 	AsImageTemplateRestartCustomizer() (*ImageTemplateRestartCustomizer, bool)
@@ -369,7 +349,7 @@ type BasicImageTemplateCustomizer interface {
 	AsImageTemplateCustomizer() (*ImageTemplateCustomizer, bool)
 }
 
-// ImageTemplateCustomizer ...
+// ImageTemplateCustomizer describes a unit of image customization
 type ImageTemplateCustomizer struct {
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
@@ -720,7 +700,7 @@ func (itis ImageTemplateIsoSource) AsBasicImageTemplateSource() (BasicImageTempl
 	return &itis, true
 }
 
-// ImageTemplateLastRunStatus ...
+// ImageTemplateLastRunStatus describes the latest status of running an image template
 type ImageTemplateLastRunStatus struct {
 	// StartTime - Start time of the last run (UTC)
 	StartTime *date.Time `json:"startTime,omitempty"`
@@ -734,10 +714,11 @@ type ImageTemplateLastRunStatus struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ImageTemplateListResult ...
+// ImageTemplateListResult the result of List image templates operation
 type ImageTemplateListResult struct {
 	autorest.Response `json:"-"`
-	Value             *[]ImageTemplate `json:"value,omitempty"`
+	// Value - An array of image templates
+	Value *[]ImageTemplate `json:"value,omitempty"`
 	// NextLink - The continuation token.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -1126,7 +1107,7 @@ func (itpsc ImageTemplatePowerShellCustomizer) AsBasicImageTemplateCustomizer() 
 	return &itpsc, true
 }
 
-// ImageTemplateProperties ...
+// ImageTemplateProperties describes the properties of an image template
 type ImageTemplateProperties struct {
 	// Source - Specifies the properties used to describe the source image.
 	Source BasicImageTemplateSource `json:"source,omitempty"`
@@ -1140,8 +1121,10 @@ type ImageTemplateProperties struct {
 	ProvisioningError *ProvisioningError `json:"provisioningError,omitempty"`
 	// LastRunStatus - READ-ONLY; State of 'run' that is currently executing or was last executed.
 	LastRunStatus *ImageTemplateLastRunStatus `json:"lastRunStatus,omitempty"`
-	// BuildTimeoutInMinutes - Maximum duration to wait while building the image template. Omit or specify 0 to use the default (60 minutes).
+	// BuildTimeoutInMinutes - Maximum duration to wait while building the image template. Omit or specify 0 to use the default (4 hours).
 	BuildTimeoutInMinutes *int32 `json:"buildTimeoutInMinutes,omitempty"`
+	// VMProfile - Describes how virtual machine is set up to build images
+	VMProfile *ImageTemplateVMProfile `json:"vmProfile,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for ImageTemplateProperties struct.
@@ -1212,6 +1195,15 @@ func (itp *ImageTemplateProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				itp.BuildTimeoutInMinutes = &buildTimeoutInMinutes
+			}
+		case "vmProfile":
+			if v != nil {
+				var VMProfile ImageTemplateVMProfile
+				err = json.Unmarshal(*v, &VMProfile)
+				if err != nil {
+					return err
+				}
+				itp.VMProfile = &VMProfile
 			}
 		}
 	}
@@ -1289,7 +1281,8 @@ func (itrc ImageTemplateRestartCustomizer) AsBasicImageTemplateCustomizer() (Bas
 // ImageTemplateSharedImageDistributor distribute via Shared Image Gallery.
 type ImageTemplateSharedImageDistributor struct {
 	// GalleryImageID - Resource Id of the Shared Image Gallery image
-	GalleryImageID     *string   `json:"galleryImageId,omitempty"`
+	GalleryImageID *string `json:"galleryImageId,omitempty"`
+	// ReplicationRegions - A list of regions that the image will be replicated to
 	ReplicationRegions *[]string `json:"replicationRegions,omitempty"`
 	// RunOutputName - The name to be used for the associated RunOutput.
 	RunOutputName *string `json:"runOutputName,omitempty"`
@@ -1460,7 +1453,7 @@ func (itsc ImageTemplateShellCustomizer) AsBasicImageTemplateCustomizer() (Basic
 	return &itsc, true
 }
 
-// BasicImageTemplateSource ...
+// BasicImageTemplateSource describes a virtual machine image source for building, customizing and distributing
 type BasicImageTemplateSource interface {
 	AsImageTemplateIsoSource() (*ImageTemplateIsoSource, bool)
 	AsImageTemplatePlatformImageSource() (*ImageTemplatePlatformImageSource, bool)
@@ -1469,7 +1462,7 @@ type BasicImageTemplateSource interface {
 	AsImageTemplateSource() (*ImageTemplateSource, bool)
 }
 
-// ImageTemplateSource ...
+// ImageTemplateSource describes a virtual machine image source for building, customizing and distributing
 type ImageTemplateSource struct {
 	// Type - Possible values include: 'TypeImageTemplateSource', 'TypeISO', 'TypePlatformImage', 'TypeManagedImage', 'TypeSharedImageVersion'
 	Type Type `json:"type,omitempty"`
@@ -1633,6 +1626,12 @@ func (itvd ImageTemplateVhdDistributor) AsImageTemplateDistributor() (*ImageTemp
 // AsBasicImageTemplateDistributor is the BasicImageTemplateDistributor implementation for ImageTemplateVhdDistributor.
 func (itvd ImageTemplateVhdDistributor) AsBasicImageTemplateDistributor() (BasicImageTemplateDistributor, bool) {
 	return &itvd, true
+}
+
+// ImageTemplateVMProfile describes the virtual machine used to build, customize and capture images
+type ImageTemplateVMProfile struct {
+	// VMSize - Size of the virtual machine used to build, customize and capture images. Omit or specify empty string to use the default (Standard_D1_v2).
+	VMSize *string `json:"vmSize,omitempty"`
 }
 
 // InnerError inner error details.
@@ -1805,7 +1804,7 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 	return OperationListResultPage{fn: getNextPage}
 }
 
-// ProvisioningError ...
+// ProvisioningError describes the error happened when create or update an image template
 type ProvisioningError struct {
 	// ProvisioningErrorCode - Error code of the provisioning failure. Possible values include: 'BadSourceType', 'BadPIRSource', 'BadISOSource', 'BadManagedImageSource', 'BadSharedImageVersionSource', 'BadCustomizerType', 'UnsupportedCustomizerType', 'NoCustomizerScript', 'BadDistributeType', 'BadSharedImageDistribute', 'ServerError', 'Other'
 	ProvisioningErrorCode ProvisioningErrorCode `json:"provisioningErrorCode,omitempty"`
@@ -1841,7 +1840,8 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 
 // RunOutput represents an output that was created by running an image template.
 type RunOutput struct {
-	autorest.Response    `json:"-"`
+	autorest.Response `json:"-"`
+	// RunOutputProperties - The properties of the run output
 	*RunOutputProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -1914,10 +1914,11 @@ func (ro *RunOutput) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RunOutputCollection ...
+// RunOutputCollection the result of List run outputs operation
 type RunOutputCollection struct {
 	autorest.Response `json:"-"`
-	Value             *[]RunOutput `json:"value,omitempty"`
+	// Value - An array of run outputs
+	Value *[]RunOutput `json:"value,omitempty"`
 	// NextLink - The continuation token.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -2059,14 +2060,14 @@ func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputColle
 	return RunOutputCollectionPage{fn: getNextPage}
 }
 
-// RunOutputProperties ...
+// RunOutputProperties describes the properties of a run output
 type RunOutputProperties struct {
 	// ArtifactID - The resource id of the artifact.
 	ArtifactID *string `json:"artifactId,omitempty"`
 	// ArtifactURI - The location URI of the artifact.
 	ArtifactURI *string `json:"artifactUri,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Updating', 'ProvisioningState1Succeeded', 'ProvisioningState1Failed', 'ProvisioningState1Deleting'
-	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
 // SubResource the Sub Resource model definition.

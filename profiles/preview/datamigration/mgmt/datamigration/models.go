@@ -83,9 +83,9 @@ const (
 type CommandType = original.CommandType
 
 const (
+	CommandTypeCommandProperties                    CommandType = original.CommandTypeCommandProperties
 	CommandTypeMigrateSQLServerAzureDbSQLMiComplete CommandType = original.CommandTypeMigrateSQLServerAzureDbSQLMiComplete
 	CommandTypeMigrateSyncCompleteDatabase          CommandType = original.CommandTypeMigrateSyncCompleteDatabase
-	CommandTypeUnknown                              CommandType = original.CommandTypeUnknown
 )
 
 type DatabaseCompatLevel = original.DatabaseCompatLevel
@@ -486,7 +486,7 @@ const (
 	TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS                TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbMISyncLRS
 	TaskTypeMigrateSQLServerAzureSQLDbSync                     TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbSync
 	TaskTypeMigrateSQLServerSQLDb                              TaskType = original.TaskTypeMigrateSQLServerSQLDb
-	TaskTypeUnknown                                            TaskType = original.TaskTypeUnknown
+	TaskTypeProjectTaskProperties                              TaskType = original.TaskTypeProjectTaskProperties
 	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI        TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI
 	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS
 	TaskTypeValidateMigrationInputSQLServerSQLDbSync           TaskType = original.TaskTypeValidateMigrationInputSQLServerSQLDbSync

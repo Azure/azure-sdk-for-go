@@ -84,11 +84,11 @@ type CommandType = original.CommandType
 
 const (
 	CommandTypeCancel                               CommandType = original.CommandTypeCancel
+	CommandTypeCommandProperties                    CommandType = original.CommandTypeCommandProperties
 	CommandTypeFinish                               CommandType = original.CommandTypeFinish
 	CommandTypeMigrateSQLServerAzureDbSQLMiComplete CommandType = original.CommandTypeMigrateSQLServerAzureDbSQLMiComplete
 	CommandTypeMigrateSyncCompleteDatabase          CommandType = original.CommandTypeMigrateSyncCompleteDatabase
 	CommandTypeRestart                              CommandType = original.CommandTypeRestart
-	CommandTypeUnknown                              CommandType = original.CommandTypeUnknown
 )
 
 type DatabaseCompatLevel = original.DatabaseCompatLevel
@@ -618,10 +618,10 @@ const (
 	TaskTypeMigrateSQLServerAzureSQLDbSync                     TaskType = original.TaskTypeMigrateSQLServerAzureSQLDbSync
 	TaskTypeMigrateSQLServerSQLDb                              TaskType = original.TaskTypeMigrateSQLServerSQLDb
 	TaskTypeMigrateSsis                                        TaskType = original.TaskTypeMigrateSsis
+	TaskTypeProjectTaskProperties                              TaskType = original.TaskTypeProjectTaskProperties
 	TaskTypeServiceCheckOCI                                    TaskType = original.TaskTypeServiceCheckOCI
 	TaskTypeServiceInstallOCI                                  TaskType = original.TaskTypeServiceInstallOCI
 	TaskTypeServiceUploadOCI                                   TaskType = original.TaskTypeServiceUploadOCI
-	TaskTypeUnknown                                            TaskType = original.TaskTypeUnknown
 	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI        TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI
 	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS TaskType = original.TaskTypeValidateMigrationInputSQLServerAzureSQLDbMISyncLRS
 	TaskTypeValidateMigrationInputSQLServerSQLDbSync           TaskType = original.TaskTypeValidateMigrationInputSQLServerSQLDbSync

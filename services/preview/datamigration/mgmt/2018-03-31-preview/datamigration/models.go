@@ -595,15 +595,15 @@ const (
 	TaskTypeMigrateSQLServerAzureSQLDbMI TaskType = "Migrate.SqlServer.AzureSqlDbMI"
 	// TaskTypeMigrateSQLServerSQLDb ...
 	TaskTypeMigrateSQLServerSQLDb TaskType = "Migrate.SqlServer.SqlDb"
-	// TaskTypeUnknown ...
-	TaskTypeUnknown TaskType = "Unknown"
+	// TaskTypeProjectTaskProperties ...
+	TaskTypeProjectTaskProperties TaskType = "ProjectTaskProperties"
 	// TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI ...
 	TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI TaskType = "ValidateMigrationInput.SqlServer.AzureSqlDbMI"
 )
 
 // PossibleTaskTypeValues returns an array of possible values for the TaskType const type.
 func PossibleTaskTypeValues() []TaskType {
-	return []TaskType{TaskTypeConnectToSourceSQLServer, TaskTypeConnectToTargetAzureSQLDbMI, TaskTypeConnectToTargetSQLDb, TaskTypeGetUserTablesSQL, TaskTypeMigrateSQLServerAzureSQLDbMI, TaskTypeMigrateSQLServerSQLDb, TaskTypeUnknown, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI}
+	return []TaskType{TaskTypeConnectToSourceSQLServer, TaskTypeConnectToTargetAzureSQLDbMI, TaskTypeConnectToTargetSQLDb, TaskTypeGetUserTablesSQL, TaskTypeMigrateSQLServerAzureSQLDbMI, TaskTypeMigrateSQLServerSQLDb, TaskTypeProjectTaskProperties, TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI}
 }
 
 // Type enumerates the values for type.
@@ -1167,7 +1167,7 @@ type ConnectToSourceSQLServerTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -1325,7 +1325,7 @@ type ConnectToTargetSQLDbTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -1422,7 +1422,7 @@ type ConnectToTargetSQLMITaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -1739,7 +1739,7 @@ type GetUserTablesSQLTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -2237,7 +2237,7 @@ type MigrateSQLServerSQLDbTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -2858,7 +2858,7 @@ type MigrateSQLServerSQLMITaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3574,7 +3574,7 @@ type ProjectTaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 
@@ -3641,7 +3641,7 @@ func unmarshalBasicProjectTaskPropertiesArray(body []byte) ([]BasicProjectTaskPr
 
 // MarshalJSON is the custom marshaler for ProjectTaskProperties.
 func (ptp ProjectTaskProperties) MarshalJSON() ([]byte, error) {
-	ptp.TaskType = TaskTypeUnknown
+	ptp.TaskType = TaskTypeProjectTaskProperties
 	objectMap := make(map[string]interface{})
 	if ptp.TaskType != "" {
 		objectMap["taskType"] = ptp.TaskType
@@ -5222,7 +5222,7 @@ type ValidateMigrationInputSQLServerSQLMITaskProperties struct {
 	Errors *[]ODataError `json:"errors,omitempty"`
 	// State - READ-ONLY; The state of the task. This is ignored if submitted. Possible values include: 'TaskStateUnknown', 'TaskStateQueued', 'TaskStateRunning', 'TaskStateCanceled', 'TaskStateSucceeded', 'TaskStateFailed', 'TaskStateFailedInputValidation', 'TaskStateFaulted'
 	State TaskState `json:"state,omitempty"`
-	// TaskType - Possible values include: 'TaskTypeUnknown', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
+	// TaskType - Possible values include: 'TaskTypeProjectTaskProperties', 'TaskTypeValidateMigrationInputSQLServerAzureSQLDbMI', 'TaskTypeMigrateSQLServerSQLDb', 'TaskTypeMigrateSQLServerAzureSQLDbMI', 'TaskTypeGetUserTablesSQL', 'TaskTypeConnectToTargetSQLDb', 'TaskTypeConnectToTargetAzureSQLDbMI', 'TaskTypeConnectToSourceSQLServer'
 	TaskType TaskType `json:"taskType,omitempty"`
 }
 

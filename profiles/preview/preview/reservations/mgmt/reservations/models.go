@@ -175,15 +175,18 @@ type Patch = original.Patch
 type PatchProperties = original.PatchProperties
 type PatchPropertiesRenewProperties = original.PatchPropertiesRenewProperties
 type Properties = original.Properties
+type PropertiesType = original.PropertiesType
 type PurchaseRequest = original.PurchaseRequest
 type PurchaseRequestProperties = original.PurchaseRequestProperties
 type PurchaseRequestPropertiesReservedResourceProperties = original.PurchaseRequestPropertiesReservedResourceProperties
 type RenewPropertiesResponse = original.RenewPropertiesResponse
 type RenewPropertiesResponseBillingCurrencyTotal = original.RenewPropertiesResponseBillingCurrencyTotal
 type RenewPropertiesResponsePricingCurrencyTotal = original.RenewPropertiesResponsePricingCurrencyTotal
+type ReservationAvailablescopesFuture = original.ReservationAvailablescopesFuture
 type ReservationMergeFuture = original.ReservationMergeFuture
 type ReservationUpdateFuture = original.ReservationUpdateFuture
 type Response = original.Response
+type ScopeProperties = original.ScopeProperties
 type SkuName = original.SkuName
 type SkuProperty = original.SkuProperty
 type SkuRestriction = original.SkuRestriction
@@ -191,6 +194,7 @@ type SplitFuture = original.SplitFuture
 type SplitProperties = original.SplitProperties
 type SplitPropertiesType = original.SplitPropertiesType
 type SplitRequest = original.SplitRequest
+type SubscriptionScopeProperties = original.SubscriptionScopeProperties
 
 func New() BaseClient {
 	return original.New()

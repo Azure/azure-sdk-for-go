@@ -26,22 +26,10 @@ import (
 type BaseClientAPI interface {
 	GetAppliedReservationList(ctx context.Context, subscriptionID string) (result reservations.AppliedReservations, err error)
 	GetCatalog(ctx context.Context, subscriptionID string, reservedResourceType string, location string) (result reservations.ListCatalog, err error)
+	GetItemAvailablescopes(ctx context.Context, reservationOrderID string, reservationID string, body []string) (result reservations.GetItemAvailablescopesFuture, err error)
 }
 
 var _ BaseClientAPI = (*reservations.BaseClient)(nil)
-
-// ClientAPI contains the set of methods on the Client type.
-type ClientAPI interface {
-	Availablescopes(ctx context.Context, reservationOrderID string, reservationID string, body []string) (result reservations.ReservationAvailablescopesFuture, err error)
-	Get(ctx context.Context, reservationID string, reservationOrderID string, expand string) (result reservations.Response, err error)
-	List(ctx context.Context, reservationOrderID string) (result reservations.ListPage, err error)
-	ListRevisions(ctx context.Context, reservationID string, reservationOrderID string) (result reservations.ListPage, err error)
-	Merge(ctx context.Context, reservationOrderID string, body reservations.MergeRequest) (result reservations.ReservationMergeFuture, err error)
-	Split(ctx context.Context, reservationOrderID string, body reservations.SplitRequest) (result reservations.SplitFuture, err error)
-	Update(ctx context.Context, reservationOrderID string, reservationID string, parameters reservations.Patch) (result reservations.ReservationUpdateFuture, err error)
-}
-
-var _ ClientAPI = (*reservations.Client)(nil)
 
 // OrderClientAPI contains the set of methods on the OrderClient type.
 type OrderClientAPI interface {
@@ -52,6 +40,18 @@ type OrderClientAPI interface {
 }
 
 var _ OrderClientAPI = (*reservations.OrderClient)(nil)
+
+// ClientAPI contains the set of methods on the Client type.
+type ClientAPI interface {
+	Get(ctx context.Context, reservationID string, reservationOrderID string, expand string) (result reservations.Response, err error)
+	List(ctx context.Context, reservationOrderID string) (result reservations.ListPage, err error)
+	ListRevisions(ctx context.Context, reservationID string, reservationOrderID string) (result reservations.ListPage, err error)
+	Merge(ctx context.Context, reservationOrderID string, body reservations.MergeRequest) (result reservations.ReservationMergeFuture, err error)
+	Split(ctx context.Context, reservationOrderID string, body reservations.SplitRequest) (result reservations.SplitFuture, err error)
+	Update(ctx context.Context, reservationOrderID string, reservationID string, parameters reservations.Patch) (result reservations.ReservationUpdateFuture, err error)
+}
+
+var _ ClientAPI = (*reservations.Client)(nil)
 
 // OperationClientAPI contains the set of methods on the OperationClient type.
 type OperationClientAPI interface {

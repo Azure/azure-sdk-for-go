@@ -22646,11 +22646,11 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 
 // PrivateEndpointConnectionProperties properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
-	// PrivateEndpoint - The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	// PrivateEndpoint - The reference to the private endpoint.
+	PrivateEndpoint *SubResource `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
-	// ProvisioningState - The provisioning state of the private endpoint connection. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint connection. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -22803,10 +22803,10 @@ func NewPrivateEndpointListResultPage(getNextPage func(context.Context, PrivateE
 // PrivateEndpointProperties properties of the private endpoint.
 type PrivateEndpointProperties struct {
 	// Subnet - The ID of the subnet from which the private IP will be allocated.
-	Subnet *Subnet `json:"subnet,omitempty"`
-	// NetworkInterfaces - READ-ONLY; Gets an array of references to the network interfaces created for this private endpoint.
-	NetworkInterfaces *[]Interface `json:"networkInterfaces,omitempty"`
-	// ProvisioningState - The provisioning state of the private endpoint. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	Subnet *SubResource `json:"subnet,omitempty"`
+	// NetworkInterfaces - READ-ONLY; An array of references to the network interfaces created for this private endpoint.
+	NetworkInterfaces *[]SubResource `json:"networkInterfaces,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkServiceConnections - A grouping of information about the connection to the remote resource.
 	PrivateLinkServiceConnections *[]PrivateLinkServiceConnection `json:"privateLinkServiceConnections,omitempty"`
@@ -23075,7 +23075,7 @@ func (plsc *PrivateLinkServiceConnection) UnmarshalJSON(body []byte) error {
 
 // PrivateLinkServiceConnectionProperties properties of the PrivateLinkServiceConnection.
 type PrivateLinkServiceConnectionProperties struct {
-	// ProvisioningState - The provisioning state of the private link service connection. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the private link service connection. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkServiceID - The resource id of private link service.
 	PrivateLinkServiceID *string `json:"privateLinkServiceId,omitempty"`
@@ -23193,11 +23193,11 @@ type PrivateLinkServiceIPConfigurationProperties struct {
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
 	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
-	// Subnet - The reference of the subnet resource.
-	Subnet *Subnet `json:"subnet,omitempty"`
+	// Subnet - The reference to the subnet resource.
+	Subnet *SubResource `json:"subnet,omitempty"`
 	// Primary - Whether the ip configuration is primary or not.
 	Primary *bool `json:"primary,omitempty"`
-	// ProvisioningState - The provisioning state of the private link service ip configuration. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the private link service ip configuration. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateIPAddressVersion - Available from Api-Version 2016-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values include: 'IPv4', 'IPv6'
 	PrivateIPAddressVersion IPVersion `json:"privateIPAddressVersion,omitempty"`
@@ -23352,12 +23352,12 @@ func NewPrivateLinkServiceListResultPage(getNextPage func(context.Context, Priva
 // PrivateLinkServiceProperties properties of the private link service.
 type PrivateLinkServiceProperties struct {
 	// LoadBalancerFrontendIPConfigurations - An array of references to the load balancer IP configurations.
-	LoadBalancerFrontendIPConfigurations *[]FrontendIPConfiguration `json:"loadBalancerFrontendIpConfigurations,omitempty"`
-	// IPConfigurations - An array of references to the private link service IP configuration.
+	LoadBalancerFrontendIPConfigurations *[]SubResource `json:"loadBalancerFrontendIpConfigurations,omitempty"`
+	// IPConfigurations - An array of private link service IP configurations.
 	IPConfigurations *[]PrivateLinkServiceIPConfiguration `json:"ipConfigurations,omitempty"`
-	// NetworkInterfaces - READ-ONLY; Gets an array of references to the network interfaces created for this private link service.
-	NetworkInterfaces *[]Interface `json:"networkInterfaces,omitempty"`
-	// ProvisioningState - The provisioning state of the private link service. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// NetworkInterfaces - READ-ONLY; An array of references to the network interfaces created for this private link service.
+	NetworkInterfaces *[]SubResource `json:"networkInterfaces,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the private link service. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateEndpointConnections - An array of list about connections to the private endpoint.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`

@@ -409,35 +409,6 @@ type ExtendedStatusInfo struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// GetItemAvailablescopesFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type GetItemAvailablescopesFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *GetItemAvailablescopesFuture) Result(client BaseClient) (p Properties, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.GetItemAvailablescopesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("reservations.GetItemAvailablescopesFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
-		p, err = client.GetItemAvailablescopesResponder(p.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "reservations.GetItemAvailablescopesFuture", "Result", p.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // List ...
 type List struct {
 	autorest.Response `json:"-"`
@@ -1293,6 +1264,35 @@ type RenewPropertiesResponseBillingCurrencyTotal struct {
 type RenewPropertiesResponsePricingCurrencyTotal struct {
 	CurrencyCode *string  `json:"currencyCode,omitempty"`
 	Amount       *float64 `json:"amount,omitempty"`
+}
+
+// ReservationAvailableScopesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ReservationAvailableScopesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReservationAvailableScopesFuture) Result(client Client) (p Properties, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("reservations.ReservationAvailableScopesFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+		p, err = client.AvailableScopesResponder(p.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", p.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running

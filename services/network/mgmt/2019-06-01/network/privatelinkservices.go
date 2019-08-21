@@ -40,7 +40,7 @@ func NewPrivateLinkServicesClientWithBaseURI(baseURI string, subscriptionID stri
 	return PrivateLinkServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CheckPrivateLinkServiceVisibility checks the subscription is visible to private link service.
+// CheckPrivateLinkServiceVisibility checks the subscription is visible to private link service
 // Parameters:
 // location - the location of the domain name.
 // parameters - the request body of CheckPrivateLinkService API call.
@@ -118,7 +118,7 @@ func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityRespond
 	return
 }
 
-// CheckPrivateLinkServiceVisibilityByResourceGroup checks the subscription is visible to private link service.
+// CheckPrivateLinkServiceVisibilityByResourceGroup checks the subscription is visible to private link service
 // Parameters:
 // location - the location of the domain name.
 // resourceGroupName - the name of the resource group.

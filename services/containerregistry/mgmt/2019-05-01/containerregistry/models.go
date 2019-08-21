@@ -2024,7 +2024,7 @@ type OperationPropertiesDefinition struct {
 	ServiceSpecification *OperationServiceSpecificationDefinition `json:"serviceSpecification,omitempty"`
 }
 
-// OperationServiceSpecificationDefinition the definition of Azure Monitoring metrics list.
+// OperationServiceSpecificationDefinition the definition of Azure Monitoring list.
 type OperationServiceSpecificationDefinition struct {
 	// MetricSpecifications - A list of Azure Monitoring metrics definition.
 	MetricSpecifications *[]OperationMetricSpecificationDefinition `json:"metricSpecifications,omitempty"`
@@ -3022,10 +3022,10 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 
 // RetentionPolicy the retention policy for a container registry.
 type RetentionPolicy struct {
-	// Days - The number of days to retain manifest before it expires.
+	// Days - The number of days to retain an untagged manifest after which it gets purged.
 	Days *int32 `json:"days,omitempty"`
-	// LastUpdatedTime - READ-ONLY; The timestamp when the policy was last updated.
-	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
+	// Name - READ-ONLY; The name of retention policy.
+	Name *string `json:"name,omitempty"`
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	Status PolicyStatus `json:"status,omitempty"`
 }

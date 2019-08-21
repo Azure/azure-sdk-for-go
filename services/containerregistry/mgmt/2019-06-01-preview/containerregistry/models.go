@@ -3068,7 +3068,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type RetentionPolicy struct {
 	// Days - The number of days to retain an untagged manifest after which it gets purged.
 	Days *int32 `json:"days,omitempty"`
-	// LastUpdatedTime - READ-ONLY; The timestamp when the the policy was last updated.
+	// LastUpdatedTime - READ-ONLY; The timestamp when the policy was last updated.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
 	Status PolicyStatus `json:"status,omitempty"`

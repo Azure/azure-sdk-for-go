@@ -822,6 +822,21 @@ func PossibleExpressRouteLinkConnectorTypeValues() []ExpressRouteLinkConnectorTy
 	return []ExpressRouteLinkConnectorType{LC, SC}
 }
 
+// ExpressRouteLinkMacSecCipher enumerates the values for express route link mac sec cipher.
+type ExpressRouteLinkMacSecCipher string
+
+const (
+	// GcmAes128 ...
+	GcmAes128 ExpressRouteLinkMacSecCipher = "gcm-aes-128"
+	// GcmAes256 ...
+	GcmAes256 ExpressRouteLinkMacSecCipher = "gcm-aes-256"
+)
+
+// PossibleExpressRouteLinkMacSecCipherValues returns an array of possible values for the ExpressRouteLinkMacSecCipher const type.
+func PossibleExpressRouteLinkMacSecCipherValues() []ExpressRouteLinkMacSecCipher {
+	return []ExpressRouteLinkMacSecCipher{GcmAes128, GcmAes256}
+}
+
 // ExpressRoutePeeringState enumerates the values for express route peering state.
 type ExpressRoutePeeringState string
 
@@ -12632,6 +12647,16 @@ func NewExpressRouteLinkListResultPage(getNextPage func(context.Context, Express
 	return ExpressRouteLinkListResultPage{fn: getNextPage}
 }
 
+// ExpressRouteLinkMacSecConfig expressRouteLink Mac Security Configuration.
+type ExpressRouteLinkMacSecConfig struct {
+	// CknSecretIdentifier - Keyvault Secret Identifier URL containing Mac security CKN key.
+	CknSecretIdentifier *string `json:"cknSecretIdentifier,omitempty"`
+	// CakSecretIdentifier - Keyvault Secret Identifier URL containing Mac security CAK key.
+	CakSecretIdentifier *string `json:"cakSecretIdentifier,omitempty"`
+	// Cipher - Mac security cipher. Possible values include: 'GcmAes128', 'GcmAes256'
+	Cipher ExpressRouteLinkMacSecCipher `json:"cipher,omitempty"`
+}
+
 // ExpressRouteLinkPropertiesFormat properties specific to ExpressRouteLink resources.
 type ExpressRouteLinkPropertiesFormat struct {
 	// RouterName - READ-ONLY; Name of Azure router associated with physical port.
@@ -12648,6 +12673,8 @@ type ExpressRouteLinkPropertiesFormat struct {
 	AdminState ExpressRouteLinkAdminState `json:"adminState,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the ExpressRouteLink resource. Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// MacSecConfig - MacSec configuration.
+	MacSecConfig *ExpressRouteLinkMacSecConfig `json:"macSecConfig,omitempty"`
 }
 
 // ExpressRoutePort expressRoutePort resource definition.
@@ -12657,6 +12684,8 @@ type ExpressRoutePort struct {
 	*ExpressRoutePortPropertiesFormat `json:"properties,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+	// Identity - The identity of ExpressRoutePort, if configured.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name.
@@ -12674,6 +12703,9 @@ func (erp ExpressRoutePort) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if erp.ExpressRoutePortPropertiesFormat != nil {
 		objectMap["properties"] = erp.ExpressRoutePortPropertiesFormat
+	}
+	if erp.Identity != nil {
+		objectMap["identity"] = erp.Identity
 	}
 	if erp.ID != nil {
 		objectMap["id"] = erp.ID
@@ -12713,6 +12745,15 @@ func (erp *ExpressRoutePort) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				erp.Etag = &etag
+			}
+		case "identity":
+			if v != nil {
+				var identity ManagedServiceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				erp.Identity = &identity
 			}
 		case "id":
 			if v != nil {

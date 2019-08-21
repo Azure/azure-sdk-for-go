@@ -2926,6 +2926,14 @@ type ApplicationGatewayBackendHTTPSettingsPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// ApplicationGatewayBasicRulePropertiesFormat properties of basic rule of an application gateway.
+type ApplicationGatewayBasicRulePropertiesFormat struct {
+	// Paths - Path rules of URL path map.
+	Paths *[]string `json:"paths,omitempty"`
+	// FirewallPolicy - Reference to the FirewallPolicy resource.
+	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
+}
+
 // ApplicationGatewayConnectionDraining connection draining allows open connections to a backend server to
 // be active for a specified time after the backend server got removed from the configuration.
 type ApplicationGatewayConnectionDraining struct {
@@ -3430,6 +3438,8 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// CustomErrorConfigurations - Custom error configurations of the HTTP listener.
 	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
+	// FirewallPolicy - Reference to the FirewallPolicy resource.
+	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
 }
 
 // ApplicationGatewayIPConfiguration IP configuration of an application gateway. Currently 1 public and 1
@@ -3812,7 +3822,7 @@ type ApplicationGatewayPathRulePropertiesFormat struct {
 	RewriteRuleSet *SubResource `json:"rewriteRuleSet,omitempty"`
 	// ProvisioningState - Path rule of URL path map resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// FirewallPolicy - Reference of the FirewallPolicy resource.
+	// FirewallPolicy - Reference to the FirewallPolicy resource.
 	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
 }
 
@@ -4227,6 +4237,8 @@ type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
 	RewriteRuleSet *SubResource `json:"rewriteRuleSet,omitempty"`
 	// RedirectConfiguration - Redirect configuration resource of the application gateway.
 	RedirectConfiguration *SubResource `json:"redirectConfiguration,omitempty"`
+	// BasicRule - Basic routing rule
+	BasicRule *ApplicationGatewayBasicRulePropertiesFormat `json:"basicRule,omitempty"`
 	// FirewallPolicy - FirewallPolicy referred for Routing Rule.
 	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
 	// ProvisioningState - Provisioning state of the request routing rule resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.

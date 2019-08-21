@@ -921,6 +921,8 @@ type SapMonitorProperties struct {
 	HanaDbPasswordKeyVaultURL *string `json:"hanaDbPasswordKeyVaultUrl,omitempty"`
 	// HanaDbCredentialsMsiID - MSI ID passed by customer which has access to customer's KeyVault and to be assigned to the Collector VM.
 	HanaDbCredentialsMsiID *string `json:"hanaDbCredentialsMsiId,omitempty"`
+	// KeyVaultID - Key Vault ID containing customer's HANA credentials.
+	KeyVaultID *string `json:"keyVaultId,omitempty"`
 	// ProvisioningState - READ-ONLY; State of provisioning of the HanaInstance. Possible values include: 'Accepted', 'Creating', 'Updating', 'Failed', 'Succeeded', 'Deleting', 'Migrating'
 	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
 	// ManagedResourceGroupName - READ-ONLY; The name of the resource group the SAP Monitor resources get deployed into.

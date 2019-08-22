@@ -400,13 +400,6 @@ const (
 	SC ExpressRouteLinkConnectorType = original.SC
 )
 
-type ExpressRouteLinkMacSecCipher = original.ExpressRouteLinkMacSecCipher
-
-const (
-	GcmAes128 ExpressRouteLinkMacSecCipher = original.GcmAes128
-	GcmAes256 ExpressRouteLinkMacSecCipher = original.GcmAes256
-)
-
 type ExpressRoutePeeringState = original.ExpressRoutePeeringState
 
 const (
@@ -1339,7 +1332,6 @@ type ExpressRouteLink = original.ExpressRouteLink
 type ExpressRouteLinkListResult = original.ExpressRouteLinkListResult
 type ExpressRouteLinkListResultIterator = original.ExpressRouteLinkListResultIterator
 type ExpressRouteLinkListResultPage = original.ExpressRouteLinkListResultPage
-type ExpressRouteLinkMacSecConfig = original.ExpressRouteLinkMacSecConfig
 type ExpressRouteLinkPropertiesFormat = original.ExpressRouteLinkPropertiesFormat
 type ExpressRouteLinksClient = original.ExpressRouteLinksClient
 type ExpressRoutePort = original.ExpressRoutePort
@@ -3002,9 +2994,6 @@ func PossibleExpressRouteLinkAdminStateValues() []ExpressRouteLinkAdminState {
 }
 func PossibleExpressRouteLinkConnectorTypeValues() []ExpressRouteLinkConnectorType {
 	return original.PossibleExpressRouteLinkConnectorTypeValues()
-}
-func PossibleExpressRouteLinkMacSecCipherValues() []ExpressRouteLinkMacSecCipher {
-	return original.PossibleExpressRouteLinkMacSecCipherValues()
 }
 func PossibleExpressRoutePeeringStateValues() []ExpressRoutePeeringState {
 	return original.PossibleExpressRoutePeeringStateValues()

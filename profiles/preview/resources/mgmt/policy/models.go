@@ -34,7 +34,6 @@ type EnforcementMode = original.EnforcementMode
 const (
 	Default      EnforcementMode = original.Default
 	DoNotEnforce EnforcementMode = original.DoNotEnforce
-	NotSpecified EnforcementMode = original.NotSpecified
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -47,9 +46,9 @@ const (
 type Type = original.Type
 
 const (
-	TypeBuiltIn      Type = original.TypeBuiltIn
-	TypeCustom       Type = original.TypeCustom
-	TypeNotSpecified Type = original.TypeNotSpecified
+	BuiltIn      Type = original.BuiltIn
+	Custom       Type = original.Custom
+	NotSpecified Type = original.NotSpecified
 )
 
 type Assignment = original.Assignment

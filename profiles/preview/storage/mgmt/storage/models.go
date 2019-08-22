@@ -103,6 +103,13 @@ const (
 	Httpshttp HTTPProtocol = original.Httpshttp
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	IdentityTypeNone           IdentityType = original.IdentityTypeNone
+	IdentityTypeSystemAssigned IdentityType = original.IdentityTypeSystemAssigned
+)
+
 type ImmutabilityPolicyState = original.ImmutabilityPolicyState
 
 const (
@@ -471,6 +478,9 @@ func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 }
 func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return original.PossibleHTTPProtocolValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleImmutabilityPolicyStateValues() []ImmutabilityPolicyState {
 	return original.PossibleImmutabilityPolicyStateValues()

@@ -189,6 +189,21 @@ func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return []HTTPProtocol{HTTPS, Httpshttp}
 }
 
+// IdentityType enumerates the values for identity type.
+type IdentityType string
+
+const (
+	// IdentityTypeNone ...
+	IdentityTypeNone IdentityType = "None"
+	// IdentityTypeSystemAssigned ...
+	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+)
+
+// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{IdentityTypeNone, IdentityTypeSystemAssigned}
+}
+
 // ImmutabilityPolicyState enumerates the values for immutability policy state.
 type ImmutabilityPolicyState string
 
@@ -1745,8 +1760,8 @@ type Identity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - READ-ONLY; The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The identity type.
-	Type *string `json:"type,omitempty"`
+	// Type - The identity type. Possible values include: 'IdentityTypeSystemAssigned', 'IdentityTypeNone'
+	Type IdentityType `json:"type,omitempty"`
 }
 
 // ImmutabilityPolicy the ImmutabilityPolicy property of a blob container, including Id, resource name,

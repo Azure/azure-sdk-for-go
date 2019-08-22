@@ -189,6 +189,19 @@ func PossibleConnectionTypeValues() []ConnectionType {
 	return []ConnectionType{External, Internal}
 }
 
+// ConnectionTypeValues enumerates the values for connection type values.
+type ConnectionTypeValues string
+
+const (
+	// Azurevm ...
+	Azurevm ConnectionTypeValues = "Azure vm"
+)
+
+// PossibleConnectionTypeValuesValues returns an array of possible values for the ConnectionTypeValues const type.
+func PossibleConnectionTypeValuesValues() []ConnectionTypeValues {
+	return []ConnectionTypeValues{Azurevm}
+}
+
 // Direction enumerates the values for direction.
 type Direction string
 
@@ -232,6 +245,22 @@ const (
 // PossibleEnforcementMode1Values returns an array of possible values for the EnforcementMode1 const type.
 func PossibleEnforcementMode1Values() []EnforcementMode1 {
 	return []EnforcementMode1{EnforcementMode1Audit, EnforcementMode1Enforce}
+}
+
+// ExpandValues enumerates the values for expand values.
+type ExpandValues string
+
+const (
+	// False Get the slim network data object
+	False ExpandValues = "false"
+	// True Get the expand network data object - more information about the network data (ports and connections
+	// details)
+	True ExpandValues = "true"
+)
+
+// PossibleExpandValuesValues returns an array of possible values for the ExpandValues const type.
+func PossibleExpandValuesValues() []ExpandValues {
+	return []ExpandValues{False, True}
 }
 
 // ExternalSecuritySolutionKind enumerates the values for external security solution kind.
@@ -527,6 +556,21 @@ func PossibleStatusReasonValues() []StatusReason {
 	return []StatusReason{Expired, NewerRequestInitiated, UserRequested}
 }
 
+// TrafficDataState enumerates the values for traffic data state.
+type TrafficDataState string
+
+const (
+	// Available The Azure monitor agent is installed on the vm
+	Available TrafficDataState = "Available"
+	// Notavailable the Azure monitor agent is not installed on the vm
+	Notavailable TrafficDataState = "Not available"
+)
+
+// PossibleTrafficDataStateValues returns an array of possible values for the TrafficDataState const type.
+func PossibleTrafficDataStateValues() []TrafficDataState {
+	return []TrafficDataState{Available, Notavailable}
+}
+
 // TransportProtocol enumerates the values for transport protocol.
 type TransportProtocol string
 
@@ -647,6 +691,13 @@ type AadSolutionProperties struct {
 	Workspace    *ConnectedWorkspace `json:"workspace,omitempty"`
 	// ConnectivityState - Possible values include: 'Discovered', 'NotLicensed', 'Connected'
 	ConnectivityState AadConnectivityState `json:"connectivityState,omitempty"`
+}
+
+// ActualTrafficConnectedResources the actual traffic details
+type ActualTrafficConnectedResources struct {
+	// TrafficVolume - READ-ONLY; The actual traffic volume
+	TrafficVolume      *string              `json:"trafficVolume,omitempty"`
+	ConnectionsDetails *[]ConnectionDetails `json:"connectionsDetails,omitempty"`
 }
 
 // AdaptiveNetworkHardening the resource whose properties describes the Adaptive Network Hardening settings
@@ -1329,6 +1380,18 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 		objectMap["confidenceReasons"] = ap.ConfidenceReasons
 	}
 	return json.Marshal(objectMap)
+}
+
+// AllowedConnectionsConnectedResources the allowed connections details
+type AllowedConnectionsConnectedResources struct {
+	// TCPPortsCount - READ-ONLY; The allowed connections tcp ports count
+	TCPPortsCount *int32 `json:"tcpPortsCount,omitempty"`
+	// UDPPortsCount - READ-ONLY; The allowed connections udp ports count
+	UDPPortsCount *int32 `json:"udpPortsCount,omitempty"`
+	// TCPPorts - READ-ONLY; The allowed connections tcp ports
+	TCPPorts *string `json:"tcpPorts,omitempty"`
+	// UDPPorts - READ-ONLY; The allowed connections udp ports
+	UDPPorts *string `json:"udpPorts,omitempty"`
 }
 
 // AllowedConnectionsList list of all possible traffic between Azure resources
@@ -4653,10 +4716,10 @@ func (nd *NetworkData) UnmarshalJSON(body []byte) error {
 
 // NetworkDataConnectableResource describes the allowed inbound and outbound traffic of an Azure resource
 type NetworkDataConnectableResource struct {
-	// ConnectedResourceID - READ-ONLY; The connectable resource id
-	ConnectedResourceID *string `json:"connectedResourceId,omitempty"`
-	// ConnectionType - READ-ONLY; The connection type
-	ConnectionType *string `json:"connectionType,omitempty"`
+	// ConnectableResourceID - READ-ONLY; The connectable resource id
+	ConnectableResourceID *string `json:"connectableResourceId,omitempty"`
+	// ConnectionType - The connection type between the extention resoure to the connectable resource Id. Possible values include: 'Azurevm'
+	ConnectionType ConnectionTypeValues `json:"connectionType,omitempty"`
 	// AllowedConnections - READ-ONLY; The allowed connections details
 	AllowedConnections *NetworkDataConnectableResourceAllowedConnections `json:"allowedConnections,omitempty"`
 	// ActualTraffic - READ-ONLY; The actual traffic details
@@ -4667,97 +4730,28 @@ type NetworkDataConnectableResource struct {
 
 // NetworkDataConnectableResourceActualTraffic the actual traffic details
 type NetworkDataConnectableResourceActualTraffic struct {
-	// TimeRange - READ-ONLY; The actual traffic time range
-	TimeRange *string `json:"timeRange,omitempty"`
-	// TrafficDataState - READ-ONLY; The actual traffic state
-	TrafficDataState *string `json:"TrafficDataState,omitempty"`
-	// InboundConnectedResources - READ-ONLY; The actual traffic inbound details
-	InboundConnectedResources *NetworkDataConnectableResourceActualTrafficInboundConnectedResources `json:"inboundConnectedResources,omitempty"`
-	// OutboundConnectedResources - READ-ONLY; The actual traffic outbound details
-	OutboundConnectedResources *NetworkDataConnectableResourceActualTrafficOutboundConnectedResources `json:"outboundConnectedResources,omitempty"`
-}
-
-// NetworkDataConnectableResourceActualTrafficInboundConnectedResources the actual traffic inbound details
-type NetworkDataConnectableResourceActualTrafficInboundConnectedResources struct {
-	// ActualTrafficVolume - READ-ONLY; The actual traffic inbound volume
-	ActualTrafficVolume *string              `json:"actualTrafficVolume,omitempty"`
-	ConnectionsDetails  *[]ConnectionDetails `json:"connectionsDetails,omitempty"`
-}
-
-// NetworkDataConnectableResourceActualTrafficOutboundConnectedResources the actual traffic outbound
-// details
-type NetworkDataConnectableResourceActualTrafficOutboundConnectedResources struct {
-	// ActualTrafficVolume - READ-ONLY; The actual traffic outbound volume
-	ActualTrafficVolume *string              `json:"actualTrafficVolume,omitempty"`
-	ConnectionsDetails  *[]ConnectionDetails `json:"connectionsDetails,omitempty"`
+	// StartTime - READ-ONLY; The UTC start time of the actual traffic time range
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - READ-ONLY; The UTC end time of the actual traffic time range
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// TrafficDataState - Indicate whether the Azure monitor agent is installed on the vm. Possible values include: 'Available', 'Notavailable'
+	TrafficDataState           TrafficDataState                 `json:"trafficDataState,omitempty"`
+	InboundConnectedResources  *ActualTrafficConnectedResources `json:"inboundConnectedResources,omitempty"`
+	OutboundConnectedResources *ActualTrafficConnectedResources `json:"outboundConnectedResources,omitempty"`
 }
 
 // NetworkDataConnectableResourceAllowedConnections the allowed connections details
 type NetworkDataConnectableResourceAllowedConnections struct {
 	// CalculatedDateTime - READ-ONLY; The UTC time on which the allowed connections was calculated
-	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
-	// InboundConnectedResources - READ-ONLY; The allowed connections inbound details
-	InboundConnectedResources *NetworkDataConnectableResourceAllowedConnectionsInboundConnectedResources `json:"inboundConnectedResources,omitempty"`
-	// OutboundConnectedResources - READ-ONLY; The allowed connections outbound details
-	OutboundConnectedResources *NetworkDataConnectableResourceAllowedConnectionsOutboundConnectedResources `json:"outboundConnectedResources,omitempty"`
-}
-
-// NetworkDataConnectableResourceAllowedConnectionsInboundConnectedResources the allowed connections
-// inbound details
-type NetworkDataConnectableResourceAllowedConnectionsInboundConnectedResources struct {
-	// TCPPortsSummary - READ-ONLY; The allowed connections inbound tcp ports summary
-	TCPPortsSummary *int32 `json:"tcpPortsSummary,omitempty"`
-	// UDPPortsSummary - READ-ONLY; The allowed connections inbound udp ports summary
-	UDPPortsSummary *int32 `json:"udpPortsSummary,omitempty"`
-	// TCPPorts - READ-ONLY; The allowed connections inbound tcp ports
-	TCPPorts *string `json:"tcpPorts,omitempty"`
-	// UDPPorts - READ-ONLY; The allowed connections inbound udp ports
-	UDPPorts *string `json:"udpPorts,omitempty"`
-}
-
-// NetworkDataConnectableResourceAllowedConnectionsOutboundConnectedResources the allowed connections
-// outbound details
-type NetworkDataConnectableResourceAllowedConnectionsOutboundConnectedResources struct {
-	// TCPPortsSummary - READ-ONLY; The allowed connections outbound tcp ports summary
-	TCPPortsSummary *int32 `json:"tcpPortsSummary,omitempty"`
-	// UDPPortsSummary - READ-ONLY; The allowed connections outbound udp ports summary
-	UDPPortsSummary *int32 `json:"udpPortsSummary,omitempty"`
-	// TCPPorts - READ-ONLY; The allowed connections outbound tcp ports
-	TCPPorts *string `json:"tcpPorts,omitempty"`
-	// UDPPorts - READ-ONLY; The allowed connections outbound udp ports
-	UDPPorts *string `json:"udpPorts,omitempty"`
+	CalculatedDateTime         *date.Time                            `json:"calculatedDateTime,omitempty"`
+	InboundConnectedResources  *AllowedConnectionsConnectedResources `json:"inboundConnectedResources,omitempty"`
+	OutboundConnectedResources *AllowedConnectionsConnectedResources `json:"outboundConnectedResources,omitempty"`
 }
 
 // NetworkDataConnectableResourceUnusedPorts the unused ports details
 type NetworkDataConnectableResourceUnusedPorts struct {
-	// InboundConnectedResources - READ-ONLY; The unused ports inbound details
-	InboundConnectedResources *NetworkDataConnectableResourceUnusedPortsInboundConnectedResources `json:"inboundConnectedResources,omitempty"`
-	// OutboundConnectedResources - READ-ONLY; The unused ports outbound details
-	OutboundConnectedResources *NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources `json:"outboundConnectedResources,omitempty"`
-}
-
-// NetworkDataConnectableResourceUnusedPortsInboundConnectedResources the unused ports inbound details
-type NetworkDataConnectableResourceUnusedPortsInboundConnectedResources struct {
-	// UnusedTCPPortsSummary - READ-ONLY; The unused inbound tcp ports summary
-	UnusedTCPPortsSummary *int32 `json:"unusedTcpPortsSummary,omitempty"`
-	// UnusedUDPPortsSummary - READ-ONLY; The unused inbound udp ports summary
-	UnusedUDPPortsSummary *int32 `json:"unusedUdpPortsSummary,omitempty"`
-	// TCPPorts - READ-ONLY; The unused inbound tcp ports
-	TCPPorts *string `json:"tcpPorts,omitempty"`
-	// UDPPorts - READ-ONLY; The unused inbound udp ports
-	UDPPorts *string `json:"udpPorts,omitempty"`
-}
-
-// NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources the unused ports outbound details
-type NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources struct {
-	// UnusedTCPPortsSummary - READ-ONLY; The unused outbound tcp ports summary
-	UnusedTCPPortsSummary *int32 `json:"unusedTcpPortsSummary,omitempty"`
-	// UnusedUDPPortsSummary - READ-ONLY; The unused outbound udp ports summary
-	UnusedUDPPortsSummary *int32 `json:"unusedUdpPortsSummary,omitempty"`
-	// TCPPorts - READ-ONLY; The unused outbound tcp ports
-	TCPPorts *string `json:"tcpPorts,omitempty"`
-	// UDPPorts - READ-ONLY; The unused outbound udp ports
-	UDPPorts *string `json:"udpPorts,omitempty"`
+	InboundConnectedResources  *UnusedPortsConnectedResources `json:"inboundConnectedResources,omitempty"`
+	OutboundConnectedResources *UnusedPortsConnectedResources `json:"outboundConnectedResources,omitempty"`
 }
 
 // NetworkDataList list of network data
@@ -6832,6 +6826,18 @@ type TopologySingleResourceChild struct {
 type TopologySingleResourceParent struct {
 	// ResourceID - READ-ONLY; Azure resource id which serves as parent resource in topology view
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// UnusedPortsConnectedResources the unused ports details
+type UnusedPortsConnectedResources struct {
+	// UnusedTCPPortsCount - READ-ONLY; The unused tcp ports count
+	UnusedTCPPortsCount *int32 `json:"unusedTcpPortsCount,omitempty"`
+	// UnusedUDPPortsCount - READ-ONLY; The unused udp ports count
+	UnusedUDPPortsCount *int32 `json:"unusedUdpPortsCount,omitempty"`
+	// TCPPorts - READ-ONLY; The unused tcp ports
+	TCPPorts *string `json:"tcpPorts,omitempty"`
+	// UDPPorts - READ-ONLY; The unused udp ports
+	UDPPorts *string `json:"udpPorts,omitempty"`
 }
 
 // UserRecommendation represents a user that is recommended to be allowed for a certain rule

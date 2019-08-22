@@ -103,6 +103,12 @@ const (
 	Internal ConnectionType = original.Internal
 )
 
+type ConnectionTypeValues = original.ConnectionTypeValues
+
+const (
+	Azurevm ConnectionTypeValues = original.Azurevm
+)
+
 type DataSource = original.DataSource
 
 const (
@@ -121,6 +127,13 @@ type EnforcementMode1 = original.EnforcementMode1
 const (
 	EnforcementMode1Audit   EnforcementMode1 = original.EnforcementMode1Audit
 	EnforcementMode1Enforce EnforcementMode1 = original.EnforcementMode1Enforce
+)
+
+type ExpandValues = original.ExpandValues
+
+const (
+	False ExpandValues = original.False
+	True  ExpandValues = original.True
 )
 
 type ExportData = original.ExportData
@@ -321,6 +334,13 @@ const (
 	UserRequested         StatusReason = original.UserRequested
 )
 
+type TrafficDataState = original.TrafficDataState
+
+const (
+	Available    TrafficDataState = original.Available
+	Notavailable TrafficDataState = original.Notavailable
+)
+
 type Type = original.Type
 
 const (
@@ -335,6 +355,7 @@ const (
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
+type ActualTrafficConnectedResources = original.ActualTrafficConnectedResources
 type AdaptiveApplicationControlsClient = original.AdaptiveApplicationControlsClient
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
@@ -348,6 +369,7 @@ type AlertListPage = original.AlertListPage
 type AlertProperties = original.AlertProperties
 type AlertsClient = original.AlertsClient
 type AllowedConnectionsClient = original.AllowedConnectionsClient
+type AllowedConnectionsConnectedResources = original.AllowedConnectionsConnectedResources
 type AllowedConnectionsList = original.AllowedConnectionsList
 type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
 type AllowedConnectionsListPage = original.AllowedConnectionsListPage
@@ -478,14 +500,8 @@ type NetworkData = original.NetworkData
 type NetworkDataClient = original.NetworkDataClient
 type NetworkDataConnectableResource = original.NetworkDataConnectableResource
 type NetworkDataConnectableResourceActualTraffic = original.NetworkDataConnectableResourceActualTraffic
-type NetworkDataConnectableResourceActualTrafficInboundConnectedResources = original.NetworkDataConnectableResourceActualTrafficInboundConnectedResources
-type NetworkDataConnectableResourceActualTrafficOutboundConnectedResources = original.NetworkDataConnectableResourceActualTrafficOutboundConnectedResources
 type NetworkDataConnectableResourceAllowedConnections = original.NetworkDataConnectableResourceAllowedConnections
-type NetworkDataConnectableResourceAllowedConnectionsInboundConnectedResources = original.NetworkDataConnectableResourceAllowedConnectionsInboundConnectedResources
-type NetworkDataConnectableResourceAllowedConnectionsOutboundConnectedResources = original.NetworkDataConnectableResourceAllowedConnectionsOutboundConnectedResources
 type NetworkDataConnectableResourceUnusedPorts = original.NetworkDataConnectableResourceUnusedPorts
-type NetworkDataConnectableResourceUnusedPortsInboundConnectedResources = original.NetworkDataConnectableResourceUnusedPortsInboundConnectedResources
-type NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources = original.NetworkDataConnectableResourceUnusedPortsOutboundConnectedResources
 type NetworkDataList = original.NetworkDataList
 type NetworkDataListIterator = original.NetworkDataListIterator
 type NetworkDataListPage = original.NetworkDataListPage
@@ -550,6 +566,7 @@ type TopologyResourceProperties = original.TopologyResourceProperties
 type TopologySingleResource = original.TopologySingleResource
 type TopologySingleResourceChild = original.TopologySingleResourceChild
 type TopologySingleResourceParent = original.TopologySingleResourceParent
+type UnusedPortsConnectedResources = original.UnusedPortsConnectedResources
 type UpdateIotSecuritySolutionData = original.UpdateIotSecuritySolutionData
 type UserDefinedResourcesProperties = original.UserDefinedResourcesProperties
 type UserRecommendation = original.UserRecommendation
@@ -924,6 +941,9 @@ func PossibleConfigurationStatusValues() []ConfigurationStatus {
 func PossibleConnectionTypeValues() []ConnectionType {
 	return original.PossibleConnectionTypeValues()
 }
+func PossibleConnectionTypeValuesValues() []ConnectionTypeValues {
+	return original.PossibleConnectionTypeValuesValues()
+}
 func PossibleDataSourceValues() []DataSource {
 	return original.PossibleDataSourceValues()
 }
@@ -932,6 +952,9 @@ func PossibleEnforcementMode1Values() []EnforcementMode1 {
 }
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()
+}
+func PossibleExpandValuesValues() []ExpandValues {
+	return original.PossibleExpandValuesValues()
 }
 func PossibleExportDataValues() []ExportData {
 	return original.PossibleExportDataValues()
@@ -998,6 +1021,9 @@ func PossibleStatusReasonValues() []StatusReason {
 }
 func PossibleStatusValues() []Status {
 	return original.PossibleStatusValues()
+}
+func PossibleTrafficDataStateValues() []TrafficDataState {
+	return original.PossibleTrafficDataStateValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

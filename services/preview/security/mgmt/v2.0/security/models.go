@@ -5789,7 +5789,7 @@ func (nd *NetworkData) UnmarshalJSON(body []byte) error {
 type NetworkDataConnectableResource struct {
 	// ConnectableResourceID - READ-ONLY; The connectable resource id
 	ConnectableResourceID *string `json:"connectableResourceId,omitempty"`
-	// ConnectionType - The connection type between the extention resoure to the connectable resource Id. Possible values include: 'Azurevm'
+	// ConnectionType - The connection type between the extension resource to the connectable resource Id. Possible values include: 'Azurevm'
 	ConnectionType ConnectionTypeValues `json:"connectionType,omitempty"`
 	// AllowedConnections - READ-ONLY; The allowed connections details
 	AllowedConnections *NetworkDataConnectableResourceAllowedConnections `json:"allowedConnections,omitempty"`

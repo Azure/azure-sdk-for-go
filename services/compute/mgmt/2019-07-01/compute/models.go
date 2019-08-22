@@ -2181,7 +2181,7 @@ type CreationData struct {
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
 	// SourceUniqueID - READ-ONLY; If this field is set, this is the unique id identifying the source of this resource.
 	SourceUniqueID *string `json:"sourceUniqueId,omitempty"`
-	// UploadSizeBytes - If createOption is Upload, this is the size of the contents of the upload including the VHD footer. This value should be between 1073741824 (1 GiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32 TiB + 512 bytes for the VHD footer).
+	// UploadSizeBytes - If createOption is Upload, this is the size of the contents of the upload including the VHD footer. This value should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32 TiB + 512 bytes for the VHD footer).
 	UploadSizeBytes *int64 `json:"uploadSizeBytes,omitempty"`
 }
 

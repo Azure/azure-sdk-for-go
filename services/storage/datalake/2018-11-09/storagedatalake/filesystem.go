@@ -66,7 +66,8 @@ func (client FilesystemClient) Create(ctx context.Context, filesystem string, xM
 			Constraints: []validation.Constraint{{Target: "filesystem", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "filesystem", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: xMsClientRequestID,
-			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Empty, Rule: false,
+				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
@@ -114,7 +115,7 @@ func (client FilesystemClient) CreatePreparer(ctx context.Context, filesystem st
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xMsProperties) > 0 {
@@ -192,7 +193,8 @@ func (client FilesystemClient) Delete(ctx context.Context, filesystem string, if
 			Constraints: []validation.Constraint{{Target: "filesystem", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "filesystem", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: xMsClientRequestID,
-			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Empty, Rule: false,
+				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
@@ -240,7 +242,7 @@ func (client FilesystemClient) DeletePreparer(ctx context.Context, filesystem st
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(ifModifiedSince) > 0 {
@@ -311,7 +313,8 @@ func (client FilesystemClient) GetProperties(ctx context.Context, filesystem str
 			Constraints: []validation.Constraint{{Target: "filesystem", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "filesystem", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: xMsClientRequestID,
-			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Empty, Rule: false,
+				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
@@ -359,7 +362,7 @@ func (client FilesystemClient) GetPropertiesPreparer(ctx context.Context, filesy
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsHead(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xMsClientRequestID) > 0 {
@@ -426,7 +429,8 @@ func (client FilesystemClient) List(ctx context.Context, prefix string, continua
 			Constraints: []validation.Constraint{{Target: "maxResults", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "maxResults", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
 		{TargetValue: xMsClientRequestID,
-			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Empty, Rule: false,
+				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
@@ -479,7 +483,7 @@ func (client FilesystemClient) ListPreparer(ctx context.Context, prefix string, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPath("/"),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xMsClientRequestID) > 0 {
@@ -555,7 +559,8 @@ func (client FilesystemClient) SetProperties(ctx context.Context, filesystem str
 			Constraints: []validation.Constraint{{Target: "filesystem", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "filesystem", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: xMsClientRequestID,
-			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Empty, Rule: false,
+				Chain: []validation.Constraint{{Target: "xMsClientRequestID", Name: validation.Pattern, Rule: `^[{(]?[0-9a-f]{8}[-]?([0-9a-f]{4}[-]?){3}[0-9a-f]{12}[)}]?$`, Chain: nil}}}}},
 		{TargetValue: timeout,
 			Constraints: []validation.Constraint{{Target: "timeout", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "timeout", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}}}); err != nil {
@@ -603,7 +608,7 @@ func (client FilesystemClient) SetPropertiesPreparer(ctx context.Context, filesy
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPatch(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xMsProperties) > 0 {

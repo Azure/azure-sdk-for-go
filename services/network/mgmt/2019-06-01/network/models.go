@@ -2926,6 +2926,101 @@ type ApplicationGatewayBackendHTTPSettingsPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// ApplicationGatewayBasicRule basic rule of URL path map of an application gateway.
+type ApplicationGatewayBasicRule struct {
+	// ApplicationGatewayBasicRulePropertiesFormat - Properties of the application gateway basic rule.
+	*ApplicationGatewayBasicRulePropertiesFormat `json:"properties,omitempty"`
+	// Name - Name of the path rule that is unique within an Application Gateway.
+	Name *string `json:"name,omitempty"`
+	// Etag - A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// Type - Type of the resource.
+	Type *string `json:"type,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationGatewayBasicRule.
+func (agbr ApplicationGatewayBasicRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if agbr.ApplicationGatewayBasicRulePropertiesFormat != nil {
+		objectMap["properties"] = agbr.ApplicationGatewayBasicRulePropertiesFormat
+	}
+	if agbr.Name != nil {
+		objectMap["name"] = agbr.Name
+	}
+	if agbr.Etag != nil {
+		objectMap["etag"] = agbr.Etag
+	}
+	if agbr.Type != nil {
+		objectMap["type"] = agbr.Type
+	}
+	if agbr.ID != nil {
+		objectMap["id"] = agbr.ID
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ApplicationGatewayBasicRule struct.
+func (agbr *ApplicationGatewayBasicRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var applicationGatewayBasicRulePropertiesFormat ApplicationGatewayBasicRulePropertiesFormat
+				err = json.Unmarshal(*v, &applicationGatewayBasicRulePropertiesFormat)
+				if err != nil {
+					return err
+				}
+				agbr.ApplicationGatewayBasicRulePropertiesFormat = &applicationGatewayBasicRulePropertiesFormat
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				agbr.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				agbr.Etag = &etag
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				agbr.Type = &typeVar
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				agbr.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
 // ApplicationGatewayBasicRulePropertiesFormat properties of basic rule of an application gateway.
 type ApplicationGatewayBasicRulePropertiesFormat struct {
 	// Paths - Path rules of URL path map.
@@ -4237,10 +4332,8 @@ type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
 	RewriteRuleSet *SubResource `json:"rewriteRuleSet,omitempty"`
 	// RedirectConfiguration - Redirect configuration resource of the application gateway.
 	RedirectConfiguration *SubResource `json:"redirectConfiguration,omitempty"`
-	// BasicRule - Basic routing rule
-	BasicRule *ApplicationGatewayBasicRulePropertiesFormat `json:"basicRule,omitempty"`
-	// FirewallPolicy - FirewallPolicy referred for Routing Rule.
-	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
+	// BasicRules - Array of Basic Rules
+	BasicRules *[]ApplicationGatewayBasicRule `json:"basicRules,omitempty"`
 	// ProvisioningState - Provisioning state of the request routing rule resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }

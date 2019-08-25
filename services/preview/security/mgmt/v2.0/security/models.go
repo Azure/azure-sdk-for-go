@@ -49,21 +49,19 @@ func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return []AadConnectivityState{Connected, Discovered, NotLicensed}
 }
 
-// Action enumerates the values for action.
-type Action string
+// ActionType enumerates the values for action type.
+type ActionType string
 
 const (
-	// Add ...
-	Add Action = "Add"
-	// Recommended ...
-	Recommended Action = "Recommended"
-	// Remove ...
-	Remove Action = "Remove"
+	// ActionTypeLogicApp ...
+	ActionTypeLogicApp ActionType = "LogicApp"
+	// ActionTypePlaybookConfigurationAction ...
+	ActionTypePlaybookConfigurationAction ActionType = "PlaybookConfigurationAction"
 )
 
-// PossibleActionValues returns an array of possible values for the Action const type.
-func PossibleActionValues() []Action {
-	return []Action{Add, Recommended, Remove}
+// PossibleActionTypeValues returns an array of possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{ActionTypeLogicApp, ActionTypePlaybookConfigurationAction}
 }
 
 // AlertNotifications enumerates the values for alert notifications.
@@ -111,69 +109,6 @@ func PossibleAutoProvisionValues() []AutoProvision {
 	return []AutoProvision{AutoProvisionOff, AutoProvisionOn}
 }
 
-// ConfigurationStatus enumerates the values for configuration status.
-type ConfigurationStatus string
-
-const (
-	// Configured ...
-	Configured ConfigurationStatus = "Configured"
-	// Failed ...
-	Failed ConfigurationStatus = "Failed"
-	// InProgress ...
-	InProgress ConfigurationStatus = "InProgress"
-	// NoStatus ...
-	NoStatus ConfigurationStatus = "NoStatus"
-	// NotConfigured ...
-	NotConfigured ConfigurationStatus = "NotConfigured"
-)
-
-// PossibleConfigurationStatusValues returns an array of possible values for the ConfigurationStatus const type.
-func PossibleConfigurationStatusValues() []ConfigurationStatus {
-	return []ConfigurationStatus{Configured, Failed, InProgress, NoStatus, NotConfigured}
-}
-
-// ConfigurationStatus1 enumerates the values for configuration status 1.
-type ConfigurationStatus1 string
-
-const (
-	// ConfigurationStatus1Configured ...
-	ConfigurationStatus1Configured ConfigurationStatus1 = "Configured"
-	// ConfigurationStatus1Failed ...
-	ConfigurationStatus1Failed ConfigurationStatus1 = "Failed"
-	// ConfigurationStatus1InProgress ...
-	ConfigurationStatus1InProgress ConfigurationStatus1 = "InProgress"
-	// ConfigurationStatus1NoStatus ...
-	ConfigurationStatus1NoStatus ConfigurationStatus1 = "NoStatus"
-	// ConfigurationStatus1NotConfigured ...
-	ConfigurationStatus1NotConfigured ConfigurationStatus1 = "NotConfigured"
-)
-
-// PossibleConfigurationStatus1Values returns an array of possible values for the ConfigurationStatus1 const type.
-func PossibleConfigurationStatus1Values() []ConfigurationStatus1 {
-	return []ConfigurationStatus1{ConfigurationStatus1Configured, ConfigurationStatus1Failed, ConfigurationStatus1InProgress, ConfigurationStatus1NoStatus, ConfigurationStatus1NotConfigured}
-}
-
-// ConfigurationStatus2 enumerates the values for configuration status 2.
-type ConfigurationStatus2 string
-
-const (
-	// ConfigurationStatus2Configured ...
-	ConfigurationStatus2Configured ConfigurationStatus2 = "Configured"
-	// ConfigurationStatus2Failed ...
-	ConfigurationStatus2Failed ConfigurationStatus2 = "Failed"
-	// ConfigurationStatus2InProgress ...
-	ConfigurationStatus2InProgress ConfigurationStatus2 = "InProgress"
-	// ConfigurationStatus2NoStatus ...
-	ConfigurationStatus2NoStatus ConfigurationStatus2 = "NoStatus"
-	// ConfigurationStatus2NotConfigured ...
-	ConfigurationStatus2NotConfigured ConfigurationStatus2 = "NotConfigured"
-)
-
-// PossibleConfigurationStatus2Values returns an array of possible values for the ConfigurationStatus2 const type.
-func PossibleConfigurationStatus2Values() []ConfigurationStatus2 {
-	return []ConfigurationStatus2{ConfigurationStatus2Configured, ConfigurationStatus2Failed, ConfigurationStatus2InProgress, ConfigurationStatus2NoStatus, ConfigurationStatus2NotConfigured}
-}
-
 // ConnectionType enumerates the values for connection type.
 type ConnectionType string
 
@@ -189,19 +124,6 @@ func PossibleConnectionTypeValues() []ConnectionType {
 	return []ConnectionType{External, Internal}
 }
 
-// DataSource enumerates the values for data source.
-type DataSource string
-
-const (
-	// TwinData Devices twin data
-	TwinData DataSource = "TwinData"
-)
-
-// PossibleDataSourceValues returns an array of possible values for the DataSource const type.
-func PossibleDataSourceValues() []DataSource {
-	return []DataSource{TwinData}
-}
-
 // Direction enumerates the values for direction.
 type Direction string
 
@@ -215,49 +137,6 @@ const (
 // PossibleDirectionValues returns an array of possible values for the Direction const type.
 func PossibleDirectionValues() []Direction {
 	return []Direction{Inbound, Outbound}
-}
-
-// EnforcementMode enumerates the values for enforcement mode.
-type EnforcementMode string
-
-const (
-	// Audit ...
-	Audit EnforcementMode = "Audit"
-	// Enforce ...
-	Enforce EnforcementMode = "Enforce"
-)
-
-// PossibleEnforcementModeValues returns an array of possible values for the EnforcementMode const type.
-func PossibleEnforcementModeValues() []EnforcementMode {
-	return []EnforcementMode{Audit, Enforce}
-}
-
-// EnforcementMode1 enumerates the values for enforcement mode 1.
-type EnforcementMode1 string
-
-const (
-	// EnforcementMode1Audit ...
-	EnforcementMode1Audit EnforcementMode1 = "Audit"
-	// EnforcementMode1Enforce ...
-	EnforcementMode1Enforce EnforcementMode1 = "Enforce"
-)
-
-// PossibleEnforcementMode1Values returns an array of possible values for the EnforcementMode1 const type.
-func PossibleEnforcementMode1Values() []EnforcementMode1 {
-	return []EnforcementMode1{EnforcementMode1Audit, EnforcementMode1Enforce}
-}
-
-// ExportData enumerates the values for export data.
-type ExportData string
-
-const (
-	// RawEvents Agent raw events
-	RawEvents ExportData = "RawEvents"
-)
-
-// PossibleExportDataValues returns an array of possible values for the ExportData const type.
-func PossibleExportDataValues() []ExportData {
-	return []ExportData{RawEvents}
 }
 
 // ExternalSecuritySolutionKind enumerates the values for external security solution kind.
@@ -296,52 +175,6 @@ func PossibleFamilyValues() []Family {
 	return []Family{Ngfw, SaasWaf, Va, Waf}
 }
 
-// FileType enumerates the values for file type.
-type FileType string
-
-const (
-	// Dll ...
-	Dll FileType = "Dll"
-	// Exe ...
-	Exe FileType = "Exe"
-	// Executable ...
-	Executable FileType = "Executable"
-	// Msi ...
-	Msi FileType = "Msi"
-	// Script ...
-	Script FileType = "Script"
-	// Unknown ...
-	Unknown FileType = "Unknown"
-)
-
-// PossibleFileTypeValues returns an array of possible values for the FileType const type.
-func PossibleFileTypeValues() []FileType {
-	return []FileType{Dll, Exe, Executable, Msi, Script, Unknown}
-}
-
-// Issue enumerates the values for issue.
-type Issue string
-
-const (
-	// ExecutableViolationsAudited ...
-	ExecutableViolationsAudited Issue = "ExecutableViolationsAudited"
-	// MsiAndScriptViolationsAudited ...
-	MsiAndScriptViolationsAudited Issue = "MsiAndScriptViolationsAudited"
-	// MsiAndScriptViolationsBlocked ...
-	MsiAndScriptViolationsBlocked Issue = "MsiAndScriptViolationsBlocked"
-	// RulesViolatedManually ...
-	RulesViolatedManually Issue = "RulesViolatedManually"
-	// ViolationsAudited ...
-	ViolationsAudited Issue = "ViolationsAudited"
-	// ViolationsBlocked ...
-	ViolationsBlocked Issue = "ViolationsBlocked"
-)
-
-// PossibleIssueValues returns an array of possible values for the Issue const type.
-func PossibleIssueValues() []Issue {
-	return []Issue{ExecutableViolationsAudited, MsiAndScriptViolationsAudited, MsiAndScriptViolationsBlocked, RulesViolatedManually, ViolationsAudited, ViolationsBlocked}
-}
-
 // KindEnum enumerates the values for kind enum.
 type KindEnum string
 
@@ -361,6 +194,39 @@ func PossibleKindEnumValues() []KindEnum {
 	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
+// Operator enumerates the values for operator.
+type Operator string
+
+const (
+	// Contains ...
+	Contains Operator = "Contains"
+	// EndsWith ...
+	EndsWith Operator = "EndsWith"
+	// Equals ...
+	Equals Operator = "Equals"
+	// EqualsIgnoreCase ...
+	EqualsIgnoreCase Operator = "EqualsIgnoreCase"
+	// GreaterThan ...
+	GreaterThan Operator = "GreaterThan"
+	// GreaterThanOrEqualTo ...
+	GreaterThanOrEqualTo Operator = "GreaterThanOrEqualTo"
+	// LesserThan ...
+	LesserThan Operator = "LesserThan"
+	// LesserThanOrEqualTo ...
+	LesserThanOrEqualTo Operator = "LesserThanOrEqualTo"
+	// NotEquals ...
+	NotEquals Operator = "NotEquals"
+	// NotEqualsIgnoreCase ...
+	NotEqualsIgnoreCase Operator = "NotEqualsIgnoreCase"
+	// StartsWith ...
+	StartsWith Operator = "StartsWith"
+)
+
+// PossibleOperatorValues returns an array of possible values for the Operator const type.
+func PossibleOperatorValues() []Operator {
+	return []Operator{Contains, EndsWith, Equals, EqualsIgnoreCase, GreaterThan, GreaterThanOrEqualTo, LesserThan, LesserThanOrEqualTo, NotEquals, NotEqualsIgnoreCase, StartsWith}
+}
+
 // PricingTier enumerates the values for pricing tier.
 type PricingTier string
 
@@ -374,6 +240,25 @@ const (
 // PossiblePricingTierValues returns an array of possible values for the PricingTier const type.
 func PossiblePricingTierValues() []PricingTier {
 	return []PricingTier{Free, Standard}
+}
+
+// PropertyType enumerates the values for property type.
+type PropertyType string
+
+const (
+	// Boolean ...
+	Boolean PropertyType = "boolean"
+	// Integer ...
+	Integer PropertyType = "integer"
+	// Number ...
+	Number PropertyType = "number"
+	// String ...
+	String PropertyType = "string"
+)
+
+// PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
+func PossiblePropertyTypeValues() []PropertyType {
+	return []PropertyType{Boolean, Integer, Number, String}
 }
 
 // Protocol enumerates the values for protocol.
@@ -391,129 +276,6 @@ const (
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
 	return []Protocol{All, TCP, UDP}
-}
-
-// RecommendationAction enumerates the values for recommendation action.
-type RecommendationAction string
-
-const (
-	// RecommendationActionAdd ...
-	RecommendationActionAdd RecommendationAction = "Add"
-	// RecommendationActionRecommended ...
-	RecommendationActionRecommended RecommendationAction = "Recommended"
-	// RecommendationActionRemove ...
-	RecommendationActionRemove RecommendationAction = "Remove"
-)
-
-// PossibleRecommendationActionValues returns an array of possible values for the RecommendationAction const type.
-func PossibleRecommendationActionValues() []RecommendationAction {
-	return []RecommendationAction{RecommendationActionAdd, RecommendationActionRecommended, RecommendationActionRemove}
-}
-
-// RecommendationAction1 enumerates the values for recommendation action 1.
-type RecommendationAction1 string
-
-const (
-	// RecommendationAction1Add ...
-	RecommendationAction1Add RecommendationAction1 = "Add"
-	// RecommendationAction1Recommended ...
-	RecommendationAction1Recommended RecommendationAction1 = "Recommended"
-	// RecommendationAction1Remove ...
-	RecommendationAction1Remove RecommendationAction1 = "Remove"
-)
-
-// PossibleRecommendationAction1Values returns an array of possible values for the RecommendationAction1 const type.
-func PossibleRecommendationAction1Values() []RecommendationAction1 {
-	return []RecommendationAction1{RecommendationAction1Add, RecommendationAction1Recommended, RecommendationAction1Remove}
-}
-
-// RecommendationConfigStatus enumerates the values for recommendation config status.
-type RecommendationConfigStatus string
-
-const (
-	// Disabled ...
-	Disabled RecommendationConfigStatus = "Disabled"
-	// Enabled ...
-	Enabled RecommendationConfigStatus = "Enabled"
-)
-
-// PossibleRecommendationConfigStatusValues returns an array of possible values for the RecommendationConfigStatus const type.
-func PossibleRecommendationConfigStatusValues() []RecommendationConfigStatus {
-	return []RecommendationConfigStatus{Disabled, Enabled}
-}
-
-// RecommendationStatus enumerates the values for recommendation status.
-type RecommendationStatus string
-
-const (
-	// RecommendationStatusNoStatus ...
-	RecommendationStatusNoStatus RecommendationStatus = "NoStatus"
-	// RecommendationStatusNotAvailable ...
-	RecommendationStatusNotAvailable RecommendationStatus = "NotAvailable"
-	// RecommendationStatusNotRecommended ...
-	RecommendationStatusNotRecommended RecommendationStatus = "NotRecommended"
-	// RecommendationStatusRecommended ...
-	RecommendationStatusRecommended RecommendationStatus = "Recommended"
-)
-
-// PossibleRecommendationStatusValues returns an array of possible values for the RecommendationStatus const type.
-func PossibleRecommendationStatusValues() []RecommendationStatus {
-	return []RecommendationStatus{RecommendationStatusNoStatus, RecommendationStatusNotAvailable, RecommendationStatusNotRecommended, RecommendationStatusRecommended}
-}
-
-// RecommendationType enumerates the values for recommendation type.
-type RecommendationType string
-
-const (
-	// IoTACRAuthentication Authentication schema used for pull an edge module from an ACR repository does not
-	// use Service Principal Authentication.
-	IoTACRAuthentication RecommendationType = "IoT_ACRAuthentication"
-	// IoTAgentSendsUnutilizedMessages IoT agent message size capacity is currently underutilized, causing an
-	// increase in the number of sent messages. Adjust message intervals for better utilization.
-	IoTAgentSendsUnutilizedMessages RecommendationType = "IoT_AgentSendsUnutilizedMessages"
-	// IoTBaseline Identified security related system configuration issues.
-	IoTBaseline RecommendationType = "IoT_Baseline"
-	// IoTEdgeHubMemOptimize You can optimize Edge Hub memory usage by turning off protocol heads for any
-	// protocols not used by Edge modules in your solution.
-	IoTEdgeHubMemOptimize RecommendationType = "IoT_EdgeHubMemOptimize"
-	// IoTEdgeLoggingOptions Logging is disabled for this edge module.
-	IoTEdgeLoggingOptions RecommendationType = "IoT_EdgeLoggingOptions"
-	// IoTInconsistentModuleSettings A minority within a device security group has inconsistent Edge Module
-	// settings with the rest of their group.
-	IoTInconsistentModuleSettings RecommendationType = "IoT_InconsistentModuleSettings"
-	// IoTInstallAgent Install the Azure Security of Things Agent.
-	IoTInstallAgent RecommendationType = "IoT_InstallAgent"
-	// IoTIPFilterDenyAll IP Filter Configuration should have rules defined for allowed traffic and should deny
-	// all other traffic by default.
-	IoTIPFilterDenyAll RecommendationType = "IoT_IPFilter_DenyAll"
-	// IoTIPFilterPermissiveRule An Allow IP Filter rules source IP range is too large. Overly permissive rules
-	// might expose your IoT hub to malicious intenders.
-	IoTIPFilterPermissiveRule RecommendationType = "IoT_IPFilter_PermissiveRule"
-	// IoTOpenPorts A listening endpoint was found on the device.
-	IoTOpenPorts RecommendationType = "IoT_OpenPorts"
-	// IoTPermissiveFirewallPolicy An Allowed firewall policy was found (INPUT/OUTPUT). The policy should Deny
-	// all traffic by default and define rules to allow necessary communication to/from the device.
-	IoTPermissiveFirewallPolicy RecommendationType = "IoT_PermissiveFirewallPolicy"
-	// IoTPermissiveInputFirewallRules A rule in the firewall has been found that contains a permissive pattern
-	// for a wide range of IP addresses or Ports.
-	IoTPermissiveInputFirewallRules RecommendationType = "IoT_PermissiveInputFirewallRules"
-	// IoTPermissiveOutputFirewallRules A rule in the firewall has been found that contains a permissive
-	// pattern for a wide range of IP addresses or Ports.
-	IoTPermissiveOutputFirewallRules RecommendationType = "IoT_PermissiveOutputFirewallRules"
-	// IoTPrivilegedDockerOptions Edge module is configured to run in privileged mode, with extensive Linux
-	// capabilities or with host-level network access (send/receive data to host machine).
-	IoTPrivilegedDockerOptions RecommendationType = "IoT_PrivilegedDockerOptions"
-	// IoTSharedCredentials Same authentication credentials to the IoT Hub used by multiple devices. This could
-	// indicate an illegitimate device impersonating a legitimate device. It also exposes the risk of device
-	// impersonation by an attacker.
-	IoTSharedCredentials RecommendationType = "IoT_SharedCredentials"
-	// IoTVulnerableTLSCipherSuite Insecure TLS configurations detected. Immediate upgrade recommended.
-	IoTVulnerableTLSCipherSuite RecommendationType = "IoT_VulnerableTLSCipherSuite"
-)
-
-// PossibleRecommendationTypeValues returns an array of possible values for the RecommendationType const type.
-func PossibleRecommendationTypeValues() []RecommendationType {
-	return []RecommendationType{IoTACRAuthentication, IoTAgentSendsUnutilizedMessages, IoTBaseline, IoTEdgeHubMemOptimize, IoTEdgeLoggingOptions, IoTInconsistentModuleSettings, IoTInstallAgent, IoTIPFilterDenyAll, IoTIPFilterPermissiveRule, IoTOpenPorts, IoTPermissiveFirewallPolicy, IoTPermissiveInputFirewallRules, IoTPermissiveOutputFirewallRules, IoTPrivilegedDockerOptions, IoTSharedCredentials, IoTVulnerableTLSCipherSuite}
 }
 
 // ReportedSeverity enumerates the values for reported severity.
@@ -550,60 +312,23 @@ func PossibleSettingKindValues() []SettingKind {
 	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
 }
 
-// SolutionStatus enumerates the values for solution status.
-type SolutionStatus string
-
-const (
-	// SolutionStatusDisabled ...
-	SolutionStatusDisabled SolutionStatus = "Disabled"
-	// SolutionStatusEnabled ...
-	SolutionStatusEnabled SolutionStatus = "Enabled"
-)
-
-// PossibleSolutionStatusValues returns an array of possible values for the SolutionStatus const type.
-func PossibleSolutionStatusValues() []SolutionStatus {
-	return []SolutionStatus{SolutionStatusDisabled, SolutionStatusEnabled}
-}
-
-// SourceSystem enumerates the values for source system.
-type SourceSystem string
-
-const (
-	// AzureAppLocker ...
-	AzureAppLocker SourceSystem = "Azure_AppLocker"
-	// AzureAuditD ...
-	AzureAuditD SourceSystem = "Azure_AuditD"
-	// NonAzureAppLocker ...
-	NonAzureAppLocker SourceSystem = "NonAzure_AppLocker"
-	// NonAzureAuditD ...
-	NonAzureAuditD SourceSystem = "NonAzure_AuditD"
-	// None ...
-	None SourceSystem = "None"
-)
-
-// PossibleSourceSystemValues returns an array of possible values for the SourceSystem const type.
-func PossibleSourceSystemValues() []SourceSystem {
-	return []SourceSystem{AzureAppLocker, AzureAuditD, NonAzureAppLocker, NonAzureAuditD, None}
-}
-
 // State enumerates the values for state.
 type State string
 
 const (
-	// StateFailed At least one supported regulatory compliance control in the given standard has a state of
-	// failed
-	StateFailed State = "Failed"
-	// StatePassed All supported regulatory compliance controls in the given standard have a passed state
-	StatePassed State = "Passed"
-	// StateSkipped All supported regulatory compliance controls in the given standard have a state of skipped
-	StateSkipped State = "Skipped"
-	// StateUnsupported No supported regulatory compliance data for the given standard
-	StateUnsupported State = "Unsupported"
+	// Failed At least one supported regulatory compliance control in the given standard has a state of failed
+	Failed State = "Failed"
+	// Passed All supported regulatory compliance controls in the given standard have a passed state
+	Passed State = "Passed"
+	// Skipped All supported regulatory compliance controls in the given standard have a state of skipped
+	Skipped State = "Skipped"
+	// Unsupported No supported regulatory compliance data for the given standard
+	Unsupported State = "Unsupported"
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
 func PossibleStateValues() []State {
-	return []State{StateFailed, StatePassed, StateSkipped, StateUnsupported}
+	return []State{Failed, Passed, Skipped, Unsupported}
 }
 
 // Status enumerates the values for status.
@@ -653,42 +378,19 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 	return []TransportProtocol{TransportProtocolTCP, TransportProtocolUDP}
 }
 
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// BinarySignature ...
-	BinarySignature Type = "BinarySignature"
-	// File ...
-	File Type = "File"
-	// FileHash ...
-	FileHash Type = "FileHash"
-	// ProductSignature ...
-	ProductSignature Type = "ProductSignature"
-	// PublisherSignature ...
-	PublisherSignature Type = "PublisherSignature"
-	// VersionAndAboveSignature ...
-	VersionAndAboveSignature Type = "VersionAndAboveSignature"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{BinarySignature, File, FileHash, ProductSignature, PublisherSignature, VersionAndAboveSignature}
-}
-
 // ValueType enumerates the values for value type.
 type ValueType string
 
 const (
-	// IPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
-	IPCidr ValueType = "IpCidr"
-	// String Any string value.
-	String ValueType = "String"
+	// ValueTypeIPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
+	ValueTypeIPCidr ValueType = "IpCidr"
+	// ValueTypeString Any string value.
+	ValueTypeString ValueType = "String"
 )
 
 // PossibleValueTypeValues returns an array of possible values for the ValueType const type.
 func PossibleValueTypeValues() []ValueType {
-	return []ValueType{IPCidr, String}
+	return []ValueType{ValueTypeIPCidr, ValueTypeString}
 }
 
 // AadConnectivityState1 describes an Azure resource with kind
@@ -1684,7 +1386,7 @@ type AllowedConnectionsResourceProperties struct {
 type AllowlistCustomAlertRule struct {
 	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
 	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -1694,128 +1396,6 @@ type AllowlistCustomAlertRule struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - The type of the custom alert rule.
 	RuleType *string `json:"ruleType,omitempty"`
-}
-
-// AppWhitelistingGroup ...
-type AppWhitelistingGroup struct {
-	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Location where the resource is stored
-	Location                  *string `json:"location,omitempty"`
-	*AppWhitelistingGroupData `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AppWhitelistingGroup.
-func (awg AppWhitelistingGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if awg.AppWhitelistingGroupData != nil {
-		objectMap["properties"] = awg.AppWhitelistingGroupData
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AppWhitelistingGroup struct.
-func (awg *AppWhitelistingGroup) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				awg.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				awg.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				awg.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				awg.Location = &location
-			}
-		case "properties":
-			if v != nil {
-				var appWhitelistingGroupData AppWhitelistingGroupData
-				err = json.Unmarshal(*v, &appWhitelistingGroupData)
-				if err != nil {
-					return err
-				}
-				awg.AppWhitelistingGroupData = &appWhitelistingGroupData
-			}
-		}
-	}
-
-	return nil
-}
-
-// AppWhitelistingGroupData represents a VM/server group and set of rules that are Recommended by Azure
-// Security Center to be allowed
-type AppWhitelistingGroupData struct {
-	// EnforcementMode - Possible values include: 'Audit', 'Enforce'
-	EnforcementMode EnforcementMode `json:"enforcementMode,omitempty"`
-	// ConfigurationStatus - Possible values include: 'ConfigurationStatus2Configured', 'ConfigurationStatus2NotConfigured', 'ConfigurationStatus2InProgress', 'ConfigurationStatus2Failed', 'ConfigurationStatus2NoStatus'
-	ConfigurationStatus ConfigurationStatus2 `json:"configurationStatus,omitempty"`
-	// RecommendationStatus - Possible values include: 'RecommendationStatusRecommended', 'RecommendationStatusNotRecommended', 'RecommendationStatusNotAvailable', 'RecommendationStatusNoStatus'
-	RecommendationStatus RecommendationStatus           `json:"recommendationStatus,omitempty"`
-	Issues               *[]AppWhitelistingIssueSummary `json:"issues,omitempty"`
-	// SourceSystem - Possible values include: 'AzureAppLocker', 'AzureAuditD', 'NonAzureAppLocker', 'NonAzureAuditD', 'None'
-	SourceSystem        SourceSystem          `json:"sourceSystem,omitempty"`
-	VMRecommendations   *[]VMRecommendation   `json:"vmRecommendations,omitempty"`
-	PathRecommendations *[]PathRecommendation `json:"pathRecommendations,omitempty"`
-}
-
-// AppWhitelistingGroups represents a list of VM/server groups and set of rules that are Recommended by
-// Azure Security Center to be allowed
-type AppWhitelistingGroups struct {
-	autorest.Response `json:"-"`
-	Value             *[]AppWhitelistingGroup `json:"value,omitempty"`
-}
-
-// AppWhitelistingIssueSummary represents a summary of the alerts of the VM/server group
-type AppWhitelistingIssueSummary struct {
-	// Issue - Possible values include: 'ViolationsAudited', 'ViolationsBlocked', 'MsiAndScriptViolationsAudited', 'MsiAndScriptViolationsBlocked', 'ExecutableViolationsAudited', 'RulesViolatedManually'
-	Issue Issue `json:"issue,omitempty"`
-	// NumberOfVms - The number of machines in the VM/server group that have this alert
-	NumberOfVms *float64 `json:"numberOfVms,omitempty"`
-}
-
-// AppWhitelistingPutGroupData the altered data of the recommended VM/server group policy
-type AppWhitelistingPutGroupData struct {
-	// EnforcementMode - Possible values include: 'EnforcementMode1Audit', 'EnforcementMode1Enforce'
-	EnforcementMode     EnforcementMode1      `json:"enforcementMode,omitempty"`
-	VMRecommendations   *[]VMRecommendation   `json:"vmRecommendations,omitempty"`
-	PathRecommendations *[]PathRecommendation `json:"pathRecommendations,omitempty"`
 }
 
 // AscLocation the ASC location of the subscription is in the "name" field
@@ -3174,7 +2754,7 @@ type DataExportSettingProperties struct {
 type DenylistCustomAlertRule struct {
 	// DenylistValues - The values to deny. The format of the values depends on the rule type.
 	DenylistValues *[]string `json:"denylistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -3664,6 +3244,14 @@ type EffectiveNetworkSecurityGroups struct {
 	NetworkInterface *string `json:"networkInterface,omitempty"`
 	// NetworkSecurityGroups - The Network Security Groups effective on the network interface
 	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
+}
+
+// ETag entity tag is used for comparing two or more entities from the same requested resource. ETags may
+// be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency
+// control.
+type ETag struct {
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // BasicExternalSecuritySolution represents a security solution external to Azure Security Center which sends
@@ -4323,966 +3911,6 @@ type InformationType struct {
 	Keywords *[]InformationProtectionKeyword `json:"keywords,omitempty"`
 }
 
-// IoTSecurityAggregatedAlert security Solution Aggregated Alert information
-type IoTSecurityAggregatedAlert struct {
-	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-	// IoTSecurityAggregatedAlertProperties - Security Solution  Aggregated Alert data
-	*IoTSecurityAggregatedAlertProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IoTSecurityAggregatedAlert.
-func (itsaa IoTSecurityAggregatedAlert) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if itsaa.Tags != nil {
-		objectMap["tags"] = itsaa.Tags
-	}
-	if itsaa.IoTSecurityAggregatedAlertProperties != nil {
-		objectMap["properties"] = itsaa.IoTSecurityAggregatedAlertProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IoTSecurityAggregatedAlert struct.
-func (itsaa *IoTSecurityAggregatedAlert) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				itsaa.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				itsaa.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				itsaa.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				itsaa.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var ioTSecurityAggregatedAlertProperties IoTSecurityAggregatedAlertProperties
-				err = json.Unmarshal(*v, &ioTSecurityAggregatedAlertProperties)
-				if err != nil {
-					return err
-				}
-				itsaa.IoTSecurityAggregatedAlertProperties = &ioTSecurityAggregatedAlertProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// IoTSecurityAggregatedAlertList list of IoT aggregated security alerts
-type IoTSecurityAggregatedAlertList struct {
-	autorest.Response `json:"-"`
-	// Value - List of aggregated alerts data
-	Value *[]IoTSecurityAggregatedAlert `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IoTSecurityAggregatedAlertListIterator provides access to a complete listing of
-// IoTSecurityAggregatedAlert values.
-type IoTSecurityAggregatedAlertListIterator struct {
-	i    int
-	page IoTSecurityAggregatedAlertListPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IoTSecurityAggregatedAlertListIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecurityAggregatedAlertListIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *IoTSecurityAggregatedAlertListIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IoTSecurityAggregatedAlertListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IoTSecurityAggregatedAlertListIterator) Response() IoTSecurityAggregatedAlertList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IoTSecurityAggregatedAlertListIterator) Value() IoTSecurityAggregatedAlert {
-	if !iter.page.NotDone() {
-		return IoTSecurityAggregatedAlert{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the IoTSecurityAggregatedAlertListIterator type.
-func NewIoTSecurityAggregatedAlertListIterator(page IoTSecurityAggregatedAlertListPage) IoTSecurityAggregatedAlertListIterator {
-	return IoTSecurityAggregatedAlertListIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (itsaal IoTSecurityAggregatedAlertList) IsEmpty() bool {
-	return itsaal.Value == nil || len(*itsaal.Value) == 0
-}
-
-// ioTSecurityAggregatedAlertListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (itsaal IoTSecurityAggregatedAlertList) ioTSecurityAggregatedAlertListPreparer(ctx context.Context) (*http.Request, error) {
-	if itsaal.NextLink == nil || len(to.String(itsaal.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(itsaal.NextLink)))
-}
-
-// IoTSecurityAggregatedAlertListPage contains a page of IoTSecurityAggregatedAlert values.
-type IoTSecurityAggregatedAlertListPage struct {
-	fn     func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error)
-	itsaal IoTSecurityAggregatedAlertList
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IoTSecurityAggregatedAlertListPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecurityAggregatedAlertListPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.itsaal)
-	if err != nil {
-		return err
-	}
-	page.itsaal = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *IoTSecurityAggregatedAlertListPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IoTSecurityAggregatedAlertListPage) NotDone() bool {
-	return !page.itsaal.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IoTSecurityAggregatedAlertListPage) Response() IoTSecurityAggregatedAlertList {
-	return page.itsaal
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IoTSecurityAggregatedAlertListPage) Values() []IoTSecurityAggregatedAlert {
-	if page.itsaal.IsEmpty() {
-		return nil
-	}
-	return *page.itsaal.Value
-}
-
-// Creates a new instance of the IoTSecurityAggregatedAlertListPage type.
-func NewIoTSecurityAggregatedAlertListPage(getNextPage func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error)) IoTSecurityAggregatedAlertListPage {
-	return IoTSecurityAggregatedAlertListPage{fn: getNextPage}
-}
-
-// IoTSecurityAggregatedAlertProperties security Solution Aggregated Alert data
-type IoTSecurityAggregatedAlertProperties struct {
-	// AlertType - READ-ONLY; Name of the alert type
-	AlertType *string `json:"alertType,omitempty"`
-	// AlertDisplayName - READ-ONLY; Display name of the alert type
-	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
-	// AggregatedDateUtc - READ-ONLY; The date the incidents were detected by the vendor
-	AggregatedDateUtc *date.Date `json:"aggregatedDateUtc,omitempty"`
-	// VendorName - READ-ONLY; Name of the vendor that discovered the incident
-	VendorName *string `json:"vendorName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
-	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// RemediationSteps - READ-ONLY; Recommended steps for remediation
-	RemediationSteps *string `json:"remediationSteps,omitempty"`
-	// Description - READ-ONLY; Description of the incident and what it means
-	Description *string `json:"description,omitempty"`
-	// Count - READ-ONLY; Occurrence number of the alert within the aggregated date
-	Count *int32 `json:"count,omitempty"`
-	// EffectedResourceType - READ-ONLY; Azure resource ID of the resource that got the alerts
-	EffectedResourceType *string `json:"effectedResourceType,omitempty"`
-	// SystemSource - READ-ONLY; The type of the alerted resource (Azure, Non-Azure)
-	SystemSource *string `json:"systemSource,omitempty"`
-	// ActionTaken - READ-ONLY; The action that was taken as a response to the alert (Active, Blocked etc.)
-	ActionTaken *string `json:"actionTaken,omitempty"`
-	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
-	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
-}
-
-// IoTSecurityAggregatedRecommendation security Solution Recommendation Information
-type IoTSecurityAggregatedRecommendation struct {
-	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-	// IoTSecurityAggregatedRecommendationProperties - Security Solution data
-	*IoTSecurityAggregatedRecommendationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IoTSecurityAggregatedRecommendation.
-func (itsar IoTSecurityAggregatedRecommendation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if itsar.Tags != nil {
-		objectMap["tags"] = itsar.Tags
-	}
-	if itsar.IoTSecurityAggregatedRecommendationProperties != nil {
-		objectMap["properties"] = itsar.IoTSecurityAggregatedRecommendationProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IoTSecurityAggregatedRecommendation struct.
-func (itsar *IoTSecurityAggregatedRecommendation) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				itsar.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				itsar.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				itsar.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				itsar.Tags = tags
-			}
-		case "properties":
-			if v != nil {
-				var ioTSecurityAggregatedRecommendationProperties IoTSecurityAggregatedRecommendationProperties
-				err = json.Unmarshal(*v, &ioTSecurityAggregatedRecommendationProperties)
-				if err != nil {
-					return err
-				}
-				itsar.IoTSecurityAggregatedRecommendationProperties = &ioTSecurityAggregatedRecommendationProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// IoTSecurityAggregatedRecommendationList list of IoT aggregated security recommendations
-type IoTSecurityAggregatedRecommendationList struct {
-	autorest.Response `json:"-"`
-	// Value - List of aggregated alerts data
-	Value *[]IoTSecurityAggregatedRecommendation `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IoTSecurityAggregatedRecommendationListIterator provides access to a complete listing of
-// IoTSecurityAggregatedRecommendation values.
-type IoTSecurityAggregatedRecommendationListIterator struct {
-	i    int
-	page IoTSecurityAggregatedRecommendationListPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IoTSecurityAggregatedRecommendationListIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecurityAggregatedRecommendationListIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *IoTSecurityAggregatedRecommendationListIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IoTSecurityAggregatedRecommendationListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IoTSecurityAggregatedRecommendationListIterator) Response() IoTSecurityAggregatedRecommendationList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IoTSecurityAggregatedRecommendationListIterator) Value() IoTSecurityAggregatedRecommendation {
-	if !iter.page.NotDone() {
-		return IoTSecurityAggregatedRecommendation{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the IoTSecurityAggregatedRecommendationListIterator type.
-func NewIoTSecurityAggregatedRecommendationListIterator(page IoTSecurityAggregatedRecommendationListPage) IoTSecurityAggregatedRecommendationListIterator {
-	return IoTSecurityAggregatedRecommendationListIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (itsarl IoTSecurityAggregatedRecommendationList) IsEmpty() bool {
-	return itsarl.Value == nil || len(*itsarl.Value) == 0
-}
-
-// ioTSecurityAggregatedRecommendationListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (itsarl IoTSecurityAggregatedRecommendationList) ioTSecurityAggregatedRecommendationListPreparer(ctx context.Context) (*http.Request, error) {
-	if itsarl.NextLink == nil || len(to.String(itsarl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(itsarl.NextLink)))
-}
-
-// IoTSecurityAggregatedRecommendationListPage contains a page of IoTSecurityAggregatedRecommendation
-// values.
-type IoTSecurityAggregatedRecommendationListPage struct {
-	fn     func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error)
-	itsarl IoTSecurityAggregatedRecommendationList
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IoTSecurityAggregatedRecommendationListPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecurityAggregatedRecommendationListPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.itsarl)
-	if err != nil {
-		return err
-	}
-	page.itsarl = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *IoTSecurityAggregatedRecommendationListPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IoTSecurityAggregatedRecommendationListPage) NotDone() bool {
-	return !page.itsarl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IoTSecurityAggregatedRecommendationListPage) Response() IoTSecurityAggregatedRecommendationList {
-	return page.itsarl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IoTSecurityAggregatedRecommendationListPage) Values() []IoTSecurityAggregatedRecommendation {
-	if page.itsarl.IsEmpty() {
-		return nil
-	}
-	return *page.itsarl.Value
-}
-
-// Creates a new instance of the IoTSecurityAggregatedRecommendationListPage type.
-func NewIoTSecurityAggregatedRecommendationListPage(getNextPage func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error)) IoTSecurityAggregatedRecommendationListPage {
-	return IoTSecurityAggregatedRecommendationListPage{fn: getNextPage}
-}
-
-// IoTSecurityAggregatedRecommendationProperties security Solution Recommendation Information
-type IoTSecurityAggregatedRecommendationProperties struct {
-	// RecommendationName - Name of the recommendation
-	RecommendationName *string `json:"recommendationName,omitempty"`
-	// RecommendationDisplayName - READ-ONLY; Display name of the recommendation type.
-	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
-	// Description - READ-ONLY; Description of the incident and what it means
-	Description *string `json:"description,omitempty"`
-	// RecommendationTypeID - READ-ONLY; The recommendation-type GUID.
-	RecommendationTypeID *string `json:"recommendationTypeId,omitempty"`
-	// DetectedBy - READ-ONLY; Name of the vendor that discovered the issue
-	DetectedBy *string `json:"detectedBy,omitempty"`
-	// RemediationSteps - READ-ONLY; Recommended steps for remediation
-	RemediationSteps *string `json:"remediationSteps,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this recommendation. Possible values include: 'Informational', 'Low', 'Medium', 'High'
-	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// HealthyDevices - READ-ONLY; the number of the healthy devices within the solution
-	HealthyDevices *int32 `json:"healthyDevices,omitempty"`
-	// UnhealthyDeviceCount - READ-ONLY; the number of the unhealthy devices within the solution
-	UnhealthyDeviceCount *int32 `json:"unhealthyDeviceCount,omitempty"`
-	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
-	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
-}
-
-// IoTSecurityAlertedDevice statistic information about the number of alerts per device during the last
-// period
-type IoTSecurityAlertedDevice struct {
-	// DeviceID - READ-ONLY; Name of the alert type
-	DeviceID *string `json:"deviceId,omitempty"`
-	// AlertsCount - READ-ONLY; the number of alerts raised for this device
-	AlertsCount *int32 `json:"alertsCount,omitempty"`
-}
-
-// IoTSecurityAlertedDevicesList list of devices with the count of raised alerts
-type IoTSecurityAlertedDevicesList struct {
-	// Value - List of aggregated alerts data
-	Value *[]IoTSecurityAlertedDevice `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IoTSecurityDeviceAlert statistic information about the number of alerts per alert type during the last
-// period
-type IoTSecurityDeviceAlert struct {
-	// AlertDisplayName - READ-ONLY; Display name of the alert
-	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
-	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// AlertsCount - READ-ONLY; the number of alerts raised for this alert type
-	AlertsCount *int32 `json:"alertsCount,omitempty"`
-}
-
-// IoTSecurityDeviceAlertsList list of alerts with the count of raised alerts
-type IoTSecurityDeviceAlertsList struct {
-	// Value - List of top alerts data
-	Value *[]IoTSecurityDeviceAlert `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IoTSecurityDeviceRecommendation statistic information about the number of recommendations per
-// recommendation type
-type IoTSecurityDeviceRecommendation struct {
-	// RecommendationDisplayName - READ-ONLY; Display name of the recommendation
-	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this recommendation. Possible values include: 'Informational', 'Low', 'Medium', 'High'
-	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// DevicesCount - READ-ONLY; the number of device with this recommendation
-	DevicesCount *int32 `json:"devicesCount,omitempty"`
-}
-
-// IoTSecurityDeviceRecommendationsList list of recommendations with the count of devices
-type IoTSecurityDeviceRecommendationsList struct {
-	// Value - List of aggregated recommendation data
-	Value *[]IoTSecurityDeviceRecommendation `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IoTSecuritySolutionAnalyticsModel security Analytics of a security solution
-type IoTSecuritySolutionAnalyticsModel struct {
-	autorest.Response `json:"-"`
-	// IoTSecuritySolutionAnalyticsModelProperties - Security Solution  Aggregated Alert data
-	*IoTSecuritySolutionAnalyticsModelProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IoTSecuritySolutionAnalyticsModel.
-func (itssam IoTSecuritySolutionAnalyticsModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if itssam.IoTSecuritySolutionAnalyticsModelProperties != nil {
-		objectMap["properties"] = itssam.IoTSecuritySolutionAnalyticsModelProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IoTSecuritySolutionAnalyticsModel struct.
-func (itssam *IoTSecuritySolutionAnalyticsModel) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var ioTSecuritySolutionAnalyticsModelProperties IoTSecuritySolutionAnalyticsModelProperties
-				err = json.Unmarshal(*v, &ioTSecuritySolutionAnalyticsModelProperties)
-				if err != nil {
-					return err
-				}
-				itssam.IoTSecuritySolutionAnalyticsModelProperties = &ioTSecuritySolutionAnalyticsModelProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				itssam.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				itssam.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				itssam.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IoTSecuritySolutionAnalyticsModelList list of Security Analytics of a security solution
-type IoTSecuritySolutionAnalyticsModelList struct {
-	autorest.Response `json:"-"`
-	// Value - List of Security Analytics of a security solution
-	Value *[]IoTSecuritySolutionAnalyticsModel `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IoTSecuritySolutionAnalyticsModelProperties security Analytics of a security solution properties
-type IoTSecuritySolutionAnalyticsModelProperties struct {
-	// Metrics - READ-ONLY; Security Analytics of a security solution
-	Metrics *IoTSeverityMetrics `json:"metrics,omitempty"`
-	// UnhealthyDeviceCount - READ-ONLY; number of unhealthy devices
-	UnhealthyDeviceCount *int32 `json:"unhealthyDeviceCount,omitempty"`
-	// DevicesMetrics - READ-ONLY; The list of devices metrics by the aggregated date.
-	DevicesMetrics *[]IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem `json:"devicesMetrics,omitempty"`
-	// TopAlertedDevices - The list of top 3 devices with the most attacked.
-	TopAlertedDevices *IoTSecurityAlertedDevicesList `json:"topAlertedDevices,omitempty"`
-	// MostPrevalentDeviceAlerts - The list of most prevalent 3 alerts.
-	MostPrevalentDeviceAlerts *IoTSecurityDeviceAlertsList `json:"mostPrevalentDeviceAlerts,omitempty"`
-	// MostPrevalentDeviceRecommendations - The list of most prevalent 3 recommendations.
-	MostPrevalentDeviceRecommendations *IoTSecurityDeviceRecommendationsList `json:"mostPrevalentDeviceRecommendations,omitempty"`
-}
-
-// IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem ...
-type IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem struct {
-	// Date - the date of the metrics
-	Date *date.Time `json:"date,omitempty"`
-	// DevicesMetrics - devices alerts count by severity.
-	DevicesMetrics *IoTSeverityMetrics `json:"devicesMetrics,omitempty"`
-}
-
-// IoTSecuritySolutionModel security Solution
-type IoTSecuritySolutionModel struct {
-	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
-	// Location - The resource location.
-	Location *string `json:"location,omitempty"`
-	// IoTSecuritySolutionProperties - Security Solution data
-	*IoTSecuritySolutionProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IoTSecuritySolutionModel.
-func (itssm IoTSecuritySolutionModel) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if itssm.Tags != nil {
-		objectMap["tags"] = itssm.Tags
-	}
-	if itssm.Location != nil {
-		objectMap["location"] = itssm.Location
-	}
-	if itssm.IoTSecuritySolutionProperties != nil {
-		objectMap["properties"] = itssm.IoTSecuritySolutionProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IoTSecuritySolutionModel struct.
-func (itssm *IoTSecuritySolutionModel) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				itssm.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				itssm.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				itssm.Type = &typeVar
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				itssm.Tags = tags
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				itssm.Location = &location
-			}
-		case "properties":
-			if v != nil {
-				var ioTSecuritySolutionProperties IoTSecuritySolutionProperties
-				err = json.Unmarshal(*v, &ioTSecuritySolutionProperties)
-				if err != nil {
-					return err
-				}
-				itssm.IoTSecuritySolutionProperties = &ioTSecuritySolutionProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// IoTSecuritySolutionProperties security Solution setting data
-type IoTSecuritySolutionProperties struct {
-	// Workspace - Workspace resource ID
-	Workspace *string `json:"workspace,omitempty"`
-	// DisplayName - Resource display name.
-	DisplayName *string `json:"displayName,omitempty"`
-	// Status - Security solution status. Possible values include: 'SolutionStatusEnabled', 'SolutionStatusDisabled'
-	Status SolutionStatus `json:"status,omitempty"`
-	// Export - List of additional export to workspace data options
-	Export *[]ExportData `json:"export,omitempty"`
-	// DisabledDataSources - Disabled data sources. Disabling these data sources compromises the system.
-	DisabledDataSources *[]DataSource `json:"disabledDataSources,omitempty"`
-	// IotHubs - IoT Hub resource IDs
-	IotHubs              *[]string                       `json:"iotHubs,omitempty"`
-	UserDefinedResources *UserDefinedResourcesProperties `json:"userDefinedResources,omitempty"`
-	// AutoDiscoveredResources - READ-ONLY; List of resources that were automatically discovered as relevant to the security solution.
-	AutoDiscoveredResources      *[]string                                `json:"autoDiscoveredResources,omitempty"`
-	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
-}
-
-// IoTSecuritySolutionsList list of iot solutions
-type IoTSecuritySolutionsList struct {
-	autorest.Response `json:"-"`
-	// Value - List of security solutions
-	Value *[]IoTSecuritySolutionModel `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IoTSecuritySolutionsListIterator provides access to a complete listing of IoTSecuritySolutionModel
-// values.
-type IoTSecuritySolutionsListIterator struct {
-	i    int
-	page IoTSecuritySolutionsListPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IoTSecuritySolutionsListIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsListIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *IoTSecuritySolutionsListIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IoTSecuritySolutionsListIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IoTSecuritySolutionsListIterator) Response() IoTSecuritySolutionsList {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IoTSecuritySolutionsListIterator) Value() IoTSecuritySolutionModel {
-	if !iter.page.NotDone() {
-		return IoTSecuritySolutionModel{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the IoTSecuritySolutionsListIterator type.
-func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTSecuritySolutionsListIterator {
-	return IoTSecuritySolutionsListIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (itssl IoTSecuritySolutionsList) IsEmpty() bool {
-	return itssl.Value == nil || len(*itssl.Value) == 0
-}
-
-// ioTSecuritySolutionsListPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (itssl IoTSecuritySolutionsList) ioTSecuritySolutionsListPreparer(ctx context.Context) (*http.Request, error) {
-	if itssl.NextLink == nil || len(to.String(itssl.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(itssl.NextLink)))
-}
-
-// IoTSecuritySolutionsListPage contains a page of IoTSecuritySolutionModel values.
-type IoTSecuritySolutionsListPage struct {
-	fn    func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)
-	itssl IoTSecuritySolutionsList
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IoTSecuritySolutionsListPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsListPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.itssl)
-	if err != nil {
-		return err
-	}
-	page.itssl = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *IoTSecuritySolutionsListPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IoTSecuritySolutionsListPage) NotDone() bool {
-	return !page.itssl.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IoTSecuritySolutionsListPage) Response() IoTSecuritySolutionsList {
-	return page.itssl
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IoTSecuritySolutionsListPage) Values() []IoTSecuritySolutionModel {
-	if page.itssl.IsEmpty() {
-		return nil
-	}
-	return *page.itssl.Value
-}
-
-// Creates a new instance of the IoTSecuritySolutionsListPage type.
-func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
-	return IoTSecuritySolutionsListPage{fn: getNextPage}
-}
-
-// IoTSeverityMetrics severity metrics
-type IoTSeverityMetrics struct {
-	// High - count of high severity items
-	High *int32 `json:"high,omitempty"`
-	// Medium - count of medium severity items
-	Medium *int32 `json:"medium,omitempty"`
-	// Low - count of low severity items
-	Low *int32 `json:"low,omitempty"`
-}
-
 // JitNetworkAccessPoliciesList ...
 type JitNetworkAccessPoliciesList struct {
 	autorest.Response `json:"-"`
@@ -5564,8 +4192,6 @@ type JitNetworkAccessPolicyVirtualMachine struct {
 	ID *string `json:"id,omitempty"`
 	// Ports - Port configurations for the virtual machine
 	Ports *[]JitNetworkAccessPortRule `json:"ports,omitempty"`
-	// PublicIPAddress - Public IP address of the Azure Firewall that is linked to this policy, if applicable
-	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 }
 
 // JitNetworkAccessPortRule ...
@@ -5604,8 +4230,6 @@ type JitNetworkAccessRequestPort struct {
 	Status Status `json:"status,omitempty"`
 	// StatusReason - A description of why the `status` has its value. Possible values include: 'Expired', 'UserRequested', 'NewerRequestInitiated'
 	StatusReason StatusReason `json:"statusReason,omitempty"`
-	// MappedPort - The port which is mapped to this port's `number` in the Azure Firewall, if applicable
-	MappedPort *int32 `json:"mappedPort,omitempty"`
 }
 
 // JitNetworkAccessRequestVirtualMachine ...
@@ -5624,7 +4248,7 @@ type Kind struct {
 
 // ListCustomAlertRule a List custom alert rule
 type ListCustomAlertRule struct {
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -5809,28 +4433,535 @@ func NewOperationListPage(getNextPage func(context.Context, OperationList) (Oper
 	return OperationListPage{fn: getNextPage}
 }
 
-// PathRecommendation represents a path that is recommended to be allowed and its properties
-type PathRecommendation struct {
-	// Path - The full path to whitelist
-	Path *string `json:"path,omitempty"`
-	// Action - Possible values include: 'Recommended', 'Add', 'Remove'
-	Action Action `json:"action,omitempty"`
-	// Type - Possible values include: 'File', 'FileHash', 'PublisherSignature', 'ProductSignature', 'BinarySignature', 'VersionAndAboveSignature'
-	Type          Type           `json:"type,omitempty"`
-	PublisherInfo *PublisherInfo `json:"publisherInfo,omitempty"`
-	// Common - Whether the path is commonly run on the machine
-	Common    *bool                 `json:"common,omitempty"`
-	UserSids  *[]string             `json:"userSids,omitempty"`
-	Usernames *[]UserRecommendation `json:"usernames,omitempty"`
-	// FileType - Possible values include: 'Exe', 'Dll', 'Msi', 'Script', 'Executable', 'Unknown'
-	FileType FileType `json:"fileType,omitempty"`
-	// ConfigurationStatus - Possible values include: 'ConfigurationStatus1Configured', 'ConfigurationStatus1NotConfigured', 'ConfigurationStatus1InProgress', 'ConfigurationStatus1Failed', 'ConfigurationStatus1NoStatus'
-	ConfigurationStatus ConfigurationStatus1 `json:"configurationStatus,omitempty"`
+// PlaybookConfiguration the playbook configuration resource.
+type PlaybookConfiguration struct {
+	autorest.Response `json:"-"`
+	// PlaybookConfigurationProperties - Playbook configuration data
+	*PlaybookConfigurationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - READ-ONLY; Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
 }
 
-// Pricing azure Security Center is provided in two pricing tiers: free and standard, with the standard
-// tier available with a trial period. The standard tier offers advanced security capabilities, while the
-// free tier offers basic security features.
+// MarshalJSON is the custom marshaler for PlaybookConfiguration.
+func (pc PlaybookConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pc.PlaybookConfigurationProperties != nil {
+		objectMap["properties"] = pc.PlaybookConfigurationProperties
+	}
+	if pc.Kind != nil {
+		objectMap["kind"] = pc.Kind
+	}
+	if pc.Etag != nil {
+		objectMap["etag"] = pc.Etag
+	}
+	if pc.Tags != nil {
+		objectMap["tags"] = pc.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PlaybookConfiguration struct.
+func (pc *PlaybookConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var playbookConfigurationProperties PlaybookConfigurationProperties
+				err = json.Unmarshal(*v, &playbookConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				pc.PlaybookConfigurationProperties = &playbookConfigurationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pc.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				pc.Location = &location
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				pc.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				pc.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				pc.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicPlaybookConfigurationAction the action that should be triggered.
+type BasicPlaybookConfigurationAction interface {
+	AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool)
+	AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool)
+}
+
+// PlaybookConfigurationAction the action that should be triggered.
+type PlaybookConfigurationAction struct {
+	// ActionType - Possible values include: 'ActionTypePlaybookConfigurationAction', 'ActionTypeLogicApp'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+func unmarshalBasicPlaybookConfigurationAction(body []byte) (BasicPlaybookConfigurationAction, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["actionType"] {
+	case string(ActionTypeLogicApp):
+		var pcala PlaybookConfigurationActionLogicApp
+		err := json.Unmarshal(body, &pcala)
+		return pcala, err
+	default:
+		var pca PlaybookConfigurationAction
+		err := json.Unmarshal(body, &pca)
+		return pca, err
+	}
+}
+func unmarshalBasicPlaybookConfigurationActionArray(body []byte) ([]BasicPlaybookConfigurationAction, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	pcaArray := make([]BasicPlaybookConfigurationAction, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		pca, err := unmarshalBasicPlaybookConfigurationAction(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		pcaArray[index] = pca
+	}
+	return pcaArray, nil
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) MarshalJSON() ([]byte, error) {
+	pca.ActionType = ActionTypePlaybookConfigurationAction
+	objectMap := make(map[string]interface{})
+	if pca.ActionType != "" {
+		objectMap["actionType"] = pca.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsPlaybookConfigurationActionLogicApp is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool) {
+	return nil, false
+}
+
+// AsPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool) {
+	return &pca, true
+}
+
+// AsBasicPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsBasicPlaybookConfigurationAction() (BasicPlaybookConfigurationAction, bool) {
+	return &pca, true
+}
+
+// PlaybookConfigurationActionLogicApp the logic app action that should be triggered.
+type PlaybookConfigurationActionLogicApp struct {
+	// LogicAppResourceID - The triggered resource id.
+	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
+	// URI - The uri that should be triggered by an Http GET request.
+	URI *string `json:"uri,omitempty"`
+	// ActionType - Possible values include: 'ActionTypePlaybookConfigurationAction', 'ActionTypeLogicApp'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) MarshalJSON() ([]byte, error) {
+	pcala.ActionType = ActionTypeLogicApp
+	objectMap := make(map[string]interface{})
+	if pcala.LogicAppResourceID != nil {
+		objectMap["logicAppResourceId"] = pcala.LogicAppResourceID
+	}
+	if pcala.URI != nil {
+		objectMap["uri"] = pcala.URI
+	}
+	if pcala.ActionType != "" {
+		objectMap["actionType"] = pcala.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsPlaybookConfigurationActionLogicApp is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool) {
+	return &pcala, true
+}
+
+// AsPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool) {
+	return nil, false
+}
+
+// AsBasicPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsBasicPlaybookConfigurationAction() (BasicPlaybookConfigurationAction, bool) {
+	return &pcala, true
+}
+
+// PlaybookConfigurationList list of playbook configurations response.
+type PlaybookConfigurationList struct {
+	autorest.Response `json:"-"`
+	// Value - The list of playbook configurations under the given scope.
+	Value *[]PlaybookConfiguration `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PlaybookConfigurationListIterator provides access to a complete listing of PlaybookConfiguration values.
+type PlaybookConfigurationListIterator struct {
+	i    int
+	page PlaybookConfigurationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PlaybookConfigurationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PlaybookConfigurationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PlaybookConfigurationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PlaybookConfigurationListIterator) Response() PlaybookConfigurationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PlaybookConfigurationListIterator) Value() PlaybookConfiguration {
+	if !iter.page.NotDone() {
+		return PlaybookConfiguration{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PlaybookConfigurationListIterator type.
+func NewPlaybookConfigurationListIterator(page PlaybookConfigurationListPage) PlaybookConfigurationListIterator {
+	return PlaybookConfigurationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (pcl PlaybookConfigurationList) IsEmpty() bool {
+	return pcl.Value == nil || len(*pcl.Value) == 0
+}
+
+// playbookConfigurationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pcl PlaybookConfigurationList) playbookConfigurationListPreparer(ctx context.Context) (*http.Request, error) {
+	if pcl.NextLink == nil || len(to.String(pcl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pcl.NextLink)))
+}
+
+// PlaybookConfigurationListPage contains a page of PlaybookConfiguration values.
+type PlaybookConfigurationListPage struct {
+	fn  func(context.Context, PlaybookConfigurationList) (PlaybookConfigurationList, error)
+	pcl PlaybookConfigurationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PlaybookConfigurationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pcl)
+	if err != nil {
+		return err
+	}
+	page.pcl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PlaybookConfigurationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PlaybookConfigurationListPage) NotDone() bool {
+	return !page.pcl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PlaybookConfigurationListPage) Response() PlaybookConfigurationList {
+	return page.pcl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PlaybookConfigurationListPage) Values() []PlaybookConfiguration {
+	if page.pcl.IsEmpty() {
+		return nil
+	}
+	return *page.pcl.Value
+}
+
+// Creates a new instance of the PlaybookConfigurationListPage type.
+func NewPlaybookConfigurationListPage(getNextPage func(context.Context, PlaybookConfigurationList) (PlaybookConfigurationList, error)) PlaybookConfigurationListPage {
+	return PlaybookConfigurationListPage{fn: getNextPage}
+}
+
+// PlaybookConfigurationMetadata the metadata of the playbook configuration resource.
+type PlaybookConfigurationMetadata struct {
+	// CreatedDateTimeUtc - READ-ONLY; The playbook configuration creation date.
+	CreatedDateTimeUtc *date.Time `json:"createdDateTimeUtc,omitempty"`
+	// CreatedBy - READ-ONLY; The AAD object ID of the entity that created the playbook configuration.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// LastUpdatedDateTimeUtc - READ-ONLY; The playbook configuration last updated date.
+	LastUpdatedDateTimeUtc *date.Time `json:"lastUpdatedDateTimeUtc,omitempty"`
+	// LastUpdatedBy - READ-ONLY; The AAD object ID of the entity that last updated the playbook configuration.
+	LastUpdatedBy *string `json:"lastUpdatedBy,omitempty"`
+}
+
+// PlaybookConfigurationProperties the playbook configuration data.
+type PlaybookConfigurationProperties struct {
+	// Description - The playbook configuration description.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Indicates whether the playbook configuration is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// Metadata - The metadata of the playbook configuration resource.
+	Metadata *PlaybookConfigurationMetadata `json:"metadata,omitempty"`
+	// Scopes - A collection of the subscription's resources  scopes on which the playbook configurations logic is applied.
+	Scopes *[]PlaybookConfigurationScope `json:"scopes,omitempty"`
+	// Sources - A collection of the source event types which evaluate the playbook configuration set of rules.
+	Sources *[]PlaybookConfigurationSource `json:"sources,omitempty"`
+	// Actions - A collection of the actions which are triggered if all the configured rule set evaluation is true.
+	Actions *[]BasicPlaybookConfigurationAction `json:"actions,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PlaybookConfigurationProperties struct.
+func (pcp *PlaybookConfigurationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				pcp.Description = &description
+			}
+		case "isEnabled":
+			if v != nil {
+				var isEnabled bool
+				err = json.Unmarshal(*v, &isEnabled)
+				if err != nil {
+					return err
+				}
+				pcp.IsEnabled = &isEnabled
+			}
+		case "metadata":
+			if v != nil {
+				var metadata PlaybookConfigurationMetadata
+				err = json.Unmarshal(*v, &metadata)
+				if err != nil {
+					return err
+				}
+				pcp.Metadata = &metadata
+			}
+		case "scopes":
+			if v != nil {
+				var scopes []PlaybookConfigurationScope
+				err = json.Unmarshal(*v, &scopes)
+				if err != nil {
+					return err
+				}
+				pcp.Scopes = &scopes
+			}
+		case "sources":
+			if v != nil {
+				var sources []PlaybookConfigurationSource
+				err = json.Unmarshal(*v, &sources)
+				if err != nil {
+					return err
+				}
+				pcp.Sources = &sources
+			}
+		case "actions":
+			if v != nil {
+				actions, err := unmarshalBasicPlaybookConfigurationActionArray(*v)
+				if err != nil {
+					return err
+				}
+				pcp.Actions = &actions
+			}
+		}
+	}
+
+	return nil
+}
+
+// PlaybookConfigurationRuleSet a rule set which evaluates all its rules upon an event interception.
+type PlaybookConfigurationRuleSet struct {
+	Rules *[]PlaybookConfigurationTriggeringRule `json:"rules,omitempty"`
+}
+
+// PlaybookConfigurationScope the subscription's resources scope
+type PlaybookConfigurationScope struct {
+	// Description - The resources scope description.
+	Description *string `json:"description,omitempty"`
+	// ScopePath - The resources scope path.
+	ScopePath *string `json:"scopePath,omitempty"`
+}
+
+// PlaybookConfigurationSource the source event types which evaluate the playbook configuration set of
+// rules. For example - security alerts and recommended tasks.
+type PlaybookConfigurationSource struct {
+	// EventSource - A valid event source type.
+	EventSource *string `json:"eventSource,omitempty"`
+	// RuleSets - A set of rules which evaluate upon event interception.
+	RuleSets *[]PlaybookConfigurationRuleSet `json:"ruleSets,omitempty"`
+}
+
+// PlaybookConfigurationTriggeringRule a logic rule which evaluates upon event interception. The rule is
+// configured by comparing the specified expected value, in an expected property within the event model, by
+// the specified operator.
+type PlaybookConfigurationTriggeringRule struct {
+	// PropertyJPath - The JPath of the entity model property that should be checked.
+	PropertyJPath *string `json:"propertyJPath,omitempty"`
+	// PropertyType - The data type of the compared operands. Possible values include: 'String', 'Integer', 'Number', 'Boolean'
+	PropertyType PropertyType `json:"propertyType,omitempty"`
+	// ExpectedValue - The expected value.
+	ExpectedValue *string `json:"expectedValue,omitempty"`
+	// Operator - A valid comparer operator to use. Possible values include: 'Equals', 'EqualsIgnoreCase', 'GreaterThan', 'GreaterThanOrEqualTo', 'LesserThan', 'LesserThanOrEqualTo', 'NotEquals', 'NotEqualsIgnoreCase', 'Contains', 'StartsWith', 'EndsWith'
+	Operator Operator `json:"operator,omitempty"`
+}
+
+// PlaybookConfigurationValidationStatus the playbook configuration model state property bag.
+type PlaybookConfigurationValidationStatus struct {
+	autorest.Response `json:"-"`
+	// IsValid - Indicates whether the model is valid or not.
+	IsValid *bool `json:"isValid,omitempty"`
+	// Message - The validation message.
+	Message *string `json:"message,omitempty"`
+}
+
+// Pricing pricing tier will be applied for the scope based on the resource ID
 type Pricing struct {
 	autorest.Response `json:"-"`
 	// PricingProperties - Pricing data
@@ -5903,7 +5034,7 @@ func (p *Pricing) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PricingList list of pricing configurations response.
+// PricingList list of pricing configurations response
 type PricingList struct {
 	autorest.Response `json:"-"`
 	// Value - List of pricing configurations
@@ -5912,32 +5043,10 @@ type PricingList struct {
 
 // PricingProperties pricing properties for the relevant scope
 type PricingProperties struct {
-	// PricingTier - The pricing tier value. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. Possible values include: 'Free', 'Standard'
+	// PricingTier - The pricing tier value. Possible values include: 'Free', 'Standard'
 	PricingTier PricingTier `json:"pricingTier,omitempty"`
 	// FreeTrialRemainingTime - READ-ONLY; The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
 	FreeTrialRemainingTime *string `json:"freeTrialRemainingTime,omitempty"`
-}
-
-// PublisherInfo represents the publisher information of a process/rule
-type PublisherInfo struct {
-	// PublisherName - The Subject field of the x.509 certificate used to sign the code, using the following fields -  O = Organization, L = Locality, S = State or Province, and C = Country
-	PublisherName *string `json:"publisherName,omitempty"`
-	// ProductName - The product name taken from the file's version resource
-	ProductName *string `json:"productName,omitempty"`
-	// BinaryName - The "OriginalName" field taken from the file's version resource
-	BinaryName *string `json:"binaryName,omitempty"`
-	// Version - The binary file version taken from the file's version resource
-	Version *string `json:"version,omitempty"`
-}
-
-// RecommendationConfigurationProperties recommendation configuration
-type RecommendationConfigurationProperties struct {
-	// RecommendationType - The recommendation type. Possible values include: 'IoTACRAuthentication', 'IoTAgentSendsUnutilizedMessages', 'IoTBaseline', 'IoTEdgeHubMemOptimize', 'IoTEdgeLoggingOptions', 'IoTInconsistentModuleSettings', 'IoTInstallAgent', 'IoTIPFilterDenyAll', 'IoTIPFilterPermissiveRule', 'IoTOpenPorts', 'IoTPermissiveFirewallPolicy', 'IoTPermissiveInputFirewallRules', 'IoTPermissiveOutputFirewallRules', 'IoTPrivilegedDockerOptions', 'IoTSharedCredentials', 'IoTVulnerableTLSCipherSuite'
-	RecommendationType RecommendationType `json:"recommendationType,omitempty"`
-	// Name - READ-ONLY
-	Name *string `json:"name,omitempty"`
-	// Status - Recommendation status. The recommendation is not generated when the status is disabled. Possible values include: 'Disabled', 'Enabled'
-	Status RecommendationConfigStatus `json:"status,omitempty"`
 }
 
 // RegulatoryComplianceAssessment regulatory compliance assessment details and state
@@ -6167,7 +5276,7 @@ type RegulatoryComplianceAssessmentProperties struct {
 	AssessmentType *string `json:"assessmentType,omitempty"`
 	// AssessmentDetailsLink - READ-ONLY; Link to more detailed assessment results data. The response type will be according to the assessmentType field
 	AssessmentDetailsLink *string `json:"assessmentDetailsLink,omitempty"`
-	// State - Aggregative state based on the assessment's scanned resources states. Possible values include: 'StatePassed', 'StateFailed', 'StateSkipped', 'StateUnsupported'
+	// State - Aggregative state based on the assessment's scanned resources states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
 	State State `json:"state,omitempty"`
 	// PassedResources - READ-ONLY; The given assessment's related resources count with passed state.
 	PassedResources *int32 `json:"passedResources,omitempty"`
@@ -6403,7 +5512,7 @@ func NewRegulatoryComplianceControlListPage(getNextPage func(context.Context, Re
 type RegulatoryComplianceControlProperties struct {
 	// Description - READ-ONLY; The description of the regulatory compliance control
 	Description *string `json:"description,omitempty"`
-	// State - Aggregative state based on the control's supported assessments states. Possible values include: 'StatePassed', 'StateFailed', 'StateSkipped', 'StateUnsupported'
+	// State - Aggregative state based on the control's supported assessments states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
 	State State `json:"state,omitempty"`
 	// PassedAssessments - READ-ONLY; The number of supported regulatory compliance assessments of the given control with a passed state
 	PassedAssessments *int32 `json:"passedAssessments,omitempty"`
@@ -6634,7 +5743,7 @@ func NewRegulatoryComplianceStandardListPage(getNextPage func(context.Context, R
 
 // RegulatoryComplianceStandardProperties regulatory compliance standard data
 type RegulatoryComplianceStandardProperties struct {
-	// State - Aggregative state based on the standard's supported controls states. Possible values include: 'StatePassed', 'StateFailed', 'StateSkipped', 'StateUnsupported'
+	// State - Aggregative state based on the standard's supported controls states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
 	State State `json:"state,omitempty"`
 	// PassedControls - READ-ONLY; The number of supported regulatory compliance controls of the given standard with a passed state
 	PassedControls *int32 `json:"passedControls,omitempty"`
@@ -6852,17 +5961,17 @@ func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (Settin
 	return SettingsListPage{fn: getNextPage}
 }
 
-// TagsResource a container holding only the Tags for a resource, allowing the user to update the tags.
-type TagsResource struct {
-	// Tags - Resource tags
+// Tags a list of key value pairs that describe the resource.
+type Tags struct {
+	// Tags - A list of key value pairs that describe the resource.
 	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for TagsResource.
-func (tr TagsResource) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for Tags.
+func (t Tags) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tr.Tags != nil {
-		objectMap["tags"] = tr.Tags
+	if t.Tags != nil {
+		objectMap["tags"] = t.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -7455,52 +6564,37 @@ type TopologySingleResourceParent struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// UpdateIotSecuritySolutionData ...
-type UpdateIotSecuritySolutionData struct {
-	UserDefinedResources         *UserDefinedResourcesProperties          `json:"userDefinedResources,omitempty"`
-	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
-	// Tags - Resource tags
+// TrackedResource describes an Azure tracked resource.
+type TrackedResource struct {
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - READ-ONLY; Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
 	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for UpdateIotSecuritySolutionData.
-func (uissd UpdateIotSecuritySolutionData) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if uissd.UserDefinedResources != nil {
-		objectMap["userDefinedResources"] = uissd.UserDefinedResources
+	if tr.Kind != nil {
+		objectMap["kind"] = tr.Kind
 	}
-	if uissd.RecommendationsConfiguration != nil {
-		objectMap["recommendationsConfiguration"] = uissd.RecommendationsConfiguration
+	if tr.Etag != nil {
+		objectMap["etag"] = tr.Etag
 	}
-	if uissd.Tags != nil {
-		objectMap["tags"] = uissd.Tags
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
 	}
 	return json.Marshal(objectMap)
-}
-
-// UserDefinedResourcesProperties properties of the solution's user defined resources.
-type UserDefinedResourcesProperties struct {
-	// Query - Azure Resource Graph query which represents the security solution's user defined resources. Required to start with "where type != "Microsoft.Devices/IotHubs""
-	Query *string `json:"query,omitempty"`
-	// QuerySubscriptions - List of Azure subscription ids on which the user defined resources query should be executed.
-	QuerySubscriptions *[]string `json:"querySubscriptions,omitempty"`
-}
-
-// UserRecommendation represents a user that is recommended to be allowed for a certain rule
-type UserRecommendation struct {
-	// Username - Represents a user that is recommended to be allowed for a certain rule
-	Username *string `json:"username,omitempty"`
-	// RecommendationAction - Possible values include: 'RecommendationAction1Recommended', 'RecommendationAction1Add', 'RecommendationAction1Remove'
-	RecommendationAction RecommendationAction1 `json:"recommendationAction,omitempty"`
-}
-
-// VMRecommendation represents a machine that is part of a VM/server group
-type VMRecommendation struct {
-	// ConfigurationStatus - Possible values include: 'Configured', 'NotConfigured', 'InProgress', 'Failed', 'NoStatus'
-	ConfigurationStatus ConfigurationStatus `json:"configurationStatus,omitempty"`
-	// RecommendationAction - Possible values include: 'RecommendationActionRecommended', 'RecommendationActionAdd', 'RecommendationActionRemove'
-	RecommendationAction RecommendationAction `json:"recommendationAction,omitempty"`
-	ResourceID           *string              `json:"resourceId,omitempty"`
 }
 
 // WorkspaceSetting configures where to store the OMS agent data for workspaces under a scope

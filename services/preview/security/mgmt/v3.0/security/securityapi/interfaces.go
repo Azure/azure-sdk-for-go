@@ -63,67 +63,6 @@ type SettingsClientAPI interface {
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)
 
-// IoTSecuritySolutionsClientAPI contains the set of methods on the IoTSecuritySolutionsClient type.
-type IoTSecuritySolutionsClientAPI interface {
-	List(ctx context.Context, filter string) (result security.IoTSecuritySolutionsListPage, err error)
-}
-
-var _ IoTSecuritySolutionsClientAPI = (*security.IoTSecuritySolutionsClient)(nil)
-
-// IoTSecuritySolutionsResourceGroupClientAPI contains the set of methods on the IoTSecuritySolutionsResourceGroupClient type.
-type IoTSecuritySolutionsResourceGroupClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, filter string) (result security.IoTSecuritySolutionsListPage, err error)
-}
-
-var _ IoTSecuritySolutionsResourceGroupClientAPI = (*security.IoTSecuritySolutionsResourceGroupClient)(nil)
-
-// IotSecuritySolutionClientAPI contains the set of methods on the IotSecuritySolutionClient type.
-type IotSecuritySolutionClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData security.IoTSecuritySolutionModel) (result security.IoTSecuritySolutionModel, err error)
-	Delete(ctx context.Context, resourceGroupName string, solutionName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionModel, err error)
-	Update(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData security.UpdateIotSecuritySolutionData) (result security.IoTSecuritySolutionModel, err error)
-}
-
-var _ IotSecuritySolutionClientAPI = (*security.IotSecuritySolutionClient)(nil)
-
-// IoTSecuritySolutionsAnalyticsClientAPI contains the set of methods on the IoTSecuritySolutionsAnalyticsClient type.
-type IoTSecuritySolutionsAnalyticsClientAPI interface {
-	GetAll(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionAnalyticsModelList, err error)
-	GetDefault(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionAnalyticsModel, err error)
-}
-
-var _ IoTSecuritySolutionsAnalyticsClientAPI = (*security.IoTSecuritySolutionsAnalyticsClient)(nil)
-
-// IoTSecuritySolutionsAnalyticsAggregatedAlertsClientAPI contains the set of methods on the IoTSecuritySolutionsAnalyticsAggregatedAlertsClient type.
-type IoTSecuritySolutionsAnalyticsAggregatedAlertsClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result security.IoTSecurityAggregatedAlertListPage, err error)
-}
-
-var _ IoTSecuritySolutionsAnalyticsAggregatedAlertsClientAPI = (*security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient)(nil)
-
-// IoTSecuritySolutionsAnalyticsAggregatedAlertClientAPI contains the set of methods on the IoTSecuritySolutionsAnalyticsAggregatedAlertClient type.
-type IoTSecuritySolutionsAnalyticsAggregatedAlertClientAPI interface {
-	Dismiss(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result security.IoTSecurityAggregatedAlert, err error)
-}
-
-var _ IoTSecuritySolutionsAnalyticsAggregatedAlertClientAPI = (*security.IoTSecuritySolutionsAnalyticsAggregatedAlertClient)(nil)
-
-// IoTSecuritySolutionsAnalyticsRecommendationClientAPI contains the set of methods on the IoTSecuritySolutionsAnalyticsRecommendationClient type.
-type IoTSecuritySolutionsAnalyticsRecommendationClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string) (result security.IoTSecurityAggregatedRecommendation, err error)
-}
-
-var _ IoTSecuritySolutionsAnalyticsRecommendationClientAPI = (*security.IoTSecuritySolutionsAnalyticsRecommendationClient)(nil)
-
-// IoTSecuritySolutionsAnalyticsRecommendationsClientAPI contains the set of methods on the IoTSecuritySolutionsAnalyticsRecommendationsClient type.
-type IoTSecuritySolutionsAnalyticsRecommendationsClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result security.IoTSecurityAggregatedRecommendationListPage, err error)
-}
-
-var _ IoTSecuritySolutionsAnalyticsRecommendationsClientAPI = (*security.IoTSecuritySolutionsAnalyticsRecommendationsClient)(nil)
-
 // AllowedConnectionsClientAPI contains the set of methods on the AllowedConnectionsClient type.
 type AllowedConnectionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, connectionType security.ConnectionType) (result security.AllowedConnectionsResource, err error)
@@ -164,15 +103,6 @@ type JitNetworkAccessPoliciesClientAPI interface {
 }
 
 var _ JitNetworkAccessPoliciesClientAPI = (*security.JitNetworkAccessPoliciesClient)(nil)
-
-// AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
-type AdaptiveApplicationControlsClientAPI interface {
-	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
-	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
-	Put(ctx context.Context, groupName string, body security.AppWhitelistingPutGroupData) (result security.AppWhitelistingGroup, err error)
-}
-
-var _ AdaptiveApplicationControlsClientAPI = (*security.AdaptiveApplicationControlsClient)(nil)
 
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
@@ -290,13 +220,3 @@ type RegulatoryComplianceAssessmentsClientAPI interface {
 }
 
 var _ RegulatoryComplianceAssessmentsClientAPI = (*security.RegulatoryComplianceAssessmentsClient)(nil)
-
-// ServerVulnerabilityAssessmentClientAPI contains the set of methods on the ServerVulnerabilityAssessmentClient type.
-type ServerVulnerabilityAssessmentClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessment, err error)
-	Delete(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessment, err error)
-	ListByExtendedResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.ServerVulnerabilityAssessmentsList, err error)
-}
-
-var _ ServerVulnerabilityAssessmentClientAPI = (*security.ServerVulnerabilityAssessmentClient)(nil)

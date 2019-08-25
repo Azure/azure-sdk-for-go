@@ -49,21 +49,19 @@ func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return []AadConnectivityState{Connected, Discovered, NotLicensed}
 }
 
-// Action enumerates the values for action.
-type Action string
+// ActionType enumerates the values for action type.
+type ActionType string
 
 const (
-	// Add ...
-	Add Action = "Add"
-	// Recommended ...
-	Recommended Action = "Recommended"
-	// Remove ...
-	Remove Action = "Remove"
+	// ActionTypeLogicApp ...
+	ActionTypeLogicApp ActionType = "LogicApp"
+	// ActionTypePlaybookConfigurationAction ...
+	ActionTypePlaybookConfigurationAction ActionType = "PlaybookConfigurationAction"
 )
 
-// PossibleActionValues returns an array of possible values for the Action const type.
-func PossibleActionValues() []Action {
-	return []Action{Add, Recommended, Remove}
+// PossibleActionTypeValues returns an array of possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{ActionTypeLogicApp, ActionTypePlaybookConfigurationAction}
 }
 
 // AlertNotifications enumerates the values for alert notifications.
@@ -111,69 +109,6 @@ func PossibleAutoProvisionValues() []AutoProvision {
 	return []AutoProvision{AutoProvisionOff, AutoProvisionOn}
 }
 
-// ConfigurationStatus enumerates the values for configuration status.
-type ConfigurationStatus string
-
-const (
-	// Configured ...
-	Configured ConfigurationStatus = "Configured"
-	// Failed ...
-	Failed ConfigurationStatus = "Failed"
-	// InProgress ...
-	InProgress ConfigurationStatus = "InProgress"
-	// NoStatus ...
-	NoStatus ConfigurationStatus = "NoStatus"
-	// NotConfigured ...
-	NotConfigured ConfigurationStatus = "NotConfigured"
-)
-
-// PossibleConfigurationStatusValues returns an array of possible values for the ConfigurationStatus const type.
-func PossibleConfigurationStatusValues() []ConfigurationStatus {
-	return []ConfigurationStatus{Configured, Failed, InProgress, NoStatus, NotConfigured}
-}
-
-// ConfigurationStatus1 enumerates the values for configuration status 1.
-type ConfigurationStatus1 string
-
-const (
-	// ConfigurationStatus1Configured ...
-	ConfigurationStatus1Configured ConfigurationStatus1 = "Configured"
-	// ConfigurationStatus1Failed ...
-	ConfigurationStatus1Failed ConfigurationStatus1 = "Failed"
-	// ConfigurationStatus1InProgress ...
-	ConfigurationStatus1InProgress ConfigurationStatus1 = "InProgress"
-	// ConfigurationStatus1NoStatus ...
-	ConfigurationStatus1NoStatus ConfigurationStatus1 = "NoStatus"
-	// ConfigurationStatus1NotConfigured ...
-	ConfigurationStatus1NotConfigured ConfigurationStatus1 = "NotConfigured"
-)
-
-// PossibleConfigurationStatus1Values returns an array of possible values for the ConfigurationStatus1 const type.
-func PossibleConfigurationStatus1Values() []ConfigurationStatus1 {
-	return []ConfigurationStatus1{ConfigurationStatus1Configured, ConfigurationStatus1Failed, ConfigurationStatus1InProgress, ConfigurationStatus1NoStatus, ConfigurationStatus1NotConfigured}
-}
-
-// ConfigurationStatus2 enumerates the values for configuration status 2.
-type ConfigurationStatus2 string
-
-const (
-	// ConfigurationStatus2Configured ...
-	ConfigurationStatus2Configured ConfigurationStatus2 = "Configured"
-	// ConfigurationStatus2Failed ...
-	ConfigurationStatus2Failed ConfigurationStatus2 = "Failed"
-	// ConfigurationStatus2InProgress ...
-	ConfigurationStatus2InProgress ConfigurationStatus2 = "InProgress"
-	// ConfigurationStatus2NoStatus ...
-	ConfigurationStatus2NoStatus ConfigurationStatus2 = "NoStatus"
-	// ConfigurationStatus2NotConfigured ...
-	ConfigurationStatus2NotConfigured ConfigurationStatus2 = "NotConfigured"
-)
-
-// PossibleConfigurationStatus2Values returns an array of possible values for the ConfigurationStatus2 const type.
-func PossibleConfigurationStatus2Values() []ConfigurationStatus2 {
-	return []ConfigurationStatus2{ConfigurationStatus2Configured, ConfigurationStatus2Failed, ConfigurationStatus2InProgress, ConfigurationStatus2NoStatus, ConfigurationStatus2NotConfigured}
-}
-
 // ConnectionType enumerates the values for connection type.
 type ConnectionType string
 
@@ -202,36 +137,6 @@ const (
 // PossibleDirectionValues returns an array of possible values for the Direction const type.
 func PossibleDirectionValues() []Direction {
 	return []Direction{Inbound, Outbound}
-}
-
-// EnforcementMode enumerates the values for enforcement mode.
-type EnforcementMode string
-
-const (
-	// Audit ...
-	Audit EnforcementMode = "Audit"
-	// Enforce ...
-	Enforce EnforcementMode = "Enforce"
-)
-
-// PossibleEnforcementModeValues returns an array of possible values for the EnforcementMode const type.
-func PossibleEnforcementModeValues() []EnforcementMode {
-	return []EnforcementMode{Audit, Enforce}
-}
-
-// EnforcementMode1 enumerates the values for enforcement mode 1.
-type EnforcementMode1 string
-
-const (
-	// EnforcementMode1Audit ...
-	EnforcementMode1Audit EnforcementMode1 = "Audit"
-	// EnforcementMode1Enforce ...
-	EnforcementMode1Enforce EnforcementMode1 = "Enforce"
-)
-
-// PossibleEnforcementMode1Values returns an array of possible values for the EnforcementMode1 const type.
-func PossibleEnforcementMode1Values() []EnforcementMode1 {
-	return []EnforcementMode1{EnforcementMode1Audit, EnforcementMode1Enforce}
 }
 
 // ExternalSecuritySolutionKind enumerates the values for external security solution kind.
@@ -270,52 +175,6 @@ func PossibleFamilyValues() []Family {
 	return []Family{Ngfw, SaasWaf, Va, Waf}
 }
 
-// FileType enumerates the values for file type.
-type FileType string
-
-const (
-	// Dll ...
-	Dll FileType = "Dll"
-	// Exe ...
-	Exe FileType = "Exe"
-	// Executable ...
-	Executable FileType = "Executable"
-	// Msi ...
-	Msi FileType = "Msi"
-	// Script ...
-	Script FileType = "Script"
-	// Unknown ...
-	Unknown FileType = "Unknown"
-)
-
-// PossibleFileTypeValues returns an array of possible values for the FileType const type.
-func PossibleFileTypeValues() []FileType {
-	return []FileType{Dll, Exe, Executable, Msi, Script, Unknown}
-}
-
-// Issue enumerates the values for issue.
-type Issue string
-
-const (
-	// ExecutableViolationsAudited ...
-	ExecutableViolationsAudited Issue = "ExecutableViolationsAudited"
-	// MsiAndScriptViolationsAudited ...
-	MsiAndScriptViolationsAudited Issue = "MsiAndScriptViolationsAudited"
-	// MsiAndScriptViolationsBlocked ...
-	MsiAndScriptViolationsBlocked Issue = "MsiAndScriptViolationsBlocked"
-	// RulesViolatedManually ...
-	RulesViolatedManually Issue = "RulesViolatedManually"
-	// ViolationsAudited ...
-	ViolationsAudited Issue = "ViolationsAudited"
-	// ViolationsBlocked ...
-	ViolationsBlocked Issue = "ViolationsBlocked"
-)
-
-// PossibleIssueValues returns an array of possible values for the Issue const type.
-func PossibleIssueValues() []Issue {
-	return []Issue{ExecutableViolationsAudited, MsiAndScriptViolationsAudited, MsiAndScriptViolationsBlocked, RulesViolatedManually, ViolationsAudited, ViolationsBlocked}
-}
-
 // KindEnum enumerates the values for kind enum.
 type KindEnum string
 
@@ -335,6 +194,39 @@ func PossibleKindEnumValues() []KindEnum {
 	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
 }
 
+// Operator enumerates the values for operator.
+type Operator string
+
+const (
+	// Contains ...
+	Contains Operator = "Contains"
+	// EndsWith ...
+	EndsWith Operator = "EndsWith"
+	// Equals ...
+	Equals Operator = "Equals"
+	// EqualsIgnoreCase ...
+	EqualsIgnoreCase Operator = "EqualsIgnoreCase"
+	// GreaterThan ...
+	GreaterThan Operator = "GreaterThan"
+	// GreaterThanOrEqualTo ...
+	GreaterThanOrEqualTo Operator = "GreaterThanOrEqualTo"
+	// LesserThan ...
+	LesserThan Operator = "LesserThan"
+	// LesserThanOrEqualTo ...
+	LesserThanOrEqualTo Operator = "LesserThanOrEqualTo"
+	// NotEquals ...
+	NotEquals Operator = "NotEquals"
+	// NotEqualsIgnoreCase ...
+	NotEqualsIgnoreCase Operator = "NotEqualsIgnoreCase"
+	// StartsWith ...
+	StartsWith Operator = "StartsWith"
+)
+
+// PossibleOperatorValues returns an array of possible values for the Operator const type.
+func PossibleOperatorValues() []Operator {
+	return []Operator{Contains, EndsWith, Equals, EqualsIgnoreCase, GreaterThan, GreaterThanOrEqualTo, LesserThan, LesserThanOrEqualTo, NotEquals, NotEqualsIgnoreCase, StartsWith}
+}
+
 // PricingTier enumerates the values for pricing tier.
 type PricingTier string
 
@@ -348,6 +240,25 @@ const (
 // PossiblePricingTierValues returns an array of possible values for the PricingTier const type.
 func PossiblePricingTierValues() []PricingTier {
 	return []PricingTier{Free, Standard}
+}
+
+// PropertyType enumerates the values for property type.
+type PropertyType string
+
+const (
+	// Boolean ...
+	Boolean PropertyType = "boolean"
+	// Integer ...
+	Integer PropertyType = "integer"
+	// Number ...
+	Number PropertyType = "number"
+	// String ...
+	String PropertyType = "string"
+)
+
+// PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
+func PossiblePropertyTypeValues() []PropertyType {
+	return []PropertyType{Boolean, Integer, Number, String}
 }
 
 // Protocol enumerates the values for protocol.
@@ -365,59 +276,6 @@ const (
 // PossibleProtocolValues returns an array of possible values for the Protocol const type.
 func PossibleProtocolValues() []Protocol {
 	return []Protocol{All, TCP, UDP}
-}
-
-// RecommendationAction enumerates the values for recommendation action.
-type RecommendationAction string
-
-const (
-	// RecommendationActionAdd ...
-	RecommendationActionAdd RecommendationAction = "Add"
-	// RecommendationActionRecommended ...
-	RecommendationActionRecommended RecommendationAction = "Recommended"
-	// RecommendationActionRemove ...
-	RecommendationActionRemove RecommendationAction = "Remove"
-)
-
-// PossibleRecommendationActionValues returns an array of possible values for the RecommendationAction const type.
-func PossibleRecommendationActionValues() []RecommendationAction {
-	return []RecommendationAction{RecommendationActionAdd, RecommendationActionRecommended, RecommendationActionRemove}
-}
-
-// RecommendationAction1 enumerates the values for recommendation action 1.
-type RecommendationAction1 string
-
-const (
-	// RecommendationAction1Add ...
-	RecommendationAction1Add RecommendationAction1 = "Add"
-	// RecommendationAction1Recommended ...
-	RecommendationAction1Recommended RecommendationAction1 = "Recommended"
-	// RecommendationAction1Remove ...
-	RecommendationAction1Remove RecommendationAction1 = "Remove"
-)
-
-// PossibleRecommendationAction1Values returns an array of possible values for the RecommendationAction1 const type.
-func PossibleRecommendationAction1Values() []RecommendationAction1 {
-	return []RecommendationAction1{RecommendationAction1Add, RecommendationAction1Recommended, RecommendationAction1Remove}
-}
-
-// RecommendationStatus enumerates the values for recommendation status.
-type RecommendationStatus string
-
-const (
-	// RecommendationStatusNoStatus ...
-	RecommendationStatusNoStatus RecommendationStatus = "NoStatus"
-	// RecommendationStatusNotAvailable ...
-	RecommendationStatusNotAvailable RecommendationStatus = "NotAvailable"
-	// RecommendationStatusNotRecommended ...
-	RecommendationStatusNotRecommended RecommendationStatus = "NotRecommended"
-	// RecommendationStatusRecommended ...
-	RecommendationStatusRecommended RecommendationStatus = "Recommended"
-)
-
-// PossibleRecommendationStatusValues returns an array of possible values for the RecommendationStatus const type.
-func PossibleRecommendationStatusValues() []RecommendationStatus {
-	return []RecommendationStatus{RecommendationStatusNoStatus, RecommendationStatusNotAvailable, RecommendationStatusNotRecommended, RecommendationStatusRecommended}
 }
 
 // ReportedSeverity enumerates the values for reported severity.
@@ -454,45 +312,23 @@ func PossibleSettingKindValues() []SettingKind {
 	return []SettingKind{SettingKindAlertSuppressionSetting, SettingKindDataExportSetting}
 }
 
-// SourceSystem enumerates the values for source system.
-type SourceSystem string
-
-const (
-	// AzureAppLocker ...
-	AzureAppLocker SourceSystem = "Azure_AppLocker"
-	// AzureAuditD ...
-	AzureAuditD SourceSystem = "Azure_AuditD"
-	// NonAzureAppLocker ...
-	NonAzureAppLocker SourceSystem = "NonAzure_AppLocker"
-	// NonAzureAuditD ...
-	NonAzureAuditD SourceSystem = "NonAzure_AuditD"
-	// None ...
-	None SourceSystem = "None"
-)
-
-// PossibleSourceSystemValues returns an array of possible values for the SourceSystem const type.
-func PossibleSourceSystemValues() []SourceSystem {
-	return []SourceSystem{AzureAppLocker, AzureAuditD, NonAzureAppLocker, NonAzureAuditD, None}
-}
-
 // State enumerates the values for state.
 type State string
 
 const (
-	// StateFailed At least one supported regulatory compliance control in the given standard has a state of
-	// failed
-	StateFailed State = "Failed"
-	// StatePassed All supported regulatory compliance controls in the given standard have a passed state
-	StatePassed State = "Passed"
-	// StateSkipped All supported regulatory compliance controls in the given standard have a state of skipped
-	StateSkipped State = "Skipped"
-	// StateUnsupported No supported regulatory compliance data for the given standard
-	StateUnsupported State = "Unsupported"
+	// Failed At least one supported regulatory compliance control in the given standard has a state of failed
+	Failed State = "Failed"
+	// Passed All supported regulatory compliance controls in the given standard have a passed state
+	Passed State = "Passed"
+	// Skipped All supported regulatory compliance controls in the given standard have a state of skipped
+	Skipped State = "Skipped"
+	// Unsupported No supported regulatory compliance data for the given standard
+	Unsupported State = "Unsupported"
 )
 
 // PossibleStateValues returns an array of possible values for the State const type.
 func PossibleStateValues() []State {
-	return []State{StateFailed, StatePassed, StateSkipped, StateUnsupported}
+	return []State{Failed, Passed, Skipped, Unsupported}
 }
 
 // Status enumerates the values for status.
@@ -542,42 +378,19 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 	return []TransportProtocol{TransportProtocolTCP, TransportProtocolUDP}
 }
 
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// BinarySignature ...
-	BinarySignature Type = "BinarySignature"
-	// File ...
-	File Type = "File"
-	// FileHash ...
-	FileHash Type = "FileHash"
-	// ProductSignature ...
-	ProductSignature Type = "ProductSignature"
-	// PublisherSignature ...
-	PublisherSignature Type = "PublisherSignature"
-	// VersionAndAboveSignature ...
-	VersionAndAboveSignature Type = "VersionAndAboveSignature"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{BinarySignature, File, FileHash, ProductSignature, PublisherSignature, VersionAndAboveSignature}
-}
-
 // ValueType enumerates the values for value type.
 type ValueType string
 
 const (
-	// IPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
-	IPCidr ValueType = "IpCidr"
-	// String Any string value.
-	String ValueType = "String"
+	// ValueTypeIPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
+	ValueTypeIPCidr ValueType = "IpCidr"
+	// ValueTypeString Any string value.
+	ValueTypeString ValueType = "String"
 )
 
 // PossibleValueTypeValues returns an array of possible values for the ValueType const type.
 func PossibleValueTypeValues() []ValueType {
-	return []ValueType{IPCidr, String}
+	return []ValueType{ValueTypeIPCidr, ValueTypeString}
 }
 
 // AadConnectivityState1 describes an Azure resource with kind
@@ -1573,7 +1386,7 @@ type AllowedConnectionsResourceProperties struct {
 type AllowlistCustomAlertRule struct {
 	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
 	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -1583,128 +1396,6 @@ type AllowlistCustomAlertRule struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - The type of the custom alert rule.
 	RuleType *string `json:"ruleType,omitempty"`
-}
-
-// AppWhitelistingGroup ...
-type AppWhitelistingGroup struct {
-	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Location where the resource is stored
-	Location                  *string `json:"location,omitempty"`
-	*AppWhitelistingGroupData `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AppWhitelistingGroup.
-func (awg AppWhitelistingGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if awg.AppWhitelistingGroupData != nil {
-		objectMap["properties"] = awg.AppWhitelistingGroupData
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AppWhitelistingGroup struct.
-func (awg *AppWhitelistingGroup) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				awg.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				awg.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				awg.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				awg.Location = &location
-			}
-		case "properties":
-			if v != nil {
-				var appWhitelistingGroupData AppWhitelistingGroupData
-				err = json.Unmarshal(*v, &appWhitelistingGroupData)
-				if err != nil {
-					return err
-				}
-				awg.AppWhitelistingGroupData = &appWhitelistingGroupData
-			}
-		}
-	}
-
-	return nil
-}
-
-// AppWhitelistingGroupData represents a VM/server group and set of rules that are Recommended by Azure
-// Security Center to be allowed
-type AppWhitelistingGroupData struct {
-	// EnforcementMode - Possible values include: 'Audit', 'Enforce'
-	EnforcementMode EnforcementMode `json:"enforcementMode,omitempty"`
-	// ConfigurationStatus - Possible values include: 'ConfigurationStatus2Configured', 'ConfigurationStatus2NotConfigured', 'ConfigurationStatus2InProgress', 'ConfigurationStatus2Failed', 'ConfigurationStatus2NoStatus'
-	ConfigurationStatus ConfigurationStatus2 `json:"configurationStatus,omitempty"`
-	// RecommendationStatus - Possible values include: 'RecommendationStatusRecommended', 'RecommendationStatusNotRecommended', 'RecommendationStatusNotAvailable', 'RecommendationStatusNoStatus'
-	RecommendationStatus RecommendationStatus           `json:"recommendationStatus,omitempty"`
-	Issues               *[]AppWhitelistingIssueSummary `json:"issues,omitempty"`
-	// SourceSystem - Possible values include: 'AzureAppLocker', 'AzureAuditD', 'NonAzureAppLocker', 'NonAzureAuditD', 'None'
-	SourceSystem        SourceSystem          `json:"sourceSystem,omitempty"`
-	VMRecommendations   *[]VMRecommendation   `json:"vmRecommendations,omitempty"`
-	PathRecommendations *[]PathRecommendation `json:"pathRecommendations,omitempty"`
-}
-
-// AppWhitelistingGroups represents a list of VM/server groups and set of rules that are Recommended by
-// Azure Security Center to be allowed
-type AppWhitelistingGroups struct {
-	autorest.Response `json:"-"`
-	Value             *[]AppWhitelistingGroup `json:"value,omitempty"`
-}
-
-// AppWhitelistingIssueSummary represents a summary of the alerts of the VM/server group
-type AppWhitelistingIssueSummary struct {
-	// Issue - Possible values include: 'ViolationsAudited', 'ViolationsBlocked', 'MsiAndScriptViolationsAudited', 'MsiAndScriptViolationsBlocked', 'ExecutableViolationsAudited', 'RulesViolatedManually'
-	Issue Issue `json:"issue,omitempty"`
-	// NumberOfVms - The number of machines in the VM/server group that have this alert
-	NumberOfVms *float64 `json:"numberOfVms,omitempty"`
-}
-
-// AppWhitelistingPutGroupData the altered data of the recommended VM/server group policy
-type AppWhitelistingPutGroupData struct {
-	// EnforcementMode - Possible values include: 'EnforcementMode1Audit', 'EnforcementMode1Enforce'
-	EnforcementMode     EnforcementMode1      `json:"enforcementMode,omitempty"`
-	VMRecommendations   *[]VMRecommendation   `json:"vmRecommendations,omitempty"`
-	PathRecommendations *[]PathRecommendation `json:"pathRecommendations,omitempty"`
 }
 
 // AscLocation the ASC location of the subscription is in the "name" field
@@ -3063,7 +2754,7 @@ type DataExportSettingProperties struct {
 type DenylistCustomAlertRule struct {
 	// DenylistValues - The values to deny. The format of the values depends on the rule type.
 	DenylistValues *[]string `json:"denylistValues,omitempty"`
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -3553,6 +3244,14 @@ type EffectiveNetworkSecurityGroups struct {
 	NetworkInterface *string `json:"networkInterface,omitempty"`
 	// NetworkSecurityGroups - The Network Security Groups effective on the network interface
 	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
+}
+
+// ETag entity tag is used for comparing two or more entities from the same requested resource. ETags may
+// be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency
+// control.
+type ETag struct {
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // BasicExternalSecuritySolution represents a security solution external to Azure Security Center which sends
@@ -4493,8 +4192,6 @@ type JitNetworkAccessPolicyVirtualMachine struct {
 	ID *string `json:"id,omitempty"`
 	// Ports - Port configurations for the virtual machine
 	Ports *[]JitNetworkAccessPortRule `json:"ports,omitempty"`
-	// PublicIPAddress - Public IP address of the Azure Firewall that is linked to this policy, if applicable
-	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 }
 
 // JitNetworkAccessPortRule ...
@@ -4533,8 +4230,6 @@ type JitNetworkAccessRequestPort struct {
 	Status Status `json:"status,omitempty"`
 	// StatusReason - A description of why the `status` has its value. Possible values include: 'Expired', 'UserRequested', 'NewerRequestInitiated'
 	StatusReason StatusReason `json:"statusReason,omitempty"`
-	// MappedPort - The port which is mapped to this port's `number` in the Azure Firewall, if applicable
-	MappedPort *int32 `json:"mappedPort,omitempty"`
 }
 
 // JitNetworkAccessRequestVirtualMachine ...
@@ -4553,7 +4248,7 @@ type Kind struct {
 
 // ListCustomAlertRule a List custom alert rule
 type ListCustomAlertRule struct {
-	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'ValueTypeIPCidr', 'ValueTypeString'
 	ValueType ValueType `json:"valueType,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
@@ -4738,23 +4433,532 @@ func NewOperationListPage(getNextPage func(context.Context, OperationList) (Oper
 	return OperationListPage{fn: getNextPage}
 }
 
-// PathRecommendation represents a path that is recommended to be allowed and its properties
-type PathRecommendation struct {
-	// Path - The full path to whitelist
-	Path *string `json:"path,omitempty"`
-	// Action - Possible values include: 'Recommended', 'Add', 'Remove'
-	Action Action `json:"action,omitempty"`
-	// Type - Possible values include: 'File', 'FileHash', 'PublisherSignature', 'ProductSignature', 'BinarySignature', 'VersionAndAboveSignature'
-	Type          Type           `json:"type,omitempty"`
-	PublisherInfo *PublisherInfo `json:"publisherInfo,omitempty"`
-	// Common - Whether the path is commonly run on the machine
-	Common    *bool                 `json:"common,omitempty"`
-	UserSids  *[]string             `json:"userSids,omitempty"`
-	Usernames *[]UserRecommendation `json:"usernames,omitempty"`
-	// FileType - Possible values include: 'Exe', 'Dll', 'Msi', 'Script', 'Executable', 'Unknown'
-	FileType FileType `json:"fileType,omitempty"`
-	// ConfigurationStatus - Possible values include: 'ConfigurationStatus1Configured', 'ConfigurationStatus1NotConfigured', 'ConfigurationStatus1InProgress', 'ConfigurationStatus1Failed', 'ConfigurationStatus1NoStatus'
-	ConfigurationStatus ConfigurationStatus1 `json:"configurationStatus,omitempty"`
+// PlaybookConfiguration the playbook configuration resource.
+type PlaybookConfiguration struct {
+	autorest.Response `json:"-"`
+	// PlaybookConfigurationProperties - Playbook configuration data
+	*PlaybookConfigurationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - READ-ONLY; Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfiguration.
+func (pc PlaybookConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pc.PlaybookConfigurationProperties != nil {
+		objectMap["properties"] = pc.PlaybookConfigurationProperties
+	}
+	if pc.Kind != nil {
+		objectMap["kind"] = pc.Kind
+	}
+	if pc.Etag != nil {
+		objectMap["etag"] = pc.Etag
+	}
+	if pc.Tags != nil {
+		objectMap["tags"] = pc.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PlaybookConfiguration struct.
+func (pc *PlaybookConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var playbookConfigurationProperties PlaybookConfigurationProperties
+				err = json.Unmarshal(*v, &playbookConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				pc.PlaybookConfigurationProperties = &playbookConfigurationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pc.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				pc.Location = &location
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				pc.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				pc.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				pc.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicPlaybookConfigurationAction the action that should be triggered.
+type BasicPlaybookConfigurationAction interface {
+	AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool)
+	AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool)
+}
+
+// PlaybookConfigurationAction the action that should be triggered.
+type PlaybookConfigurationAction struct {
+	// ActionType - Possible values include: 'ActionTypePlaybookConfigurationAction', 'ActionTypeLogicApp'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+func unmarshalBasicPlaybookConfigurationAction(body []byte) (BasicPlaybookConfigurationAction, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["actionType"] {
+	case string(ActionTypeLogicApp):
+		var pcala PlaybookConfigurationActionLogicApp
+		err := json.Unmarshal(body, &pcala)
+		return pcala, err
+	default:
+		var pca PlaybookConfigurationAction
+		err := json.Unmarshal(body, &pca)
+		return pca, err
+	}
+}
+func unmarshalBasicPlaybookConfigurationActionArray(body []byte) ([]BasicPlaybookConfigurationAction, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	pcaArray := make([]BasicPlaybookConfigurationAction, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		pca, err := unmarshalBasicPlaybookConfigurationAction(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		pcaArray[index] = pca
+	}
+	return pcaArray, nil
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) MarshalJSON() ([]byte, error) {
+	pca.ActionType = ActionTypePlaybookConfigurationAction
+	objectMap := make(map[string]interface{})
+	if pca.ActionType != "" {
+		objectMap["actionType"] = pca.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsPlaybookConfigurationActionLogicApp is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool) {
+	return nil, false
+}
+
+// AsPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool) {
+	return &pca, true
+}
+
+// AsBasicPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationAction.
+func (pca PlaybookConfigurationAction) AsBasicPlaybookConfigurationAction() (BasicPlaybookConfigurationAction, bool) {
+	return &pca, true
+}
+
+// PlaybookConfigurationActionLogicApp the logic app action that should be triggered.
+type PlaybookConfigurationActionLogicApp struct {
+	// LogicAppResourceID - The triggered resource id.
+	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
+	// URI - The uri that should be triggered by an Http GET request.
+	URI *string `json:"uri,omitempty"`
+	// ActionType - Possible values include: 'ActionTypePlaybookConfigurationAction', 'ActionTypeLogicApp'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) MarshalJSON() ([]byte, error) {
+	pcala.ActionType = ActionTypeLogicApp
+	objectMap := make(map[string]interface{})
+	if pcala.LogicAppResourceID != nil {
+		objectMap["logicAppResourceId"] = pcala.LogicAppResourceID
+	}
+	if pcala.URI != nil {
+		objectMap["uri"] = pcala.URI
+	}
+	if pcala.ActionType != "" {
+		objectMap["actionType"] = pcala.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsPlaybookConfigurationActionLogicApp is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsPlaybookConfigurationActionLogicApp() (*PlaybookConfigurationActionLogicApp, bool) {
+	return &pcala, true
+}
+
+// AsPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsPlaybookConfigurationAction() (*PlaybookConfigurationAction, bool) {
+	return nil, false
+}
+
+// AsBasicPlaybookConfigurationAction is the BasicPlaybookConfigurationAction implementation for PlaybookConfigurationActionLogicApp.
+func (pcala PlaybookConfigurationActionLogicApp) AsBasicPlaybookConfigurationAction() (BasicPlaybookConfigurationAction, bool) {
+	return &pcala, true
+}
+
+// PlaybookConfigurationList list of playbook configurations response.
+type PlaybookConfigurationList struct {
+	autorest.Response `json:"-"`
+	// Value - The list of playbook configurations under the given scope.
+	Value *[]PlaybookConfiguration `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PlaybookConfigurationListIterator provides access to a complete listing of PlaybookConfiguration values.
+type PlaybookConfigurationListIterator struct {
+	i    int
+	page PlaybookConfigurationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PlaybookConfigurationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PlaybookConfigurationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PlaybookConfigurationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PlaybookConfigurationListIterator) Response() PlaybookConfigurationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PlaybookConfigurationListIterator) Value() PlaybookConfiguration {
+	if !iter.page.NotDone() {
+		return PlaybookConfiguration{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PlaybookConfigurationListIterator type.
+func NewPlaybookConfigurationListIterator(page PlaybookConfigurationListPage) PlaybookConfigurationListIterator {
+	return PlaybookConfigurationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (pcl PlaybookConfigurationList) IsEmpty() bool {
+	return pcl.Value == nil || len(*pcl.Value) == 0
+}
+
+// playbookConfigurationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pcl PlaybookConfigurationList) playbookConfigurationListPreparer(ctx context.Context) (*http.Request, error) {
+	if pcl.NextLink == nil || len(to.String(pcl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pcl.NextLink)))
+}
+
+// PlaybookConfigurationListPage contains a page of PlaybookConfiguration values.
+type PlaybookConfigurationListPage struct {
+	fn  func(context.Context, PlaybookConfigurationList) (PlaybookConfigurationList, error)
+	pcl PlaybookConfigurationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PlaybookConfigurationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PlaybookConfigurationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pcl)
+	if err != nil {
+		return err
+	}
+	page.pcl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PlaybookConfigurationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PlaybookConfigurationListPage) NotDone() bool {
+	return !page.pcl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PlaybookConfigurationListPage) Response() PlaybookConfigurationList {
+	return page.pcl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PlaybookConfigurationListPage) Values() []PlaybookConfiguration {
+	if page.pcl.IsEmpty() {
+		return nil
+	}
+	return *page.pcl.Value
+}
+
+// Creates a new instance of the PlaybookConfigurationListPage type.
+func NewPlaybookConfigurationListPage(getNextPage func(context.Context, PlaybookConfigurationList) (PlaybookConfigurationList, error)) PlaybookConfigurationListPage {
+	return PlaybookConfigurationListPage{fn: getNextPage}
+}
+
+// PlaybookConfigurationMetadata the metadata of the playbook configuration resource.
+type PlaybookConfigurationMetadata struct {
+	// CreatedDateTimeUtc - READ-ONLY; The playbook configuration creation date.
+	CreatedDateTimeUtc *date.Time `json:"createdDateTimeUtc,omitempty"`
+	// CreatedBy - READ-ONLY; The AAD object ID of the entity that created the playbook configuration.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// LastUpdatedDateTimeUtc - READ-ONLY; The playbook configuration last updated date.
+	LastUpdatedDateTimeUtc *date.Time `json:"lastUpdatedDateTimeUtc,omitempty"`
+	// LastUpdatedBy - READ-ONLY; The AAD object ID of the entity that last updated the playbook configuration.
+	LastUpdatedBy *string `json:"lastUpdatedBy,omitempty"`
+}
+
+// PlaybookConfigurationProperties the playbook configuration data.
+type PlaybookConfigurationProperties struct {
+	// Description - The playbook configuration description.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Indicates whether the playbook configuration is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// Metadata - The metadata of the playbook configuration resource.
+	Metadata *PlaybookConfigurationMetadata `json:"metadata,omitempty"`
+	// Scopes - A collection of the subscription's resources  scopes on which the playbook configurations logic is applied.
+	Scopes *[]PlaybookConfigurationScope `json:"scopes,omitempty"`
+	// Sources - A collection of the source event types which evaluate the playbook configuration set of rules.
+	Sources *[]PlaybookConfigurationSource `json:"sources,omitempty"`
+	// Actions - A collection of the actions which are triggered if all the configured rule set evaluation is true.
+	Actions *[]BasicPlaybookConfigurationAction `json:"actions,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for PlaybookConfigurationProperties struct.
+func (pcp *PlaybookConfigurationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				pcp.Description = &description
+			}
+		case "isEnabled":
+			if v != nil {
+				var isEnabled bool
+				err = json.Unmarshal(*v, &isEnabled)
+				if err != nil {
+					return err
+				}
+				pcp.IsEnabled = &isEnabled
+			}
+		case "metadata":
+			if v != nil {
+				var metadata PlaybookConfigurationMetadata
+				err = json.Unmarshal(*v, &metadata)
+				if err != nil {
+					return err
+				}
+				pcp.Metadata = &metadata
+			}
+		case "scopes":
+			if v != nil {
+				var scopes []PlaybookConfigurationScope
+				err = json.Unmarshal(*v, &scopes)
+				if err != nil {
+					return err
+				}
+				pcp.Scopes = &scopes
+			}
+		case "sources":
+			if v != nil {
+				var sources []PlaybookConfigurationSource
+				err = json.Unmarshal(*v, &sources)
+				if err != nil {
+					return err
+				}
+				pcp.Sources = &sources
+			}
+		case "actions":
+			if v != nil {
+				actions, err := unmarshalBasicPlaybookConfigurationActionArray(*v)
+				if err != nil {
+					return err
+				}
+				pcp.Actions = &actions
+			}
+		}
+	}
+
+	return nil
+}
+
+// PlaybookConfigurationRuleSet a rule set which evaluates all its rules upon an event interception.
+type PlaybookConfigurationRuleSet struct {
+	Rules *[]PlaybookConfigurationTriggeringRule `json:"rules,omitempty"`
+}
+
+// PlaybookConfigurationScope the subscription's resources scope
+type PlaybookConfigurationScope struct {
+	// Description - The resources scope description.
+	Description *string `json:"description,omitempty"`
+	// ScopePath - The resources scope path.
+	ScopePath *string `json:"scopePath,omitempty"`
+}
+
+// PlaybookConfigurationSource the source event types which evaluate the playbook configuration set of
+// rules. For example - security alerts and recommended tasks.
+type PlaybookConfigurationSource struct {
+	// EventSource - A valid event source type.
+	EventSource *string `json:"eventSource,omitempty"`
+	// RuleSets - A set of rules which evaluate upon event interception.
+	RuleSets *[]PlaybookConfigurationRuleSet `json:"ruleSets,omitempty"`
+}
+
+// PlaybookConfigurationTriggeringRule a logic rule which evaluates upon event interception. The rule is
+// configured by comparing the specified expected value, in an expected property within the event model, by
+// the specified operator.
+type PlaybookConfigurationTriggeringRule struct {
+	// PropertyJPath - The JPath of the entity model property that should be checked.
+	PropertyJPath *string `json:"propertyJPath,omitempty"`
+	// PropertyType - The data type of the compared operands. Possible values include: 'String', 'Integer', 'Number', 'Boolean'
+	PropertyType PropertyType `json:"propertyType,omitempty"`
+	// ExpectedValue - The expected value.
+	ExpectedValue *string `json:"expectedValue,omitempty"`
+	// Operator - A valid comparer operator to use. Possible values include: 'Equals', 'EqualsIgnoreCase', 'GreaterThan', 'GreaterThanOrEqualTo', 'LesserThan', 'LesserThanOrEqualTo', 'NotEquals', 'NotEqualsIgnoreCase', 'Contains', 'StartsWith', 'EndsWith'
+	Operator Operator `json:"operator,omitempty"`
+}
+
+// PlaybookConfigurationValidationStatus the playbook configuration model state property bag.
+type PlaybookConfigurationValidationStatus struct {
+	autorest.Response `json:"-"`
+	// IsValid - Indicates whether the model is valid or not.
+	IsValid *bool `json:"isValid,omitempty"`
+	// Message - The validation message.
+	Message *string `json:"message,omitempty"`
 }
 
 // Pricing pricing tier will be applied for the scope based on the resource ID
@@ -4980,18 +5184,6 @@ func NewPricingListPage(getNextPage func(context.Context, PricingList) (PricingL
 type PricingProperties struct {
 	// PricingTier - Pricing tier type. Possible values include: 'Free', 'Standard'
 	PricingTier PricingTier `json:"pricingTier,omitempty"`
-}
-
-// PublisherInfo represents the publisher information of a process/rule
-type PublisherInfo struct {
-	// PublisherName - The Subject field of the x.509 certificate used to sign the code, using the following fields -  O = Organization, L = Locality, S = State or Province, and C = Country
-	PublisherName *string `json:"publisherName,omitempty"`
-	// ProductName - The product name taken from the file's version resource
-	ProductName *string `json:"productName,omitempty"`
-	// BinaryName - The "OriginalName" field taken from the file's version resource
-	BinaryName *string `json:"binaryName,omitempty"`
-	// Version - The binary file version taken from the file's version resource
-	Version *string `json:"version,omitempty"`
 }
 
 // RegulatoryComplianceAssessment regulatory compliance assessment details and state
@@ -5221,7 +5413,7 @@ type RegulatoryComplianceAssessmentProperties struct {
 	AssessmentType *string `json:"assessmentType,omitempty"`
 	// AssessmentDetailsLink - READ-ONLY; Link to more detailed assessment results data. The response type will be according to the assessmentType field
 	AssessmentDetailsLink *string `json:"assessmentDetailsLink,omitempty"`
-	// State - Aggregative state based on the assessment's scanned resources states. Possible values include: 'StatePassed', 'StateFailed', 'StateSkipped', 'StateUnsupported'
+	// State - Aggregative state based on the assessment's scanned resources states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
 	State State `json:"state,omitempty"`
 	// PassedResources - READ-ONLY; The given assessment's related resources count with passed state.
 	PassedResources *int32 `json:"passedResources,omitempty"`
@@ -5457,7 +5649,7 @@ func NewRegulatoryComplianceControlListPage(getNextPage func(context.Context, Re
 type RegulatoryComplianceControlProperties struct {
 	// Description - READ-ONLY; The description of the regulatory compliance control
 	Description *string `json:"description,omitempty"`
-	// State - Aggregative state based on the control's supported assessments states. Possible values include: 'StatePassed', 'StateFailed', 'StateSkipped', 'StateUnsupported'
+	// State - Aggregative state based on the control's supported assessments states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
 	State State `json:"state,omitempty"`
 	// PassedAssessments - READ-ONLY; The number of supported regulatory compliance assessments of the given control with a passed state
 	PassedAssessments *int32 `json:"passedAssessments,omitempty"`
@@ -5688,7 +5880,7 @@ func NewRegulatoryComplianceStandardListPage(getNextPage func(context.Context, R
 
 // RegulatoryComplianceStandardProperties regulatory compliance standard data
 type RegulatoryComplianceStandardProperties struct {
-	// State - Aggregative state based on the standard's supported controls states. Possible values include: 'StatePassed', 'StateFailed', 'StateSkipped', 'StateUnsupported'
+	// State - Aggregative state based on the standard's supported controls states. Possible values include: 'Passed', 'Failed', 'Skipped', 'Unsupported'
 	State State `json:"state,omitempty"`
 	// PassedControls - READ-ONLY; The number of supported regulatory compliance controls of the given standard with a passed state
 	PassedControls *int32 `json:"passedControls,omitempty"`
@@ -5904,6 +6096,21 @@ func (page SettingsListPage) Values() []Setting {
 // Creates a new instance of the SettingsListPage type.
 func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
 	return SettingsListPage{fn: getNextPage}
+}
+
+// Tags a list of key value pairs that describe the resource.
+type Tags struct {
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Tags.
+func (t Tags) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.Tags != nil {
+		objectMap["tags"] = t.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // Task security task that we recommend to do in order to strengthen security
@@ -6494,21 +6701,37 @@ type TopologySingleResourceParent struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// UserRecommendation represents a user that is recommended to be allowed for a certain rule
-type UserRecommendation struct {
-	// Username - Represents a user that is recommended to be allowed for a certain rule
-	Username *string `json:"username,omitempty"`
-	// RecommendationAction - Possible values include: 'RecommendationAction1Recommended', 'RecommendationAction1Add', 'RecommendationAction1Remove'
-	RecommendationAction RecommendationAction1 `json:"recommendationAction,omitempty"`
+// TrackedResource describes an Azure tracked resource.
+type TrackedResource struct {
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - READ-ONLY; Location where the resource is stored
+	Location *string `json:"location,omitempty"`
+	// Kind - Kind of the resource
+	Kind *string `json:"kind,omitempty"`
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	Etag *string `json:"etag,omitempty"`
+	// Tags - A list of key value pairs that describe the resource.
+	Tags map[string]*string `json:"tags"`
 }
 
-// VMRecommendation represents a machine that is part of a VM/server group
-type VMRecommendation struct {
-	// ConfigurationStatus - Possible values include: 'Configured', 'NotConfigured', 'InProgress', 'Failed', 'NoStatus'
-	ConfigurationStatus ConfigurationStatus `json:"configurationStatus,omitempty"`
-	// RecommendationAction - Possible values include: 'RecommendationActionRecommended', 'RecommendationActionAdd', 'RecommendationActionRemove'
-	RecommendationAction RecommendationAction `json:"recommendationAction,omitempty"`
-	ResourceID           *string              `json:"resourceId,omitempty"`
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Kind != nil {
+		objectMap["kind"] = tr.Kind
+	}
+	if tr.Etag != nil {
+		objectMap["etag"] = tr.Etag
+	}
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkspaceSetting configures where to store the OMS agent data for workspaces under a scope

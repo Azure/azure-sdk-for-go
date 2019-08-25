@@ -23,6 +23,19 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// PlaybookConfigurationsClientAPI contains the set of methods on the PlaybookConfigurationsClient type.
+type PlaybookConfigurationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfiguration, err error)
+	Delete(ctx context.Context, resourceGroupName string, playbookConfigurationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, playbookConfigurationName string) (result security.PlaybookConfiguration, err error)
+	List(ctx context.Context) (result security.PlaybookConfigurationListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.PlaybookConfigurationListPage, err error)
+	Patch(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfiguration, err error)
+	Validate(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfigurationValidationStatus, err error)
+}
+
+var _ PlaybookConfigurationsClientAPI = (*security.PlaybookConfigurationsClient)(nil)
+
 // RegulatoryComplianceStandardsClientAPI contains the set of methods on the RegulatoryComplianceStandardsClient type.
 type RegulatoryComplianceStandardsClientAPI interface {
 	Get(ctx context.Context, regulatoryComplianceStandardName string) (result security.RegulatoryComplianceStandard, err error)
@@ -198,15 +211,6 @@ type JitNetworkAccessPoliciesClientAPI interface {
 }
 
 var _ JitNetworkAccessPoliciesClientAPI = (*security.JitNetworkAccessPoliciesClient)(nil)
-
-// AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
-type AdaptiveApplicationControlsClientAPI interface {
-	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
-	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
-	Put(ctx context.Context, groupName string, body security.AppWhitelistingPutGroupData) (result security.AppWhitelistingGroup, err error)
-}
-
-var _ AdaptiveApplicationControlsClientAPI = (*security.AdaptiveApplicationControlsClient)(nil)
 
 // ExternalSecuritySolutionsClientAPI contains the set of methods on the ExternalSecuritySolutionsClient type.
 type ExternalSecuritySolutionsClientAPI interface {

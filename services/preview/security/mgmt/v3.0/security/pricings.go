@@ -41,7 +41,7 @@ func NewPricingsClientWithBaseURI(baseURI string, subscriptionID string, ascLoca
 	return PricingsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Get security pricing configuration in the subscription
+// Get gets a provided Security Center pricing configuration in the subscription.
 // Parameters:
 // pricingName - name of the pricing configuration
 func (client PricingsClient) Get(ctx context.Context, pricingName string) (result Pricing, err error) {
@@ -122,7 +122,7 @@ func (client PricingsClient) GetResponder(resp *http.Response) (result Pricing, 
 	return
 }
 
-// List security pricing configurations in the subscription
+// List lists Security Center pricing configurations in the subscription.
 func (client PricingsClient) List(ctx context.Context) (result PricingList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PricingsClient.List")
@@ -200,7 +200,7 @@ func (client PricingsClient) ListResponder(resp *http.Response) (result PricingL
 	return
 }
 
-// Update security pricing configuration in the subscription
+// Update updates a provided Security Center pricing configuration in the subscription.
 // Parameters:
 // pricingName - name of the pricing configuration
 // pricing - pricing object

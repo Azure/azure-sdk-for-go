@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v32.6.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| kusto | 2019-05-15 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| datalake | 2018-06-17 |
+
 ## `v32.5.0`
 
 ### New Packages

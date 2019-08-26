@@ -717,6 +717,7 @@ const (
 	TypeMicrosoftAccessSink          TypeBasicCopySink = original.TypeMicrosoftAccessSink
 	TypeOdbcSink                     TypeBasicCopySink = original.TypeOdbcSink
 	TypeOracleSink                   TypeBasicCopySink = original.TypeOracleSink
+	TypeOrcSink                      TypeBasicCopySink = original.TypeOrcSink
 	TypeParquetSink                  TypeBasicCopySink = original.TypeParquetSink
 	TypeSalesforceServiceCloudSink   TypeBasicCopySink = original.TypeSalesforceServiceCloudSink
 	TypeSalesforceSink               TypeBasicCopySink = original.TypeSalesforceSink
@@ -783,6 +784,7 @@ const (
 	TypeOffice365Source                TypeBasicCopySource = original.TypeOffice365Source
 	TypeOracleServiceCloudSource       TypeBasicCopySource = original.TypeOracleServiceCloudSource
 	TypeOracleSource                   TypeBasicCopySource = original.TypeOracleSource
+	TypeOrcSource                      TypeBasicCopySource = original.TypeOrcSource
 	TypeParquetSource                  TypeBasicCopySource = original.TypeParquetSource
 	TypePaypalSource                   TypeBasicCopySource = original.TypePaypalSource
 	TypePhoenixSource                  TypeBasicCopySource = original.TypePhoenixSource
@@ -877,6 +879,7 @@ const (
 	TypeOffice365Table                 TypeBasicDataset = original.TypeOffice365Table
 	TypeOracleServiceCloudObject       TypeBasicDataset = original.TypeOracleServiceCloudObject
 	TypeOracleTable                    TypeBasicDataset = original.TypeOracleTable
+	TypeOrc                            TypeBasicDataset = original.TypeOrc
 	TypeParquet                        TypeBasicDataset = original.TypeParquet
 	TypePaypalObject                   TypeBasicDataset = original.TypePaypalObject
 	TypePhoenixObject                  TypeBasicDataset = original.TypePhoenixObject
@@ -1633,7 +1636,11 @@ type OracleSink = original.OracleSink
 type OracleSource = original.OracleSource
 type OracleTableDataset = original.OracleTableDataset
 type OracleTableDatasetTypeProperties = original.OracleTableDatasetTypeProperties
+type OrcDataset = original.OrcDataset
+type OrcDatasetTypeProperties = original.OrcDatasetTypeProperties
 type OrcFormat = original.OrcFormat
+type OrcSink = original.OrcSink
+type OrcSource = original.OrcSource
 type ParameterSpecification = original.ParameterSpecification
 type ParquetDataset = original.ParquetDataset
 type ParquetDatasetTypeProperties = original.ParquetDatasetTypeProperties

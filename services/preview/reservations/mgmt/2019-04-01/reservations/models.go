@@ -1113,6 +1113,12 @@ type PatchPropertiesRenewProperties struct {
 
 // Properties ...
 type Properties struct {
+	autorest.Response `json:"-"`
+	Properties        *SubscriptionScopeProperties `json:"properties,omitempty"`
+}
+
+// PropertiesType ...
+type PropertiesType struct {
 	// ReservedResourceType - Possible values include: 'VirtualMachines', 'SQLDatabases', 'SuseLinux', 'CosmosDb', 'RedHat', 'SQLDataWarehouse', 'VMwareCloudSimple', 'RedHatOsa'
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
 	// InstanceFlexibility - Possible values include: 'On', 'Off'
@@ -1260,6 +1266,35 @@ type RenewPropertiesResponsePricingCurrencyTotal struct {
 	Amount       *float64 `json:"amount,omitempty"`
 }
 
+// ReservationAvailableScopesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ReservationAvailableScopesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ReservationAvailableScopesFuture) Result(client Client) (p Properties, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("reservations.ReservationAvailableScopesFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+		p, err = client.AvailableScopesResponder(p.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "reservations.ReservationAvailableScopesFuture", "Result", p.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ReservationMergeFuture struct {
@@ -1327,11 +1362,17 @@ type Response struct {
 	// ID - READ-ONLY; Identifier of the reservation
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Name of the reservation
-	Name       *string     `json:"name,omitempty"`
-	Sku        *SkuName    `json:"sku,omitempty"`
-	Properties *Properties `json:"properties,omitempty"`
+	Name       *string         `json:"name,omitempty"`
+	Sku        *SkuName        `json:"sku,omitempty"`
+	Properties *PropertiesType `json:"properties,omitempty"`
 	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
 	Type *string `json:"type,omitempty"`
+}
+
+// ScopeProperties ...
+type ScopeProperties struct {
+	Scope *string `json:"scope,omitempty"`
+	Valid *bool   `json:"valid,omitempty"`
 }
 
 // SkuName ...
@@ -1437,4 +1478,9 @@ func (sr *SplitRequest) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// SubscriptionScopeProperties ...
+type SubscriptionScopeProperties struct {
+	Scopes *[]ScopeProperties `json:"scopes,omitempty"`
 }

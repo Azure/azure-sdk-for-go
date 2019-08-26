@@ -22,7 +22,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-01-21/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-05-15/kusto"
 )
 
 const (
@@ -90,6 +90,7 @@ const (
 	KindDataConnection Kind = original.KindDataConnection
 	KindEventGrid      Kind = original.KindEventGrid
 	KindEventHub       Kind = original.KindEventHub
+	KindIotHub         Kind = original.KindIotHub
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -98,6 +99,7 @@ const (
 	Creating  ProvisioningState = original.Creating
 	Deleting  ProvisioningState = original.Deleting
 	Failed    ProvisioningState = original.Failed
+	Moving    ProvisioningState = original.Moving
 	Running   ProvisioningState = original.Running
 	Succeeded ProvisioningState = original.Succeeded
 )
@@ -171,18 +173,24 @@ type EventGridConnectionProperties = original.EventGridConnectionProperties
 type EventGridDataConnection = original.EventGridDataConnection
 type EventHubConnectionProperties = original.EventHubConnectionProperties
 type EventHubDataConnection = original.EventHubDataConnection
+type IotHubConnectionProperties = original.IotHubConnectionProperties
+type IotHubDataConnection = original.IotHubDataConnection
 type ListResourceSkusResult = original.ListResourceSkusResult
-type ListSkusResult = original.ListSkusResult
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type OptimizedAutoscale = original.OptimizedAutoscale
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type SkuDescription = original.SkuDescription
+type SkuDescriptionList = original.SkuDescriptionList
+type SkuLocationInfoItem = original.SkuLocationInfoItem
 type TrackedResource = original.TrackedResource
 type TrustedExternalTenant = original.TrustedExternalTenant
+type VirtualNetworkConfiguration = original.VirtualNetworkConfiguration
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

@@ -42,11 +42,11 @@ func NewIotSecuritySolutionsAnalyticsClientWithBaseURI(baseURI string, subscript
 	return IotSecuritySolutionsAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Get security Analytics of a security solution
+// Get use this method to get IoT Security Analytics metrics.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
+// solutionName - the name of the IoT Security solution.
 func (client IotSecuritySolutionsAnalyticsClient) Get(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionsAnalyticsClient.Get")
@@ -130,11 +130,11 @@ func (client IotSecuritySolutionsAnalyticsClient) GetResponder(resp *http.Respon
 	return
 }
 
-// List security Analytics of a security solution
+// List use this method to get IoT security Analytics metrics in an array.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
+// solutionName - the name of the IoT Security solution.
 func (client IotSecuritySolutionsAnalyticsClient) List(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModelList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionsAnalyticsClient.List")

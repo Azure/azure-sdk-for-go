@@ -41,11 +41,11 @@ func NewIotSecuritySolutionClientWithBaseURI(baseURI string, subscriptionID stri
 	return IotSecuritySolutionClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Create create or update an IoT security solution
+// Create use this method to create or update yours IoT Security solution
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
+// solutionName - the name of the IoT Security solution.
 // iotSecuritySolutionData - the security solution data
 func (client IotSecuritySolutionClient) Create(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel) (result IoTSecuritySolutionModel, err error) {
 	if tracing.IsEnabled() {
@@ -145,11 +145,11 @@ func (client IotSecuritySolutionClient) CreateResponder(resp *http.Response) (re
 	return
 }
 
-// Delete delete an IoT security solution
+// Delete use this method to delete yours IoT Security solution
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
+// solutionName - the name of the IoT Security solution.
 func (client IotSecuritySolutionClient) Delete(ctx context.Context, resourceGroupName string, solutionName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionClient.Delete")
@@ -232,11 +232,11 @@ func (client IotSecuritySolutionClient) DeleteResponder(resp *http.Response) (re
 	return
 }
 
-// Get get details of a specific IoT security solution
+// Get user this method to get details of a specific IoT Security solution based on solution name
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
+// solutionName - the name of the IoT Security solution.
 func (client IotSecuritySolutionClient) Get(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionClient.Get")
@@ -320,11 +320,11 @@ func (client IotSecuritySolutionClient) GetResponder(resp *http.Response) (resul
 	return
 }
 
-// ListByResourceGroup list IoT security solutions by resource group
+// ListByResourceGroup use thie method to get the list IoT Security solutions organized by resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// filter - filter the Security Solution with OData syntax. supporting filter by iotHubs
+// filter - filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
 func (client IotSecuritySolutionClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result IoTSecuritySolutionsListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionClient.ListByResourceGroup")
@@ -448,9 +448,9 @@ func (client IotSecuritySolutionClient) ListByResourceGroupComplete(ctx context.
 	return
 }
 
-// ListBySubscription list IoT security solutions by subscription
+// ListBySubscription use this method to get the list of IoT Security solutions by subscription.
 // Parameters:
-// filter - filter the Security Solution with OData syntax. supporting filter by iotHubs
+// filter - filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
 func (client IotSecuritySolutionClient) ListBySubscription(ctx context.Context, filter string) (result IoTSecuritySolutionsListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionClient.ListBySubscription")
@@ -569,12 +569,12 @@ func (client IotSecuritySolutionClient) ListBySubscriptionComplete(ctx context.C
 	return
 }
 
-// Update update an existing IoT security solution tags or user defined resources. To update other fields use the
-// CreateOrUpdate method
+// Update use this method to update existing IoT Security solution tags or user defined resources. To update other
+// fields use the CreateOrUpdate method.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
+// solutionName - the name of the IoT Security solution.
 // updateIotSecuritySolutionData - the security solution data
 func (client IotSecuritySolutionClient) Update(ctx context.Context, resourceGroupName string, solutionName string, updateIotSecuritySolutionData UpdateIotSecuritySolutionData) (result IoTSecuritySolutionModel, err error) {
 	if tracing.IsEnabled() {

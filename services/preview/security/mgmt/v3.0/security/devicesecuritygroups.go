@@ -40,10 +40,11 @@ func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID str
 	return DeviceSecurityGroupsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// CreateOrUpdate creates or updates the device security group on a specified IoT hub resource.
+// CreateOrUpdate use this method to creates or updates the device security group on a specified IoT Hub resource.
 // Parameters:
 // resourceID - the identifier of the resource.
-// deviceSecurityGroupName - the name of the security group. Please notice that the name is case insensitive.
+// deviceSecurityGroupName - the name of the device security group. Note that the name of the device security
+// group is case insensitive.
 // deviceSecurityGroup - security group object.
 func (client DeviceSecurityGroupsClient) CreateOrUpdate(ctx context.Context, resourceID string, deviceSecurityGroupName string, deviceSecurityGroup DeviceSecurityGroup) (result DeviceSecurityGroup, err error) {
 	if tracing.IsEnabled() {
@@ -119,10 +120,11 @@ func (client DeviceSecurityGroupsClient) CreateOrUpdateResponder(resp *http.Resp
 	return
 }
 
-// Delete deletes the security group
+// Delete user this method to deletes the device security group.
 // Parameters:
 // resourceID - the identifier of the resource.
-// deviceSecurityGroupName - the name of the security group. Please notice that the name is case insensitive.
+// deviceSecurityGroupName - the name of the device security group. Note that the name of the device security
+// group is case insensitive.
 func (client DeviceSecurityGroupsClient) Delete(ctx context.Context, resourceID string, deviceSecurityGroupName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupsClient.Delete")
@@ -194,10 +196,11 @@ func (client DeviceSecurityGroupsClient) DeleteResponder(resp *http.Response) (r
 	return
 }
 
-// Get gets the device security group for the specified IoT hub resource.
+// Get use this method to get the device security group for the specified IoT Hub resource.
 // Parameters:
 // resourceID - the identifier of the resource.
-// deviceSecurityGroupName - the name of the security group. Please notice that the name is case insensitive.
+// deviceSecurityGroupName - the name of the device security group. Note that the name of the device security
+// group is case insensitive.
 func (client DeviceSecurityGroupsClient) Get(ctx context.Context, resourceID string, deviceSecurityGroupName string) (result DeviceSecurityGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupsClient.Get")
@@ -270,7 +273,7 @@ func (client DeviceSecurityGroupsClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// List gets the list of device security groups for the specified IoT hub resource.
+// List use this method get the list of device security groups for the specified IoT Hub resource.
 // Parameters:
 // resourceID - the identifier of the resource.
 func (client DeviceSecurityGroupsClient) List(ctx context.Context, resourceID string) (result DeviceSecurityGroupListPage, err error) {

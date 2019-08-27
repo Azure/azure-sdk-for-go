@@ -44,12 +44,12 @@ func NewIotSecuritySolutionsAnalyticsAggregatedAlertClientWithBaseURI(baseURI st
 	return IotSecuritySolutionsAnalyticsAggregatedAlertClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Dismiss security Analytics of a security solution
+// Dismiss use this method to dismiss an aggregated IoT Security Solution Alert.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
-// aggregatedAlertName - identifier of the aggregated alert
+// solutionName - the name of the IoT Security solution.
+// aggregatedAlertName - identifier of the aggregated alert.
 func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) Dismiss(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionsAnalyticsAggregatedAlertClient.Dismiss")
@@ -133,12 +133,13 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) DismissResponde
 	return
 }
 
-// Get security Analytics of a security solution
+// Get use this method to get a single the aggregated alert of yours IoT Security solution. This aggregation is
+// performed by alert name.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
-// aggregatedAlertName - identifier of the aggregated alert
+// solutionName - the name of the IoT Security solution.
+// aggregatedAlertName - identifier of the aggregated alert.
 func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) Get(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result IoTSecurityAggregatedAlert, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionsAnalyticsAggregatedAlertClient.Get")
@@ -223,12 +224,12 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) GetResponder(re
 	return
 }
 
-// List security Analytics of a security solution
+// List use this method to get the aggregated alert list of yours IoT Security solution.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
-// top - the number of results to retrieve.
+// solutionName - the name of the IoT Security solution.
+// top - number of results to retrieve.
 func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) List(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result IoTSecurityAggregatedAlertListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionsAnalyticsAggregatedAlertClient.List")

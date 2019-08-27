@@ -44,12 +44,13 @@ func NewIotSecuritySolutionsAnalyticsRecommendationClientWithBaseURI(baseURI str
 	return IotSecuritySolutionsAnalyticsRecommendationClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Get security Analytics of a security solution
+// Get use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This
+// aggregation is performed by recommendation name.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
-// aggregatedRecommendationName - identifier of the aggregated recommendation
+// solutionName - the name of the IoT Security solution.
+// aggregatedRecommendationName - name of the recommendation aggregated for this query.
 func (client IotSecuritySolutionsAnalyticsRecommendationClient) Get(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string) (result IoTSecurityAggregatedRecommendation, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionsAnalyticsRecommendationClient.Get")
@@ -134,12 +135,13 @@ func (client IotSecuritySolutionsAnalyticsRecommendationClient) GetResponder(res
 	return
 }
 
-// List security Analytics of a security solution
+// List use this method to get the list of aggregated security analytics recommendations of yours IoT Security
+// solution.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the solution manager name
-// top - the number of results to retrieve.
+// solutionName - the name of the IoT Security solution.
+// top - number of results to retrieve.
 func (client IotSecuritySolutionsAnalyticsRecommendationClient) List(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result IoTSecurityAggregatedRecommendationListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionsAnalyticsRecommendationClient.List")

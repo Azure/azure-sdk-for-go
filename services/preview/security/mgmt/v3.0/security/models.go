@@ -685,6 +685,21 @@ func PossibleTypeValues() []Type {
 	return []Type{BinarySignature, File, FileHash, ProductSignature, PublisherSignature, VersionAndAboveSignature}
 }
 
+// ValueType enumerates the values for value type.
+type ValueType string
+
+const (
+	// IPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
+	IPCidr ValueType = "IpCidr"
+	// String Any string value.
+	String ValueType = "String"
+)
+
+// PossibleValueTypeValues returns an array of possible values for the ValueType const type.
+func PossibleValueTypeValues() []ValueType {
+	return []ValueType{IPCidr, String}
+}
+
 // AadConnectivityState1 describes an Azure resource with kind
 type AadConnectivityState1 struct {
 	// ConnectivityState - Possible values include: 'Discovered', 'NotLicensed', 'Connected'
@@ -1409,6 +1424,23 @@ type AllowedConnectionsResourceProperties struct {
 	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
 	// ConnectableResources - READ-ONLY; List of connectable resources
 	ConnectableResources *[]ConnectableResource `json:"connectableResources,omitempty"`
+}
+
+// AllowlistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is allowed
+type AllowlistCustomAlertRule struct {
+	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
+	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
 }
 
 // AppWhitelistingGroup ...
@@ -3005,6 +3037,18 @@ type ContactProperties struct {
 	AlertsToAdmins AlertsToAdmins `json:"alertsToAdmins,omitempty"`
 }
 
+// CustomAlertRule a custom alert rule
+type CustomAlertRule struct {
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // DataExportSetting represents a data export setting
 type DataExportSetting struct {
 	// DataExportSettingProperties - Data export setting data
@@ -3095,6 +3139,254 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 type DataExportSettingProperties struct {
 	// Enabled - Is the data export setting is enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// DenylistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
+// denied
+type DenylistCustomAlertRule struct {
+	// DenylistValues - The values to deny. The format of the values depends on the rule type.
+	DenylistValues *[]string `json:"denylistValues,omitempty"`
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// DeviceSecurityGroup the device security group resource
+type DeviceSecurityGroup struct {
+	autorest.Response `json:"-"`
+	// DeviceSecurityGroupProperties - Device Security group data
+	*DeviceSecurityGroupProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceSecurityGroup.
+func (dsg DeviceSecurityGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsg.DeviceSecurityGroupProperties != nil {
+		objectMap["properties"] = dsg.DeviceSecurityGroupProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DeviceSecurityGroup struct.
+func (dsg *DeviceSecurityGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var deviceSecurityGroupProperties DeviceSecurityGroupProperties
+				err = json.Unmarshal(*v, &deviceSecurityGroupProperties)
+				if err != nil {
+					return err
+				}
+				dsg.DeviceSecurityGroupProperties = &deviceSecurityGroupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dsg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dsg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dsg.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DeviceSecurityGroupList list of device security groups
+type DeviceSecurityGroupList struct {
+	autorest.Response `json:"-"`
+	// Value - List of device security group objects
+	Value *[]DeviceSecurityGroup `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DeviceSecurityGroupListIterator provides access to a complete listing of DeviceSecurityGroup values.
+type DeviceSecurityGroupListIterator struct {
+	i    int
+	page DeviceSecurityGroupListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DeviceSecurityGroupListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DeviceSecurityGroupListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DeviceSecurityGroupListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DeviceSecurityGroupListIterator) Response() DeviceSecurityGroupList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DeviceSecurityGroupListIterator) Value() DeviceSecurityGroup {
+	if !iter.page.NotDone() {
+		return DeviceSecurityGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DeviceSecurityGroupListIterator type.
+func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
+	return DeviceSecurityGroupListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dsgl DeviceSecurityGroupList) IsEmpty() bool {
+	return dsgl.Value == nil || len(*dsgl.Value) == 0
+}
+
+// deviceSecurityGroupListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dsgl DeviceSecurityGroupList) deviceSecurityGroupListPreparer(ctx context.Context) (*http.Request, error) {
+	if dsgl.NextLink == nil || len(to.String(dsgl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dsgl.NextLink)))
+}
+
+// DeviceSecurityGroupListPage contains a page of DeviceSecurityGroup values.
+type DeviceSecurityGroupListPage struct {
+	fn   func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)
+	dsgl DeviceSecurityGroupList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DeviceSecurityGroupListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dsgl)
+	if err != nil {
+		return err
+	}
+	page.dsgl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DeviceSecurityGroupListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DeviceSecurityGroupListPage) NotDone() bool {
+	return !page.dsgl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DeviceSecurityGroupListPage) Response() DeviceSecurityGroupList {
+	return page.dsgl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DeviceSecurityGroupListPage) Values() []DeviceSecurityGroup {
+	if page.dsgl.IsEmpty() {
+		return nil
+	}
+	return *page.dsgl.Value
+}
+
+// Creates a new instance of the DeviceSecurityGroupListPage type.
+func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return DeviceSecurityGroupListPage{fn: getNextPage}
+}
+
+// DeviceSecurityGroupProperties describes properties of a security group.
+type DeviceSecurityGroupProperties struct {
+	// ThresholdRules - A list of threshold custom alert rules.
+	ThresholdRules *[]ThresholdCustomAlertRule `json:"thresholdRules,omitempty"`
+	// TimeWindowRules - A list of time window custom alert rules.
+	TimeWindowRules *[]TimeWindowCustomAlertRule `json:"timeWindowRules,omitempty"`
+	// AllowlistRules - A list of allow-list custom alert rules.
+	AllowlistRules *[]AllowlistCustomAlertRule `json:"allowlistRules,omitempty"`
+	// DenylistRules - A list of deny-list custom alert rules.
+	DenylistRules *[]DenylistCustomAlertRule `json:"denylistRules,omitempty"`
 }
 
 // DiscoveredSecuritySolution ...
@@ -5290,6 +5582,20 @@ type Kind struct {
 	Kind *string `json:"kind,omitempty"`
 }
 
+// ListCustomAlertRule a List custom alert rule
+type ListCustomAlertRule struct {
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // Location describes an Azure resource with location
 type Location struct {
 	// Location - READ-ONLY; Location where the resource is stored
@@ -5482,9 +5788,7 @@ type PathRecommendation struct {
 	ConfigurationStatus ConfigurationStatus1 `json:"configurationStatus,omitempty"`
 }
 
-// Pricing azure Security Center is provided in two pricing tiers: free and standard, with the standard
-// tier available with a trial period. The standard tier offers advanced security capabilities, while the
-// free tier offers basic security features.
+// Pricing pricing tier will be applied for the scope based on the resource ID
 type Pricing struct {
 	autorest.Response `json:"-"`
 	// PricingProperties - Pricing data
@@ -5557,7 +5861,7 @@ func (p *Pricing) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PricingList list of pricing configurations response.
+// PricingList list of pricing configurations response
 type PricingList struct {
 	autorest.Response `json:"-"`
 	// Value - List of pricing configurations
@@ -6873,6 +7177,42 @@ type TaskProperties struct {
 	LastStateChangeTimeUtc *date.Time `json:"lastStateChangeTimeUtc,omitempty"`
 	// SubState - READ-ONLY; Additional data on the state of the task
 	SubState *string `json:"subState,omitempty"`
+}
+
+// ThresholdCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is within the given range.
+type ThresholdCustomAlertRule struct {
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// TimeWindowCustomAlertRule a custom alert rule that checks if the number of activities (depends on the
+// custom alert type) in a time window is within the given range.
+type TimeWindowCustomAlertRule struct {
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Whether the custom alert is enabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
 }
 
 // TopologyList ...

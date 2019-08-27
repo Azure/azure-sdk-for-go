@@ -332,6 +332,13 @@ const (
 	VersionAndAboveSignature Type = original.VersionAndAboveSignature
 )
 
+type ValueType = original.ValueType
+
+const (
+	IPCidr ValueType = original.IPCidr
+	String ValueType = original.String
+)
+
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
@@ -353,6 +360,7 @@ type AllowedConnectionsListIterator = original.AllowedConnectionsListIterator
 type AllowedConnectionsListPage = original.AllowedConnectionsListPage
 type AllowedConnectionsResource = original.AllowedConnectionsResource
 type AllowedConnectionsResourceProperties = original.AllowedConnectionsResourceProperties
+type AllowlistCustomAlertRule = original.AllowlistCustomAlertRule
 type AppWhitelistingGroup = original.AppWhitelistingGroup
 type AppWhitelistingGroupData = original.AppWhitelistingGroupData
 type AppWhitelistingGroups = original.AppWhitelistingGroups
@@ -398,8 +406,16 @@ type ContactListIterator = original.ContactListIterator
 type ContactListPage = original.ContactListPage
 type ContactProperties = original.ContactProperties
 type ContactsClient = original.ContactsClient
+type CustomAlertRule = original.CustomAlertRule
 type DataExportSetting = original.DataExportSetting
 type DataExportSettingProperties = original.DataExportSettingProperties
+type DenylistCustomAlertRule = original.DenylistCustomAlertRule
+type DeviceSecurityGroup = original.DeviceSecurityGroup
+type DeviceSecurityGroupList = original.DeviceSecurityGroupList
+type DeviceSecurityGroupListIterator = original.DeviceSecurityGroupListIterator
+type DeviceSecurityGroupListPage = original.DeviceSecurityGroupListPage
+type DeviceSecurityGroupProperties = original.DeviceSecurityGroupProperties
+type DeviceSecurityGroupsClient = original.DeviceSecurityGroupsClient
 type DiscoveredSecuritySolution = original.DiscoveredSecuritySolution
 type DiscoveredSecuritySolutionList = original.DiscoveredSecuritySolutionList
 type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutionListIterator
@@ -445,15 +461,11 @@ type IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem = original.Io
 type IoTSecuritySolutionModel = original.IoTSecuritySolutionModel
 type IoTSecuritySolutionProperties = original.IoTSecuritySolutionProperties
 type IoTSecuritySolutionsAnalyticsAggregatedAlertClient = original.IoTSecuritySolutionsAnalyticsAggregatedAlertClient
-type IoTSecuritySolutionsAnalyticsAggregatedAlertsClient = original.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient
 type IoTSecuritySolutionsAnalyticsClient = original.IoTSecuritySolutionsAnalyticsClient
 type IoTSecuritySolutionsAnalyticsRecommendationClient = original.IoTSecuritySolutionsAnalyticsRecommendationClient
-type IoTSecuritySolutionsAnalyticsRecommendationsClient = original.IoTSecuritySolutionsAnalyticsRecommendationsClient
-type IoTSecuritySolutionsClient = original.IoTSecuritySolutionsClient
 type IoTSecuritySolutionsList = original.IoTSecuritySolutionsList
 type IoTSecuritySolutionsListIterator = original.IoTSecuritySolutionsListIterator
 type IoTSecuritySolutionsListPage = original.IoTSecuritySolutionsListPage
-type IoTSecuritySolutionsResourceGroupClient = original.IoTSecuritySolutionsResourceGroupClient
 type IoTSeverityMetrics = original.IoTSeverityMetrics
 type IotSecuritySolutionClient = original.IotSecuritySolutionClient
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
@@ -471,6 +483,7 @@ type JitNetworkAccessRequest = original.JitNetworkAccessRequest
 type JitNetworkAccessRequestPort = original.JitNetworkAccessRequestPort
 type JitNetworkAccessRequestVirtualMachine = original.JitNetworkAccessRequestVirtualMachine
 type Kind = original.Kind
+type ListCustomAlertRule = original.ListCustomAlertRule
 type Location = original.Location
 type LocationsClient = original.LocationsClient
 type Operation = original.Operation
@@ -524,6 +537,8 @@ type TaskListPage = original.TaskListPage
 type TaskParameters = original.TaskParameters
 type TaskProperties = original.TaskProperties
 type TasksClient = original.TasksClient
+type ThresholdCustomAlertRule = original.ThresholdCustomAlertRule
+type TimeWindowCustomAlertRule = original.TimeWindowCustomAlertRule
 type TopologyClient = original.TopologyClient
 type TopologyList = original.TopologyList
 type TopologyListIterator = original.TopologyListIterator
@@ -637,6 +652,18 @@ func NewContactsClient(subscriptionID string, ascLocation string) ContactsClient
 func NewContactsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ContactsClient {
 	return original.NewContactsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
+	return original.NewDeviceSecurityGroupListIterator(page)
+}
+func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return original.NewDeviceSecurityGroupListPage(getNextPage)
+}
+func NewDeviceSecurityGroupsClient(subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClient(subscriptionID, ascLocation)
+}
+func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return original.NewDeviceSecurityGroupsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionListPage) DiscoveredSecuritySolutionListIterator {
 	return original.NewDiscoveredSecuritySolutionListIterator(page)
 }
@@ -691,12 +718,6 @@ func NewIoTSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string
 func NewIoTSecuritySolutionsAnalyticsAggregatedAlertClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertClient {
 	return original.NewIoTSecuritySolutionsAnalyticsAggregatedAlertClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
-func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
-	return original.NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient(subscriptionID, ascLocation)
-}
-func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
-	return original.NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
 func NewIoTSecuritySolutionsAnalyticsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsClient {
 	return original.NewIoTSecuritySolutionsAnalyticsClient(subscriptionID, ascLocation)
 }
@@ -709,29 +730,11 @@ func NewIoTSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string,
 func NewIoTSecuritySolutionsAnalyticsRecommendationClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationClient {
 	return original.NewIoTSecuritySolutionsAnalyticsRecommendationClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
-func NewIoTSecuritySolutionsAnalyticsRecommendationsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationsClient {
-	return original.NewIoTSecuritySolutionsAnalyticsRecommendationsClient(subscriptionID, ascLocation)
-}
-func NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationsClient {
-	return original.NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewIoTSecuritySolutionsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
-	return original.NewIoTSecuritySolutionsClient(subscriptionID, ascLocation)
-}
-func NewIoTSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
-	return original.NewIoTSecuritySolutionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
 func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTSecuritySolutionsListIterator {
 	return original.NewIoTSecuritySolutionsListIterator(page)
 }
 func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
 	return original.NewIoTSecuritySolutionsListPage(getNextPage)
-}
-func NewIoTSecuritySolutionsResourceGroupClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
-	return original.NewIoTSecuritySolutionsResourceGroupClient(subscriptionID, ascLocation)
-}
-func NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
-	return original.NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewIotSecuritySolutionClient(subscriptionID string, ascLocation string) IotSecuritySolutionClient {
 	return original.NewIotSecuritySolutionClient(subscriptionID, ascLocation)
@@ -972,6 +975,9 @@ func PossibleStatusValues() []Status {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
+}
+func PossibleValueTypeValues() []ValueType {
+	return original.PossibleValueTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

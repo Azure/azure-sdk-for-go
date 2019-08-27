@@ -40,13 +40,25 @@ const (
 type AzureSkuName = original.AzureSkuName
 
 const (
-	D11V2 AzureSkuName = original.D11V2
-	D12V2 AzureSkuName = original.D12V2
-	D13V2 AzureSkuName = original.D13V2
-	D14V2 AzureSkuName = original.D14V2
-	L16   AzureSkuName = original.L16
-	L4    AzureSkuName = original.L4
-	L8    AzureSkuName = original.L8
+	DevNoSLAStandardD11V2 AzureSkuName = original.DevNoSLAStandardD11V2
+	StandardD11V2         AzureSkuName = original.StandardD11V2
+	StandardD12V2         AzureSkuName = original.StandardD12V2
+	StandardD13V2         AzureSkuName = original.StandardD13V2
+	StandardD14V2         AzureSkuName = original.StandardD14V2
+	StandardDS13V21TBPS   AzureSkuName = original.StandardDS13V21TBPS
+	StandardDS13V22TBPS   AzureSkuName = original.StandardDS13V22TBPS
+	StandardDS14V23TBPS   AzureSkuName = original.StandardDS14V23TBPS
+	StandardDS14V24TBPS   AzureSkuName = original.StandardDS14V24TBPS
+	StandardL16s          AzureSkuName = original.StandardL16s
+	StandardL4s           AzureSkuName = original.StandardL4s
+	StandardL8s           AzureSkuName = original.StandardL8s
+)
+
+type AzureSkuTier = original.AzureSkuTier
+
+const (
+	Basic    AzureSkuTier = original.Basic
+	Standard AzureSkuTier = original.Standard
 )
 
 type DataFormat = original.DataFormat
@@ -233,6 +245,9 @@ func PossibleAzureScaleTypeValues() []AzureScaleType {
 }
 func PossibleAzureSkuNameValues() []AzureSkuName {
 	return original.PossibleAzureSkuNameValues()
+}
+func PossibleAzureSkuTierValues() []AzureSkuTier {
+	return original.PossibleAzureSkuTierValues()
 }
 func PossibleDataFormatValues() []DataFormat {
 	return original.PossibleDataFormatValues()

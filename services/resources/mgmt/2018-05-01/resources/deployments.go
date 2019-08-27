@@ -42,7 +42,9 @@ func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) Depl
 }
 
 // CalculateTemplateHash calculate the hash of the given template.
-func (client DeploymentsClient) CalculateTemplateHash(ctx context.Context) (result TemplateHashResult, err error) {
+// Parameters:
+// templateParameter - the template provided to calculate hash.
+func (client DeploymentsClient) CalculateTemplateHash(ctx context.Context, templateParameter interface{}) (result TemplateHashResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeploymentsClient.CalculateTemplateHash")
 		defer func() {
@@ -53,7 +55,7 @@ func (client DeploymentsClient) CalculateTemplateHash(ctx context.Context) (resu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CalculateTemplateHashPreparer(ctx)
+	req, err := client.CalculateTemplateHashPreparer(ctx, templateParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CalculateTemplateHash", nil, "Failure preparing request")
 		return
@@ -75,16 +77,18 @@ func (client DeploymentsClient) CalculateTemplateHash(ctx context.Context) (resu
 }
 
 // CalculateTemplateHashPreparer prepares the CalculateTemplateHash request.
-func (client DeploymentsClient) CalculateTemplateHashPreparer(ctx context.Context) (*http.Request, error) {
+func (client DeploymentsClient) CalculateTemplateHashPreparer(ctx context.Context, templateParameter interface{}) (*http.Request, error) {
 	const APIVersion = "2018-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPath("/providers/Microsoft.Resources/calculateTemplateHash"),
+		autorest.WithJSON(templateParameter),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

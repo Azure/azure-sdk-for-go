@@ -5235,7 +5235,7 @@ func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuri
 	return IoTSecuritySolutionsListPage{fn: getNextPage}
 }
 
-// IoTSeverityMetrics ioT Security solution analyics severity metrics.
+// IoTSeverityMetrics ioT Security solution analytics severity metrics.
 type IoTSeverityMetrics struct {
 	// High - Count of high severity alerts/recommendations.
 	High *int32 `json:"high,omitempty"`

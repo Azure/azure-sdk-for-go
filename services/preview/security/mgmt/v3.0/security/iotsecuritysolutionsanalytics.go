@@ -26,20 +26,20 @@ import (
 	"net/http"
 )
 
-// IoTSecuritySolutionsAnalyticsClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
-type IoTSecuritySolutionsAnalyticsClient struct {
+// IotSecuritySolutionsAnalyticsClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
+type IotSecuritySolutionsAnalyticsClient struct {
 	BaseClient
 }
 
-// NewIoTSecuritySolutionsAnalyticsClient creates an instance of the IoTSecuritySolutionsAnalyticsClient client.
-func NewIoTSecuritySolutionsAnalyticsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsClient {
-	return NewIoTSecuritySolutionsAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+// NewIotSecuritySolutionsAnalyticsClient creates an instance of the IotSecuritySolutionsAnalyticsClient client.
+func NewIotSecuritySolutionsAnalyticsClient(subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsClient {
+	return NewIotSecuritySolutionsAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
-// NewIoTSecuritySolutionsAnalyticsClientWithBaseURI creates an instance of the IoTSecuritySolutionsAnalyticsClient
+// NewIotSecuritySolutionsAnalyticsClientWithBaseURI creates an instance of the IotSecuritySolutionsAnalyticsClient
 // client.
-func NewIoTSecuritySolutionsAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsClient {
-	return IoTSecuritySolutionsAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewIotSecuritySolutionsAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsClient {
+	return IotSecuritySolutionsAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // Get security Analytics of a security solution
@@ -47,9 +47,9 @@ func NewIoTSecuritySolutionsAnalyticsClientWithBaseURI(baseURI string, subscript
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // solutionName - the solution manager name
-func (client IoTSecuritySolutionsAnalyticsClient) Get(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModel, err error) {
+func (client IotSecuritySolutionsAnalyticsClient) Get(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsAnalyticsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionsAnalyticsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -65,32 +65,32 @@ func (client IoTSecuritySolutionsAnalyticsClient) Get(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.IoTSecuritySolutionsAnalyticsClient", "Get", err.Error())
+		return result, validation.NewError("security.IotSecuritySolutionsAnalyticsClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, solutionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client IoTSecuritySolutionsAnalyticsClient) GetPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
+func (client IotSecuritySolutionsAnalyticsClient) GetPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"solutionName":      autorest.Encode("path", solutionName),
@@ -112,14 +112,14 @@ func (client IoTSecuritySolutionsAnalyticsClient) GetPreparer(ctx context.Contex
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client IoTSecuritySolutionsAnalyticsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client IotSecuritySolutionsAnalyticsClient) GetSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client IoTSecuritySolutionsAnalyticsClient) GetResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModel, err error) {
+func (client IotSecuritySolutionsAnalyticsClient) GetResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -135,9 +135,9 @@ func (client IoTSecuritySolutionsAnalyticsClient) GetResponder(resp *http.Respon
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // solutionName - the solution manager name
-func (client IoTSecuritySolutionsAnalyticsClient) List(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModelList, err error) {
+func (client IotSecuritySolutionsAnalyticsClient) List(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModelList, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsAnalyticsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionsAnalyticsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -153,32 +153,32 @@ func (client IoTSecuritySolutionsAnalyticsClient) List(ctx context.Context, reso
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.IoTSecuritySolutionsAnalyticsClient", "List", err.Error())
+		return result, validation.NewError("security.IotSecuritySolutionsAnalyticsClient", "List", err.Error())
 	}
 
 	req, err := client.ListPreparer(ctx, resourceGroupName, solutionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client IoTSecuritySolutionsAnalyticsClient) ListPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
+func (client IotSecuritySolutionsAnalyticsClient) ListPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"solutionName":      autorest.Encode("path", solutionName),
@@ -200,14 +200,14 @@ func (client IoTSecuritySolutionsAnalyticsClient) ListPreparer(ctx context.Conte
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client IoTSecuritySolutionsAnalyticsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client IotSecuritySolutionsAnalyticsClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client IoTSecuritySolutionsAnalyticsClient) ListResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModelList, err error) {
+func (client IotSecuritySolutionsAnalyticsClient) ListResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModelList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

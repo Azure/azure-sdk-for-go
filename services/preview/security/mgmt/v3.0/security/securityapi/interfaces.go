@@ -85,30 +85,30 @@ type IotSecuritySolutionClientAPI interface {
 
 var _ IotSecuritySolutionClientAPI = (*security.IotSecuritySolutionClient)(nil)
 
-// IoTSecuritySolutionsAnalyticsClientAPI contains the set of methods on the IoTSecuritySolutionsAnalyticsClient type.
-type IoTSecuritySolutionsAnalyticsClientAPI interface {
+// IotSecuritySolutionsAnalyticsClientAPI contains the set of methods on the IotSecuritySolutionsAnalyticsClient type.
+type IotSecuritySolutionsAnalyticsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionAnalyticsModel, err error)
 	List(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionAnalyticsModelList, err error)
 }
 
-var _ IoTSecuritySolutionsAnalyticsClientAPI = (*security.IoTSecuritySolutionsAnalyticsClient)(nil)
+var _ IotSecuritySolutionsAnalyticsClientAPI = (*security.IotSecuritySolutionsAnalyticsClient)(nil)
 
-// IoTSecuritySolutionsAnalyticsAggregatedAlertClientAPI contains the set of methods on the IoTSecuritySolutionsAnalyticsAggregatedAlertClient type.
-type IoTSecuritySolutionsAnalyticsAggregatedAlertClientAPI interface {
+// IotSecuritySolutionsAnalyticsAggregatedAlertClientAPI contains the set of methods on the IotSecuritySolutionsAnalyticsAggregatedAlertClient type.
+type IotSecuritySolutionsAnalyticsAggregatedAlertClientAPI interface {
 	Dismiss(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, solutionName string, aggregatedAlertName string) (result security.IoTSecurityAggregatedAlert, err error)
 	List(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result security.IoTSecurityAggregatedAlertListPage, err error)
 }
 
-var _ IoTSecuritySolutionsAnalyticsAggregatedAlertClientAPI = (*security.IoTSecuritySolutionsAnalyticsAggregatedAlertClient)(nil)
+var _ IotSecuritySolutionsAnalyticsAggregatedAlertClientAPI = (*security.IotSecuritySolutionsAnalyticsAggregatedAlertClient)(nil)
 
-// IoTSecuritySolutionsAnalyticsRecommendationClientAPI contains the set of methods on the IoTSecuritySolutionsAnalyticsRecommendationClient type.
-type IoTSecuritySolutionsAnalyticsRecommendationClientAPI interface {
+// IotSecuritySolutionsAnalyticsRecommendationClientAPI contains the set of methods on the IotSecuritySolutionsAnalyticsRecommendationClient type.
+type IotSecuritySolutionsAnalyticsRecommendationClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, solutionName string, aggregatedRecommendationName string) (result security.IoTSecurityAggregatedRecommendation, err error)
 	List(ctx context.Context, resourceGroupName string, solutionName string, top *int32) (result security.IoTSecurityAggregatedRecommendationListPage, err error)
 }
 
-var _ IoTSecuritySolutionsAnalyticsRecommendationClientAPI = (*security.IoTSecuritySolutionsAnalyticsRecommendationClient)(nil)
+var _ IotSecuritySolutionsAnalyticsRecommendationClientAPI = (*security.IotSecuritySolutionsAnalyticsRecommendationClient)(nil)
 
 // AllowedConnectionsClientAPI contains the set of methods on the AllowedConnectionsClient type.
 type AllowedConnectionsClientAPI interface {

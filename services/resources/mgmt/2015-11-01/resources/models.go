@@ -1756,7 +1756,7 @@ type TargetResource struct {
 // template and its hash.
 type TemplateHashResult struct {
 	autorest.Response `json:"-"`
-	// MinifiedTemplate - The template string after minification.
+	// MinifiedTemplate - The minified template string.
 	MinifiedTemplate *string `json:"minifiedTemplate,omitempty"`
 	// TemplateHash - The template hash.
 	TemplateHash *string `json:"templateHash,omitempty"`

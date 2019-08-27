@@ -136,6 +136,7 @@ type TagsListResult = original.TagsListResult
 type TagsListResultIterator = original.TagsListResultIterator
 type TagsListResultPage = original.TagsListResultPage
 type TargetResource = original.TargetResource
+type TemplateHashResult = original.TemplateHashResult
 type TemplateLink = original.TemplateLink
 type UpdateByIDFuture = original.UpdateByIDFuture
 type UpdateFuture = original.UpdateFuture

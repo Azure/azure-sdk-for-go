@@ -1710,6 +1710,16 @@ type TargetResource struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
+// TemplateHashResult result of the request to calculate template hash. It contains a string of minified
+// template and its hash.
+type TemplateHashResult struct {
+	autorest.Response `json:"-"`
+	// MinifiedTemplate - The template string after minification.
+	MinifiedTemplate *string `json:"minifiedTemplate,omitempty"`
+	// TemplateHash - The template hash.
+	TemplateHash *string `json:"templateHash,omitempty"`
+}
+
 // TemplateLink entity representing the reference to the template.
 type TemplateLink struct {
 	// URI - The URI of the template to deploy.

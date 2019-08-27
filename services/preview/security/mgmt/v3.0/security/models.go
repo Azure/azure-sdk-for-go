@@ -4298,7 +4298,7 @@ type IoTSecurityAggregatedAlert struct {
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// IoTSecurityAggregatedAlertProperties - IoT Security solution aggregated alert datails.
+	// IoTSecurityAggregatedAlertProperties - IoT Security solution aggregated alert details.
 	*IoTSecurityAggregatedAlertProperties `json:"properties,omitempty"`
 }
 
@@ -4521,7 +4521,7 @@ func NewIoTSecurityAggregatedAlertListPage(getNextPage func(context.Context, IoT
 	return IoTSecurityAggregatedAlertListPage{fn: getNextPage}
 }
 
-// IoTSecurityAggregatedAlertProperties ioT Security solution aggregated alert datails.
+// IoTSecurityAggregatedAlertProperties ioT Security solution aggregated alert details.
 type IoTSecurityAggregatedAlertProperties struct {
 	// AlertType - READ-ONLY; Name of the alert type.
 	AlertType *string `json:"alertType,omitempty"`
@@ -4967,7 +4967,7 @@ type IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem struct {
 	DevicesMetrics *IoTSeverityMetrics `json:"devicesMetrics,omitempty"`
 }
 
-// IoTSecuritySolutionModel ioT Security solution confgurtion and resource information.
+// IoTSecuritySolutionModel ioT Security solution configuration and resource information.
 type IoTSecuritySolutionModel struct {
 	autorest.Response `json:"-"`
 	// ID - READ-ONLY; Resource Id
@@ -5898,7 +5898,7 @@ type RecommendationConfigurationProperties struct {
 	RecommendationType RecommendationType `json:"recommendationType,omitempty"`
 	// Name - READ-ONLY
 	Name *string `json:"name,omitempty"`
-	// Status - Recommendation status. When the recommendtion status is disabled recommendations are not generated. Possible values include: 'Disabled', 'Enabled'
+	// Status - Recommendation status. When the recommendation status is disabled recommendations are not generated. Possible values include: 'Disabled', 'Enabled'
 	Status RecommendationConfigStatus `json:"status,omitempty"`
 }
 

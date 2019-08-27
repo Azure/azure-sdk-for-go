@@ -320,7 +320,7 @@ func (client IotSecuritySolutionClient) GetResponder(resp *http.Response) (resul
 	return
 }
 
-// ListByResourceGroup use thie method to get the list IoT Security solutions organized by resource group.
+// ListByResourceGroup use this method to get the list IoT Security solutions organized by resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.

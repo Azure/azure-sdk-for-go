@@ -167,6 +167,7 @@ type NamespacesClient = original.NamespacesClient
 type NamespacesCreateOrUpdateFuture = original.NamespacesCreateOrUpdateFuture
 type NamespacesDeleteFuture = original.NamespacesDeleteFuture
 type NetworkRuleSet = original.NetworkRuleSet
+type NetworkRuleSetListResult = original.NetworkRuleSetListResult
 type NetworkRuleSetProperties = original.NetworkRuleSetProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay

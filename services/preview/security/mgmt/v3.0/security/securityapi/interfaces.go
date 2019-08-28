@@ -85,13 +85,13 @@ type IotSecuritySolutionClientAPI interface {
 
 var _ IotSecuritySolutionClientAPI = (*security.IotSecuritySolutionClient)(nil)
 
-// IotSecuritySolutionsAnalyticsClientAPI contains the set of methods on the IotSecuritySolutionsAnalyticsClient type.
-type IotSecuritySolutionsAnalyticsClientAPI interface {
+// IotSecuritySolutionAnalyticsClientAPI contains the set of methods on the IotSecuritySolutionAnalyticsClient type.
+type IotSecuritySolutionAnalyticsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionAnalyticsModel, err error)
 	List(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionAnalyticsModelList, err error)
 }
 
-var _ IotSecuritySolutionsAnalyticsClientAPI = (*security.IotSecuritySolutionsAnalyticsClient)(nil)
+var _ IotSecuritySolutionAnalyticsClientAPI = (*security.IotSecuritySolutionAnalyticsClient)(nil)
 
 // IotSecuritySolutionsAnalyticsAggregatedAlertClientAPI contains the set of methods on the IotSecuritySolutionsAnalyticsAggregatedAlertClient type.
 type IotSecuritySolutionsAnalyticsAggregatedAlertClientAPI interface {

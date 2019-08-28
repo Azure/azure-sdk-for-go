@@ -464,9 +464,9 @@ type IoTSecuritySolutionsList = original.IoTSecuritySolutionsList
 type IoTSecuritySolutionsListIterator = original.IoTSecuritySolutionsListIterator
 type IoTSecuritySolutionsListPage = original.IoTSecuritySolutionsListPage
 type IoTSeverityMetrics = original.IoTSeverityMetrics
+type IotSecuritySolutionAnalyticsClient = original.IotSecuritySolutionAnalyticsClient
 type IotSecuritySolutionClient = original.IotSecuritySolutionClient
 type IotSecuritySolutionsAnalyticsAggregatedAlertClient = original.IotSecuritySolutionsAnalyticsAggregatedAlertClient
-type IotSecuritySolutionsAnalyticsClient = original.IotSecuritySolutionsAnalyticsClient
 type IotSecuritySolutionsAnalyticsRecommendationClient = original.IotSecuritySolutionsAnalyticsRecommendationClient
 type JitNetworkAccessPoliciesClient = original.JitNetworkAccessPoliciesClient
 type JitNetworkAccessPoliciesList = original.JitNetworkAccessPoliciesList
@@ -718,6 +718,12 @@ func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTS
 func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
 	return original.NewIoTSecuritySolutionsListPage(getNextPage)
 }
+func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
+	return original.NewIotSecuritySolutionAnalyticsClient(subscriptionID, ascLocation)
+}
+func NewIotSecuritySolutionAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
+	return original.NewIotSecuritySolutionAnalyticsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewIotSecuritySolutionClient(subscriptionID string, ascLocation string) IotSecuritySolutionClient {
 	return original.NewIotSecuritySolutionClient(subscriptionID, ascLocation)
 }
@@ -729,12 +735,6 @@ func NewIotSecuritySolutionsAnalyticsAggregatedAlertClient(subscriptionID string
 }
 func NewIotSecuritySolutionsAnalyticsAggregatedAlertClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsAggregatedAlertClient {
 	return original.NewIotSecuritySolutionsAnalyticsAggregatedAlertClientWithBaseURI(baseURI, subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionsAnalyticsClient(subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsClient {
-	return original.NewIotSecuritySolutionsAnalyticsClient(subscriptionID, ascLocation)
-}
-func NewIotSecuritySolutionsAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsClient {
-	return original.NewIotSecuritySolutionsAnalyticsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string, ascLocation string) IotSecuritySolutionsAnalyticsRecommendationClient {
 	return original.NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID, ascLocation)

@@ -181,6 +181,19 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Unknown, Updating}
 }
 
+// QuotaUnit enumerates the values for quota unit.
+type QuotaUnit string
+
+const (
+	// Count ...
+	Count QuotaUnit = "Count"
+)
+
+// PossibleQuotaUnitValues returns an array of possible values for the QuotaUnit const type.
+func PossibleQuotaUnitValues() []QuotaUnit {
+	return []QuotaUnit{Count}
+}
+
 // RemoteLoginPortPublicAccess enumerates the values for remote login port public access.
 type RemoteLoginPortPublicAccess string
 
@@ -215,15 +228,38 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type Status string
 
 const (
-	// StatusDisabled ...
-	StatusDisabled Status = "Disabled"
-	// StatusEnabled ...
-	StatusEnabled Status = "Enabled"
+	// Failure ...
+	Failure Status = "Failure"
+	// InvalidQuotaBelowClusterMinimum ...
+	InvalidQuotaBelowClusterMinimum Status = "InvalidQuotaBelowClusterMinimum"
+	// InvalidQuotaExceedsSubscriptionLimit ...
+	InvalidQuotaExceedsSubscriptionLimit Status = "InvalidQuotaExceedsSubscriptionLimit"
+	// InvalidVMFamilyName ...
+	InvalidVMFamilyName Status = "InvalidVMFamilyName"
+	// Success ...
+	Success Status = "Success"
+	// Undefined ...
+	Undefined Status = "Undefined"
 )
 
 // PossibleStatusValues returns an array of possible values for the Status const type.
 func PossibleStatusValues() []Status {
-	return []Status{StatusDisabled, StatusEnabled}
+	return []Status{Failure, InvalidQuotaBelowClusterMinimum, InvalidQuotaExceedsSubscriptionLimit, InvalidVMFamilyName, Success, Undefined}
+}
+
+// Status1 enumerates the values for status 1.
+type Status1 string
+
+const (
+	// Status1Disabled ...
+	Status1Disabled Status1 = "Disabled"
+	// Status1Enabled ...
+	Status1Enabled Status1 = "Enabled"
+)
+
+// PossibleStatus1Values returns an array of possible values for the Status1 const type.
+func PossibleStatus1Values() []Status1 {
+	return []Status1{Status1Disabled, Status1Enabled}
 }
 
 // UnderlyingResourceAction enumerates the values for underlying resource action.
@@ -245,13 +281,13 @@ func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
 type UsageUnit string
 
 const (
-	// Count ...
-	Count UsageUnit = "Count"
+	// UsageUnitCount ...
+	UsageUnitCount UsageUnit = "Count"
 )
 
 // PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
 func PossibleUsageUnitValues() []UsageUnit {
-	return []UsageUnit{Count}
+	return []UsageUnit{UsageUnitCount}
 }
 
 // VMPriority enumerates the values for vm priority.
@@ -1735,6 +1771,152 @@ type ListWorkspaceKeysResult struct {
 	ContainerRegistryCredentials *RegistryListCredentialsResult `json:"containerRegistryCredentials,omitempty"`
 }
 
+// ListWorkspaceQuotas the List WorkspaceQuotasByVMFamily operation response.
+type ListWorkspaceQuotas struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of Workspace Quotas by VM Family
+	Value *[]ResourceQuota `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page of workspace quota information by VM Family. Call ListNext() with this to fetch the next page of Workspace Quota information.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ListWorkspaceQuotasIterator provides access to a complete listing of ResourceQuota values.
+type ListWorkspaceQuotasIterator struct {
+	i    int
+	page ListWorkspaceQuotasPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ListWorkspaceQuotasIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListWorkspaceQuotasIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ListWorkspaceQuotasIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ListWorkspaceQuotasIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ListWorkspaceQuotasIterator) Response() ListWorkspaceQuotas {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ListWorkspaceQuotasIterator) Value() ResourceQuota {
+	if !iter.page.NotDone() {
+		return ResourceQuota{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ListWorkspaceQuotasIterator type.
+func NewListWorkspaceQuotasIterator(page ListWorkspaceQuotasPage) ListWorkspaceQuotasIterator {
+	return ListWorkspaceQuotasIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lwq ListWorkspaceQuotas) IsEmpty() bool {
+	return lwq.Value == nil || len(*lwq.Value) == 0
+}
+
+// listWorkspaceQuotasPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lwq ListWorkspaceQuotas) listWorkspaceQuotasPreparer(ctx context.Context) (*http.Request, error) {
+	if lwq.NextLink == nil || len(to.String(lwq.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lwq.NextLink)))
+}
+
+// ListWorkspaceQuotasPage contains a page of ResourceQuota values.
+type ListWorkspaceQuotasPage struct {
+	fn  func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)
+	lwq ListWorkspaceQuotas
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ListWorkspaceQuotasPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListWorkspaceQuotasPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.lwq)
+	if err != nil {
+		return err
+	}
+	page.lwq = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ListWorkspaceQuotasPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ListWorkspaceQuotasPage) NotDone() bool {
+	return !page.lwq.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ListWorkspaceQuotasPage) Response() ListWorkspaceQuotas {
+	return page.lwq
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ListWorkspaceQuotasPage) Values() []ResourceQuota {
+	if page.lwq.IsEmpty() {
+		return nil
+	}
+	return *page.lwq.Value
+}
+
+// Creates a new instance of the ListWorkspaceQuotasPage type.
+func NewListWorkspaceQuotasPage(getNextPage func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)) ListWorkspaceQuotasPage {
+	return ListWorkspaceQuotasPage{fn: getNextPage}
+}
+
 // MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MachineLearningComputeCreateOrUpdateFuture struct {
@@ -2014,6 +2196,24 @@ type Password struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// QuotaBaseProperties the properties for Quota update or retrieval.
+type QuotaBaseProperties struct {
+	// ID - Specifies the resource ID.
+	ID *string `json:"id,omitempty"`
+	// Type - Specifies the resource type.
+	Type *string `json:"type,omitempty"`
+	// Limit - The maximum permitted quota of the resource.
+	Limit *int64 `json:"limit,omitempty"`
+	// Unit - An enum describing the unit of quota measurement. Possible values include: 'Count'
+	Unit QuotaUnit `json:"unit,omitempty"`
+}
+
+// QuotaUpdateParameters quota update parameters.
+type QuotaUpdateParameters struct {
+	// Value - The list for update quota.
+	Value *[]QuotaBaseProperties `json:"value,omitempty"`
+}
+
 // RegistryListCredentialsResult ...
 type RegistryListCredentialsResult struct {
 	// Location - READ-ONLY
@@ -2057,6 +2257,28 @@ type ResourceID struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// ResourceName the Resource Name.
+type ResourceName struct {
+	// Value - READ-ONLY; The name of the resource.
+	Value *string `json:"value,omitempty"`
+	// LocalizedValue - READ-ONLY; The localized name of the resource.
+	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// ResourceQuota the quota assigned to a resource.
+type ResourceQuota struct {
+	// ID - READ-ONLY; Specifies the resource ID.
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Specifies the resource type.
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; Name of the resource.
+	Name *ResourceName `json:"name,omitempty"`
+	// Limit - READ-ONLY; The maximum permitted quota of the resource.
+	Limit *int64 `json:"limit,omitempty"`
+	// Unit - READ-ONLY; An enum describing the unit of quota measurement. Possible values include: 'Count'
+	Unit QuotaUnit `json:"unit,omitempty"`
+}
+
 // ScaleSettings scale settings for AML Compute
 type ScaleSettings struct {
 	// MaxNodeCount - Max number of nodes to use
@@ -2077,8 +2299,8 @@ type ServicePrincipalCredentials struct {
 
 // SslConfiguration the ssl configuration for scoring
 type SslConfiguration struct {
-	// Status - Enable or disable ssl for scoring. Possible values include: 'StatusDisabled', 'StatusEnabled'
-	Status Status `json:"status,omitempty"`
+	// Status - Enable or disable ssl for scoring. Possible values include: 'Status1Disabled', 'Status1Enabled'
+	Status Status1 `json:"status,omitempty"`
 	// Cert - Cert data
 	Cert *string `json:"cert,omitempty"`
 	// Key - Key data
@@ -2097,13 +2319,36 @@ type SystemService struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// UpdateWorkspaceQuotas the properties for update Quota response.
+type UpdateWorkspaceQuotas struct {
+	// ID - READ-ONLY; Specifies the resource ID.
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Specifies the resource type.
+	Type *string `json:"type,omitempty"`
+	// Limit - The maximum permitted quota of the resource.
+	Limit *int64 `json:"limit,omitempty"`
+	// Unit - READ-ONLY; An enum describing the unit of quota measurement. Possible values include: 'Count'
+	Unit QuotaUnit `json:"unit,omitempty"`
+	// Status - Status of update workspace quota. Possible values include: 'Undefined', 'Success', 'Failure', 'InvalidQuotaBelowClusterMinimum', 'InvalidQuotaExceedsSubscriptionLimit', 'InvalidVMFamilyName'
+	Status Status `json:"status,omitempty"`
+}
+
+// UpdateWorkspaceQuotasResult the result of update workspace quota.
+type UpdateWorkspaceQuotasResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of workspace quota update result.
+	Value *[]UpdateWorkspaceQuotas `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page of workspace quota update result. Call ListNext() with this to fetch the next page of Workspace Quota update result.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // Usage describes AML Resource Usage.
 type Usage struct {
 	// ID - READ-ONLY; Specifies the resource ID.
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Specifies the resource type.
 	Type *string `json:"type,omitempty"`
-	// Unit - READ-ONLY; An enum describing the unit of usage measurement. Possible values include: 'Count'
+	// Unit - READ-ONLY; An enum describing the unit of usage measurement. Possible values include: 'UsageUnitCount'
 	Unit UsageUnit `json:"unit,omitempty"`
 	// CurrentValue - READ-ONLY; The current usage of the resource.
 	CurrentValue *int64 `json:"currentValue,omitempty"`

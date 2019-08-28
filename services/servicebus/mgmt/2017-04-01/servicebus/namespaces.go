@@ -1293,13 +1293,13 @@ func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result Ac
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.
 // namespaceName - the namespace name
-func (client NamespacesClient) ListNetworkRuleSets(ctx context.Context, resourceGroupName string, namespaceName string) (result NetworkRuleSetListResult, err error) {
+func (client NamespacesClient) ListNetworkRuleSets(ctx context.Context, resourceGroupName string, namespaceName string) (result NetworkRuleSetListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NamespacesClient.ListNetworkRuleSets")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.nrslr.Response.Response != nil {
+				sc = result.nrslr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1314,6 +1314,7 @@ func (client NamespacesClient) ListNetworkRuleSets(ctx context.Context, resource
 		return result, validation.NewError("servicebus.NamespacesClient", "ListNetworkRuleSets", err.Error())
 	}
 
+	result.fn = client.listNetworkRuleSetsNextResults
 	req, err := client.ListNetworkRuleSetsPreparer(ctx, resourceGroupName, namespaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "ListNetworkRuleSets", nil, "Failure preparing request")
@@ -1322,12 +1323,12 @@ func (client NamespacesClient) ListNetworkRuleSets(ctx context.Context, resource
 
 	resp, err := client.ListNetworkRuleSetsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.nrslr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "ListNetworkRuleSets", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListNetworkRuleSetsResponder(resp)
+	result.nrslr, err = client.ListNetworkRuleSetsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "ListNetworkRuleSets", resp, "Failure responding to request")
 	}
@@ -1373,6 +1374,43 @@ func (client NamespacesClient) ListNetworkRuleSetsResponder(resp *http.Response)
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listNetworkRuleSetsNextResults retrieves the next set of results, if any.
+func (client NamespacesClient) listNetworkRuleSetsNextResults(ctx context.Context, lastResults NetworkRuleSetListResult) (result NetworkRuleSetListResult, err error) {
+	req, err := lastResults.networkRuleSetListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "listNetworkRuleSetsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListNetworkRuleSetsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "listNetworkRuleSetsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListNetworkRuleSetsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "listNetworkRuleSetsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListNetworkRuleSetsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client NamespacesClient) ListNetworkRuleSetsComplete(ctx context.Context, resourceGroupName string, namespaceName string) (result NetworkRuleSetListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NamespacesClient.ListNetworkRuleSets")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListNetworkRuleSets(ctx, resourceGroupName, namespaceName)
 	return
 }
 

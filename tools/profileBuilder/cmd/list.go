@@ -51,89 +51,92 @@ Example:
 $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 `,
 	Args: cobra.NoArgs,
-	Run: func(cmd *cobra.Command, args []string) {
-		logWriter := ioutil.Discard
-		if verboseFlag {
-			logWriter = os.Stdout
-		}
-
-		outputLog := log.New(logWriter, "[STATUS] ", 0)
-		errLog := log.New(os.Stderr, "[ERROR] ", 0)
-
-		if !filepath.IsAbs(outputRootDir) {
-			abs, err := filepath.Abs(outputRootDir)
-			if err != nil {
-				errLog.Fatalf("failed to convert to absolute path: %v", err)
-			}
-			outputRootDir = abs
-		}
-
-		inputFile, err := cmd.Flags().GetString(inputLongName)
-		if err != nil {
-			errLog.Fatalf("failed to get %s: %v", inputLongName, err)
-		}
-
-		data, err := ioutil.ReadFile(inputFile)
-		if err != nil {
-			errLog.Fatalf("failed to read list: %v", err)
-		}
-
-		var listDef model.ListDefinition
-		err = json.Unmarshal(data, &listDef)
-		if err != nil {
-			errLog.Fatalf("failed to unmarshal JSON: %v", err)
-		}
-
-		if modulesFlag {
-			// when generating in module-aware mode a few extra things need to happen
-			// 1. find the latest module version for the profile we're working on
-			// 2. update the list of includes package to their latest module versions
-			// 3. if any includes were updated generate a new major version for this profile
-			modver, err := getLatestModVer(outputRootDir)
-			if err != nil {
-				errLog.Fatalf("failed to get module dir: %v", err)
-			}
-			updated, err := updateModuleVersions(&listDef)
-			if err != nil {
-				errLog.Fatalf("failed to update module versions: %v", err)
-			}
-			if updated {
-				// at least one include was updated, write out updated list definition
-				data, err = json.MarshalIndent(listDef, "", "  ")
-				if err != nil {
-					errLog.Fatalf("failed to marshal updated list: %v", err)
-				}
-				data = append(data, '\n')
-				err = ioutil.WriteFile(inputFile, data, 0666)
-				if err != nil {
-					errLog.Fatalf("failed to write updated list: %v", err)
-				}
-				// increment profile module major version and generate new go.mod file
-				modver = modinfo.IncrementModuleVersion(modver)
-				outputRootDir = filepath.Join(outputRootDir, modver)
-				err = generateGoMod(outputRootDir)
-				if err != nil {
-					errLog.Fatalf("failed to generate go.mod: %v", err)
-				}
-			} else if modver != "" {
-				outputRootDir = filepath.Join(outputRootDir, modver)
-			}
-		}
-		outputLog.Printf("Output-Location set to: %s", outputRootDir)
-		if clearOutputFlag {
-			if err := dirs.DeleteChildDirs(outputRootDir); err != nil {
-				errLog.Fatalf("Unable to clear output-folder: %v", err)
-			}
-		}
-		// use recursive build to include the *api packages
-		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, true, modulesFlag)
-	},
+	Run:  runCommand,
 }
 
 func init() {
 	rootCmd.AddCommand(listCmd)
 	listCmd.Flags().StringP(inputLongName, inputShortName, "", inputDescription)
 	listCmd.MarkFlagRequired(inputLongName)
+}
+
+func runCommand(cmd *cobra.Command, args []string) {
+	logWriter := ioutil.Discard
+	if verboseFlag {
+		logWriter = os.Stdout
+	}
+
+	outputLog := log.New(logWriter, "[STATUS] ", 0)
+	errLog := log.New(os.Stderr, "[ERROR] ", 0)
+
+	if !filepath.IsAbs(outputRootDir) {
+		abs, err := filepath.Abs(outputRootDir)
+		if err != nil {
+			errLog.Fatalf("failed to convert to absolute path: %v", err)
+		}
+		outputRootDir = abs
+	}
+
+	inputFile, err := cmd.Flags().GetString(inputLongName)
+	if err != nil {
+		errLog.Fatalf("failed to get %s: %v", inputLongName, err)
+	}
+
+	data, err := ioutil.ReadFile(inputFile)
+	if err != nil {
+		errLog.Fatalf("failed to read list: %v", err)
+	}
+
+	var listDef model.ListDefinition
+	err = json.Unmarshal(data, &listDef)
+	if err != nil {
+		errLog.Fatalf("failed to unmarshal JSON: %v", err)
+	}
+
+	if modulesFlag {
+		// when generating in module-aware mode a few extra things need to happen
+		// 1. find the latest module version for the profile we're working on
+		// 2. update the list of includes package to their latest module versions
+		// 3. if any includes were updated generate a new major version for this profile
+		modver, err := getLatestModVer(outputRootDir)
+		if err != nil {
+			errLog.Fatalf("failed to get module dir: %v", err)
+		}
+		updated, err := updateModuleVersions(&listDef)
+		if err != nil {
+			errLog.Fatalf("failed to update module versions: %v", err)
+		}
+		if updated {
+			// at least one include was updated, write out updated list definition
+			data, err = json.MarshalIndent(listDef, "", "  ")
+			if err != nil {
+				errLog.Fatalf("failed to marshal updated list: %v", err)
+			}
+			data = append(data, '\n')
+			err = ioutil.WriteFile(inputFile, data, 0666)
+			if err != nil {
+				errLog.Fatalf("failed to write updated list: %v", err)
+			}
+			// increment profile module major version and generate new go.mod file
+			modver = modinfo.IncrementModuleVersion(modver)
+			outputRootDir = filepath.Join(outputRootDir, modver)
+			err = generateGoMod(outputRootDir)
+			if err != nil {
+				errLog.Fatalf("failed to generate go.mod: %v", err)
+			}
+		} else if modver != "" {
+			outputRootDir = filepath.Join(outputRootDir, modver)
+		}
+	}
+	fmt.Printf("Executes profileBuilder in %s\n", outputRootDir)
+	outputLog.Printf("Output-Location set to: %s", outputRootDir)
+	if clearOutputFlag {
+		if err := dirs.DeleteChildDirs(outputRootDir); err != nil {
+			errLog.Fatalf("Unable to clear output-folder: %v", err)
+		}
+	}
+	// use recursive build to include the *api packages
+	model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, true, modulesFlag)
 }
 
 // for each included package check if there is a newer module major version then the one specified,

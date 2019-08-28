@@ -1289,6 +1289,93 @@ func (client NamespacesClient) ListKeysResponder(resp *http.Response) (result Ac
 	return
 }
 
+// ListNetworkRuleSets gets list of NetworkRuleSet for a Namespace.
+// Parameters:
+// resourceGroupName - name of the Resource group within the Azure subscription.
+// namespaceName - the namespace name
+func (client NamespacesClient) ListNetworkRuleSets(ctx context.Context, resourceGroupName string, namespaceName string) (result NetworkRuleSetListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/NamespacesClient.ListNetworkRuleSets")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: namespaceName,
+			Constraints: []validation.Constraint{{Target: "namespaceName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "namespaceName", Name: validation.MinLength, Rule: 6, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("servicebus.NamespacesClient", "ListNetworkRuleSets", err.Error())
+	}
+
+	req, err := client.ListNetworkRuleSetsPreparer(ctx, resourceGroupName, namespaceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "ListNetworkRuleSets", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListNetworkRuleSetsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "ListNetworkRuleSets", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListNetworkRuleSetsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "servicebus.NamespacesClient", "ListNetworkRuleSets", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListNetworkRuleSetsPreparer prepares the ListNetworkRuleSets request.
+func (client NamespacesClient) ListNetworkRuleSetsPreparer(ctx context.Context, resourceGroupName string, namespaceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"namespaceName":     autorest.Encode("path", namespaceName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2017-04-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/networkRuleSets", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListNetworkRuleSetsSender sends the ListNetworkRuleSets request. The method will close the
+// http.Response Body if it receives an error.
+func (client NamespacesClient) ListNetworkRuleSetsSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListNetworkRuleSetsResponder handles the response to the ListNetworkRuleSets request. The method always
+// closes the http.Response Body.
+func (client NamespacesClient) ListNetworkRuleSetsResponder(resp *http.Response) (result NetworkRuleSetListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Migrate this operation Migrate the given namespace to provided name type
 // Parameters:
 // resourceGroupName - name of the Resource group within the Azure subscription.

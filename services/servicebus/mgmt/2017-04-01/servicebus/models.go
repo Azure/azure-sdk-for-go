@@ -1335,6 +1335,15 @@ func (nrs *NetworkRuleSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// NetworkRuleSetListResult the response of the List NetworkRuleSet operation.
+type NetworkRuleSetListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Result of the List NetworkRuleSet operation.
+	Value *[]NetworkRuleSet `json:"value,omitempty"`
+	// NextLink - Link to the next set of results. Not empty if Value contains incomplete list of NetworkRuleSet.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // NetworkRuleSetProperties networkRuleSet properties
 type NetworkRuleSetProperties struct {
 	// DefaultAction - Default Action for Network Rule Set. Possible values include: 'Allow', 'Deny'

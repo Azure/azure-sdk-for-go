@@ -7488,8 +7488,8 @@ type TopologySingleResourceParent struct {
 
 // UpdateIotSecuritySolutionData ...
 type UpdateIotSecuritySolutionData struct {
-	UserDefinedResources         *UserDefinedResourcesProperties          `json:"userDefinedResources,omitempty"`
-	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
+	// UpdateIoTSecuritySolutionProperties - Security Solution data
+	*UpdateIoTSecuritySolutionProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
@@ -7497,16 +7497,52 @@ type UpdateIotSecuritySolutionData struct {
 // MarshalJSON is the custom marshaler for UpdateIotSecuritySolutionData.
 func (uissd UpdateIotSecuritySolutionData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if uissd.UserDefinedResources != nil {
-		objectMap["userDefinedResources"] = uissd.UserDefinedResources
-	}
-	if uissd.RecommendationsConfiguration != nil {
-		objectMap["recommendationsConfiguration"] = uissd.RecommendationsConfiguration
+	if uissd.UpdateIoTSecuritySolutionProperties != nil {
+		objectMap["properties"] = uissd.UpdateIoTSecuritySolutionProperties
 	}
 	if uissd.Tags != nil {
 		objectMap["tags"] = uissd.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for UpdateIotSecuritySolutionData struct.
+func (uissd *UpdateIotSecuritySolutionData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var updateIoTSecuritySolutionProperties UpdateIoTSecuritySolutionProperties
+				err = json.Unmarshal(*v, &updateIoTSecuritySolutionProperties)
+				if err != nil {
+					return err
+				}
+				uissd.UpdateIoTSecuritySolutionProperties = &updateIoTSecuritySolutionProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				uissd.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// UpdateIoTSecuritySolutionProperties update Security Solution setting data
+type UpdateIoTSecuritySolutionProperties struct {
+	UserDefinedResources         *UserDefinedResourcesProperties          `json:"userDefinedResources,omitempty"`
+	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
 }
 
 // UserDefinedResourcesProperties properties of the IoT Security solution's user defined resources.

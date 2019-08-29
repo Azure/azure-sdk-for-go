@@ -83,4 +83,3 @@ func selectFilesWithName(path string, name string) ([]string, error) {
 	})
 	return files, err
 }
-}

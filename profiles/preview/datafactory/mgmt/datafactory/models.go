@@ -150,6 +150,16 @@ const (
 	OnPremisesWithIfd DynamicsDeploymentType = original.OnPremisesWithIfd
 )
 
+type EventSubscriptionStatus = original.EventSubscriptionStatus
+
+const (
+	Deprovisioning EventSubscriptionStatus = original.Deprovisioning
+	Disabled       EventSubscriptionStatus = original.Disabled
+	Enabled        EventSubscriptionStatus = original.Enabled
+	Provisioning   EventSubscriptionStatus = original.Provisioning
+	Unknown        EventSubscriptionStatus = original.Unknown
+)
+
 type FtpAuthenticationType = original.FtpAuthenticationType
 
 const (
@@ -309,6 +319,13 @@ const (
 	IntegrationRuntimeUpdateResultFail    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultFail
 	IntegrationRuntimeUpdateResultNone    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultNone
 	IntegrationRuntimeUpdateResultSucceed IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultSucceed
+)
+
+type JSONWriteFilePattern = original.JSONWriteFilePattern
+
+const (
+	ArrayOfObjects JSONWriteFilePattern = original.ArrayOfObjects
+	SetOfObjects   JSONWriteFilePattern = original.SetOfObjects
 )
 
 type ManagedIntegrationRuntimeNodeStatus = original.ManagedIntegrationRuntimeNodeStatus
@@ -613,9 +630,9 @@ const (
 type TriggerRuntimeState = original.TriggerRuntimeState
 
 const (
-	Disabled TriggerRuntimeState = original.Disabled
-	Started  TriggerRuntimeState = original.Started
-	Stopped  TriggerRuntimeState = original.Stopped
+	TriggerRuntimeStateDisabled TriggerRuntimeState = original.TriggerRuntimeStateDisabled
+	TriggerRuntimeStateStarted  TriggerRuntimeState = original.TriggerRuntimeStateStarted
+	TriggerRuntimeStateStopped  TriggerRuntimeState = original.TriggerRuntimeStateStopped
 )
 
 type TumblingWindowFrequency = original.TumblingWindowFrequency
@@ -679,6 +696,7 @@ const (
 	TypeAzureBlobFSSink              TypeBasicCopySink = original.TypeAzureBlobFSSink
 	TypeAzureDataExplorerSink        TypeBasicCopySink = original.TypeAzureDataExplorerSink
 	TypeAzureDataLakeStoreSink       TypeBasicCopySink = original.TypeAzureDataLakeStoreSink
+	TypeAzureMySQLSink               TypeBasicCopySink = original.TypeAzureMySQLSink
 	TypeAzurePostgreSQLSink          TypeBasicCopySink = original.TypeAzurePostgreSQLSink
 	TypeAzureQueueSink               TypeBasicCopySink = original.TypeAzureQueueSink
 	TypeAzureSearchIndexSink         TypeBasicCopySink = original.TypeAzureSearchIndexSink
@@ -695,6 +713,7 @@ const (
 	TypeDynamicsSink                 TypeBasicCopySink = original.TypeDynamicsSink
 	TypeFileSystemSink               TypeBasicCopySink = original.TypeFileSystemSink
 	TypeInformixSink                 TypeBasicCopySink = original.TypeInformixSink
+	TypeJSONSink                     TypeBasicCopySink = original.TypeJSONSink
 	TypeMicrosoftAccessSink          TypeBasicCopySink = original.TypeMicrosoftAccessSink
 	TypeOdbcSink                     TypeBasicCopySink = original.TypeOdbcSink
 	TypeOracleSink                   TypeBasicCopySink = original.TypeOracleSink
@@ -750,6 +769,7 @@ const (
 	TypeImpalaSource                   TypeBasicCopySource = original.TypeImpalaSource
 	TypeInformixSource                 TypeBasicCopySource = original.TypeInformixSource
 	TypeJiraSource                     TypeBasicCopySource = original.TypeJiraSource
+	TypeJSONSource                     TypeBasicCopySource = original.TypeJSONSource
 	TypeMagentoSource                  TypeBasicCopySource = original.TypeMagentoSource
 	TypeMariaDBSource                  TypeBasicCopySource = original.TypeMariaDBSource
 	TypeMarketoSource                  TypeBasicCopySource = original.TypeMarketoSource
@@ -801,6 +821,7 @@ type TypeBasicDataset = original.TypeBasicDataset
 
 const (
 	TypeAmazonMWSObject                TypeBasicDataset = original.TypeAmazonMWSObject
+	TypeAmazonRedshiftTable            TypeBasicDataset = original.TypeAmazonRedshiftTable
 	TypeAmazonS3Object                 TypeBasicDataset = original.TypeAmazonS3Object
 	TypeAvro                           TypeBasicDataset = original.TypeAvro
 	TypeAzureBlob                      TypeBasicDataset = original.TypeAzureBlob
@@ -823,6 +844,7 @@ const (
 	TypeCouchbaseTable                 TypeBasicDataset = original.TypeCouchbaseTable
 	TypeCustomDataset                  TypeBasicDataset = original.TypeCustomDataset
 	TypeDataset                        TypeBasicDataset = original.TypeDataset
+	TypeDb2Table                       TypeBasicDataset = original.TypeDb2Table
 	TypeDelimitedText                  TypeBasicDataset = original.TypeDelimitedText
 	TypeDocumentDbCollection           TypeBasicDataset = original.TypeDocumentDbCollection
 	TypeDrillTable                     TypeBasicDataset = original.TypeDrillTable
@@ -841,6 +863,7 @@ const (
 	TypeImpalaObject                   TypeBasicDataset = original.TypeImpalaObject
 	TypeInformixTable                  TypeBasicDataset = original.TypeInformixTable
 	TypeJiraObject                     TypeBasicDataset = original.TypeJiraObject
+	TypeJSON                           TypeBasicDataset = original.TypeJSON
 	TypeMagentoObject                  TypeBasicDataset = original.TypeMagentoObject
 	TypeMariaDBTable                   TypeBasicDataset = original.TypeMariaDBTable
 	TypeMarketoObject                  TypeBasicDataset = original.TypeMarketoObject
@@ -1046,6 +1069,16 @@ const (
 	TypeSsisObjectMetadata TypeBasicSsisObjectMetadata = original.TypeSsisObjectMetadata
 )
 
+type TypeBasicStoreWriteSettings = original.TypeBasicStoreWriteSettings
+
+const (
+	TypeAzureBlobFSWriteSettings        TypeBasicStoreWriteSettings = original.TypeAzureBlobFSWriteSettings
+	TypeAzureBlobStorageWriteSettings   TypeBasicStoreWriteSettings = original.TypeAzureBlobStorageWriteSettings
+	TypeAzureDataLakeStoreWriteSettings TypeBasicStoreWriteSettings = original.TypeAzureDataLakeStoreWriteSettings
+	TypeFileServerWriteSettings         TypeBasicStoreWriteSettings = original.TypeFileServerWriteSettings
+	TypeStoreWriteSettings              TypeBasicStoreWriteSettings = original.TypeStoreWriteSettings
+)
+
 type TypeBasicTrigger = original.TypeBasicTrigger
 
 const (
@@ -1095,6 +1128,8 @@ type AmazonMWSSource = original.AmazonMWSSource
 type AmazonRedshiftLinkedService = original.AmazonRedshiftLinkedService
 type AmazonRedshiftLinkedServiceTypeProperties = original.AmazonRedshiftLinkedServiceTypeProperties
 type AmazonRedshiftSource = original.AmazonRedshiftSource
+type AmazonRedshiftTableDataset = original.AmazonRedshiftTableDataset
+type AmazonRedshiftTableDatasetTypeProperties = original.AmazonRedshiftTableDatasetTypeProperties
 type AmazonS3Dataset = original.AmazonS3Dataset
 type AmazonS3DatasetTypeProperties = original.AmazonS3DatasetTypeProperties
 type AmazonS3LinkedService = original.AmazonS3LinkedService
@@ -1168,6 +1203,7 @@ type AzureMariaDBSource = original.AzureMariaDBSource
 type AzureMariaDBTableDataset = original.AzureMariaDBTableDataset
 type AzureMySQLLinkedService = original.AzureMySQLLinkedService
 type AzureMySQLLinkedServiceTypeProperties = original.AzureMySQLLinkedServiceTypeProperties
+type AzureMySQLSink = original.AzureMySQLSink
 type AzureMySQLSource = original.AzureMySQLSource
 type AzureMySQLTableDataset = original.AzureMySQLTableDataset
 type AzureMySQLTableDatasetTypeProperties = original.AzureMySQLTableDatasetTypeProperties
@@ -1222,6 +1258,7 @@ type BasicLinkedService = original.BasicLinkedService
 type BasicMultiplePipelineTrigger = original.BasicMultiplePipelineTrigger
 type BasicSecretBase = original.BasicSecretBase
 type BasicSsisObjectMetadata = original.BasicSsisObjectMetadata
+type BasicStoreWriteSettings = original.BasicStoreWriteSettings
 type BasicTrigger = original.BasicTrigger
 type BasicTriggerDependencyReference = original.BasicTriggerDependencyReference
 type BasicWebLinkedServiceTypeProperties = original.BasicWebLinkedServiceTypeProperties
@@ -1302,6 +1339,8 @@ type DatasetsClient = original.DatasetsClient
 type Db2LinkedService = original.Db2LinkedService
 type Db2LinkedServiceTypeProperties = original.Db2LinkedServiceTypeProperties
 type Db2Source = original.Db2Source
+type Db2TableDataset = original.Db2TableDataset
+type Db2TableDatasetTypeProperties = original.Db2TableDatasetTypeProperties
 type DeleteActivity = original.DeleteActivity
 type DeleteActivityTypeProperties = original.DeleteActivityTypeProperties
 type DelimitedTextDataset = original.DelimitedTextDataset
@@ -1482,7 +1521,12 @@ type IntegrationRuntimeVNetProperties = original.IntegrationRuntimeVNetPropertie
 type IntegrationRuntimesClient = original.IntegrationRuntimesClient
 type IntegrationRuntimesStartFuture = original.IntegrationRuntimesStartFuture
 type IntegrationRuntimesStopFuture = original.IntegrationRuntimesStopFuture
+type JSONDataset = original.JSONDataset
+type JSONDatasetTypeProperties = original.JSONDatasetTypeProperties
 type JSONFormat = original.JSONFormat
+type JSONSink = original.JSONSink
+type JSONSource = original.JSONSource
+type JSONWriteSettings = original.JSONWriteSettings
 type JiraLinkedService = original.JiraLinkedService
 type JiraLinkedServiceTypeProperties = original.JiraLinkedServiceTypeProperties
 type JiraObjectDataset = original.JiraObjectDataset
@@ -1549,6 +1593,7 @@ type NetezzaLinkedServiceTypeProperties = original.NetezzaLinkedServiceTypePrope
 type NetezzaPartitionSettings = original.NetezzaPartitionSettings
 type NetezzaSource = original.NetezzaSource
 type NetezzaTableDataset = original.NetezzaTableDataset
+type NetezzaTableDatasetTypeProperties = original.NetezzaTableDatasetTypeProperties
 type ODataLinkedService = original.ODataLinkedService
 type ODataLinkedServiceTypeProperties = original.ODataLinkedServiceTypeProperties
 type ODataResourceDataset = original.ODataResourceDataset
@@ -1805,9 +1850,12 @@ type TriggerResource = original.TriggerResource
 type TriggerRun = original.TriggerRun
 type TriggerRunsClient = original.TriggerRunsClient
 type TriggerRunsQueryResponse = original.TriggerRunsQueryResponse
+type TriggerSubscriptionOperationStatus = original.TriggerSubscriptionOperationStatus
 type TriggersClient = original.TriggersClient
 type TriggersStartFuture = original.TriggersStartFuture
 type TriggersStopFuture = original.TriggersStopFuture
+type TriggersSubscribeToEventsFuture = original.TriggersSubscribeToEventsFuture
+type TriggersUnsubscribeFromEventsFuture = original.TriggersUnsubscribeFromEventsFuture
 type TumblingWindowTrigger = original.TumblingWindowTrigger
 type TumblingWindowTriggerDependencyReference = original.TumblingWindowTriggerDependencyReference
 type TumblingWindowTriggerTypeProperties = original.TumblingWindowTriggerTypeProperties
@@ -2026,6 +2074,9 @@ func PossibleDynamicsAuthenticationTypeValues() []DynamicsAuthenticationType {
 func PossibleDynamicsDeploymentTypeValues() []DynamicsDeploymentType {
 	return original.PossibleDynamicsDeploymentTypeValues()
 }
+func PossibleEventSubscriptionStatusValues() []EventSubscriptionStatus {
+	return original.PossibleEventSubscriptionStatusValues()
+}
 func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
 	return original.PossibleFtpAuthenticationTypeValues()
 }
@@ -2085,6 +2136,9 @@ func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
 }
 func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
 	return original.PossibleIntegrationRuntimeUpdateResultValues()
+}
+func PossibleJSONWriteFilePatternValues() []JSONWriteFilePattern {
+	return original.PossibleJSONWriteFilePatternValues()
 }
 func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRuntimeNodeStatus {
 	return original.PossibleManagedIntegrationRuntimeNodeStatusValues()
@@ -2229,6 +2283,9 @@ func PossibleTypeBasicLinkedServiceValues() []TypeBasicLinkedService {
 }
 func PossibleTypeBasicSsisObjectMetadataValues() []TypeBasicSsisObjectMetadata {
 	return original.PossibleTypeBasicSsisObjectMetadataValues()
+}
+func PossibleTypeBasicStoreWriteSettingsValues() []TypeBasicStoreWriteSettings {
+	return original.PossibleTypeBasicStoreWriteSettingsValues()
 }
 func PossibleTypeBasicTriggerValues() []TypeBasicTrigger {
 	return original.PossibleTypeBasicTriggerValues()

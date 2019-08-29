@@ -273,6 +273,7 @@ type EncryptionProtectorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.EncryptionProtector) (result sql.EncryptionProtectorsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtector, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtectorListResultPage, err error)
+	Revalidate(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtectorsRevalidateFuture, err error)
 }
 
 var _ EncryptionProtectorsClientAPI = (*sql.EncryptionProtectorsClient)(nil)

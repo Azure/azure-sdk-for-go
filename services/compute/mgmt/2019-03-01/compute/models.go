@@ -270,19 +270,22 @@ func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 type DiskCreateOption string
 
 const (
-	// Attach ...
+	// Attach Disk will be attached to a VM.
 	Attach DiskCreateOption = "Attach"
-	// Copy ...
+	// Copy Create a new disk or snapshot by copying from a disk or snapshot specified by the given
+	// sourceResourceId.
 	Copy DiskCreateOption = "Copy"
-	// Empty ...
+	// Empty Create an empty data disk of a size given by diskSizeGB.
 	Empty DiskCreateOption = "Empty"
-	// FromImage ...
+	// FromImage Create a new disk from a platform image specified by the given imageReference.
 	FromImage DiskCreateOption = "FromImage"
-	// Import ...
+	// Import Create a disk by importing from a blob specified by a sourceUri in a storage account specified by
+	// storageAccountId.
 	Import DiskCreateOption = "Import"
-	// Restore ...
+	// Restore Create a new disk by copying from a backup recovery point.
 	Restore DiskCreateOption = "Restore"
-	// Upload ...
+	// Upload Create a new disk by obtaining a write token and using it to directly upload the contents of the
+	// disk.
 	Upload DiskCreateOption = "Upload"
 )
 
@@ -312,17 +315,17 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 type DiskState string
 
 const (
-	// ActiveSAS ...
+	// ActiveSAS The disk currently has an Active SAS Uri associated with it.
 	ActiveSAS DiskState = "ActiveSAS"
-	// ActiveUpload ...
+	// ActiveUpload A disk is created for upload and a write token has been issued for uploading to it.
 	ActiveUpload DiskState = "ActiveUpload"
-	// Attached ...
+	// Attached The disk is currently mounted to a running VM.
 	Attached DiskState = "Attached"
-	// ReadyToUpload ...
+	// ReadyToUpload A disk is ready to be created by upload by requesting a write token.
 	ReadyToUpload DiskState = "ReadyToUpload"
-	// Reserved ...
+	// Reserved The disk is mounted to a stopped-deallocated VM
 	Reserved DiskState = "Reserved"
-	// Unattached ...
+	// Unattached The disk is not being used and can be attached to a VM.
 	Unattached DiskState = "Unattached"
 )
 
@@ -335,13 +338,17 @@ func PossibleDiskStateValues() []DiskState {
 type DiskStorageAccountTypes string
 
 const (
-	// PremiumLRS ...
+	// PremiumLRS Premium SSD locally redundant storage. Best for production and performance sensitive
+	// workloads.
 	PremiumLRS DiskStorageAccountTypes = "Premium_LRS"
-	// StandardLRS ...
+	// StandardLRS Standard HDD locally redundant storage. Best for backup, non-critical, and infrequent
+	// access.
 	StandardLRS DiskStorageAccountTypes = "Standard_LRS"
-	// StandardSSDLRS ...
+	// StandardSSDLRS Standard SSD locally redundant storage. Best for web servers, lightly used enterprise
+	// applications and dev/test.
 	StandardSSDLRS DiskStorageAccountTypes = "StandardSSD_LRS"
-	// UltraSSDLRS ...
+	// UltraSSDLRS Ultra SSD locally redundant storage. Best for IO-intensive workloads such as SAP HANA, top
+	// tier databases (for example, SQL, Oracle), and other transaction-heavy workloads.
 	UltraSSDLRS DiskStorageAccountTypes = "UltraSSD_LRS"
 )
 
@@ -794,11 +801,11 @@ func PossibleSettingNamesValues() []SettingNames {
 type SnapshotStorageAccountTypes string
 
 const (
-	// SnapshotStorageAccountTypesPremiumLRS ...
+	// SnapshotStorageAccountTypesPremiumLRS Premium SSD locally redundant storage
 	SnapshotStorageAccountTypesPremiumLRS SnapshotStorageAccountTypes = "Premium_LRS"
-	// SnapshotStorageAccountTypesStandardLRS ...
+	// SnapshotStorageAccountTypesStandardLRS Standard HDD locally redundant storage
 	SnapshotStorageAccountTypesStandardLRS SnapshotStorageAccountTypes = "Standard_LRS"
-	// SnapshotStorageAccountTypesStandardZRS ...
+	// SnapshotStorageAccountTypesStandardZRS Standard zone redundant storage
 	SnapshotStorageAccountTypesStandardZRS SnapshotStorageAccountTypes = "Standard_ZRS"
 )
 
@@ -1721,6 +1728,13 @@ func (asu *AvailabilitySetUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// BillingProfile specifies the billing related details of a low priority VM or VMSS. <br><br>Minimum
+// api-version: 2019-03-01.
+type BillingProfile struct {
+	// MaxPrice - Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. <br><br> This price will be compared with the current low priority price for the VM size. Also, the prices are compared at the time of create/update of low priority VM/VMSS and the operation will only succeed if  the maxPrice is greater than the current low priority price. <br><br> The maxPrice will also be used for evicting a low priority VM/VMSS if the current low priority price goes beyond the maxPrice after creation of VM/VMSS. <br><br> Possible values are: <br><br> - Any decimal value greater than zero. Example: $0.01538 <br><br> -1 – indicates default price to be up-to on-demand. <br><br> You can set the maxPrice to -1 to indicate that the low priority VM/VMSS should not be evicted for price reasons. Also, the default max price is -1 if it is not provided by you. <br><br>Minimum api-version: 2019-03-01.
+	MaxPrice *float64 `json:"maxPrice,omitempty"`
+}
+
 // BootDiagnostics boot Diagnostics is a debugging feature which allows you to view Console Output and
 // Screenshot to diagnose VM status. <br><br> You can easily view the output of your console log. <br><br>
 // Azure also enables you to see a screenshot of the VM from the hypervisor.
@@ -2165,6 +2179,10 @@ type CreationData struct {
 	SourceURI *string `json:"sourceUri,omitempty"`
 	// SourceResourceID - If createOption is Copy, this is the ARM id of the source snapshot or disk.
 	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	// SourceUniqueID - READ-ONLY; If this field is set, this is the unique id identifying the source of this resource.
+	SourceUniqueID *string `json:"sourceUniqueId,omitempty"`
+	// UploadSizeBytes - If createOption is Upload, this is the size of the contents of the upload including the VHD footer. This value should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32 TiB + 512 bytes for the VHD footer).
+	UploadSizeBytes *int64 `json:"uploadSizeBytes,omitempty"`
 }
 
 // DataDisk describes a data disk.
@@ -3307,8 +3325,12 @@ type DiskProperties struct {
 	HyperVGeneration HyperVGeneration `json:"hyperVGeneration,omitempty"`
 	// CreationData - Disk source information. CreationData information cannot be changed after the disk has been created.
 	CreationData *CreationData `json:"creationData,omitempty"`
-	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	// DiskSizeBytes - READ-ONLY; The size of the disk in bytes. This field is read only.
+	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty"`
+	// UniqueID - READ-ONLY; Unique Guid identifying the resource.
+	UniqueID *string `json:"uniqueId,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used for Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 	// ProvisioningState - READ-ONLY; The disk provisioning state.
@@ -3529,7 +3551,7 @@ func (du *DiskUpdate) UnmarshalJSON(body []byte) error {
 type DiskUpdateProperties struct {
 	// OsType - the Operating System type. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
-	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
@@ -3545,6 +3567,8 @@ type EncryptionSettingsCollection struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// EncryptionSettings - A collection of encryption settings, one for each disk volume.
 	EncryptionSettings *[]EncryptionSettingsElement `json:"encryptionSettings,omitempty"`
+	// EncryptionSettingsVersion - Describes what type of encryption is used for the disks. Once this field is set, it cannot be overwritten. '1.0' corresponds to Azure Disk Encryption with AAD app.'1.1' corresponds to Azure Disk Encryption.
+	EncryptionSettingsVersion *string `json:"encryptionSettingsVersion,omitempty"`
 }
 
 // EncryptionSettingsElement encryption settings for one disk volume.
@@ -7563,12 +7587,18 @@ type SnapshotProperties struct {
 	HyperVGeneration HyperVGeneration `json:"hyperVGeneration,omitempty"`
 	// CreationData - Disk source information. CreationData information cannot be changed after the disk has been created.
 	CreationData *CreationData `json:"creationData,omitempty"`
-	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	// DiskSizeBytes - READ-ONLY; The size of the disk in bytes. This field is read only.
+	DiskSizeBytes *int64 `json:"diskSizeBytes,omitempty"`
+	// UniqueID - READ-ONLY; Unique Guid identifying the resource.
+	UniqueID *string `json:"uniqueId,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
 	// ProvisioningState - READ-ONLY; The disk provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// Incremental - Whether a snapshot is incremental. Incremental snapshots on the same disk occupy less space than full snapshots and can be diffed.
+	Incremental *bool `json:"incremental,omitempty"`
 }
 
 // SnapshotsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -7781,7 +7811,7 @@ func (su *SnapshotUpdate) UnmarshalJSON(body []byte) error {
 type SnapshotUpdateProperties struct {
 	// OsType - the Operating System type. Possible values include: 'Windows', 'Linux'
 	OsType OperatingSystemTypes `json:"osType,omitempty"`
-	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the VHD to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
+	// DiskSizeGB - If creationData.createOption is Empty, this field is mandatory and it indicates the size of the disk to create. If this field is present for updates or creation with other options, it indicates a resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's size.
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// EncryptionSettingsCollection - Encryption settings collection used be Azure Disk Encryption, can contain multiple encryption settings per disk or snapshot.
 	EncryptionSettingsCollection *EncryptionSettingsCollection `json:"encryptionSettingsCollection,omitempty"`
@@ -8954,6 +8984,12 @@ type VirtualMachineProperties struct {
 	VirtualMachineScaleSet *SubResource `json:"virtualMachineScaleSet,omitempty"`
 	// ProximityPlacementGroup - Specifies information about the proximity placement group that the virtual machine should be assigned to. <br><br>Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource `json:"proximityPlacementGroup,omitempty"`
+	// Priority - Specifies the priority for the virtual machine. <br><br>Minimum api-version: 2019-03-01. Possible values include: 'Regular', 'Low'
+	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
+	// EvictionPolicy - Specifies the eviction policy for the low priority virtual machine. Only supported value is 'Deallocate'. <br><br>Minimum api-version: 2019-03-01. Possible values include: 'Deallocate', 'Delete'
+	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
+	// BillingProfile - Specifies the billing related details of a low priority virtual machine. <br><br>Minimum api-version: 2019-03-01.
+	BillingProfile *BillingProfile `json:"billingProfile,omitempty"`
 	// Host - Specifies information about the dedicated host that the virtual machine resides in. <br><br>Minimum api-version: 2018-10-01.
 	Host *SubResource `json:"host,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response.
@@ -11243,6 +11279,8 @@ type VirtualMachineScaleSetUpdateVMProfile struct {
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
 	// LicenseType - The license type, which is for bring your own license scenario.
 	LicenseType *string `json:"licenseType,omitempty"`
+	// BillingProfile - Specifies the billing related details of a low priority VMSS. <br><br>Minimum api-version: 2019-03-01.
+	BillingProfile *BillingProfile `json:"billingProfile,omitempty"`
 	// ScheduledEventsProfile - Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }
@@ -11627,6 +11665,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
 	// EvictionPolicy - Specifies the eviction policy for virtual machines in a low priority scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
 	EvictionPolicy VirtualMachineEvictionPolicyTypes `json:"evictionPolicy,omitempty"`
+	// BillingProfile - Specifies the billing related details of a low priority VMSS. <br><br>Minimum api-version: 2019-03-01.
+	BillingProfile *BillingProfile `json:"billingProfile,omitempty"`
 	// ScheduledEventsProfile - Specifies Scheduled Event related configurations.
 	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }

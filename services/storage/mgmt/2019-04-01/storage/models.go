@@ -1706,6 +1706,143 @@ type FileShareItems struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// FileShareItemsIterator provides access to a complete listing of FileShareItem values.
+type FileShareItemsIterator struct {
+	i    int
+	page FileShareItemsPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *FileShareItemsIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileShareItemsIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *FileShareItemsIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter FileShareItemsIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter FileShareItemsIterator) Response() FileShareItems {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter FileShareItemsIterator) Value() FileShareItem {
+	if !iter.page.NotDone() {
+		return FileShareItem{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the FileShareItemsIterator type.
+func NewFileShareItemsIterator(page FileShareItemsPage) FileShareItemsIterator {
+	return FileShareItemsIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (fsi FileShareItems) IsEmpty() bool {
+	return fsi.Value == nil || len(*fsi.Value) == 0
+}
+
+// fileShareItemsPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (fsi FileShareItems) fileShareItemsPreparer(ctx context.Context) (*http.Request, error) {
+	if fsi.NextLink == nil || len(to.String(fsi.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(fsi.NextLink)))
+}
+
+// FileShareItemsPage contains a page of FileShareItem values.
+type FileShareItemsPage struct {
+	fn  func(context.Context, FileShareItems) (FileShareItems, error)
+	fsi FileShareItems
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *FileShareItemsPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileShareItemsPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.fsi)
+	if err != nil {
+		return err
+	}
+	page.fsi = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *FileShareItemsPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page FileShareItemsPage) NotDone() bool {
+	return !page.fsi.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page FileShareItemsPage) Response() FileShareItems {
+	return page.fsi
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page FileShareItemsPage) Values() []FileShareItem {
+	if page.fsi.IsEmpty() {
+		return nil
+	}
+	return *page.fsi.Value
+}
+
+// Creates a new instance of the FileShareItemsPage type.
+func NewFileShareItemsPage(getNextPage func(context.Context, FileShareItems) (FileShareItems, error)) FileShareItemsPage {
+	return FileShareItemsPage{fn: getNextPage}
+}
+
 // FileShareProperties the properties of the file share.
 type FileShareProperties struct {
 	// LastModifiedTime - READ-ONLY; Returns the date and time the share was last modified.

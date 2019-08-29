@@ -46,7 +46,7 @@ func init() {
 }
 
 func theAfterscriptsCommand(sdk string) error {
-	println("Generating profiles...")
+	println("Executing after scripts...")
 	absolutePathOfSDK, err := filepath.Abs(sdk)
 	if err != nil {
 		return fmt.Errorf("failed to get the directory of SDK: %v", err)
@@ -67,33 +67,12 @@ func theAfterscriptsCommand(sdk string) error {
 	for _, script := range afterscripts {
 		args := strings.Split(script, " ")
 		c := exec.Command(args[0], args[1:]...)
-		vprintf("Invoke after script with args %v", c.Args)
+		vprintf("Invoke after script %v\n", c.Args)
 		if output, err := c.CombinedOutput(); err != nil {
 			return fmt.Errorf("failed to execute after script %s, messages %s: %v", script, string(output), err)
 		}
 	}
 	return nil
-	// c := exec.Command("go", "generate", "./...")
-	// err = c.Run()
-	// if err != nil {
-	// 	return fmt.Errorf("Error occurs when generating profiles: %v", err)
-	// }
-	// vprintln("Formatting the whole SDK folder...")
-	// err = changeDir(absolutePathOfSDK)
-	// if err != nil {
-	// 	return fmt.Errorf("failed to enter directory for SDK: %v", err)
-	// }
-	// c = exec.Command("gofmt", "-w", "./profiles/")
-	// err = c.Run()
-	// if err != nil {
-	// 	return fmt.Errorf("Error occurs when formatting profiles: %v", err)
-	// }
-	// c = exec.Command("gofmt", "-w", "./services/")
-	// err = c.Run()
-	// if err != nil {
-	// 	return fmt.Errorf("Error occurs when formatting the SDK folder: %v", err)
-	// }
-	// return nil
 }
 
 func expandAfterScripts(file *os.File) ([]string, error) {

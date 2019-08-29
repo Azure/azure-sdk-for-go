@@ -654,6 +654,7 @@ type AvailabilitySetProperties = original.AvailabilitySetProperties
 type AvailabilitySetUpdate = original.AvailabilitySetUpdate
 type AvailabilitySetsClient = original.AvailabilitySetsClient
 type BaseClient = original.BaseClient
+type BillingProfile = original.BillingProfile
 type BootDiagnostics = original.BootDiagnostics
 type BootDiagnosticsInstanceView = original.BootDiagnosticsInstanceView
 type CloudError = original.CloudError

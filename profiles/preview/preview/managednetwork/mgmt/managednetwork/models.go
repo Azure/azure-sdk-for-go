@@ -35,14 +35,6 @@ const (
 	Connectivity Kind = original.Connectivity
 )
 
-type PeeringPolicyType = original.PeeringPolicyType
-
-const (
-	PeeringPolicyTypeHubAndSpokeTopology                   PeeringPolicyType = original.PeeringPolicyTypeHubAndSpokeTopology
-	PeeringPolicyTypeManagedNetworkPeeringPolicyProperties PeeringPolicyType = original.PeeringPolicyTypeManagedNetworkPeeringPolicyProperties
-	PeeringPolicyTypeMeshTopology                          PeeringPolicyType = original.PeeringPolicyTypeMeshTopology
-)
-
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -52,8 +44,14 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
+type Type = original.Type
+
+const (
+	HubAndSpokeTopology Type = original.HubAndSpokeTopology
+	MeshTopology        Type = original.MeshTopology
+)
+
 type BaseClient = original.BaseClient
-type BasicPeeringPolicyProperties = original.BasicPeeringPolicyProperties
 type ConnectivityCollection = original.ConnectivityCollection
 type ErrorResponse = original.ErrorResponse
 type Group = original.Group
@@ -171,11 +169,11 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
 }
-func PossiblePeeringPolicyTypeValues() []PeeringPolicyType {
-	return original.PossiblePeeringPolicyTypeValues()
-}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

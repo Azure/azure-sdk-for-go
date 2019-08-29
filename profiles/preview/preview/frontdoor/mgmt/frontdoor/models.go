@@ -158,6 +158,7 @@ const (
 	RequestHeader MatchVariable = original.RequestHeader
 	RequestMethod MatchVariable = original.RequestMethod
 	RequestURI    MatchVariable = original.RequestURI
+	SocketAddr    MatchVariable = original.SocketAddr
 )
 
 type MinimumTLSVersion = original.MinimumTLSVersion

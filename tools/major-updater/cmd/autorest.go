@@ -68,7 +68,7 @@ func theAutorestCommand(sdk, spec string) error {
 	if err != nil {
 		return fmt.Errorf("failed to open config file %s: %v", configFileName, err)
 	}
-	options, err := expandAutorestOptions(file)
+	options, err := expandAutorestOptions(file, absolutePathOfSDK)
 	if err != nil {
 		return err
 	}
@@ -100,7 +100,7 @@ const (
 	flagPattern   = "--%s"
 )
 
-func expandAutorestOptions(file *os.File) ([]string, error) {
+func expandAutorestOptions(file *os.File, absolutePathOfSDK string) ([]string, error) {
 	b, _ := ioutil.ReadAll(file)
 	var config map[string]*json.RawMessage
 	if err := json.Unmarshal(b, &config); err != nil {
@@ -116,12 +116,16 @@ func expandAutorestOptions(file *os.File) ([]string, error) {
 	}
 	options := make([]string, 6)
 	for k, v := range autorestOptions {
+		if k == "sdkrel:go-sdk-folder" {
+			continue
+		}
 		v := string(*v)
 		if v == "\"\"" {
 			options = append(options, fmt.Sprintf(flagPattern, k))
 		} else {
-			options = append(options, fmt.Sprintf(optionPattern, k))
+			options = append(options, fmt.Sprintf(optionPattern, k, v))
 		}
 	}
+	options = append(options, fmt.Sprintf(optionPattern, "go-sdk-folder", absolutePathOfSDK))
 	return options, nil
 }

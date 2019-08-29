@@ -41,15 +41,15 @@ func NewIotSecuritySolutionClientWithBaseURI(baseURI string, subscriptionID stri
 	return IotSecuritySolutionClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Create use this method to create or update yours IoT Security solution
+// CreateOrUpdate use this method to create or update yours IoT Security solution
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // solutionName - the name of the IoT Security solution.
 // iotSecuritySolutionData - the security solution data
-func (client IotSecuritySolutionClient) Create(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel) (result IoTSecuritySolutionModel, err error) {
+func (client IotSecuritySolutionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel) (result IoTSecuritySolutionModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -75,32 +75,32 @@ func (client IotSecuritySolutionClient) Create(ctx context.Context, resourceGrou
 							{Target: "iotSecuritySolutionData.IoTSecuritySolutionProperties.UserDefinedResources.QuerySubscriptions", Name: validation.Null, Rule: true, Chain: nil},
 						}},
 				}}}}}); err != nil {
-		return result, validation.NewError("security.IotSecuritySolutionClient", "Create", err.Error())
+		return result, validation.NewError("security.IotSecuritySolutionClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, solutionName, iotSecuritySolutionData)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, solutionName, iotSecuritySolutionData)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client IotSecuritySolutionClient) CreatePreparer(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client IotSecuritySolutionClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData IoTSecuritySolutionModel) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"solutionName":      autorest.Encode("path", solutionName),
@@ -125,16 +125,16 @@ func (client IotSecuritySolutionClient) CreatePreparer(ctx context.Context, reso
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client IotSecuritySolutionClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client IotSecuritySolutionClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client IotSecuritySolutionClient) CreateResponder(resp *http.Response) (result IoTSecuritySolutionModel, err error) {
+func (client IotSecuritySolutionClient) CreateOrUpdateResponder(resp *http.Response) (result IoTSecuritySolutionModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -75,7 +75,7 @@ var _ DeviceSecurityGroupsClientAPI = (*security.DeviceSecurityGroupsClient)(nil
 
 // IotSecuritySolutionClientAPI contains the set of methods on the IotSecuritySolutionClient type.
 type IotSecuritySolutionClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData security.IoTSecuritySolutionModel) (result security.IoTSecuritySolutionModel, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, solutionName string, iotSecuritySolutionData security.IoTSecuritySolutionModel) (result security.IoTSecuritySolutionModel, err error)
 	Delete(ctx context.Context, resourceGroupName string, solutionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, solutionName string) (result security.IoTSecuritySolutionModel, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result security.IoTSecuritySolutionsListPage, err error)

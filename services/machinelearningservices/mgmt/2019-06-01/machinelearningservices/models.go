@@ -62,13 +62,15 @@ const (
 	ComputeTypeDataLakeAnalytics ComputeType = "DataLakeAnalytics"
 	// ComputeTypeHDInsight ...
 	ComputeTypeHDInsight ComputeType = "HDInsight"
+	// ComputeTypeOnPrem ...
+	ComputeTypeOnPrem ComputeType = "OnPrem"
 	// ComputeTypeVirtualMachine ...
 	ComputeTypeVirtualMachine ComputeType = "VirtualMachine"
 )
 
 // PossibleComputeTypeValues returns an array of possible values for the ComputeType const type.
 func PossibleComputeTypeValues() []ComputeType {
-	return []ComputeType{ComputeTypeAKS, ComputeTypeAmlCompute, ComputeTypeDatabricks, ComputeTypeDataFactory, ComputeTypeDataLakeAnalytics, ComputeTypeHDInsight, ComputeTypeVirtualMachine}
+	return []ComputeType{ComputeTypeAKS, ComputeTypeAmlCompute, ComputeTypeDatabricks, ComputeTypeDataFactory, ComputeTypeDataLakeAnalytics, ComputeTypeHDInsight, ComputeTypeOnPrem, ComputeTypeVirtualMachine}
 }
 
 // ComputeTypeBasicCompute enumerates the values for compute type basic compute.
@@ -89,13 +91,15 @@ const (
 	ComputeTypeDataLakeAnalytics1 ComputeTypeBasicCompute = "DataLakeAnalytics"
 	// ComputeTypeHDInsight1 ...
 	ComputeTypeHDInsight1 ComputeTypeBasicCompute = "HDInsight"
+	// ComputeTypeOnPrem1 ...
+	ComputeTypeOnPrem1 ComputeTypeBasicCompute = "OnPrem"
 	// ComputeTypeVirtualMachine1 ...
 	ComputeTypeVirtualMachine1 ComputeTypeBasicCompute = "VirtualMachine"
 )
 
 // PossibleComputeTypeBasicComputeValues returns an array of possible values for the ComputeTypeBasicCompute const type.
 func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
-	return []ComputeTypeBasicCompute{ComputeTypeAKS1, ComputeTypeAmlCompute1, ComputeTypeCompute, ComputeTypeDatabricks1, ComputeTypeDataFactory1, ComputeTypeDataLakeAnalytics1, ComputeTypeHDInsight1, ComputeTypeVirtualMachine1}
+	return []ComputeTypeBasicCompute{ComputeTypeAKS1, ComputeTypeAmlCompute1, ComputeTypeCompute, ComputeTypeDatabricks1, ComputeTypeDataFactory1, ComputeTypeDataLakeAnalytics1, ComputeTypeHDInsight1, ComputeTypeOnPrem1, ComputeTypeVirtualMachine1}
 }
 
 // ComputeTypeBasicComputeNodesInformation enumerates the values for compute type basic compute nodes
@@ -289,7 +293,7 @@ type AKS struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1', 'ComputeTypeOnPrem1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -347,6 +351,11 @@ func (a AKS) AsDatabricks() (*Databricks, bool) {
 
 // AsDataLakeAnalytics is the BasicCompute implementation for AKS.
 func (a AKS) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
+	return nil, false
+}
+
+// AsOnPrem is the BasicCompute implementation for AKS.
+func (a AKS) AsOnPrem() (*OnPrem, bool) {
 	return nil, false
 }
 
@@ -464,7 +473,7 @@ type AmlCompute struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1', 'ComputeTypeOnPrem1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -522,6 +531,11 @@ func (ac AmlCompute) AsDatabricks() (*Databricks, bool) {
 
 // AsDataLakeAnalytics is the BasicCompute implementation for AmlCompute.
 func (ac AmlCompute) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
+	return nil, false
+}
+
+// AsOnPrem is the BasicCompute implementation for AmlCompute.
+func (ac AmlCompute) AsOnPrem() (*OnPrem, bool) {
 	return nil, false
 }
 
@@ -669,6 +683,7 @@ type BasicCompute interface {
 	AsDataFactory() (*DataFactory, bool)
 	AsDatabricks() (*Databricks, bool)
 	AsDataLakeAnalytics() (*DataLakeAnalytics, bool)
+	AsOnPrem() (*OnPrem, bool)
 	AsCompute() (*Compute, bool)
 }
 
@@ -690,7 +705,7 @@ type Compute struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1', 'ComputeTypeOnPrem1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -730,6 +745,10 @@ func unmarshalBasicCompute(body []byte) (BasicCompute, error) {
 		var dla DataLakeAnalytics
 		err := json.Unmarshal(body, &dla)
 		return dla, err
+	case string(ComputeTypeOnPrem1):
+		var op OnPrem
+		err := json.Unmarshal(body, &op)
+		return op, err
 	default:
 		var c Compute
 		err := json.Unmarshal(body, &c)
@@ -806,6 +825,11 @@ func (c Compute) AsDatabricks() (*Databricks, bool) {
 
 // AsDataLakeAnalytics is the BasicCompute implementation for Compute.
 func (c Compute) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
+	return nil, false
+}
+
+// AsOnPrem is the BasicCompute implementation for Compute.
+func (c Compute) AsOnPrem() (*OnPrem, bool) {
 	return nil, false
 }
 
@@ -1137,7 +1161,7 @@ type Databricks struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1', 'ComputeTypeOnPrem1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -1195,6 +1219,11 @@ func (d Databricks) AsDatabricks() (*Databricks, bool) {
 
 // AsDataLakeAnalytics is the BasicCompute implementation for Databricks.
 func (d Databricks) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
+	return nil, false
+}
+
+// AsOnPrem is the BasicCompute implementation for Databricks.
+func (d Databricks) AsOnPrem() (*OnPrem, bool) {
 	return nil, false
 }
 
@@ -1278,7 +1307,7 @@ type DataFactory struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1', 'ComputeTypeOnPrem1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -1336,6 +1365,11 @@ func (df DataFactory) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
 	return nil, false
 }
 
+// AsOnPrem is the BasicCompute implementation for DataFactory.
+func (df DataFactory) AsOnPrem() (*OnPrem, bool) {
+	return nil, false
+}
+
 // AsCompute is the BasicCompute implementation for DataFactory.
 func (df DataFactory) AsCompute() (*Compute, bool) {
 	return nil, false
@@ -1365,7 +1399,7 @@ type DataLakeAnalytics struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1', 'ComputeTypeOnPrem1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -1424,6 +1458,11 @@ func (dla DataLakeAnalytics) AsDatabricks() (*Databricks, bool) {
 // AsDataLakeAnalytics is the BasicCompute implementation for DataLakeAnalytics.
 func (dla DataLakeAnalytics) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
 	return &dla, true
+}
+
+// AsOnPrem is the BasicCompute implementation for DataLakeAnalytics.
+func (dla DataLakeAnalytics) AsOnPrem() (*OnPrem, bool) {
+	return nil, false
 }
 
 // AsCompute is the BasicCompute implementation for DataLakeAnalytics.
@@ -1485,7 +1524,7 @@ type HDInsight struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1', 'ComputeTypeOnPrem1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -1543,6 +1582,11 @@ func (hi HDInsight) AsDatabricks() (*Databricks, bool) {
 
 // AsDataLakeAnalytics is the BasicCompute implementation for HDInsight.
 func (hi HDInsight) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
+	return nil, false
+}
+
+// AsOnPrem is the BasicCompute implementation for HDInsight.
+func (hi HDInsight) AsOnPrem() (*OnPrem, bool) {
 	return nil, false
 }
 
@@ -1830,6 +1874,111 @@ type NodeStateCounts struct {
 	LeavingNodeCount *int32 `json:"leavingNodeCount,omitempty"`
 	// PreemptedNodeCount - READ-ONLY; Number of compute nodes which are in preempted state.
 	PreemptedNodeCount *int32 `json:"preemptedNodeCount,omitempty"`
+}
+
+// OnPrem a OnPrem compute.
+type OnPrem struct {
+	Properties *OnPremProperties `json:"properties,omitempty"`
+	// ComputeLocation - Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Description - The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+	// CreatedOn - READ-ONLY; The date and time when the compute was created.
+	CreatedOn *date.Time `json:"createdOn,omitempty"`
+	// ModifiedOn - READ-ONLY; The date and time when the compute was last modified.
+	ModifiedOn *date.Time `json:"modifiedOn,omitempty"`
+	// ResourceID - ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+	// ProvisioningErrors - READ-ONLY; Errors during provisioning
+	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
+	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1', 'ComputeTypeOnPrem1'
+	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OnPrem.
+func (op OnPrem) MarshalJSON() ([]byte, error) {
+	op.ComputeType = ComputeTypeOnPrem1
+	objectMap := make(map[string]interface{})
+	if op.Properties != nil {
+		objectMap["properties"] = op.Properties
+	}
+	if op.ComputeLocation != nil {
+		objectMap["computeLocation"] = op.ComputeLocation
+	}
+	if op.Description != nil {
+		objectMap["description"] = op.Description
+	}
+	if op.ResourceID != nil {
+		objectMap["resourceId"] = op.ResourceID
+	}
+	if op.ComputeType != "" {
+		objectMap["computeType"] = op.ComputeType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAKS is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsAKS() (*AKS, bool) {
+	return nil, false
+}
+
+// AsAmlCompute is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsAmlCompute() (*AmlCompute, bool) {
+	return nil, false
+}
+
+// AsVirtualMachine is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsVirtualMachine() (*VirtualMachine, bool) {
+	return nil, false
+}
+
+// AsHDInsight is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsHDInsight() (*HDInsight, bool) {
+	return nil, false
+}
+
+// AsDataFactory is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsDataFactory() (*DataFactory, bool) {
+	return nil, false
+}
+
+// AsDatabricks is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsDatabricks() (*Databricks, bool) {
+	return nil, false
+}
+
+// AsDataLakeAnalytics is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
+	return nil, false
+}
+
+// AsOnPrem is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsOnPrem() (*OnPrem, bool) {
+	return &op, true
+}
+
+// AsCompute is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsCompute() (*Compute, bool) {
+	return nil, false
+}
+
+// AsBasicCompute is the BasicCompute implementation for OnPrem.
+func (op OnPrem) AsBasicCompute() (BasicCompute, bool) {
+	return &op, true
+}
+
+// OnPremProperties ...
+type OnPremProperties struct {
+	// Address - Public IP address of the virtual machine.
+	Address *string `json:"address,omitempty"`
+	// Username - Username of admin account
+	Username *string `json:"username,omitempty"`
+	// Password - Password of admin account
+	Password *string `json:"password,omitempty"`
 }
 
 // Operation azure Machine Learning workspace REST API operation
@@ -2150,7 +2299,7 @@ type VirtualMachine struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1', 'ComputeTypeOnPrem1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -2208,6 +2357,11 @@ func (VM VirtualMachine) AsDatabricks() (*Databricks, bool) {
 
 // AsDataLakeAnalytics is the BasicCompute implementation for VirtualMachine.
 func (VM VirtualMachine) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
+	return nil, false
+}
+
+// AsOnPrem is the BasicCompute implementation for VirtualMachine.
+func (VM VirtualMachine) AsOnPrem() (*OnPrem, bool) {
 	return nil, false
 }
 

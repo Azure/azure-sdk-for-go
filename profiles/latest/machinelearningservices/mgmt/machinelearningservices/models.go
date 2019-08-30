@@ -45,6 +45,7 @@ const (
 	ComputeTypeDataFactory       ComputeType = original.ComputeTypeDataFactory
 	ComputeTypeDataLakeAnalytics ComputeType = original.ComputeTypeDataLakeAnalytics
 	ComputeTypeHDInsight         ComputeType = original.ComputeTypeHDInsight
+	ComputeTypeOnPrem            ComputeType = original.ComputeTypeOnPrem
 	ComputeTypeVirtualMachine    ComputeType = original.ComputeTypeVirtualMachine
 )
 
@@ -58,6 +59,7 @@ const (
 	ComputeTypeDataFactory1       ComputeTypeBasicCompute = original.ComputeTypeDataFactory1
 	ComputeTypeDataLakeAnalytics1 ComputeTypeBasicCompute = original.ComputeTypeDataLakeAnalytics1
 	ComputeTypeHDInsight1         ComputeTypeBasicCompute = original.ComputeTypeHDInsight1
+	ComputeTypeOnPrem1            ComputeTypeBasicCompute = original.ComputeTypeOnPrem1
 	ComputeTypeVirtualMachine1    ComputeTypeBasicCompute = original.ComputeTypeVirtualMachine1
 )
 
@@ -181,6 +183,8 @@ type MachineLearningComputeCreateOrUpdateFuture = original.MachineLearningComput
 type MachineLearningComputeDeleteFuture = original.MachineLearningComputeDeleteFuture
 type MachineLearningComputeUpdateFuture = original.MachineLearningComputeUpdateFuture
 type NodeStateCounts = original.NodeStateCounts
+type OnPrem = original.OnPrem
+type OnPremProperties = original.OnPremProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult

@@ -1084,6 +1084,7 @@ type TypeBasicTrigger = original.TypeBasicTrigger
 const (
 	TypeBlobEventsTrigger          TypeBasicTrigger = original.TypeBlobEventsTrigger
 	TypeBlobTrigger                TypeBasicTrigger = original.TypeBlobTrigger
+	TypeChainingTrigger            TypeBasicTrigger = original.TypeChainingTrigger
 	TypeMultiplePipelineTrigger    TypeBasicTrigger = original.TypeMultiplePipelineTrigger
 	TypeRerunTumblingWindowTrigger TypeBasicTrigger = original.TypeRerunTumblingWindowTrigger
 	TypeScheduleTrigger            TypeBasicTrigger = original.TypeScheduleTrigger
@@ -1277,6 +1278,8 @@ type CassandraLinkedServiceTypeProperties = original.CassandraLinkedServiceTypeP
 type CassandraSource = original.CassandraSource
 type CassandraTableDataset = original.CassandraTableDataset
 type CassandraTableDatasetTypeProperties = original.CassandraTableDatasetTypeProperties
+type ChainingTrigger = original.ChainingTrigger
+type ChainingTriggerTypeProperties = original.ChainingTriggerTypeProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type CommonDataServiceForAppsEntityDataset = original.CommonDataServiceForAppsEntityDataset

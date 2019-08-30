@@ -1957,7 +1957,7 @@ func (nrs *NetworkRuleSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// NetworkRuleSetListResult the response of the List NetworkRuleSet operation.
+// NetworkRuleSetListResult the response of the List NetworkRuleSet operation
 type NetworkRuleSetListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Result of the List NetworkRuleSet operation.

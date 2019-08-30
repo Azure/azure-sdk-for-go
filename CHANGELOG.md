@@ -1,5 +1,56 @@
 # CHANGELOG
 
+## `v33.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| batch | 2019-08-01<br/>2019-08-01.10.0 |
+| computervision | v2.1 |
+| containerregistry | 2019-07 |
+| containerservice | 2019-08-01 |
+| frontdoor | 2019-05-01 |
+| machinelearningservices | 2019-06-01 |
+| managednetwork | 2019-06-01-preview |
+| peering | 2019-08-01-preview |
+| policy | 2019-06-01 |
+| portal | 2018-10-01-preview |
+| servicefabric | 2019-03-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| backup | 2016-12-01<br/>2017-07-01 |
+| frontdoor | 2019-04-01 |
+| logic | 2016-06-01<br/>2018-07-01-preview |
+| network | 2018-07-01<br/>2018-08-01<br/>2018-10-01<br/>2018-11-01<br/>2018-12-01 |
+| resources | 2015-11-01<br/>2016-02-01<br/>2016-07-01<br/>2016-09-01<br/>2017-05-10<br/>2018-02-01<br/>2018-05-01<br/>2019-03-01<br/>2019-05-01 |
+| security | v2.0 |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview<br/>2017-10-01-preview |
+| storage | 2019-04-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| billing | 2018-11-01-preview |
+| compute | 2019-03-01<br/>2019-07-01 |
+| datafactory | 2018-06-01 |
+| datamigration | 2017-11-15-preview<br/>2018-03-31-preview<br/>2018-04-19<br/>2018-07-15-preview |
+| hanaonazure | 2017-11-03-preview |
+| healthcareapis | 2018-08-20-preview |
+| inkrecognizer | v1.0 |
+| insights | 2015-05-01 |
+| kusto | 2019-01-21 |
+| network | 2019-02-01<br/>2019-04-01<br/>2019-06-01 |
+| qnamaker | v4.0 |
+| reservations | 2019-04-01 |
+| security | v3.0 |
+| securityinsight | 2017-08-01-preview |
+| servicefabric | 2019-03-01 |
+
 ## `v32.6.0`
 
 ### New Packages

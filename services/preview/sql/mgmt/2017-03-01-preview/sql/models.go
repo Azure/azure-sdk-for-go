@@ -4205,7 +4205,7 @@ func (epu *ElasticPoolUpdate) UnmarshalJSON(body []byte) error {
 // EncryptionProtector the server encryption protector.
 type EncryptionProtector struct {
 	autorest.Response `json:"-"`
-	// Kind - Kind of encryption protector. This is metadata used for the Azure portal experience.
+	// Kind - READ-ONLY; Kind of encryption protector. This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
 	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
@@ -4222,9 +4222,6 @@ type EncryptionProtector struct {
 // MarshalJSON is the custom marshaler for EncryptionProtector.
 func (ep EncryptionProtector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ep.Kind != nil {
-		objectMap["kind"] = ep.Kind
-	}
 	if ep.EncryptionProtectorProperties != nil {
 		objectMap["properties"] = ep.EncryptionProtectorProperties
 	}
@@ -4487,6 +4484,29 @@ func (future *EncryptionProtectorsCreateOrUpdateFuture) Result(client Encryption
 			err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", ep.Response.Response, "Failure responding to request")
 		}
 	}
+	return
+}
+
+// EncryptionProtectorsRevalidateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type EncryptionProtectorsRevalidateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *EncryptionProtectorsRevalidateFuture) Result(client EncryptionProtectorsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsRevalidateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.EncryptionProtectorsRevalidateFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 

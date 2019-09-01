@@ -4818,12 +4818,6 @@ type IoTSecurityAlertedDevice struct {
 	AlertsCount *int32 `json:"alertsCount,omitempty"`
 }
 
-// IoTSecurityAlertedDevicesList list of devices with open alerts including the count of alerts per device.
-type IoTSecurityAlertedDevicesList struct {
-	// Value - List of devices with open alerts including the count of alerts per device
-	Value *[]IoTSecurityAlertedDevice `json:"value,omitempty"`
-}
-
 // IoTSecurityDeviceAlert statistical information about the number of alerts per alert type during last set
 // number of days
 type IoTSecurityDeviceAlert struct {
@@ -4835,14 +4829,6 @@ type IoTSecurityDeviceAlert struct {
 	AlertsCount *int32 `json:"alertsCount,omitempty"`
 }
 
-// IoTSecurityDeviceAlertsList list of alerts with the count of raised alerts
-type IoTSecurityDeviceAlertsList struct {
-	// Value - List of top alerts data
-	Value *[]IoTSecurityDeviceAlert `json:"value,omitempty"`
-	// NextLink - READ-ONLY; When there is too much alert data for one page, use this URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
 // IoTSecurityDeviceRecommendation statistical information about the number of recommendations per device,
 // per recommendation type.
 type IoTSecurityDeviceRecommendation struct {
@@ -4852,13 +4838,6 @@ type IoTSecurityDeviceRecommendation struct {
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// DevicesCount - READ-ONLY; Number of devices with this recommendation.
 	DevicesCount *int32 `json:"devicesCount,omitempty"`
-}
-
-// IoTSecurityDeviceRecommendationsList list of aggregated recommendation data, per recommendation type,
-// per device.
-type IoTSecurityDeviceRecommendationsList struct {
-	// Value - List of aggregated recommendation data
-	Value *[]IoTSecurityDeviceRecommendation `json:"value,omitempty"`
 }
 
 // IoTSecuritySolutionAnalyticsModel security analytics of your IoT Security solution
@@ -4952,11 +4931,11 @@ type IoTSecuritySolutionAnalyticsModelProperties struct {
 	// DevicesMetrics - READ-ONLY; List of device metrics by the aggregation date.
 	DevicesMetrics *[]IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem `json:"devicesMetrics,omitempty"`
 	// TopAlertedDevices - List of the 3 devices with the most alerts.
-	TopAlertedDevices *IoTSecurityAlertedDevicesList `json:"topAlertedDevices,omitempty"`
+	TopAlertedDevices *[]IoTSecurityAlertedDevice `json:"topAlertedDevices,omitempty"`
 	// MostPrevalentDeviceAlerts - List of the 3 most prevalent device alerts.
-	MostPrevalentDeviceAlerts *IoTSecurityDeviceAlertsList `json:"mostPrevalentDeviceAlerts,omitempty"`
+	MostPrevalentDeviceAlerts *[]IoTSecurityDeviceAlert `json:"mostPrevalentDeviceAlerts,omitempty"`
 	// MostPrevalentDeviceRecommendations - List of the 3 most prevalent device recommendations.
-	MostPrevalentDeviceRecommendations *IoTSecurityDeviceRecommendationsList `json:"mostPrevalentDeviceRecommendations,omitempty"`
+	MostPrevalentDeviceRecommendations *[]IoTSecurityDeviceRecommendation `json:"mostPrevalentDeviceRecommendations,omitempty"`
 }
 
 // IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem ...

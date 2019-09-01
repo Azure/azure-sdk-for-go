@@ -19,10 +19,21 @@
 
 package aad
 
-import original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2017-04-01/aad"
+import original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2018-01-01/aad"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type AggregationType = original.AggregationType
+
+const (
+	Average AggregationType = original.Average
+	Count   AggregationType = original.Count
+	Maximum AggregationType = original.Maximum
+	Minimum AggregationType = original.Minimum
+	None    AggregationType = original.None
+	Total   AggregationType = original.Total
 )
 
 type Category = original.Category
@@ -38,6 +49,31 @@ const (
 	Logs CategoryType = original.Logs
 )
 
+type ResultType = original.ResultType
+
+const (
+	Data     ResultType = original.Data
+	Metadata ResultType = original.Metadata
+)
+
+type Unit = original.Unit
+
+const (
+	UnitBitsPerSecond  Unit = original.UnitBitsPerSecond
+	UnitBytes          Unit = original.UnitBytes
+	UnitByteSeconds    Unit = original.UnitByteSeconds
+	UnitBytesPerSecond Unit = original.UnitBytesPerSecond
+	UnitCores          Unit = original.UnitCores
+	UnitCount          Unit = original.UnitCount
+	UnitCountPerSecond Unit = original.UnitCountPerSecond
+	UnitMilliCores     Unit = original.UnitMilliCores
+	UnitMilliSeconds   Unit = original.UnitMilliSeconds
+	UnitNanoCores      Unit = original.UnitNanoCores
+	UnitPercent        Unit = original.UnitPercent
+	UnitSeconds        Unit = original.UnitSeconds
+	UnitUnspecified    Unit = original.UnitUnspecified
+)
+
 type BaseClient = original.BaseClient
 type DiagnosticSettings = original.DiagnosticSettings
 type DiagnosticSettingsCategory = original.DiagnosticSettingsCategory
@@ -50,12 +86,24 @@ type DiagnosticSettingsResourceCollection = original.DiagnosticSettingsResourceC
 type Display = original.Display
 type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
+type LocalizableString = original.LocalizableString
 type LogSettings = original.LogSettings
+type MetadataValue = original.MetadataValue
+type Metric = original.Metric
+type MetricAvailability = original.MetricAvailability
+type MetricDefinition = original.MetricDefinition
+type MetricDefinitionCollection = original.MetricDefinitionCollection
+type MetricDefinitionsClient = original.MetricDefinitionsClient
+type MetricErrorResponse = original.MetricErrorResponse
+type MetricValue = original.MetricValue
+type MetricsClient = original.MetricsClient
 type OperationsClient = original.OperationsClient
 type OperationsDiscovery = original.OperationsDiscovery
 type OperationsDiscoveryCollection = original.OperationsDiscoveryCollection
 type ProxyOnlyResource = original.ProxyOnlyResource
+type Response = original.Response
 type RetentionPolicy = original.RetentionPolicy
+type TimeSeriesElement = original.TimeSeriesElement
 
 func New() BaseClient {
 	return original.New()
@@ -72,6 +120,18 @@ func NewDiagnosticSettingsClient() DiagnosticSettingsClient {
 func NewDiagnosticSettingsClientWithBaseURI(baseURI string) DiagnosticSettingsClient {
 	return original.NewDiagnosticSettingsClientWithBaseURI(baseURI)
 }
+func NewMetricDefinitionsClient() MetricDefinitionsClient {
+	return original.NewMetricDefinitionsClient()
+}
+func NewMetricDefinitionsClientWithBaseURI(baseURI string) MetricDefinitionsClient {
+	return original.NewMetricDefinitionsClientWithBaseURI(baseURI)
+}
+func NewMetricsClient() MetricsClient {
+	return original.NewMetricsClient()
+}
+func NewMetricsClientWithBaseURI(baseURI string) MetricsClient {
+	return original.NewMetricsClientWithBaseURI(baseURI)
+}
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()
 }
@@ -81,11 +141,20 @@ func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
 }
+func PossibleAggregationTypeValues() []AggregationType {
+	return original.PossibleAggregationTypeValues()
+}
 func PossibleCategoryTypeValues() []CategoryType {
 	return original.PossibleCategoryTypeValues()
 }
 func PossibleCategoryValues() []Category {
 	return original.PossibleCategoryValues()
+}
+func PossibleResultTypeValues() []ResultType {
+	return original.PossibleResultTypeValues()
+}
+func PossibleUnitValues() []Unit {
+	return original.PossibleUnitValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

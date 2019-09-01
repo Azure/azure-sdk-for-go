@@ -19,8 +19,10 @@
 
 package aadapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2017-04-01/aad/aadapi"
+import original "github.com/Azure/azure-sdk-for-go/services/aad/mgmt/2018-01-01/aad/aadapi"
 
 type DiagnosticSettingsCategoryClientAPI = original.DiagnosticSettingsCategoryClientAPI
 type DiagnosticSettingsClientAPI = original.DiagnosticSettingsClientAPI
+type MetricDefinitionsClientAPI = original.MetricDefinitionsClientAPI
+type MetricsClientAPI = original.MetricsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

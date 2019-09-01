@@ -1382,18 +1382,6 @@ func (ap AlertProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AllowedConnectionsConnectedResources the allowed connections details
-type AllowedConnectionsConnectedResources struct {
-	// TCPPortsCount - READ-ONLY; The allowed connections tcp ports count
-	TCPPortsCount *int32 `json:"tcpPortsCount,omitempty"`
-	// UDPPortsCount - READ-ONLY; The allowed connections udp ports count
-	UDPPortsCount *int32 `json:"udpPortsCount,omitempty"`
-	// TCPPorts - READ-ONLY; The allowed connections tcp ports
-	TCPPorts *string `json:"tcpPorts,omitempty"`
-	// UDPPorts - READ-ONLY; The allowed connections udp ports
-	UDPPorts *string `json:"udpPorts,omitempty"`
-}
-
 // AllowedConnectionsList list of all possible traffic between Azure resources
 type AllowedConnectionsList struct {
 	autorest.Response `json:"-"`
@@ -2777,6 +2765,18 @@ type ConnectedResource struct {
 	// TCPPorts - READ-ONLY; The allowed tcp ports
 	TCPPorts *string `json:"tcpPorts,omitempty"`
 	// UDPPorts - READ-ONLY; The allowed udp ports
+	UDPPorts *string `json:"udpPorts,omitempty"`
+}
+
+// ConnectedResources the connections details
+type ConnectedResources struct {
+	// TCPPortsCount - READ-ONLY; The allowed connections tcp ports count
+	TCPPortsCount *int32 `json:"tcpPortsCount,omitempty"`
+	// UDPPortsCount - READ-ONLY; The allowed connections udp ports count
+	UDPPortsCount *int32 `json:"udpPortsCount,omitempty"`
+	// TCPPorts - READ-ONLY; The allowed connections tcp ports
+	TCPPorts *string `json:"tcpPorts,omitempty"`
+	// UDPPorts - READ-ONLY; The allowed connections udp ports
 	UDPPorts *string `json:"udpPorts,omitempty"`
 }
 
@@ -4743,15 +4743,15 @@ type NetworkDataConnectableResourceActualTraffic struct {
 // NetworkDataConnectableResourceAllowedConnections the allowed connections details
 type NetworkDataConnectableResourceAllowedConnections struct {
 	// CalculatedDateTime - READ-ONLY; The UTC time on which the allowed connections was calculated
-	CalculatedDateTime         *date.Time                            `json:"calculatedDateTime,omitempty"`
-	InboundConnectedResources  *AllowedConnectionsConnectedResources `json:"inboundConnectedResources,omitempty"`
-	OutboundConnectedResources *AllowedConnectionsConnectedResources `json:"outboundConnectedResources,omitempty"`
+	CalculatedDateTime         *date.Time          `json:"calculatedDateTime,omitempty"`
+	InboundConnectedResources  *ConnectedResources `json:"inboundConnectedResources,omitempty"`
+	OutboundConnectedResources *ConnectedResources `json:"outboundConnectedResources,omitempty"`
 }
 
 // NetworkDataConnectableResourceUnusedPorts the unused ports details
 type NetworkDataConnectableResourceUnusedPorts struct {
-	InboundConnectedResources  *UnusedPortsConnectedResources `json:"inboundConnectedResources,omitempty"`
-	OutboundConnectedResources *UnusedPortsConnectedResources `json:"outboundConnectedResources,omitempty"`
+	InboundConnectedResources  *ConnectedResources `json:"inboundConnectedResources,omitempty"`
+	OutboundConnectedResources *ConnectedResources `json:"outboundConnectedResources,omitempty"`
 }
 
 // NetworkDataList list of network data
@@ -6826,18 +6826,6 @@ type TopologySingleResourceChild struct {
 type TopologySingleResourceParent struct {
 	// ResourceID - READ-ONLY; Azure resource id which serves as parent resource in topology view
 	ResourceID *string `json:"resourceId,omitempty"`
-}
-
-// UnusedPortsConnectedResources the unused ports details
-type UnusedPortsConnectedResources struct {
-	// UnusedTCPPortsCount - READ-ONLY; The unused tcp ports count
-	UnusedTCPPortsCount *int32 `json:"unusedTcpPortsCount,omitempty"`
-	// UnusedUDPPortsCount - READ-ONLY; The unused udp ports count
-	UnusedUDPPortsCount *int32 `json:"unusedUdpPortsCount,omitempty"`
-	// TCPPorts - READ-ONLY; The unused tcp ports
-	TCPPorts *string `json:"tcpPorts,omitempty"`
-	// UDPPorts - READ-ONLY; The unused udp ports
-	UDPPorts *string `json:"udpPorts,omitempty"`
 }
 
 // UserRecommendation represents a user that is recommended to be allowed for a certain rule

@@ -817,6 +817,15 @@ const (
 	TypeZohoSource                     TypeBasicCopySource = original.TypeZohoSource
 )
 
+type TypeBasicCustomSetupBase = original.TypeBasicCustomSetupBase
+
+const (
+	TypeCmdkeySetup              TypeBasicCustomSetupBase = original.TypeCmdkeySetup
+	TypeComponentSetup           TypeBasicCustomSetupBase = original.TypeComponentSetup
+	TypeCustomSetupBase          TypeBasicCustomSetupBase = original.TypeCustomSetupBase
+	TypeEnvironmentVariableSetup TypeBasicCustomSetupBase = original.TypeEnvironmentVariableSetup
+)
+
 type TypeBasicDataset = original.TypeBasicDataset
 
 const (
@@ -1246,6 +1255,7 @@ type BasicActivity = original.BasicActivity
 type BasicControlActivity = original.BasicControlActivity
 type BasicCopySink = original.BasicCopySink
 type BasicCopySource = original.BasicCopySource
+type BasicCustomSetupBase = original.BasicCustomSetupBase
 type BasicDataset = original.BasicDataset
 type BasicDatasetCompression = original.BasicDatasetCompression
 type BasicDatasetStorageFormat = original.BasicDatasetStorageFormat
@@ -1282,12 +1292,15 @@ type ChainingTrigger = original.ChainingTrigger
 type ChainingTriggerTypeProperties = original.ChainingTriggerTypeProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type CmdkeySetup = original.CmdkeySetup
+type CmdkeySetupTypeProperties = original.CmdkeySetupTypeProperties
 type CommonDataServiceForAppsEntityDataset = original.CommonDataServiceForAppsEntityDataset
 type CommonDataServiceForAppsEntityDatasetTypeProperties = original.CommonDataServiceForAppsEntityDatasetTypeProperties
 type CommonDataServiceForAppsLinkedService = original.CommonDataServiceForAppsLinkedService
 type CommonDataServiceForAppsLinkedServiceTypeProperties = original.CommonDataServiceForAppsLinkedServiceTypeProperties
 type CommonDataServiceForAppsSink = original.CommonDataServiceForAppsSink
 type CommonDataServiceForAppsSource = original.CommonDataServiceForAppsSource
+type ComponentSetup = original.ComponentSetup
 type ConcurLinkedService = original.ConcurLinkedService
 type ConcurLinkedServiceTypeProperties = original.ConcurLinkedServiceTypeProperties
 type ConcurObjectDataset = original.ConcurObjectDataset
@@ -1316,6 +1329,7 @@ type CustomActivityReferenceObject = original.CustomActivityReferenceObject
 type CustomActivityTypeProperties = original.CustomActivityTypeProperties
 type CustomDataSourceLinkedService = original.CustomDataSourceLinkedService
 type CustomDataset = original.CustomDataset
+type CustomSetupBase = original.CustomSetupBase
 type DataLakeAnalyticsUSQLActivity = original.DataLakeAnalyticsUSQLActivity
 type DataLakeAnalyticsUSQLActivityTypeProperties = original.DataLakeAnalyticsUSQLActivityTypeProperties
 type DatabricksNotebookActivity = original.DatabricksNotebookActivity
@@ -1385,6 +1399,8 @@ type EloquaLinkedServiceTypeProperties = original.EloquaLinkedServiceTypePropert
 type EloquaObjectDataset = original.EloquaObjectDataset
 type EloquaSource = original.EloquaSource
 type EntityReference = original.EntityReference
+type EnvironmentVariableSetup = original.EnvironmentVariableSetup
+type EnvironmentVariableSetupTypeProperties = original.EnvironmentVariableSetupTypeProperties
 type ExecutePipelineActivity = original.ExecutePipelineActivity
 type ExecutePipelineActivityTypeProperties = original.ExecutePipelineActivityTypeProperties
 type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
@@ -1534,6 +1550,7 @@ type JiraLinkedService = original.JiraLinkedService
 type JiraLinkedServiceTypeProperties = original.JiraLinkedServiceTypeProperties
 type JiraObjectDataset = original.JiraObjectDataset
 type JiraSource = original.JiraSource
+type LicensedComponentSetupTypeProperties = original.LicensedComponentSetupTypeProperties
 type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime
 type LinkedIntegrationRuntimeKeyAuthorization = original.LinkedIntegrationRuntimeKeyAuthorization
 type LinkedIntegrationRuntimeRbacAuthorization = original.LinkedIntegrationRuntimeRbacAuthorization
@@ -2259,6 +2276,9 @@ func PossibleTypeBasicCopySinkValues() []TypeBasicCopySink {
 }
 func PossibleTypeBasicCopySourceValues() []TypeBasicCopySource {
 	return original.PossibleTypeBasicCopySourceValues()
+}
+func PossibleTypeBasicCustomSetupBaseValues() []TypeBasicCustomSetupBase {
+	return original.PossibleTypeBasicCustomSetupBaseValues()
 }
 func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
 	return original.PossibleTypeBasicDatasetCompressionValues()

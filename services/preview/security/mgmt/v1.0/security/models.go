@@ -695,7 +695,7 @@ type AadSolutionProperties struct {
 
 // ActualTrafficConnectedResources the actual traffic details
 type ActualTrafficConnectedResources struct {
-	// TrafficVolume - READ-ONLY; The actual traffic volume
+	// TrafficVolume - READ-ONLY; The actual traffic volume between the actual traffic start time to the actual traffic end time
 	TrafficVolume      *string              `json:"trafficVolume,omitempty"`
 	ConnectionsDetails *[]ConnectionDetails `json:"connectionsDetails,omitempty"`
 }
@@ -2790,7 +2790,7 @@ type ConnectedWorkspace struct {
 type ConnectionDetails struct {
 	// PortAndProtocol - READ-ONLY; The port and the protocol of the traffic
 	PortAndProtocol *string `json:"portAndProtocol,omitempty"`
-	// Volume - READ-ONLY; The volume of the traffic
+	// Volume - READ-ONLY; The volume of the traffic between the actual traffic start time to the actual traffic end time
 	Volume *string `json:"volume,omitempty"`
 }
 

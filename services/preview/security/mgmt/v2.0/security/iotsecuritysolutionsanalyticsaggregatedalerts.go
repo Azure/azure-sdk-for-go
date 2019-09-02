@@ -34,14 +34,14 @@ type IoTSecuritySolutionsAnalyticsAggregatedAlertsClient struct {
 
 // NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient creates an instance of the
 // IoTSecuritySolutionsAnalyticsAggregatedAlertsClient client.
-func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
-	return NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClient(expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
+	return NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI creates an instance of the
 // IoTSecuritySolutionsAnalyticsAggregatedAlertsClient client.
-func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
-	return IoTSecuritySolutionsAnalyticsAggregatedAlertsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewIoTSecuritySolutionsAnalyticsAggregatedAlertsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsAggregatedAlertsClient {
+	return IoTSecuritySolutionsAnalyticsAggregatedAlertsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // List security Analytics of a security solution

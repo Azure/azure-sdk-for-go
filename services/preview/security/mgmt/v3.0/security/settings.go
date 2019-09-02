@@ -32,13 +32,13 @@ type SettingsClient struct {
 }
 
 // NewSettingsClient creates an instance of the SettingsClient client.
-func NewSettingsClient(subscriptionID string, ascLocation string) SettingsClient {
-	return NewSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewSettingsClient(expand ExpandValues, subscriptionID string, ascLocation string) SettingsClient {
+	return NewSettingsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewSettingsClientWithBaseURI creates an instance of the SettingsClient client.
-func NewSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SettingsClient {
-	return SettingsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewSettingsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) SettingsClient {
+	return SettingsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // Get settings of different configurations in security center

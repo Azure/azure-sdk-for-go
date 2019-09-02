@@ -32,13 +32,13 @@ type ContactsClient struct {
 }
 
 // NewContactsClient creates an instance of the ContactsClient client.
-func NewContactsClient(subscriptionID string, ascLocation string) ContactsClient {
-	return NewContactsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewContactsClient(expand ExpandValues, subscriptionID string, ascLocation string) ContactsClient {
+	return NewContactsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewContactsClientWithBaseURI creates an instance of the ContactsClient client.
-func NewContactsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) ContactsClient {
-	return ContactsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewContactsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) ContactsClient {
+	return ContactsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // Create security contact configurations for the subscription

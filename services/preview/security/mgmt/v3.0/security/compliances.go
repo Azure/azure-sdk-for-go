@@ -31,13 +31,13 @@ type CompliancesClient struct {
 }
 
 // NewCompliancesClient creates an instance of the CompliancesClient client.
-func NewCompliancesClient(subscriptionID string, ascLocation string) CompliancesClient {
-	return NewCompliancesClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewCompliancesClient(expand ExpandValues, subscriptionID string, ascLocation string) CompliancesClient {
+	return NewCompliancesClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewCompliancesClientWithBaseURI creates an instance of the CompliancesClient client.
-func NewCompliancesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) CompliancesClient {
-	return CompliancesClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewCompliancesClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) CompliancesClient {
+	return CompliancesClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // Get details of a specific Compliance.

@@ -31,13 +31,13 @@ type DeviceSecurityGroupsClient struct {
 }
 
 // NewDeviceSecurityGroupsClient creates an instance of the DeviceSecurityGroupsClient client.
-func NewDeviceSecurityGroupsClient(subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
-	return NewDeviceSecurityGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewDeviceSecurityGroupsClient(expand ExpandValues, subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return NewDeviceSecurityGroupsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewDeviceSecurityGroupsClientWithBaseURI creates an instance of the DeviceSecurityGroupsClient client.
-func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
-	return DeviceSecurityGroupsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
+	return DeviceSecurityGroupsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // CreateOrUpdate creates or updates the device security group on a specified IoT hub resource.

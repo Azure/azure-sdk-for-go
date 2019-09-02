@@ -32,13 +32,13 @@ type IoTSecuritySolutionsClient struct {
 }
 
 // NewIoTSecuritySolutionsClient creates an instance of the IoTSecuritySolutionsClient client.
-func NewIoTSecuritySolutionsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
-	return NewIoTSecuritySolutionsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewIoTSecuritySolutionsClient(expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
+	return NewIoTSecuritySolutionsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewIoTSecuritySolutionsClientWithBaseURI creates an instance of the IoTSecuritySolutionsClient client.
-func NewIoTSecuritySolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
-	return IoTSecuritySolutionsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewIoTSecuritySolutionsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsClient {
+	return IoTSecuritySolutionsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // List list of security solutions

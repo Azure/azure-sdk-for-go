@@ -32,13 +32,13 @@ type AllowedConnectionsClient struct {
 }
 
 // NewAllowedConnectionsClient creates an instance of the AllowedConnectionsClient client.
-func NewAllowedConnectionsClient(subscriptionID string, ascLocation string) AllowedConnectionsClient {
-	return NewAllowedConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewAllowedConnectionsClient(expand ExpandValues, subscriptionID string, ascLocation string) AllowedConnectionsClient {
+	return NewAllowedConnectionsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewAllowedConnectionsClientWithBaseURI creates an instance of the AllowedConnectionsClient client.
-func NewAllowedConnectionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AllowedConnectionsClient {
-	return AllowedConnectionsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewAllowedConnectionsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) AllowedConnectionsClient {
+	return AllowedConnectionsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // Get gets the list of all possible traffic between resources for the subscription and location, based on connection

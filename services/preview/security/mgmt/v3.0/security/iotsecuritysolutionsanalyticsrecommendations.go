@@ -34,14 +34,14 @@ type IoTSecuritySolutionsAnalyticsRecommendationsClient struct {
 
 // NewIoTSecuritySolutionsAnalyticsRecommendationsClient creates an instance of the
 // IoTSecuritySolutionsAnalyticsRecommendationsClient client.
-func NewIoTSecuritySolutionsAnalyticsRecommendationsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationsClient {
-	return NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewIoTSecuritySolutionsAnalyticsRecommendationsClient(expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationsClient {
+	return NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI creates an instance of the
 // IoTSecuritySolutionsAnalyticsRecommendationsClient client.
-func NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationsClient {
-	return IoTSecuritySolutionsAnalyticsRecommendationsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewIoTSecuritySolutionsAnalyticsRecommendationsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsRecommendationsClient {
+	return IoTSecuritySolutionsAnalyticsRecommendationsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // List security Analytics of a security solution

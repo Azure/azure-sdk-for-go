@@ -32,13 +32,13 @@ type WorkspaceSettingsClient struct {
 }
 
 // NewWorkspaceSettingsClient creates an instance of the WorkspaceSettingsClient client.
-func NewWorkspaceSettingsClient(subscriptionID string, ascLocation string) WorkspaceSettingsClient {
-	return NewWorkspaceSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewWorkspaceSettingsClient(expand ExpandValues, subscriptionID string, ascLocation string) WorkspaceSettingsClient {
+	return NewWorkspaceSettingsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewWorkspaceSettingsClientWithBaseURI creates an instance of the WorkspaceSettingsClient client.
-func NewWorkspaceSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) WorkspaceSettingsClient {
-	return WorkspaceSettingsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewWorkspaceSettingsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) WorkspaceSettingsClient {
+	return WorkspaceSettingsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // Create creating settings about where we should store your security data and logs

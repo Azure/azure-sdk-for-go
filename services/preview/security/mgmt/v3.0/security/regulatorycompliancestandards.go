@@ -32,14 +32,14 @@ type RegulatoryComplianceStandardsClient struct {
 }
 
 // NewRegulatoryComplianceStandardsClient creates an instance of the RegulatoryComplianceStandardsClient client.
-func NewRegulatoryComplianceStandardsClient(subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
-	return NewRegulatoryComplianceStandardsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewRegulatoryComplianceStandardsClient(expand ExpandValues, subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
+	return NewRegulatoryComplianceStandardsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewRegulatoryComplianceStandardsClientWithBaseURI creates an instance of the RegulatoryComplianceStandardsClient
 // client.
-func NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
-	return RegulatoryComplianceStandardsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
+	return RegulatoryComplianceStandardsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // Get supported regulatory compliance details state for selected standard

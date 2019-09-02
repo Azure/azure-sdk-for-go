@@ -32,13 +32,13 @@ type AdaptiveApplicationControlsClient struct {
 }
 
 // NewAdaptiveApplicationControlsClient creates an instance of the AdaptiveApplicationControlsClient client.
-func NewAdaptiveApplicationControlsClient(subscriptionID string, ascLocation string) AdaptiveApplicationControlsClient {
-	return NewAdaptiveApplicationControlsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+func NewAdaptiveApplicationControlsClient(expand ExpandValues, subscriptionID string, ascLocation string) AdaptiveApplicationControlsClient {
+	return NewAdaptiveApplicationControlsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
 }
 
 // NewAdaptiveApplicationControlsClientWithBaseURI creates an instance of the AdaptiveApplicationControlsClient client.
-func NewAdaptiveApplicationControlsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveApplicationControlsClient {
-	return AdaptiveApplicationControlsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewAdaptiveApplicationControlsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) AdaptiveApplicationControlsClient {
+	return AdaptiveApplicationControlsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
 }
 
 // Get gets an application control VM/server group.

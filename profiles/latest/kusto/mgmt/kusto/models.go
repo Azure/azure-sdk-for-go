@@ -74,6 +74,7 @@ const (
 	SINGLEJSON DataFormat = original.SINGLEJSON
 	SOHSV      DataFormat = original.SOHSV
 	TSV        DataFormat = original.TSV
+	TSVE       DataFormat = original.TSVE
 	TXT        DataFormat = original.TXT
 )
 

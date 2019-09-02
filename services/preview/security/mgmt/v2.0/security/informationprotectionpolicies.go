@@ -31,14 +31,14 @@ type InformationProtectionPoliciesClient struct {
 }
 
 // NewInformationProtectionPoliciesClient creates an instance of the InformationProtectionPoliciesClient client.
-func NewInformationProtectionPoliciesClient(expand ExpandValues, subscriptionID string, ascLocation string) InformationProtectionPoliciesClient {
-	return NewInformationProtectionPoliciesClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewInformationProtectionPoliciesClient(subscriptionID string, ascLocation string) InformationProtectionPoliciesClient {
+	return NewInformationProtectionPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewInformationProtectionPoliciesClientWithBaseURI creates an instance of the InformationProtectionPoliciesClient
 // client.
-func NewInformationProtectionPoliciesClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) InformationProtectionPoliciesClient {
-	return InformationProtectionPoliciesClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewInformationProtectionPoliciesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) InformationProtectionPoliciesClient {
+	return InformationProtectionPoliciesClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // CreateOrUpdate details of the information protection policy.

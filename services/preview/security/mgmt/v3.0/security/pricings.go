@@ -32,13 +32,13 @@ type PricingsClient struct {
 }
 
 // NewPricingsClient creates an instance of the PricingsClient client.
-func NewPricingsClient(expand ExpandValues, subscriptionID string, ascLocation string) PricingsClient {
-	return NewPricingsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewPricingsClient(subscriptionID string, ascLocation string) PricingsClient {
+	return NewPricingsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewPricingsClientWithBaseURI creates an instance of the PricingsClient client.
-func NewPricingsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) PricingsClient {
-	return PricingsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewPricingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) PricingsClient {
+	return PricingsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // Get gets a provided Security Center pricing configuration in the subscription.

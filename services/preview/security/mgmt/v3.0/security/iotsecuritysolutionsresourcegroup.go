@@ -34,14 +34,14 @@ type IoTSecuritySolutionsResourceGroupClient struct {
 
 // NewIoTSecuritySolutionsResourceGroupClient creates an instance of the IoTSecuritySolutionsResourceGroupClient
 // client.
-func NewIoTSecuritySolutionsResourceGroupClient(expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
-	return NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewIoTSecuritySolutionsResourceGroupClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
+	return NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewIoTSecuritySolutionsResourceGroupClientWithBaseURI creates an instance of the
 // IoTSecuritySolutionsResourceGroupClient client.
-func NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
-	return IoTSecuritySolutionsResourceGroupClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewIoTSecuritySolutionsResourceGroupClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsResourceGroupClient {
+	return IoTSecuritySolutionsResourceGroupClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // List list of security solutions

@@ -32,19 +32,21 @@ type NetworkDataClient struct {
 }
 
 // NewNetworkDataClient creates an instance of the NetworkDataClient client.
-func NewNetworkDataClient(expand ExpandValues, subscriptionID string, ascLocation string) NetworkDataClient {
-	return NewNetworkDataClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewNetworkDataClient(subscriptionID string, ascLocation string) NetworkDataClient {
+	return NewNetworkDataClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewNetworkDataClientWithBaseURI creates an instance of the NetworkDataClient client.
-func NewNetworkDataClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) NetworkDataClient {
-	return NetworkDataClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewNetworkDataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) NetworkDataClient {
+	return NetworkDataClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // Get get the network data on your scanned resource
 // Parameters:
 // resourceID - the identifier of the resource.
-func (client NetworkDataClient) Get(ctx context.Context, resourceID string) (result NetworkData, err error) {
+// expand - expand whether you want to get more information about the network data (ports and connections
+// details)
+func (client NetworkDataClient) Get(ctx context.Context, resourceID string, expand ExpandValues) (result NetworkData, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.Get")
 		defer func() {
@@ -55,7 +57,7 @@ func (client NetworkDataClient) Get(ctx context.Context, resourceID string) (res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceID)
+	req, err := client.GetPreparer(ctx, resourceID, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "Get", nil, "Failure preparing request")
 		return
@@ -77,7 +79,7 @@ func (client NetworkDataClient) Get(ctx context.Context, resourceID string) (res
 }
 
 // GetPreparer prepares the Get request.
-func (client NetworkDataClient) GetPreparer(ctx context.Context, resourceID string) (*http.Request, error) {
+func (client NetworkDataClient) GetPreparer(ctx context.Context, resourceID string, expand ExpandValues) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceId": autorest.Encode("path", resourceID),
 	}
@@ -86,8 +88,8 @@ func (client NetworkDataClient) GetPreparer(ctx context.Context, resourceID stri
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(string(client.Expand)) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", client.Expand)
+	if len(string(expand)) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -119,7 +121,10 @@ func (client NetworkDataClient) GetResponder(resp *http.Response) (result Networ
 }
 
 // List get the network data on all your scanned resources inside a scope
-func (client NetworkDataClient) List(ctx context.Context) (result NetworkDataListPage, err error) {
+// Parameters:
+// expand - expand whether you want to get more information about the network data (ports and connections
+// details)
+func (client NetworkDataClient) List(ctx context.Context, expand ExpandValues) (result NetworkDataListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.List")
 		defer func() {
@@ -137,7 +142,7 @@ func (client NetworkDataClient) List(ctx context.Context) (result NetworkDataLis
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "List", nil, "Failure preparing request")
 		return
@@ -159,7 +164,7 @@ func (client NetworkDataClient) List(ctx context.Context) (result NetworkDataLis
 }
 
 // ListPreparer prepares the List request.
-func (client NetworkDataClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client NetworkDataClient) ListPreparer(ctx context.Context, expand ExpandValues) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -168,8 +173,8 @@ func (client NetworkDataClient) ListPreparer(ctx context.Context) (*http.Request
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(string(client.Expand)) > 0 {
-		queryParameters["$expand"] = autorest.Encode("query", client.Expand)
+	if len(string(expand)) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -222,7 +227,7 @@ func (client NetworkDataClient) listNextResults(ctx context.Context, lastResults
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client NetworkDataClient) ListComplete(ctx context.Context) (result NetworkDataListIterator, err error) {
+func (client NetworkDataClient) ListComplete(ctx context.Context, expand ExpandValues) (result NetworkDataListIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.List")
 		defer func() {
@@ -233,6 +238,6 @@ func (client NetworkDataClient) ListComplete(ctx context.Context) (result Networ
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx)
+	result.page, err = client.List(ctx, expand)
 	return
 }

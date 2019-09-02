@@ -32,14 +32,14 @@ type IoTSecuritySolutionsAnalyticsClient struct {
 }
 
 // NewIoTSecuritySolutionsAnalyticsClient creates an instance of the IoTSecuritySolutionsAnalyticsClient client.
-func NewIoTSecuritySolutionsAnalyticsClient(expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsClient {
-	return NewIoTSecuritySolutionsAnalyticsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewIoTSecuritySolutionsAnalyticsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsClient {
+	return NewIoTSecuritySolutionsAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewIoTSecuritySolutionsAnalyticsClientWithBaseURI creates an instance of the IoTSecuritySolutionsAnalyticsClient
 // client.
-func NewIoTSecuritySolutionsAnalyticsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsClient {
-	return IoTSecuritySolutionsAnalyticsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewIoTSecuritySolutionsAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsClient {
+	return IoTSecuritySolutionsAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // GetAll security Analytics of a security solution

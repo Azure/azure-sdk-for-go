@@ -31,13 +31,13 @@ type AdvancedThreatProtectionClient struct {
 }
 
 // NewAdvancedThreatProtectionClient creates an instance of the AdvancedThreatProtectionClient client.
-func NewAdvancedThreatProtectionClient(expand ExpandValues, subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
-	return NewAdvancedThreatProtectionClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
+	return NewAdvancedThreatProtectionClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewAdvancedThreatProtectionClientWithBaseURI creates an instance of the AdvancedThreatProtectionClient client.
-func NewAdvancedThreatProtectionClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
-	return AdvancedThreatProtectionClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewAdvancedThreatProtectionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
+	return AdvancedThreatProtectionClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // Create creates or updates the Advanced Threat Protection settings on a specified resource.

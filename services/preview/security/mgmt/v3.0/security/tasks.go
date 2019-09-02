@@ -32,13 +32,13 @@ type TasksClient struct {
 }
 
 // NewTasksClient creates an instance of the TasksClient client.
-func NewTasksClient(expand ExpandValues, subscriptionID string, ascLocation string) TasksClient {
-	return NewTasksClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewTasksClient(subscriptionID string, ascLocation string) TasksClient {
+	return NewTasksClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewTasksClientWithBaseURI creates an instance of the TasksClient client.
-func NewTasksClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) TasksClient {
-	return TasksClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewTasksClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) TasksClient {
+	return TasksClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // GetResourceGroupLevelTask recommended tasks that will help improve the security of the subscription proactively

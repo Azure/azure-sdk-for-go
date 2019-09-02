@@ -33,14 +33,14 @@ type RegulatoryComplianceAssessmentsClient struct {
 }
 
 // NewRegulatoryComplianceAssessmentsClient creates an instance of the RegulatoryComplianceAssessmentsClient client.
-func NewRegulatoryComplianceAssessmentsClient(expand ExpandValues, subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
-	return NewRegulatoryComplianceAssessmentsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
+	return NewRegulatoryComplianceAssessmentsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewRegulatoryComplianceAssessmentsClientWithBaseURI creates an instance of the RegulatoryComplianceAssessmentsClient
 // client.
-func NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
-	return RegulatoryComplianceAssessmentsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
+	return RegulatoryComplianceAssessmentsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // Get supported regulatory compliance details and state for selected assessment

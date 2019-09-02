@@ -32,13 +32,13 @@ type IotSecuritySolutionClient struct {
 }
 
 // NewIotSecuritySolutionClient creates an instance of the IotSecuritySolutionClient client.
-func NewIotSecuritySolutionClient(expand ExpandValues, subscriptionID string, ascLocation string) IotSecuritySolutionClient {
-	return NewIotSecuritySolutionClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewIotSecuritySolutionClient(subscriptionID string, ascLocation string) IotSecuritySolutionClient {
+	return NewIotSecuritySolutionClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewIotSecuritySolutionClientWithBaseURI creates an instance of the IotSecuritySolutionClient client.
-func NewIotSecuritySolutionClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) IotSecuritySolutionClient {
-	return IotSecuritySolutionClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewIotSecuritySolutionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionClient {
+	return IotSecuritySolutionClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // Create create new solution manager

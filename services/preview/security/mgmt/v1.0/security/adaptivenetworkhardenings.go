@@ -32,13 +32,13 @@ type AdaptiveNetworkHardeningsClient struct {
 }
 
 // NewAdaptiveNetworkHardeningsClient creates an instance of the AdaptiveNetworkHardeningsClient client.
-func NewAdaptiveNetworkHardeningsClient(expand ExpandValues, subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
-	return NewAdaptiveNetworkHardeningsClientWithBaseURI(DefaultBaseURI, expand, subscriptionID, ascLocation)
+func NewAdaptiveNetworkHardeningsClient(subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
+	return NewAdaptiveNetworkHardeningsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
 // NewAdaptiveNetworkHardeningsClientWithBaseURI creates an instance of the AdaptiveNetworkHardeningsClient client.
-func NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI string, expand ExpandValues, subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
-	return AdaptiveNetworkHardeningsClient{NewWithBaseURI(baseURI, expand, subscriptionID, ascLocation)}
+func NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AdaptiveNetworkHardeningsClient {
+	return AdaptiveNetworkHardeningsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
 // Enforce enforces the given rules on the NSG(s) listed in the request

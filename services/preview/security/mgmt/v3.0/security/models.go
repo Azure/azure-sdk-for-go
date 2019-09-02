@@ -7182,6 +7182,12 @@ type ThresholdCustomAlertRule struct {
 // TimeWindowCustomAlertRule a custom alert rule that checks if the number of activities (depends on the
 // custom alert type) in a time window is within the given range.
 type TimeWindowCustomAlertRule struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
 	// DisplayName - READ-ONLY; The display name of the custom alert.
 	DisplayName *string `json:"displayName,omitempty"`
 	// Description - READ-ONLY; The description of the custom alert.
@@ -7190,12 +7196,6 @@ type TimeWindowCustomAlertRule struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - The type of the custom alert rule.
 	RuleType *string `json:"ruleType,omitempty"`
-	// MinThreshold - The minimum threshold.
-	MinThreshold *int32 `json:"minThreshold,omitempty"`
-	// MaxThreshold - The maximum threshold.
-	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
-	// TimeWindowSize - The time window size in iso8601 format.
-	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
 }
 
 // TopologyList ...

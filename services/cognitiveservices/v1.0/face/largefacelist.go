@@ -356,7 +356,7 @@ func (client LargeFaceListClient) AddFaceFromURLResponder(resp *http.Response) (
 // Parameters:
 // largeFaceListID - id referencing a particular large face list.
 // body - request body for creating a large face list.
-func (client LargeFaceListClient) Create(ctx context.Context, largeFaceListID string, body MetaDataContract) (result autorest.Response, err error) {
+func (client LargeFaceListClient) Create(ctx context.Context, largeFaceListID string, body MetaDataContractMandatoryName) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LargeFaceListClient.Create")
 		defer func() {
@@ -396,7 +396,7 @@ func (client LargeFaceListClient) Create(ctx context.Context, largeFaceListID st
 }
 
 // CreatePreparer prepares the Create request.
-func (client LargeFaceListClient) CreatePreparer(ctx context.Context, largeFaceListID string, body MetaDataContract) (*http.Request, error) {
+func (client LargeFaceListClient) CreatePreparer(ctx context.Context, largeFaceListID string, body MetaDataContractMandatoryName) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}

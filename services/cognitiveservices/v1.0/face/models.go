@@ -655,7 +655,7 @@ type Makeup struct {
 }
 
 // MetaDataContract a combination of user defined name and user specified data and recognition model name
-// for largePersonGroup/personGroup, and largeFaceList/faceList.
+// for largePersonGroup/personGroup.
 type MetaDataContract struct {
 	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02'
 	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
@@ -665,9 +665,29 @@ type MetaDataContract struct {
 	UserData *string `json:"userData,omitempty"`
 }
 
-// NameAndUserDataContract a combination of user defined name and user specified data for the person,
-// largePersonGroup/personGroup, and largeFaceList/faceList.
+// MetaDataContractMandatoryName a combination of user defined name and user specified data and recognition
+// model name for largeFaceList/faceList.
+type MetaDataContractMandatoryName struct {
+	// RecognitionModel - Possible values include: 'Recognition01', 'Recognition02'
+	RecognitionModel RecognitionModel `json:"recognitionModel,omitempty"`
+	// Name - User defined name, maximum length is 128.
+	Name *string `json:"name,omitempty"`
+	// UserData - User specified data. Length should not exceed 16KB.
+	UserData *string `json:"userData,omitempty"`
+}
+
+// NameAndUserDataContract a combination of user defined name and user specified data for the person and
+// largePersonGroup/personGroup.
 type NameAndUserDataContract struct {
+	// Name - User defined name, maximum length is 128.
+	Name *string `json:"name,omitempty"`
+	// UserData - User specified data. Length should not exceed 16KB.
+	UserData *string `json:"userData,omitempty"`
+}
+
+// NameAndUserDataContractMandatoryName a combination of user defined name and user specified data for
+// largeFaceList/faceList.
+type NameAndUserDataContractMandatoryName struct {
 	// Name - User defined name, maximum length is 128.
 	Name *string `json:"name,omitempty"`
 	// UserData - User specified data. Length should not exceed 16KB.

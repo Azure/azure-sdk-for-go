@@ -344,7 +344,7 @@ func (client ListClient) AddFaceFromURLResponder(resp *http.Response) (result Pe
 // Parameters:
 // faceListID - id referencing a particular face list.
 // body - request body for creating a face list.
-func (client ListClient) Create(ctx context.Context, faceListID string, body MetaDataContract) (result autorest.Response, err error) {
+func (client ListClient) Create(ctx context.Context, faceListID string, body MetaDataContractMandatoryName) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListClient.Create")
 		defer func() {
@@ -384,7 +384,7 @@ func (client ListClient) Create(ctx context.Context, faceListID string, body Met
 }
 
 // CreatePreparer prepares the Create request.
-func (client ListClient) CreatePreparer(ctx context.Context, faceListID string, body MetaDataContract) (*http.Request, error) {
+func (client ListClient) CreatePreparer(ctx context.Context, faceListID string, body MetaDataContractMandatoryName) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}

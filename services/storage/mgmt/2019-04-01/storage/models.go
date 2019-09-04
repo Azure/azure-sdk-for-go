@@ -1287,6 +1287,23 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// CloudError an error response from the Storage service.
+type CloudError struct {
+	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// CloudErrorBody an error response from the Storage service.
+type CloudErrorBody struct {
+	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	Code *string `json:"code,omitempty"`
+	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	Message *string `json:"message,omitempty"`
+	// Target - The target of the particular error. For example, the name of the property in error.
+	Target *string `json:"target,omitempty"`
+	// Details - A list of additional details about the error.
+	Details *[]CloudErrorBody `json:"details,omitempty"`
+}
+
 // ContainerProperties the properties of a container.
 type ContainerProperties struct {
 	// PublicAccess - Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'PublicAccessContainer', 'PublicAccessBlob', 'PublicAccessNone'
@@ -1424,23 +1441,6 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty"`
 	// Dfs - READ-ONLY; Gets the dfs endpoint.
 	Dfs *string `json:"dfs,omitempty"`
-}
-
-// ErrorResponse an error response from the Storage service.
-type ErrorResponse struct {
-	Error *ErrorResponseBody `json:"error,omitempty"`
-}
-
-// ErrorResponseBody an error response from the Storage service.
-type ErrorResponseBody struct {
-	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-	// Message - A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty"`
-	// Details - A list of additional details about the error.
-	Details *[]ErrorResponseBody `json:"details,omitempty"`
 }
 
 // FileServiceItems ...

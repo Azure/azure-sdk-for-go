@@ -44,8 +44,9 @@ func NewSubAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, a
 // Parameters:
 // scope - scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
 // management group (/providers/Microsoft.Management/managementGroups/mgName).
+// assessmentName - the Assessment Key - Unique key for the assessment type
 // subAssessmentName - the Sub-Assessment Key - Unique key for the sub-assessment type
-func (client SubAssessmentsClient) Get(ctx context.Context, scope string, subAssessmentName string) (result SubAssessment, err error) {
+func (client SubAssessmentsClient) Get(ctx context.Context, scope string, assessmentName string, subAssessmentName string) (result SubAssessment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubAssessmentsClient.Get")
 		defer func() {
@@ -56,7 +57,7 @@ func (client SubAssessmentsClient) Get(ctx context.Context, scope string, subAss
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, scope, subAssessmentName)
+	req, err := client.GetPreparer(ctx, scope, assessmentName, subAssessmentName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.SubAssessmentsClient", "Get", nil, "Failure preparing request")
 		return
@@ -78,8 +79,9 @@ func (client SubAssessmentsClient) Get(ctx context.Context, scope string, subAss
 }
 
 // GetPreparer prepares the Get request.
-func (client SubAssessmentsClient) GetPreparer(ctx context.Context, scope string, subAssessmentName string) (*http.Request, error) {
+func (client SubAssessmentsClient) GetPreparer(ctx context.Context, scope string, assessmentName string, subAssessmentName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"assessmentName":    autorest.Encode("path", assessmentName),
 		"scope":             autorest.Encode("path", scope),
 		"subAssessmentName": autorest.Encode("path", subAssessmentName),
 	}
@@ -92,7 +94,7 @@ func (client SubAssessmentsClient) GetPreparer(ctx context.Context, scope string
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{scope}/providers/Microsoft.Security/subAssessments/{subAssessmentName}", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments/{subAssessmentName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

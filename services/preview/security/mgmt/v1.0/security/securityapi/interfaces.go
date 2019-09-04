@@ -25,7 +25,7 @@ import (
 
 // SubAssessmentsClientAPI contains the set of methods on the SubAssessmentsClient type.
 type SubAssessmentsClientAPI interface {
-	Get(ctx context.Context, scope string, subAssessmentName string) (result security.SubAssessment, err error)
+	Get(ctx context.Context, scope string, assessmentName string, subAssessmentName string) (result security.SubAssessment, err error)
 	List(ctx context.Context, scope string) (result security.SubAssessmentListPage, err error)
 }
 

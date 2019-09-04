@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v33.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| storagecache | 2019-08-01-preview |
+
 ## `v33.0.0`
 
 ### New Packages

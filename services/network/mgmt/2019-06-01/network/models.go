@@ -397,11 +397,13 @@ const (
 	AzureFirewallApplicationRuleProtocolTypeHTTP AzureFirewallApplicationRuleProtocolType = "Http"
 	// AzureFirewallApplicationRuleProtocolTypeHTTPS ...
 	AzureFirewallApplicationRuleProtocolTypeHTTPS AzureFirewallApplicationRuleProtocolType = "Https"
+	// AzureFirewallApplicationRuleProtocolTypeMssql ...
+	AzureFirewallApplicationRuleProtocolTypeMssql AzureFirewallApplicationRuleProtocolType = "Mssql"
 )
 
 // PossibleAzureFirewallApplicationRuleProtocolTypeValues returns an array of possible values for the AzureFirewallApplicationRuleProtocolType const type.
 func PossibleAzureFirewallApplicationRuleProtocolTypeValues() []AzureFirewallApplicationRuleProtocolType {
-	return []AzureFirewallApplicationRuleProtocolType{AzureFirewallApplicationRuleProtocolTypeHTTP, AzureFirewallApplicationRuleProtocolTypeHTTPS}
+	return []AzureFirewallApplicationRuleProtocolType{AzureFirewallApplicationRuleProtocolTypeHTTP, AzureFirewallApplicationRuleProtocolTypeHTTPS, AzureFirewallApplicationRuleProtocolTypeMssql}
 }
 
 // AzureFirewallNatRCActionType enumerates the values for azure firewall nat rc action type.
@@ -6349,7 +6351,7 @@ type AzureFirewallApplicationRuleCollectionPropertiesFormat struct {
 
 // AzureFirewallApplicationRuleProtocol properties of the application rule protocol.
 type AzureFirewallApplicationRuleProtocol struct {
-	// ProtocolType - Protocol type. Possible values include: 'AzureFirewallApplicationRuleProtocolTypeHTTP', 'AzureFirewallApplicationRuleProtocolTypeHTTPS'
+	// ProtocolType - Protocol type. Possible values include: 'AzureFirewallApplicationRuleProtocolTypeHTTP', 'AzureFirewallApplicationRuleProtocolTypeHTTPS', 'AzureFirewallApplicationRuleProtocolTypeMssql'
 	ProtocolType AzureFirewallApplicationRuleProtocolType `json:"protocolType,omitempty"`
 	// Port - Port number for the protocol, cannot be greater than 64000. This field is optional.
 	Port *int32 `json:"port,omitempty"`
@@ -7749,6 +7751,35 @@ func (future *BastionHostsDeleteFuture) Result(client BastionHostsClient) (ar au
 		return
 	}
 	ar.Response = future.Response()
+	return
+}
+
+// BastionHostsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type BastionHostsUpdateTagsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *BastionHostsUpdateTagsFuture) Result(client BastionHostsClient) (bh BastionHost, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.BastionHostsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.BastionHostsUpdateTagsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if bh.Response.Response, err = future.GetResult(sender); err == nil && bh.Response.Response.StatusCode != http.StatusNoContent {
+		bh, err = client.UpdateTagsResponder(bh.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.BastionHostsUpdateTagsFuture", "Result", bh.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 

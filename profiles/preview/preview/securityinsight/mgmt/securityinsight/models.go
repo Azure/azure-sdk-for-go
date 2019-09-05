@@ -233,15 +233,15 @@ const (
 type Kind = original.Kind
 
 const (
-	KindAlertRule Kind = original.KindAlertRule
-	KindScheduled Kind = original.KindScheduled
+	KindAggregations     Kind = original.KindAggregations
+	KindCasesAggregation Kind = original.KindCasesAggregation
 )
 
-type KindBasicAggregations = original.KindBasicAggregations
+type KindBasicAlertRule = original.KindBasicAlertRule
 
 const (
-	KindAggregations     KindBasicAggregations = original.KindAggregations
-	KindCasesAggregation KindBasicAggregations = original.KindCasesAggregation
+	KindAlertRule KindBasicAlertRule = original.KindAlertRule
+	KindScheduled KindBasicAlertRule = original.KindScheduled
 )
 
 type KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplate
@@ -761,11 +761,11 @@ func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 func PossibleKillChainIntentValues() []KillChainIntent {
 	return original.PossibleKillChainIntentValues()
 }
-func PossibleKindBasicAggregationsValues() []KindBasicAggregations {
-	return original.PossibleKindBasicAggregationsValues()
-}
 func PossibleKindBasicAlertRuleTemplateValues() []KindBasicAlertRuleTemplate {
 	return original.PossibleKindBasicAlertRuleTemplateValues()
+}
+func PossibleKindBasicAlertRuleValues() []KindBasicAlertRule {
+	return original.PossibleKindBasicAlertRuleValues()
 }
 func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
 	return original.PossibleKindBasicDataConnectorValues()

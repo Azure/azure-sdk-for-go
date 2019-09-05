@@ -84,6 +84,17 @@ type RunsClientAPI interface {
 
 var _ RunsClientAPI = (*containerregistry.RunsClient)(nil)
 
+// TaskRunsClientAPI contains the set of methods on the TaskRunsClient type.
+type TaskRunsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun containerregistry.TaskRun) (result containerregistry.TaskRunsCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result containerregistry.TaskRunsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result containerregistry.TaskRun, err error)
+	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.TaskRunListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters containerregistry.TaskRunUpdateParameters) (result containerregistry.TaskRunsUpdateFuture, err error)
+}
+
+var _ TaskRunsClientAPI = (*containerregistry.TaskRunsClient)(nil)
+
 // TasksClientAPI contains the set of methods on the TasksClient type.
 type TasksClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskCreateParameters containerregistry.Task) (result containerregistry.TasksCreateFuture, err error)

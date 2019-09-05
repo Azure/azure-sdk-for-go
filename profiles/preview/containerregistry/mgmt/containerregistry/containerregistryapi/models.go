@@ -25,5 +25,6 @@ type OperationsClientAPI = original.OperationsClientAPI
 type RegistriesClientAPI = original.RegistriesClientAPI
 type ReplicationsClientAPI = original.ReplicationsClientAPI
 type RunsClientAPI = original.RunsClientAPI
+type TaskRunsClientAPI = original.TaskRunsClientAPI
 type TasksClientAPI = original.TasksClientAPI
 type WebhooksClientAPI = original.WebhooksClientAPI

@@ -193,13 +193,13 @@ func PossibleConnectionTypeValues() []ConnectionType {
 type ConnectionTypeValues string
 
 const (
-	// Azurevm ...
-	Azurevm ConnectionTypeValues = "Azure vm"
+	// AzureVM ...
+	AzureVM ConnectionTypeValues = "Azure VM"
 )
 
 // PossibleConnectionTypeValuesValues returns an array of possible values for the ConnectionTypeValues const type.
 func PossibleConnectionTypeValuesValues() []ConnectionTypeValues {
-	return []ConnectionTypeValues{Azurevm}
+	return []ConnectionTypeValues{AzureVM}
 }
 
 // Direction enumerates the values for direction.
@@ -695,8 +695,8 @@ type AadSolutionProperties struct {
 
 // ActualTrafficConnectedResources the actual traffic details
 type ActualTrafficConnectedResources struct {
-	// TrafficVolume - READ-ONLY; The actual traffic volume between the actual traffic start time to the actual traffic end time
-	TrafficVolume      *string              `json:"trafficVolume,omitempty"`
+	// Volume - READ-ONLY; The actual traffic volume between the actual traffic start time to the actual traffic end time
+	Volume             *string              `json:"volume,omitempty"`
 	ConnectionsDetails *[]ConnectionDetails `json:"connectionsDetails,omitempty"`
 }
 
@@ -2770,13 +2770,13 @@ type ConnectedResource struct {
 
 // ConnectedResources the connections details
 type ConnectedResources struct {
-	// TCPPortsCount - READ-ONLY; The allowed connections tcp ports count
+	// TCPPortsCount - READ-ONLY; The connections tcp ports count
 	TCPPortsCount *int32 `json:"tcpPortsCount,omitempty"`
-	// UDPPortsCount - READ-ONLY; The allowed connections udp ports count
+	// UDPPortsCount - READ-ONLY; The connections udp ports count
 	UDPPortsCount *int32 `json:"udpPortsCount,omitempty"`
-	// TCPPorts - READ-ONLY; The allowed connections tcp ports
+	// TCPPorts - READ-ONLY; The connections tcp ports
 	TCPPorts *string `json:"tcpPorts,omitempty"`
-	// UDPPorts - READ-ONLY; The allowed connections udp ports
+	// UDPPorts - READ-ONLY; The connections udp ports
 	UDPPorts *string `json:"udpPorts,omitempty"`
 }
 
@@ -4718,7 +4718,7 @@ func (nd *NetworkData) UnmarshalJSON(body []byte) error {
 type NetworkDataConnectableResource struct {
 	// ConnectableResourceID - READ-ONLY; The connectable resource id
 	ConnectableResourceID *string `json:"connectableResourceId,omitempty"`
-	// ConnectionType - The connection type between the extension resource to the connectable resource Id. Possible values include: 'Azurevm'
+	// ConnectionType - The connection type between the extension resource to the connectable resource Id. Possible values include: 'AzureVM'
 	ConnectionType ConnectionTypeValues `json:"connectionType,omitempty"`
 	// AllowedConnections - READ-ONLY; The allowed connections details
 	AllowedConnections *NetworkDataConnectableResourceAllowedConnections `json:"allowedConnections,omitempty"`

@@ -106,7 +106,7 @@ const (
 type ConnectionTypeValues = original.ConnectionTypeValues
 
 const (
-	Azurevm ConnectionTypeValues = original.Azurevm
+	AzureVM ConnectionTypeValues = original.AzureVM
 )
 
 type DataSource = original.DataSource

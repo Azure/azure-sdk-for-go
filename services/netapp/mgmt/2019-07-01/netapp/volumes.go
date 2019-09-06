@@ -117,7 +117,7 @@ func (client VolumesClient) CreateOrUpdatePreparer(ctx context.Context, body Vol
 		"volumeName":        autorest.Encode("path", volumeName),
 	}
 
-	const APIVersion = "2019-06-01"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -211,7 +211,7 @@ func (client VolumesClient) DeletePreparer(ctx context.Context, resourceGroupNam
 		"volumeName":        autorest.Encode("path", volumeName),
 	}
 
-	const APIVersion = "2019-06-01"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -305,7 +305,7 @@ func (client VolumesClient) GetPreparer(ctx context.Context, resourceGroupName s
 		"volumeName":        autorest.Encode("path", volumeName),
 	}
 
-	const APIVersion = "2019-06-01"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -392,7 +392,7 @@ func (client VolumesClient) ListPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-06-01"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -482,7 +482,7 @@ func (client VolumesClient) UpdatePreparer(ctx context.Context, body VolumePatch
 		"volumeName":        autorest.Encode("path", volumeName),
 	}
 
-	const APIVersion = "2019-06-01"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

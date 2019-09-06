@@ -4432,7 +4432,7 @@ func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResul
 
 // TaskRunProperties the properties of task run.
 type TaskRunProperties struct {
-	// ProvisioningState - READ-ONLY; The privisioning state of this taskrun. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provisioning state of this task run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// RunRequest - The request (parameters) for the run
 	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
@@ -4652,7 +4652,7 @@ func (future *TaskRunsUpdateFuture) Result(client TaskRunsClient) (tr TaskRun, e
 	return
 }
 
-// TaskRunUpdateParameters the parameters for updating a taskrun.
+// TaskRunUpdateParameters the parameters for updating a task run.
 type TaskRunUpdateParameters struct {
 	// Identity - Identity for the resource.
 	Identity *IdentityProperties `json:"identity,omitempty"`

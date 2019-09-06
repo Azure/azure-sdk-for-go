@@ -401,6 +401,7 @@ type TaskRunListResult = original.TaskRunListResult
 type TaskRunListResultIterator = original.TaskRunListResultIterator
 type TaskRunListResultPage = original.TaskRunListResultPage
 type TaskRunProperties = original.TaskRunProperties
+type TaskRunPropertiesUpdateParameters = original.TaskRunPropertiesUpdateParameters
 type TaskRunRequest = original.TaskRunRequest
 type TaskRunUpdateParameters = original.TaskRunUpdateParameters
 type TaskRunsClient = original.TaskRunsClient

@@ -4174,8 +4174,6 @@ type TaskRun struct {
 	// Identity - Identity for the resource.
 	Identity           *IdentityProperties `json:"identity,omitempty"`
 	*TaskRunProperties `json:"properties,omitempty"`
-	RunRequest         BasicRunRequest `json:"runRequest,omitempty"`
-	RunResult          *Run            `json:"runResult,omitempty"`
 	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource.
@@ -4196,10 +4194,6 @@ func (tr TaskRun) MarshalJSON() ([]byte, error) {
 	}
 	if tr.TaskRunProperties != nil {
 		objectMap["properties"] = tr.TaskRunProperties
-	}
-	objectMap["runRequest"] = tr.RunRequest
-	if tr.RunResult != nil {
-		objectMap["runResult"] = tr.RunResult
 	}
 	if tr.Location != nil {
 		objectMap["location"] = tr.Location
@@ -4236,23 +4230,6 @@ func (tr *TaskRun) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				tr.TaskRunProperties = &taskRunProperties
-			}
-		case "runRequest":
-			if v != nil {
-				runRequest, err := unmarshalBasicRunRequest(*v)
-				if err != nil {
-					return err
-				}
-				tr.RunRequest = runRequest
-			}
-		case "runResult":
-			if v != nil {
-				var runResult Run
-				err = json.Unmarshal(*v, &runResult)
-				if err != nil {
-					return err
-				}
-				tr.RunResult = &runResult
 			}
 		case "id":
 			if v != nil {
@@ -4455,6 +4432,78 @@ func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResul
 type TaskRunProperties struct {
 	// ProvisioningState - READ-ONLY; Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	RunRequest        BasicRunRequest   `json:"runRequest,omitempty"`
+	// RunResult - READ-ONLY
+	RunResult *Run `json:"runResult,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRunProperties struct.
+func (trp *TaskRunProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "provisioningState":
+			if v != nil {
+				var provisioningState ProvisioningState
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				trp.ProvisioningState = provisioningState
+			}
+		case "runRequest":
+			if v != nil {
+				runRequest, err := unmarshalBasicRunRequest(*v)
+				if err != nil {
+					return err
+				}
+				trp.RunRequest = runRequest
+			}
+		case "runResult":
+			if v != nil {
+				var runResult Run
+				err = json.Unmarshal(*v, &runResult)
+				if err != nil {
+					return err
+				}
+				trp.RunResult = &runResult
+			}
+		}
+	}
+
+	return nil
+}
+
+// TaskRunPropertiesUpdateParameters ...
+type TaskRunPropertiesUpdateParameters struct {
+	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRunPropertiesUpdateParameters struct.
+func (trpup *TaskRunPropertiesUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "runRequest":
+			if v != nil {
+				runRequest, err := unmarshalBasicRunRequest(*v)
+				if err != nil {
+					return err
+				}
+				trpup.RunRequest = runRequest
+			}
+		}
+	}
+
+	return nil
 }
 
 // TaskRunRequest the parameters for a task run request.
@@ -4596,8 +4645,9 @@ func (future *TaskRunsUpdateFuture) Result(client TaskRunsClient) (ar autorest.R
 // TaskRunUpdateParameters ...
 type TaskRunUpdateParameters struct {
 	// Identity - Identity for the resource.
-	Identity   *IdentityProperties `json:"identity,omitempty"`
-	RunRequest BasicRunRequest     `json:"runRequest,omitempty"`
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// TaskRunPropertiesUpdateParameters - The properties for updating a taskrun.
+	*TaskRunPropertiesUpdateParameters `json:"properties,omitempty"`
 	// Tags - The ARM resource tags.
 	Tags map[string]*string `json:"tags"`
 }
@@ -4608,7 +4658,9 @@ func (trup TaskRunUpdateParameters) MarshalJSON() ([]byte, error) {
 	if trup.Identity != nil {
 		objectMap["identity"] = trup.Identity
 	}
-	objectMap["runRequest"] = trup.RunRequest
+	if trup.TaskRunPropertiesUpdateParameters != nil {
+		objectMap["properties"] = trup.TaskRunPropertiesUpdateParameters
+	}
 	if trup.Tags != nil {
 		objectMap["tags"] = trup.Tags
 	}
@@ -4633,13 +4685,14 @@ func (trup *TaskRunUpdateParameters) UnmarshalJSON(body []byte) error {
 				}
 				trup.Identity = &identity
 			}
-		case "runRequest":
+		case "properties":
 			if v != nil {
-				runRequest, err := unmarshalBasicRunRequest(*v)
+				var taskRunPropertiesUpdateParameters TaskRunPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &taskRunPropertiesUpdateParameters)
 				if err != nil {
 					return err
 				}
-				trup.RunRequest = runRequest
+				trup.TaskRunPropertiesUpdateParameters = &taskRunPropertiesUpdateParameters
 			}
 		case "tags":
 			if v != nil {

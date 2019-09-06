@@ -227,7 +227,7 @@ func (client FileServicesClient) ListResponder(resp *http.Response) (result File
 	return
 }
 
-// PutServiceProperties sets the properties of file services in storage accounts, including CORS (Cross-Origin Resource
+// SetServiceProperties sets the properties of file services in storage accounts, including CORS (Cross-Origin Resource
 // Sharing) rules.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
@@ -236,9 +236,9 @@ func (client FileServicesClient) ListResponder(resp *http.Response) (result File
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
 // parameters - the properties of file services in storage accounts, including CORS (Cross-Origin Resource
 // Sharing) rules.
-func (client FileServicesClient) PutServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties) (result FileServiceProperties, err error) {
+func (client FileServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties) (result FileServiceProperties, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/FileServicesClient.PutServiceProperties")
+		ctx = tracing.StartSpan(ctx, fqdn+"/FileServicesClient.SetServiceProperties")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -257,32 +257,32 @@ func (client FileServicesClient) PutServiceProperties(ctx context.Context, resou
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("storage.FileServicesClient", "PutServiceProperties", err.Error())
+		return result, validation.NewError("storage.FileServicesClient", "SetServiceProperties", err.Error())
 	}
 
-	req, err := client.PutServicePropertiesPreparer(ctx, resourceGroupName, accountName, parameters)
+	req, err := client.SetServicePropertiesPreparer(ctx, resourceGroupName, accountName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.FileServicesClient", "PutServiceProperties", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "storage.FileServicesClient", "SetServiceProperties", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.PutServicePropertiesSender(req)
+	resp, err := client.SetServicePropertiesSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "storage.FileServicesClient", "PutServiceProperties", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storage.FileServicesClient", "SetServiceProperties", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.PutServicePropertiesResponder(resp)
+	result, err = client.SetServicePropertiesResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.FileServicesClient", "PutServiceProperties", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "storage.FileServicesClient", "SetServiceProperties", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// PutServicePropertiesPreparer prepares the PutServiceProperties request.
-func (client FileServicesClient) PutServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties) (*http.Request, error) {
+// SetServicePropertiesPreparer prepares the SetServiceProperties request.
+func (client FileServicesClient) SetServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"FileServicesName":  autorest.Encode("path", "default"),
@@ -305,16 +305,16 @@ func (client FileServicesClient) PutServicePropertiesPreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// PutServicePropertiesSender sends the PutServiceProperties request. The method will close the
+// SetServicePropertiesSender sends the SetServiceProperties request. The method will close the
 // http.Response Body if it receives an error.
-func (client FileServicesClient) PutServicePropertiesSender(req *http.Request) (*http.Response, error) {
+func (client FileServicesClient) SetServicePropertiesSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// PutServicePropertiesResponder handles the response to the PutServiceProperties request. The method always
+// SetServicePropertiesResponder handles the response to the SetServiceProperties request. The method always
 // closes the http.Response Body.
-func (client FileServicesClient) PutServicePropertiesResponder(resp *http.Response) (result FileServiceProperties, err error) {
+func (client FileServicesClient) SetServicePropertiesResponder(resp *http.Response) (result FileServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -323,6 +323,8 @@ type FileServicesClient = original.FileServicesClient
 type FileShare = original.FileShare
 type FileShareItem = original.FileShareItem
 type FileShareItems = original.FileShareItems
+type FileShareItemsIterator = original.FileShareItemsIterator
+type FileShareItemsPage = original.FileShareItemsPage
 type FileShareProperties = original.FileShareProperties
 type FileSharesClient = original.FileSharesClient
 type GeoReplicationStats = original.GeoReplicationStats
@@ -403,6 +405,12 @@ func NewFileServicesClient(subscriptionID string) FileServicesClient {
 }
 func NewFileServicesClientWithBaseURI(baseURI string, subscriptionID string) FileServicesClient {
 	return original.NewFileServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFileShareItemsIterator(page FileShareItemsPage) FileShareItemsIterator {
+	return original.NewFileShareItemsIterator(page)
+}
+func NewFileShareItemsPage(getNextPage func(context.Context, FileShareItems) (FileShareItems, error)) FileShareItemsPage {
+	return original.NewFileShareItemsPage(getNextPage)
 }
 func NewFileSharesClient(subscriptionID string) FileSharesClient {
 	return original.NewFileSharesClient(subscriptionID)

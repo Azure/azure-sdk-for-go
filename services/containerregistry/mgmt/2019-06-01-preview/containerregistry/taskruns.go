@@ -41,7 +41,7 @@ func NewTaskRunsClientWithBaseURI(baseURI string, subscriptionID string) TaskRun
 	return TaskRunsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates a run request for a container registry with the specified parameters.
+// Create creates a task run for a container registry with the specified parameters.
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
 // registryName - the name of the container registry.
@@ -133,11 +133,11 @@ func (client TaskRunsClient) CreateResponder(resp *http.Response) (result TaskRu
 	return
 }
 
-// Delete deletes a specified TaskRun resource.
+// Delete deletes a specified task run resource.
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
 // registryName - the name of the container registry.
-// taskRunName - the Run Request name.
+// taskRunName - the task run name.
 func (client TaskRunsClient) Delete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result TaskRunsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TaskRunsClient.Delete")
@@ -221,7 +221,7 @@ func (client TaskRunsClient) DeleteResponder(resp *http.Response) (result autore
 	return
 }
 
-// Get gets the detailed information for a given run request.
+// Get gets the detailed information for a given task run.
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
 // registryName - the name of the container registry.

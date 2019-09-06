@@ -4168,8 +4168,8 @@ func (tpup *TaskPropertiesUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TaskRun the taskrun that has the ARM resource and taskrun properties.
-// The taskrun will have the information of request and result of a run.
+// TaskRun the task run that has the ARM resource and properties.
+// The task run will have the information of request and result of a run.
 type TaskRun struct {
 	autorest.Response `json:"-"`
 	// Identity - Identity for the resource.
@@ -4430,13 +4430,13 @@ func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResul
 	return TaskRunListResultPage{fn: getNextPage}
 }
 
-// TaskRunProperties the properties of a taskrun.
+// TaskRunProperties the properties of task run.
 type TaskRunProperties struct {
 	// ProvisioningState - READ-ONLY; The privisioning state of this taskrun. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// RunRequest - The request (parameters) for the run
 	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
-	// RunResult - READ-ONLY; The run result of this taskrun
+	// RunResult - READ-ONLY; The result of this task run
 	RunResult *Run `json:"runResult,omitempty"`
 }
 
@@ -4631,7 +4631,7 @@ type TaskRunsUpdateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *TaskRunsUpdateFuture) Result(client TaskRunsClient) (ar autorest.Response, err error) {
+func (future *TaskRunsUpdateFuture) Result(client TaskRunsClient) (tr TaskRun, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -4642,7 +4642,13 @@ func (future *TaskRunsUpdateFuture) Result(client TaskRunsClient) (ar autorest.R
 		err = azure.NewAsyncOpIncompleteError("containerregistry.TaskRunsUpdateFuture")
 		return
 	}
-	ar.Response = future.Response()
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr, err = client.UpdateResponder(tr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsUpdateFuture", "Result", tr.Response.Response, "Failure responding to request")
+		}
+	}
 	return
 }
 

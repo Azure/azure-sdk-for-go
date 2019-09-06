@@ -439,7 +439,7 @@ func (client TaskRunsClient) ListComplete(ctx context.Context, resourceGroupName
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
 // registryName - the name of the container registry.
-// taskRunName - the run request name.
+// taskRunName - the task run name.
 // updateParameters - the parameters for updating a task run.
 func (client TaskRunsClient) Update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters) (result TaskRunsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -516,12 +516,13 @@ func (client TaskRunsClient) UpdateSender(req *http.Request) (future TaskRunsUpd
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client TaskRunsClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client TaskRunsClient) UpdateResponder(resp *http.Response) (result TaskRun, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = resp
+	result.Response = autorest.Response{Response: resp}
 	return
 }

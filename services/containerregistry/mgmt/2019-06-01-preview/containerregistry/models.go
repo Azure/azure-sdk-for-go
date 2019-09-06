@@ -4168,11 +4168,13 @@ func (tpup *TaskPropertiesUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TaskRun ...
+// TaskRun the taskrun that has the ARM resource and taskrun properties.
+// The taskrun will have the information of request and result of a run.
 type TaskRun struct {
 	autorest.Response `json:"-"`
 	// Identity - Identity for the resource.
-	Identity           *IdentityProperties `json:"identity,omitempty"`
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// TaskRunProperties - The properties associated with the taskrun, i.e., request and result of the run
 	*TaskRunProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
@@ -4282,7 +4284,7 @@ func (tr *TaskRun) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TaskRunListResult ...
+// TaskRunListResult the collection of taskruns.
 type TaskRunListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The collection value.
@@ -4428,12 +4430,13 @@ func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResul
 	return TaskRunListResultPage{fn: getNextPage}
 }
 
-// TaskRunProperties ...
+// TaskRunProperties the properties of a taskrun.
 type TaskRunProperties struct {
-	// ProvisioningState - READ-ONLY; Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The privisioning state of this taskrun. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	RunRequest        BasicRunRequest   `json:"runRequest,omitempty"`
-	// RunResult - READ-ONLY
+	// RunRequest - The request (parameters) for the run
+	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
+	// RunResult - READ-ONLY; The run result of this taskrun
 	RunResult *Run `json:"runResult,omitempty"`
 }
 
@@ -4478,8 +4481,9 @@ func (trp *TaskRunProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TaskRunPropertiesUpdateParameters ...
+// TaskRunPropertiesUpdateParameters the properties of a taskrun update parameters.
 type TaskRunPropertiesUpdateParameters struct {
+	// RunRequest - The request (parameters) for the new run
 	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
 }
 
@@ -4642,7 +4646,7 @@ func (future *TaskRunsUpdateFuture) Result(client TaskRunsClient) (ar autorest.R
 	return
 }
 
-// TaskRunUpdateParameters ...
+// TaskRunUpdateParameters the parameters for updating a taskrun.
 type TaskRunUpdateParameters struct {
 	// Identity - Identity for the resource.
 	Identity *IdentityProperties `json:"identity,omitempty"`

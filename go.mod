@@ -20,5 +20,5 @@ require (
 	google.golang.org/api v0.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20190620144150-6af8c5fc6601 // indirect
 	google.golang.org/grpc v1.21.1 // indirect
-	pack.ag/amqp v0.11.2
+	pack.ag/amqp v0.12.1
 )

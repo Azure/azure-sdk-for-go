@@ -1274,6 +1274,14 @@ type BlobServicePropertiesProperties struct {
 	DeleteRetentionPolicy *DeleteRetentionPolicy `json:"deleteRetentionPolicy,omitempty"`
 	// AutomaticSnapshotPolicyEnabled - Automatic Snapshot is enabled if set to true.
 	AutomaticSnapshotPolicyEnabled *bool `json:"automaticSnapshotPolicyEnabled,omitempty"`
+	// ChangeFeed - The blob service properties for change feed events.
+	ChangeFeed *ChangeFeed `json:"changeFeed,omitempty"`
+}
+
+// ChangeFeed the blob service properties for change feed events.
+type ChangeFeed struct {
+	// Enabled - Indicates whether change feed event logging is enabled for the Blob service.
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // CheckNameAvailabilityResult the CheckNameAvailability operation response.

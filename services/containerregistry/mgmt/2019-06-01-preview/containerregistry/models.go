@@ -4174,7 +4174,7 @@ type TaskRun struct {
 	autorest.Response `json:"-"`
 	// Identity - Identity for the resource.
 	Identity *IdentityProperties `json:"identity,omitempty"`
-	// TaskRunProperties - The properties associated with the taskrun, i.e., request and result of the run
+	// TaskRunProperties - The properties associated with the task run, i.e., request and result of the run
 	*TaskRunProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The resource ID.
 	ID *string `json:"id,omitempty"`
@@ -4284,7 +4284,7 @@ func (tr *TaskRun) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TaskRunListResult the collection of taskruns.
+// TaskRunListResult the collection of task runs.
 type TaskRunListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The collection value.
@@ -4481,7 +4481,7 @@ func (trp *TaskRunProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TaskRunPropertiesUpdateParameters the properties of a taskrun update parameters.
+// TaskRunPropertiesUpdateParameters the properties of a task run update parameters.
 type TaskRunPropertiesUpdateParameters struct {
 	// RunRequest - The request (parameters) for the new run
 	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
@@ -4656,7 +4656,7 @@ func (future *TaskRunsUpdateFuture) Result(client TaskRunsClient) (tr TaskRun, e
 type TaskRunUpdateParameters struct {
 	// Identity - Identity for the resource.
 	Identity *IdentityProperties `json:"identity,omitempty"`
-	// TaskRunPropertiesUpdateParameters - The properties for updating a taskrun.
+	// TaskRunPropertiesUpdateParameters - The properties for updating a task run.
 	*TaskRunPropertiesUpdateParameters `json:"properties,omitempty"`
 	// Tags - The ARM resource tags.
 	Tags map[string]*string `json:"tags"`

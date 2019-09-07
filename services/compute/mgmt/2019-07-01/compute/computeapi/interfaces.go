@@ -132,6 +132,7 @@ type VirtualMachinesClientAPI interface {
 	ListByLocation(ctx context.Context, location string) (result compute.VirtualMachineListResultPage, err error)
 	PerformMaintenance(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesPerformMaintenanceFuture, err error)
 	PowerOff(ctx context.Context, resourceGroupName string, VMName string, skipShutdown *bool) (result compute.VirtualMachinesPowerOffFuture, err error)
+	Reapply(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesReapplyFuture, err error)
 	Redeploy(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesRedeployFuture, err error)
 	Reimage(ctx context.Context, resourceGroupName string, VMName string, parameters *compute.VirtualMachineReimageParameters) (result compute.VirtualMachinesReimageFuture, err error)
 	Restart(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesRestartFuture, err error)

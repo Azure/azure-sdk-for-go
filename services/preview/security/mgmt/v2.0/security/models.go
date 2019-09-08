@@ -671,9 +671,9 @@ func PossibleStatusReasonValues() []StatusReason {
 type TrafficDataState string
 
 const (
-	// Available The Azure monitor agent is installed on the vm
+	// Available The network traffic data is collect on the Azure resource
 	Available TrafficDataState = "Available"
-	// Notavailable the Azure monitor agent is not installed on the vm
+	// Notavailable the network traffic data is not collect on the Azure resource
 	Notavailable TrafficDataState = "Not available"
 )
 
@@ -5805,7 +5805,7 @@ type NetworkDataConnectableResourceActualTraffic struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - READ-ONLY; The UTC end time of the actual traffic time range
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// TrafficDataState - Indicate whether the Azure monitor agent is installed on the vm. Possible values include: 'Available', 'Notavailable'
+	// TrafficDataState - Indicate whether the network traffic data is collect on the Azure resource. Possible values include: 'Available', 'Notavailable'
 	TrafficDataState           TrafficDataState                 `json:"trafficDataState,omitempty"`
 	InboundConnectedResources  *ActualTrafficConnectedResources `json:"inboundConnectedResources,omitempty"`
 	OutboundConnectedResources *ActualTrafficConnectedResources `json:"outboundConnectedResources,omitempty"`

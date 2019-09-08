@@ -41,7 +41,7 @@ func NewNetworkDataClientWithBaseURI(baseURI string, subscriptionID string, ascL
 	return NetworkDataClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Get get the network data collection on your scanned resource
+// Get get the network data on your scanned resource
 // Parameters:
 // resourceID - the identifier of the resource.
 // expand - expand whether you want to get more information about the network data (ports and connections
@@ -95,7 +95,7 @@ func (client NetworkDataClient) GetPreparer(ctx context.Context, resourceID stri
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceId}/providers/Microsoft.Security/NetworkData", pathParameters),
+		autorest.WithPathParameters("/{resourceId}/providers/Microsoft.Security/NetworkData/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -120,14 +120,14 @@ func (client NetworkDataClient) GetResponder(resp *http.Response) (result Networ
 	return
 }
 
-// Get1 get the network data on your scanned resource
+// GetResourceCollection get the network data collection on your scanned resource
 // Parameters:
 // resourceID - the identifier of the resource.
 // expand - expand whether you want to get more information about the network data (ports and connections
 // details)
-func (client NetworkDataClient) Get1(ctx context.Context, resourceID string, expand ExpandValues) (result NetworkData, err error) {
+func (client NetworkDataClient) GetResourceCollection(ctx context.Context, resourceID string, expand ExpandValues) (result NetworkData, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.Get1")
+		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.GetResourceCollection")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -136,29 +136,29 @@ func (client NetworkDataClient) Get1(ctx context.Context, resourceID string, exp
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.Get1Preparer(ctx, resourceID, expand)
+	req, err := client.GetResourceCollectionPreparer(ctx, resourceID, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "Get1", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "GetResourceCollection", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.Get1Sender(req)
+	resp, err := client.GetResourceCollectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "Get1", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "GetResourceCollection", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.Get1Responder(resp)
+	result, err = client.GetResourceCollectionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "Get1", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.NetworkDataClient", "GetResourceCollection", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// Get1Preparer prepares the Get1 request.
-func (client NetworkDataClient) Get1Preparer(ctx context.Context, resourceID string, expand ExpandValues) (*http.Request, error) {
+// GetResourceCollectionPreparer prepares the GetResourceCollection request.
+func (client NetworkDataClient) GetResourceCollectionPreparer(ctx context.Context, resourceID string, expand ExpandValues) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceId": autorest.Encode("path", resourceID),
 	}
@@ -174,21 +174,21 @@ func (client NetworkDataClient) Get1Preparer(ctx context.Context, resourceID str
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceId}/providers/Microsoft.Security/NetworkData/default", pathParameters),
+		autorest.WithPathParameters("/{resourceId}/providers/Microsoft.Security/NetworkData", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// Get1Sender sends the Get1 request. The method will close the
+// GetResourceCollectionSender sends the GetResourceCollection request. The method will close the
 // http.Response Body if it receives an error.
-func (client NetworkDataClient) Get1Sender(req *http.Request) (*http.Response, error) {
+func (client NetworkDataClient) GetResourceCollectionSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// Get1Responder handles the response to the Get1 request. The method always
+// GetResourceCollectionResponder handles the response to the GetResourceCollection request. The method always
 // closes the http.Response Body.
-func (client NetworkDataClient) Get1Responder(resp *http.Response) (result NetworkData, err error) {
+func (client NetworkDataClient) GetResourceCollectionResponder(resp *http.Response) (result NetworkData, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

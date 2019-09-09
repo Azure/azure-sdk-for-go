@@ -877,7 +877,6 @@ type FunctionEnvelopeCollectionIterator = original.FunctionEnvelopeCollectionIte
 type FunctionEnvelopeCollectionPage = original.FunctionEnvelopeCollectionPage
 type FunctionEnvelopeProperties = original.FunctionEnvelopeProperties
 type FunctionSecrets = original.FunctionSecrets
-type FunctionSecretsProperties = original.FunctionSecretsProperties
 type GeoDistribution = original.GeoDistribution
 type GeoRegion = original.GeoRegion
 type GeoRegionCollection = original.GeoRegionCollection

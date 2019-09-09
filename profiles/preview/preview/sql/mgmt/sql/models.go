@@ -22,388 +22,149 @@ package sql
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2018-06-01-preview/sql"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type CapabilityGroup = original.CapabilityGroup
+type IdentityType = original.IdentityType
 
 const (
-	SupportedEditions                CapabilityGroup = original.SupportedEditions
-	SupportedElasticPoolEditions     CapabilityGroup = original.SupportedElasticPoolEditions
-	SupportedManagedInstanceVersions CapabilityGroup = original.SupportedManagedInstanceVersions
+	SystemAssigned IdentityType = original.SystemAssigned
 )
 
-type CapabilityStatus = original.CapabilityStatus
+type InstancePoolLicenseType = original.InstancePoolLicenseType
 
 const (
-	Available CapabilityStatus = original.Available
-	Default   CapabilityStatus = original.Default
-	Disabled  CapabilityStatus = original.Disabled
-	Visible   CapabilityStatus = original.Visible
+	BasePrice       InstancePoolLicenseType = original.BasePrice
+	LicenseIncluded InstancePoolLicenseType = original.LicenseIncluded
 )
 
-type CatalogCollationType = original.CatalogCollationType
+type ManagedInstanceLicenseType = original.ManagedInstanceLicenseType
 
 const (
-	DATABASEDEFAULT         CatalogCollationType = original.DATABASEDEFAULT
-	SQLLatin1GeneralCP1CIAS CatalogCollationType = original.SQLLatin1GeneralCP1CIAS
+	ManagedInstanceLicenseTypeBasePrice       ManagedInstanceLicenseType = original.ManagedInstanceLicenseTypeBasePrice
+	ManagedInstanceLicenseTypeLicenseIncluded ManagedInstanceLicenseType = original.ManagedInstanceLicenseTypeLicenseIncluded
 )
 
-type CreateMode = original.CreateMode
+type ManagedInstanceProxyOverride = original.ManagedInstanceProxyOverride
 
 const (
-	CreateModeCopy                           CreateMode = original.CreateModeCopy
-	CreateModeDefault                        CreateMode = original.CreateModeDefault
-	CreateModeOnlineSecondary                CreateMode = original.CreateModeOnlineSecondary
-	CreateModePointInTimeRestore             CreateMode = original.CreateModePointInTimeRestore
-	CreateModeRecovery                       CreateMode = original.CreateModeRecovery
-	CreateModeRestore                        CreateMode = original.CreateModeRestore
-	CreateModeRestoreExternalBackup          CreateMode = original.CreateModeRestoreExternalBackup
-	CreateModeRestoreExternalBackupSecondary CreateMode = original.CreateModeRestoreExternalBackupSecondary
-	CreateModeRestoreLongTermRetentionBackup CreateMode = original.CreateModeRestoreLongTermRetentionBackup
-	CreateModeSecondary                      CreateMode = original.CreateModeSecondary
+	Default  ManagedInstanceProxyOverride = original.Default
+	Proxy    ManagedInstanceProxyOverride = original.Proxy
+	Redirect ManagedInstanceProxyOverride = original.Redirect
 )
 
-type DatabaseLicenseType = original.DatabaseLicenseType
+type ManagedServerCreateMode = original.ManagedServerCreateMode
 
 const (
-	BasePrice       DatabaseLicenseType = original.BasePrice
-	LicenseIncluded DatabaseLicenseType = original.LicenseIncluded
+	ManagedServerCreateModeDefault            ManagedServerCreateMode = original.ManagedServerCreateModeDefault
+	ManagedServerCreateModePointInTimeRestore ManagedServerCreateMode = original.ManagedServerCreateModePointInTimeRestore
 )
 
-type DatabaseReadScale = original.DatabaseReadScale
+type SecurityAlertPolicyState = original.SecurityAlertPolicyState
 
 const (
-	DatabaseReadScaleDisabled DatabaseReadScale = original.DatabaseReadScaleDisabled
-	DatabaseReadScaleEnabled  DatabaseReadScale = original.DatabaseReadScaleEnabled
+	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = original.SecurityAlertPolicyStateDisabled
+	SecurityAlertPolicyStateEnabled  SecurityAlertPolicyState = original.SecurityAlertPolicyStateEnabled
+	SecurityAlertPolicyStateNew      SecurityAlertPolicyState = original.SecurityAlertPolicyStateNew
 )
 
-type DatabaseStatus = original.DatabaseStatus
+type SensitivityLabelSource = original.SensitivityLabelSource
 
 const (
-	DatabaseStatusAutoClosed                        DatabaseStatus = original.DatabaseStatusAutoClosed
-	DatabaseStatusCopying                           DatabaseStatus = original.DatabaseStatusCopying
-	DatabaseStatusCreating                          DatabaseStatus = original.DatabaseStatusCreating
-	DatabaseStatusDisabled                          DatabaseStatus = original.DatabaseStatusDisabled
-	DatabaseStatusEmergencyMode                     DatabaseStatus = original.DatabaseStatusEmergencyMode
-	DatabaseStatusInaccessible                      DatabaseStatus = original.DatabaseStatusInaccessible
-	DatabaseStatusOffline                           DatabaseStatus = original.DatabaseStatusOffline
-	DatabaseStatusOfflineChangingDwPerformanceTiers DatabaseStatus = original.DatabaseStatusOfflineChangingDwPerformanceTiers
-	DatabaseStatusOfflineSecondary                  DatabaseStatus = original.DatabaseStatusOfflineSecondary
-	DatabaseStatusOnline                            DatabaseStatus = original.DatabaseStatusOnline
-	DatabaseStatusOnlineChangingDwPerformanceTiers  DatabaseStatus = original.DatabaseStatusOnlineChangingDwPerformanceTiers
-	DatabaseStatusPaused                            DatabaseStatus = original.DatabaseStatusPaused
-	DatabaseStatusPausing                           DatabaseStatus = original.DatabaseStatusPausing
-	DatabaseStatusRecovering                        DatabaseStatus = original.DatabaseStatusRecovering
-	DatabaseStatusRecoveryPending                   DatabaseStatus = original.DatabaseStatusRecoveryPending
-	DatabaseStatusRestoring                         DatabaseStatus = original.DatabaseStatusRestoring
-	DatabaseStatusResuming                          DatabaseStatus = original.DatabaseStatusResuming
-	DatabaseStatusScaling                           DatabaseStatus = original.DatabaseStatusScaling
-	DatabaseStatusShutdown                          DatabaseStatus = original.DatabaseStatusShutdown
-	DatabaseStatusStandby                           DatabaseStatus = original.DatabaseStatusStandby
-	DatabaseStatusSuspect                           DatabaseStatus = original.DatabaseStatusSuspect
+	Current     SensitivityLabelSource = original.Current
+	Recommended SensitivityLabelSource = original.Recommended
 )
 
-type ElasticPoolLicenseType = original.ElasticPoolLicenseType
-
-const (
-	ElasticPoolLicenseTypeBasePrice       ElasticPoolLicenseType = original.ElasticPoolLicenseTypeBasePrice
-	ElasticPoolLicenseTypeLicenseIncluded ElasticPoolLicenseType = original.ElasticPoolLicenseTypeLicenseIncluded
-)
-
-type ElasticPoolState = original.ElasticPoolState
-
-const (
-	ElasticPoolStateCreating ElasticPoolState = original.ElasticPoolStateCreating
-	ElasticPoolStateDisabled ElasticPoolState = original.ElasticPoolStateDisabled
-	ElasticPoolStateReady    ElasticPoolState = original.ElasticPoolStateReady
-)
-
-type InstanceFailoverGroupReplicationRole = original.InstanceFailoverGroupReplicationRole
-
-const (
-	Primary   InstanceFailoverGroupReplicationRole = original.Primary
-	Secondary InstanceFailoverGroupReplicationRole = original.Secondary
-)
-
-type LogSizeUnit = original.LogSizeUnit
-
-const (
-	Gigabytes LogSizeUnit = original.Gigabytes
-	Megabytes LogSizeUnit = original.Megabytes
-	Percent   LogSizeUnit = original.Percent
-	Petabytes LogSizeUnit = original.Petabytes
-	Terabytes LogSizeUnit = original.Terabytes
-)
-
-type ManagementOperationState = original.ManagementOperationState
-
-const (
-	CancelInProgress ManagementOperationState = original.CancelInProgress
-	Cancelled        ManagementOperationState = original.Cancelled
-	Failed           ManagementOperationState = original.Failed
-	InProgress       ManagementOperationState = original.InProgress
-	Pending          ManagementOperationState = original.Pending
-	Succeeded        ManagementOperationState = original.Succeeded
-)
-
-type MaxSizeUnit = original.MaxSizeUnit
-
-const (
-	MaxSizeUnitGigabytes MaxSizeUnit = original.MaxSizeUnitGigabytes
-	MaxSizeUnitMegabytes MaxSizeUnit = original.MaxSizeUnitMegabytes
-	MaxSizeUnitPetabytes MaxSizeUnit = original.MaxSizeUnitPetabytes
-	MaxSizeUnitTerabytes MaxSizeUnit = original.MaxSizeUnitTerabytes
-)
-
-type PerformanceLevelUnit = original.PerformanceLevelUnit
-
-const (
-	DTU    PerformanceLevelUnit = original.DTU
-	VCores PerformanceLevelUnit = original.VCores
-)
-
-type ReadOnlyEndpointFailoverPolicy = original.ReadOnlyEndpointFailoverPolicy
-
-const (
-	ReadOnlyEndpointFailoverPolicyDisabled ReadOnlyEndpointFailoverPolicy = original.ReadOnlyEndpointFailoverPolicyDisabled
-	ReadOnlyEndpointFailoverPolicyEnabled  ReadOnlyEndpointFailoverPolicy = original.ReadOnlyEndpointFailoverPolicyEnabled
-)
-
-type ReadWriteEndpointFailoverPolicy = original.ReadWriteEndpointFailoverPolicy
-
-const (
-	Automatic ReadWriteEndpointFailoverPolicy = original.Automatic
-	Manual    ReadWriteEndpointFailoverPolicy = original.Manual
-)
-
-type SampleName = original.SampleName
-
-const (
-	AdventureWorksLT       SampleName = original.AdventureWorksLT
-	WideWorldImportersFull SampleName = original.WideWorldImportersFull
-	WideWorldImportersStd  SampleName = original.WideWorldImportersStd
-)
-
-type ServerKeyType = original.ServerKeyType
-
-const (
-	AzureKeyVault  ServerKeyType = original.AzureKeyVault
-	ServiceManaged ServerKeyType = original.ServiceManaged
-)
-
-type VulnerabilityAssessmentPolicyBaselineName = original.VulnerabilityAssessmentPolicyBaselineName
-
-const (
-	VulnerabilityAssessmentPolicyBaselineNameDefault VulnerabilityAssessmentPolicyBaselineName = original.VulnerabilityAssessmentPolicyBaselineNameDefault
-	VulnerabilityAssessmentPolicyBaselineNameMaster  VulnerabilityAssessmentPolicyBaselineName = original.VulnerabilityAssessmentPolicyBaselineNameMaster
-)
-
-type VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanState
-
-const (
-	VulnerabilityAssessmentScanStateFailed      VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStateFailed
-	VulnerabilityAssessmentScanStateFailedToRun VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStateFailedToRun
-	VulnerabilityAssessmentScanStateInProgress  VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStateInProgress
-	VulnerabilityAssessmentScanStatePassed      VulnerabilityAssessmentScanState = original.VulnerabilityAssessmentScanStatePassed
-)
-
-type VulnerabilityAssessmentScanTriggerType = original.VulnerabilityAssessmentScanTriggerType
-
-const (
-	OnDemand  VulnerabilityAssessmentScanTriggerType = original.OnDemand
-	Recurring VulnerabilityAssessmentScanTriggerType = original.Recurring
-)
-
-type BackupShortTermRetentionPoliciesClient = original.BackupShortTermRetentionPoliciesClient
-type BackupShortTermRetentionPoliciesCreateOrUpdateFuture = original.BackupShortTermRetentionPoliciesCreateOrUpdateFuture
-type BackupShortTermRetentionPoliciesUpdateFuture = original.BackupShortTermRetentionPoliciesUpdateFuture
-type BackupShortTermRetentionPolicy = original.BackupShortTermRetentionPolicy
-type BackupShortTermRetentionPolicyListResult = original.BackupShortTermRetentionPolicyListResult
-type BackupShortTermRetentionPolicyListResultIterator = original.BackupShortTermRetentionPolicyListResultIterator
-type BackupShortTermRetentionPolicyListResultPage = original.BackupShortTermRetentionPolicyListResultPage
-type BackupShortTermRetentionPolicyProperties = original.BackupShortTermRetentionPolicyProperties
 type BaseClient = original.BaseClient
-type CapabilitiesClient = original.CapabilitiesClient
-type Database = original.Database
-type DatabaseListResult = original.DatabaseListResult
-type DatabaseListResultIterator = original.DatabaseListResultIterator
-type DatabaseListResultPage = original.DatabaseListResultPage
-type DatabaseOperation = original.DatabaseOperation
-type DatabaseOperationListResult = original.DatabaseOperationListResult
-type DatabaseOperationListResultIterator = original.DatabaseOperationListResultIterator
-type DatabaseOperationListResultPage = original.DatabaseOperationListResultPage
-type DatabaseOperationProperties = original.DatabaseOperationProperties
-type DatabaseOperationsClient = original.DatabaseOperationsClient
-type DatabaseProperties = original.DatabaseProperties
-type DatabaseUpdate = original.DatabaseUpdate
-type DatabaseVulnerabilityAssessment = original.DatabaseVulnerabilityAssessment
-type DatabaseVulnerabilityAssessmentListResult = original.DatabaseVulnerabilityAssessmentListResult
-type DatabaseVulnerabilityAssessmentListResultIterator = original.DatabaseVulnerabilityAssessmentListResultIterator
-type DatabaseVulnerabilityAssessmentListResultPage = original.DatabaseVulnerabilityAssessmentListResultPage
-type DatabaseVulnerabilityAssessmentProperties = original.DatabaseVulnerabilityAssessmentProperties
-type DatabaseVulnerabilityAssessmentRuleBaseline = original.DatabaseVulnerabilityAssessmentRuleBaseline
-type DatabaseVulnerabilityAssessmentRuleBaselineItem = original.DatabaseVulnerabilityAssessmentRuleBaselineItem
-type DatabaseVulnerabilityAssessmentRuleBaselineProperties = original.DatabaseVulnerabilityAssessmentRuleBaselineProperties
-type DatabaseVulnerabilityAssessmentScanExportProperties = original.DatabaseVulnerabilityAssessmentScanExportProperties
-type DatabaseVulnerabilityAssessmentScansClient = original.DatabaseVulnerabilityAssessmentScansClient
-type DatabaseVulnerabilityAssessmentScansExport = original.DatabaseVulnerabilityAssessmentScansExport
-type DatabaseVulnerabilityAssessmentScansInitiateScanFuture = original.DatabaseVulnerabilityAssessmentScansInitiateScanFuture
+type DatabaseSecurityAlertListResult = original.DatabaseSecurityAlertListResult
+type DatabaseSecurityAlertListResultIterator = original.DatabaseSecurityAlertListResultIterator
+type DatabaseSecurityAlertListResultPage = original.DatabaseSecurityAlertListResultPage
+type DatabaseSecurityAlertPoliciesClient = original.DatabaseSecurityAlertPoliciesClient
+type DatabaseSecurityAlertPolicy = original.DatabaseSecurityAlertPolicy
 type DatabasesClient = original.DatabasesClient
-type DatabasesCreateOrUpdateFuture = original.DatabasesCreateOrUpdateFuture
-type DatabasesDeleteFuture = original.DatabasesDeleteFuture
-type DatabasesPauseFuture = original.DatabasesPauseFuture
-type DatabasesResumeFuture = original.DatabasesResumeFuture
-type DatabasesUpdateFuture = original.DatabasesUpdateFuture
-type DatabasesUpgradeDataWarehouseFuture = original.DatabasesUpgradeDataWarehouseFuture
-type EditionCapability = original.EditionCapability
-type ElasticPool = original.ElasticPool
-type ElasticPoolEditionCapability = original.ElasticPoolEditionCapability
-type ElasticPoolListResult = original.ElasticPoolListResult
-type ElasticPoolListResultIterator = original.ElasticPoolListResultIterator
-type ElasticPoolListResultPage = original.ElasticPoolListResultPage
-type ElasticPoolOperation = original.ElasticPoolOperation
-type ElasticPoolOperationListResult = original.ElasticPoolOperationListResult
-type ElasticPoolOperationListResultIterator = original.ElasticPoolOperationListResultIterator
-type ElasticPoolOperationListResultPage = original.ElasticPoolOperationListResultPage
-type ElasticPoolOperationProperties = original.ElasticPoolOperationProperties
-type ElasticPoolOperationsClient = original.ElasticPoolOperationsClient
-type ElasticPoolPerDatabaseMaxPerformanceLevelCapability = original.ElasticPoolPerDatabaseMaxPerformanceLevelCapability
-type ElasticPoolPerDatabaseMinPerformanceLevelCapability = original.ElasticPoolPerDatabaseMinPerformanceLevelCapability
-type ElasticPoolPerDatabaseSettings = original.ElasticPoolPerDatabaseSettings
-type ElasticPoolPerformanceLevelCapability = original.ElasticPoolPerformanceLevelCapability
-type ElasticPoolProperties = original.ElasticPoolProperties
-type ElasticPoolUpdate = original.ElasticPoolUpdate
-type ElasticPoolUpdateProperties = original.ElasticPoolUpdateProperties
+type DatabasesFailoverFuture = original.DatabasesFailoverFuture
 type ElasticPoolsClient = original.ElasticPoolsClient
-type ElasticPoolsCreateOrUpdateFuture = original.ElasticPoolsCreateOrUpdateFuture
-type ElasticPoolsDeleteFuture = original.ElasticPoolsDeleteFuture
-type ElasticPoolsUpdateFuture = original.ElasticPoolsUpdateFuture
-type InstanceFailoverGroup = original.InstanceFailoverGroup
-type InstanceFailoverGroupListResult = original.InstanceFailoverGroupListResult
-type InstanceFailoverGroupListResultIterator = original.InstanceFailoverGroupListResultIterator
-type InstanceFailoverGroupListResultPage = original.InstanceFailoverGroupListResultPage
-type InstanceFailoverGroupProperties = original.InstanceFailoverGroupProperties
-type InstanceFailoverGroupReadOnlyEndpoint = original.InstanceFailoverGroupReadOnlyEndpoint
-type InstanceFailoverGroupReadWriteEndpoint = original.InstanceFailoverGroupReadWriteEndpoint
-type InstanceFailoverGroupsClient = original.InstanceFailoverGroupsClient
-type InstanceFailoverGroupsCreateOrUpdateFuture = original.InstanceFailoverGroupsCreateOrUpdateFuture
-type InstanceFailoverGroupsDeleteFuture = original.InstanceFailoverGroupsDeleteFuture
-type InstanceFailoverGroupsFailoverFuture = original.InstanceFailoverGroupsFailoverFuture
-type InstanceFailoverGroupsForceFailoverAllowDataLossFuture = original.InstanceFailoverGroupsForceFailoverAllowDataLossFuture
-type LicenseTypeCapability = original.LicenseTypeCapability
-type LocationCapabilities = original.LocationCapabilities
-type LogSizeCapability = original.LogSizeCapability
-type ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient = original.ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient
-type ManagedDatabaseVulnerabilityAssessmentScansClient = original.ManagedDatabaseVulnerabilityAssessmentScansClient
-type ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture = original.ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture
-type ManagedDatabaseVulnerabilityAssessmentsClient = original.ManagedDatabaseVulnerabilityAssessmentsClient
-type ManagedInstanceEditionCapability = original.ManagedInstanceEditionCapability
-type ManagedInstanceEncryptionProtector = original.ManagedInstanceEncryptionProtector
-type ManagedInstanceEncryptionProtectorListResult = original.ManagedInstanceEncryptionProtectorListResult
-type ManagedInstanceEncryptionProtectorListResultIterator = original.ManagedInstanceEncryptionProtectorListResultIterator
-type ManagedInstanceEncryptionProtectorListResultPage = original.ManagedInstanceEncryptionProtectorListResultPage
-type ManagedInstanceEncryptionProtectorProperties = original.ManagedInstanceEncryptionProtectorProperties
-type ManagedInstanceEncryptionProtectorsClient = original.ManagedInstanceEncryptionProtectorsClient
-type ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture = original.ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture
-type ManagedInstanceEncryptionProtectorsRevalidateFuture = original.ManagedInstanceEncryptionProtectorsRevalidateFuture
-type ManagedInstanceFamilyCapability = original.ManagedInstanceFamilyCapability
-type ManagedInstanceKey = original.ManagedInstanceKey
-type ManagedInstanceKeyListResult = original.ManagedInstanceKeyListResult
-type ManagedInstanceKeyListResultIterator = original.ManagedInstanceKeyListResultIterator
-type ManagedInstanceKeyListResultPage = original.ManagedInstanceKeyListResultPage
-type ManagedInstanceKeyProperties = original.ManagedInstanceKeyProperties
-type ManagedInstanceKeysClient = original.ManagedInstanceKeysClient
-type ManagedInstanceKeysCreateOrUpdateFuture = original.ManagedInstanceKeysCreateOrUpdateFuture
-type ManagedInstanceKeysDeleteFuture = original.ManagedInstanceKeysDeleteFuture
-type ManagedInstancePairInfo = original.ManagedInstancePairInfo
-type ManagedInstanceTdeCertificatesClient = original.ManagedInstanceTdeCertificatesClient
-type ManagedInstanceTdeCertificatesCreateFuture = original.ManagedInstanceTdeCertificatesCreateFuture
-type ManagedInstanceVcoresCapability = original.ManagedInstanceVcoresCapability
-type ManagedInstanceVersionCapability = original.ManagedInstanceVersionCapability
-type MaxSizeCapability = original.MaxSizeCapability
-type MaxSizeRangeCapability = original.MaxSizeRangeCapability
-type PartnerRegionInfo = original.PartnerRegionInfo
-type PerformanceLevelCapability = original.PerformanceLevelCapability
+type ElasticPoolsFailoverFuture = original.ElasticPoolsFailoverFuture
+type InstancePool = original.InstancePool
+type InstancePoolListResult = original.InstancePoolListResult
+type InstancePoolListResultIterator = original.InstancePoolListResultIterator
+type InstancePoolListResultPage = original.InstancePoolListResultPage
+type InstancePoolProperties = original.InstancePoolProperties
+type InstancePoolUpdate = original.InstancePoolUpdate
+type InstancePoolsClient = original.InstancePoolsClient
+type InstancePoolsCreateOrUpdateFuture = original.InstancePoolsCreateOrUpdateFuture
+type InstancePoolsDeleteFuture = original.InstancePoolsDeleteFuture
+type InstancePoolsUpdateFuture = original.InstancePoolsUpdateFuture
+type ManagedDatabaseSensitivityLabelsClient = original.ManagedDatabaseSensitivityLabelsClient
+type ManagedInstance = original.ManagedInstance
+type ManagedInstanceListResult = original.ManagedInstanceListResult
+type ManagedInstanceListResultIterator = original.ManagedInstanceListResultIterator
+type ManagedInstanceListResultPage = original.ManagedInstanceListResultPage
+type ManagedInstanceProperties = original.ManagedInstanceProperties
+type ManagedInstanceUpdate = original.ManagedInstanceUpdate
+type ManagedInstanceVulnerabilityAssessment = original.ManagedInstanceVulnerabilityAssessment
+type ManagedInstanceVulnerabilityAssessmentListResult = original.ManagedInstanceVulnerabilityAssessmentListResult
+type ManagedInstanceVulnerabilityAssessmentListResultIterator = original.ManagedInstanceVulnerabilityAssessmentListResultIterator
+type ManagedInstanceVulnerabilityAssessmentListResultPage = original.ManagedInstanceVulnerabilityAssessmentListResultPage
+type ManagedInstanceVulnerabilityAssessmentProperties = original.ManagedInstanceVulnerabilityAssessmentProperties
+type ManagedInstanceVulnerabilityAssessmentsClient = original.ManagedInstanceVulnerabilityAssessmentsClient
+type ManagedInstancesClient = original.ManagedInstancesClient
+type ManagedInstancesCreateOrUpdateFuture = original.ManagedInstancesCreateOrUpdateFuture
+type ManagedInstancesDeleteFuture = original.ManagedInstancesDeleteFuture
+type ManagedInstancesUpdateFuture = original.ManagedInstancesUpdateFuture
+type Name = original.Name
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointProperty = original.PrivateEndpointProperty
+type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
-type RecoverableManagedDatabase = original.RecoverableManagedDatabase
-type RecoverableManagedDatabaseListResult = original.RecoverableManagedDatabaseListResult
-type RecoverableManagedDatabaseListResultIterator = original.RecoverableManagedDatabaseListResultIterator
-type RecoverableManagedDatabaseListResultPage = original.RecoverableManagedDatabaseListResultPage
-type RecoverableManagedDatabaseProperties = original.RecoverableManagedDatabaseProperties
-type RecoverableManagedDatabasesClient = original.RecoverableManagedDatabasesClient
 type Resource = original.Resource
-type ResourceMoveDefinition = original.ResourceMoveDefinition
-type ServerVersionCapability = original.ServerVersionCapability
-type ServiceObjectiveCapability = original.ServiceObjectiveCapability
+type ResourceIdentity = original.ResourceIdentity
+type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
+type SensitivityLabel = original.SensitivityLabel
+type SensitivityLabelListResult = original.SensitivityLabelListResult
+type SensitivityLabelListResultIterator = original.SensitivityLabelListResultIterator
+type SensitivityLabelListResultPage = original.SensitivityLabelListResultPage
+type SensitivityLabelProperties = original.SensitivityLabelProperties
+type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
+type ServerVulnerabilityAssessmentListResult = original.ServerVulnerabilityAssessmentListResult
+type ServerVulnerabilityAssessmentListResultIterator = original.ServerVulnerabilityAssessmentListResultIterator
+type ServerVulnerabilityAssessmentListResultPage = original.ServerVulnerabilityAssessmentListResultPage
+type ServerVulnerabilityAssessmentProperties = original.ServerVulnerabilityAssessmentProperties
+type ServerVulnerabilityAssessmentsClient = original.ServerVulnerabilityAssessmentsClient
 type Sku = original.Sku
-type TdeCertificate = original.TdeCertificate
-type TdeCertificateProperties = original.TdeCertificateProperties
-type TdeCertificatesClient = original.TdeCertificatesClient
-type TdeCertificatesCreateFuture = original.TdeCertificatesCreateFuture
 type TrackedResource = original.TrackedResource
+type Usage = original.Usage
+type UsageListResult = original.UsageListResult
+type UsageListResultIterator = original.UsageListResultIterator
+type UsageListResultPage = original.UsageListResultPage
+type UsagesClient = original.UsagesClient
 type VulnerabilityAssessmentRecurringScansProperties = original.VulnerabilityAssessmentRecurringScansProperties
-type VulnerabilityAssessmentScanError = original.VulnerabilityAssessmentScanError
-type VulnerabilityAssessmentScanRecord = original.VulnerabilityAssessmentScanRecord
-type VulnerabilityAssessmentScanRecordListResult = original.VulnerabilityAssessmentScanRecordListResult
-type VulnerabilityAssessmentScanRecordListResultIterator = original.VulnerabilityAssessmentScanRecordListResultIterator
-type VulnerabilityAssessmentScanRecordListResultPage = original.VulnerabilityAssessmentScanRecordListResultPage
-type VulnerabilityAssessmentScanRecordProperties = original.VulnerabilityAssessmentScanRecordProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewBackupShortTermRetentionPoliciesClient(subscriptionID string) BackupShortTermRetentionPoliciesClient {
-	return original.NewBackupShortTermRetentionPoliciesClient(subscriptionID)
+func NewDatabaseSecurityAlertListResultIterator(page DatabaseSecurityAlertListResultPage) DatabaseSecurityAlertListResultIterator {
+	return original.NewDatabaseSecurityAlertListResultIterator(page)
 }
-func NewBackupShortTermRetentionPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupShortTermRetentionPoliciesClient {
-	return original.NewBackupShortTermRetentionPoliciesClientWithBaseURI(baseURI, subscriptionID)
+func NewDatabaseSecurityAlertListResultPage(getNextPage func(context.Context, DatabaseSecurityAlertListResult) (DatabaseSecurityAlertListResult, error)) DatabaseSecurityAlertListResultPage {
+	return original.NewDatabaseSecurityAlertListResultPage(getNextPage)
 }
-func NewBackupShortTermRetentionPolicyListResultIterator(page BackupShortTermRetentionPolicyListResultPage) BackupShortTermRetentionPolicyListResultIterator {
-	return original.NewBackupShortTermRetentionPolicyListResultIterator(page)
+func NewDatabaseSecurityAlertPoliciesClient(subscriptionID string) DatabaseSecurityAlertPoliciesClient {
+	return original.NewDatabaseSecurityAlertPoliciesClient(subscriptionID)
 }
-func NewBackupShortTermRetentionPolicyListResultPage(getNextPage func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error)) BackupShortTermRetentionPolicyListResultPage {
-	return original.NewBackupShortTermRetentionPolicyListResultPage(getNextPage)
-}
-func NewCapabilitiesClient(subscriptionID string) CapabilitiesClient {
-	return original.NewCapabilitiesClient(subscriptionID)
-}
-func NewCapabilitiesClientWithBaseURI(baseURI string, subscriptionID string) CapabilitiesClient {
-	return original.NewCapabilitiesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDatabaseListResultIterator(page DatabaseListResultPage) DatabaseListResultIterator {
-	return original.NewDatabaseListResultIterator(page)
-}
-func NewDatabaseListResultPage(getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
-	return original.NewDatabaseListResultPage(getNextPage)
-}
-func NewDatabaseOperationListResultIterator(page DatabaseOperationListResultPage) DatabaseOperationListResultIterator {
-	return original.NewDatabaseOperationListResultIterator(page)
-}
-func NewDatabaseOperationListResultPage(getNextPage func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error)) DatabaseOperationListResultPage {
-	return original.NewDatabaseOperationListResultPage(getNextPage)
-}
-func NewDatabaseOperationsClient(subscriptionID string) DatabaseOperationsClient {
-	return original.NewDatabaseOperationsClient(subscriptionID)
-}
-func NewDatabaseOperationsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseOperationsClient {
-	return original.NewDatabaseOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewDatabaseVulnerabilityAssessmentListResultIterator(page DatabaseVulnerabilityAssessmentListResultPage) DatabaseVulnerabilityAssessmentListResultIterator {
-	return original.NewDatabaseVulnerabilityAssessmentListResultIterator(page)
-}
-func NewDatabaseVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)) DatabaseVulnerabilityAssessmentListResultPage {
-	return original.NewDatabaseVulnerabilityAssessmentListResultPage(getNextPage)
-}
-func NewDatabaseVulnerabilityAssessmentScansClient(subscriptionID string) DatabaseVulnerabilityAssessmentScansClient {
-	return original.NewDatabaseVulnerabilityAssessmentScansClient(subscriptionID)
-}
-func NewDatabaseVulnerabilityAssessmentScansClientWithBaseURI(baseURI string, subscriptionID string) DatabaseVulnerabilityAssessmentScansClient {
-	return original.NewDatabaseVulnerabilityAssessmentScansClientWithBaseURI(baseURI, subscriptionID)
+func NewDatabaseSecurityAlertPoliciesClientWithBaseURI(baseURI string, subscriptionID string) DatabaseSecurityAlertPoliciesClient {
+	return original.NewDatabaseSecurityAlertPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClient(subscriptionID)
@@ -411,179 +172,119 @@ func NewDatabasesClient(subscriptionID string) DatabasesClient {
 func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewElasticPoolListResultIterator(page ElasticPoolListResultPage) ElasticPoolListResultIterator {
-	return original.NewElasticPoolListResultIterator(page)
-}
-func NewElasticPoolListResultPage(getNextPage func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error)) ElasticPoolListResultPage {
-	return original.NewElasticPoolListResultPage(getNextPage)
-}
-func NewElasticPoolOperationListResultIterator(page ElasticPoolOperationListResultPage) ElasticPoolOperationListResultIterator {
-	return original.NewElasticPoolOperationListResultIterator(page)
-}
-func NewElasticPoolOperationListResultPage(getNextPage func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error)) ElasticPoolOperationListResultPage {
-	return original.NewElasticPoolOperationListResultPage(getNextPage)
-}
-func NewElasticPoolOperationsClient(subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClient(subscriptionID)
-}
-func NewElasticPoolOperationsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolOperationsClient {
-	return original.NewElasticPoolOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewElasticPoolsClient(subscriptionID string) ElasticPoolsClient {
 	return original.NewElasticPoolsClient(subscriptionID)
 }
 func NewElasticPoolsClientWithBaseURI(baseURI string, subscriptionID string) ElasticPoolsClient {
 	return original.NewElasticPoolsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewInstanceFailoverGroupListResultIterator(page InstanceFailoverGroupListResultPage) InstanceFailoverGroupListResultIterator {
-	return original.NewInstanceFailoverGroupListResultIterator(page)
+func NewInstancePoolListResultIterator(page InstancePoolListResultPage) InstancePoolListResultIterator {
+	return original.NewInstancePoolListResultIterator(page)
 }
-func NewInstanceFailoverGroupListResultPage(getNextPage func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error)) InstanceFailoverGroupListResultPage {
-	return original.NewInstanceFailoverGroupListResultPage(getNextPage)
+func NewInstancePoolListResultPage(getNextPage func(context.Context, InstancePoolListResult) (InstancePoolListResult, error)) InstancePoolListResultPage {
+	return original.NewInstancePoolListResultPage(getNextPage)
 }
-func NewInstanceFailoverGroupsClient(subscriptionID string) InstanceFailoverGroupsClient {
-	return original.NewInstanceFailoverGroupsClient(subscriptionID)
+func NewInstancePoolsClient(subscriptionID string) InstancePoolsClient {
+	return original.NewInstancePoolsClient(subscriptionID)
 }
-func NewInstanceFailoverGroupsClientWithBaseURI(baseURI string, subscriptionID string) InstanceFailoverGroupsClient {
-	return original.NewInstanceFailoverGroupsClientWithBaseURI(baseURI, subscriptionID)
+func NewInstancePoolsClientWithBaseURI(baseURI string, subscriptionID string) InstancePoolsClient {
+	return original.NewInstancePoolsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient(subscriptionID string) ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient {
-	return original.NewManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient(subscriptionID)
+func NewManagedDatabaseSensitivityLabelsClient(subscriptionID string) ManagedDatabaseSensitivityLabelsClient {
+	return original.NewManagedDatabaseSensitivityLabelsClient(subscriptionID)
 }
-func NewManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientWithBaseURI(baseURI string, subscriptionID string) ManagedDatabaseVulnerabilityAssessmentRuleBaselinesClient {
-	return original.NewManagedDatabaseVulnerabilityAssessmentRuleBaselinesClientWithBaseURI(baseURI, subscriptionID)
+func NewManagedDatabaseSensitivityLabelsClientWithBaseURI(baseURI string, subscriptionID string) ManagedDatabaseSensitivityLabelsClient {
+	return original.NewManagedDatabaseSensitivityLabelsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewManagedDatabaseVulnerabilityAssessmentScansClient(subscriptionID string) ManagedDatabaseVulnerabilityAssessmentScansClient {
-	return original.NewManagedDatabaseVulnerabilityAssessmentScansClient(subscriptionID)
+func NewManagedInstanceListResultIterator(page ManagedInstanceListResultPage) ManagedInstanceListResultIterator {
+	return original.NewManagedInstanceListResultIterator(page)
 }
-func NewManagedDatabaseVulnerabilityAssessmentScansClientWithBaseURI(baseURI string, subscriptionID string) ManagedDatabaseVulnerabilityAssessmentScansClient {
-	return original.NewManagedDatabaseVulnerabilityAssessmentScansClientWithBaseURI(baseURI, subscriptionID)
+func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
+	return original.NewManagedInstanceListResultPage(getNextPage)
 }
-func NewManagedDatabaseVulnerabilityAssessmentsClient(subscriptionID string) ManagedDatabaseVulnerabilityAssessmentsClient {
-	return original.NewManagedDatabaseVulnerabilityAssessmentsClient(subscriptionID)
+func NewManagedInstanceVulnerabilityAssessmentListResultIterator(page ManagedInstanceVulnerabilityAssessmentListResultPage) ManagedInstanceVulnerabilityAssessmentListResultIterator {
+	return original.NewManagedInstanceVulnerabilityAssessmentListResultIterator(page)
 }
-func NewManagedDatabaseVulnerabilityAssessmentsClientWithBaseURI(baseURI string, subscriptionID string) ManagedDatabaseVulnerabilityAssessmentsClient {
-	return original.NewManagedDatabaseVulnerabilityAssessmentsClientWithBaseURI(baseURI, subscriptionID)
+func NewManagedInstanceVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, ManagedInstanceVulnerabilityAssessmentListResult) (ManagedInstanceVulnerabilityAssessmentListResult, error)) ManagedInstanceVulnerabilityAssessmentListResultPage {
+	return original.NewManagedInstanceVulnerabilityAssessmentListResultPage(getNextPage)
 }
-func NewManagedInstanceEncryptionProtectorListResultIterator(page ManagedInstanceEncryptionProtectorListResultPage) ManagedInstanceEncryptionProtectorListResultIterator {
-	return original.NewManagedInstanceEncryptionProtectorListResultIterator(page)
+func NewManagedInstanceVulnerabilityAssessmentsClient(subscriptionID string) ManagedInstanceVulnerabilityAssessmentsClient {
+	return original.NewManagedInstanceVulnerabilityAssessmentsClient(subscriptionID)
 }
-func NewManagedInstanceEncryptionProtectorListResultPage(getNextPage func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error)) ManagedInstanceEncryptionProtectorListResultPage {
-	return original.NewManagedInstanceEncryptionProtectorListResultPage(getNextPage)
+func NewManagedInstanceVulnerabilityAssessmentsClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceVulnerabilityAssessmentsClient {
+	return original.NewManagedInstanceVulnerabilityAssessmentsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewManagedInstanceEncryptionProtectorsClient(subscriptionID string) ManagedInstanceEncryptionProtectorsClient {
-	return original.NewManagedInstanceEncryptionProtectorsClient(subscriptionID)
+func NewManagedInstancesClient(subscriptionID string) ManagedInstancesClient {
+	return original.NewManagedInstancesClient(subscriptionID)
 }
-func NewManagedInstanceEncryptionProtectorsClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceEncryptionProtectorsClient {
-	return original.NewManagedInstanceEncryptionProtectorsClientWithBaseURI(baseURI, subscriptionID)
+func NewManagedInstancesClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstancesClient {
+	return original.NewManagedInstancesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewManagedInstanceKeyListResultIterator(page ManagedInstanceKeyListResultPage) ManagedInstanceKeyListResultIterator {
-	return original.NewManagedInstanceKeyListResultIterator(page)
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
 }
-func NewManagedInstanceKeyListResultPage(getNextPage func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error)) ManagedInstanceKeyListResultPage {
-	return original.NewManagedInstanceKeyListResultPage(getNextPage)
+func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
 }
-func NewManagedInstanceKeysClient(subscriptionID string) ManagedInstanceKeysClient {
-	return original.NewManagedInstanceKeysClient(subscriptionID)
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
 }
-func NewManagedInstanceKeysClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceKeysClient {
-	return original.NewManagedInstanceKeysClientWithBaseURI(baseURI, subscriptionID)
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewManagedInstanceTdeCertificatesClient(subscriptionID string) ManagedInstanceTdeCertificatesClient {
-	return original.NewManagedInstanceTdeCertificatesClient(subscriptionID)
+func NewSensitivityLabelListResultIterator(page SensitivityLabelListResultPage) SensitivityLabelListResultIterator {
+	return original.NewSensitivityLabelListResultIterator(page)
 }
-func NewManagedInstanceTdeCertificatesClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceTdeCertificatesClient {
-	return original.NewManagedInstanceTdeCertificatesClientWithBaseURI(baseURI, subscriptionID)
+func NewSensitivityLabelListResultPage(getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
+	return original.NewSensitivityLabelListResultPage(getNextPage)
 }
-func NewRecoverableManagedDatabaseListResultIterator(page RecoverableManagedDatabaseListResultPage) RecoverableManagedDatabaseListResultIterator {
-	return original.NewRecoverableManagedDatabaseListResultIterator(page)
+func NewServerVulnerabilityAssessmentListResultIterator(page ServerVulnerabilityAssessmentListResultPage) ServerVulnerabilityAssessmentListResultIterator {
+	return original.NewServerVulnerabilityAssessmentListResultIterator(page)
 }
-func NewRecoverableManagedDatabaseListResultPage(getNextPage func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error)) RecoverableManagedDatabaseListResultPage {
-	return original.NewRecoverableManagedDatabaseListResultPage(getNextPage)
+func NewServerVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error)) ServerVulnerabilityAssessmentListResultPage {
+	return original.NewServerVulnerabilityAssessmentListResultPage(getNextPage)
 }
-func NewRecoverableManagedDatabasesClient(subscriptionID string) RecoverableManagedDatabasesClient {
-	return original.NewRecoverableManagedDatabasesClient(subscriptionID)
+func NewServerVulnerabilityAssessmentsClient(subscriptionID string) ServerVulnerabilityAssessmentsClient {
+	return original.NewServerVulnerabilityAssessmentsClient(subscriptionID)
 }
-func NewRecoverableManagedDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RecoverableManagedDatabasesClient {
-	return original.NewRecoverableManagedDatabasesClientWithBaseURI(baseURI, subscriptionID)
+func NewServerVulnerabilityAssessmentsClientWithBaseURI(baseURI string, subscriptionID string) ServerVulnerabilityAssessmentsClient {
+	return original.NewServerVulnerabilityAssessmentsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewTdeCertificatesClient(subscriptionID string) TdeCertificatesClient {
-	return original.NewTdeCertificatesClient(subscriptionID)
+func NewUsageListResultIterator(page UsageListResultPage) UsageListResultIterator {
+	return original.NewUsageListResultIterator(page)
 }
-func NewTdeCertificatesClientWithBaseURI(baseURI string, subscriptionID string) TdeCertificatesClient {
-	return original.NewTdeCertificatesClientWithBaseURI(baseURI, subscriptionID)
+func NewUsageListResultPage(getNextPage func(context.Context, UsageListResult) (UsageListResult, error)) UsageListResultPage {
+	return original.NewUsageListResultPage(getNextPage)
 }
-func NewVulnerabilityAssessmentScanRecordListResultIterator(page VulnerabilityAssessmentScanRecordListResultPage) VulnerabilityAssessmentScanRecordListResultIterator {
-	return original.NewVulnerabilityAssessmentScanRecordListResultIterator(page)
+func NewUsagesClient(subscriptionID string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID)
 }
-func NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
-	return original.NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage)
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleCapabilityGroupValues() []CapabilityGroup {
-	return original.PossibleCapabilityGroupValues()
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
-func PossibleCapabilityStatusValues() []CapabilityStatus {
-	return original.PossibleCapabilityStatusValues()
+func PossibleInstancePoolLicenseTypeValues() []InstancePoolLicenseType {
+	return original.PossibleInstancePoolLicenseTypeValues()
 }
-func PossibleCatalogCollationTypeValues() []CatalogCollationType {
-	return original.PossibleCatalogCollationTypeValues()
+func PossibleManagedInstanceLicenseTypeValues() []ManagedInstanceLicenseType {
+	return original.PossibleManagedInstanceLicenseTypeValues()
 }
-func PossibleCreateModeValues() []CreateMode {
-	return original.PossibleCreateModeValues()
+func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride {
+	return original.PossibleManagedInstanceProxyOverrideValues()
 }
-func PossibleDatabaseLicenseTypeValues() []DatabaseLicenseType {
-	return original.PossibleDatabaseLicenseTypeValues()
+func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
+	return original.PossibleManagedServerCreateModeValues()
 }
-func PossibleDatabaseReadScaleValues() []DatabaseReadScale {
-	return original.PossibleDatabaseReadScaleValues()
+func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
+	return original.PossibleSecurityAlertPolicyStateValues()
 }
-func PossibleDatabaseStatusValues() []DatabaseStatus {
-	return original.PossibleDatabaseStatusValues()
-}
-func PossibleElasticPoolLicenseTypeValues() []ElasticPoolLicenseType {
-	return original.PossibleElasticPoolLicenseTypeValues()
-}
-func PossibleElasticPoolStateValues() []ElasticPoolState {
-	return original.PossibleElasticPoolStateValues()
-}
-func PossibleInstanceFailoverGroupReplicationRoleValues() []InstanceFailoverGroupReplicationRole {
-	return original.PossibleInstanceFailoverGroupReplicationRoleValues()
-}
-func PossibleLogSizeUnitValues() []LogSizeUnit {
-	return original.PossibleLogSizeUnitValues()
-}
-func PossibleManagementOperationStateValues() []ManagementOperationState {
-	return original.PossibleManagementOperationStateValues()
-}
-func PossibleMaxSizeUnitValues() []MaxSizeUnit {
-	return original.PossibleMaxSizeUnitValues()
-}
-func PossiblePerformanceLevelUnitValues() []PerformanceLevelUnit {
-	return original.PossiblePerformanceLevelUnitValues()
-}
-func PossibleReadOnlyEndpointFailoverPolicyValues() []ReadOnlyEndpointFailoverPolicy {
-	return original.PossibleReadOnlyEndpointFailoverPolicyValues()
-}
-func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailoverPolicy {
-	return original.PossibleReadWriteEndpointFailoverPolicyValues()
-}
-func PossibleSampleNameValues() []SampleName {
-	return original.PossibleSampleNameValues()
-}
-func PossibleServerKeyTypeValues() []ServerKeyType {
-	return original.PossibleServerKeyTypeValues()
-}
-func PossibleVulnerabilityAssessmentPolicyBaselineNameValues() []VulnerabilityAssessmentPolicyBaselineName {
-	return original.PossibleVulnerabilityAssessmentPolicyBaselineNameValues()
-}
-func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentScanState {
-	return original.PossibleVulnerabilityAssessmentScanStateValues()
-}
-func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAssessmentScanTriggerType {
-	return original.PossibleVulnerabilityAssessmentScanTriggerTypeValues()
+func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
+	return original.PossibleSensitivityLabelSourceValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

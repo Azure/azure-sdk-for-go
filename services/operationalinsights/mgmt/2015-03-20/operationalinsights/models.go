@@ -263,7 +263,7 @@ func (ss *SavedSearch) UnmarshalJSON(body []byte) error {
 // SavedSearchesListResult the saved search list operation response.
 type SavedSearchesListResult struct {
 	autorest.Response `json:"-"`
-	// Metadata - Unused legacy property, kept here for backwrad compatibility.
+	// Metadata - Unused legacy property, kept here for backward compatibility.
 	Metadata *SearchMetadata `json:"__metadata,omitempty"`
 	// Value - The array of result values.
 	Value *[]SavedSearch `json:"value,omitempty"`

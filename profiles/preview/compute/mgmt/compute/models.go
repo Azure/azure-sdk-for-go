@@ -460,6 +460,14 @@ const (
 	Regular VirtualMachinePriorityTypes = original.Regular
 )
 
+type VirtualMachineScaleSetScaleInRules = original.VirtualMachineScaleSetScaleInRules
+
+const (
+	Default  VirtualMachineScaleSetScaleInRules = original.Default
+	NewestVM VirtualMachineScaleSetScaleInRules = original.NewestVM
+	OldestVM VirtualMachineScaleSetScaleInRules = original.OldestVM
+)
+
 type VirtualMachineScaleSetSkuScaleType = original.VirtualMachineScaleSetSkuScaleType
 
 const (
@@ -866,6 +874,7 @@ type RunCommandParameterDefinition = original.RunCommandParameterDefinition
 type RunCommandResult = original.RunCommandResult
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
+type ScaleInPolicy = original.ScaleInPolicy
 type ScheduledEventsProfile = original.ScheduledEventsProfile
 type Sku = original.Sku
 type Snapshot = original.Snapshot
@@ -1507,6 +1516,9 @@ func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionP
 }
 func PossibleVirtualMachinePriorityTypesValues() []VirtualMachinePriorityTypes {
 	return original.PossibleVirtualMachinePriorityTypesValues()
+}
+func PossibleVirtualMachineScaleSetScaleInRulesValues() []VirtualMachineScaleSetScaleInRules {
+	return original.PossibleVirtualMachineScaleSetScaleInRulesValues()
 }
 func PossibleVirtualMachineScaleSetSkuScaleTypeValues() []VirtualMachineScaleSetSkuScaleType {
 	return original.PossibleVirtualMachineScaleSetSkuScaleTypeValues()

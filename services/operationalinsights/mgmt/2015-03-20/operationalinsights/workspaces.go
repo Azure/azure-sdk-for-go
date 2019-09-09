@@ -550,6 +550,11 @@ func (client WorkspacesClient) ListLinkTargetsResponder(resp *http.Response) (re
 }
 
 // Purge purges data in an Log Analytics workspace by a set of user-defined filters.
+//
+// In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the
+// execution of purge requests by sending a single command whose predicate includes all user identities that require
+// purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge
+// request to verify that the results are expected.
 // Parameters:
 // resourceGroupName - the Resource Group name.
 // workspaceName - the Log Analytics Workspace name.

@@ -804,7 +804,7 @@ type EHNamespaceProperties struct {
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
 	// ServiceBusEndpoint - READ-ONLY; Endpoint you can use to perform Service Bus operations.
 	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty"`
-	// ClusterArmID - Cluster ARM ID of the Namspace.
+	// ClusterArmID - Cluster ARM ID of the Namespace.
 	ClusterArmID *string `json:"clusterArmId,omitempty"`
 	// MetricID - READ-ONLY; Identifier for Azure Insights metrics.
 	MetricID *string `json:"metricId,omitempty"`
@@ -841,9 +841,9 @@ type ErrorResponse struct {
 
 // Identity properties to configure Identity for Bring your Own Keys
 type Identity struct {
-	// PrincipalID - ObjectId from the Keyvalut
+	// PrincipalID - ObjectId from the KeyVault
 	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - TenantId from the Keyvalut
+	// TenantID - TenantId from the KeyVault
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - Enumerates the possible value Identity type, which currently supports only 'SystemAssigned'. Possible values include: 'SystemAssigned'
 	Type IdentityType `json:"type,omitempty"`

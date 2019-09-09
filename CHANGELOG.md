@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v33.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| sql | 2018-06-01-preview |
+
 ## `v33.1.0`
 
 ### New Packages

@@ -290,8 +290,8 @@ var _ ServerVulnerabilityAssessmentClientAPI = (*security.ServerVulnerabilityAss
 // SubAssessmentsClientAPI contains the set of methods on the SubAssessmentsClient type.
 type SubAssessmentsClientAPI interface {
 	Get(ctx context.Context, scope string, assessmentName string, subAssessmentName string) (result security.SubAssessment, err error)
-	List(ctx context.Context, scope string) (result security.SubAssessmentListPage, err error)
-	List1(ctx context.Context, scope string, assessmentName string) (result security.SubAssessmentListPage, err error)
+	List(ctx context.Context, scope string, assessmentName string) (result security.SubAssessmentListPage, err error)
+	ListAll(ctx context.Context, scope string) (result security.SubAssessmentListPage, err error)
 }
 
 var _ SubAssessmentsClientAPI = (*security.SubAssessmentsClient)(nil)

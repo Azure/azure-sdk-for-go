@@ -1061,8 +1061,7 @@ func (client AppsClient) CreateFunctionResponder(resp *http.Response) (result Fu
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // functionName - function name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 // functionEnvelope - function details.
 func (client AppsClient) CreateInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope FunctionEnvelope) (result AppsCreateInstanceFunctionSlotFuture, err error) {
 	if tracing.IsEnabled() {
@@ -1999,6 +1998,192 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierSlotResponder(re
 	return
 }
 
+// CreateOrUpdateFunctionSecret add or update a function secret.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - the name of the function.
+// keyName - the name of the key.
+// key - the key to create or update
+func (client AppsClient) CreateOrUpdateFunctionSecret(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, key KeyInfo) (result KeyInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateFunctionSecret")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CreateOrUpdateFunctionSecret", err.Error())
+	}
+
+	req, err := client.CreateOrUpdateFunctionSecretPreparer(ctx, resourceGroupName, name, functionName, keyName, key)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateFunctionSecret", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateFunctionSecretSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateFunctionSecret", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateFunctionSecretResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateFunctionSecret", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdateFunctionSecretPreparer prepares the CreateOrUpdateFunctionSecret request.
+func (client AppsClient) CreateOrUpdateFunctionSecretPreparer(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, key KeyInfo) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"keyName":           autorest.Encode("path", keyName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}", pathParameters),
+		autorest.WithJSON(key),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateFunctionSecretSender sends the CreateOrUpdateFunctionSecret request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CreateOrUpdateFunctionSecretSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CreateOrUpdateFunctionSecretResponder handles the response to the CreateOrUpdateFunctionSecret request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CreateOrUpdateFunctionSecretResponder(resp *http.Response) (result KeyInfo, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateOrUpdateFunctionSecretSlot add or update a function secret.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - the name of the function.
+// keyName - the name of the key.
+// slot - name of the deployment slot.
+// key - the key to create or update
+func (client AppsClient) CreateOrUpdateFunctionSecretSlot(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, key KeyInfo) (result KeyInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateFunctionSecretSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CreateOrUpdateFunctionSecretSlot", err.Error())
+	}
+
+	req, err := client.CreateOrUpdateFunctionSecretSlotPreparer(ctx, resourceGroupName, name, functionName, keyName, slot, key)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateFunctionSecretSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateFunctionSecretSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateFunctionSecretSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateFunctionSecretSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateFunctionSecretSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdateFunctionSecretSlotPreparer prepares the CreateOrUpdateFunctionSecretSlot request.
+func (client AppsClient) CreateOrUpdateFunctionSecretSlotPreparer(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, key KeyInfo) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"keyName":           autorest.Encode("path", keyName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/keys/{keyName}", pathParameters),
+		autorest.WithJSON(key),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateFunctionSecretSlotSender sends the CreateOrUpdateFunctionSecretSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CreateOrUpdateFunctionSecretSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CreateOrUpdateFunctionSecretSlotResponder handles the response to the CreateOrUpdateFunctionSecretSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CreateOrUpdateFunctionSecretSlotResponder(resp *http.Response) (result KeyInfo, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateOrUpdateHostNameBinding creates a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -2176,6 +2361,192 @@ func (client AppsClient) CreateOrUpdateHostNameBindingSlotResponder(resp *http.R
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateOrUpdateHostSecret add or update a host level secret.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// keyType - the type of host key.
+// keyName - the name of the key.
+// key - the key to create or update
+func (client AppsClient) CreateOrUpdateHostSecret(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, key KeyInfo) (result KeyInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateHostSecret")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CreateOrUpdateHostSecret", err.Error())
+	}
+
+	req, err := client.CreateOrUpdateHostSecretPreparer(ctx, resourceGroupName, name, keyType, keyName, key)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostSecret", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateHostSecretSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostSecret", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateHostSecretResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostSecret", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdateHostSecretPreparer prepares the CreateOrUpdateHostSecret request.
+func (client AppsClient) CreateOrUpdateHostSecretPreparer(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, key KeyInfo) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"keyName":           autorest.Encode("path", keyName),
+		"keyType":           autorest.Encode("path", keyType),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}", pathParameters),
+		autorest.WithJSON(key),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateHostSecretSender sends the CreateOrUpdateHostSecret request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CreateOrUpdateHostSecretSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CreateOrUpdateHostSecretResponder handles the response to the CreateOrUpdateHostSecret request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CreateOrUpdateHostSecretResponder(resp *http.Response) (result KeyInfo, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreateOrUpdateHostSecretSlot add or update a host level secret.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// keyType - the type of host key.
+// keyName - the name of the key.
+// slot - name of the deployment slot.
+// key - the key to create or update
+func (client AppsClient) CreateOrUpdateHostSecretSlot(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, key KeyInfo) (result KeyInfo, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateHostSecretSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CreateOrUpdateHostSecretSlot", err.Error())
+	}
+
+	req, err := client.CreateOrUpdateHostSecretSlotPreparer(ctx, resourceGroupName, name, keyType, keyName, slot, key)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostSecretSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateHostSecretSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostSecretSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateHostSecretSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateHostSecretSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdateHostSecretSlotPreparer prepares the CreateOrUpdateHostSecretSlot request.
+func (client AppsClient) CreateOrUpdateHostSecretSlotPreparer(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, key KeyInfo) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"keyName":           autorest.Encode("path", keyName),
+		"keyType":           autorest.Encode("path", keyType),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}", pathParameters),
+		autorest.WithJSON(key),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateHostSecretSlotSender sends the CreateOrUpdateHostSecretSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CreateOrUpdateHostSecretSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CreateOrUpdateHostSecretSlotResponder handles the response to the CreateOrUpdateHostSecretSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CreateOrUpdateHostSecretSlotResponder(resp *http.Response) (result KeyInfo, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -4637,6 +5008,184 @@ func (client AppsClient) DeleteFunctionResponder(resp *http.Response) (result au
 	return
 }
 
+// DeleteFunctionSecret delete a function secret.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - the name of the function.
+// keyName - the name of the key.
+func (client AppsClient) DeleteFunctionSecret(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DeleteFunctionSecret")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "DeleteFunctionSecret", err.Error())
+	}
+
+	req, err := client.DeleteFunctionSecretPreparer(ctx, resourceGroupName, name, functionName, keyName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteFunctionSecret", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteFunctionSecretSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteFunctionSecret", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteFunctionSecretResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteFunctionSecret", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteFunctionSecretPreparer prepares the DeleteFunctionSecret request.
+func (client AppsClient) DeleteFunctionSecretPreparer(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"keyName":           autorest.Encode("path", keyName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteFunctionSecretSender sends the DeleteFunctionSecret request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) DeleteFunctionSecretSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteFunctionSecretResponder handles the response to the DeleteFunctionSecret request. The method always
+// closes the http.Response Body.
+func (client AppsClient) DeleteFunctionSecretResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteFunctionSecretSlot delete a function secret.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - the name of the function.
+// keyName - the name of the key.
+// slot - name of the deployment slot.
+func (client AppsClient) DeleteFunctionSecretSlot(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DeleteFunctionSecretSlot")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "DeleteFunctionSecretSlot", err.Error())
+	}
+
+	req, err := client.DeleteFunctionSecretSlotPreparer(ctx, resourceGroupName, name, functionName, keyName, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteFunctionSecretSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteFunctionSecretSlotSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteFunctionSecretSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteFunctionSecretSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteFunctionSecretSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteFunctionSecretSlotPreparer prepares the DeleteFunctionSecretSlot request.
+func (client AppsClient) DeleteFunctionSecretSlotPreparer(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"keyName":           autorest.Encode("path", keyName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/keys/{keyName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteFunctionSecretSlotSender sends the DeleteFunctionSecretSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) DeleteFunctionSecretSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteFunctionSecretSlotResponder handles the response to the DeleteFunctionSecretSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) DeleteFunctionSecretSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // DeleteHostNameBinding deletes a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -4807,6 +5356,184 @@ func (client AppsClient) DeleteHostNameBindingSlotResponder(resp *http.Response)
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteHostSecret delete a host level secret.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// keyType - the type of host key.
+// keyName - the name of the key.
+func (client AppsClient) DeleteHostSecret(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DeleteHostSecret")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "DeleteHostSecret", err.Error())
+	}
+
+	req, err := client.DeleteHostSecretPreparer(ctx, resourceGroupName, name, keyType, keyName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostSecret", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteHostSecretSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostSecret", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteHostSecretResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostSecret", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteHostSecretPreparer prepares the DeleteHostSecret request.
+func (client AppsClient) DeleteHostSecretPreparer(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"keyName":           autorest.Encode("path", keyName),
+		"keyType":           autorest.Encode("path", keyType),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteHostSecretSender sends the DeleteHostSecret request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) DeleteHostSecretSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteHostSecretResponder handles the response to the DeleteHostSecret request. The method always
+// closes the http.Response Body.
+func (client AppsClient) DeleteHostSecretResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeleteHostSecretSlot delete a host level secret.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// keyType - the type of host key.
+// keyName - the name of the key.
+// slot - name of the deployment slot.
+func (client AppsClient) DeleteHostSecretSlot(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DeleteHostSecretSlot")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "DeleteHostSecretSlot", err.Error())
+	}
+
+	req, err := client.DeleteHostSecretSlotPreparer(ctx, resourceGroupName, name, keyType, keyName, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostSecretSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteHostSecretSlotSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostSecretSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteHostSecretSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeleteHostSecretSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteHostSecretSlotPreparer prepares the DeleteHostSecretSlot request.
+func (client AppsClient) DeleteHostSecretSlotPreparer(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"keyName":           autorest.Encode("path", keyName),
+		"keyType":           autorest.Encode("path", keyType),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteHostSecretSlotSender sends the DeleteHostSecretSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) DeleteHostSecretSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteHostSecretSlotResponder handles the response to the DeleteHostSecretSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) DeleteHostSecretSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -4995,8 +5722,7 @@ func (client AppsClient) DeleteHybridConnectionSlotResponder(resp *http.Response
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // functionName - function name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) DeleteInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DeleteInstanceFunctionSlot")
@@ -9382,6 +10108,530 @@ func (client AppsClient) GetFunctionsAdminTokenSlotResponder(resp *http.Response
 	return
 }
 
+// GetFunctionState get the enablement state for a function.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - function name.
+func (client AppsClient) GetFunctionState(ctx context.Context, resourceGroupName string, name string, functionName string) (result String, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetFunctionState")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetFunctionState", err.Error())
+	}
+
+	req, err := client.GetFunctionStatePreparer(ctx, resourceGroupName, name, functionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionState", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetFunctionStateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionState", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetFunctionStateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionState", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetFunctionStatePreparer prepares the GetFunctionState request.
+func (client AppsClient) GetFunctionStatePreparer(ctx context.Context, resourceGroupName string, name string, functionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/properties/state", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetFunctionStateSender sends the GetFunctionState request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetFunctionStateSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetFunctionStateResponder handles the response to the GetFunctionState request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetFunctionStateResponder(resp *http.Response) (result String, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetFunctionStateSlot get the enablement state for a function.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - function name.
+// slot - name of the deployment slot.
+func (client AppsClient) GetFunctionStateSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (result String, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetFunctionStateSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetFunctionStateSlot", err.Error())
+	}
+
+	req, err := client.GetFunctionStateSlotPreparer(ctx, resourceGroupName, name, functionName, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionStateSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetFunctionStateSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionStateSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetFunctionStateSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionStateSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetFunctionStateSlotPreparer prepares the GetFunctionStateSlot request.
+func (client AppsClient) GetFunctionStateSlotPreparer(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/properties/state", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetFunctionStateSlotSender sends the GetFunctionStateSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetFunctionStateSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetFunctionStateSlotResponder handles the response to the GetFunctionStateSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetFunctionStateSlotResponder(resp *http.Response) (result String, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetFunctionStatus get function status.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - function name.
+func (client AppsClient) GetFunctionStatus(ctx context.Context, resourceGroupName string, name string, functionName string) (result FunctionStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetFunctionStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetFunctionStatus", err.Error())
+	}
+
+	req, err := client.GetFunctionStatusPreparer(ctx, resourceGroupName, name, functionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionStatus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetFunctionStatusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionStatus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetFunctionStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionStatus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetFunctionStatusPreparer prepares the GetFunctionStatus request.
+func (client AppsClient) GetFunctionStatusPreparer(ctx context.Context, resourceGroupName string, name string, functionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/properties/status", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetFunctionStatusSender sends the GetFunctionStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetFunctionStatusSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetFunctionStatusResponder handles the response to the GetFunctionStatus request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetFunctionStatusResponder(resp *http.Response) (result FunctionStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetFunctionStatusSlot get function status.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - function name.
+// slot - name of the deployment slot.
+func (client AppsClient) GetFunctionStatusSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (result FunctionStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetFunctionStatusSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetFunctionStatusSlot", err.Error())
+	}
+
+	req, err := client.GetFunctionStatusSlotPreparer(ctx, resourceGroupName, name, functionName, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionStatusSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetFunctionStatusSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionStatusSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetFunctionStatusSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetFunctionStatusSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetFunctionStatusSlotPreparer prepares the GetFunctionStatusSlot request.
+func (client AppsClient) GetFunctionStatusSlotPreparer(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/properties/status", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetFunctionStatusSlotSender sends the GetFunctionStatusSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetFunctionStatusSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetFunctionStatusSlotResponder handles the response to the GetFunctionStatusSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetFunctionStatusSlotResponder(resp *http.Response) (result FunctionStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostConfig get the host configuration (host.json).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+func (client AppsClient) GetHostConfig(ctx context.Context, resourceGroupName string, name string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetHostConfig")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetHostConfig", err.Error())
+	}
+
+	req, err := client.GetHostConfigPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostConfig", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetHostConfigSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostConfig", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetHostConfigResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostConfig", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetHostConfigPreparer prepares the GetHostConfig request.
+func (client AppsClient) GetHostConfigPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/properties/config", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetHostConfigSender sends the GetHostConfig request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetHostConfigSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetHostConfigResponder handles the response to the GetHostConfig request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetHostConfigResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostConfigSlot get the host configuration (host.json).
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// slot - name of the deployment slot.
+func (client AppsClient) GetHostConfigSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SetObject, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetHostConfigSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetHostConfigSlot", err.Error())
+	}
+
+	req, err := client.GetHostConfigSlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostConfigSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetHostConfigSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostConfigSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetHostConfigSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostConfigSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetHostConfigSlotPreparer prepares the GetHostConfigSlot request.
+func (client AppsClient) GetHostConfigSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/properties/config", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetHostConfigSlotSender sends the GetHostConfigSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetHostConfigSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetHostConfigSlotResponder handles the response to the GetHostConfigSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetHostConfigSlotResponder(resp *http.Response) (result SetObject, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetHostNameBinding get the named hostname binding for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -9549,6 +10799,178 @@ func (client AppsClient) GetHostNameBindingSlotSender(req *http.Request) (*http.
 // GetHostNameBindingSlotResponder handles the response to the GetHostNameBindingSlot request. The method always
 // closes the http.Response Body.
 func (client AppsClient) GetHostNameBindingSlotResponder(resp *http.Response) (result HostNameBinding, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostStatus get the host status.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+func (client AppsClient) GetHostStatus(ctx context.Context, resourceGroupName string, name string) (result HostStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetHostStatus")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetHostStatus", err.Error())
+	}
+
+	req, err := client.GetHostStatusPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostStatus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetHostStatusSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostStatus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetHostStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostStatus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetHostStatusPreparer prepares the GetHostStatus request.
+func (client AppsClient) GetHostStatusPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/properties/status", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetHostStatusSender sends the GetHostStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetHostStatusSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetHostStatusResponder handles the response to the GetHostStatus request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetHostStatusResponder(resp *http.Response) (result HostStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetHostStatusSlot get the host status.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// slot - name of the deployment slot.
+func (client AppsClient) GetHostStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result HostStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetHostStatusSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetHostStatusSlot", err.Error())
+	}
+
+	req, err := client.GetHostStatusSlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostStatusSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetHostStatusSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostStatusSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetHostStatusSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetHostStatusSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetHostStatusSlotPreparer prepares the GetHostStatusSlot request.
+func (client AppsClient) GetHostStatusSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/properties/status", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetHostStatusSlotSender sends the GetHostStatusSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetHostStatusSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetHostStatusSlotResponder handles the response to the GetHostStatusSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetHostStatusSlotResponder(resp *http.Response) (result HostStatus, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -9744,8 +11166,7 @@ func (client AppsClient) GetHybridConnectionSlotResponder(resp *http.Response) (
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // functionName - function name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) GetInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (result FunctionEnvelope, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetInstanceFunctionSlot")
@@ -18399,6 +19820,182 @@ func (client AppsClient) ListDomainOwnershipIdentifiersSlotComplete(ctx context.
 	return
 }
 
+// ListFunctionKeys get function keys for a function in a web site, or a deployment slot.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - function name.
+func (client AppsClient) ListFunctionKeys(ctx context.Context, resourceGroupName string, name string, functionName string) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListFunctionKeys")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListFunctionKeys", err.Error())
+	}
+
+	req, err := client.ListFunctionKeysPreparer(ctx, resourceGroupName, name, functionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListFunctionKeys", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListFunctionKeysSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListFunctionKeys", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListFunctionKeysResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListFunctionKeys", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListFunctionKeysPreparer prepares the ListFunctionKeys request.
+func (client AppsClient) ListFunctionKeysPreparer(ctx context.Context, resourceGroupName string, name string, functionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/listkeys", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListFunctionKeysSender sends the ListFunctionKeys request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListFunctionKeysSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListFunctionKeysResponder handles the response to the ListFunctionKeys request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListFunctionKeysResponder(resp *http.Response) (result StringDictionary, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListFunctionKeysSlot get function keys for a function in a web site, or a deployment slot.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - function name.
+// slot - name of the deployment slot.
+func (client AppsClient) ListFunctionKeysSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (result StringDictionary, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListFunctionKeysSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListFunctionKeysSlot", err.Error())
+	}
+
+	req, err := client.ListFunctionKeysSlotPreparer(ctx, resourceGroupName, name, functionName, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListFunctionKeysSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListFunctionKeysSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListFunctionKeysSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListFunctionKeysSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListFunctionKeysSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListFunctionKeysSlotPreparer prepares the ListFunctionKeysSlot request.
+func (client AppsClient) ListFunctionKeysSlotPreparer(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/listkeys", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListFunctionKeysSlotSender sends the ListFunctionKeysSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListFunctionKeysSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListFunctionKeysSlotResponder handles the response to the ListFunctionKeysSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListFunctionKeysSlotResponder(resp *http.Response) (result StringDictionary, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // ListFunctions list the functions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -18614,8 +20211,7 @@ func (client AppsClient) ListFunctionSecretsResponder(resp *http.Response) (resu
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // functionName - function name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) ListFunctionSecretsSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (result FunctionSecrets, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListFunctionSecretsSlot")
@@ -18689,6 +20285,178 @@ func (client AppsClient) ListFunctionSecretsSlotSender(req *http.Request) (*http
 // ListFunctionSecretsSlotResponder handles the response to the ListFunctionSecretsSlot request. The method always
 // closes the http.Response Body.
 func (client AppsClient) ListFunctionSecretsSlotResponder(resp *http.Response) (result FunctionSecrets, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListHostKeys get host secrets for a function app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+func (client AppsClient) ListHostKeys(ctx context.Context, resourceGroupName string, name string) (result HostKeys, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListHostKeys")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListHostKeys", err.Error())
+	}
+
+	req, err := client.ListHostKeysPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostKeys", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListHostKeysSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostKeys", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListHostKeysResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostKeys", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListHostKeysPreparer prepares the ListHostKeys request.
+func (client AppsClient) ListHostKeysPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listkeys", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListHostKeysSender sends the ListHostKeys request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListHostKeysSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListHostKeysResponder handles the response to the ListHostKeys request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListHostKeysResponder(resp *http.Response) (result HostKeys, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListHostKeysSlot get host secrets for a function app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// slot - name of the deployment slot.
+func (client AppsClient) ListHostKeysSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result HostKeys, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListHostKeysSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListHostKeysSlot", err.Error())
+	}
+
+	req, err := client.ListHostKeysSlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostKeysSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListHostKeysSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostKeysSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListHostKeysSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostKeysSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListHostKeysSlotPreparer prepares the ListHostKeysSlot request.
+func (client AppsClient) ListHostKeysSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/listkeys", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListHostKeysSlotSender sends the ListHostKeysSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListHostKeysSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListHostKeysSlotResponder handles the response to the ListHostKeysSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListHostKeysSlotResponder(resp *http.Response) (result HostKeys, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -19304,8 +21072,7 @@ func (client AppsClient) ListHybridConnectionsSlotResponder(resp *http.Response)
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) ListInstanceFunctionsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result FunctionEnvelopeCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListInstanceFunctionsSlot")
@@ -24760,8 +26527,7 @@ func (client AppsClient) ListSyncFunctionTriggersResponder(resp *http.Response) 
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
-// slot - name of the deployment slot. If a slot is not specified, the API will restore a backup of the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) ListSyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result FunctionSecrets, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSyncFunctionTriggersSlot")
@@ -24841,6 +26607,176 @@ func (client AppsClient) ListSyncFunctionTriggersSlotResponder(resp *http.Respon
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListSyncStatus this is to allow calling via powershell and ARM template.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+func (client AppsClient) ListSyncStatus(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSyncStatus")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSyncStatus", err.Error())
+	}
+
+	req, err := client.ListSyncStatusPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSyncStatus", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSyncStatusSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSyncStatus", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListSyncStatusResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSyncStatus", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSyncStatusPreparer prepares the ListSyncStatus request.
+func (client AppsClient) ListSyncStatusPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listsyncstatus", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSyncStatusSender sends the ListSyncStatus request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSyncStatusSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListSyncStatusResponder handles the response to the ListSyncStatus request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSyncStatusResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// ListSyncStatusSlot this is to allow calling via powershell and ARM template.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// slot - name of the deployment slot.
+func (client AppsClient) ListSyncStatusSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSyncStatusSlot")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSyncStatusSlot", err.Error())
+	}
+
+	req, err := client.ListSyncStatusSlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSyncStatusSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSyncStatusSlotSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSyncStatusSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListSyncStatusSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSyncStatusSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSyncStatusSlotPreparer prepares the ListSyncStatusSlot request.
+func (client AppsClient) ListSyncStatusSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/listsyncstatus", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSyncStatusSlotSender sends the ListSyncStatusSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSyncStatusSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListSyncStatusSlotResponder handles the response to the ListSyncStatusSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSyncStatusSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }
 
@@ -29646,7 +31582,177 @@ func (client AppsClient) SwapSlotWithProductionResponder(resp *http.Response) (r
 	return
 }
 
-// SyncFunctionTriggers syncs function trigger metadata to the scale controller
+// SyncFunctions syncs function trigger metadata to the management database
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+func (client AppsClient) SyncFunctions(ctx context.Context, resourceGroupName string, name string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.SyncFunctions")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "SyncFunctions", err.Error())
+	}
+
+	req, err := client.SyncFunctionsPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncFunctions", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.SyncFunctionsSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncFunctions", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.SyncFunctionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncFunctions", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// SyncFunctionsPreparer prepares the SyncFunctions request.
+func (client AppsClient) SyncFunctionsPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/sync", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SyncFunctionsSender sends the SyncFunctions request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) SyncFunctionsSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// SyncFunctionsResponder handles the response to the SyncFunctions request. The method always
+// closes the http.Response Body.
+func (client AppsClient) SyncFunctionsResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// SyncFunctionsSlot syncs function trigger metadata to the management database
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// slot - name of the deployment slot.
+func (client AppsClient) SyncFunctionsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.SyncFunctionsSlot")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "SyncFunctionsSlot", err.Error())
+	}
+
+	req, err := client.SyncFunctionsSlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncFunctionsSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.SyncFunctionsSlotSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncFunctionsSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.SyncFunctionsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SyncFunctionsSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// SyncFunctionsSlotPreparer prepares the SyncFunctionsSlot request.
+func (client AppsClient) SyncFunctionsSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/sync", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SyncFunctionsSlotSender sends the SyncFunctionsSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) SyncFunctionsSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// SyncFunctionsSlotResponder handles the response to the SyncFunctionsSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) SyncFunctionsSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// SyncFunctionTriggers syncs function trigger metadata to the management database
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -29730,12 +31836,11 @@ func (client AppsClient) SyncFunctionTriggersResponder(resp *http.Response) (res
 	return
 }
 
-// SyncFunctionTriggersSlot syncs function trigger metadata to the scale controller
+// SyncFunctionTriggersSlot syncs function trigger metadata to the management database
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
-// slot - name of the deployment slot. If a slot is not specified, the API will restore a backup of the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) SyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.SyncFunctionTriggersSlot")
@@ -31558,6 +33663,186 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierSlotResponder(resp *http
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateFunctionState set the enablement state for a function.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - function name.
+func (client AppsClient) UpdateFunctionState(ctx context.Context, resourceGroupName string, name string, functionName string, requestEnvelope string) (result String, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdateFunctionState")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "UpdateFunctionState", err.Error())
+	}
+
+	req, err := client.UpdateFunctionStatePreparer(ctx, resourceGroupName, name, functionName, requestEnvelope)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateFunctionState", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateFunctionStateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateFunctionState", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateFunctionStateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateFunctionState", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateFunctionStatePreparer prepares the UpdateFunctionState request.
+func (client AppsClient) UpdateFunctionStatePreparer(ctx context.Context, resourceGroupName string, name string, functionName string, requestEnvelope string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/properties/state", pathParameters),
+		autorest.WithJSON(requestEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateFunctionStateSender sends the UpdateFunctionState request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateFunctionStateSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// UpdateFunctionStateResponder handles the response to the UpdateFunctionState request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateFunctionStateResponder(resp *http.Response) (result String, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateFunctionStateSlot set the enablement state for a function.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - site name.
+// functionName - function name.
+// slot - name of the deployment slot.
+func (client AppsClient) UpdateFunctionStateSlot(ctx context.Context, resourceGroupName string, name string, functionName string, requestEnvelope string, slot string) (result String, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.UpdateFunctionStateSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "UpdateFunctionStateSlot", err.Error())
+	}
+
+	req, err := client.UpdateFunctionStateSlotPreparer(ctx, resourceGroupName, name, functionName, requestEnvelope, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateFunctionStateSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.UpdateFunctionStateSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateFunctionStateSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.UpdateFunctionStateSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "UpdateFunctionStateSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// UpdateFunctionStateSlotPreparer prepares the UpdateFunctionStateSlot request.
+func (client AppsClient) UpdateFunctionStateSlotPreparer(ctx context.Context, resourceGroupName string, name string, functionName string, requestEnvelope string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"functionName":      autorest.Encode("path", functionName),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2018-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/properties/state", pathParameters),
+		autorest.WithJSON(requestEnvelope),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// UpdateFunctionStateSlotSender sends the UpdateFunctionStateSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) UpdateFunctionStateSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// UpdateFunctionStateSlotResponder handles the response to the UpdateFunctionStateSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) UpdateFunctionStateSlotResponder(resp *http.Response) (result String, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

@@ -9813,7 +9813,7 @@ type FileSystemHTTPLogsConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// FunctionEnvelope web Job Information.
+// FunctionEnvelope function information.
 type FunctionEnvelope struct {
 	autorest.Response `json:"-"`
 	// FunctionEnvelopeProperties - FunctionEnvelope resource specific properties
@@ -10056,6 +10056,8 @@ type FunctionEnvelopeProperties struct {
 	ScriptHref *string `json:"script_href,omitempty"`
 	// ConfigHref - Config URI.
 	ConfigHref *string `json:"config_href,omitempty"`
+	// TestDataHref - Test data URI.
+	TestDataHref *string `json:"test_data_href,omitempty"`
 	// SecretsFileHref - Secrets file URI.
 	SecretsFileHref *string `json:"secrets_file_href,omitempty"`
 	// Href - Function URI.
@@ -10066,6 +10068,12 @@ type FunctionEnvelopeProperties struct {
 	Files map[string]*string `json:"files"`
 	// TestData - Test data used when testing via the Azure Portal.
 	TestData *string `json:"test_data,omitempty"`
+	// InvokeURLTemplate - The invocation URL
+	InvokeURLTemplate *string `json:"invoke_url_template,omitempty"`
+	// Language - The function language
+	Language *string `json:"language,omitempty"`
+	// IsDisabled - Value indicating whether the function is disabled
+	IsDisabled *bool `json:"isDisabled,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FunctionEnvelopeProperties.
@@ -10083,6 +10091,9 @@ func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	if fe.ConfigHref != nil {
 		objectMap["config_href"] = fe.ConfigHref
 	}
+	if fe.TestDataHref != nil {
+		objectMap["test_data_href"] = fe.TestDataHref
+	}
 	if fe.SecretsFileHref != nil {
 		objectMap["secrets_file_href"] = fe.SecretsFileHref
 	}
@@ -10097,6 +10108,15 @@ func (fe FunctionEnvelopeProperties) MarshalJSON() ([]byte, error) {
 	}
 	if fe.TestData != nil {
 		objectMap["test_data"] = fe.TestData
+	}
+	if fe.InvokeURLTemplate != nil {
+		objectMap["invoke_url_template"] = fe.InvokeURLTemplate
+	}
+	if fe.Language != nil {
+		objectMap["language"] = fe.Language
+	}
+	if fe.IsDisabled != nil {
+		objectMap["isDisabled"] = fe.IsDisabled
 	}
 	return json.Marshal(objectMap)
 }
@@ -10194,6 +10214,99 @@ type FunctionSecretsProperties struct {
 	Key *string `json:"key,omitempty"`
 	// TriggerURL - Trigger URL.
 	TriggerURL *string `json:"trigger_url,omitempty"`
+}
+
+// FunctionStatus function status.
+type FunctionStatus struct {
+	autorest.Response `json:"-"`
+	// FunctionStatusProperties - FunctionStatus resource specific properties
+	*FunctionStatusProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FunctionStatus.
+func (fs FunctionStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fs.FunctionStatusProperties != nil {
+		objectMap["properties"] = fs.FunctionStatusProperties
+	}
+	if fs.Kind != nil {
+		objectMap["kind"] = fs.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for FunctionStatus struct.
+func (fs *FunctionStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var functionStatusProperties FunctionStatusProperties
+				err = json.Unmarshal(*v, &functionStatusProperties)
+				if err != nil {
+					return err
+				}
+				fs.FunctionStatusProperties = &functionStatusProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fs.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				fs.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fs.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// FunctionStatusProperties functionStatus resource specific properties
+type FunctionStatusProperties struct {
+	// Errors - Collection of initialization errors for the function.
+	Errors *[]string `json:"errors,omitempty"`
 }
 
 // GeoDistribution a global distribution definition.
@@ -10502,6 +10615,118 @@ type HostingEnvironmentProfile struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// HostKeys functions host level keys.
+type HostKeys struct {
+	autorest.Response `json:"-"`
+	// HostKeysProperties - HostKeys resource specific properties
+	*HostKeysProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HostKeys.
+func (hk HostKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hk.HostKeysProperties != nil {
+		objectMap["properties"] = hk.HostKeysProperties
+	}
+	if hk.Kind != nil {
+		objectMap["kind"] = hk.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for HostKeys struct.
+func (hk *HostKeys) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var hostKeysProperties HostKeysProperties
+				err = json.Unmarshal(*v, &hostKeysProperties)
+				if err != nil {
+					return err
+				}
+				hk.HostKeysProperties = &hostKeysProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				hk.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				hk.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				hk.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				hk.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// HostKeysProperties hostKeys resource specific properties
+type HostKeysProperties struct {
+	// MasterKey - Secret key.
+	MasterKey *string `json:"masterKey,omitempty"`
+	// FunctionKeys - Host level function keys.
+	FunctionKeys map[string]*string `json:"functionKeys"`
+	// SystemKeys - System keys.
+	SystemKeys map[string]*string `json:"systemKeys"`
+}
+
+// MarshalJSON is the custom marshaler for HostKeysProperties.
+func (hk HostKeysProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hk.MasterKey != nil {
+		objectMap["masterKey"] = hk.MasterKey
+	}
+	if hk.FunctionKeys != nil {
+		objectMap["functionKeys"] = hk.FunctionKeys
+	}
+	if hk.SystemKeys != nil {
+		objectMap["systemKeys"] = hk.SystemKeys
+	}
+	return json.Marshal(objectMap)
+}
+
 // HostName details of a hostname derived from a domain.
 type HostName struct {
 	// Name - Name of the hostname.
@@ -10787,6 +11012,107 @@ type HostNameSslState struct {
 	ToUpdate *bool `json:"toUpdate,omitempty"`
 	// HostType - Indicates whether the hostname is a standard or repository hostname. Possible values include: 'HostTypeStandard', 'HostTypeRepository'
 	HostType HostType `json:"hostType,omitempty"`
+}
+
+// HostStatus function host status.
+type HostStatus struct {
+	autorest.Response `json:"-"`
+	// HostStatusProperties - HostStatus resource specific properties
+	*HostStatusProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HostStatus.
+func (hs HostStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hs.HostStatusProperties != nil {
+		objectMap["properties"] = hs.HostStatusProperties
+	}
+	if hs.Kind != nil {
+		objectMap["kind"] = hs.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for HostStatus struct.
+func (hs *HostStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var hostStatusProperties HostStatusProperties
+				err = json.Unmarshal(*v, &hostStatusProperties)
+				if err != nil {
+					return err
+				}
+				hs.HostStatusProperties = &hostStatusProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				hs.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				hs.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				hs.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				hs.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// HostStatusProperties hostStatus resource specific properties
+type HostStatusProperties struct {
+	// ID - The host id.
+	ID *string `json:"id,omitempty"`
+	// State - The current host state.
+	State *string `json:"state,omitempty"`
+	// Version - The Function runtime version.
+	Version *string `json:"version,omitempty"`
+	// VersionDetails - The Function runtime version details.
+	VersionDetails *string `json:"versionDetails,omitempty"`
+	// Errors - Collection of initialization errors for the host.
+	Errors *[]string `json:"errors,omitempty"`
 }
 
 // HTTPLogsConfig http logs configuration.
@@ -11943,6 +12269,101 @@ func (j JobProperties) MarshalJSON() ([]byte, error) {
 		objectMap["settings"] = j.Settings
 	}
 	return json.Marshal(objectMap)
+}
+
+// KeyInfo function key info.
+type KeyInfo struct {
+	autorest.Response `json:"-"`
+	// KeyInfoProperties - KeyInfo resource specific properties
+	*KeyInfoProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyInfo.
+func (ki KeyInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ki.KeyInfoProperties != nil {
+		objectMap["properties"] = ki.KeyInfoProperties
+	}
+	if ki.Kind != nil {
+		objectMap["kind"] = ki.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for KeyInfo struct.
+func (ki *KeyInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var keyInfoProperties KeyInfoProperties
+				err = json.Unmarshal(*v, &keyInfoProperties)
+				if err != nil {
+					return err
+				}
+				ki.KeyInfoProperties = &keyInfoProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ki.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ki.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ki.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ki.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// KeyInfoProperties keyInfo resource specific properties
+type KeyInfoProperties struct {
+	// Name - Key name
+	Name *string `json:"name,omitempty"`
+	// Value - Key value
+	Value *string `json:"value,omitempty"`
 }
 
 // ListCapability ...

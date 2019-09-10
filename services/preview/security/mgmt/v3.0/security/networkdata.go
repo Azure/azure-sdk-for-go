@@ -125,7 +125,7 @@ func (client NetworkDataClient) GetResponder(resp *http.Response) (result Networ
 // resourceID - the identifier of the resource.
 // expand - expand whether you want to get more information about the network data (ports and connections
 // details)
-func (client NetworkDataClient) GetResourceCollection(ctx context.Context, resourceID string, expand ExpandValues) (result NetworkData, err error) {
+func (client NetworkDataClient) GetResourceCollection(ctx context.Context, resourceID string, expand ExpandValues) (result NetworkDataList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkDataClient.GetResourceCollection")
 		defer func() {
@@ -188,7 +188,7 @@ func (client NetworkDataClient) GetResourceCollectionSender(req *http.Request) (
 
 // GetResourceCollectionResponder handles the response to the GetResourceCollection request. The method always
 // closes the http.Response Body.
-func (client NetworkDataClient) GetResourceCollectionResponder(resp *http.Response) (result NetworkData, err error) {
+func (client NetworkDataClient) GetResourceCollectionResponder(resp *http.Response) (result NetworkDataList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

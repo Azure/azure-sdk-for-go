@@ -695,9 +695,9 @@ func PossibleStatusReasonValues() []StatusReason {
 type TrafficDataState string
 
 const (
-	// Available The network traffic data is collect on the Azure resource
+	// Available The network traffic data is collected on the Azure resource
 	Available TrafficDataState = "Available"
-	// Notavailable the network traffic data is not collect on the Azure resource
+	// Notavailable the network traffic data is not collected on the Azure resource
 	Notavailable TrafficDataState = "Not available"
 )
 
@@ -727,6 +727,21 @@ const (
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
 	return []Type{BinarySignature, File, FileHash, ProductSignature, PublisherSignature, VersionAndAboveSignature}
+}
+
+// ValueType enumerates the values for value type.
+type ValueType string
+
+const (
+	// IPCidr An IP range in CIDR format (e.g. '192.168.0.1/8').
+	IPCidr ValueType = "IpCidr"
+	// String Any string value.
+	String ValueType = "String"
+)
+
+// PossibleValueTypeValues returns an array of possible values for the ValueType const type.
+func PossibleValueTypeValues() []ValueType {
+	return []ValueType{IPCidr, String}
 }
 
 // AadConnectivityState1 describes an Azure resource with kind
@@ -1460,6 +1475,23 @@ type AllowedConnectionsResourceProperties struct {
 	CalculatedDateTime *date.Time `json:"calculatedDateTime,omitempty"`
 	// ConnectableResources - READ-ONLY; List of connectable resources
 	ConnectableResources *[]ConnectableResource `json:"connectableResources,omitempty"`
+}
+
+// AllowlistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is allowed.
+type AllowlistCustomAlertRule struct {
+	// AllowlistValues - The values to allow. The format of the values depends on the rule type.
+	AllowlistValues *[]string `json:"allowlistValues,omitempty"`
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
 }
 
 // AppWhitelistingGroup ...
@@ -3076,6 +3108,18 @@ type ContactProperties struct {
 	AlertsToAdmins AlertsToAdmins `json:"alertsToAdmins,omitempty"`
 }
 
+// CustomAlertRule a custom alert rule.
+type CustomAlertRule struct {
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // DataExportSetting represents a data export setting
 type DataExportSetting struct {
 	// DataExportSettingProperties - Data export setting data
@@ -3166,6 +3210,254 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 type DataExportSettingProperties struct {
 	// Enabled - Is the data export setting is enabled
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// DenylistCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type) is
+// denied.
+type DenylistCustomAlertRule struct {
+	// DenylistValues - The values to deny. The format of the values depends on the rule type.
+	DenylistValues *[]string `json:"denylistValues,omitempty"`
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// DeviceSecurityGroup the device security group resource
+type DeviceSecurityGroup struct {
+	autorest.Response `json:"-"`
+	// DeviceSecurityGroupProperties - Device Security group data
+	*DeviceSecurityGroupProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceSecurityGroup.
+func (dsg DeviceSecurityGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsg.DeviceSecurityGroupProperties != nil {
+		objectMap["properties"] = dsg.DeviceSecurityGroupProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DeviceSecurityGroup struct.
+func (dsg *DeviceSecurityGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var deviceSecurityGroupProperties DeviceSecurityGroupProperties
+				err = json.Unmarshal(*v, &deviceSecurityGroupProperties)
+				if err != nil {
+					return err
+				}
+				dsg.DeviceSecurityGroupProperties = &deviceSecurityGroupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dsg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dsg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dsg.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DeviceSecurityGroupList list of device security groups
+type DeviceSecurityGroupList struct {
+	autorest.Response `json:"-"`
+	// Value - List of device security group objects
+	Value *[]DeviceSecurityGroup `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DeviceSecurityGroupListIterator provides access to a complete listing of DeviceSecurityGroup values.
+type DeviceSecurityGroupListIterator struct {
+	i    int
+	page DeviceSecurityGroupListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DeviceSecurityGroupListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DeviceSecurityGroupListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DeviceSecurityGroupListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DeviceSecurityGroupListIterator) Response() DeviceSecurityGroupList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DeviceSecurityGroupListIterator) Value() DeviceSecurityGroup {
+	if !iter.page.NotDone() {
+		return DeviceSecurityGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DeviceSecurityGroupListIterator type.
+func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
+	return DeviceSecurityGroupListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dsgl DeviceSecurityGroupList) IsEmpty() bool {
+	return dsgl.Value == nil || len(*dsgl.Value) == 0
+}
+
+// deviceSecurityGroupListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dsgl DeviceSecurityGroupList) deviceSecurityGroupListPreparer(ctx context.Context) (*http.Request, error) {
+	if dsgl.NextLink == nil || len(to.String(dsgl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dsgl.NextLink)))
+}
+
+// DeviceSecurityGroupListPage contains a page of DeviceSecurityGroup values.
+type DeviceSecurityGroupListPage struct {
+	fn   func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)
+	dsgl DeviceSecurityGroupList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DeviceSecurityGroupListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSecurityGroupListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.dsgl)
+	if err != nil {
+		return err
+	}
+	page.dsgl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DeviceSecurityGroupListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DeviceSecurityGroupListPage) NotDone() bool {
+	return !page.dsgl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DeviceSecurityGroupListPage) Response() DeviceSecurityGroupList {
+	return page.dsgl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DeviceSecurityGroupListPage) Values() []DeviceSecurityGroup {
+	if page.dsgl.IsEmpty() {
+		return nil
+	}
+	return *page.dsgl.Value
+}
+
+// Creates a new instance of the DeviceSecurityGroupListPage type.
+func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return DeviceSecurityGroupListPage{fn: getNextPage}
+}
+
+// DeviceSecurityGroupProperties describes properties of a security group.
+type DeviceSecurityGroupProperties struct {
+	// ThresholdRules - The list of custom alert threshold rules.
+	ThresholdRules *[]ThresholdCustomAlertRule `json:"thresholdRules,omitempty"`
+	// TimeWindowRules - The list of custom alert time-window rules.
+	TimeWindowRules *[]TimeWindowCustomAlertRule `json:"timeWindowRules,omitempty"`
+	// AllowlistRules - The allow-list custom alert rules.
+	AllowlistRules *[]AllowlistCustomAlertRule `json:"allowlistRules,omitempty"`
+	// DenylistRules - The deny-list custom alert rules.
+	DenylistRules *[]DenylistCustomAlertRule `json:"denylistRules,omitempty"`
 }
 
 // DiscoveredSecuritySolution ...
@@ -4077,7 +4369,7 @@ type IoTSecurityAggregatedAlert struct {
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// IoTSecurityAggregatedAlertProperties - Security Solution  Aggregated Alert data
+	// IoTSecurityAggregatedAlertProperties - IoT Security solution aggregated alert details.
 	*IoTSecurityAggregatedAlertProperties `json:"properties,omitempty"`
 }
 
@@ -4153,12 +4445,12 @@ func (itsaa *IoTSecurityAggregatedAlert) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// IoTSecurityAggregatedAlertList list of IoT aggregated security alerts
+// IoTSecurityAggregatedAlertList list of IoT Security solution aggregated alert data.
 type IoTSecurityAggregatedAlertList struct {
 	autorest.Response `json:"-"`
-	// Value - List of aggregated alerts data
+	// Value - List of aggregated alerts data.
 	Value *[]IoTSecurityAggregatedAlert `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
+	// NextLink - READ-ONLY; When there is too much alert data for one page, use this URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4300,35 +4592,35 @@ func NewIoTSecurityAggregatedAlertListPage(getNextPage func(context.Context, IoT
 	return IoTSecurityAggregatedAlertListPage{fn: getNextPage}
 }
 
-// IoTSecurityAggregatedAlertProperties security Solution Aggregated Alert data
+// IoTSecurityAggregatedAlertProperties ioT Security solution aggregated alert details.
 type IoTSecurityAggregatedAlertProperties struct {
-	// AlertType - READ-ONLY; Name of the alert type
+	// AlertType - READ-ONLY; Name of the alert type.
 	AlertType *string `json:"alertType,omitempty"`
-	// AlertDisplayName - READ-ONLY; Display name of the alert type
+	// AlertDisplayName - READ-ONLY; Display name of the alert type.
 	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
-	// AggregatedDateUtc - READ-ONLY; The date the incidents were detected by the vendor
+	// AggregatedDateUtc - READ-ONLY; Date of detection.
 	AggregatedDateUtc *date.Date `json:"aggregatedDateUtc,omitempty"`
-	// VendorName - READ-ONLY; Name of the vendor that discovered the incident
+	// VendorName - READ-ONLY; Name of the organization that raised the alert.
 	VendorName *string `json:"vendorName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed alert severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// RemediationSteps - READ-ONLY; Recommended steps for remediation
+	// RemediationSteps - READ-ONLY; Recommended steps for remediation.
 	RemediationSteps *string `json:"remediationSteps,omitempty"`
-	// Description - READ-ONLY; Description of the incident and what it means
+	// Description - READ-ONLY; Description of the suspected vulnerability and meaning.
 	Description *string `json:"description,omitempty"`
-	// Count - READ-ONLY; Occurrence number of the alert within the aggregated date
+	// Count - READ-ONLY; Number of alerts occurrences within the aggregated time window.
 	Count *int32 `json:"count,omitempty"`
-	// EffectedResourceType - READ-ONLY; Azure resource ID of the resource that got the alerts
+	// EffectedResourceType - READ-ONLY; Azure resource ID of the resource that received the alerts.
 	EffectedResourceType *string `json:"effectedResourceType,omitempty"`
-	// SystemSource - READ-ONLY; The type of the alerted resource (Azure, Non-Azure)
+	// SystemSource - READ-ONLY; The type of the alerted resource (Azure, Non-Azure).
 	SystemSource *string `json:"systemSource,omitempty"`
-	// ActionTaken - READ-ONLY; The action that was taken as a response to the alert (Active, Blocked etc.)
+	// ActionTaken - READ-ONLY; IoT Security solution alert response.
 	ActionTaken *string `json:"actionTaken,omitempty"`
-	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
+	// LogAnalyticsQuery - READ-ONLY; Log analytics query for getting the list of affected devices/alerts.
 	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
 }
 
-// IoTSecurityAggregatedRecommendation security Solution Recommendation Information
+// IoTSecurityAggregatedRecommendation ioT Security solution recommendation information.
 type IoTSecurityAggregatedRecommendation struct {
 	autorest.Response `json:"-"`
 	// ID - READ-ONLY; Resource Id
@@ -4415,12 +4707,12 @@ func (itsar *IoTSecurityAggregatedRecommendation) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// IoTSecurityAggregatedRecommendationList list of IoT aggregated security recommendations
+// IoTSecurityAggregatedRecommendationList list of IoT Security solution aggregated recommendations.
 type IoTSecurityAggregatedRecommendationList struct {
 	autorest.Response `json:"-"`
-	// Value - List of aggregated alerts data
+	// Value - List of aggregated recommendations data.
 	Value *[]IoTSecurityAggregatedRecommendation `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
+	// NextLink - READ-ONLY; When there is too much alert data for one page, use this URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -4563,82 +4855,63 @@ func NewIoTSecurityAggregatedRecommendationListPage(getNextPage func(context.Con
 	return IoTSecurityAggregatedRecommendationListPage{fn: getNextPage}
 }
 
-// IoTSecurityAggregatedRecommendationProperties security Solution Recommendation Information
+// IoTSecurityAggregatedRecommendationProperties ioT Security solution aggregated recommendation
+// information
 type IoTSecurityAggregatedRecommendationProperties struct {
-	// RecommendationName - Name of the recommendation
+	// RecommendationName - Name of the recommendation.
 	RecommendationName *string `json:"recommendationName,omitempty"`
 	// RecommendationDisplayName - READ-ONLY; Display name of the recommendation type.
 	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
-	// Description - READ-ONLY; Description of the incident and what it means
+	// Description - READ-ONLY; Description of the suspected vulnerability and meaning.
 	Description *string `json:"description,omitempty"`
-	// RecommendationTypeID - READ-ONLY; The recommendation-type GUID.
+	// RecommendationTypeID - READ-ONLY; Recommendation-type GUID.
 	RecommendationTypeID *string `json:"recommendationTypeId,omitempty"`
-	// DetectedBy - READ-ONLY; Name of the vendor that discovered the issue
+	// DetectedBy - READ-ONLY; Name of the organization that made the recommendation.
 	DetectedBy *string `json:"detectedBy,omitempty"`
 	// RemediationSteps - READ-ONLY; Recommended steps for remediation
 	RemediationSteps *string `json:"remediationSteps,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this recommendation. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// HealthyDevices - READ-ONLY; the number of the healthy devices within the solution
+	// HealthyDevices - READ-ONLY; Number of healthy devices within the IoT Security solution.
 	HealthyDevices *int32 `json:"healthyDevices,omitempty"`
-	// UnhealthyDeviceCount - READ-ONLY; the number of the unhealthy devices within the solution
+	// UnhealthyDeviceCount - READ-ONLY; Number of unhealthy devices within the IoT Security solution.
 	UnhealthyDeviceCount *int32 `json:"unhealthyDeviceCount,omitempty"`
-	// LogAnalyticsQuery - READ-ONLY; query in log analytics to get the list of affected devices/alerts
+	// LogAnalyticsQuery - READ-ONLY; Log analytics query for getting the list of affected devices/alerts.
 	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
 }
 
-// IoTSecurityAlertedDevice statistic information about the number of alerts per device during the last
-// period
+// IoTSecurityAlertedDevice statistical information about the number of alerts per device during last set
+// number of days.
 type IoTSecurityAlertedDevice struct {
-	// DeviceID - READ-ONLY; Name of the alert type
+	// DeviceID - READ-ONLY; Device identifier.
 	DeviceID *string `json:"deviceId,omitempty"`
-	// AlertsCount - READ-ONLY; the number of alerts raised for this device
+	// AlertsCount - READ-ONLY; Number of alerts raised for this device.
 	AlertsCount *int32 `json:"alertsCount,omitempty"`
 }
 
-// IoTSecurityAlertedDevicesList list of devices with the count of raised alerts
-type IoTSecurityAlertedDevicesList struct {
-	// Value - List of aggregated alerts data
-	Value *[]IoTSecurityAlertedDevice `json:"value,omitempty"`
-}
-
-// IoTSecurityDeviceAlert statistic information about the number of alerts per alert type during the last
-// period
+// IoTSecurityDeviceAlert statistical information about the number of alerts per alert type during last set
+// number of days
 type IoTSecurityDeviceAlert struct {
 	// AlertDisplayName - READ-ONLY; Display name of the alert
 	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed Alert severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// AlertsCount - READ-ONLY; the number of alerts raised for this alert type
+	// AlertsCount - READ-ONLY; Number of alerts raised for this alert type.
 	AlertsCount *int32 `json:"alertsCount,omitempty"`
 }
 
-// IoTSecurityDeviceAlertsList list of alerts with the count of raised alerts
-type IoTSecurityDeviceAlertsList struct {
-	// Value - List of top alerts data
-	Value *[]IoTSecurityDeviceAlert `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IoTSecurityDeviceRecommendation statistic information about the number of recommendations per
-// recommendation type
+// IoTSecurityDeviceRecommendation statistical information about the number of recommendations per device,
+// per recommendation type.
 type IoTSecurityDeviceRecommendation struct {
-	// RecommendationDisplayName - READ-ONLY; Display name of the recommendation
+	// RecommendationDisplayName - READ-ONLY; Display name of the recommendation.
 	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this recommendation. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
-	// DevicesCount - READ-ONLY; the number of device with this recommendation
+	// DevicesCount - READ-ONLY; Number of devices with this recommendation.
 	DevicesCount *int32 `json:"devicesCount,omitempty"`
 }
 
-// IoTSecurityDeviceRecommendationsList list of recommendations with the count of devices
-type IoTSecurityDeviceRecommendationsList struct {
-	// Value - List of aggregated recommendation data
-	Value *[]IoTSecurityDeviceRecommendation `json:"value,omitempty"`
-}
-
-// IoTSecuritySolutionAnalyticsModel security Analytics of a security solution
+// IoTSecuritySolutionAnalyticsModel security analytics of your IoT Security solution
 type IoTSecuritySolutionAnalyticsModel struct {
 	autorest.Response `json:"-"`
 	// IoTSecuritySolutionAnalyticsModelProperties - Security Solution  Aggregated Alert data
@@ -4711,40 +4984,40 @@ func (itssam *IoTSecuritySolutionAnalyticsModel) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// IoTSecuritySolutionAnalyticsModelList list of Security Analytics of a security solution
+// IoTSecuritySolutionAnalyticsModelList list of Security analytics of your IoT Security solution
 type IoTSecuritySolutionAnalyticsModelList struct {
 	autorest.Response `json:"-"`
-	// Value - List of Security Analytics of a security solution
+	// Value - List of Security analytics of your IoT Security solution
 	Value *[]IoTSecuritySolutionAnalyticsModel `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The URI to fetch the next page.
+	// NextLink - READ-ONLY; When there is too much alert data for one page, use this URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IoTSecuritySolutionAnalyticsModelProperties security Analytics of a security solution properties
+// IoTSecuritySolutionAnalyticsModelProperties security analytics properties of your IoT Security solution
 type IoTSecuritySolutionAnalyticsModelProperties struct {
-	// Metrics - READ-ONLY; Security Analytics of a security solution
+	// Metrics - READ-ONLY; Security analytics of your IoT Security solution.
 	Metrics *IoTSeverityMetrics `json:"metrics,omitempty"`
-	// UnhealthyDeviceCount - READ-ONLY; number of unhealthy devices
+	// UnhealthyDeviceCount - READ-ONLY; Number of unhealthy devices within your IoT Security solution.
 	UnhealthyDeviceCount *int32 `json:"unhealthyDeviceCount,omitempty"`
-	// DevicesMetrics - READ-ONLY; The list of devices metrics by the aggregated date.
+	// DevicesMetrics - READ-ONLY; List of device metrics by the aggregation date.
 	DevicesMetrics *[]IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem `json:"devicesMetrics,omitempty"`
-	// TopAlertedDevices - The list of top 3 devices with the most attacked.
-	TopAlertedDevices *IoTSecurityAlertedDevicesList `json:"topAlertedDevices,omitempty"`
-	// MostPrevalentDeviceAlerts - The list of most prevalent 3 alerts.
-	MostPrevalentDeviceAlerts *IoTSecurityDeviceAlertsList `json:"mostPrevalentDeviceAlerts,omitempty"`
-	// MostPrevalentDeviceRecommendations - The list of most prevalent 3 recommendations.
-	MostPrevalentDeviceRecommendations *IoTSecurityDeviceRecommendationsList `json:"mostPrevalentDeviceRecommendations,omitempty"`
+	// TopAlertedDevices - List of the 3 devices with the most alerts.
+	TopAlertedDevices *[]IoTSecurityAlertedDevice `json:"topAlertedDevices,omitempty"`
+	// MostPrevalentDeviceAlerts - List of the 3 most prevalent device alerts.
+	MostPrevalentDeviceAlerts *[]IoTSecurityDeviceAlert `json:"mostPrevalentDeviceAlerts,omitempty"`
+	// MostPrevalentDeviceRecommendations - List of the 3 most prevalent device recommendations.
+	MostPrevalentDeviceRecommendations *[]IoTSecurityDeviceRecommendation `json:"mostPrevalentDeviceRecommendations,omitempty"`
 }
 
 // IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem ...
 type IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem struct {
-	// Date - the date of the metrics
+	// Date - Aggregation of IoT Security solution device alert metrics by date.
 	Date *date.Time `json:"date,omitempty"`
-	// DevicesMetrics - devices alerts count by severity.
+	// DevicesMetrics - Device alert count by severity.
 	DevicesMetrics *IoTSeverityMetrics `json:"devicesMetrics,omitempty"`
 }
 
-// IoTSecuritySolutionModel security Solution
+// IoTSecuritySolutionModel ioT Security solution configuration and resource information.
 type IoTSecuritySolutionModel struct {
 	autorest.Response `json:"-"`
 	// ID - READ-ONLY; Resource Id
@@ -4851,9 +5124,9 @@ type IoTSecuritySolutionProperties struct {
 	Workspace *string `json:"workspace,omitempty"`
 	// DisplayName - Resource display name.
 	DisplayName *string `json:"displayName,omitempty"`
-	// Status - Security solution status. Possible values include: 'SolutionStatusEnabled', 'SolutionStatusDisabled'
+	// Status - Status of the IoT Security solution. Possible values include: 'SolutionStatusEnabled', 'SolutionStatusDisabled'
 	Status SolutionStatus `json:"status,omitempty"`
-	// Export - List of additional export to workspace data options
+	// Export - List of additional options for exporting to workspace data.
 	Export *[]ExportData `json:"export,omitempty"`
 	// DisabledDataSources - Disabled data sources. Disabling these data sources compromises the system.
 	DisabledDataSources *[]DataSource `json:"disabledDataSources,omitempty"`
@@ -4865,10 +5138,10 @@ type IoTSecuritySolutionProperties struct {
 	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
 }
 
-// IoTSecuritySolutionsList list of iot solutions
+// IoTSecuritySolutionsList list of IoT Security solutions.
 type IoTSecuritySolutionsList struct {
 	autorest.Response `json:"-"`
-	// Value - List of security solutions
+	// Value - List of IoT Security solutions
 	Value *[]IoTSecuritySolutionModel `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -5012,13 +5285,13 @@ func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuri
 	return IoTSecuritySolutionsListPage{fn: getNextPage}
 }
 
-// IoTSeverityMetrics severity metrics
+// IoTSeverityMetrics ioT Security solution analytics severity metrics.
 type IoTSeverityMetrics struct {
-	// High - count of high severity items
+	// High - Count of high severity alerts/recommendations.
 	High *int32 `json:"high,omitempty"`
-	// Medium - count of medium severity items
+	// Medium - Count of medium severity alerts/recommendations.
 	Medium *int32 `json:"medium,omitempty"`
-	// Low - count of low severity items
+	// Low - Count of low severity alerts/recommendations.
 	Low *int32 `json:"low,omitempty"`
 }
 
@@ -5361,6 +5634,20 @@ type Kind struct {
 	Kind *string `json:"kind,omitempty"`
 }
 
+// ListCustomAlertRule a List custom alert rule.
+type ListCustomAlertRule struct {
+	// ValueType - READ-ONLY; The value type of the items in the list. Possible values include: 'IPCidr', 'String'
+	ValueType ValueType `json:"valueType,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // Location describes an Azure resource with location
 type Location struct {
 	// Location - READ-ONLY; Location where the resource is stored
@@ -5459,7 +5746,7 @@ type NetworkDataConnectableResourceActualTraffic struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - READ-ONLY; The UTC end time of the actual traffic time range
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// TrafficDataState - Indicate whether the network traffic data is collect on the Azure resource. Possible values include: 'Available', 'Notavailable'
+	// TrafficDataState - Indicate whether the network traffic data is collected on the Azure resource. Possible values include: 'Available', 'Notavailable'
 	TrafficDataState           TrafficDataState                 `json:"trafficDataState,omitempty"`
 	InboundConnectedResources  *ActualTrafficConnectedResources `json:"inboundConnectedResources,omitempty"`
 	OutboundConnectedResources *ActualTrafficConnectedResources `json:"outboundConnectedResources,omitempty"`
@@ -5918,13 +6205,13 @@ type PublisherInfo struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// RecommendationConfigurationProperties recommendation configuration
+// RecommendationConfigurationProperties the type of IoT Security recommendation.
 type RecommendationConfigurationProperties struct {
-	// RecommendationType - The recommendation type. Possible values include: 'IoTACRAuthentication', 'IoTAgentSendsUnutilizedMessages', 'IoTBaseline', 'IoTEdgeHubMemOptimize', 'IoTEdgeLoggingOptions', 'IoTInconsistentModuleSettings', 'IoTInstallAgent', 'IoTIPFilterDenyAll', 'IoTIPFilterPermissiveRule', 'IoTOpenPorts', 'IoTPermissiveFirewallPolicy', 'IoTPermissiveInputFirewallRules', 'IoTPermissiveOutputFirewallRules', 'IoTPrivilegedDockerOptions', 'IoTSharedCredentials', 'IoTVulnerableTLSCipherSuite'
+	// RecommendationType - The type of IoT Security recommendation. Possible values include: 'IoTACRAuthentication', 'IoTAgentSendsUnutilizedMessages', 'IoTBaseline', 'IoTEdgeHubMemOptimize', 'IoTEdgeLoggingOptions', 'IoTInconsistentModuleSettings', 'IoTInstallAgent', 'IoTIPFilterDenyAll', 'IoTIPFilterPermissiveRule', 'IoTOpenPorts', 'IoTPermissiveFirewallPolicy', 'IoTPermissiveInputFirewallRules', 'IoTPermissiveOutputFirewallRules', 'IoTPrivilegedDockerOptions', 'IoTSharedCredentials', 'IoTVulnerableTLSCipherSuite'
 	RecommendationType RecommendationType `json:"recommendationType,omitempty"`
 	// Name - READ-ONLY
 	Name *string `json:"name,omitempty"`
-	// Status - Recommendation status. The recommendation is not generated when the status is disabled. Possible values include: 'Disabled', 'Enabled'
+	// Status - Recommendation status. When the recommendation status is disabled recommendations are not generated. Possible values include: 'Disabled', 'Enabled'
 	Status RecommendationConfigStatus `json:"status,omitempty"`
 }
 
@@ -7209,6 +7496,42 @@ type TaskProperties struct {
 	SubState *string `json:"subState,omitempty"`
 }
 
+// ThresholdCustomAlertRule a custom alert rule that checks if a value (depends on the custom alert type)
+// is within the given range.
+type ThresholdCustomAlertRule struct {
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
+// TimeWindowCustomAlertRule a custom alert rule that checks if the number of activities (depends on the
+// custom alert type) in a time window is within the given range.
+type TimeWindowCustomAlertRule struct {
+	// TimeWindowSize - The time window size in iso8601 format.
+	TimeWindowSize *string `json:"timeWindowSize,omitempty"`
+	// MinThreshold - The minimum threshold.
+	MinThreshold *int32 `json:"minThreshold,omitempty"`
+	// MaxThreshold - The maximum threshold.
+	MaxThreshold *int32 `json:"maxThreshold,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the custom alert.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - READ-ONLY; The description of the custom alert.
+	Description *string `json:"description,omitempty"`
+	// IsEnabled - Status of the custom alert.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+	// RuleType - The type of the custom alert rule.
+	RuleType *string `json:"ruleType,omitempty"`
+}
+
 // TopologyList ...
 type TopologyList struct {
 	autorest.Response `json:"-"`
@@ -7478,8 +7801,8 @@ type TopologySingleResourceParent struct {
 
 // UpdateIotSecuritySolutionData ...
 type UpdateIotSecuritySolutionData struct {
-	UserDefinedResources         *UserDefinedResourcesProperties          `json:"userDefinedResources,omitempty"`
-	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
+	// UpdateIoTSecuritySolutionProperties - Security Solution data
+	*UpdateIoTSecuritySolutionProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
@@ -7487,11 +7810,8 @@ type UpdateIotSecuritySolutionData struct {
 // MarshalJSON is the custom marshaler for UpdateIotSecuritySolutionData.
 func (uissd UpdateIotSecuritySolutionData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if uissd.UserDefinedResources != nil {
-		objectMap["userDefinedResources"] = uissd.UserDefinedResources
-	}
-	if uissd.RecommendationsConfiguration != nil {
-		objectMap["recommendationsConfiguration"] = uissd.RecommendationsConfiguration
+	if uissd.UpdateIoTSecuritySolutionProperties != nil {
+		objectMap["properties"] = uissd.UpdateIoTSecuritySolutionProperties
 	}
 	if uissd.Tags != nil {
 		objectMap["tags"] = uissd.Tags
@@ -7499,7 +7819,46 @@ func (uissd UpdateIotSecuritySolutionData) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UserDefinedResourcesProperties properties of the solution's user defined resources.
+// UnmarshalJSON is the custom unmarshaler for UpdateIotSecuritySolutionData struct.
+func (uissd *UpdateIotSecuritySolutionData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var updateIoTSecuritySolutionProperties UpdateIoTSecuritySolutionProperties
+				err = json.Unmarshal(*v, &updateIoTSecuritySolutionProperties)
+				if err != nil {
+					return err
+				}
+				uissd.UpdateIoTSecuritySolutionProperties = &updateIoTSecuritySolutionProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				uissd.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// UpdateIoTSecuritySolutionProperties update Security Solution setting data
+type UpdateIoTSecuritySolutionProperties struct {
+	UserDefinedResources         *UserDefinedResourcesProperties          `json:"userDefinedResources,omitempty"`
+	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
+}
+
+// UserDefinedResourcesProperties properties of the IoT Security solution's user defined resources.
 type UserDefinedResourcesProperties struct {
 	// Query - Azure Resource Graph query which represents the security solution's user defined resources. Required to start with "where type != "Microsoft.Devices/IotHubs""
 	Query *string `json:"query,omitempty"`

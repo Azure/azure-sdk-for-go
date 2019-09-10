@@ -1278,7 +1278,7 @@ func (client VirtualMachinesClient) PowerOffResponder(resp *http.Response) (resu
 	return
 }
 
-// Reapply the operation to reapply a virtual machine state.
+// Reapply reapplies the state of a virtual machine.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.

@@ -119,7 +119,7 @@ func (client SubAssessmentsClient) GetResponder(resp *http.Response) (result Sub
 	return
 }
 
-// List get security sub-assessments on all your scanned resources inside a scope
+// List get security sub-assessments on all your scanned resources inside a subscription scope
 // Parameters:
 // scope - scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
 // management group (/providers/Microsoft.Management/managementGroups/mgName).
@@ -229,5 +229,120 @@ func (client SubAssessmentsClient) ListComplete(ctx context.Context, scope strin
 		}()
 	}
 	result.page, err = client.List(ctx, scope)
+	return
+}
+
+// List1 get security sub-assessments on all your scanned resources inside a scope
+// Parameters:
+// scope - scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
+// management group (/providers/Microsoft.Management/managementGroups/mgName).
+// assessmentName - the Assessment Key - Unique key for the assessment type
+func (client SubAssessmentsClient) List1(ctx context.Context, scope string, assessmentName string) (result SubAssessmentListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubAssessmentsClient.List1")
+		defer func() {
+			sc := -1
+			if result.sal.Response.Response != nil {
+				sc = result.sal.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.list1NextResults
+	req, err := client.List1Preparer(ctx, scope, assessmentName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.SubAssessmentsClient", "List1", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.List1Sender(req)
+	if err != nil {
+		result.sal.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.SubAssessmentsClient", "List1", resp, "Failure sending request")
+		return
+	}
+
+	result.sal, err = client.List1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.SubAssessmentsClient", "List1", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// List1Preparer prepares the List1 request.
+func (client SubAssessmentsClient) List1Preparer(ctx context.Context, scope string, assessmentName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"assessmentName": autorest.Encode("path", assessmentName),
+		"scope":          autorest.Encode("path", scope),
+	}
+
+	const APIVersion = "2019-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/subAssessments", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// List1Sender sends the List1 request. The method will close the
+// http.Response Body if it receives an error.
+func (client SubAssessmentsClient) List1Sender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// List1Responder handles the response to the List1 request. The method always
+// closes the http.Response Body.
+func (client SubAssessmentsClient) List1Responder(resp *http.Response) (result SubAssessmentList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// list1NextResults retrieves the next set of results, if any.
+func (client SubAssessmentsClient) list1NextResults(ctx context.Context, lastResults SubAssessmentList) (result SubAssessmentList, err error) {
+	req, err := lastResults.subAssessmentListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "security.SubAssessmentsClient", "list1NextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.List1Sender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "security.SubAssessmentsClient", "list1NextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.List1Responder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.SubAssessmentsClient", "list1NextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// List1Complete enumerates all values, automatically crossing page boundaries as required.
+func (client SubAssessmentsClient) List1Complete(ctx context.Context, scope string, assessmentName string) (result SubAssessmentListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SubAssessmentsClient.List1")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.List1(ctx, scope, assessmentName)
 	return
 }

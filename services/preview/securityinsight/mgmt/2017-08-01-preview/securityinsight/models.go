@@ -1618,8 +1618,8 @@ func (am *AggregationsModel) UnmarshalJSON(body []byte) error {
 
 // BasicAlertRule alert rule.
 type BasicAlertRule interface {
-	AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool)
 	AsFusionAlertRule() (*FusionAlertRule, bool)
+	AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool)
 	AsScheduledAlertRule() (*ScheduledAlertRule, bool)
 	AsAlertRule() (*AlertRule, bool)
 }
@@ -1629,7 +1629,7 @@ type AlertRule struct {
 	autorest.Response `json:"-"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindMicrosoftSecurityIncidentCreation', 'KindFusion', 'KindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -1641,14 +1641,14 @@ func unmarshalBasicAlertRule(body []byte) (BasicAlertRule, error) {
 	}
 
 	switch m["kind"] {
-	case string(KindMicrosoftSecurityIncidentCreation):
-		var msicar MicrosoftSecurityIncidentCreationAlertRule
-		err := json.Unmarshal(body, &msicar)
-		return msicar, err
 	case string(KindFusion):
 		var far FusionAlertRule
 		err := json.Unmarshal(body, &far)
 		return far, err
+	case string(KindMicrosoftSecurityIncidentCreation):
+		var msicar MicrosoftSecurityIncidentCreationAlertRule
+		err := json.Unmarshal(body, &msicar)
+		return msicar, err
 	case string(KindScheduled):
 		var sar ScheduledAlertRule
 		err := json.Unmarshal(body, &sar)
@@ -1691,13 +1691,13 @@ func (ar AlertRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for AlertRule.
-func (ar AlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
+// AsFusionAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
 	return nil, false
 }
 
-// AsFusionAlertRule is the BasicAlertRule implementation for AlertRule.
-func (ar AlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
 	return nil, false
 }
 
@@ -1919,8 +1919,8 @@ func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (Al
 
 // BasicAlertRuleTemplate alert rule template.
 type BasicAlertRuleTemplate interface {
-	AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool)
 	AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool)
+	AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool)
 	AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool)
 	AsAlertRuleTemplate() (*AlertRuleTemplate, bool)
 }
@@ -1934,7 +1934,7 @@ type AlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -1946,14 +1946,14 @@ func unmarshalBasicAlertRuleTemplate(body []byte) (BasicAlertRuleTemplate, error
 	}
 
 	switch m["kind"] {
-	case string(KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation):
-		var msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate
-		err := json.Unmarshal(body, &msicart)
-		return msicart, err
 	case string(KindBasicAlertRuleTemplateKindFusion):
 		var fart FusionAlertRuleTemplate
 		err := json.Unmarshal(body, &fart)
 		return fart, err
+	case string(KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation):
+		var msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate
+		err := json.Unmarshal(body, &msicart)
+		return msicart, err
 	case string(KindBasicAlertRuleTemplateKindScheduled):
 		var sart ScheduledAlertRuleTemplate
 		err := json.Unmarshal(body, &sart)
@@ -1993,13 +1993,13 @@ func (art AlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
-func (art AlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
 	return nil, false
 }
 
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
-func (art AlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -2040,7 +2040,7 @@ type AlertRuleTemplatePropertiesBase struct {
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
 	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	CreatedDateUTC *date.Time `json:"createdDateUTC,omitempty"`
 	// Description - The description of the alert rule template.
 	Description *string `json:"description,omitempty"`
 	// DisplayName - The display name for alert rule template.
@@ -5534,7 +5534,7 @@ type FusionAlertRule struct {
 	*FusionAlertRuleProperties `json:"properties,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindMicrosoftSecurityIncidentCreation', 'KindFusion', 'KindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -5554,14 +5554,14 @@ func (far FusionAlertRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for FusionAlertRule.
-func (far FusionAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
-	return nil, false
-}
-
 // AsFusionAlertRule is the BasicAlertRule implementation for FusionAlertRule.
 func (far FusionAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
 	return &far, true
+}
+
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
+	return nil, false
 }
 
 // AsScheduledAlertRule is the BasicAlertRule implementation for FusionAlertRule.
@@ -5632,7 +5632,7 @@ type FusionAlertRuleProperties struct {
 	// Enabled - Determines whether this alert rule is enabled or disabled.
 	Enabled *bool `json:"enabled,omitempty"`
 	// LastModifiedUtc - READ-ONLY; The last time that this alert has been modified.
-	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
+	LastModifiedUtc *date.Time `json:"lastModifiedUtc,omitempty"`
 	// Severity - READ-ONLY; The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
 	Severity AlertSeverity `json:"severity,omitempty"`
 	// Tactics - READ-ONLY; The tactics of the alert rule
@@ -5649,7 +5649,7 @@ type FusionAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -5666,14 +5666,14 @@ func (fart FusionAlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
-func (fart FusionAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
-	return nil, false
-}
-
 // AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
 func (fart FusionAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
 	return &fart, true
+}
+
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
+	return nil, false
 }
 
 // AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
@@ -5758,7 +5758,7 @@ type FusionAlertRuleTemplateProperties struct {
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
 	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	CreatedDateUTC *date.Time `json:"createdDateUTC,omitempty"`
 	// Description - The description of the alert rule template.
 	Description *string `json:"description,omitempty"`
 	// DisplayName - The display name for alert rule template.
@@ -6659,7 +6659,7 @@ type MicrosoftSecurityIncidentCreationAlertRule struct {
 	*MicrosoftSecurityIncidentCreationAlertRuleProperties `json:"properties,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindMicrosoftSecurityIncidentCreation', 'KindFusion', 'KindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -6679,14 +6679,14 @@ func (msicar MicrosoftSecurityIncidentCreationAlertRule) MarshalJSON() ([]byte, 
 	return json.Marshal(objectMap)
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
-func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
-	return &msicar, true
-}
-
 // AsFusionAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
 func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
 	return nil, false
+}
+
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
+	return &msicar, true
 }
 
 // AsScheduledAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
@@ -6749,12 +6749,12 @@ func (msicar *MicrosoftSecurityIncidentCreationAlertRule) UnmarshalJSON(body []b
 // MicrosoftSecurityIncidentCreationAlertRuleCommonProperties microsoftSecurityIncidentCreation rule common
 // property bag.
 type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
+	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
+	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
 	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
-	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
-	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
 }
 
 // MicrosoftSecurityIncidentCreationAlertRuleProperties microsoftSecurityIncidentCreation rule property
@@ -6769,15 +6769,15 @@ type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 	// Enabled - Determines whether this alert rule is enabled or disabled.
 	Enabled *bool `json:"enabled,omitempty"`
 	// LastModifiedUtc - READ-ONLY; The last time that this alert has been modified.
-	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
+	LastModifiedUtc *date.Time `json:"lastModifiedUtc,omitempty"`
 	// Tactics - The tactics of the alert rule
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
+	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
 	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
-	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
-	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
 }
 
 // MicrosoftSecurityIncidentCreationAlertRuleTemplate represents MicrosoftSecurityIncidentCreation rule
@@ -6791,7 +6791,7 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -6808,14 +6808,14 @@ func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) MarshalJSON() 
 	return json.Marshal(objectMap)
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
-func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
-	return &msicart, true
-}
-
 // AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
 func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
 	return nil, false
+}
+
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
+	return &msicart, true
 }
 
 // AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
@@ -6899,7 +6899,7 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
 	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	CreatedDateUTC *date.Time `json:"createdDateUTC,omitempty"`
 	// Description - The description of the alert rule template.
 	Description *string `json:"description,omitempty"`
 	// DisplayName - The display name for alert rule template.
@@ -6910,12 +6910,12 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	Status TemplateStatus `json:"status,omitempty"`
 	// Tactics - The tactics of the alert rule template
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
+	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
 	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
-	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
-	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
 }
 
 // OfficeConsent consent for Office365 tenant that already made.
@@ -8076,7 +8076,7 @@ type ScheduledAlertRule struct {
 	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindMicrosoftSecurityIncidentCreation', 'KindFusion', 'KindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -8096,13 +8096,13 @@ func (sar ScheduledAlertRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
-func (sar ScheduledAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
+// AsFusionAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
 	return nil, false
 }
 
-// AsFusionAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
-func (sar ScheduledAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
 	return nil, false
 }
 
@@ -8190,7 +8190,7 @@ type ScheduledAlertRuleProperties struct {
 	// Enabled - Determines whether this alert rule is enabled or disabled.
 	Enabled *bool `json:"enabled,omitempty"`
 	// LastModifiedUtc - READ-ONLY; The last time that this alert rule has been modified.
-	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
+	LastModifiedUtc *date.Time `json:"lastModifiedUtc,omitempty"`
 	// SuppressionDuration - The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
 	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
 	// SuppressionEnabled - Determines whether the suppression for this alert rule is enabled or disabled.
@@ -8221,7 +8221,7 @@ type ScheduledAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -8238,13 +8238,13 @@ func (sart ScheduledAlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
-func (sart ScheduledAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
 	return nil, false
 }
 
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
-func (sart ScheduledAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -8328,7 +8328,7 @@ type ScheduledAlertRuleTemplateProperties struct {
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
 	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	CreatedDateUTC *date.Time `json:"createdDateUTC,omitempty"`
 	// Description - The description of the alert rule template.
 	Description *string `json:"description,omitempty"`
 	// DisplayName - The display name for alert rule template.

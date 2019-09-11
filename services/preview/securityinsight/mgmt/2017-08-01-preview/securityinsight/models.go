@@ -1402,7 +1402,7 @@ func (ar *ActionRequest) UnmarshalJSON(body []byte) error {
 
 // ActionRequestProperties action property bag.
 type ActionRequestProperties struct {
-	// TriggerURI - The uri for the action to trigger.
+	// TriggerURI - Logic App Callback URL.
 	TriggerURI *string `json:"triggerUri,omitempty"`
 }
 

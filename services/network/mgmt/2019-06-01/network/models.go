@@ -15910,6 +15910,17 @@ func NewInterfaceIPConfigurationListResultPage(getNextPage func(context.Context,
 	return InterfaceIPConfigurationListResultPage{fn: getNextPage}
 }
 
+// InterfaceIPConfigurationPrivateLinkConnectionProperties privateLinkConnection properties for the network
+// interface.
+type InterfaceIPConfigurationPrivateLinkConnectionProperties struct {
+	// GroupID - The group id for current private link connection.
+	GroupID *string `json:"groupId,omitempty"`
+	// RequiredMemberName - The require member name for current private link connection.
+	RequiredMemberName *string `json:"requiredMemberName,omitempty"`
+	// Fqdns - List of FQDNs for current private link connection.
+	Fqdns *[]string `json:"fqdns,omitempty"`
+}
+
 // InterfaceIPConfigurationPropertiesFormat properties of IP configuration.
 type InterfaceIPConfigurationPropertiesFormat struct {
 	// VirtualNetworkTaps - The reference to Virtual Network Taps.
@@ -15936,6 +15947,8 @@ type InterfaceIPConfigurationPropertiesFormat struct {
 	ApplicationSecurityGroups *[]ApplicationSecurityGroup `json:"applicationSecurityGroups,omitempty"`
 	// ProvisioningState - The provisioning state of the network interface IP configuration. Possible values are: 'Updating', 'Deleting', and 'Failed'.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// PrivateLinkConnectionProperties - PrivateLinkConnection properties for the network interface.
+	PrivateLinkConnectionProperties *InterfaceIPConfigurationPrivateLinkConnectionProperties `json:"privateLinkConnectionProperties,omitempty"`
 }
 
 // InterfaceListResult response for the ListNetworkInterface API service call.

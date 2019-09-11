@@ -2119,8 +2119,6 @@ type AuthenticationSettingsContract struct {
 	OAuth2 *OAuth2AuthenticationSettingsContract `json:"oAuth2,omitempty"`
 	// Openid - OpenID Connect Authentication Settings
 	Openid *OpenIDAuthenticationSettingsContract `json:"openid,omitempty"`
-	// SubscriptionKeyRequired - Specifies whether subscription key is required during call to this API, true - API is included into closed products only, false - API is included into open products alone, null - there is a mix of products.
-	SubscriptionKeyRequired *bool `json:"subscriptionKeyRequired,omitempty"`
 }
 
 // AuthorizationServerCollection paged OAuth2 Authorization Servers list representation.

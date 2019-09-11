@@ -3546,7 +3546,7 @@ type SBTopicProperties struct {
 type SQLFilter struct {
 	// SQLExpression - The SQL expression. e.g. MyProperty='ABC'
 	SQLExpression *string `json:"sqlExpression,omitempty"`
-	// CompatibilityLevel - READ-ONLY; This property is reserved for future use. An integer value showing the compatibility level, currently hard-coded to 20.
+	// CompatibilityLevel - This property is reserved for future use. An integer value showing the compatibility level, currently hard-coded to 20.
 	CompatibilityLevel *int32 `json:"compatibilityLevel,omitempty"`
 	// RequiresPreprocessing - Value that indicates whether the rule action requires preprocessing.
 	RequiresPreprocessing *bool `json:"requiresPreprocessing,omitempty"`

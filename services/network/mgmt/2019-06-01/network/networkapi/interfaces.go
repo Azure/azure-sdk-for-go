@@ -507,6 +507,7 @@ type ConnectionMonitorsClientAPI interface {
 	Query(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (result network.ConnectionMonitorsQueryFuture, err error)
 	Start(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (result network.ConnectionMonitorsStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (result network.ConnectionMonitorsStopFuture, err error)
+	UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters network.TagsObject) (result network.ConnectionMonitorResult, err error)
 }
 
 var _ ConnectionMonitorsClientAPI = (*network.ConnectionMonitorsClient)(nil)

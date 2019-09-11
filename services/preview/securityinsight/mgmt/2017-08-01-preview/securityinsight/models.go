@@ -1402,7 +1402,7 @@ func (ar *ActionRequest) UnmarshalJSON(body []byte) error {
 
 // ActionRequestProperties action property bag.
 type ActionRequestProperties struct {
-	// TriggerURI - Logic App Callback URL.
+	// TriggerURI - Logic App Callback URL for this specific workflow.
 	TriggerURI *string `json:"triggerUri,omitempty"`
 }
 
@@ -1495,7 +1495,7 @@ func (ar *ActionResponse) UnmarshalJSON(body []byte) error {
 
 // ActionResponseProperties action property bag.
 type ActionResponseProperties struct {
-	// WorkflowID - The workflow id of the playbook.
+	// WorkflowID - The name of the logic app's workflow.
 	WorkflowID *string `json:"workflowId,omitempty"`
 }
 

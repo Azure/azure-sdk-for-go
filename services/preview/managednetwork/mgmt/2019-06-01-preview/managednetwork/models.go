@@ -563,8 +563,8 @@ type ManagedNetwork struct {
 	autorest.Response `json:"-"`
 	// Properties - The MNC properties
 	*Properties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags *[]string `json:"tags,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -610,12 +610,12 @@ func (mn *ManagedNetwork) UnmarshalJSON(body []byte) error {
 			}
 		case "tags":
 			if v != nil {
-				var tags []string
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
 				}
-				mn.Tags = &tags
+				mn.Tags = tags
 			}
 		case "location":
 			if v != nil {
@@ -1411,8 +1411,8 @@ type ScopeAssignmentProperties struct {
 
 // TrackedResource the resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	// Tags - Resource tags.
-	Tags *[]string `json:"tags,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1423,8 +1423,29 @@ type TrackedResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	return json.Marshal(objectMap)
+}
+
 // Update update Tags of Managed Network
 type Update struct {
-	// Tags - Updates the tags property of the Managed Network
-	Tags *[]string `json:"tags,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Update.
+func (u Update) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if u.Tags != nil {
+		objectMap["tags"] = u.Tags
+	}
+	return json.Marshal(objectMap)
 }

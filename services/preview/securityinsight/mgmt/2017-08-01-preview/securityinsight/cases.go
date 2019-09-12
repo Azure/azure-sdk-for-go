@@ -41,7 +41,7 @@ func NewCasesClientWithBaseURI(baseURI string, subscriptionID string) CasesClien
 	return CasesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates the case (deprecated, will be replaced in the future).
+// CreateOrUpdate creates or updates the case.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -147,7 +147,7 @@ func (client CasesClient) CreateOrUpdateResponder(resp *http.Response) (result C
 	return
 }
 
-// Delete delete the case (deprecated, will be replaced in the future).
+// Delete delete the case
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -242,7 +242,7 @@ func (client CasesClient) DeleteResponder(resp *http.Response) (result autorest.
 	return
 }
 
-// Get gets a case (deprecated, will be replaced in the future).
+// Get gets a case.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -338,7 +338,7 @@ func (client CasesClient) GetResponder(resp *http.Response) (result Case, err er
 	return
 }
 
-// GetComment gets a case comment (deprecated, will be replaced in the future).
+// GetComment gets a case comment
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -436,7 +436,7 @@ func (client CasesClient) GetCommentResponder(resp *http.Response) (result CaseC
 	return
 }
 
-// List gets all cases (deprecated, will be replaced in the future).
+// List gets all cases.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.

@@ -97,6 +97,25 @@ type ManagedInstancesClientAPI interface {
 
 var _ ManagedInstancesClientAPI = (*sql.ManagedInstancesClient)(nil)
 
+// ManagedDatabaseRestoreDetailsClientAPI contains the set of methods on the ManagedDatabaseRestoreDetailsClient type.
+type ManagedDatabaseRestoreDetailsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabaseRestoreDetailsResult, err error)
+}
+
+var _ ManagedDatabaseRestoreDetailsClientAPI = (*sql.ManagedDatabaseRestoreDetailsClient)(nil)
+
+// ManagedDatabasesClientAPI contains the set of methods on the ManagedDatabasesClient type.
+type ManagedDatabasesClientAPI interface {
+	CompleteRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.CompleteDatabaseRestoreDefinition) (result sql.ManagedDatabasesCompleteRestoreFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedDatabase) (result sql.ManagedDatabasesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabasesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabase, err error)
+	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters sql.ManagedDatabaseUpdate) (result sql.ManagedDatabasesUpdateFuture, err error)
+}
+
+var _ ManagedDatabasesClientAPI = (*sql.ManagedDatabasesClient)(nil)
+
 // DatabasesClientAPI contains the set of methods on the DatabasesClient type.
 type DatabasesClientAPI interface {
 	Failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabasesFailoverFuture, err error)

@@ -32,13 +32,13 @@ type ContainerServicesClient struct {
 }
 
 // NewContainerServicesClient creates an instance of the ContainerServicesClient client.
-func NewContainerServicesClient(subscriptionID string, filter string) ContainerServicesClient {
-	return NewContainerServicesClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
+	return NewContainerServicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewContainerServicesClientWithBaseURI creates an instance of the ContainerServicesClient client.
-func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string, filter string) ContainerServicesClient {
-	return ContainerServicesClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
+	return ContainerServicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a container service with the specified configuration of orchestrator, masters, and

@@ -32,13 +32,13 @@ type VirtualMachineScaleSetVMsClient struct {
 }
 
 // NewVirtualMachineScaleSetVMsClient creates an instance of the VirtualMachineScaleSetVMsClient client.
-func NewVirtualMachineScaleSetVMsClient(subscriptionID string, filter string) VirtualMachineScaleSetVMsClient {
-	return NewVirtualMachineScaleSetVMsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewVirtualMachineScaleSetVMsClient(subscriptionID string) VirtualMachineScaleSetVMsClient {
+	return NewVirtualMachineScaleSetVMsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewVirtualMachineScaleSetVMsClientWithBaseURI creates an instance of the VirtualMachineScaleSetVMsClient client.
-func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineScaleSetVMsClient {
-	return VirtualMachineScaleSetVMsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMsClient {
+	return VirtualMachineScaleSetVMsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Deallocate deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the

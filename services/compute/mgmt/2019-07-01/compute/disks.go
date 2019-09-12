@@ -32,13 +32,13 @@ type DisksClient struct {
 }
 
 // NewDisksClient creates an instance of the DisksClient client.
-func NewDisksClient(subscriptionID string, filter string) DisksClient {
-	return NewDisksClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewDisksClient(subscriptionID string) DisksClient {
+	return NewDisksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDisksClientWithBaseURI creates an instance of the DisksClient client.
-func NewDisksClientWithBaseURI(baseURI string, subscriptionID string, filter string) DisksClient {
-	return DisksClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClient {
+	return DisksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a disk.

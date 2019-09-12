@@ -32,13 +32,13 @@ type VirtualMachinesClient struct {
 }
 
 // NewVirtualMachinesClient creates an instance of the VirtualMachinesClient client.
-func NewVirtualMachinesClient(subscriptionID string, filter string) VirtualMachinesClient {
-	return NewVirtualMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
+	return NewVirtualMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewVirtualMachinesClientWithBaseURI creates an instance of the VirtualMachinesClient client.
-func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachinesClient {
-	return VirtualMachinesClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
+	return VirtualMachinesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Capture captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create

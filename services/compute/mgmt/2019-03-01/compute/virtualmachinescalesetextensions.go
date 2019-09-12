@@ -31,14 +31,14 @@ type VirtualMachineScaleSetExtensionsClient struct {
 }
 
 // NewVirtualMachineScaleSetExtensionsClient creates an instance of the VirtualMachineScaleSetExtensionsClient client.
-func NewVirtualMachineScaleSetExtensionsClient(subscriptionID string, filter string) VirtualMachineScaleSetExtensionsClient {
-	return NewVirtualMachineScaleSetExtensionsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewVirtualMachineScaleSetExtensionsClient(subscriptionID string) VirtualMachineScaleSetExtensionsClient {
+	return NewVirtualMachineScaleSetExtensionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewVirtualMachineScaleSetExtensionsClientWithBaseURI creates an instance of the
 // VirtualMachineScaleSetExtensionsClient client.
-func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineScaleSetExtensionsClient {
-	return VirtualMachineScaleSetExtensionsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetExtensionsClient {
+	return VirtualMachineScaleSetExtensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate the operation to create or update an extension.

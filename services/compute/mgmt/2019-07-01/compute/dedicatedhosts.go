@@ -32,13 +32,13 @@ type DedicatedHostsClient struct {
 }
 
 // NewDedicatedHostsClient creates an instance of the DedicatedHostsClient client.
-func NewDedicatedHostsClient(subscriptionID string, filter string) DedicatedHostsClient {
-	return NewDedicatedHostsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewDedicatedHostsClient(subscriptionID string) DedicatedHostsClient {
+	return NewDedicatedHostsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDedicatedHostsClientWithBaseURI creates an instance of the DedicatedHostsClient client.
-func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string, filter string) DedicatedHostsClient {
-	return DedicatedHostsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostsClient {
+	return DedicatedHostsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or update a dedicated host .

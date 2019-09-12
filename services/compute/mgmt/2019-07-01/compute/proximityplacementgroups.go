@@ -31,13 +31,13 @@ type ProximityPlacementGroupsClient struct {
 }
 
 // NewProximityPlacementGroupsClient creates an instance of the ProximityPlacementGroupsClient client.
-func NewProximityPlacementGroupsClient(subscriptionID string, filter string) ProximityPlacementGroupsClient {
-	return NewProximityPlacementGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewProximityPlacementGroupsClient(subscriptionID string) ProximityPlacementGroupsClient {
+	return NewProximityPlacementGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewProximityPlacementGroupsClientWithBaseURI creates an instance of the ProximityPlacementGroupsClient client.
-func NewProximityPlacementGroupsClientWithBaseURI(baseURI string, subscriptionID string, filter string) ProximityPlacementGroupsClient {
-	return ProximityPlacementGroupsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewProximityPlacementGroupsClientWithBaseURI(baseURI string, subscriptionID string) ProximityPlacementGroupsClient {
+	return ProximityPlacementGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or update a proximity placement group.

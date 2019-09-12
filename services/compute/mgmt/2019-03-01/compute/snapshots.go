@@ -32,13 +32,13 @@ type SnapshotsClient struct {
 }
 
 // NewSnapshotsClient creates an instance of the SnapshotsClient client.
-func NewSnapshotsClient(subscriptionID string, filter string) SnapshotsClient {
-	return NewSnapshotsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
+	return NewSnapshotsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewSnapshotsClientWithBaseURI creates an instance of the SnapshotsClient client.
-func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string, filter string) SnapshotsClient {
-	return SnapshotsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
+	return SnapshotsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates a snapshot.

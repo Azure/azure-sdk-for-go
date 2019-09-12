@@ -31,13 +31,13 @@ type ImagesClient struct {
 }
 
 // NewImagesClient creates an instance of the ImagesClient client.
-func NewImagesClient(subscriptionID string, filter string) ImagesClient {
-	return NewImagesClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
+func NewImagesClient(subscriptionID string) ImagesClient {
+	return NewImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewImagesClientWithBaseURI creates an instance of the ImagesClient client.
-func NewImagesClientWithBaseURI(baseURI string, subscriptionID string, filter string) ImagesClient {
-	return ImagesClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
+func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
+	return ImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate create or update an image.

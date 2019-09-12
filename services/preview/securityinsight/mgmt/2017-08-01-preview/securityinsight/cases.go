@@ -147,7 +147,7 @@ func (client CasesClient) CreateOrUpdateResponder(resp *http.Response) (result C
 	return
 }
 
-// Delete delete the case
+// Delete delete the case.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
@@ -338,7 +338,7 @@ func (client CasesClient) GetResponder(resp *http.Response) (result Case, err er
 	return
 }
 
-// GetComment gets a case comment
+// GetComment gets a case comment.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.

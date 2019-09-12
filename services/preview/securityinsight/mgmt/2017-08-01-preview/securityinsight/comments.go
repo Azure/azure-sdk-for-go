@@ -41,7 +41,7 @@ func NewCommentsClientWithBaseURI(baseURI string, subscriptionID string) Comment
 	return CommentsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByCase gets all case comments
+// ListByCase gets all case comments.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.

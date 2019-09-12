@@ -722,6 +722,34 @@ func PossibleRegistryValueKindValues() []RegistryValueKind {
 	return []RegistryValueKind{RegistryValueKindBinary, RegistryValueKindDWord, RegistryValueKindExpandString, RegistryValueKindMultiString, RegistryValueKindNone, RegistryValueKindQWord, RegistryValueKindString, RegistryValueKindUnknown}
 }
 
+// RelationNodeKind enumerates the values for relation node kind.
+type RelationNodeKind string
+
+const (
+	// RelationNodeKindBookmark Bookmark node part of the relation
+	RelationNodeKindBookmark RelationNodeKind = "Bookmark"
+	// RelationNodeKindCase Case node part of the relation
+	RelationNodeKindCase RelationNodeKind = "Case"
+)
+
+// PossibleRelationNodeKindValues returns an array of possible values for the RelationNodeKind const type.
+func PossibleRelationNodeKindValues() []RelationNodeKind {
+	return []RelationNodeKind{RelationNodeKindBookmark, RelationNodeKindCase}
+}
+
+// RelationTypes enumerates the values for relation types.
+type RelationTypes string
+
+const (
+	// CasesToBookmarks Relations between cases and bookmarks
+	CasesToBookmarks RelationTypes = "CasesToBookmarks"
+)
+
+// PossibleRelationTypesValues returns an array of possible values for the RelationTypes const type.
+func PossibleRelationTypesValues() []RelationTypes {
+	return []RelationTypes{CasesToBookmarks}
+}
+
 // SettingKind enumerates the values for setting kind.
 type SettingKind string
 
@@ -3049,6 +3077,264 @@ type BookmarkProperties struct {
 	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
 }
 
+// BookmarkRelation represents a bookmark relation
+type BookmarkRelation struct {
+	autorest.Response `json:"-"`
+	// BookmarkRelationProperties - Bookmark relation properties
+	*BookmarkRelationProperties `json:"properties,omitempty"`
+	// Kind - READ-ONLY; The type of relation node. Possible values include: 'CasesToBookmarks'
+	Kind RelationTypes `json:"kind,omitempty"`
+	// Etag - ETag for relation
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BookmarkRelation.
+func (br BookmarkRelation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if br.BookmarkRelationProperties != nil {
+		objectMap["properties"] = br.BookmarkRelationProperties
+	}
+	if br.Etag != nil {
+		objectMap["etag"] = br.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for BookmarkRelation struct.
+func (br *BookmarkRelation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var bookmarkRelationProperties BookmarkRelationProperties
+				err = json.Unmarshal(*v, &bookmarkRelationProperties)
+				if err != nil {
+					return err
+				}
+				br.BookmarkRelationProperties = &bookmarkRelationProperties
+			}
+		case "kind":
+			if v != nil {
+				var kind RelationTypes
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				br.Kind = kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				br.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				br.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				br.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				br.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// BookmarkRelationList list of bookmark relations.
+type BookmarkRelationList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of relations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of relations.
+	Value *[]BookmarkRelation `json:"value,omitempty"`
+}
+
+// BookmarkRelationListIterator provides access to a complete listing of BookmarkRelation values.
+type BookmarkRelationListIterator struct {
+	i    int
+	page BookmarkRelationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *BookmarkRelationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarkRelationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *BookmarkRelationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter BookmarkRelationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter BookmarkRelationListIterator) Response() BookmarkRelationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter BookmarkRelationListIterator) Value() BookmarkRelation {
+	if !iter.page.NotDone() {
+		return BookmarkRelation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the BookmarkRelationListIterator type.
+func NewBookmarkRelationListIterator(page BookmarkRelationListPage) BookmarkRelationListIterator {
+	return BookmarkRelationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (brl BookmarkRelationList) IsEmpty() bool {
+	return brl.Value == nil || len(*brl.Value) == 0
+}
+
+// bookmarkRelationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (brl BookmarkRelationList) bookmarkRelationListPreparer(ctx context.Context) (*http.Request, error) {
+	if brl.NextLink == nil || len(to.String(brl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(brl.NextLink)))
+}
+
+// BookmarkRelationListPage contains a page of BookmarkRelation values.
+type BookmarkRelationListPage struct {
+	fn  func(context.Context, BookmarkRelationList) (BookmarkRelationList, error)
+	brl BookmarkRelationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *BookmarkRelationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarkRelationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.brl)
+	if err != nil {
+		return err
+	}
+	page.brl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *BookmarkRelationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page BookmarkRelationListPage) NotDone() bool {
+	return !page.brl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page BookmarkRelationListPage) Response() BookmarkRelationList {
+	return page.brl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page BookmarkRelationListPage) Values() []BookmarkRelation {
+	if page.brl.IsEmpty() {
+		return nil
+	}
+	return *page.brl.Value
+}
+
+// Creates a new instance of the BookmarkRelationListPage type.
+func NewBookmarkRelationListPage(getNextPage func(context.Context, BookmarkRelationList) (BookmarkRelationList, error)) BookmarkRelationListPage {
+	return BookmarkRelationListPage{fn: getNextPage}
+}
+
+// BookmarkRelationProperties bookmark relation properties
+type BookmarkRelationProperties struct {
+	// RelationName - Name of relation
+	RelationName *string `json:"relationName,omitempty"`
+	// BookmarkID - The case related bookmark id
+	BookmarkID *string `json:"bookmarkId,omitempty"`
+	// CaseIdentifier - The case identifier
+	CaseIdentifier *string `json:"caseIdentifier,omitempty"`
+	// CaseTitle - The case title
+	CaseTitle *string `json:"caseTitle,omitempty"`
+	// CaseSeverity - The case severity
+	CaseSeverity *string `json:"caseSeverity,omitempty"`
+}
+
 // Case represents a case in Azure Security Insights.
 type Case struct {
 	autorest.Response `json:"-"`
@@ -3545,6 +3831,262 @@ type CaseProperties struct {
 	Title *string `json:"title,omitempty"`
 	// TotalComments - READ-ONLY; the number of total comments in the case
 	TotalComments *int32 `json:"totalComments,omitempty"`
+}
+
+// CaseRelation represents a case relation
+type CaseRelation struct {
+	autorest.Response `json:"-"`
+	// CaseRelationProperties - Case relation properties
+	*CaseRelationProperties `json:"properties,omitempty"`
+	// Kind - READ-ONLY; The type of relation node. Possible values include: 'CasesToBookmarks'
+	Kind RelationTypes `json:"kind,omitempty"`
+	// Etag - ETag for relation
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CaseRelation.
+func (cr CaseRelation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cr.CaseRelationProperties != nil {
+		objectMap["properties"] = cr.CaseRelationProperties
+	}
+	if cr.Etag != nil {
+		objectMap["etag"] = cr.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CaseRelation struct.
+func (cr *CaseRelation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var caseRelationProperties CaseRelationProperties
+				err = json.Unmarshal(*v, &caseRelationProperties)
+				if err != nil {
+					return err
+				}
+				cr.CaseRelationProperties = &caseRelationProperties
+			}
+		case "kind":
+			if v != nil {
+				var kind RelationTypes
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				cr.Kind = kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				cr.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CaseRelationList list of case relations.
+type CaseRelationList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of relations.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of relations.
+	Value *[]CaseRelation `json:"value,omitempty"`
+}
+
+// CaseRelationListIterator provides access to a complete listing of CaseRelation values.
+type CaseRelationListIterator struct {
+	i    int
+	page CaseRelationListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CaseRelationListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CaseRelationListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CaseRelationListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CaseRelationListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CaseRelationListIterator) Response() CaseRelationList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CaseRelationListIterator) Value() CaseRelation {
+	if !iter.page.NotDone() {
+		return CaseRelation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CaseRelationListIterator type.
+func NewCaseRelationListIterator(page CaseRelationListPage) CaseRelationListIterator {
+	return CaseRelationListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (crl CaseRelationList) IsEmpty() bool {
+	return crl.Value == nil || len(*crl.Value) == 0
+}
+
+// caseRelationListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (crl CaseRelationList) caseRelationListPreparer(ctx context.Context) (*http.Request, error) {
+	if crl.NextLink == nil || len(to.String(crl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(crl.NextLink)))
+}
+
+// CaseRelationListPage contains a page of CaseRelation values.
+type CaseRelationListPage struct {
+	fn  func(context.Context, CaseRelationList) (CaseRelationList, error)
+	crl CaseRelationList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CaseRelationListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CaseRelationListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.crl)
+	if err != nil {
+		return err
+	}
+	page.crl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CaseRelationListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CaseRelationListPage) NotDone() bool {
+	return !page.crl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CaseRelationListPage) Response() CaseRelationList {
+	return page.crl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CaseRelationListPage) Values() []CaseRelation {
+	if page.crl.IsEmpty() {
+		return nil
+	}
+	return *page.crl.Value
+}
+
+// Creates a new instance of the CaseRelationListPage type.
+func NewCaseRelationListPage(getNextPage func(context.Context, CaseRelationList) (CaseRelationList, error)) CaseRelationListPage {
+	return CaseRelationListPage{fn: getNextPage}
+}
+
+// CaseRelationProperties case relation properties
+type CaseRelationProperties struct {
+	// RelationName - Name of relation
+	RelationName *string `json:"relationName,omitempty"`
+	// BookmarkID - The case related bookmark id
+	BookmarkID *string `json:"bookmarkId,omitempty"`
+	// CaseIdentifier - The case identifier
+	CaseIdentifier *string `json:"caseIdentifier,omitempty"`
+	// BookmarkName - The case related bookmark name
+	BookmarkName *string `json:"bookmarkName,omitempty"`
 }
 
 // CasesAggregation represents aggregations results for cases.
@@ -8053,6 +8595,154 @@ type RegistryValueEntityProperties struct {
 func (rvep RegistryValueEntityProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// RelationBase represents a relation
+type RelationBase struct {
+	// Kind - READ-ONLY; The type of relation node. Possible values include: 'CasesToBookmarks'
+	Kind RelationTypes `json:"kind,omitempty"`
+	// Etag - ETag for relation
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// RelationNode relation node
+type RelationNode struct {
+	// RelationNodeID - Relation Node Id
+	RelationNodeID *string `json:"relationNodeId,omitempty"`
+	// RelationNodeKind - READ-ONLY; The type of relation node. Possible values include: 'RelationNodeKindCase', 'RelationNodeKindBookmark'
+	RelationNodeKind RelationNodeKind `json:"relationNodeKind,omitempty"`
+	// Etag - Etag for relation node
+	Etag *string `json:"etag,omitempty"`
+	// RelationAdditionalProperties - Additional set of properties
+	RelationAdditionalProperties map[string]*string `json:"relationAdditionalProperties"`
+}
+
+// MarshalJSON is the custom marshaler for RelationNode.
+func (rn RelationNode) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rn.RelationNodeID != nil {
+		objectMap["relationNodeId"] = rn.RelationNodeID
+	}
+	if rn.Etag != nil {
+		objectMap["etag"] = rn.Etag
+	}
+	if rn.RelationAdditionalProperties != nil {
+		objectMap["relationAdditionalProperties"] = rn.RelationAdditionalProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// RelationsModelInput relation input model
+type RelationsModelInput struct {
+	// RelationsModelInputProperties - Relation input properties
+	*RelationsModelInputProperties `json:"properties,omitempty"`
+	// Kind - READ-ONLY; The type of relation node. Possible values include: 'CasesToBookmarks'
+	Kind RelationTypes `json:"kind,omitempty"`
+	// Etag - ETag for relation
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RelationsModelInput.
+func (rmi RelationsModelInput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmi.RelationsModelInputProperties != nil {
+		objectMap["properties"] = rmi.RelationsModelInputProperties
+	}
+	if rmi.Etag != nil {
+		objectMap["etag"] = rmi.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RelationsModelInput struct.
+func (rmi *RelationsModelInput) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var relationsModelInputProperties RelationsModelInputProperties
+				err = json.Unmarshal(*v, &relationsModelInputProperties)
+				if err != nil {
+					return err
+				}
+				rmi.RelationsModelInputProperties = &relationsModelInputProperties
+			}
+		case "kind":
+			if v != nil {
+				var kind RelationTypes
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				rmi.Kind = kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				rmi.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rmi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rmi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rmi.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RelationsModelInputProperties relation input properties
+type RelationsModelInputProperties struct {
+	// RelationName - Name of relation
+	RelationName *string `json:"relationName,omitempty"`
+	// SourceRelationNode - Relation source node
+	SourceRelationNode *RelationNode `json:"sourceRelationNode,omitempty"`
+	// TargetRelationNode - Relation target node
+	TargetRelationNode *RelationNode `json:"targetRelationNode,omitempty"`
 }
 
 // Resource an azure resource object

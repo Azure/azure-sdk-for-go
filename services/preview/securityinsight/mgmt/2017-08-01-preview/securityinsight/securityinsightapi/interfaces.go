@@ -69,6 +69,26 @@ type CasesClientAPI interface {
 
 var _ CasesClientAPI = (*securityinsight.CasesClient)(nil)
 
+// CaseRelationsClientAPI contains the set of methods on the CaseRelationsClient type.
+type CaseRelationsClientAPI interface {
+	CreateOrUpdateRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, relationName string, relationInputModel securityinsight.RelationsModelInput) (result securityinsight.CaseRelation, err error)
+	DeleteRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, relationName string) (result autorest.Response, err error)
+	GetRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, relationName string) (result securityinsight.CaseRelation, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseRelationListPage, err error)
+}
+
+var _ CaseRelationsClientAPI = (*securityinsight.CaseRelationsClient)(nil)
+
+// BookmarkRelationsClientAPI contains the set of methods on the BookmarkRelationsClient type.
+type BookmarkRelationsClientAPI interface {
+	CreateOrUpdateRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, relationName string, relationInputModel securityinsight.RelationsModelInput) (result securityinsight.BookmarkRelation, err error)
+	DeleteRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, relationName string) (result autorest.Response, err error)
+	GetRelation(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, relationName string) (result securityinsight.BookmarkRelation, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, bookmarkID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.BookmarkRelationListPage, err error)
+}
+
+var _ BookmarkRelationsClientAPI = (*securityinsight.BookmarkRelationsClient)(nil)
+
 // CommentsClientAPI contains the set of methods on the CommentsClient type.
 type CommentsClientAPI interface {
 	ListByCase(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.CaseCommentListPage, err error)

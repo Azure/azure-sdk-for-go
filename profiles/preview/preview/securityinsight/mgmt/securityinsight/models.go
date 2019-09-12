@@ -340,6 +340,19 @@ const (
 	RegistryValueKindUnknown      RegistryValueKind = original.RegistryValueKindUnknown
 )
 
+type RelationNodeKind = original.RelationNodeKind
+
+const (
+	RelationNodeKindBookmark RelationNodeKind = original.RelationNodeKindBookmark
+	RelationNodeKindCase     RelationNodeKind = original.RelationNodeKindCase
+)
+
+type RelationTypes = original.RelationTypes
+
+const (
+	CasesToBookmarks RelationTypes = original.CasesToBookmarks
+)
+
 type SettingKind = original.SettingKind
 
 const (
@@ -422,6 +435,12 @@ type BookmarkList = original.BookmarkList
 type BookmarkListIterator = original.BookmarkListIterator
 type BookmarkListPage = original.BookmarkListPage
 type BookmarkProperties = original.BookmarkProperties
+type BookmarkRelation = original.BookmarkRelation
+type BookmarkRelationList = original.BookmarkRelationList
+type BookmarkRelationListIterator = original.BookmarkRelationListIterator
+type BookmarkRelationListPage = original.BookmarkRelationListPage
+type BookmarkRelationProperties = original.BookmarkRelationProperties
+type BookmarkRelationsClient = original.BookmarkRelationsClient
 type BookmarksClient = original.BookmarksClient
 type Case = original.Case
 type CaseComment = original.CaseComment
@@ -434,6 +453,12 @@ type CaseList = original.CaseList
 type CaseListIterator = original.CaseListIterator
 type CaseListPage = original.CaseListPage
 type CaseProperties = original.CaseProperties
+type CaseRelation = original.CaseRelation
+type CaseRelationList = original.CaseRelationList
+type CaseRelationListIterator = original.CaseRelationListIterator
+type CaseRelationListPage = original.CaseRelationListPage
+type CaseRelationProperties = original.CaseRelationProperties
+type CaseRelationsClient = original.CaseRelationsClient
 type CasesAggregation = original.CasesAggregation
 type CasesAggregationBySeverityProperties = original.CasesAggregationBySeverityProperties
 type CasesAggregationByStatusProperties = original.CasesAggregationByStatusProperties
@@ -524,6 +549,10 @@ type RegistryKeyEntity = original.RegistryKeyEntity
 type RegistryKeyEntityProperties = original.RegistryKeyEntityProperties
 type RegistryValueEntity = original.RegistryValueEntity
 type RegistryValueEntityProperties = original.RegistryValueEntityProperties
+type RelationBase = original.RelationBase
+type RelationNode = original.RelationNode
+type RelationsModelInput = original.RelationsModelInput
+type RelationsModelInputProperties = original.RelationsModelInputProperties
 type Resource = original.Resource
 type ScheduledAlertRule = original.ScheduledAlertRule
 type ScheduledAlertRuleProperties = original.ScheduledAlertRuleProperties
@@ -596,6 +625,18 @@ func NewBookmarkListIterator(page BookmarkListPage) BookmarkListIterator {
 func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
 	return original.NewBookmarkListPage(getNextPage)
 }
+func NewBookmarkRelationListIterator(page BookmarkRelationListPage) BookmarkRelationListIterator {
+	return original.NewBookmarkRelationListIterator(page)
+}
+func NewBookmarkRelationListPage(getNextPage func(context.Context, BookmarkRelationList) (BookmarkRelationList, error)) BookmarkRelationListPage {
+	return original.NewBookmarkRelationListPage(getNextPage)
+}
+func NewBookmarkRelationsClient(subscriptionID string) BookmarkRelationsClient {
+	return original.NewBookmarkRelationsClient(subscriptionID)
+}
+func NewBookmarkRelationsClientWithBaseURI(baseURI string, subscriptionID string) BookmarkRelationsClient {
+	return original.NewBookmarkRelationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBookmarksClient(subscriptionID string) BookmarksClient {
 	return original.NewBookmarksClient(subscriptionID)
 }
@@ -619,6 +660,18 @@ func NewCaseListIterator(page CaseListPage) CaseListIterator {
 }
 func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
 	return original.NewCaseListPage(getNextPage)
+}
+func NewCaseRelationListIterator(page CaseRelationListPage) CaseRelationListIterator {
+	return original.NewCaseRelationListIterator(page)
+}
+func NewCaseRelationListPage(getNextPage func(context.Context, CaseRelationList) (CaseRelationList, error)) CaseRelationListPage {
+	return original.NewCaseRelationListPage(getNextPage)
+}
+func NewCaseRelationsClient(subscriptionID string) CaseRelationsClient {
+	return original.NewCaseRelationsClient(subscriptionID)
+}
+func NewCaseRelationsClientWithBaseURI(baseURI string, subscriptionID string) CaseRelationsClient {
+	return original.NewCaseRelationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCasesAggregationsClient(subscriptionID string) CasesAggregationsClient {
 	return original.NewCasesAggregationsClient(subscriptionID)
@@ -790,6 +843,12 @@ func PossibleRegistryHiveValues() []RegistryHive {
 }
 func PossibleRegistryValueKindValues() []RegistryValueKind {
 	return original.PossibleRegistryValueKindValues()
+}
+func PossibleRelationNodeKindValues() []RelationNodeKind {
+	return original.PossibleRelationNodeKindValues()
+}
+func PossibleRelationTypesValues() []RelationTypes {
+	return original.PossibleRelationTypesValues()
 }
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()

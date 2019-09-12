@@ -41,7 +41,7 @@ func NewCaseRelationsClientWithBaseURI(baseURI string, subscriptionID string) Ca
 	return CaseRelationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdateRelation creates the case relation.
+// CreateOrUpdateRelation creates or updates the case relation.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.

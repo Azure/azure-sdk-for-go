@@ -32,13 +32,13 @@ type VirtualMachineSizesClient struct {
 }
 
 // NewVirtualMachineSizesClient creates an instance of the VirtualMachineSizesClient client.
-func NewVirtualMachineSizesClient(subscriptionID string) VirtualMachineSizesClient {
-	return NewVirtualMachineSizesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineSizesClient(subscriptionID string, filter string) VirtualMachineSizesClient {
+	return NewVirtualMachineSizesClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
 }
 
 // NewVirtualMachineSizesClientWithBaseURI creates an instance of the VirtualMachineSizesClient client.
-func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSizesClient {
-	return VirtualMachineSizesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineSizesClient {
+	return VirtualMachineSizesClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
 }
 
 // List this API is deprecated. Use [Resources

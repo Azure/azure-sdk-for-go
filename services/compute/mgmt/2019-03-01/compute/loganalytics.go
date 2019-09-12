@@ -32,13 +32,13 @@ type LogAnalyticsClient struct {
 }
 
 // NewLogAnalyticsClient creates an instance of the LogAnalyticsClient client.
-func NewLogAnalyticsClient(subscriptionID string) LogAnalyticsClient {
-	return NewLogAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewLogAnalyticsClient(subscriptionID string, filter string) LogAnalyticsClient {
+	return NewLogAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
 }
 
 // NewLogAnalyticsClientWithBaseURI creates an instance of the LogAnalyticsClient client.
-func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string) LogAnalyticsClient {
-	return LogAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, filter string) LogAnalyticsClient {
+	return LogAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
 }
 
 // ExportRequestRateByInterval export logs that show Api requests made by this subscription in the given time window to

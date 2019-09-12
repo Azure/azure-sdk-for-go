@@ -32,13 +32,13 @@ type DedicatedHostGroupsClient struct {
 }
 
 // NewDedicatedHostGroupsClient creates an instance of the DedicatedHostGroupsClient client.
-func NewDedicatedHostGroupsClient(subscriptionID string) DedicatedHostGroupsClient {
-	return NewDedicatedHostGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewDedicatedHostGroupsClient(subscriptionID string, filter string) DedicatedHostGroupsClient {
+	return NewDedicatedHostGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
 }
 
 // NewDedicatedHostGroupsClientWithBaseURI creates an instance of the DedicatedHostGroupsClient client.
-func NewDedicatedHostGroupsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostGroupsClient {
-	return DedicatedHostGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewDedicatedHostGroupsClientWithBaseURI(baseURI string, subscriptionID string, filter string) DedicatedHostGroupsClient {
+	return DedicatedHostGroupsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
 }
 
 // CreateOrUpdate create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups

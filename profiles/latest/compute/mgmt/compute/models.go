@@ -1067,8 +1067,8 @@ type WinRMConfiguration = original.WinRMConfiguration
 type WinRMListener = original.WinRMListener
 type WindowsConfiguration = original.WindowsConfiguration
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, filter string) BaseClient {
+	return original.New(subscriptionID, filter)
 }
 func NewAvailabilitySetListResultIterator(page AvailabilitySetListResultPage) AvailabilitySetListResultIterator {
 	return original.NewAvailabilitySetListResultIterator(page)
@@ -1076,11 +1076,11 @@ func NewAvailabilitySetListResultIterator(page AvailabilitySetListResultPage) Av
 func NewAvailabilitySetListResultPage(getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
 	return original.NewAvailabilitySetListResultPage(getNextPage)
 }
-func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
-	return original.NewAvailabilitySetsClient(subscriptionID)
+func NewAvailabilitySetsClient(subscriptionID string, filter string) AvailabilitySetsClient {
+	return original.NewAvailabilitySetsClient(subscriptionID, filter)
 }
-func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
-	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID)
+func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string, filter string) AvailabilitySetsClient {
+	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewContainerServiceListResultIterator(page ContainerServiceListResultPage) ContainerServiceListResultIterator {
 	return original.NewContainerServiceListResultIterator(page)
@@ -1088,11 +1088,11 @@ func NewContainerServiceListResultIterator(page ContainerServiceListResultPage) 
 func NewContainerServiceListResultPage(getNextPage func(context.Context, ContainerServiceListResult) (ContainerServiceListResult, error)) ContainerServiceListResultPage {
 	return original.NewContainerServiceListResultPage(getNextPage)
 }
-func NewContainerServicesClient(subscriptionID string) ContainerServicesClient {
-	return original.NewContainerServicesClient(subscriptionID)
+func NewContainerServicesClient(subscriptionID string, filter string) ContainerServicesClient {
+	return original.NewContainerServicesClient(subscriptionID, filter)
 }
-func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string) ContainerServicesClient {
-	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID)
+func NewContainerServicesClientWithBaseURI(baseURI string, subscriptionID string, filter string) ContainerServicesClient {
+	return original.NewContainerServicesClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewDedicatedHostGroupListResultIterator(page DedicatedHostGroupListResultPage) DedicatedHostGroupListResultIterator {
 	return original.NewDedicatedHostGroupListResultIterator(page)
@@ -1100,11 +1100,11 @@ func NewDedicatedHostGroupListResultIterator(page DedicatedHostGroupListResultPa
 func NewDedicatedHostGroupListResultPage(getNextPage func(context.Context, DedicatedHostGroupListResult) (DedicatedHostGroupListResult, error)) DedicatedHostGroupListResultPage {
 	return original.NewDedicatedHostGroupListResultPage(getNextPage)
 }
-func NewDedicatedHostGroupsClient(subscriptionID string) DedicatedHostGroupsClient {
-	return original.NewDedicatedHostGroupsClient(subscriptionID)
+func NewDedicatedHostGroupsClient(subscriptionID string, filter string) DedicatedHostGroupsClient {
+	return original.NewDedicatedHostGroupsClient(subscriptionID, filter)
 }
-func NewDedicatedHostGroupsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostGroupsClient {
-	return original.NewDedicatedHostGroupsClientWithBaseURI(baseURI, subscriptionID)
+func NewDedicatedHostGroupsClientWithBaseURI(baseURI string, subscriptionID string, filter string) DedicatedHostGroupsClient {
+	return original.NewDedicatedHostGroupsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewDedicatedHostListResultIterator(page DedicatedHostListResultPage) DedicatedHostListResultIterator {
 	return original.NewDedicatedHostListResultIterator(page)
@@ -1112,11 +1112,11 @@ func NewDedicatedHostListResultIterator(page DedicatedHostListResultPage) Dedica
 func NewDedicatedHostListResultPage(getNextPage func(context.Context, DedicatedHostListResult) (DedicatedHostListResult, error)) DedicatedHostListResultPage {
 	return original.NewDedicatedHostListResultPage(getNextPage)
 }
-func NewDedicatedHostsClient(subscriptionID string) DedicatedHostsClient {
-	return original.NewDedicatedHostsClient(subscriptionID)
+func NewDedicatedHostsClient(subscriptionID string, filter string) DedicatedHostsClient {
+	return original.NewDedicatedHostsClient(subscriptionID, filter)
 }
-func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostsClient {
-	return original.NewDedicatedHostsClientWithBaseURI(baseURI, subscriptionID)
+func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string, filter string) DedicatedHostsClient {
+	return original.NewDedicatedHostsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewDiskListIterator(page DiskListPage) DiskListIterator {
 	return original.NewDiskListIterator(page)
@@ -1124,17 +1124,17 @@ func NewDiskListIterator(page DiskListPage) DiskListIterator {
 func NewDiskListPage(getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
 	return original.NewDiskListPage(getNextPage)
 }
-func NewDisksClient(subscriptionID string) DisksClient {
-	return original.NewDisksClient(subscriptionID)
+func NewDisksClient(subscriptionID string, filter string) DisksClient {
+	return original.NewDisksClient(subscriptionID, filter)
 }
-func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClient {
-	return original.NewDisksClientWithBaseURI(baseURI, subscriptionID)
+func NewDisksClientWithBaseURI(baseURI string, subscriptionID string, filter string) DisksClient {
+	return original.NewDisksClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewGalleriesClient(subscriptionID string) GalleriesClient {
-	return original.NewGalleriesClient(subscriptionID)
+func NewGalleriesClient(subscriptionID string, filter string) GalleriesClient {
+	return original.NewGalleriesClient(subscriptionID, filter)
 }
-func NewGalleriesClientWithBaseURI(baseURI string, subscriptionID string) GalleriesClient {
-	return original.NewGalleriesClientWithBaseURI(baseURI, subscriptionID)
+func NewGalleriesClientWithBaseURI(baseURI string, subscriptionID string, filter string) GalleriesClient {
+	return original.NewGalleriesClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewGalleryApplicationListIterator(page GalleryApplicationListPage) GalleryApplicationListIterator {
 	return original.NewGalleryApplicationListIterator(page)
@@ -1148,17 +1148,17 @@ func NewGalleryApplicationVersionListIterator(page GalleryApplicationVersionList
 func NewGalleryApplicationVersionListPage(getNextPage func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error)) GalleryApplicationVersionListPage {
 	return original.NewGalleryApplicationVersionListPage(getNextPage)
 }
-func NewGalleryApplicationVersionsClient(subscriptionID string) GalleryApplicationVersionsClient {
-	return original.NewGalleryApplicationVersionsClient(subscriptionID)
+func NewGalleryApplicationVersionsClient(subscriptionID string, filter string) GalleryApplicationVersionsClient {
+	return original.NewGalleryApplicationVersionsClient(subscriptionID, filter)
 }
-func NewGalleryApplicationVersionsClientWithBaseURI(baseURI string, subscriptionID string) GalleryApplicationVersionsClient {
-	return original.NewGalleryApplicationVersionsClientWithBaseURI(baseURI, subscriptionID)
+func NewGalleryApplicationVersionsClientWithBaseURI(baseURI string, subscriptionID string, filter string) GalleryApplicationVersionsClient {
+	return original.NewGalleryApplicationVersionsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewGalleryApplicationsClient(subscriptionID string) GalleryApplicationsClient {
-	return original.NewGalleryApplicationsClient(subscriptionID)
+func NewGalleryApplicationsClient(subscriptionID string, filter string) GalleryApplicationsClient {
+	return original.NewGalleryApplicationsClient(subscriptionID, filter)
 }
-func NewGalleryApplicationsClientWithBaseURI(baseURI string, subscriptionID string) GalleryApplicationsClient {
-	return original.NewGalleryApplicationsClientWithBaseURI(baseURI, subscriptionID)
+func NewGalleryApplicationsClientWithBaseURI(baseURI string, subscriptionID string, filter string) GalleryApplicationsClient {
+	return original.NewGalleryApplicationsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewGalleryImageListIterator(page GalleryImageListPage) GalleryImageListIterator {
 	return original.NewGalleryImageListIterator(page)
@@ -1172,17 +1172,17 @@ func NewGalleryImageVersionListIterator(page GalleryImageVersionListPage) Galler
 func NewGalleryImageVersionListPage(getNextPage func(context.Context, GalleryImageVersionList) (GalleryImageVersionList, error)) GalleryImageVersionListPage {
 	return original.NewGalleryImageVersionListPage(getNextPage)
 }
-func NewGalleryImageVersionsClient(subscriptionID string) GalleryImageVersionsClient {
-	return original.NewGalleryImageVersionsClient(subscriptionID)
+func NewGalleryImageVersionsClient(subscriptionID string, filter string) GalleryImageVersionsClient {
+	return original.NewGalleryImageVersionsClient(subscriptionID, filter)
 }
-func NewGalleryImageVersionsClientWithBaseURI(baseURI string, subscriptionID string) GalleryImageVersionsClient {
-	return original.NewGalleryImageVersionsClientWithBaseURI(baseURI, subscriptionID)
+func NewGalleryImageVersionsClientWithBaseURI(baseURI string, subscriptionID string, filter string) GalleryImageVersionsClient {
+	return original.NewGalleryImageVersionsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewGalleryImagesClient(subscriptionID string) GalleryImagesClient {
-	return original.NewGalleryImagesClient(subscriptionID)
+func NewGalleryImagesClient(subscriptionID string, filter string) GalleryImagesClient {
+	return original.NewGalleryImagesClient(subscriptionID, filter)
 }
-func NewGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string) GalleryImagesClient {
-	return original.NewGalleryImagesClientWithBaseURI(baseURI, subscriptionID)
+func NewGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string, filter string) GalleryImagesClient {
+	return original.NewGalleryImagesClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewGalleryListIterator(page GalleryListPage) GalleryListIterator {
 	return original.NewGalleryListIterator(page)
@@ -1196,11 +1196,11 @@ func NewImageListResultIterator(page ImageListResultPage) ImageListResultIterato
 func NewImageListResultPage(getNextPage func(context.Context, ImageListResult) (ImageListResult, error)) ImageListResultPage {
 	return original.NewImageListResultPage(getNextPage)
 }
-func NewImagesClient(subscriptionID string) ImagesClient {
-	return original.NewImagesClient(subscriptionID)
+func NewImagesClient(subscriptionID string, filter string) ImagesClient {
+	return original.NewImagesClient(subscriptionID, filter)
 }
-func NewImagesClientWithBaseURI(baseURI string, subscriptionID string) ImagesClient {
-	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID)
+func NewImagesClientWithBaseURI(baseURI string, subscriptionID string, filter string) ImagesClient {
+	return original.NewImagesClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIterator {
 	return original.NewListUsagesResultIterator(page)
@@ -1208,17 +1208,17 @@ func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIter
 func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
 	return original.NewListUsagesResultPage(getNextPage)
 }
-func NewLogAnalyticsClient(subscriptionID string) LogAnalyticsClient {
-	return original.NewLogAnalyticsClient(subscriptionID)
+func NewLogAnalyticsClient(subscriptionID string, filter string) LogAnalyticsClient {
+	return original.NewLogAnalyticsClient(subscriptionID, filter)
 }
-func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string) LogAnalyticsClient {
-	return original.NewLogAnalyticsClientWithBaseURI(baseURI, subscriptionID)
+func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, filter string) LogAnalyticsClient {
+	return original.NewLogAnalyticsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string, filter string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, filter)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, filter string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewProximityPlacementGroupListResultIterator(page ProximityPlacementGroupListResultPage) ProximityPlacementGroupListResultIterator {
 	return original.NewProximityPlacementGroupListResultIterator(page)
@@ -1226,17 +1226,17 @@ func NewProximityPlacementGroupListResultIterator(page ProximityPlacementGroupLi
 func NewProximityPlacementGroupListResultPage(getNextPage func(context.Context, ProximityPlacementGroupListResult) (ProximityPlacementGroupListResult, error)) ProximityPlacementGroupListResultPage {
 	return original.NewProximityPlacementGroupListResultPage(getNextPage)
 }
-func NewProximityPlacementGroupsClient(subscriptionID string) ProximityPlacementGroupsClient {
-	return original.NewProximityPlacementGroupsClient(subscriptionID)
+func NewProximityPlacementGroupsClient(subscriptionID string, filter string) ProximityPlacementGroupsClient {
+	return original.NewProximityPlacementGroupsClient(subscriptionID, filter)
 }
-func NewProximityPlacementGroupsClientWithBaseURI(baseURI string, subscriptionID string) ProximityPlacementGroupsClient {
-	return original.NewProximityPlacementGroupsClientWithBaseURI(baseURI, subscriptionID)
+func NewProximityPlacementGroupsClientWithBaseURI(baseURI string, subscriptionID string, filter string) ProximityPlacementGroupsClient {
+	return original.NewProximityPlacementGroupsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClient(subscriptionID)
+func NewResourceSkusClient(subscriptionID string, filter string) ResourceSkusClient {
+	return original.NewResourceSkusClient(subscriptionID, filter)
 }
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID)
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string, filter string) ResourceSkusClient {
+	return original.NewResourceSkusClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
 	return original.NewResourceSkusResultIterator(page)
@@ -1256,35 +1256,35 @@ func NewSnapshotListIterator(page SnapshotListPage) SnapshotListIterator {
 func NewSnapshotListPage(getNextPage func(context.Context, SnapshotList) (SnapshotList, error)) SnapshotListPage {
 	return original.NewSnapshotListPage(getNextPage)
 }
-func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
-	return original.NewSnapshotsClient(subscriptionID)
+func NewSnapshotsClient(subscriptionID string, filter string) SnapshotsClient {
+	return original.NewSnapshotsClient(subscriptionID, filter)
 }
-func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
-	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID)
+func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string, filter string) SnapshotsClient {
+	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewUsageClient(subscriptionID string) UsageClient {
-	return original.NewUsageClient(subscriptionID)
+func NewUsageClient(subscriptionID string, filter string) UsageClient {
+	return original.NewUsageClient(subscriptionID, filter)
 }
-func NewUsageClientWithBaseURI(baseURI string, subscriptionID string) UsageClient {
-	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID)
+func NewUsageClientWithBaseURI(baseURI string, subscriptionID string, filter string) UsageClient {
+	return original.NewUsageClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewVirtualMachineExtensionImagesClient(subscriptionID string) VirtualMachineExtensionImagesClient {
-	return original.NewVirtualMachineExtensionImagesClient(subscriptionID)
+func NewVirtualMachineExtensionImagesClient(subscriptionID string, filter string) VirtualMachineExtensionImagesClient {
+	return original.NewVirtualMachineExtensionImagesClient(subscriptionID, filter)
 }
-func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionImagesClient {
-	return original.NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineExtensionImagesClient {
+	return original.NewVirtualMachineExtensionImagesClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewVirtualMachineExtensionsClient(subscriptionID string) VirtualMachineExtensionsClient {
-	return original.NewVirtualMachineExtensionsClient(subscriptionID)
+func NewVirtualMachineExtensionsClient(subscriptionID string, filter string) VirtualMachineExtensionsClient {
+	return original.NewVirtualMachineExtensionsClient(subscriptionID, filter)
 }
-func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineExtensionsClient {
-	return original.NewVirtualMachineExtensionsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineExtensionsClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineExtensionsClient {
+	return original.NewVirtualMachineExtensionsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesClient {
-	return original.NewVirtualMachineImagesClient(subscriptionID)
+func NewVirtualMachineImagesClient(subscriptionID string, filter string) VirtualMachineImagesClient {
+	return original.NewVirtualMachineImagesClient(subscriptionID, filter)
 }
-func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
-	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineImagesClient {
+	return original.NewVirtualMachineImagesClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewVirtualMachineListResultIterator(page VirtualMachineListResultPage) VirtualMachineListResultIterator {
 	return original.NewVirtualMachineListResultIterator(page)
@@ -1292,11 +1292,11 @@ func NewVirtualMachineListResultIterator(page VirtualMachineListResultPage) Virt
 func NewVirtualMachineListResultPage(getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
 	return original.NewVirtualMachineListResultPage(getNextPage)
 }
-func NewVirtualMachineRunCommandsClient(subscriptionID string) VirtualMachineRunCommandsClient {
-	return original.NewVirtualMachineRunCommandsClient(subscriptionID)
+func NewVirtualMachineRunCommandsClient(subscriptionID string, filter string) VirtualMachineRunCommandsClient {
+	return original.NewVirtualMachineRunCommandsClient(subscriptionID, filter)
 }
-func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineRunCommandsClient {
-	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineRunCommandsClient {
+	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewVirtualMachineScaleSetExtensionListResultIterator(page VirtualMachineScaleSetExtensionListResultPage) VirtualMachineScaleSetExtensionListResultIterator {
 	return original.NewVirtualMachineScaleSetExtensionListResultIterator(page)
@@ -1304,11 +1304,11 @@ func NewVirtualMachineScaleSetExtensionListResultIterator(page VirtualMachineSca
 func NewVirtualMachineScaleSetExtensionListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetExtensionListResult) (VirtualMachineScaleSetExtensionListResult, error)) VirtualMachineScaleSetExtensionListResultPage {
 	return original.NewVirtualMachineScaleSetExtensionListResultPage(getNextPage)
 }
-func NewVirtualMachineScaleSetExtensionsClient(subscriptionID string) VirtualMachineScaleSetExtensionsClient {
-	return original.NewVirtualMachineScaleSetExtensionsClient(subscriptionID)
+func NewVirtualMachineScaleSetExtensionsClient(subscriptionID string, filter string) VirtualMachineScaleSetExtensionsClient {
+	return original.NewVirtualMachineScaleSetExtensionsClient(subscriptionID, filter)
 }
-func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetExtensionsClient {
-	return original.NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineScaleSetExtensionsClient {
+	return original.NewVirtualMachineScaleSetExtensionsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewVirtualMachineScaleSetListOSUpgradeHistoryIterator(page VirtualMachineScaleSetListOSUpgradeHistoryPage) VirtualMachineScaleSetListOSUpgradeHistoryIterator {
 	return original.NewVirtualMachineScaleSetListOSUpgradeHistoryIterator(page)
@@ -1334,11 +1334,11 @@ func NewVirtualMachineScaleSetListWithLinkResultIterator(page VirtualMachineScal
 func NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
 	return original.NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage)
 }
-func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
-	return original.NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID)
+func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string, filter string) VirtualMachineScaleSetRollingUpgradesClient {
+	return original.NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID, filter)
 }
-func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
-	return original.NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineScaleSetRollingUpgradesClient {
+	return original.NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI, subscriptionID, filter)
 }
 func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVMListResultPage) VirtualMachineScaleSetVMListResultIterator {
 	return original.NewVirtualMachineScaleSetVMListResultIterator(page)
@@ -1346,32 +1346,32 @@ func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVM
 func NewVirtualMachineScaleSetVMListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
 	return original.NewVirtualMachineScaleSetVMListResultPage(getNextPage)
 }
-func NewVirtualMachineScaleSetVMsClient(subscriptionID string) VirtualMachineScaleSetVMsClient {
-	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID)
+func NewVirtualMachineScaleSetVMsClient(subscriptionID string, filter string) VirtualMachineScaleSetVMsClient {
+	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID, filter)
 }
-func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMsClient {
-	return original.NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineScaleSetVMsClient {
+	return original.NewVirtualMachineScaleSetVMsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewVirtualMachineScaleSetsClient(subscriptionID string) VirtualMachineScaleSetsClient {
-	return original.NewVirtualMachineScaleSetsClient(subscriptionID)
+func NewVirtualMachineScaleSetsClient(subscriptionID string, filter string) VirtualMachineScaleSetsClient {
+	return original.NewVirtualMachineScaleSetsClient(subscriptionID, filter)
 }
-func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetsClient {
-	return original.NewVirtualMachineScaleSetsClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineScaleSetsClient {
+	return original.NewVirtualMachineScaleSetsClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewVirtualMachineSizesClient(subscriptionID string) VirtualMachineSizesClient {
-	return original.NewVirtualMachineSizesClient(subscriptionID)
+func NewVirtualMachineSizesClient(subscriptionID string, filter string) VirtualMachineSizesClient {
+	return original.NewVirtualMachineSizesClient(subscriptionID, filter)
 }
-func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineSizesClient {
-	return original.NewVirtualMachineSizesClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineSizesClient {
+	return original.NewVirtualMachineSizesClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
-	return original.NewVirtualMachinesClient(subscriptionID)
+func NewVirtualMachinesClient(subscriptionID string, filter string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClient(subscriptionID, filter)
 }
-func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
-	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID, filter)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, filter string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, filter)
 }
 func PossibleAccessLevelValues() []AccessLevel {
 	return original.PossibleAccessLevelValues()

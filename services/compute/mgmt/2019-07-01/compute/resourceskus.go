@@ -31,13 +31,13 @@ type ResourceSkusClient struct {
 }
 
 // NewResourceSkusClient creates an instance of the ResourceSkusClient client.
-func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
-	return NewResourceSkusClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewResourceSkusClient(subscriptionID string, filter string) ResourceSkusClient {
+	return NewResourceSkusClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
 }
 
 // NewResourceSkusClientWithBaseURI creates an instance of the ResourceSkusClient client.
-func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) ResourceSkusClient {
-	return ResourceSkusClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string, filter string) ResourceSkusClient {
+	return ResourceSkusClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
 }
 
 // List gets the list of Microsoft.Compute SKUs available for your Subscription.
@@ -83,6 +83,9 @@ func (client ResourceSkusClient) ListPreparer(ctx context.Context) (*http.Reques
 	const APIVersion = "2019-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(client.Filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", client.Filter)
 	}
 
 	preparer := autorest.CreatePreparer(

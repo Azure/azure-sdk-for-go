@@ -31,13 +31,13 @@ type VirtualMachineImagesClient struct {
 }
 
 // NewVirtualMachineImagesClient creates an instance of the VirtualMachineImagesClient client.
-func NewVirtualMachineImagesClient(subscriptionID string) VirtualMachineImagesClient {
-	return NewVirtualMachineImagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineImagesClient(subscriptionID string, filter string) VirtualMachineImagesClient {
+	return NewVirtualMachineImagesClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
 }
 
 // NewVirtualMachineImagesClientWithBaseURI creates an instance of the VirtualMachineImagesClient client.
-func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineImagesClient {
-	return VirtualMachineImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineImagesClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineImagesClient {
+	return VirtualMachineImagesClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
 }
 
 // Get gets a virtual machine image.

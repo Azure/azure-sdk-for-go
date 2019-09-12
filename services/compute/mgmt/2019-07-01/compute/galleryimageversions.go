@@ -32,13 +32,13 @@ type GalleryImageVersionsClient struct {
 }
 
 // NewGalleryImageVersionsClient creates an instance of the GalleryImageVersionsClient client.
-func NewGalleryImageVersionsClient(subscriptionID string) GalleryImageVersionsClient {
-	return NewGalleryImageVersionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewGalleryImageVersionsClient(subscriptionID string, filter string) GalleryImageVersionsClient {
+	return NewGalleryImageVersionsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
 }
 
 // NewGalleryImageVersionsClientWithBaseURI creates an instance of the GalleryImageVersionsClient client.
-func NewGalleryImageVersionsClientWithBaseURI(baseURI string, subscriptionID string) GalleryImageVersionsClient {
-	return GalleryImageVersionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewGalleryImageVersionsClientWithBaseURI(baseURI string, subscriptionID string, filter string) GalleryImageVersionsClient {
+	return GalleryImageVersionsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
 }
 
 // CreateOrUpdate create or update a gallery Image Version.

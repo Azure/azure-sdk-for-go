@@ -32,13 +32,13 @@ type VirtualMachineScaleSetsClient struct {
 }
 
 // NewVirtualMachineScaleSetsClient creates an instance of the VirtualMachineScaleSetsClient client.
-func NewVirtualMachineScaleSetsClient(subscriptionID string) VirtualMachineScaleSetsClient {
-	return NewVirtualMachineScaleSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewVirtualMachineScaleSetsClient(subscriptionID string, filter string) VirtualMachineScaleSetsClient {
+	return NewVirtualMachineScaleSetsClientWithBaseURI(DefaultBaseURI, subscriptionID, filter)
 }
 
 // NewVirtualMachineScaleSetsClientWithBaseURI creates an instance of the VirtualMachineScaleSetsClient client.
-func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetsClient {
-	return VirtualMachineScaleSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewVirtualMachineScaleSetsClientWithBaseURI(baseURI string, subscriptionID string, filter string) VirtualMachineScaleSetsClient {
+	return VirtualMachineScaleSetsClient{NewWithBaseURI(baseURI, subscriptionID, filter)}
 }
 
 // ConvertToSinglePlacementGroup converts SinglePlacementGroup property to false for a existing virtual machine scale

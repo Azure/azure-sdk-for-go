@@ -40,12 +40,12 @@ func NewOrderClientWithBaseURI(baseURI string) OrderClient {
 	return OrderClient{NewWithBaseURI(baseURI)}
 }
 
-// Calculate calculate price for placing a `ReservationOrder`.
+// CalculatePrice calculate price for placing a `ReservationOrder`.
 // Parameters:
 // body - information needed for calculate or purchase reservation
-func (client OrderClient) Calculate(ctx context.Context, body PurchaseRequest) (result CalculatePriceResponse, err error) {
+func (client OrderClient) CalculatePrice(ctx context.Context, body PurchaseRequest) (result CalculatePriceResponse, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OrderClient.Calculate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/OrderClient.CalculatePrice")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -54,29 +54,29 @@ func (client OrderClient) Calculate(ctx context.Context, body PurchaseRequest) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CalculatePreparer(ctx, body)
+	req, err := client.CalculatePricePreparer(ctx, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "Calculate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "CalculatePrice", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CalculateSender(req)
+	resp, err := client.CalculatePriceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "Calculate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "CalculatePrice", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CalculateResponder(resp)
+	result, err = client.CalculatePriceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "Calculate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "CalculatePrice", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CalculatePreparer prepares the Calculate request.
-func (client OrderClient) CalculatePreparer(ctx context.Context, body PurchaseRequest) (*http.Request, error) {
+// CalculatePricePreparer prepares the CalculatePrice request.
+func (client OrderClient) CalculatePricePreparer(ctx context.Context, body PurchaseRequest) (*http.Request, error) {
 	const APIVersion = "2019-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -92,16 +92,16 @@ func (client OrderClient) CalculatePreparer(ctx context.Context, body PurchaseRe
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CalculateSender sends the Calculate request. The method will close the
+// CalculatePriceSender sends the CalculatePrice request. The method will close the
 // http.Response Body if it receives an error.
-func (client OrderClient) CalculateSender(req *http.Request) (*http.Response, error) {
+func (client OrderClient) CalculatePriceSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// CalculateResponder handles the response to the Calculate request. The method always
+// CalculatePriceResponder handles the response to the CalculatePrice request. The method always
 // closes the http.Response Body.
-func (client OrderClient) CalculateResponder(resp *http.Response) (result CalculatePriceResponse, err error) {
+func (client OrderClient) CalculatePriceResponder(resp *http.Response) (result CalculatePriceResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -115,7 +115,8 @@ func (client OrderClient) CalculateResponder(resp *http.Response) (result Calcul
 // Get get the details of the `ReservationOrder`.
 // Parameters:
 // reservationOrderID - order Id of the reservation
-func (client OrderClient) Get(ctx context.Context, reservationOrderID string) (result OrderResponse, err error) {
+// expand - may be used to expand the planInformation.
+func (client OrderClient) Get(ctx context.Context, reservationOrderID string, expand string) (result OrderResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OrderClient.Get")
 		defer func() {
@@ -126,7 +127,7 @@ func (client OrderClient) Get(ctx context.Context, reservationOrderID string) (r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, reservationOrderID)
+	req, err := client.GetPreparer(ctx, reservationOrderID, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "Get", nil, "Failure preparing request")
 		return
@@ -148,7 +149,7 @@ func (client OrderClient) Get(ctx context.Context, reservationOrderID string) (r
 }
 
 // GetPreparer prepares the Get request.
-func (client OrderClient) GetPreparer(ctx context.Context, reservationOrderID string) (*http.Request, error) {
+func (client OrderClient) GetPreparer(ctx context.Context, reservationOrderID string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"reservationOrderId": autorest.Encode("path", reservationOrderID),
 	}
@@ -156,6 +157,9 @@ func (client OrderClient) GetPreparer(ctx context.Context, reservationOrderID st
 	const APIVersion = "2019-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 
 	preparer := autorest.CreatePreparer(

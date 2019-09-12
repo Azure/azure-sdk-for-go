@@ -105,6 +105,7 @@ type BastionHostsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, bastionHostName string) (result network.BastionHost, err error)
 	List(ctx context.Context) (result network.BastionHostListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.BastionHostListResultPage, err error)
+	UpdateTags(ctx context.Context, resourceGroupName string, bastionHostName string, bastionHostParameters network.TagsObject) (result network.BastionHostsUpdateTagsFuture, err error)
 }
 
 var _ BastionHostsClientAPI = (*network.BastionHostsClient)(nil)

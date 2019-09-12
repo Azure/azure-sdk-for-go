@@ -1382,6 +1382,21 @@ func PossiblePfsGroupValues() []PfsGroup {
 	return []PfsGroup{PfsGroupECP256, PfsGroupECP384, PfsGroupNone, PfsGroupPFS1, PfsGroupPFS14, PfsGroupPFS2, PfsGroupPFS2048, PfsGroupPFS24, PfsGroupPFSMM}
 }
 
+// PreferredIPVersion enumerates the values for preferred ip version.
+type PreferredIPVersion string
+
+const (
+	// PreferredIPVersionIPv4 ...
+	PreferredIPVersionIPv4 PreferredIPVersion = "IPv4"
+	// PreferredIPVersionIPv6 ...
+	PreferredIPVersionIPv6 PreferredIPVersion = "IPv6"
+)
+
+// PossiblePreferredIPVersionValues returns an array of possible values for the PreferredIPVersion const type.
+func PossiblePreferredIPVersionValues() []PreferredIPVersion {
+	return []PreferredIPVersion{PreferredIPVersionIPv4, PreferredIPVersionIPv6}
+}
+
 // ProbeProtocol enumerates the values for probe protocol.
 type ProbeProtocol string
 
@@ -7752,6 +7767,35 @@ func (future *BastionHostsDeleteFuture) Result(client BastionHostsClient) (ar au
 	return
 }
 
+// BastionHostsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type BastionHostsUpdateTagsFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *BastionHostsUpdateTagsFuture) Result(client BastionHostsClient) (bh BastionHost, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.BastionHostsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.BastionHostsUpdateTagsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if bh.Response.Response, err = future.GetResult(sender); err == nil && bh.Response.Response.StatusCode != http.StatusNoContent {
+		bh, err = client.UpdateTagsResponder(bh.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.BastionHostsUpdateTagsFuture", "Result", bh.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // BGPCommunity contains bgp community information offered in Service Community resources.
 type BGPCommunity struct {
 	// ServiceSupportedRegion - The region which the service support. e.g. For O365, region is Global.
@@ -8608,6 +8652,8 @@ type ConnectivityParameters struct {
 	Protocol Protocol `json:"protocol,omitempty"`
 	// ProtocolConfiguration - Configuration of the protocol.
 	ProtocolConfiguration *ProtocolConfiguration `json:"protocolConfiguration,omitempty"`
+	// PreferredIPVersion - Preferred IP version. Possible values include: 'PreferredIPVersionIPv4', 'PreferredIPVersionIPv6'
+	PreferredIPVersion PreferredIPVersion `json:"preferredIPVersion,omitempty"`
 }
 
 // ConnectivitySource parameters that define the source of the connection.

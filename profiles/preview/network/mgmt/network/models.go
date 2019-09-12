@@ -664,6 +664,13 @@ const (
 	PfsGroupPFSMM   PfsGroup = original.PfsGroupPFSMM
 )
 
+type PreferredIPVersion = original.PreferredIPVersion
+
+const (
+	PreferredIPVersionIPv4 PreferredIPVersion = original.PreferredIPVersionIPv4
+	PreferredIPVersionIPv6 PreferredIPVersion = original.PreferredIPVersionIPv6
+)
+
 type ProbeProtocol = original.ProbeProtocol
 
 const (
@@ -1166,6 +1173,7 @@ type BastionHostPropertiesFormat = original.BastionHostPropertiesFormat
 type BastionHostsClient = original.BastionHostsClient
 type BastionHostsCreateOrUpdateFuture = original.BastionHostsCreateOrUpdateFuture
 type BastionHostsDeleteFuture = original.BastionHostsDeleteFuture
+type BastionHostsUpdateTagsFuture = original.BastionHostsUpdateTagsFuture
 type BgpPeerStatus = original.BgpPeerStatus
 type BgpPeerStatusListResult = original.BgpPeerStatusListResult
 type BgpServiceCommunitiesClient = original.BgpServiceCommunitiesClient
@@ -3084,6 +3092,9 @@ func PossiblePcStatusValues() []PcStatus {
 }
 func PossiblePfsGroupValues() []PfsGroup {
 	return original.PossiblePfsGroupValues()
+}
+func PossiblePreferredIPVersionValues() []PreferredIPVersion {
+	return original.PossiblePreferredIPVersionValues()
 }
 func PossibleProbeProtocolValues() []ProbeProtocol {
 	return original.PossibleProbeProtocolValues()

@@ -119,6 +119,8 @@ const (
 	Execution AttackTactic = "Execution"
 	// Exfiltration ...
 	Exfiltration AttackTactic = "Exfiltration"
+	// Impact ...
+	Impact AttackTactic = "Impact"
 	// InitialAccess ...
 	InitialAccess AttackTactic = "InitialAccess"
 	// LateralMovement ...
@@ -131,7 +133,7 @@ const (
 
 // PossibleAttackTacticValues returns an array of possible values for the AttackTactic const type.
 func PossibleAttackTacticValues() []AttackTactic {
-	return []AttackTactic{Collection, CommandAndControl, CredentialAccess, DefenseEvasion, Discovery, Execution, Exfiltration, InitialAccess, LateralMovement, Persistence, PrivilegeEscalation}
+	return []AttackTactic{Collection, CommandAndControl, CredentialAccess, DefenseEvasion, Discovery, Execution, Exfiltration, Impact, InitialAccess, LateralMovement, Persistence, PrivilegeEscalation}
 }
 
 // CaseSeverity enumerates the values for case severity.

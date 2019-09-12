@@ -72,6 +72,7 @@ const (
 	Discovery           AttackTactic = original.Discovery
 	Execution           AttackTactic = original.Execution
 	Exfiltration        AttackTactic = original.Exfiltration
+	Impact              AttackTactic = original.Impact
 	InitialAccess       AttackTactic = original.InitialAccess
 	LateralMovement     AttackTactic = original.LateralMovement
 	Persistence         AttackTactic = original.Persistence

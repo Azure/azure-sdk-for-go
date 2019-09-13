@@ -664,13 +664,6 @@ const (
 	PfsGroupPFSMM   PfsGroup = original.PfsGroupPFSMM
 )
 
-type PreferredIPVersion = original.PreferredIPVersion
-
-const (
-	PreferredIPVersionIPv4 PreferredIPVersion = original.PreferredIPVersionIPv4
-	PreferredIPVersionIPv6 PreferredIPVersion = original.PreferredIPVersionIPv6
-)
-
 type ProbeProtocol = original.ProbeProtocol
 
 const (
@@ -3092,9 +3085,6 @@ func PossiblePcStatusValues() []PcStatus {
 }
 func PossiblePfsGroupValues() []PfsGroup {
 	return original.PossiblePfsGroupValues()
-}
-func PossiblePreferredIPVersionValues() []PreferredIPVersion {
-	return original.PossiblePreferredIPVersionValues()
 }
 func PossibleProbeProtocolValues() []ProbeProtocol {
 	return original.PossibleProbeProtocolValues()

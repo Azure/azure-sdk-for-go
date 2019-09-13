@@ -1382,21 +1382,6 @@ func PossiblePfsGroupValues() []PfsGroup {
 	return []PfsGroup{PfsGroupECP256, PfsGroupECP384, PfsGroupNone, PfsGroupPFS1, PfsGroupPFS14, PfsGroupPFS2, PfsGroupPFS2048, PfsGroupPFS24, PfsGroupPFSMM}
 }
 
-// PreferredIPVersion enumerates the values for preferred ip version.
-type PreferredIPVersion string
-
-const (
-	// PreferredIPVersionIPv4 ...
-	PreferredIPVersionIPv4 PreferredIPVersion = "IPv4"
-	// PreferredIPVersionIPv6 ...
-	PreferredIPVersionIPv6 PreferredIPVersion = "IPv6"
-)
-
-// PossiblePreferredIPVersionValues returns an array of possible values for the PreferredIPVersion const type.
-func PossiblePreferredIPVersionValues() []PreferredIPVersion {
-	return []PreferredIPVersion{PreferredIPVersionIPv4, PreferredIPVersionIPv6}
-}
-
 // ProbeProtocol enumerates the values for probe protocol.
 type ProbeProtocol string
 
@@ -8652,8 +8637,8 @@ type ConnectivityParameters struct {
 	Protocol Protocol `json:"protocol,omitempty"`
 	// ProtocolConfiguration - Configuration of the protocol.
 	ProtocolConfiguration *ProtocolConfiguration `json:"protocolConfiguration,omitempty"`
-	// PreferredIPVersion - Preferred IP version. Possible values include: 'PreferredIPVersionIPv4', 'PreferredIPVersionIPv6'
-	PreferredIPVersion PreferredIPVersion `json:"preferredIPVersion,omitempty"`
+	// PreferredIPVersion - Preferred IP version. Possible values include: 'IPv4', 'IPv6'
+	PreferredIPVersion IPVersion `json:"preferredIPVersion,omitempty"`
 }
 
 // ConnectivitySource parameters that define the source of the connection.

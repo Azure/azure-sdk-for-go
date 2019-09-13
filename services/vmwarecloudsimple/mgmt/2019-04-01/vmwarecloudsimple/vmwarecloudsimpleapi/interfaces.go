@@ -33,7 +33,7 @@ var _ OperationsClientAPI = (*vmwarecloudsimple.OperationsClient)(nil)
 
 // DedicatedCloudNodesClientAPI contains the set of methods on the DedicatedCloudNodesClient type.
 type DedicatedCloudNodesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest vmwarecloudsimple.DedicatedCloudNode) (result vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest vmwarecloudsimple.CreateDedicatedCloudNodeRequest) (result vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string) (result vmwarecloudsimple.DedicatedCloudNode, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result vmwarecloudsimple.DedicatedCloudNodeListResponsePage, err error)

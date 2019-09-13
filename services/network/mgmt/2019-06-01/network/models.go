@@ -8637,7 +8637,7 @@ type ConnectivityParameters struct {
 	Protocol Protocol `json:"protocol,omitempty"`
 	// ProtocolConfiguration - Configuration of the protocol.
 	ProtocolConfiguration *ProtocolConfiguration `json:"protocolConfiguration,omitempty"`
-	// PreferredIPVersion - Preferred IP version. Possible values include: 'IPv4', 'IPv6'
+	// PreferredIPVersion - Preferred IP version of the connection. Possible values include: 'IPv4', 'IPv6'
 	PreferredIPVersion IPVersion `json:"preferredIPVersion,omitempty"`
 }
 

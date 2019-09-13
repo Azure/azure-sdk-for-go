@@ -1166,6 +1166,7 @@ type BastionHostPropertiesFormat = original.BastionHostPropertiesFormat
 type BastionHostsClient = original.BastionHostsClient
 type BastionHostsCreateOrUpdateFuture = original.BastionHostsCreateOrUpdateFuture
 type BastionHostsDeleteFuture = original.BastionHostsDeleteFuture
+type BastionHostsUpdateTagsFuture = original.BastionHostsUpdateTagsFuture
 type BgpPeerStatus = original.BgpPeerStatus
 type BgpPeerStatusListResult = original.BgpPeerStatusListResult
 type BgpServiceCommunitiesClient = original.BgpServiceCommunitiesClient

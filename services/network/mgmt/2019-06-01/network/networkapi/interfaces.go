@@ -105,6 +105,7 @@ type BastionHostsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, bastionHostName string) (result network.BastionHost, err error)
 	List(ctx context.Context) (result network.BastionHostListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.BastionHostListResultPage, err error)
+	UpdateTags(ctx context.Context, resourceGroupName string, bastionHostName string, bastionHostParameters network.TagsObject) (result network.BastionHostsUpdateTagsFuture, err error)
 }
 
 var _ BastionHostsClientAPI = (*network.BastionHostsClient)(nil)
@@ -507,6 +508,7 @@ type ConnectionMonitorsClientAPI interface {
 	Query(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (result network.ConnectionMonitorsQueryFuture, err error)
 	Start(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (result network.ConnectionMonitorsStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (result network.ConnectionMonitorsStopFuture, err error)
+	UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters network.TagsObject) (result network.ConnectionMonitorResult, err error)
 }
 
 var _ ConnectionMonitorsClientAPI = (*network.ConnectionMonitorsClient)(nil)

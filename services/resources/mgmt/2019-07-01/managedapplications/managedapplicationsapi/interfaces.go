@@ -62,11 +62,11 @@ var _ UpdateAccessClientAPI = (*managedapplications.UpdateAccessClient)(nil)
 // JitRequestsClientAPI contains the set of methods on the JitRequestsClient type.
 type JitRequestsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters managedapplications.JitRequestDefinition) (result managedapplications.JitRequestsCreateOrUpdateFuture, err error)
-	CreateOrUpdate1(ctx context.Context, resourceGroupName string, jitRequestName string, parameters managedapplications.JitRequestDefinition) (result managedapplications.JitRequestsCreateOrUpdate1Future, err error)
 	Delete(ctx context.Context, resourceGroupName string, jitRequestName string) (result autorest.Response, err error)
 	GetByName(ctx context.Context, resourceGroupName string, jitRequestName string) (result managedapplications.JitRequestDefinition, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result managedapplications.JitRequestDefinitionListResult, err error)
 	ListBySubscription(ctx context.Context) (result managedapplications.JitRequestDefinitionListResult, err error)
+	Patch(ctx context.Context, resourceGroupName string, jitRequestName string, parameters managedapplications.JitRequestDefinition) (result managedapplications.JitRequestsPatchFuture, err error)
 }
 
 var _ JitRequestsClientAPI = (*managedapplications.JitRequestsClient)(nil)

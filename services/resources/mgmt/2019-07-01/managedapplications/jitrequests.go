@@ -135,94 +135,6 @@ func (client JitRequestsClient) CreateOrUpdateResponder(resp *http.Response) (re
 	return
 }
 
-// CreateOrUpdate1 creates or updates the JIT request.
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// jitRequestName - the name of the JIT request.
-// parameters - parameters supplied to the update JIT request.
-func (client JitRequestsClient) CreateOrUpdate1(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition) (result JitRequestsCreateOrUpdate1Future, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/JitRequestsClient.CreateOrUpdate1")
-		defer func() {
-			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("managedapplications.JitRequestsClient", "CreateOrUpdate1", err.Error())
-	}
-
-	req, err := client.CreateOrUpdate1Preparer(ctx, resourceGroupName, jitRequestName, parameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsClient", "CreateOrUpdate1", nil, "Failure preparing request")
-		return
-	}
-
-	result, err = client.CreateOrUpdate1Sender(req)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsClient", "CreateOrUpdate1", result.Response(), "Failure sending request")
-		return
-	}
-
-	return
-}
-
-// CreateOrUpdate1Preparer prepares the CreateOrUpdate1 request.
-func (client JitRequestsClient) CreateOrUpdate1Preparer(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"jitRequestName":    autorest.Encode("path", jitRequestName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-07-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPatch(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}", pathParameters),
-		autorest.WithJSON(parameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreateOrUpdate1Sender sends the CreateOrUpdate1 request. The method will close the
-// http.Response Body if it receives an error.
-func (client JitRequestsClient) CreateOrUpdate1Sender(req *http.Request) (future JitRequestsCreateOrUpdate1Future, err error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
-}
-
-// CreateOrUpdate1Responder handles the response to the CreateOrUpdate1 request. The method always
-// closes the http.Response Body.
-func (client JitRequestsClient) CreateOrUpdate1Responder(resp *http.Response) (result JitRequestDefinition, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // Delete deletes the JIT request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -537,6 +449,94 @@ func (client JitRequestsClient) ListBySubscriptionSender(req *http.Request) (*ht
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
 // closes the http.Response Body.
 func (client JitRequestsClient) ListBySubscriptionResponder(resp *http.Response) (result JitRequestDefinitionListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Patch creates or updates the JIT request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// jitRequestName - the name of the JIT request.
+// parameters - parameters supplied to the update JIT request.
+func (client JitRequestsClient) Patch(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition) (result JitRequestsPatchFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/JitRequestsClient.Patch")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("managedapplications.JitRequestsClient", "Patch", err.Error())
+	}
+
+	req, err := client.PatchPreparer(ctx, resourceGroupName, jitRequestName, parameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsClient", "Patch", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.PatchSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsClient", "Patch", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// PatchPreparer prepares the Patch request.
+func (client JitRequestsClient) PatchPreparer(ctx context.Context, resourceGroupName string, jitRequestName string, parameters JitRequestDefinition) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"jitRequestName":    autorest.Encode("path", jitRequestName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-07-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPatch(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Solutions/jitRequests/{jitRequestName}", pathParameters),
+		autorest.WithJSON(parameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// PatchSender sends the Patch request. The method will close the
+// http.Response Body if it receives an error.
+func (client JitRequestsClient) PatchSender(req *http.Request) (future JitRequestsPatchFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// PatchResponder handles the response to the Patch request. The method always
+// closes the http.Response Body.
+func (client JitRequestsClient) PatchResponder(resp *http.Response) (result JitRequestDefinition, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -649,35 +649,6 @@ func (dcn *DedicatedCloudNode) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DedicatedCloudNodeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type DedicatedCloudNodeCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DedicatedCloudNodeCreateOrUpdateFuture) Result(client DedicatedCloudNodeClient) (dcn DedicatedCloudNode, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodeCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.DedicatedCloudNodeCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dcn.Response.Response, err = future.GetResult(sender); err == nil && dcn.Response.Response.StatusCode != http.StatusNoContent {
-		dcn, err = client.CreateOrUpdateResponder(dcn.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodeCreateOrUpdateFuture", "Result", dcn.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // DedicatedCloudNodeListResponse list of dedicated nodes response model
 type DedicatedCloudNodeListResponse struct {
 	autorest.Response `json:"-"`
@@ -1019,6 +990,35 @@ func (dcnp *DedicatedCloudNodeProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DedicatedCloudNodesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DedicatedCloudNodesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DedicatedCloudNodesCreateOrUpdateFuture) Result(client DedicatedCloudNodesClient) (dcn DedicatedCloudNode, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if dcn.Response.Response, err = future.GetResult(sender); err == nil && dcn.Response.Response.StatusCode != http.StatusNoContent {
+		dcn, err = client.CreateOrUpdateResponder(dcn.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture", "Result", dcn.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // DedicatedCloudService dedicated cloud service model
 type DedicatedCloudService struct {
 	autorest.Response `json:"-"`
@@ -1118,29 +1118,6 @@ func (dcs *DedicatedCloudService) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// DedicatedCloudServiceDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type DedicatedCloudServiceDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DedicatedCloudServiceDeleteFuture) Result(client DedicatedCloudServiceClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.DedicatedCloudServiceDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
 }
 
 // DedicatedCloudServiceListResponse list of dedicated cloud services
@@ -1300,6 +1277,29 @@ type DedicatedCloudServiceProperties struct {
 	Nodes *int32 `json:"nodes,omitempty"`
 	// ServiceURL - link to a service management web portal
 	ServiceURL *string `json:"serviceURL,omitempty"`
+}
+
+// DedicatedCloudServicesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DedicatedCloudServicesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DedicatedCloudServicesDeleteFuture) Result(client DedicatedCloudServicesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.DedicatedCloudServicesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // OperationError operation error model
@@ -1641,7 +1641,7 @@ type ResourcePool struct {
 	autorest.Response `json:"-"`
 	// ID - resource pool id (privateCloudId:vsphereId)
 	ID *string `json:"id,omitempty"`
-	// Location - Azure region
+	// Location - READ-ONLY; Azure region
 	Location *string `json:"location,omitempty"`
 	// Name - READ-ONLY; {ResourcePoolName}
 	Name *string `json:"name,omitempty"`
@@ -1658,9 +1658,6 @@ func (rp ResourcePool) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rp.ID != nil {
 		objectMap["id"] = rp.ID
-	}
-	if rp.Location != nil {
-		objectMap["location"] = rp.Location
 	}
 	if rp.ResourcePoolProperties != nil {
 		objectMap["properties"] = rp.ResourcePoolProperties
@@ -2370,58 +2367,6 @@ func (VM *VirtualMachine) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// VirtualMachineCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type VirtualMachineCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachineCreateOrUpdateFuture) Result(client VirtualMachineClient) (VM VirtualMachine, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachineCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if VM.Response.Response, err = future.GetResult(sender); err == nil && VM.Response.Response.StatusCode != http.StatusNoContent {
-		VM, err = client.CreateOrUpdateResponder(VM.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineCreateOrUpdateFuture", "Result", VM.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// VirtualMachineDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachineDeleteFuture) Result(client VirtualMachineClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachineDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // VirtualMachineListResponse list of virtual machines
 type VirtualMachineListResponse struct {
 	autorest.Response `json:"-"`
@@ -2582,9 +2527,9 @@ type VirtualMachineProperties struct {
 	ExposeToGuestVM *bool `json:"exposeToGuestVM,omitempty"`
 	// Folder - READ-ONLY; The path to virtual machine folder in VCenter
 	Folder *string `json:"folder,omitempty"`
-	// GuestOS - The name of Guest OS
+	// GuestOS - READ-ONLY; The name of Guest OS
 	GuestOS *string `json:"guestOS,omitempty"`
-	// GuestOSType - The Guest OS type. Possible values include: 'Linux', 'Windows', 'Other'
+	// GuestOSType - READ-ONLY; The Guest OS type. Possible values include: 'Linux', 'Windows', 'Other'
 	GuestOSType GuestOSType `json:"guestOSType,omitempty"`
 	// Nics - The list of Virtual NICs
 	Nics *[]VirtualNic `json:"nics,omitempty"`
@@ -2614,46 +2559,98 @@ type VirtualMachineProperties struct {
 	Vmwaretools *string `json:"vmwaretools,omitempty"`
 }
 
-// VirtualMachineStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineStartFuture struct {
+// VirtualMachinesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualMachinesCreateOrUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineStartFuture) Result(client VirtualMachineClient) (ar autorest.Response, err error) {
+func (future *VirtualMachinesCreateOrUpdateFuture) Result(client VirtualMachinesClient) (VM VirtualMachine, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineStartFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachineStartFuture")
+		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if VM.Response.Response, err = future.GetResult(sender); err == nil && VM.Response.Response.StatusCode != http.StatusNoContent {
+		VM, err = client.CreateOrUpdateResponder(VM.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture", "Result", VM.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// VirtualMachinesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VirtualMachinesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachinesDeleteFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// VirtualMachineStopFuture an abstraction for monitoring and retrieving the results of a long-running
+// VirtualMachinesStartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type VirtualMachineStopFuture struct {
+type VirtualMachinesStartFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineStopFuture) Result(client VirtualMachineClient) (ar autorest.Response, err error) {
+func (future *VirtualMachinesStartFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineStopFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesStartFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachineStopFuture")
+		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesStartFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// VirtualMachinesStopFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VirtualMachinesStopFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachinesStopFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesStopFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesStopFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -2664,6 +2661,35 @@ func (future *VirtualMachineStopFuture) Result(client VirtualMachineClient) (ar 
 type VirtualMachineStopMode struct {
 	// Mode - mode indicates a type of stop operation - reboot, suspend, shutdown or power-off. Possible values include: 'Reboot', 'Suspend', 'Shutdown', 'Poweroff'
 	Mode StopMode `json:"mode,omitempty"`
+}
+
+// VirtualMachinesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type VirtualMachinesUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachinesUpdateFuture) Result(client VirtualMachinesClient) (VM VirtualMachine, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if VM.Response.Response, err = future.GetResult(sender); err == nil && VM.Response.Response.StatusCode != http.StatusNoContent {
+		VM, err = client.UpdateResponder(VM.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesUpdateFuture", "Result", VM.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // VirtualMachineTemplate virtual machine template model
@@ -2912,9 +2938,9 @@ type VirtualMachineTemplateProperties struct {
 	Disks *[]VirtualDisk `json:"disks,omitempty"`
 	// ExposeToGuestVM - Expose Guest OS or not
 	ExposeToGuestVM *bool `json:"exposeToGuestVM,omitempty"`
-	// GuestOS - The Guest OS
+	// GuestOS - READ-ONLY; The Guest OS
 	GuestOS *string `json:"guestOS,omitempty"`
-	// GuestOSType - The Guest OS types
+	// GuestOSType - READ-ONLY; The Guest OS types
 	GuestOSType *string `json:"guestOSType,omitempty"`
 	// Nics - The list of Virtual NICs
 	Nics *[]VirtualNic `json:"nics,omitempty"`
@@ -2932,35 +2958,6 @@ type VirtualMachineTemplateProperties struct {
 	Vmwaretools *string `json:"vmwaretools,omitempty"`
 }
 
-// VirtualMachineUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachineUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachineUpdateFuture) Result(client VirtualMachineClient) (VM VirtualMachine, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachineUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if VM.Response.Response, err = future.GetResult(sender); err == nil && VM.Response.Response.StatusCode != http.StatusNoContent {
-		VM, err = client.UpdateResponder(VM.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineUpdateFuture", "Result", VM.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // VirtualNetwork virtual network model
 type VirtualNetwork struct {
 	autorest.Response `json:"-"`
@@ -2968,7 +2965,7 @@ type VirtualNetwork struct {
 	Assignable *bool `json:"assignable,omitempty"`
 	// ID - virtual network id (privateCloudId:vsphereId)
 	ID *string `json:"id,omitempty"`
-	// Location - Azure region
+	// Location - READ-ONLY; Azure region
 	Location *string `json:"location,omitempty"`
 	// Name - READ-ONLY; {VirtualNetworkName}
 	Name *string `json:"name,omitempty"`
@@ -2983,9 +2980,6 @@ func (vn VirtualNetwork) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if vn.ID != nil {
 		objectMap["id"] = vn.ID
-	}
-	if vn.Location != nil {
-		objectMap["location"] = vn.Location
 	}
 	if vn.VirtualNetworkProperties != nil {
 		objectMap["properties"] = vn.VirtualNetworkProperties
@@ -3220,7 +3214,7 @@ type VirtualNic struct {
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`
 	// MacAddress - NIC MAC address
 	MacAddress *string `json:"macAddress,omitempty"`
-	// Network - The list of Virtual Networks
+	// Network - Virtual Network
 	Network *VirtualNetwork `json:"network,omitempty"`
 	// NicType - NIC type. Possible values include: 'E1000', 'E1000E', 'PCNET32', 'VMXNET', 'VMXNET2', 'VMXNET3'
 	NicType NICType `json:"nicType,omitempty"`

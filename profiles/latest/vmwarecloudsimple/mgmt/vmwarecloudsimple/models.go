@@ -133,6 +133,7 @@ type AvailableOperationsListResponse = original.AvailableOperationsListResponse
 type AvailableOperationsListResponseIterator = original.AvailableOperationsListResponseIterator
 type AvailableOperationsListResponsePage = original.AvailableOperationsListResponsePage
 type BaseClient = original.BaseClient
+type BaseDedicatedCloudNode = original.BaseDedicatedCloudNode
 type CSRPError = original.CSRPError
 type CSRPErrorBody = original.CSRPErrorBody
 type CreateDedicatedCloudNodeProperties = original.CreateDedicatedCloudNodeProperties

@@ -59,7 +59,10 @@ func (client DedicatedCloudNodesClient) CreateOrUpdate(ctx context.Context, reso
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: dedicatedCloudNodeName,
-			Constraints: []validation.Constraint{{Target: "dedicatedCloudNodeName", Name: validation.Pattern, Rule: `^[-a-zA-Z0-9]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "dedicatedCloudNodeName", Name: validation.Pattern, Rule: `^[-a-zA-Z0-9]+$`, Chain: nil}}},
+		{TargetValue: dedicatedCloudNodeRequest,
+			Constraints: []validation.Constraint{{Target: "dedicatedCloudNodeRequest.CreateDedicatedCloudNodeProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "dedicatedCloudNodeRequest.CreateDedicatedCloudNodeProperties.NodesCount", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("vmwarecloudsimple.DedicatedCloudNodesClient", "CreateOrUpdate", err.Error())
 	}
 

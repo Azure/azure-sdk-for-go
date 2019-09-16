@@ -22,6 +22,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"sort"
 	"strings"
 
@@ -57,15 +58,21 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 
 var (
 	semverRegex = regexp.MustCompile(`v\d+\.\d+\.\d+$`)
+	goverRegex  = regexp.MustCompile(`\d+\.\d+$`)
 	// this is used so tests can hook getTags() to return whatever tags
 	getTagsHook func(string, string) ([]string, error)
 	// default version to start a module at if not specified
 	startingModVer = "v1.0.0"
+	quietFlag      bool
+	verboseFlag    bool
+	goModFile      = "module %s\n\ngo %s\n"
 )
 
 func init() {
 	// default to the real version
 	getTagsHook = getTags
+	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
+	rootCmd.PersistentFlags().BoolVarP(&quietFlag, "quiet", "q", false, "quiet output")
 }
 
 // Execute executes the specified command.
@@ -86,7 +93,7 @@ func theCommand(args []string) error {
 
 // does the actual work
 func theCommandImpl(args []string) (string, error) {
-	stage := filepath.Clean(args[0])
+	stage, _ := filepath.Abs(args[0])
 	if len(args) == 2 {
 		if !modinfo.IsValidModuleVersion(args[1]) {
 			return "", fmt.Errorf("the string '%s' is not a valid module version", args[1])
@@ -97,7 +104,15 @@ func theCommandImpl(args []string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to find latest major version: %v", err)
 	}
+	vprintf("Latest major version path: %v\n", lmv)
 	mod, err := modinfo.GetModuleInfo(lmv, stage)
+	// test whether go.mod file exists
+	if err := ensureGoModFileExistence(lmv); err != nil {
+		return "", fmt.Errorf("error when ensure existence of go.mod file: %v", err)
+	}
+	if err := ensureGoModFileExistence(stage); err != nil {
+		return "", fmt.Errorf("error when ensure existence of go.mod file: %v", err)
+	}
 	if err != nil {
 		return "", fmt.Errorf("failed to create module info: %v", err)
 	}
@@ -113,8 +128,37 @@ func theCommandImpl(args []string) (string, error) {
 	return tag, err
 }
 
+func ensureGoModFileExistence(path string) error {
+	goMod := filepath.Join(path, "go.mod")
+	// test if go.mod exists
+	if _, err := os.Stat(goMod); os.IsNotExist(err) {
+		// not exist
+		vprintf("File go.mod does not exist in path %s\n", path)
+		goVersion := runtime.Version()
+		goVersion = goverRegex.FindString(goVersion)
+		modName, err := getTagPrefix(path)
+		if err != nil {
+			return err
+		}
+		goFile, err := os.Create(goMod)
+		if err != nil {
+			return err
+		}
+		fmt.Fprintf(goFile, goModFile, modName, goVersion)
+		if err := goFile.Close(); err != nil {
+			return err
+		}
+		return nil
+	} else {
+		// exist
+		vprintf("File go.mod already exists in path %s\n", path)
+		return nil
+	}
+}
+
 // releases the module as a new side-by-side major version
 func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
+	vprintln("This is a side by side update")
 	// update the go.mod file with the new major version
 	goMod := filepath.Join(stage, "go.mod")
 	file, err := os.OpenFile(goMod, os.O_RDWR, 0666)
@@ -141,6 +185,7 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 
 // releases the module as an in-place update (minor or patch)
 func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
+	vprintln("This is a inplace update")
 	// find existing tags for this module and create a new one
 	prefix, err := getTagPrefix(lmv)
 	if err != nil {
@@ -201,7 +246,9 @@ func findLatestMajorVersion(stage string) (string, error) {
 	}
 	sort.Strings(dirs)
 	// last one in the slice is the largest
-	return filepath.Join(parent, dirs[len(dirs)-1]), nil
+	v := filepath.Join(parent, dirs[len(dirs)-1])
+	vprintf("Latest major version: %v\n", v)
+	return v, nil
 }
 
 // updates the module version inside the go.mod file

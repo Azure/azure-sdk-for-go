@@ -22,7 +22,7 @@ package databoxedge
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-03-01/databoxedge"
+	original "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-07-01/databoxedge"
 )
 
 const (
@@ -90,6 +90,7 @@ type DeviceStatus = original.DeviceStatus
 
 const (
 	Disconnected          DeviceStatus = original.Disconnected
+	Maintenance           DeviceStatus = original.Maintenance
 	NeedsAttention        DeviceStatus = original.NeedsAttention
 	Offline               DeviceStatus = original.Offline
 	Online                DeviceStatus = original.Online
@@ -233,6 +234,16 @@ const (
 	NetworkGroupRDMA    NetworkGroup = original.NetworkGroupRDMA
 )
 
+type NodeStatus = original.NodeStatus
+
+const (
+	NodeStatusDown         NodeStatus = original.NodeStatusDown
+	NodeStatusRebooting    NodeStatus = original.NodeStatusRebooting
+	NodeStatusShuttingDown NodeStatus = original.NodeStatusShuttingDown
+	NodeStatusUnknown      NodeStatus = original.NodeStatusUnknown
+	NodeStatusUp           NodeStatus = original.NodeStatusUp
+)
+
 type OrderState = original.OrderState
 
 const (
@@ -300,8 +311,11 @@ const (
 type ShareStatus = original.ShareStatus
 
 const (
-	ShareStatusOffline ShareStatus = original.ShareStatusOffline
-	ShareStatusOnline  ShareStatus = original.ShareStatusOnline
+	ShareStatusNeedsAttention ShareStatus = original.ShareStatusNeedsAttention
+	ShareStatusOffline        ShareStatus = original.ShareStatusOffline
+	ShareStatusOK             ShareStatus = original.ShareStatusOK
+	ShareStatusUnknown        ShareStatus = original.ShareStatusUnknown
+	ShareStatusUpdating       ShareStatus = original.ShareStatusUpdating
 )
 
 type SkuName = original.SkuName
@@ -423,6 +437,10 @@ type NetworkAdapter = original.NetworkAdapter
 type NetworkAdapterPosition = original.NetworkAdapterPosition
 type NetworkSettings = original.NetworkSettings
 type NetworkSettingsProperties = original.NetworkSettingsProperties
+type Node = original.Node
+type NodeList = original.NodeList
+type NodeProperties = original.NodeProperties
+type NodesClient = original.NodesClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationProperties = original.OperationProperties
@@ -546,6 +564,12 @@ func NewJobsClient(subscriptionID string) JobsClient {
 }
 func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
 	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNodesClient(subscriptionID string) NodesClient {
+	return original.NewNodesClient(subscriptionID)
+}
+func NewNodesClientWithBaseURI(baseURI string, subscriptionID string) NodesClient {
+	return original.NewNodesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -711,6 +735,9 @@ func PossibleNetworkAdapterStatusValues() []NetworkAdapterStatus {
 }
 func PossibleNetworkGroupValues() []NetworkGroup {
 	return original.PossibleNetworkGroupValues()
+}
+func PossibleNodeStatusValues() []NodeStatus {
+	return original.PossibleNodeStatusValues()
 }
 func PossibleOrderStateValues() []OrderState {
 	return original.PossibleOrderStateValues()

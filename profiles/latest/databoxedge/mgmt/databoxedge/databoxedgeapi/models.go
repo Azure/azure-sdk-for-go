@@ -19,12 +19,13 @@
 
 package databoxedgeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-03-01/databoxedge/databoxedgeapi"
+import original "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-07-01/databoxedge/databoxedgeapi"
 
 type AlertsClientAPI = original.AlertsClientAPI
 type BandwidthSchedulesClientAPI = original.BandwidthSchedulesClientAPI
 type DevicesClientAPI = original.DevicesClientAPI
 type JobsClientAPI = original.JobsClientAPI
+type NodesClientAPI = original.NodesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type OperationsStatusClientAPI = original.OperationsStatusClientAPI
 type OrdersClientAPI = original.OrdersClientAPI

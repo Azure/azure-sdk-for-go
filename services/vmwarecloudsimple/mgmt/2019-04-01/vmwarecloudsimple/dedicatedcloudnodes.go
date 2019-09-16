@@ -46,7 +46,7 @@ func NewDedicatedCloudNodesClientWithBaseURI(baseURI string, referer string, sub
 // resourceGroupName - the name of the resource group
 // dedicatedCloudNodeName - dedicated cloud node name
 // dedicatedCloudNodeRequest - create Dedicated Cloud Node request
-func (client DedicatedCloudNodesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest CreateDedicatedCloudNodeRequest) (result DedicatedCloudNodesCreateOrUpdateFuture, err error) {
+func (client DedicatedCloudNodesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode) (result DedicatedCloudNodesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudNodesClient.CreateOrUpdate")
 		defer func() {
@@ -61,8 +61,21 @@ func (client DedicatedCloudNodesClient) CreateOrUpdate(ctx context.Context, reso
 		{TargetValue: dedicatedCloudNodeName,
 			Constraints: []validation.Constraint{{Target: "dedicatedCloudNodeName", Name: validation.Pattern, Rule: `^[-a-zA-Z0-9]+$`, Chain: nil}}},
 		{TargetValue: dedicatedCloudNodeRequest,
-			Constraints: []validation.Constraint{{Target: "dedicatedCloudNodeRequest.CreateDedicatedCloudNodeProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "dedicatedCloudNodeRequest.CreateDedicatedCloudNodeProperties.NodesCount", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "dedicatedCloudNodeRequest.Location", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "dedicatedCloudNodeRequest.Name", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "dedicatedCloudNodeRequest.Name", Name: validation.Pattern, Rule: `^[-a-zA-Z0-9]+$`, Chain: nil}}},
+				{Target: "dedicatedCloudNodeRequest.DedicatedCloudNodeProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "dedicatedCloudNodeRequest.DedicatedCloudNodeProperties.AvailabilityZoneID", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dedicatedCloudNodeRequest.DedicatedCloudNodeProperties.NodesCount", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dedicatedCloudNodeRequest.DedicatedCloudNodeProperties.PlacementGroupID", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dedicatedCloudNodeRequest.DedicatedCloudNodeProperties.PurchaseID", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dedicatedCloudNodeRequest.DedicatedCloudNodeProperties.SkuDescription", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "dedicatedCloudNodeRequest.DedicatedCloudNodeProperties.SkuDescription.ID", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "dedicatedCloudNodeRequest.DedicatedCloudNodeProperties.SkuDescription.Name", Name: validation.Null, Rule: true, Chain: nil},
+							}},
+					}},
+				{Target: "dedicatedCloudNodeRequest.Sku", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "dedicatedCloudNodeRequest.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("vmwarecloudsimple.DedicatedCloudNodesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -82,7 +95,7 @@ func (client DedicatedCloudNodesClient) CreateOrUpdate(ctx context.Context, reso
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DedicatedCloudNodesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest CreateDedicatedCloudNodeRequest) (*http.Request, error) {
+func (client DedicatedCloudNodesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, dedicatedCloudNodeName string, dedicatedCloudNodeRequest DedicatedCloudNode) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dedicatedCloudNodeName": autorest.Encode("path", dedicatedCloudNodeName),
 		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
@@ -94,6 +107,9 @@ func (client DedicatedCloudNodesClient) CreateOrUpdatePreparer(ctx context.Conte
 		"api-version": APIVersion,
 	}
 
+	dedicatedCloudNodeRequest.ID = nil
+	dedicatedCloudNodeRequest.Name = nil
+	dedicatedCloudNodeRequest.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

@@ -516,183 +516,6 @@ func NewAvailableOperationsListResponsePage(getNextPage func(context.Context, Av
 	return AvailableOperationsListResponsePage{fn: getNextPage}
 }
 
-// BaseDedicatedCloudNode dedicated cloud node model
-type BaseDedicatedCloudNode struct {
-	// ID - READ-ONLY; /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/dedicatedCloudNodes/{dedicatedCloudNodeName}
-	ID *string `json:"id,omitempty"`
-	// Location - Azure region
-	Location *string `json:"location,omitempty"`
-	// Name - READ-ONLY; {dedicatedCloudNodeName}
-	Name *string `json:"name,omitempty"`
-	// Sku - Dedicated Cloud Nodes SKU
-	Sku *Sku `json:"sku,omitempty"`
-	// Tags - Dedicated Cloud Nodes tags
-	Tags map[string]*string `json:"tags"`
-	// Type - READ-ONLY; {resourceProviderNamespace}/{resourceType}
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for BaseDedicatedCloudNode.
-func (bdcn BaseDedicatedCloudNode) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if bdcn.Location != nil {
-		objectMap["location"] = bdcn.Location
-	}
-	if bdcn.Sku != nil {
-		objectMap["sku"] = bdcn.Sku
-	}
-	if bdcn.Tags != nil {
-		objectMap["tags"] = bdcn.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// CreateDedicatedCloudNodeProperties ...
-type CreateDedicatedCloudNodeProperties struct {
-	// NodesCount - count of nodes to create
-	NodesCount *int32 `json:"nodesCount,omitempty"`
-	// AvailabilityZoneID - Availability Zone id, e.g. "az1"
-	AvailabilityZoneID *string `json:"availabilityZoneId,omitempty"`
-	// AvailabilityZoneName - READ-ONLY; Availability Zone name, e.g. "Availability Zone 1"
-	AvailabilityZoneName *string `json:"availabilityZoneName,omitempty"`
-	// CloudRackName - READ-ONLY; VMWare Cloud Rack Name
-	CloudRackName *string `json:"cloudRackName,omitempty"`
-	// Created - READ-ONLY; date time the resource was created
-	Created interface{} `json:"created,omitempty"`
-	// PlacementGroupID - Placement Group id, e.g. "n1"
-	PlacementGroupID *string `json:"placementGroupId,omitempty"`
-	// PlacementGroupName - READ-ONLY; Placement Name, e.g. "Placement Group 1"
-	PlacementGroupName *string `json:"placementGroupName,omitempty"`
-	// PrivateCloudID - READ-ONLY; Private Cloud Id
-	PrivateCloudID *string `json:"privateCloudId,omitempty"`
-	// PrivateCloudName - READ-ONLY; Resource Pool Name
-	PrivateCloudName *string `json:"privateCloudName,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning status of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// PurchaseID - purchase id
-	PurchaseID *uuid.UUID `json:"purchaseId,omitempty"`
-	// SkuDescription - Dedicated Cloud Nodes SKU's description
-	*SkuDescription `json:"skuDescription,omitempty"`
-	// Status - READ-ONLY; Node status, indicates is private cloud set up on this node or not. Possible values include: 'Unused', 'Used'
-	Status NodeStatus `json:"status,omitempty"`
-	// VmwareClusterName - READ-ONLY; VMWare Cluster Name
-	VmwareClusterName *string `json:"vmwareClusterName,omitempty"`
-}
-
-// CreateDedicatedCloudNodeRequest ...
-type CreateDedicatedCloudNodeRequest struct {
-	// CreateDedicatedCloudNodeProperties - Dedicated Cloud Nodes properties
-	*CreateDedicatedCloudNodeProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/dedicatedCloudNodes/{dedicatedCloudNodeName}
-	ID *string `json:"id,omitempty"`
-	// Location - Azure region
-	Location *string `json:"location,omitempty"`
-	// Name - READ-ONLY; {dedicatedCloudNodeName}
-	Name *string `json:"name,omitempty"`
-	// Sku - Dedicated Cloud Nodes SKU
-	Sku *Sku `json:"sku,omitempty"`
-	// Tags - Dedicated Cloud Nodes tags
-	Tags map[string]*string `json:"tags"`
-	// Type - READ-ONLY; {resourceProviderNamespace}/{resourceType}
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CreateDedicatedCloudNodeRequest.
-func (cdcnr CreateDedicatedCloudNodeRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if cdcnr.CreateDedicatedCloudNodeProperties != nil {
-		objectMap["properties"] = cdcnr.CreateDedicatedCloudNodeProperties
-	}
-	if cdcnr.Location != nil {
-		objectMap["location"] = cdcnr.Location
-	}
-	if cdcnr.Sku != nil {
-		objectMap["sku"] = cdcnr.Sku
-	}
-	if cdcnr.Tags != nil {
-		objectMap["tags"] = cdcnr.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for CreateDedicatedCloudNodeRequest struct.
-func (cdcnr *CreateDedicatedCloudNodeRequest) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var createDedicatedCloudNodeProperties CreateDedicatedCloudNodeProperties
-				err = json.Unmarshal(*v, &createDedicatedCloudNodeProperties)
-				if err != nil {
-					return err
-				}
-				cdcnr.CreateDedicatedCloudNodeProperties = &createDedicatedCloudNodeProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				cdcnr.ID = &ID
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				cdcnr.Location = &location
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				cdcnr.Name = &name
-			}
-		case "sku":
-			if v != nil {
-				var sku Sku
-				err = json.Unmarshal(*v, &sku)
-				if err != nil {
-					return err
-				}
-				cdcnr.Sku = &sku
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				cdcnr.Tags = tags
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				cdcnr.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
 // CSRPError general error model
 type CSRPError struct {
 	// Error - Error's body
@@ -711,17 +534,17 @@ type CSRPErrorBody struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// DedicatedCloudNode ...
+// DedicatedCloudNode dedicated cloud node model
 type DedicatedCloudNode struct {
 	autorest.Response `json:"-"`
-	// DedicatedCloudNodeProperties - Dedicated Cloud Nodes properties
-	*DedicatedCloudNodeProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/dedicatedCloudNodes/{dedicatedCloudNodeName}
 	ID *string `json:"id,omitempty"`
 	// Location - Azure region
 	Location *string `json:"location,omitempty"`
 	// Name - READ-ONLY; {dedicatedCloudNodeName}
 	Name *string `json:"name,omitempty"`
+	// DedicatedCloudNodeProperties - Dedicated Cloud Nodes properties
+	*DedicatedCloudNodeProperties `json:"properties,omitempty"`
 	// Sku - Dedicated Cloud Nodes SKU
 	Sku *Sku `json:"sku,omitempty"`
 	// Tags - Dedicated Cloud Nodes tags
@@ -733,11 +556,11 @@ type DedicatedCloudNode struct {
 // MarshalJSON is the custom marshaler for DedicatedCloudNode.
 func (dcn DedicatedCloudNode) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dcn.DedicatedCloudNodeProperties != nil {
-		objectMap["properties"] = dcn.DedicatedCloudNodeProperties
-	}
 	if dcn.Location != nil {
 		objectMap["location"] = dcn.Location
+	}
+	if dcn.DedicatedCloudNodeProperties != nil {
+		objectMap["properties"] = dcn.DedicatedCloudNodeProperties
 	}
 	if dcn.Sku != nil {
 		objectMap["sku"] = dcn.Sku
@@ -757,15 +580,6 @@ func (dcn *DedicatedCloudNode) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "properties":
-			if v != nil {
-				var dedicatedCloudNodeProperties DedicatedCloudNodeProperties
-				err = json.Unmarshal(*v, &dedicatedCloudNodeProperties)
-				if err != nil {
-					return err
-				}
-				dcn.DedicatedCloudNodeProperties = &dedicatedCloudNodeProperties
-			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -792,6 +606,15 @@ func (dcn *DedicatedCloudNode) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dcn.Name = &name
+			}
+		case "properties":
+			if v != nil {
+				var dedicatedCloudNodeProperties DedicatedCloudNodeProperties
+				err = json.Unmarshal(*v, &dedicatedCloudNodeProperties)
+				if err != nil {
+					return err
+				}
+				dcn.DedicatedCloudNodeProperties = &dedicatedCloudNodeProperties
 			}
 		case "sku":
 			if v != nil {
@@ -983,6 +806,8 @@ type DedicatedCloudNodeProperties struct {
 	CloudRackName *string `json:"cloudRackName,omitempty"`
 	// Created - READ-ONLY; date time the resource was created
 	Created interface{} `json:"created,omitempty"`
+	// NodesCount - count of nodes to create
+	NodesCount *int32 `json:"nodesCount,omitempty"`
 	// PlacementGroupID - Placement Group id, e.g. "n1"
 	PlacementGroupID *string `json:"placementGroupId,omitempty"`
 	// PlacementGroupName - READ-ONLY; Placement Name, e.g. "Placement Group 1"
@@ -1008,6 +833,9 @@ func (dcnp DedicatedCloudNodeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if dcnp.AvailabilityZoneID != nil {
 		objectMap["availabilityZoneId"] = dcnp.AvailabilityZoneID
+	}
+	if dcnp.NodesCount != nil {
+		objectMap["nodesCount"] = dcnp.NodesCount
 	}
 	if dcnp.PlacementGroupID != nil {
 		objectMap["placementGroupId"] = dcnp.PlacementGroupID
@@ -1065,6 +893,15 @@ func (dcnp *DedicatedCloudNodeProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dcnp.Created = created
+			}
+		case "nodesCount":
+			if v != nil {
+				var nodesCount int32
+				err = json.Unmarshal(*v, &nodesCount)
+				if err != nil {
+					return err
+				}
+				dcnp.NodesCount = &nodesCount
 			}
 		case "placementGroupId":
 			if v != nil {

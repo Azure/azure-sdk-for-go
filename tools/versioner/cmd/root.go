@@ -88,10 +88,7 @@ func Execute() {
 
 // wrapper for cobra, prints tag to stdout
 func theCommand(args []string) error {
-	tag, err := theCommandImpl(args)
-	if err == nil {
-		fmt.Printf("tag: %s\n", tag)
-	}
+	_, err := theCommandImpl(args)
 	return err
 }
 

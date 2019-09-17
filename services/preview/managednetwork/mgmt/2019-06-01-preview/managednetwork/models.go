@@ -107,6 +107,8 @@ type Group struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Group.
@@ -117,6 +119,9 @@ func (g Group) MarshalJSON() ([]byte, error) {
 	}
 	if g.Kind != "" {
 		objectMap["kind"] = g.Kind
+	}
+	if g.Location != nil {
+		objectMap["location"] = g.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -174,6 +179,15 @@ func (g *Group) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				g.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				g.Location = &location
 			}
 		}
 	}
@@ -563,16 +577,16 @@ type ManagedNetwork struct {
 	autorest.Response `json:"-"`
 	// Properties - The MNC properties
 	*Properties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags *[]string `json:"tags,omitempty"`
-	// Location - The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedNetwork.
@@ -610,21 +624,12 @@ func (mn *ManagedNetwork) UnmarshalJSON(body []byte) error {
 			}
 		case "tags":
 			if v != nil {
-				var tags []string
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
 				}
-				mn.Tags = &tags
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				mn.Location = &location
+				mn.Tags = tags
 			}
 		case "id":
 			if v != nil {
@@ -652,6 +657,15 @@ func (mn *ManagedNetwork) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mn.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				mn.Location = &location
 			}
 		}
 	}
@@ -955,6 +969,8 @@ type PeeringPolicy struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 }
 
 // PeeringPolicyListResult result of the request to list Managed Network Peering Policies. It contains a
@@ -1141,6 +1157,8 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 }
 
 // Resource the general resource model definition
@@ -1151,6 +1169,8 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 }
 
 // ResourceID generic pointer to a resource
@@ -1190,6 +1210,8 @@ type ScopeAssignment struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ScopeAssignment.
@@ -1197,6 +1219,9 @@ func (sa ScopeAssignment) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sa.ScopeAssignmentProperties != nil {
 		objectMap["properties"] = sa.ScopeAssignmentProperties
+	}
+	if sa.Location != nil {
+		objectMap["location"] = sa.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -1245,6 +1270,15 @@ func (sa *ScopeAssignment) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sa.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sa.Location = &location
 			}
 		}
 	}
@@ -1411,20 +1445,41 @@ type ScopeAssignmentProperties struct {
 
 // TrackedResource the resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	// Tags - Resource tags.
-	Tags *[]string `json:"tags,omitempty"`
-	// Location - The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	return json.Marshal(objectMap)
 }
 
 // Update update Tags of Managed Network
 type Update struct {
-	// Tags - Updates the tags property of the Managed Network
-	Tags *[]string `json:"tags,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Update.
+func (u Update) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if u.Tags != nil {
+		objectMap["tags"] = u.Tags
+	}
+	return json.Marshal(objectMap)
 }

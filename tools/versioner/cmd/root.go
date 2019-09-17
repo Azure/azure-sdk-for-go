@@ -140,6 +140,10 @@ func ensureGoModFileExistence(path string) error {
 		if err != nil {
 			return err
 		}
+		if index := strings.Index(modName, "/stage"); index > -1 {
+			modName = modName[0:index]
+		}
+		modName = "github.com/Azure/azure-sdk-for-go/" + modName
 		goFile, err := os.Create(goMod)
 		if err != nil {
 			return err

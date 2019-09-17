@@ -47,13 +47,13 @@ func NewListManagementTermClient(endpoint string) ListManagementTermClient {
 // listID - list Id of the image list.
 // term - term to be deleted
 // language - language of the terms.
-func (client ListManagementTermClient) AddTerm(ctx context.Context, listID string, term string, language string) (result SetObject, err error) {
+func (client ListManagementTermClient) AddTerm(ctx context.Context, listID string, term string, language string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ListManagementTermClient.AddTerm")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -66,7 +66,7 @@ func (client ListManagementTermClient) AddTerm(ctx context.Context, listID strin
 
 	resp, err := client.AddTermSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		err = autorest.NewErrorWithError(err, "contentmoderator.ListManagementTermClient", "AddTerm", resp, "Failure sending request")
 		return
 	}
@@ -111,14 +111,13 @@ func (client ListManagementTermClient) AddTermSender(req *http.Request) (*http.R
 
 // AddTermResponder handles the response to the AddTerm request. The method always
 // closes the http.Response Body.
-func (client ListManagementTermClient) AddTermResponder(resp *http.Response) (result SetObject, err error) {
+func (client ListManagementTermClient) AddTermResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 

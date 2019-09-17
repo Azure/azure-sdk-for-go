@@ -83,7 +83,7 @@ func PossibleStateValues() []State {
 	return []State{Deleted, Disabled, Enabled, PastDue, Warned}
 }
 
-// AdPrincipal active Directory Principal for subscription creation delegated permission
+// AdPrincipal active Directory Principal who’ll get owner access on the new subscription.
 type AdPrincipal struct {
 	// ObjectID - Object id of the Principal
 	ObjectID *string `json:"objectId,omitempty"`
@@ -122,7 +122,7 @@ func (cp CreationParameters) MarshalJSON() ([]byte, error) {
 // CreationResult the created subscription object.
 type CreationResult struct {
 	autorest.Response `json:"-"`
-	// SubscriptionLink - The link to the new subscription.
+	// SubscriptionLink - The link to the new subscription. Use this link to check the status of subscription creation operation.
 	SubscriptionLink *string `json:"subscriptionLink,omitempty"`
 }
 
@@ -349,49 +349,21 @@ type Model struct {
 	AuthorizationSource *string `json:"authorizationSource,omitempty"`
 }
 
-// Operation REST API operation
+// Operation status of the subscription POST operation.
 type Operation struct {
-	// Name - Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
-	// Display - The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
-}
-
-// OperationDisplay the object that represents the operation.
-type OperationDisplay struct {
-	// Provider - Service provider: Microsoft.Subscription
-	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource on which the operation is performed: Profile, endpoint, etc.
-	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
-}
-
-// OperationListResult result of the request to list operations. It contains a list of operations and a URL
-// link to get the next set of results.
-type OperationListResult struct {
-	autorest.Response `json:"-"`
-	// Value - List of operations.
-	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// OperationListResultType a list of pending subscription operations.
-type OperationListResultType struct {
-	autorest.Response `json:"-"`
-	// Value - A list of pending SubscriptionOperations
-	Value *[]OperationType `json:"value,omitempty"`
-}
-
-// OperationType status of the subscription POST operation.
-type OperationType struct {
 	// ID - READ-ONLY; The operation Id.
 	ID *string `json:"id,omitempty"`
 	// Status - Status of the pending subscription
 	Status *string `json:"status,omitempty"`
 	// StatusDetail - Status Detail of the pending subscription
 	StatusDetail *string `json:"statusDetail,omitempty"`
+}
+
+// OperationListResult a list of pending subscription operations.
+type OperationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of pending SubscriptionOperations
+	Value *[]Operation `json:"value,omitempty"`
 }
 
 // Policies subscription policies.

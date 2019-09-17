@@ -1,4 +1,4 @@
-package subscription
+package aad
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
@@ -25,25 +25,25 @@ import (
 	"net/http"
 )
 
-// OperationsGroupClient is the the subscription client
-type OperationsGroupClient struct {
+// OperationsClient is the azure Active Directory Client.
+type OperationsClient struct {
 	BaseClient
 }
 
-// NewOperationsGroupClient creates an instance of the OperationsGroupClient client.
-func NewOperationsGroupClient() OperationsGroupClient {
-	return NewOperationsGroupClientWithBaseURI(DefaultBaseURI)
+// NewOperationsClient creates an instance of the OperationsClient client.
+func NewOperationsClient() OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI)
 }
 
-// NewOperationsGroupClientWithBaseURI creates an instance of the OperationsGroupClient client.
-func NewOperationsGroupClientWithBaseURI(baseURI string) OperationsGroupClient {
-	return OperationsGroupClient{NewWithBaseURI(baseURI)}
+// NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI)}
 }
 
-// List lists all of the available pending Microsoft.Subscription API operations.
-func (client OperationsGroupClient) List(ctx context.Context) (result OperationListResultType, err error) {
+// List operation to return the list of available operations.
+func (client OperationsClient) List(ctx context.Context) (result OperationsDiscoveryCollection, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsGroupClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -54,28 +54,28 @@ func (client OperationsGroupClient) List(ctx context.Context) (result OperationL
 	}
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.OperationsGroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "aad.OperationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "subscription.OperationsGroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "aad.OperationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.OperationsGroupClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "aad.OperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client OperationsGroupClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2018-03-01-preview"
+func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2017-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -83,21 +83,21 @@ func (client OperationsGroupClient) ListPreparer(ctx context.Context) (*http.Req
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.Subscription/subscriptionOperations"),
+		autorest.WithPath("/providers/microsoft.aadiam/operations"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client OperationsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsGroupClient) ListResponder(resp *http.Response) (result OperationListResultType, err error) {
+func (client OperationsClient) ListResponder(resp *http.Response) (result OperationsDiscoveryCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

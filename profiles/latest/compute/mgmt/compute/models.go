@@ -22,7 +22,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-03-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-07-01/compute"
 )
 
 const (
@@ -654,6 +654,7 @@ type AvailabilitySetProperties = original.AvailabilitySetProperties
 type AvailabilitySetUpdate = original.AvailabilitySetUpdate
 type AvailabilitySetsClient = original.AvailabilitySetsClient
 type BaseClient = original.BaseClient
+type BillingProfile = original.BillingProfile
 type BootDiagnostics = original.BootDiagnostics
 type BootDiagnosticsInstanceView = original.BootDiagnosticsInstanceView
 type CloudError = original.CloudError
@@ -743,6 +744,7 @@ type GalleryApplicationsCreateOrUpdateFuture = original.GalleryApplicationsCreat
 type GalleryApplicationsDeleteFuture = original.GalleryApplicationsDeleteFuture
 type GalleryArtifactPublishingProfileBase = original.GalleryArtifactPublishingProfileBase
 type GalleryArtifactSource = original.GalleryArtifactSource
+type GalleryArtifactVersionSource = original.GalleryArtifactVersionSource
 type GalleryDataDiskImage = original.GalleryDataDiskImage
 type GalleryDiskImage = original.GalleryDiskImage
 type GalleryIdentifier = original.GalleryIdentifier
@@ -864,6 +866,7 @@ type RunCommandParameterDefinition = original.RunCommandParameterDefinition
 type RunCommandResult = original.RunCommandResult
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
+type ScheduledEventsProfile = original.ScheduledEventsProfile
 type Sku = original.Sku
 type Snapshot = original.Snapshot
 type SnapshotList = original.SnapshotList
@@ -884,6 +887,7 @@ type StorageProfile = original.StorageProfile
 type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
 type TargetRegion = original.TargetRegion
+type TerminateNotificationProfile = original.TerminateNotificationProfile
 type ThrottledRequestsInput = original.ThrottledRequestsInput
 type UpdateResource = original.UpdateResource
 type UpgradeOperationHistoricalStatusInfo = original.UpgradeOperationHistoricalStatusInfo

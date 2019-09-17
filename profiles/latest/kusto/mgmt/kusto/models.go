@@ -22,7 +22,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-01-21/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-05-15/kusto"
 )
 
 const (
@@ -40,13 +40,25 @@ const (
 type AzureSkuName = original.AzureSkuName
 
 const (
-	D11V2 AzureSkuName = original.D11V2
-	D12V2 AzureSkuName = original.D12V2
-	D13V2 AzureSkuName = original.D13V2
-	D14V2 AzureSkuName = original.D14V2
-	L16   AzureSkuName = original.L16
-	L4    AzureSkuName = original.L4
-	L8    AzureSkuName = original.L8
+	DevNoSLAStandardD11V2 AzureSkuName = original.DevNoSLAStandardD11V2
+	StandardD11V2         AzureSkuName = original.StandardD11V2
+	StandardD12V2         AzureSkuName = original.StandardD12V2
+	StandardD13V2         AzureSkuName = original.StandardD13V2
+	StandardD14V2         AzureSkuName = original.StandardD14V2
+	StandardDS13V21TBPS   AzureSkuName = original.StandardDS13V21TBPS
+	StandardDS13V22TBPS   AzureSkuName = original.StandardDS13V22TBPS
+	StandardDS14V23TBPS   AzureSkuName = original.StandardDS14V23TBPS
+	StandardDS14V24TBPS   AzureSkuName = original.StandardDS14V24TBPS
+	StandardL16s          AzureSkuName = original.StandardL16s
+	StandardL4s           AzureSkuName = original.StandardL4s
+	StandardL8s           AzureSkuName = original.StandardL8s
+)
+
+type AzureSkuTier = original.AzureSkuTier
+
+const (
+	Basic    AzureSkuTier = original.Basic
+	Standard AzureSkuTier = original.Standard
 )
 
 type DataFormat = original.DataFormat
@@ -90,6 +102,7 @@ const (
 	KindDataConnection Kind = original.KindDataConnection
 	KindEventGrid      Kind = original.KindEventGrid
 	KindEventHub       Kind = original.KindEventHub
+	KindIotHub         Kind = original.KindIotHub
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -98,6 +111,7 @@ const (
 	Creating  ProvisioningState = original.Creating
 	Deleting  ProvisioningState = original.Deleting
 	Failed    ProvisioningState = original.Failed
+	Moving    ProvisioningState = original.Moving
 	Running   ProvisioningState = original.Running
 	Succeeded ProvisioningState = original.Succeeded
 )
@@ -171,18 +185,24 @@ type EventGridConnectionProperties = original.EventGridConnectionProperties
 type EventGridDataConnection = original.EventGridDataConnection
 type EventHubConnectionProperties = original.EventHubConnectionProperties
 type EventHubDataConnection = original.EventHubDataConnection
+type IotHubConnectionProperties = original.IotHubConnectionProperties
+type IotHubDataConnection = original.IotHubDataConnection
 type ListResourceSkusResult = original.ListResourceSkusResult
-type ListSkusResult = original.ListSkusResult
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type OptimizedAutoscale = original.OptimizedAutoscale
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type SkuDescription = original.SkuDescription
+type SkuDescriptionList = original.SkuDescriptionList
+type SkuLocationInfoItem = original.SkuLocationInfoItem
 type TrackedResource = original.TrackedResource
 type TrustedExternalTenant = original.TrustedExternalTenant
+type VirtualNetworkConfiguration = original.VirtualNetworkConfiguration
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -225,6 +245,9 @@ func PossibleAzureScaleTypeValues() []AzureScaleType {
 }
 func PossibleAzureSkuNameValues() []AzureSkuName {
 	return original.PossibleAzureSkuNameValues()
+}
+func PossibleAzureSkuTierValues() []AzureSkuTier {
+	return original.PossibleAzureSkuTierValues()
 }
 func PossibleDataFormatValues() []DataFormat {
 	return original.PossibleDataFormatValues()

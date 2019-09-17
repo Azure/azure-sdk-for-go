@@ -96,8 +96,8 @@ func (client TopLevelDomainsClient) GetGetTopLevelDomainsPreparer(ctx context.Co
 // GetGetTopLevelDomainsSender sends the GetGetTopLevelDomains request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) GetGetTopLevelDomainsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetGetTopLevelDomainsResponder handles the response to the GetGetTopLevelDomains request. The method always
@@ -208,8 +208,8 @@ func (client TopLevelDomainsClient) GetTopLevelDomainPreparer(ctx context.Contex
 // GetTopLevelDomainSender sends the GetTopLevelDomain request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) GetTopLevelDomainSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetTopLevelDomainResponder handles the response to the GetTopLevelDomain request. The method always
@@ -287,8 +287,8 @@ func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsPreparer(ctx con
 // ListTopLevelDomainAgreementsSender sends the ListTopLevelDomainAgreements request. The method will close the
 // http.Response Body if it receives an error.
 func (client TopLevelDomainsClient) ListTopLevelDomainAgreementsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListTopLevelDomainAgreementsResponder handles the response to the ListTopLevelDomainAgreements request. The method always

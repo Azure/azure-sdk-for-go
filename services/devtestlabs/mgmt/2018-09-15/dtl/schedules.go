@@ -616,7 +616,7 @@ func (client SchedulesClient) ListApplicableComplete(ctx context.Context, resour
 	return
 }
 
-// Update modify properties of schedules.
+// Update allows modifying tags of schedules. All other properties will be ignored.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.

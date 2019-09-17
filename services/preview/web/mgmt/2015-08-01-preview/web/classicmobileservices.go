@@ -100,8 +100,8 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServicePreparer(ctx
 // DeleteClassicMobileServiceSender sends the DeleteClassicMobileService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) DeleteClassicMobileServiceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteClassicMobileServiceResponder handles the response to the DeleteClassicMobileService request. The method always
@@ -177,8 +177,8 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicePreparer(ctx co
 // GetClassicMobileServiceSender sends the GetClassicMobileService request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) GetClassicMobileServiceSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetClassicMobileServiceResponder handles the response to the GetClassicMobileService request. The method always
@@ -253,8 +253,8 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicesPreparer(ctx c
 // GetClassicMobileServicesSender sends the GetClassicMobileServices request. The method will close the
 // http.Response Body if it receives an error.
 func (client ClassicMobileServicesClient) GetClassicMobileServicesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetClassicMobileServicesResponder handles the response to the GetClassicMobileServices request. The method always

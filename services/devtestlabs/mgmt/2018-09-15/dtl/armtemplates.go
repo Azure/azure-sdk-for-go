@@ -45,7 +45,7 @@ func NewArmTemplatesClientWithBaseURI(baseURI string, subscriptionID string) Arm
 // resourceGroupName - the name of the resource group.
 // labName - the name of the lab.
 // artifactSourceName - the name of the artifact source.
-// name - the name of the azure Resource Manager template.
+// name - the name of the azure resource manager template.
 // expand - specify the $expand query. Example: 'properties($select=displayName)'
 func (client ArmTemplatesClient) Get(ctx context.Context, resourceGroupName string, labName string, artifactSourceName string, name string, expand string) (result ArmTemplate, err error) {
 	if tracing.IsEnabled() {

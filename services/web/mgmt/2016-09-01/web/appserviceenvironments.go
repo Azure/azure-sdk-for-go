@@ -113,9 +113,9 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdatePreparer(ctx context.Co
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) CreateOrUpdateSender(req *http.Request) (future AppServiceEnvironmentsCreateOrUpdateFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -201,9 +201,9 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(c
 // CreateOrUpdateMultiRolePoolSender sends the CreateOrUpdateMultiRolePool request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *http.Request) (future AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -291,9 +291,9 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(ctx 
 // CreateOrUpdateWorkerPoolSender sends the CreateOrUpdateWorkerPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http.Request) (future AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -381,9 +381,9 @@ func (client AppServiceEnvironmentsClient) DeletePreparer(ctx context.Context, r
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) DeleteSender(req *http.Request) (future AppServiceEnvironmentsDeleteFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -471,8 +471,8 @@ func (client AppServiceEnvironmentsClient) GetPreparer(ctx context.Context, reso
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) GetSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -558,8 +558,8 @@ func (client AppServiceEnvironmentsClient) GetDiagnosticsItemPreparer(ctx contex
 // GetDiagnosticsItemSender sends the GetDiagnosticsItem request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) GetDiagnosticsItemSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetDiagnosticsItemResponder handles the response to the GetDiagnosticsItem request. The method always
@@ -643,8 +643,8 @@ func (client AppServiceEnvironmentsClient) GetMultiRolePoolPreparer(ctx context.
 // GetMultiRolePoolSender sends the GetMultiRolePool request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) GetMultiRolePoolSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetMultiRolePoolResponder handles the response to the GetMultiRolePool request. The method always
@@ -730,8 +730,8 @@ func (client AppServiceEnvironmentsClient) GetWorkerPoolPreparer(ctx context.Con
 // GetWorkerPoolSender sends the GetWorkerPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) GetWorkerPoolSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetWorkerPoolResponder handles the response to the GetWorkerPool request. The method always
@@ -803,8 +803,8 @@ func (client AppServiceEnvironmentsClient) ListPreparer(ctx context.Context) (*h
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -926,8 +926,8 @@ func (client AppServiceEnvironmentsClient) ListAppServicePlansPreparer(ctx conte
 // ListAppServicePlansSender sends the ListAppServicePlans request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListAppServicePlansSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListAppServicePlansResponder handles the response to the ListAppServicePlans request. The method always
@@ -1047,8 +1047,8 @@ func (client AppServiceEnvironmentsClient) ListByResourceGroupPreparer(ctx conte
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
@@ -1170,8 +1170,8 @@ func (client AppServiceEnvironmentsClient) ListCapacitiesPreparer(ctx context.Co
 // ListCapacitiesSender sends the ListCapacities request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListCapacitiesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListCapacitiesResponder handles the response to the ListCapacities request. The method always
@@ -1292,8 +1292,8 @@ func (client AppServiceEnvironmentsClient) ListDiagnosticsPreparer(ctx context.C
 // ListDiagnosticsSender sends the ListDiagnostics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListDiagnosticsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListDiagnosticsResponder handles the response to the ListDiagnostics request. The method always
@@ -1377,8 +1377,8 @@ func (client AppServiceEnvironmentsClient) ListMetricDefinitionsPreparer(ctx con
 // ListMetricDefinitionsSender sends the ListMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMetricDefinitionsResponder handles the response to the ListMetricDefinitions request. The method always
@@ -1473,8 +1473,8 @@ func (client AppServiceEnvironmentsClient) ListMetricsPreparer(ctx context.Conte
 // ListMetricsSender sends the ListMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMetricsResponder handles the response to the ListMetrics request. The method always
@@ -1596,8 +1596,8 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitionsPrepare
 // ListMultiRoleMetricDefinitionsSender sends the ListMultiRoleMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMultiRoleMetricDefinitionsResponder handles the response to the ListMultiRoleMetricDefinitions request. The method always
@@ -1741,8 +1741,8 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricsPreparer(ctx cont
 // ListMultiRoleMetricsSender sends the ListMultiRoleMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRoleMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMultiRoleMetricsResponder handles the response to the ListMultiRoleMetrics request. The method always
@@ -1867,8 +1867,8 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefini
 // ListMultiRolePoolInstanceMetricDefinitionsSender sends the ListMultiRolePoolInstanceMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMultiRolePoolInstanceMetricDefinitionsResponder handles the response to the ListMultiRolePoolInstanceMetricDefinitions request. The method always
@@ -1997,8 +1997,8 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricsPrepa
 // ListMultiRolePoolInstanceMetricsSender sends the ListMultiRolePoolInstanceMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMultiRolePoolInstanceMetricsResponder handles the response to the ListMultiRolePoolInstanceMetrics request. The method always
@@ -2120,8 +2120,8 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolsPreparer(ctx contex
 // ListMultiRolePoolsSender sends the ListMultiRolePools request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMultiRolePoolsResponder handles the response to the ListMultiRolePools request. The method always
@@ -2243,8 +2243,8 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkusPreparer(ctx con
 // ListMultiRolePoolSkusSender sends the ListMultiRolePoolSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMultiRolePoolSkusResponder handles the response to the ListMultiRolePoolSkus request. The method always
@@ -2366,8 +2366,8 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleUsagesPreparer(ctx conte
 // ListMultiRoleUsagesSender sends the ListMultiRoleUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListMultiRoleUsagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListMultiRoleUsagesResponder handles the response to the ListMultiRoleUsages request. The method always
@@ -2488,8 +2488,8 @@ func (client AppServiceEnvironmentsClient) ListOperationsPreparer(ctx context.Co
 // ListOperationsSender sends the ListOperations request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListOperationsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListOperationsResponder handles the response to the ListOperations request. The method always
@@ -2580,8 +2580,8 @@ func (client AppServiceEnvironmentsClient) ListUsagesPreparer(ctx context.Contex
 // ListUsagesSender sends the ListUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListUsagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListUsagesResponder handles the response to the ListUsages request. The method always
@@ -2702,8 +2702,8 @@ func (client AppServiceEnvironmentsClient) ListVipsPreparer(ctx context.Context,
 // ListVipsSender sends the ListVips request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListVipsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListVipsResponder handles the response to the ListVips request. The method always
@@ -2792,8 +2792,8 @@ func (client AppServiceEnvironmentsClient) ListWebAppsPreparer(ctx context.Conte
 // ListWebAppsSender sends the ListWebApps request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWebAppsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListWebAppsResponder handles the response to the ListWebApps request. The method always
@@ -2917,8 +2917,8 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitionsPrepare
 // ListWebWorkerMetricDefinitionsSender sends the ListWebWorkerMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListWebWorkerMetricDefinitionsResponder handles the response to the ListWebWorkerMetricDefinitions request. The method always
@@ -3052,8 +3052,8 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricsPreparer(ctx cont
 // ListWebWorkerMetricsSender sends the ListWebWorkerMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWebWorkerMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListWebWorkerMetricsResponder handles the response to the ListWebWorkerMetrics request. The method always
@@ -3177,8 +3177,8 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerUsagesPreparer(ctx conte
 // ListWebWorkerUsagesSender sends the ListWebWorkerUsages request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWebWorkerUsagesSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListWebWorkerUsagesResponder handles the response to the ListWebWorkerUsages request. The method always
@@ -3305,8 +3305,8 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitio
 // ListWorkerPoolInstanceMetricDefinitionsSender sends the ListWorkerPoolInstanceMetricDefinitions request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListWorkerPoolInstanceMetricDefinitionsResponder handles the response to the ListWorkerPoolInstanceMetricDefinitions request. The method always
@@ -3442,8 +3442,8 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricsPreparer
 // ListWorkerPoolInstanceMetricsSender sends the ListWorkerPoolInstanceMetrics request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListWorkerPoolInstanceMetricsResponder handles the response to the ListWorkerPoolInstanceMetrics request. The method always
@@ -3565,8 +3565,8 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolsPreparer(ctx context.C
 // ListWorkerPoolsSender sends the ListWorkerPools request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWorkerPoolsSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListWorkerPoolsResponder handles the response to the ListWorkerPools request. The method always
@@ -3690,8 +3690,8 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolSkusPreparer(ctx contex
 // ListWorkerPoolSkusSender sends the ListWorkerPoolSkus request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ListWorkerPoolSkusSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListWorkerPoolSkusResponder handles the response to the ListWorkerPoolSkus request. The method always
@@ -3812,8 +3812,8 @@ func (client AppServiceEnvironmentsClient) RebootPreparer(ctx context.Context, r
 // RebootSender sends the Reboot request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) RebootSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // RebootResponder handles the response to the Reboot request. The method always
@@ -3890,9 +3890,9 @@ func (client AppServiceEnvironmentsClient) ResumePreparer(ctx context.Context, r
 // ResumeSender sends the Resume request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ResumeSender(req *http.Request) (future AppServiceEnvironmentsResumeFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -4017,9 +4017,9 @@ func (client AppServiceEnvironmentsClient) SuspendPreparer(ctx context.Context, 
 // SuspendSender sends the Suspend request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) SuspendSender(req *http.Request) (future AppServiceEnvironmentsSuspendFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	resp, err = autorest.SendWithSender(client, req, sd...)
 	if err != nil {
 		return
 	}
@@ -4153,8 +4153,8 @@ func (client AppServiceEnvironmentsClient) UpdatePreparer(ctx context.Context, r
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -4241,8 +4241,8 @@ func (client AppServiceEnvironmentsClient) UpdateMultiRolePoolPreparer(ctx conte
 // UpdateMultiRolePoolSender sends the UpdateMultiRolePool request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) UpdateMultiRolePoolSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateMultiRolePoolResponder handles the response to the UpdateMultiRolePool request. The method always
@@ -4331,8 +4331,8 @@ func (client AppServiceEnvironmentsClient) UpdateWorkerPoolPreparer(ctx context.
 // UpdateWorkerPoolSender sends the UpdateWorkerPool request. The method will close the
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) UpdateWorkerPoolSender(req *http.Request) (*http.Response, error) {
-	return autorest.SendWithSender(client, req,
-		azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateWorkerPoolResponder handles the response to the UpdateWorkerPool request. The method always

@@ -19,10 +19,16 @@
 
 package peeringapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-03-01-preview/peering/peeringapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-08-01-preview/peering/peeringapi"
 
+type BaseClientAPI = original.BaseClientAPI
 type LegacyPeeringsClientAPI = original.LegacyPeeringsClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PeerAsnsClientAPI = original.PeerAsnsClientAPI
 type PeeringsClientAPI = original.PeeringsClientAPI
+type PrefixesClientAPI = original.PrefixesClientAPI
+type ServiceLocationsClientAPI = original.ServiceLocationsClientAPI
+type ServicePrefixesClientAPI = original.ServicePrefixesClientAPI
+type ServiceProvidersClientAPI = original.ServiceProvidersClientAPI
+type ServicesClientAPI = original.ServicesClientAPI

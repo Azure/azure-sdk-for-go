@@ -580,6 +580,12 @@ const (
 	LoadDistributionSourceIPProtocol LoadDistribution = original.LoadDistributionSourceIPProtocol
 )
 
+type ManagedRuleEnabledState = original.ManagedRuleEnabledState
+
+const (
+	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = original.ManagedRuleEnabledStateDisabled
+)
+
 type NatGatewaySkuName = original.NatGatewaySkuName
 
 const (
@@ -620,6 +626,24 @@ const (
 	OriginInbound  Origin = original.OriginInbound
 	OriginLocal    Origin = original.OriginLocal
 	OriginOutbound Origin = original.OriginOutbound
+)
+
+type OwaspCrsExclusionEntryMatchVariable = original.OwaspCrsExclusionEntryMatchVariable
+
+const (
+	RequestArgNames    OwaspCrsExclusionEntryMatchVariable = original.RequestArgNames
+	RequestCookieNames OwaspCrsExclusionEntryMatchVariable = original.RequestCookieNames
+	RequestHeaderNames OwaspCrsExclusionEntryMatchVariable = original.RequestHeaderNames
+)
+
+type OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperator
+
+const (
+	OwaspCrsExclusionEntrySelectorMatchOperatorContains   OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorContains
+	OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith   OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith
+	OwaspCrsExclusionEntrySelectorMatchOperatorEquals     OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorEquals
+	OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny  OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny
+	OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith OwaspCrsExclusionEntrySelectorMatchOperator = original.OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith
 )
 
 type PcError = original.PcError
@@ -1521,6 +1545,10 @@ type LocalNetworkGatewaysCreateOrUpdateFuture = original.LocalNetworkGatewaysCre
 type LocalNetworkGatewaysDeleteFuture = original.LocalNetworkGatewaysDeleteFuture
 type LocalNetworkGatewaysUpdateTagsFuture = original.LocalNetworkGatewaysUpdateTagsFuture
 type LogSpecification = original.LogSpecification
+type ManagedRuleGroupOverride = original.ManagedRuleGroupOverride
+type ManagedRuleOverride = original.ManagedRuleOverride
+type ManagedRuleSet = original.ManagedRuleSet
+type ManagedRulesDefinition = original.ManagedRulesDefinition
 type ManagedServiceIdentity = original.ManagedServiceIdentity
 type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
 type MatchCondition = original.MatchCondition
@@ -1548,6 +1576,7 @@ type OperationPropertiesFormatServiceSpecification = original.OperationPropertie
 type OperationsClient = original.OperationsClient
 type OutboundRule = original.OutboundRule
 type OutboundRulePropertiesFormat = original.OutboundRulePropertiesFormat
+type OwaspCrsExclusionEntry = original.OwaspCrsExclusionEntry
 type P2SVpnGateway = original.P2SVpnGateway
 type P2SVpnGatewayProperties = original.P2SVpnGatewayProperties
 type P2SVpnProfileParameters = original.P2SVpnProfileParameters
@@ -3059,6 +3088,9 @@ func PossibleLoadBalancerSkuNameValues() []LoadBalancerSkuName {
 func PossibleLoadDistributionValues() []LoadDistribution {
 	return original.PossibleLoadDistributionValues()
 }
+func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
+	return original.PossibleManagedRuleEnabledStateValues()
+}
 func PossibleNatGatewaySkuNameValues() []NatGatewaySkuName {
 	return original.PossibleNatGatewaySkuNameValues()
 }
@@ -3073,6 +3105,12 @@ func PossibleOperationStatusValues() []OperationStatus {
 }
 func PossibleOriginValues() []Origin {
 	return original.PossibleOriginValues()
+}
+func PossibleOwaspCrsExclusionEntryMatchVariableValues() []OwaspCrsExclusionEntryMatchVariable {
+	return original.PossibleOwaspCrsExclusionEntryMatchVariableValues()
+}
+func PossibleOwaspCrsExclusionEntrySelectorMatchOperatorValues() []OwaspCrsExclusionEntrySelectorMatchOperator {
+	return original.PossibleOwaspCrsExclusionEntrySelectorMatchOperatorValues()
 }
 func PossiblePcErrorValues() []PcError {
 	return original.PossiblePcErrorValues()

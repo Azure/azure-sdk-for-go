@@ -1205,6 +1205,19 @@ func PossibleLoadDistributionValues() []LoadDistribution {
 	return []LoadDistribution{LoadDistributionDefault, LoadDistributionSourceIP, LoadDistributionSourceIPProtocol}
 }
 
+// ManagedRuleEnabledState enumerates the values for managed rule enabled state.
+type ManagedRuleEnabledState string
+
+const (
+	// ManagedRuleEnabledStateDisabled ...
+	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = "Disabled"
+)
+
+// PossibleManagedRuleEnabledStateValues returns an array of possible values for the ManagedRuleEnabledState const type.
+func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
+	return []ManagedRuleEnabledState{ManagedRuleEnabledStateDisabled}
+}
+
 // NatGatewaySkuName enumerates the values for nat gateway sku name.
 type NatGatewaySkuName string
 
@@ -1292,6 +1305,45 @@ const (
 // PossibleOriginValues returns an array of possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
 	return []Origin{OriginInbound, OriginLocal, OriginOutbound}
+}
+
+// OwaspCrsExclusionEntryMatchVariable enumerates the values for owasp crs exclusion entry match variable.
+type OwaspCrsExclusionEntryMatchVariable string
+
+const (
+	// RequestArgNames ...
+	RequestArgNames OwaspCrsExclusionEntryMatchVariable = "RequestArgNames"
+	// RequestCookieNames ...
+	RequestCookieNames OwaspCrsExclusionEntryMatchVariable = "RequestCookieNames"
+	// RequestHeaderNames ...
+	RequestHeaderNames OwaspCrsExclusionEntryMatchVariable = "RequestHeaderNames"
+)
+
+// PossibleOwaspCrsExclusionEntryMatchVariableValues returns an array of possible values for the OwaspCrsExclusionEntryMatchVariable const type.
+func PossibleOwaspCrsExclusionEntryMatchVariableValues() []OwaspCrsExclusionEntryMatchVariable {
+	return []OwaspCrsExclusionEntryMatchVariable{RequestArgNames, RequestCookieNames, RequestHeaderNames}
+}
+
+// OwaspCrsExclusionEntrySelectorMatchOperator enumerates the values for owasp crs exclusion entry selector
+// match operator.
+type OwaspCrsExclusionEntrySelectorMatchOperator string
+
+const (
+	// OwaspCrsExclusionEntrySelectorMatchOperatorContains ...
+	OwaspCrsExclusionEntrySelectorMatchOperatorContains OwaspCrsExclusionEntrySelectorMatchOperator = "Contains"
+	// OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith ...
+	OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith OwaspCrsExclusionEntrySelectorMatchOperator = "EndsWith"
+	// OwaspCrsExclusionEntrySelectorMatchOperatorEquals ...
+	OwaspCrsExclusionEntrySelectorMatchOperatorEquals OwaspCrsExclusionEntrySelectorMatchOperator = "Equals"
+	// OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny ...
+	OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny OwaspCrsExclusionEntrySelectorMatchOperator = "EqualsAny"
+	// OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith ...
+	OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith OwaspCrsExclusionEntrySelectorMatchOperator = "StartsWith"
+)
+
+// PossibleOwaspCrsExclusionEntrySelectorMatchOperatorValues returns an array of possible values for the OwaspCrsExclusionEntrySelectorMatchOperator const type.
+func PossibleOwaspCrsExclusionEntrySelectorMatchOperatorValues() []OwaspCrsExclusionEntrySelectorMatchOperator {
+	return []OwaspCrsExclusionEntrySelectorMatchOperator{OwaspCrsExclusionEntrySelectorMatchOperatorContains, OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith, OwaspCrsExclusionEntrySelectorMatchOperatorEquals, OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny, OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith}
 }
 
 // PcError enumerates the values for pc error.
@@ -20065,6 +20117,39 @@ type LogSpecification struct {
 	BlobDuration *string `json:"blobDuration,omitempty"`
 }
 
+// ManagedRuleGroupOverride defines a managed rule group override setting.
+type ManagedRuleGroupOverride struct {
+	// RuleGroupName - Describes the managed rule group to override.
+	RuleGroupName *string `json:"ruleGroupName,omitempty"`
+	// Rules - List of rules that will be disabled. If none specified, all rules in the group will be disabled.
+	Rules *[]ManagedRuleOverride `json:"rules,omitempty"`
+}
+
+// ManagedRuleOverride defines a managed rule group override setting.
+type ManagedRuleOverride struct {
+	// RuleID - Identifier for the managed rule.
+	RuleID *string `json:"ruleId,omitempty"`
+	// State - Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified. Possible values include: 'ManagedRuleEnabledStateDisabled'
+	State ManagedRuleEnabledState `json:"state,omitempty"`
+}
+
+// ManagedRulesDefinition allow to exclude some variable satisfy the condition for the WAF check.
+type ManagedRulesDefinition struct {
+	// Exclusions - Describes the Exclusions that are applied on the policy.
+	Exclusions      *[]OwaspCrsExclusionEntry `json:"exclusions,omitempty"`
+	ManagedRuleSets *[]ManagedRuleSet         `json:"managedRuleSets,omitempty"`
+}
+
+// ManagedRuleSet defines a managed rule set.
+type ManagedRuleSet struct {
+	// RuleSetType - Defines the rule set type to use.
+	RuleSetType *string `json:"ruleSetType,omitempty"`
+	// RuleSetVersion - Defines the version of the rule set to use.
+	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
+	// RuleGroupOverrides - Defines the rule group overrides to apply to the rule set.
+	RuleGroupOverrides *[]ManagedRuleGroupOverride `json:"ruleGroupOverrides,omitempty"`
+}
+
 // ManagedServiceIdentity identity for the resource.
 type ManagedServiceIdentity struct {
 	// PrincipalID - READ-ONLY; The principal id of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -20911,6 +20996,16 @@ type OutboundRulePropertiesFormat struct {
 	EnableTCPReset *bool `json:"enableTcpReset,omitempty"`
 	// IdleTimeoutInMinutes - The timeout for the TCP idle connection.
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
+}
+
+// OwaspCrsExclusionEntry allow to exclude some variable satisfy the condition for the WAF check.
+type OwaspCrsExclusionEntry struct {
+	// MatchVariable - The variable to be excluded. Possible values include: 'RequestHeaderNames', 'RequestCookieNames', 'RequestArgNames'
+	MatchVariable OwaspCrsExclusionEntryMatchVariable `json:"matchVariable,omitempty"`
+	// SelectorMatchOperator - When matchVariable is a collection, operate on the selector to specify which elements in the collection this exclusion applies to. Possible values include: 'OwaspCrsExclusionEntrySelectorMatchOperatorEquals', 'OwaspCrsExclusionEntrySelectorMatchOperatorContains', 'OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith', 'OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith', 'OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny'
+	SelectorMatchOperator OwaspCrsExclusionEntrySelectorMatchOperator `json:"selectorMatchOperator,omitempty"`
+	// Selector - When matchVariable is a collection, operator used to specify which elements in the collection this exclusion applies to.
+	Selector *string `json:"selector,omitempty"`
 }
 
 // P2SVpnGateway p2SVpnGateway Resource.
@@ -22451,10 +22546,16 @@ type PeerExpressRouteCircuitConnectionPropertiesFormat struct {
 
 // PolicySettings defines contents of a web application firewall global configuration.
 type PolicySettings struct {
-	// EnabledState - Describes if the policy is in enabled state or disabled state. Possible values include: 'WebApplicationFirewallEnabledStateDisabled', 'WebApplicationFirewallEnabledStateEnabled'
-	EnabledState WebApplicationFirewallEnabledState `json:"enabledState,omitempty"`
+	// State - Describes if the policy is in enabled state or disabled state. Possible values include: 'WebApplicationFirewallEnabledStateDisabled', 'WebApplicationFirewallEnabledStateEnabled'
+	State WebApplicationFirewallEnabledState `json:"state,omitempty"`
 	// Mode - Describes if it is in detection mode or prevention mode at policy level. Possible values include: 'WebApplicationFirewallModePrevention', 'WebApplicationFirewallModeDetection'
 	Mode WebApplicationFirewallMode `json:"mode,omitempty"`
+	// RequestBodyCheck - Whether to allow WAF to check request Body.
+	RequestBodyCheck *bool `json:"requestBodyCheck,omitempty"`
+	// MaxRequestBodySizeInKb - Maximum request body size in Kb for WAF.
+	MaxRequestBodySizeInKb *int32 `json:"maxRequestBodySizeInKb,omitempty"`
+	// FileUploadLimitInMb - Maximum file upload size in Mb for WAF.
+	FileUploadLimitInMb *int32 `json:"fileUploadLimitInMb,omitempty"`
 }
 
 // PrepareNetworkPoliciesRequest details of PrepareNetworkPolicies for Subnet.
@@ -33841,6 +33942,8 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 	PolicySettings *PolicySettings `json:"policySettings,omitempty"`
 	// CustomRules - Describes custom rules inside the policy.
 	CustomRules *[]WebApplicationFirewallCustomRule `json:"customRules,omitempty"`
+	// ManagedRules - Describes the managedRules structure
+	ManagedRules *ManagedRulesDefinition `json:"managedRules,omitempty"`
 	// ApplicationGateways - READ-ONLY; A collection of references to application gateways.
 	ApplicationGateways *[]ApplicationGateway `json:"applicationGateways,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the WebApplicationFirewallPolicy.

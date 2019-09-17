@@ -431,6 +431,21 @@ func PossibleTokenPasswordNameValues() []TokenPasswordName {
 	return []TokenPasswordName{TokenPasswordNamePassword1, TokenPasswordNamePassword2}
 }
 
+// TokenStatus enumerates the values for token status.
+type TokenStatus string
+
+const (
+	// TokenStatusDisabled ...
+	TokenStatusDisabled TokenStatus = "disabled"
+	// TokenStatusEnabled ...
+	TokenStatusEnabled TokenStatus = "enabled"
+)
+
+// PossibleTokenStatusValues returns an array of possible values for the TokenStatus const type.
+func PossibleTokenStatusValues() []TokenStatus {
+	return []TokenStatus{TokenStatusDisabled, TokenStatusEnabled}
+}
+
 // TokenType enumerates the values for token type.
 type TokenType string
 
@@ -5309,7 +5324,7 @@ func NewTokenListResultPage(getNextPage func(context.Context, TokenListResult) (
 
 // TokenPassword the password that will be used for authenticating the token of a container registry.
 type TokenPassword struct {
-	// CreationTime - The password created datetime of the password.
+	// CreationTime - The creation datetime of the password.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// Expiry - The expiry datetime of the password.
 	Expiry *date.Time `json:"expiry,omitempty"`
@@ -5331,8 +5346,8 @@ type TokenProperties struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// Credentials - The credentials that can be used for authenticating the token.
 	Credentials *TokenCredentialsProperties `json:"credentials,omitempty"`
-	// Status - The status of the token example enabled or disabled. Possible values include: 'StatusEnabled', 'StatusDisabled'
-	Status Status `json:"status,omitempty"`
+	// Status - The status of the token example enabled or disabled. Possible values include: 'TokenStatusEnabled', 'TokenStatusDisabled'
+	Status TokenStatus `json:"status,omitempty"`
 }
 
 // TokensCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.

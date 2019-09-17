@@ -24,13 +24,13 @@ import (
 
 // TranslatorClientAPI contains the set of methods on the TranslatorClient type.
 type TranslatorClientAPI interface {
-	BreakSentence(ctx context.Context, textParameter []translatortext.BreakSentenceTextInput, language string, script string, xClientTraceID string) (result translatortext.ListBreakSentenceResultItem, err error)
-	Detect(ctx context.Context, textParameter []translatortext.DetectTextInput, xClientTraceID string) (result translatortext.ListDetectResultItem, err error)
-	DictionaryExamples(ctx context.Context, from string, toParameter string, textParameter []translatortext.DictionaryExampleTextInput, xClientTraceID string) (result translatortext.ListDictionaryExampleResultItem, err error)
-	DictionaryLookup(ctx context.Context, from string, toParameter string, textParameter []translatortext.DictionaryLookupTextInput, xClientTraceID string) (result translatortext.ListDictionaryLookupResultItem, err error)
-	Languages(ctx context.Context, scope []string, acceptLanguage string, xClientTraceID string) (result translatortext.LanguagesResult, err error)
-	Translate(ctx context.Context, toParameter []string, textParameter []translatortext.TranslateTextInput, from string, textType string, category string, profanityAction string, profanityMarker string, includeAlignment *bool, includeSentenceLength *bool, suggestedFrom string, fromScript string, toScript []string, xClientTraceID string) (result translatortext.ListTranslateResultAllItem, err error)
-	Transliterate(ctx context.Context, language string, fromScript string, toScript string, texts []translatortext.TransliterateTextInput, xClientTraceID string) (result translatortext.ListTransliterateResultItem, err error)
+	BreakSentence(ctx context.Context, language string, script string, xClientTraceID string, requestBody string, responseBody string, responseHeader string) (result translatortext.ListBreakSentenceResultItem, err error)
+	Detect(ctx context.Context, xClientTraceID string, requestBody string, responseBody string, responseHeader string) (result translatortext.ListDetectResultItem, err error)
+	DictionaryExamples(ctx context.Context, from string, toParameter string, xClientTraceID string, requestBody string, responseBody string, responseHeader string) (result translatortext.ListDictionaryExampleResultItem, err error)
+	DictionaryLookup(ctx context.Context, from string, toParameter string, xClientTraceID string, requestBody string, responseBody string, responseHeader string) (result translatortext.ListDictionaryLookupResultItem, err error)
+	Languages(ctx context.Context, scope []string, acceptLanguage string, xClientTraceID string, responseBody string, responseHeader string) (result translatortext.LanguagesResult, err error)
+	Translate(ctx context.Context, toParameter []string, from string, textType string, category string, profanityAction string, profanityMarker string, includeAlignment *bool, includeSentenceLength *bool, suggestedFrom string, fromScript string, toScript []string, xClientTraceID string, requestBody string, responseBody string) (result translatortext.ListTranslateResultAllItem, err error)
+	Transliterate(ctx context.Context, language string, fromScript string, toScript string, xClientTraceID string, requestBody string, respnseBody string) (result translatortext.ListTransliterateResultItem, err error)
 }
 
 var _ TranslatorClientAPI = (*translatortext.TranslatorClient)(nil)

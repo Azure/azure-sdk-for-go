@@ -282,6 +282,8 @@ type AccountCreateParameters = original.AccountCreateParameters
 type AccountKey = original.AccountKey
 type AccountListKeysResult = original.AccountListKeysResult
 type AccountListResult = original.AccountListResult
+type AccountListResultIterator = original.AccountListResultIterator
+type AccountListResultPage = original.AccountListResultPage
 type AccountProperties = original.AccountProperties
 type AccountPropertiesCreateParameters = original.AccountPropertiesCreateParameters
 type AccountPropertiesUpdateParameters = original.AccountPropertiesUpdateParameters
@@ -381,6 +383,12 @@ type VirtualNetworkRule = original.VirtualNetworkRule
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return original.NewAccountListResultIterator(page)
+}
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(getNextPage)
 }
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)

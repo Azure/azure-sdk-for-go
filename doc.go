@@ -11,6 +11,7 @@ Samples: https://github.com/Azure-Samples/azure-sdk-for-go-samples
 */
 package sdk
 
+
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");

@@ -65,7 +65,11 @@ var (
 	startingModVer = "v1.0.0"
 	quietFlag      bool
 	verboseFlag    bool
-	goModFile      = "module %s\n\ngo %s\n"
+)
+
+const (
+	goModFileContent = "module %s\n\ngo %s\n"
+	defaultVersion   = "0.0.0"
 )
 
 func init() {
@@ -148,7 +152,7 @@ func ensureGoModFileExistence(path string) error {
 		if err != nil {
 			return err
 		}
-		fmt.Fprintf(goFile, goModFile, modName, goVersion)
+		fmt.Fprintf(goFile, goModFileContent, modName, goVersion)
 		if err := goFile.Close(); err != nil {
 			return err
 		}
@@ -176,13 +180,16 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 	}
 	// must close file before renaming directory
 	file.Close()
-	// move staging to new LMV directory
-	if err = os.Rename(stage, mod.DestDir()); err != nil {
-		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
-	}
 	var tag string
 	if tag, err = calculateModuleTag(nil, mod); err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %v", err)
+	}
+	if err := updateVersion(stage, tag); err != nil {
+		return "", fmt.Errorf("failed to update version.go: %v", err)
+	}
+	// move staging to new LMV directory
+	if err = os.Rename(stage, mod.DestDir()); err != nil {
+		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
 	}
 	return tag, nil
 }
@@ -202,6 +209,9 @@ func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 	var tag string
 	if tag, err = calculateModuleTag(tags, mod); err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %v", err)
+	}
+	if err := updateVersion(stage, tag); err != nil {
+		return "", fmt.Errorf("failed to update version.go: %v", err)
 	}
 	// move staging directory over the LMV by first deleting LMV then renaming stage
 	if modinfo.HasVersionSuffix(lmv) {
@@ -227,6 +237,44 @@ func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
 	}
 	return tag, nil
+}
+
+func updateVersion(path, tag string) error {
+	version := semverRegex.FindString(tag)
+	vprintf("Updating version.go file in %s with version %s\n", path, version)
+	v, err := semver.NewVersion(version)
+	if err != nil {
+		return err
+	}
+	version = v.String()
+	// version.go file must exists
+	file := filepath.Join(path, "version.go")
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		return errors.New("version.go file does not exist")
+	}
+	verFile, err := os.OpenFile(file, os.O_RDWR, 0666)
+	defer verFile.Close()
+	if err != nil {
+		return err
+	}
+	scanner := bufio.NewScanner(verFile)
+	scanner.Split(bufio.ScanLines)
+	lines := make([]string, 0)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	_, err = verFile.Seek(0, io.SeekStart) // set pointer to start of the file
+	if err != nil {
+		return fmt.Errorf("failed to seek to start: %v", err)
+	}
+	for _, line := range lines {
+		if !strings.HasPrefix(line, "// ") && strings.Index(line, defaultVersion) > -1 {
+			line = strings.ReplaceAll(line, defaultVersion, version)
+		}
+		fmt.Fprintln(verFile, line)
+	}
+	fmt.Fprintf(verFile, "\n// tag: %s", tag)
+	return nil
 }
 
 // returns the absolute path to the latest major version based on the provided staging directory.

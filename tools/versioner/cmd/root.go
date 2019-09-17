@@ -279,7 +279,7 @@ func updateVersion(path, tag string) error {
 		fmt.Fprintln(verFile, line)
 	}
 	if !hasTag {
-		fmt.Fprintf(verFile, "\n// tag: %s", tag)
+		fmt.Fprintf(verFile, "\n// tag: %s\n", tag)
 	}
 	return nil
 }

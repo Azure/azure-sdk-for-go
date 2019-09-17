@@ -267,13 +267,20 @@ func updateVersion(path, tag string) error {
 	if err != nil {
 		return fmt.Errorf("failed to seek to start: %v", err)
 	}
+	hasTag := false
 	for _, line := range lines {
 		if !strings.HasPrefix(line, "// ") && strings.Index(line, defaultVersion) > -1 {
 			line = strings.ReplaceAll(line, defaultVersion, version)
 		}
+		if strings.HasPrefix(line, "// tag: ") {
+			line = fmt.Sprintf("// tag: %s", tag)
+			hasTag = true
+		}
 		fmt.Fprintln(verFile, line)
 	}
-	fmt.Fprintf(verFile, "\n// tag: %s", tag)
+	if !hasTag {
+		fmt.Fprintf(verFile, "\n// tag: %s", tag)
+	}
 	return nil
 }
 

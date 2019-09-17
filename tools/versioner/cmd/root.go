@@ -154,11 +154,10 @@ func ensureGoModFileExistence(path string) error {
 			return err
 		}
 		return nil
-	} else {
-		// exist
-		vprintf("File go.mod already exists in path %s\n", path)
-		return nil
 	}
+	// exist
+	vprintf("File go.mod already exists in path %s\n", path)
+	return nil
 }
 
 // releases the module as a new side-by-side major version

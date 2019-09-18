@@ -273,7 +273,6 @@ type EncryptionProtectorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.EncryptionProtector) (result sql.EncryptionProtectorsCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtector, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtectorListResultPage, err error)
-	Revalidate(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtectorsRevalidateFuture, err error)
 }
 
 var _ EncryptionProtectorsClientAPI = (*sql.EncryptionProtectorsClient)(nil)
@@ -297,6 +296,7 @@ type ManagedInstancesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstance, err error)
 	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
+	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultPage, err error)
 	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceUpdate) (result sql.ManagedInstancesUpdateFuture, err error)
 }

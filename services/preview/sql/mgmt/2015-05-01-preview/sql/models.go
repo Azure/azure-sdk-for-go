@@ -1640,7 +1640,7 @@ type DatabaseBlobAuditingPolicyProperties struct {
 	// IsStorageSecondaryKeyInUse - Specifies whether storageAccountAccessKey value is the storage's secondary key.
 	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
 	// IsAzureMonitorTargetEnabled - Specifies whether audit events are sent to Azure Monitor.
-	// In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
+	// In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
 	//
 	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
 	// Note that for server level audit you should use the 'master' database as {databaseName}.
@@ -3022,7 +3022,7 @@ func (epu *ElasticPoolUpdate) UnmarshalJSON(body []byte) error {
 // EncryptionProtector the server encryption protector.
 type EncryptionProtector struct {
 	autorest.Response `json:"-"`
-	// Kind - READ-ONLY; Kind of encryption protector. This is metadata used for the Azure portal experience.
+	// Kind - Kind of encryption protector. This is metadata used for the Azure portal experience.
 	Kind *string `json:"kind,omitempty"`
 	// Location - READ-ONLY; Resource location.
 	Location *string `json:"location,omitempty"`
@@ -3039,6 +3039,9 @@ type EncryptionProtector struct {
 // MarshalJSON is the custom marshaler for EncryptionProtector.
 func (ep EncryptionProtector) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if ep.Kind != nil {
+		objectMap["kind"] = ep.Kind
+	}
 	if ep.EncryptionProtectorProperties != nil {
 		objectMap["properties"] = ep.EncryptionProtectorProperties
 	}
@@ -3301,29 +3304,6 @@ func (future *EncryptionProtectorsCreateOrUpdateFuture) Result(client Encryption
 			err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", ep.Response.Response, "Failure responding to request")
 		}
 	}
-	return
-}
-
-// EncryptionProtectorsRevalidateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type EncryptionProtectorsRevalidateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *EncryptionProtectorsRevalidateFuture) Result(client EncryptionProtectorsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsRevalidateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.EncryptionProtectorsRevalidateFuture")
-		return
-	}
-	ar.Response = future.Response()
 	return
 }
 
@@ -7003,17 +6983,17 @@ type ServiceTierAdvisorProperties struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
-// Sku an ARM Resource SKU.
+// Sku the resource model definition representing SKU
 type Sku struct {
-	// Name - The name of the SKU, typically, a letter + Number code, e.g. P3.
+	// Name - The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string `json:"name,omitempty"`
-	// Tier - The tier or edition of the particular SKU, e.g. Basic, Premium.
+	// Tier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
 	Tier *string `json:"tier,omitempty"`
-	// Size - Size of the particular SKU
+	// Size - The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
 	Size *string `json:"size,omitempty"`
 	// Family - If the service has different generations of hardware, for the same SKU, then that can be captured here.
 	Family *string `json:"family,omitempty"`
-	// Capacity - Capacity of the particular SKU.
+	// Capacity - If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 

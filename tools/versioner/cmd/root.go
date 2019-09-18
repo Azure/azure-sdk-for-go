@@ -94,7 +94,10 @@ func theCommand(args []string) error {
 
 // does the actual work
 func theCommandImpl(args []string) (string, error) {
-	stage, _ := filepath.Abs(args[0])
+	stage, err := filepath.Abs(args[0])
+	if err != nil {
+		return "", fmt.Errorf("failed to get absolute path from %s: %v", args[0], err)
+	}
 	if len(args) == 2 {
 		if !modinfo.IsValidModuleVersion(args[1]) {
 			return "", fmt.Errorf("the string '%s' is not a valid module version", args[1])

@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v33.3.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| network | 2019-07-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| network | 2019-06-01 |
+
 ## `v33.2.0`
 
 ### New Packages

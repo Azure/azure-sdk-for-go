@@ -38,9 +38,9 @@ const (
 type AlertRuleKind = original.AlertRuleKind
 
 const (
-	Filter    AlertRuleKind = original.Filter
-	Fusion    AlertRuleKind = original.Fusion
-	Scheduled AlertRuleKind = original.Scheduled
+	Fusion                            AlertRuleKind = original.Fusion
+	MicrosoftSecurityIncidentCreation AlertRuleKind = original.MicrosoftSecurityIncidentCreation
+	Scheduled                         AlertRuleKind = original.Scheduled
 )
 
 type AlertSeverity = original.AlertSeverity
@@ -72,6 +72,7 @@ const (
 	Discovery           AttackTactic = original.Discovery
 	Execution           AttackTactic = original.Execution
 	Exfiltration        AttackTactic = original.Exfiltration
+	Impact              AttackTactic = original.Impact
 	InitialAccess       AttackTactic = original.InitialAccess
 	LateralMovement     AttackTactic = original.LateralMovement
 	Persistence         AttackTactic = original.Persistence
@@ -240,17 +241,19 @@ const (
 type KindBasicAlertRule = original.KindBasicAlertRule
 
 const (
-	KindAlertRule KindBasicAlertRule = original.KindAlertRule
-	KindScheduled KindBasicAlertRule = original.KindScheduled
+	KindAlertRule                         KindBasicAlertRule = original.KindAlertRule
+	KindFusion                            KindBasicAlertRule = original.KindFusion
+	KindMicrosoftSecurityIncidentCreation KindBasicAlertRule = original.KindMicrosoftSecurityIncidentCreation
+	KindScheduled                         KindBasicAlertRule = original.KindScheduled
 )
 
 type KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplate
 
 const (
-	KindBasicAlertRuleTemplateKindAlertRuleTemplate KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindAlertRuleTemplate
-	KindBasicAlertRuleTemplateKindFilter            KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindFilter
-	KindBasicAlertRuleTemplateKindFusion            KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindFusion
-	KindBasicAlertRuleTemplateKindScheduled         KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindScheduled
+	KindBasicAlertRuleTemplateKindAlertRuleTemplate                 KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindAlertRuleTemplate
+	KindBasicAlertRuleTemplateKindFusion                            KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindFusion
+	KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation
+	KindBasicAlertRuleTemplateKindScheduled                         KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindScheduled
 )
 
 type KindBasicDataConnector = original.KindBasicDataConnector
@@ -301,6 +304,15 @@ type LicenseStatus = original.LicenseStatus
 const (
 	LicenseStatusDisabled LicenseStatus = original.LicenseStatusDisabled
 	LicenseStatusEnabled  LicenseStatus = original.LicenseStatusEnabled
+)
+
+type MicrosoftSecurityProductName = original.MicrosoftSecurityProductName
+
+const (
+	AzureActiveDirectoryIdentityProtection MicrosoftSecurityProductName = original.AzureActiveDirectoryIdentityProtection
+	AzureAdvancedThreatProtection          MicrosoftSecurityProductName = original.AzureAdvancedThreatProtection
+	AzureSecurityCenter                    MicrosoftSecurityProductName = original.AzureSecurityCenter
+	MicrosoftCloudAppSecurity              MicrosoftSecurityProductName = original.MicrosoftCloudAppSecurity
 )
 
 type OSFamily = original.OSFamily
@@ -406,6 +418,7 @@ type AlertRuleKind1 = original.AlertRuleKind1
 type AlertRuleModel = original.AlertRuleModel
 type AlertRuleTemplate = original.AlertRuleTemplate
 type AlertRuleTemplateModel = original.AlertRuleTemplateModel
+type AlertRuleTemplatePropertiesBase = original.AlertRuleTemplatePropertiesBase
 type AlertRuleTemplatesClient = original.AlertRuleTemplatesClient
 type AlertRuleTemplatesList = original.AlertRuleTemplatesList
 type AlertRuleTemplatesListIterator = original.AlertRuleTemplatesListIterator
@@ -422,7 +435,6 @@ type AwsCloudTrailDataConnectorDataTypesLogs = original.AwsCloudTrailDataConnect
 type AwsCloudTrailDataConnectorProperties = original.AwsCloudTrailDataConnectorProperties
 type AzureResourceEntity = original.AzureResourceEntity
 type AzureResourceEntityProperties = original.AzureResourceEntityProperties
-type BaseAlertRuleTemplateProperties = original.BaseAlertRuleTemplateProperties
 type BaseClient = original.BaseClient
 type BasicAggregations = original.BasicAggregations
 type BasicAlertRule = original.BasicAlertRule
@@ -506,12 +518,10 @@ type FileEntity = original.FileEntity
 type FileEntityProperties = original.FileEntityProperties
 type FileHashEntity = original.FileHashEntity
 type FileHashEntityProperties = original.FileHashEntityProperties
-type FilterAlertRuleTemplate = original.FilterAlertRuleTemplate
-type FilterAlertRuleTemplateProperties = original.FilterAlertRuleTemplateProperties
-type FilterAlertRuleTemplatePropertiesModel = original.FilterAlertRuleTemplatePropertiesModel
+type FusionAlertRule = original.FusionAlertRule
+type FusionAlertRuleProperties = original.FusionAlertRuleProperties
 type FusionAlertRuleTemplate = original.FusionAlertRuleTemplate
 type FusionAlertRuleTemplateProperties = original.FusionAlertRuleTemplateProperties
-type FusionAlertRuleTemplatePropertiesModel = original.FusionAlertRuleTemplatePropertiesModel
 type GeoLocation = original.GeoLocation
 type HostEntity = original.HostEntity
 type HostEntityProperties = original.HostEntityProperties
@@ -525,6 +535,11 @@ type MDATPDataConnector = original.MDATPDataConnector
 type MDATPDataConnectorProperties = original.MDATPDataConnectorProperties
 type MalwareEntity = original.MalwareEntity
 type MalwareEntityProperties = original.MalwareEntityProperties
+type MicrosoftSecurityIncidentCreationAlertRule = original.MicrosoftSecurityIncidentCreationAlertRule
+type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties = original.MicrosoftSecurityIncidentCreationAlertRuleCommonProperties
+type MicrosoftSecurityIncidentCreationAlertRuleProperties = original.MicrosoftSecurityIncidentCreationAlertRuleProperties
+type MicrosoftSecurityIncidentCreationAlertRuleTemplate = original.MicrosoftSecurityIncidentCreationAlertRuleTemplate
+type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties = original.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
 type OfficeConsent = original.OfficeConsent
 type OfficeConsentList = original.OfficeConsentList
 type OfficeConsentListIterator = original.OfficeConsentListIterator
@@ -554,11 +569,12 @@ type RelationNode = original.RelationNode
 type RelationsModelInput = original.RelationsModelInput
 type RelationsModelInputProperties = original.RelationsModelInputProperties
 type Resource = original.Resource
+type ResourceWithEtag = original.ResourceWithEtag
 type ScheduledAlertRule = original.ScheduledAlertRule
+type ScheduledAlertRuleCommonProperties = original.ScheduledAlertRuleCommonProperties
 type ScheduledAlertRuleProperties = original.ScheduledAlertRuleProperties
 type ScheduledAlertRuleTemplate = original.ScheduledAlertRuleTemplate
 type ScheduledAlertRuleTemplateProperties = original.ScheduledAlertRuleTemplateProperties
-type ScheduledAlertRuleTemplatePropertiesModel = original.ScheduledAlertRuleTemplatePropertiesModel
 type SecurityAlert = original.SecurityAlert
 type SecurityAlertProperties = original.SecurityAlertProperties
 type SecurityAlertPropertiesConfidenceReasonsItem = original.SecurityAlertPropertiesConfidenceReasonsItem
@@ -834,6 +850,9 @@ func PossibleKindValues() []Kind {
 }
 func PossibleLicenseStatusValues() []LicenseStatus {
 	return original.PossibleLicenseStatusValues()
+}
+func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName {
+	return original.PossibleMicrosoftSecurityProductNameValues()
 }
 func PossibleOSFamilyValues() []OSFamily {
 	return original.PossibleOSFamilyValues()

@@ -217,6 +217,13 @@ const (
 	TokenPasswordNamePassword2 TokenPasswordName = original.TokenPasswordNamePassword2
 )
 
+type TokenStatus = original.TokenStatus
+
+const (
+	TokenStatusDisabled TokenStatus = original.TokenStatusDisabled
+	TokenStatusEnabled  TokenStatus = original.TokenStatusEnabled
+)
+
 type TokenType = original.TokenType
 
 const (
@@ -654,6 +661,9 @@ func PossibleTokenCertificateNameValues() []TokenCertificateName {
 }
 func PossibleTokenPasswordNameValues() []TokenPasswordName {
 	return original.PossibleTokenPasswordNameValues()
+}
+func PossibleTokenStatusValues() []TokenStatus {
+	return original.PossibleTokenStatusValues()
 }
 func PossibleTokenTypeValues() []TokenType {
 	return original.PossibleTokenTypeValues()

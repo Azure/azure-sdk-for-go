@@ -14,6 +14,12 @@
 | -----------: | :---------: |
 | network | 2019-06-01 |
 
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| sql | 2017-10-01-preview<br/>2018-06-01-preview |
+
 ## `v33.2.0`
 
 ### New Packages

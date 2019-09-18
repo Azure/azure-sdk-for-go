@@ -627,9 +627,9 @@ func (client WorkflowsClient) ListByResourceGroupComplete(ctx context.Context, r
 	return
 }
 
-// ListBySubscription gets a list of workflows by subscription.
+// ListBySubscription gets the list of workflows by subscription.
 // Parameters:
-// top - the number of items to be included in the result.
+// top - the number of items to be included in the results.
 // filter - the filter to apply on the operation. Options for filters include: State, Trigger, and
 // ReferencedResourceId.
 func (client WorkflowsClient) ListBySubscription(ctx context.Context, top *int32, filter string) (result WorkflowListResultPage, err error) {

@@ -57,8 +57,9 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 }
 
 var (
-	semverRegex = regexp.MustCompile(`v\d+\.\d+\.\d+$`)
-	goverRegex  = regexp.MustCompile(`\d+\.\d+$`)
+	semverRegex    = regexp.MustCompile(`v\d+\.\d+\.\d+$`)
+	goverRegex     = regexp.MustCompile(`\d+\.\d+$`)
+	versionGoRegex = regexp.MustCompile(`\d+\.\d+\.\d+`)
 	// this is used so tests can hook getTags() to return whatever tags
 	getTagsHook func(string, string) ([]string, error)
 	// default version to start a module at if not specified
@@ -69,7 +70,6 @@ var (
 
 const (
 	goModFileContent = "module %s\n\ngo %s\n"
-	defaultVersion   = "0.0.0"
 )
 
 func init() {
@@ -268,8 +268,9 @@ func updateVersion(path, tag string) error {
 	}
 	hasTag := false
 	for _, line := range lines {
-		if !strings.HasPrefix(line, "// ") && strings.Index(line, defaultVersion) > -1 {
-			line = strings.ReplaceAll(line, defaultVersion, version)
+		if !strings.HasPrefix(line, "// ") && versionGoRegex.MatchString(line) {
+			// line = strings.ReplaceAll(line, defaultVersion, version)
+			line = versionGoRegex.ReplaceAllString(line, version)
 		}
 		if strings.HasPrefix(line, "// tag: ") {
 			line = fmt.Sprintf("// tag: %s", tag)

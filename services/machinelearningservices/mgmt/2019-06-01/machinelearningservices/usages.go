@@ -44,7 +44,8 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 // List gets the current usage information as well as limits for AML resources for given subscription and location.
 // Parameters:
 // location - the location for which resource usage is queried.
-func (client UsagesClient) List(ctx context.Context, location string) (result ListUsagesResultPage, err error) {
+// expandChildren - specifies if detailed usages of child resources are required.
+func (client UsagesClient) List(ctx context.Context, location string, expandChildren string) (result ListUsagesResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/UsagesClient.List")
 		defer func() {
@@ -62,7 +63,7 @@ func (client UsagesClient) List(ctx context.Context, location string) (result Li
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, location)
+	req, err := client.ListPreparer(ctx, location, expandChildren)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.UsagesClient", "List", nil, "Failure preparing request")
 		return
@@ -84,7 +85,7 @@ func (client UsagesClient) List(ctx context.Context, location string) (result Li
 }
 
 // ListPreparer prepares the List request.
-func (client UsagesClient) ListPreparer(ctx context.Context, location string) (*http.Request, error) {
+func (client UsagesClient) ListPreparer(ctx context.Context, location string, expandChildren string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"location":       autorest.Encode("path", location),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -93,6 +94,9 @@ func (client UsagesClient) ListPreparer(ctx context.Context, location string) (*
 	const APIVersion = "2019-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(expandChildren) > 0 {
+		queryParameters["expandChildren"] = autorest.Encode("query", expandChildren)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -145,7 +149,7 @@ func (client UsagesClient) listNextResults(ctx context.Context, lastResults List
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsagesClient) ListComplete(ctx context.Context, location string) (result ListUsagesResultIterator, err error) {
+func (client UsagesClient) ListComplete(ctx context.Context, location string, expandChildren string) (result ListUsagesResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/UsagesClient.List")
 		defer func() {
@@ -156,6 +160,6 @@ func (client UsagesClient) ListComplete(ctx context.Context, location string) (r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, location)
+	result.page, err = client.List(ctx, location, expandChildren)
 	return
 }

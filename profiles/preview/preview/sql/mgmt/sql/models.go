@@ -29,6 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type CatalogCollationType = original.CatalogCollationType
+
+const (
+	DATABASEDEFAULT         CatalogCollationType = original.DATABASEDEFAULT
+	SQLLatin1GeneralCP1CIAS CatalogCollationType = original.SQLLatin1GeneralCP1CIAS
+)
+
 type IdentityType = original.IdentityType
 
 const (
@@ -42,6 +49,27 @@ const (
 	LicenseIncluded InstancePoolLicenseType = original.LicenseIncluded
 )
 
+type ManagedDatabaseCreateMode = original.ManagedDatabaseCreateMode
+
+const (
+	Default               ManagedDatabaseCreateMode = original.Default
+	PointInTimeRestore    ManagedDatabaseCreateMode = original.PointInTimeRestore
+	Recovery              ManagedDatabaseCreateMode = original.Recovery
+	RestoreExternalBackup ManagedDatabaseCreateMode = original.RestoreExternalBackup
+)
+
+type ManagedDatabaseStatus = original.ManagedDatabaseStatus
+
+const (
+	Creating     ManagedDatabaseStatus = original.Creating
+	Inaccessible ManagedDatabaseStatus = original.Inaccessible
+	Offline      ManagedDatabaseStatus = original.Offline
+	Online       ManagedDatabaseStatus = original.Online
+	Restoring    ManagedDatabaseStatus = original.Restoring
+	Shutdown     ManagedDatabaseStatus = original.Shutdown
+	Updating     ManagedDatabaseStatus = original.Updating
+)
+
 type ManagedInstanceLicenseType = original.ManagedInstanceLicenseType
 
 const (
@@ -52,9 +80,9 @@ const (
 type ManagedInstanceProxyOverride = original.ManagedInstanceProxyOverride
 
 const (
-	Default  ManagedInstanceProxyOverride = original.Default
-	Proxy    ManagedInstanceProxyOverride = original.Proxy
-	Redirect ManagedInstanceProxyOverride = original.Redirect
+	ManagedInstanceProxyOverrideDefault  ManagedInstanceProxyOverride = original.ManagedInstanceProxyOverrideDefault
+	ManagedInstanceProxyOverrideProxy    ManagedInstanceProxyOverride = original.ManagedInstanceProxyOverrideProxy
+	ManagedInstanceProxyOverrideRedirect ManagedInstanceProxyOverride = original.ManagedInstanceProxyOverrideRedirect
 )
 
 type ManagedServerCreateMode = original.ManagedServerCreateMode
@@ -80,6 +108,7 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type CompleteDatabaseRestoreDefinition = original.CompleteDatabaseRestoreDefinition
 type DatabaseSecurityAlertListResult = original.DatabaseSecurityAlertListResult
 type DatabaseSecurityAlertListResultIterator = original.DatabaseSecurityAlertListResultIterator
 type DatabaseSecurityAlertListResultPage = original.DatabaseSecurityAlertListResultPage
@@ -99,7 +128,21 @@ type InstancePoolsClient = original.InstancePoolsClient
 type InstancePoolsCreateOrUpdateFuture = original.InstancePoolsCreateOrUpdateFuture
 type InstancePoolsDeleteFuture = original.InstancePoolsDeleteFuture
 type InstancePoolsUpdateFuture = original.InstancePoolsUpdateFuture
+type ManagedDatabase = original.ManagedDatabase
+type ManagedDatabaseListResult = original.ManagedDatabaseListResult
+type ManagedDatabaseListResultIterator = original.ManagedDatabaseListResultIterator
+type ManagedDatabaseListResultPage = original.ManagedDatabaseListResultPage
+type ManagedDatabaseProperties = original.ManagedDatabaseProperties
+type ManagedDatabaseRestoreDetailsClient = original.ManagedDatabaseRestoreDetailsClient
+type ManagedDatabaseRestoreDetailsProperties = original.ManagedDatabaseRestoreDetailsProperties
+type ManagedDatabaseRestoreDetailsResult = original.ManagedDatabaseRestoreDetailsResult
 type ManagedDatabaseSensitivityLabelsClient = original.ManagedDatabaseSensitivityLabelsClient
+type ManagedDatabaseUpdate = original.ManagedDatabaseUpdate
+type ManagedDatabasesClient = original.ManagedDatabasesClient
+type ManagedDatabasesCompleteRestoreFuture = original.ManagedDatabasesCompleteRestoreFuture
+type ManagedDatabasesCreateOrUpdateFuture = original.ManagedDatabasesCreateOrUpdateFuture
+type ManagedDatabasesDeleteFuture = original.ManagedDatabasesDeleteFuture
+type ManagedDatabasesUpdateFuture = original.ManagedDatabasesUpdateFuture
 type ManagedInstance = original.ManagedInstance
 type ManagedInstanceListResult = original.ManagedInstanceListResult
 type ManagedInstanceListResultIterator = original.ManagedInstanceListResultIterator
@@ -190,11 +233,29 @@ func NewInstancePoolsClient(subscriptionID string) InstancePoolsClient {
 func NewInstancePoolsClientWithBaseURI(baseURI string, subscriptionID string) InstancePoolsClient {
 	return original.NewInstancePoolsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewManagedDatabaseListResultIterator(page ManagedDatabaseListResultPage) ManagedDatabaseListResultIterator {
+	return original.NewManagedDatabaseListResultIterator(page)
+}
+func NewManagedDatabaseListResultPage(getNextPage func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error)) ManagedDatabaseListResultPage {
+	return original.NewManagedDatabaseListResultPage(getNextPage)
+}
+func NewManagedDatabaseRestoreDetailsClient(subscriptionID string) ManagedDatabaseRestoreDetailsClient {
+	return original.NewManagedDatabaseRestoreDetailsClient(subscriptionID)
+}
+func NewManagedDatabaseRestoreDetailsClientWithBaseURI(baseURI string, subscriptionID string) ManagedDatabaseRestoreDetailsClient {
+	return original.NewManagedDatabaseRestoreDetailsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewManagedDatabaseSensitivityLabelsClient(subscriptionID string) ManagedDatabaseSensitivityLabelsClient {
 	return original.NewManagedDatabaseSensitivityLabelsClient(subscriptionID)
 }
 func NewManagedDatabaseSensitivityLabelsClientWithBaseURI(baseURI string, subscriptionID string) ManagedDatabaseSensitivityLabelsClient {
 	return original.NewManagedDatabaseSensitivityLabelsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagedDatabasesClient(subscriptionID string) ManagedDatabasesClient {
+	return original.NewManagedDatabasesClient(subscriptionID)
+}
+func NewManagedDatabasesClientWithBaseURI(baseURI string, subscriptionID string) ManagedDatabasesClient {
+	return original.NewManagedDatabasesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewManagedInstanceListResultIterator(page ManagedInstanceListResultPage) ManagedInstanceListResultIterator {
 	return original.NewManagedInstanceListResultIterator(page)
@@ -265,11 +326,20 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleCatalogCollationTypeValues() []CatalogCollationType {
+	return original.PossibleCatalogCollationTypeValues()
+}
 func PossibleIdentityTypeValues() []IdentityType {
 	return original.PossibleIdentityTypeValues()
 }
 func PossibleInstancePoolLicenseTypeValues() []InstancePoolLicenseType {
 	return original.PossibleInstancePoolLicenseTypeValues()
+}
+func PossibleManagedDatabaseCreateModeValues() []ManagedDatabaseCreateMode {
+	return original.PossibleManagedDatabaseCreateModeValues()
+}
+func PossibleManagedDatabaseStatusValues() []ManagedDatabaseStatus {
+	return original.PossibleManagedDatabaseStatusValues()
 }
 func PossibleManagedInstanceLicenseTypeValues() []ManagedInstanceLicenseType {
 	return original.PossibleManagedInstanceLicenseTypeValues()

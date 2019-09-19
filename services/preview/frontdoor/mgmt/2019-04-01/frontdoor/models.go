@@ -1837,6 +1837,10 @@ type LoadBalancingSettingsUpdateParameters struct {
 type ManagedRuleDefinition struct {
 	// RuleID - READ-ONLY; Identifier for the managed rule.
 	RuleID *string `json:"ruleId,omitempty"`
+	// DefaultState - READ-ONLY; Describes the default state for the managed rule. Possible values include: 'ManagedRuleEnabledStateDisabled', 'ManagedRuleEnabledStateEnabled'
+	DefaultState ManagedRuleEnabledState `json:"defaultState,omitempty"`
+	// DefaultAction - READ-ONLY; Describes the default action to be applied when the managed rule matches. Possible values include: 'Allow', 'Block', 'Log', 'Redirect'
+	DefaultAction ActionType `json:"defaultAction,omitempty"`
 	// Description - READ-ONLY; Describes the functionality of the managed rule.
 	Description *string `json:"description,omitempty"`
 }

@@ -514,14 +514,25 @@ Changing one or more values will affect all subsequet API calls.
 The default policy is to call `autorest.DoRetryForStatusCodes()` from an API's `Sender` method.  Example:
 ```go
 func (client OperationsClient) ListSender(req *http.Request) (*http.Response, error) {
-    return autorest.SendWithSender(client, req,
-        autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
 }
 ```
 
 Details on how `autorest.DoRetryforStatusCodes()` works can be found in the [documentation](https://godoc.org/github.com/Azure/go-autorest/autorest#DoRetryForStatusCodes).
 
-It is not possible to change the invoked retry policy without writing a custom `Sender` and its calling code.
+The slice of `SendDecorators` used in a `Sender` method can be customized per API call by smuggling them in the context.  Here's an example.
+
+```go
+ctx := context.Background()
+autorest.WithSendDecorators(ctx, []autorest.SendDecorator{
+	autorest.DoRetryForStatusCodesWithCap(client.RetryAttempts,
+		client.RetryDuration, time.Duration(0),
+        autorest.StatusCodesForRetry...)})
+client.List(ctx)
+```
+
+This will replace the default slice of `SendDecorators` with the provided slice.
 
 The `PollingDelay` and `PollingDuration` values are used exclusively by [WaitForCompletionRef()](https://godoc.org/github.com/Azure/go-autorest/autorest/azure#Future.WaitForCompletionRef) when blocking on an async call until it completes.
 

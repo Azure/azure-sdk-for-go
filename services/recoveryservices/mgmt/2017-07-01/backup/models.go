@@ -20,11 +20,12 @@ package backup
 import (
 	"context"
 	"encoding/json"
+	"net/http"
+
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -566,15 +567,15 @@ func PossibleJobStatusValues() []JobStatus {
 }
 
 // JobSupportedAction enumerates the values for job supported action.
-type JobSupportedAction string
+type JobSupportedAction int
 
 const (
 	// JobSupportedActionCancellable ...
-	JobSupportedActionCancellable JobSupportedAction = "Cancellable"
+	JobSupportedActionCancellable JobSupportedAction = iota
 	// JobSupportedActionInvalid ...
-	JobSupportedActionInvalid JobSupportedAction = "Invalid"
+	JobSupportedActionInvalid
 	// JobSupportedActionRetriable ...
-	JobSupportedActionRetriable JobSupportedAction = "Retriable"
+	JobSupportedActionRetriable
 )
 
 // PossibleJobSupportedActionValues returns an array of possible values for the JobSupportedAction const type.

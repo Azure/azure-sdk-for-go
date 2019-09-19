@@ -22,7 +22,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-05-15/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-09-07/kusto"
 )
 
 const (
@@ -95,6 +95,13 @@ const (
 	DatabasePrincipalTypeApp   DatabasePrincipalType = original.DatabasePrincipalTypeApp
 	DatabasePrincipalTypeGroup DatabasePrincipalType = original.DatabasePrincipalTypeGroup
 	DatabasePrincipalTypeUser  DatabasePrincipalType = original.DatabasePrincipalTypeUser
+)
+
+type IdentityType = original.IdentityType
+
+const (
+	IdentityTypeNone           IdentityType = original.IdentityTypeNone
+	IdentityTypeSystemAssigned IdentityType = original.IdentityTypeSystemAssigned
 )
 
 type Kind = original.Kind
@@ -186,8 +193,11 @@ type EventGridConnectionProperties = original.EventGridConnectionProperties
 type EventGridDataConnection = original.EventGridDataConnection
 type EventHubConnectionProperties = original.EventHubConnectionProperties
 type EventHubDataConnection = original.EventHubDataConnection
+type Identity = original.Identity
+type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type IotHubConnectionProperties = original.IotHubConnectionProperties
 type IotHubDataConnection = original.IotHubDataConnection
+type KeyVaultProperties = original.KeyVaultProperties
 type ListResourceSkusResult = original.ListResourceSkusResult
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -258,6 +268,9 @@ func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
 }
 func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
 	return original.PossibleDatabasePrincipalTypeValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()

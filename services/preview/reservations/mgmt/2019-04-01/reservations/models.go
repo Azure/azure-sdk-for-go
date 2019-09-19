@@ -182,6 +182,40 @@ func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
 	return []InstanceFlexibility{Off, On}
 }
 
+// PaymentStatus enumerates the values for payment status.
+type PaymentStatus string
+
+const (
+	// Cancelled ...
+	Cancelled PaymentStatus = "Cancelled"
+	// Failed ...
+	Failed PaymentStatus = "Failed"
+	// Scheduled ...
+	Scheduled PaymentStatus = "Scheduled"
+	// Succeeded ...
+	Succeeded PaymentStatus = "Succeeded"
+)
+
+// PossiblePaymentStatusValues returns an array of possible values for the PaymentStatus const type.
+func PossiblePaymentStatusValues() []PaymentStatus {
+	return []PaymentStatus{Cancelled, Failed, Scheduled, Succeeded}
+}
+
+// ReservationBillingPlan enumerates the values for reservation billing plan.
+type ReservationBillingPlan string
+
+const (
+	// Monthly ...
+	Monthly ReservationBillingPlan = "Monthly"
+	// Upfront ...
+	Upfront ReservationBillingPlan = "Upfront"
+)
+
+// PossibleReservationBillingPlanValues returns an array of possible values for the ReservationBillingPlan const type.
+func PossibleReservationBillingPlanValues() []ReservationBillingPlan {
+	return []ReservationBillingPlan{Monthly, Upfront}
+}
+
 // ReservationTerm enumerates the values for reservation term.
 type ReservationTerm string
 
@@ -357,6 +391,7 @@ type CalculatePriceResponseProperties struct {
 	SkuDescription *string `json:"skuDescription,omitempty"`
 	// PricingCurrencyTotal - Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included.
 	PricingCurrencyTotal *CalculatePriceResponsePropertiesPricingCurrencyTotal `json:"pricingCurrencyTotal,omitempty"`
+	PaymentSchedule      *[]PaymentDetail                                      `json:"paymentSchedule,omitempty"`
 }
 
 // CalculatePriceResponsePropertiesBillingCurrencyTotal currency and amount that customer will be charged
@@ -379,6 +414,8 @@ type Catalog struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 	// Name - READ-ONLY; The name of SKU
 	Name *string `json:"name,omitempty"`
+	// BillingPlans - The billing plan options available for this SKU.
+	BillingPlans *[]CatalogBillingPlansItem `json:"billingPlans,omitempty"`
 	// Terms - READ-ONLY; Available reservation terms for this resource
 	Terms *[]ReservationTerm `json:"terms,omitempty"`
 	// Locations - READ-ONLY
@@ -387,6 +424,62 @@ type Catalog struct {
 	SkuProperties *[]SkuProperty `json:"skuProperties,omitempty"`
 	// Restrictions - READ-ONLY
 	Restrictions *[]SkuRestriction `json:"restrictions,omitempty"`
+}
+
+// CatalogBillingPlansItem ...
+type CatalogBillingPlansItem struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string][]ReservationBillingPlan `json:""`
+	// Name - The term for the billing SKU is available for. Possible values include: 'P1Y', 'P3Y'
+	Name ReservationTerm `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CatalogBillingPlansItem.
+func (cPi CatalogBillingPlansItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cPi.Name != "" {
+		objectMap["name"] = cPi.Name
+	}
+	for k, v := range cPi.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CatalogBillingPlansItem struct.
+func (cPi *CatalogBillingPlansItem) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties []ReservationBillingPlan
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if cPi.AdditionalProperties == nil {
+					cPi.AdditionalProperties = make(map[string][]ReservationBillingPlan)
+				}
+				cPi.AdditionalProperties[k] = additionalProperties
+			}
+		case "name":
+			if v != nil {
+				var name ReservationTerm
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cPi.Name = name
+			}
+		}
+	}
+
+	return nil
 }
 
 // Error ...
@@ -778,6 +871,17 @@ type OperationResponse struct {
 	Origin  *string           `json:"origin,omitempty"`
 }
 
+// OrderBillingPlanInformation information describing the type of billing plan for this reservation.
+type OrderBillingPlanInformation struct {
+	// PricingCurrencyTotal - Amount of money to be paid for the Order. Tax is not included.
+	PricingCurrencyTotal *Price `json:"pricingCurrencyTotal,omitempty"`
+	// StartDate - Date when the billing plan has started.
+	StartDate *date.Date `json:"startDate,omitempty"`
+	// NextPaymentDueDate - For recurring billing plans, indicates the date when next payment will be processed. Null when total is paid off.
+	NextPaymentDueDate *date.Date       `json:"nextPaymentDueDate,omitempty"`
+	Transactions       *[]PaymentDetail `json:"transactions,omitempty"`
+}
+
 // OrderList ...
 type OrderList struct {
 	autorest.Response `json:"-"`
@@ -937,8 +1041,11 @@ type OrderProperties struct {
 	// Term - Possible values include: 'P1Y', 'P3Y'
 	Term ReservationTerm `json:"term,omitempty"`
 	// ProvisioningState - Current state of the reservation.
-	ProvisioningState    *string     `json:"provisioningState,omitempty"`
-	ReservationsProperty *[]Response `json:"reservations,omitempty"`
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// BillingPlan - Possible values include: 'Upfront', 'Monthly'
+	BillingPlan          ReservationBillingPlan       `json:"billingPlan,omitempty"`
+	PlanInformation      *OrderBillingPlanInformation `json:"planInformation,omitempty"`
+	ReservationsProperty *[]Response                  `json:"reservations,omitempty"`
 }
 
 // OrderPurchaseFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1111,6 +1218,30 @@ type PatchPropertiesRenewProperties struct {
 	PurchaseProperties *PurchaseRequest `json:"purchaseProperties,omitempty"`
 }
 
+// PaymentDetail information about payment related to a reservation order.
+type PaymentDetail struct {
+	// DueDate - Date when the payment needs to be done.
+	DueDate *date.Date `json:"dueDate,omitempty"`
+	// PaymentDate - Date when the transaction is completed. Is null when it is scheduled.
+	PaymentDate *date.Date `json:"paymentDate,omitempty"`
+	// PricingCurrencyTotal - Amount in pricing currency. Tax not included.
+	PricingCurrencyTotal *Price `json:"pricingCurrencyTotal,omitempty"`
+	// BillingCurrencyTotal - Amount charged in Billing currency. Tax not included. Is null for future payments
+	BillingCurrencyTotal *Price `json:"billingCurrencyTotal,omitempty"`
+	// BillingAccount - Shows the Account that is charged for this payment.
+	BillingAccount *string `json:"billingAccount,omitempty"`
+	// Status - Possible values include: 'Succeeded', 'Failed', 'Scheduled', 'Cancelled'
+	Status             PaymentStatus       `json:"status,omitempty"`
+	ExtendedStatusInfo *ExtendedStatusInfo `json:"extendedStatusInfo,omitempty"`
+}
+
+// Price ...
+type Price struct {
+	// CurrencyCode - The ISO 4217 3-letter currency code for the currency used by this purchase record.
+	CurrencyCode *string  `json:"currencyCode,omitempty"`
+	Amount       *float64 `json:"amount,omitempty"`
+}
+
 // Properties ...
 type Properties struct {
 	autorest.Response `json:"-"`
@@ -1138,12 +1269,14 @@ type PropertiesType struct {
 	// ExpiryDate - This is the date when the Reservation will expire.
 	ExpiryDate *date.Date `json:"expiryDate,omitempty"`
 	// SkuDescription - Description of the SKU in english.
-	SkuDescription     *string              `json:"skuDescription,omitempty"`
-	ExtendedStatusInfo *ExtendedStatusInfo  `json:"extendedStatusInfo,omitempty"`
-	SplitProperties    *SplitPropertiesType `json:"splitProperties,omitempty"`
-	MergeProperties    *MergePropertiesType `json:"mergeProperties,omitempty"`
-	BillingScopeID     *string              `json:"billingScopeId,omitempty"`
-	Renew              *bool                `json:"renew,omitempty"`
+	SkuDescription     *string             `json:"skuDescription,omitempty"`
+	ExtendedStatusInfo *ExtendedStatusInfo `json:"extendedStatusInfo,omitempty"`
+	// BillingPlan - Possible values include: 'Upfront', 'Monthly'
+	BillingPlan     ReservationBillingPlan `json:"billingPlan,omitempty"`
+	SplitProperties *SplitPropertiesType   `json:"splitProperties,omitempty"`
+	MergeProperties *MergePropertiesType   `json:"mergeProperties,omitempty"`
+	BillingScopeID  *string                `json:"billingScopeId,omitempty"`
+	Renew           *bool                  `json:"renew,omitempty"`
 	// RenewSource - Reservation Id of the reservation from which this reservation is renewed. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
 	RenewSource *string `json:"renewSource,omitempty"`
 	// RenewDestination - Reservation Id of the reservation which is purchased because of renew. Format of the resource Id is /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
@@ -1224,8 +1357,10 @@ type PurchaseRequestProperties struct {
 	ReservedResourceType ReservedResourceType `json:"reservedResourceType,omitempty"`
 	BillingScopeID       *string              `json:"billingScopeId,omitempty"`
 	// Term - Possible values include: 'P1Y', 'P3Y'
-	Term     ReservationTerm `json:"term,omitempty"`
-	Quantity *int32          `json:"quantity,omitempty"`
+	Term ReservationTerm `json:"term,omitempty"`
+	// BillingPlan - Possible values include: 'Upfront', 'Monthly'
+	BillingPlan ReservationBillingPlan `json:"billingPlan,omitempty"`
+	Quantity    *int32                 `json:"quantity,omitempty"`
 	// DisplayName - Friendly name of the Reservation
 	DisplayName *string `json:"displayName,omitempty"`
 	// AppliedScopeType - Possible values include: 'Single', 'Shared'

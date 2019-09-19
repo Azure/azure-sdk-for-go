@@ -7235,35 +7235,6 @@ type WorkflowTriggerFilter struct {
 	State WorkflowState `json:"state,omitempty"`
 }
 
-// WorkflowTriggerHistoriesResubmitAllFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type WorkflowTriggerHistoriesResubmitAllFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *WorkflowTriggerHistoriesResubmitAllFuture) Result(client WorkflowTriggerHistoriesClient) (wrlrp WorkflowRunListResultPage, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesResubmitAllFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("logic.WorkflowTriggerHistoriesResubmitAllFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if wrlrp.wrlr.Response.Response, err = future.GetResult(sender); err == nil && wrlrp.wrlr.Response.Response.StatusCode != http.StatusNoContent {
-		wrlrp, err = client.ResubmitResponder(wrlrp.wrlr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesResubmitAllFuture", "Result", wrlrp.wrlr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // WorkflowTriggerHistoriesResubmitFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type WorkflowTriggerHistoriesResubmitFuture struct {
@@ -7272,7 +7243,7 @@ type WorkflowTriggerHistoriesResubmitFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *WorkflowTriggerHistoriesResubmitFuture) Result(client WorkflowTriggerHistoriesClient) (wrlrp WorkflowRunListResultPage, err error) {
+func (future *WorkflowTriggerHistoriesResubmitFuture) Result(client WorkflowTriggerHistoriesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -7283,13 +7254,7 @@ func (future *WorkflowTriggerHistoriesResubmitFuture) Result(client WorkflowTrig
 		err = azure.NewAsyncOpIncompleteError("logic.WorkflowTriggerHistoriesResubmitFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if wrlrp.wrlr.Response.Response, err = future.GetResult(sender); err == nil && wrlrp.wrlr.Response.Response.StatusCode != http.StatusNoContent {
-		wrlrp, err = client.ResubmitResponder(wrlrp.wrlr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesResubmitFuture", "Result", wrlrp.wrlr.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 

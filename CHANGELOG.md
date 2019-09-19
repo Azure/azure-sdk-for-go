@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v33.4.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| netapp | 2019-07-01 |
+
 ## `v33.3.0`
 
 ### New Packages

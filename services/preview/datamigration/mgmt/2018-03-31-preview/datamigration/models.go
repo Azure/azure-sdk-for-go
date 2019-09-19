@@ -2994,8 +2994,8 @@ type MigrateSQLServerSQLServerDatabaseInput struct {
 
 // MigrationEligibilityInfo information about migration eligibility of a server object
 type MigrationEligibilityInfo struct {
-	// IsEligibileForMigration - READ-ONLY; Whether object is eligible for migration or not.
-	IsEligibileForMigration *bool `json:"isEligibileForMigration,omitempty"`
+	// IsEligibleForMigration - READ-ONLY; Whether object is eligible for migration or not.
+	IsEligibleForMigration *bool `json:"isEligibleForMigration,omitempty"`
 	// ValidationMessages - READ-ONLY; Information about eligibility failure for the server object.
 	ValidationMessages *[]string `json:"validationMessages,omitempty"`
 }

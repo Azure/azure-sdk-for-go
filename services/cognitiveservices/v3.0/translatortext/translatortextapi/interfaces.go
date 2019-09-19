@@ -30,7 +30,7 @@ type TranslatorClientAPI interface {
 	DictionaryLookup(ctx context.Context, from string, toParameter string, xClientTraceID string, requestBody string, responseBody string, responseHeader string) (result translatortext.ListDictionaryLookupResultItem, err error)
 	Languages(ctx context.Context, scope []string, acceptLanguage string, xClientTraceID string, responseBody string, responseHeader string) (result translatortext.LanguagesResult, err error)
 	Translate(ctx context.Context, toParameter []string, from string, textType string, category string, profanityAction string, profanityMarker string, includeAlignment *bool, includeSentenceLength *bool, suggestedFrom string, fromScript string, toScript []string, xClientTraceID string, requestBody string, responseBody string) (result translatortext.ListTranslateResultAllItem, err error)
-	Transliterate(ctx context.Context, language string, fromScript string, toScript string, xClientTraceID string, requestBody string, respnseBody string) (result translatortext.ListTransliterateResultItem, err error)
+	Transliterate(ctx context.Context, language string, fromScript string, toScript string, xClientTraceID string, requestBody string, responseBody string) (result translatortext.ListTransliterateResultItem, err error)
 }
 
 var _ TranslatorClientAPI = (*translatortext.TranslatorClient)(nil)

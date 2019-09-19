@@ -1173,11 +1173,11 @@ func (client TranslatorClient) TranslateResponder(resp *http.Response) (result L
 // * The array can have at most 10 elements.
 // * The text value of an array element cannot exceed 1,000 characters including spaces.
 // * The entire text included in the request cannot exceed 5,000 characters including spaces.
-// respnseBody - a successful response is a JSON array with one result for each element in the input array. A
+// responseBody - a successful response is a JSON array with one result for each element in the input array. A
 // result object includes the following properties:
 // * `text`- A string which is the result of converting the input string to the output script.
 // * `script`- A string specifying the script used in the output.
-func (client TranslatorClient) Transliterate(ctx context.Context, language string, fromScript string, toScript string, xClientTraceID string, requestBody string, respnseBody string) (result ListTransliterateResultItem, err error) {
+func (client TranslatorClient) Transliterate(ctx context.Context, language string, fromScript string, toScript string, xClientTraceID string, requestBody string, responseBody string) (result ListTransliterateResultItem, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslatorClient.Transliterate")
 		defer func() {
@@ -1188,7 +1188,7 @@ func (client TranslatorClient) Transliterate(ctx context.Context, language strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.TransliteratePreparer(ctx, language, fromScript, toScript, xClientTraceID, requestBody, respnseBody)
+	req, err := client.TransliteratePreparer(ctx, language, fromScript, toScript, xClientTraceID, requestBody, responseBody)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "translatortext.TranslatorClient", "Transliterate", nil, "Failure preparing request")
 		return
@@ -1210,7 +1210,7 @@ func (client TranslatorClient) Transliterate(ctx context.Context, language strin
 }
 
 // TransliteratePreparer prepares the Transliterate request.
-func (client TranslatorClient) TransliteratePreparer(ctx context.Context, language string, fromScript string, toScript string, xClientTraceID string, requestBody string, respnseBody string) (*http.Request, error) {
+func (client TranslatorClient) TransliteratePreparer(ctx context.Context, language string, fromScript string, toScript string, xClientTraceID string, requestBody string, responseBody string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -1236,9 +1236,9 @@ func (client TranslatorClient) TransliteratePreparer(ctx context.Context, langua
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithHeader("Request Body", autorest.String(requestBody)))
 	}
-	if len(respnseBody) > 0 {
+	if len(responseBody) > 0 {
 		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithHeader("Respnse Body", autorest.String(respnseBody)))
+			autorest.WithHeader("Response Body", autorest.String(responseBody)))
 	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

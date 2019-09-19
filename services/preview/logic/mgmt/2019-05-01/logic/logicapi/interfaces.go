@@ -283,12 +283,12 @@ type IntegrationServiceEnvironmentManagedAPIClientAPI interface {
 
 var _ IntegrationServiceEnvironmentManagedAPIClientAPI = (*logic.IntegrationServiceEnvironmentManagedAPIClient)(nil)
 
-// IntegrationServiceEnvironmentManagedAPIOperationsClientAPI contains the set of methods on the IntegrationServiceEnvironmentManagedAPIOperationsClient type.
-type IntegrationServiceEnvironmentManagedAPIOperationsClientAPI interface {
+// IntegrationServiceEnvironmentsManagedAPIOperationsClientAPI contains the set of methods on the IntegrationServiceEnvironmentsManagedAPIOperationsClient type.
+type IntegrationServiceEnvironmentsManagedAPIOperationsClientAPI interface {
 	List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.APIOperationListResultPage, err error)
 }
 
-var _ IntegrationServiceEnvironmentManagedAPIOperationsClientAPI = (*logic.IntegrationServiceEnvironmentManagedAPIOperationsClient)(nil)
+var _ IntegrationServiceEnvironmentsManagedAPIOperationsClientAPI = (*logic.IntegrationServiceEnvironmentsManagedAPIOperationsClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {

@@ -269,26 +269,20 @@ var _ IntegrationServiceEnvironmentNetworkHealthClientAPI = (*logic.IntegrationS
 
 // IntegrationServiceEnvironmentManagedApisClientAPI contains the set of methods on the IntegrationServiceEnvironmentManagedApisClient type.
 type IntegrationServiceEnvironmentManagedApisClientAPI interface {
+	Delete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedApisDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.ManagedAPI, err error)
 	List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result logic.ManagedAPIListResultPage, err error)
+	Put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedApisPutFuture, err error)
 }
 
 var _ IntegrationServiceEnvironmentManagedApisClientAPI = (*logic.IntegrationServiceEnvironmentManagedApisClient)(nil)
 
-// IntegrationServiceEnvironmentManagedAPIClientAPI contains the set of methods on the IntegrationServiceEnvironmentManagedAPIClient type.
-type IntegrationServiceEnvironmentManagedAPIClientAPI interface {
-	Delete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedAPIDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.ManagedAPI, err error)
-	Put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedAPIPutFuture, err error)
-}
-
-var _ IntegrationServiceEnvironmentManagedAPIClientAPI = (*logic.IntegrationServiceEnvironmentManagedAPIClient)(nil)
-
-// IntegrationServiceEnvironmentsManagedAPIOperationsClientAPI contains the set of methods on the IntegrationServiceEnvironmentsManagedAPIOperationsClient type.
-type IntegrationServiceEnvironmentsManagedAPIOperationsClientAPI interface {
+// IntegrationServiceEnvironmentManagedAPIOperationsClientAPI contains the set of methods on the IntegrationServiceEnvironmentManagedAPIOperationsClient type.
+type IntegrationServiceEnvironmentManagedAPIOperationsClientAPI interface {
 	List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.APIOperationListResultPage, err error)
 }
 
-var _ IntegrationServiceEnvironmentsManagedAPIOperationsClientAPI = (*logic.IntegrationServiceEnvironmentsManagedAPIOperationsClient)(nil)
+var _ IntegrationServiceEnvironmentManagedAPIOperationsClientAPI = (*logic.IntegrationServiceEnvironmentManagedAPIOperationsClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {

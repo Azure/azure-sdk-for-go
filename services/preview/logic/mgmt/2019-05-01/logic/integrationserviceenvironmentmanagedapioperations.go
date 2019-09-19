@@ -25,21 +25,21 @@ import (
 	"net/http"
 )
 
-// IntegrationServiceEnvironmentsManagedAPIOperationsClient is the REST API for Azure Logic Apps.
-type IntegrationServiceEnvironmentsManagedAPIOperationsClient struct {
+// IntegrationServiceEnvironmentManagedAPIOperationsClient is the REST API for Azure Logic Apps.
+type IntegrationServiceEnvironmentManagedAPIOperationsClient struct {
 	BaseClient
 }
 
-// NewIntegrationServiceEnvironmentsManagedAPIOperationsClient creates an instance of the
-// IntegrationServiceEnvironmentsManagedAPIOperationsClient client.
-func NewIntegrationServiceEnvironmentsManagedAPIOperationsClient(subscriptionID string) IntegrationServiceEnvironmentsManagedAPIOperationsClient {
-	return NewIntegrationServiceEnvironmentsManagedAPIOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewIntegrationServiceEnvironmentManagedAPIOperationsClient creates an instance of the
+// IntegrationServiceEnvironmentManagedAPIOperationsClient client.
+func NewIntegrationServiceEnvironmentManagedAPIOperationsClient(subscriptionID string) IntegrationServiceEnvironmentManagedAPIOperationsClient {
+	return NewIntegrationServiceEnvironmentManagedAPIOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIntegrationServiceEnvironmentsManagedAPIOperationsClientWithBaseURI creates an instance of the
-// IntegrationServiceEnvironmentsManagedAPIOperationsClient client.
-func NewIntegrationServiceEnvironmentsManagedAPIOperationsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationServiceEnvironmentsManagedAPIOperationsClient {
-	return IntegrationServiceEnvironmentsManagedAPIOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewIntegrationServiceEnvironmentManagedAPIOperationsClientWithBaseURI creates an instance of the
+// IntegrationServiceEnvironmentManagedAPIOperationsClient client.
+func NewIntegrationServiceEnvironmentManagedAPIOperationsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationServiceEnvironmentManagedAPIOperationsClient {
+	return IntegrationServiceEnvironmentManagedAPIOperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List gets the managed Api operations.
@@ -47,9 +47,9 @@ func NewIntegrationServiceEnvironmentsManagedAPIOperationsClientWithBaseURI(base
 // resourceGroup - the resource group.
 // integrationServiceEnvironmentName - the integration service environment name.
 // APIName - the api name.
-func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result APIOperationListResultPage, err error) {
+func (client IntegrationServiceEnvironmentManagedAPIOperationsClient) List(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result APIOperationListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationServiceEnvironmentsManagedAPIOperationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationServiceEnvironmentManagedAPIOperationsClient.List")
 		defer func() {
 			sc := -1
 			if result.aolr.Response.Response != nil {
@@ -61,27 +61,27 @@ func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) List(ctx 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroup, integrationServiceEnvironmentName, APIName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsManagedAPIOperationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedAPIOperationsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.aolr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsManagedAPIOperationsClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedAPIOperationsClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.aolr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsManagedAPIOperationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedAPIOperationsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) ListPreparer(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (*http.Request, error) {
+func (client IntegrationServiceEnvironmentManagedAPIOperationsClient) ListPreparer(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"apiName":                           autorest.Encode("path", APIName),
 		"integrationServiceEnvironmentName": autorest.Encode("path", integrationServiceEnvironmentName),
@@ -104,14 +104,14 @@ func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) ListPrepa
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client IntegrationServiceEnvironmentManagedAPIOperationsClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) ListResponder(resp *http.Response) (result APIOperationListResult, err error) {
+func (client IntegrationServiceEnvironmentManagedAPIOperationsClient) ListResponder(resp *http.Response) (result APIOperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -123,10 +123,10 @@ func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) ListRespo
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) listNextResults(ctx context.Context, lastResults APIOperationListResult) (result APIOperationListResult, err error) {
+func (client IntegrationServiceEnvironmentManagedAPIOperationsClient) listNextResults(ctx context.Context, lastResults APIOperationListResult) (result APIOperationListResult, err error) {
 	req, err := lastResults.aPIOperationListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsManagedAPIOperationsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedAPIOperationsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -134,19 +134,19 @@ func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) listNextR
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsManagedAPIOperationsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedAPIOperationsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsManagedAPIOperationsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedAPIOperationsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client IntegrationServiceEnvironmentsManagedAPIOperationsClient) ListComplete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result APIOperationListResultIterator, err error) {
+func (client IntegrationServiceEnvironmentManagedAPIOperationsClient) ListComplete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result APIOperationListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationServiceEnvironmentsManagedAPIOperationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationServiceEnvironmentManagedAPIOperationsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

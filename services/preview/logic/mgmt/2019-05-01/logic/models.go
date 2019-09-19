@@ -1350,49 +1350,12 @@ type APIReference struct {
 	Category APITier `json:"category,omitempty"`
 	// IntegrationServiceEnvironment - The integration service environment reference.
 	IntegrationServiceEnvironment *ResourceReference `json:"integrationServiceEnvironment,omitempty"`
-	// ID - READ-ONLY; The resource id.
+	// ID - The resource id.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Gets the resource name.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Gets the resource type.
 	Type *string `json:"type,omitempty"`
-	// Location - The resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - The resource tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for APIReference.
-func (ar APIReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ar.DisplayName != nil {
-		objectMap["displayName"] = ar.DisplayName
-	}
-	if ar.Description != nil {
-		objectMap["description"] = ar.Description
-	}
-	if ar.IconURI != nil {
-		objectMap["iconUri"] = ar.IconURI
-	}
-	if ar.Swagger != nil {
-		objectMap["swagger"] = ar.Swagger
-	}
-	if ar.BrandColor != nil {
-		objectMap["brandColor"] = ar.BrandColor
-	}
-	if ar.Category != "" {
-		objectMap["category"] = ar.Category
-	}
-	if ar.IntegrationServiceEnvironment != nil {
-		objectMap["integrationServiceEnvironment"] = ar.IntegrationServiceEnvironment
-	}
-	if ar.Location != nil {
-		objectMap["location"] = ar.Location
-	}
-	if ar.Tags != nil {
-		objectMap["tags"] = ar.Tags
-	}
-	return json.Marshal(objectMap)
 }
 
 // APIResourceBackendService the API backend service.

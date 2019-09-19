@@ -3869,8 +3869,8 @@ type ScopeMapProperties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Actions - The list of scoped permissions for registry artifacts.
-	// E.g. repositories/repository-name/pull,
-	// repositories/repository-name/delete
+	// E.g. repositories/repository-name/content/read,
+	// repositories/repository-name/metadata/write
 	Actions *[]string `json:"actions,omitempty"`
 }
 

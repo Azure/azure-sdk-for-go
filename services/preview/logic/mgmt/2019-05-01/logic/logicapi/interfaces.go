@@ -127,7 +127,7 @@ var _ WorkflowRunActionRequestHistoriesClientAPI = (*logic.WorkflowRunActionRequ
 // WorkflowRunActionScopeRepetitionsClientAPI contains the set of methods on the WorkflowRunActionScopeRepetitionsClient type.
 type WorkflowRunActionScopeRepetitionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string, repetitionName string) (result logic.WorkflowRunActionRepetitionDefinition, err error)
-	List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result logic.WorkflowRunActionRepetitionDefinitionCollectionPage, err error)
+	List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result logic.WorkflowRunActionRepetitionDefinitionCollection, err error)
 }
 
 var _ WorkflowRunActionScopeRepetitionsClientAPI = (*logic.WorkflowRunActionScopeRepetitionsClient)(nil)
@@ -261,9 +261,6 @@ var _ IntegrationServiceEnvironmentSkusClientAPI = (*logic.IntegrationServiceEnv
 
 // IntegrationServiceEnvironmentClientAPI contains the set of methods on the IntegrationServiceEnvironmentClient type.
 type IntegrationServiceEnvironmentClientAPI interface {
-	Delete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.ManagedAPI, err error)
-	Put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentPutFuture, err error)
 	Restart(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result autorest.Response, err error)
 }
 
@@ -282,6 +279,15 @@ type IntegrationServiceEnvironmentManagedApisClientAPI interface {
 }
 
 var _ IntegrationServiceEnvironmentManagedApisClientAPI = (*logic.IntegrationServiceEnvironmentManagedApisClient)(nil)
+
+// IntegrationServiceEnvironmentManagedAPIClientAPI contains the set of methods on the IntegrationServiceEnvironmentManagedAPIClient type.
+type IntegrationServiceEnvironmentManagedAPIClientAPI interface {
+	Delete(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedAPIDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.ManagedAPI, err error)
+	Put(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string, APIName string) (result logic.IntegrationServiceEnvironmentManagedAPIPutFuture, err error)
+}
+
+var _ IntegrationServiceEnvironmentManagedAPIClientAPI = (*logic.IntegrationServiceEnvironmentManagedAPIClient)(nil)
 
 // IntegrationServiceEnvironmentManagedAPIOperationsClientAPI contains the set of methods on the IntegrationServiceEnvironmentManagedAPIOperationsClient type.
 type IntegrationServiceEnvironmentManagedAPIOperationsClientAPI interface {

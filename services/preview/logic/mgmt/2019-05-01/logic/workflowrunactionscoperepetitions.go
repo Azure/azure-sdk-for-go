@@ -131,18 +131,17 @@ func (client WorkflowRunActionScopeRepetitionsClient) GetResponder(resp *http.Re
 // workflowName - the workflow name.
 // runName - the workflow run name.
 // actionName - the workflow action name.
-func (client WorkflowRunActionScopeRepetitionsClient) List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunActionRepetitionDefinitionCollectionPage, err error) {
+func (client WorkflowRunActionScopeRepetitionsClient) List(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunActionRepetitionDefinitionCollection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkflowRunActionScopeRepetitionsClient.List")
 		defer func() {
 			sc := -1
-			if result.wrardc.Response.Response != nil {
-				sc = result.wrardc.Response.Response.StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, workflowName, runName, actionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionScopeRepetitionsClient", "List", nil, "Failure preparing request")
@@ -151,12 +150,12 @@ func (client WorkflowRunActionScopeRepetitionsClient) List(ctx context.Context, 
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.wrardc.Response = autorest.Response{Response: resp}
+		result.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionScopeRepetitionsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.wrardc, err = client.ListResponder(resp)
+	result, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionScopeRepetitionsClient", "List", resp, "Failure responding to request")
 	}
@@ -204,42 +203,5 @@ func (client WorkflowRunActionScopeRepetitionsClient) ListResponder(resp *http.R
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listNextResults retrieves the next set of results, if any.
-func (client WorkflowRunActionScopeRepetitionsClient) listNextResults(ctx context.Context, lastResults WorkflowRunActionRepetitionDefinitionCollection) (result WorkflowRunActionRepetitionDefinitionCollection, err error) {
-	req, err := lastResults.workflowRunActionRepetitionDefinitionCollectionPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionScopeRepetitionsClient", "listNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "logic.WorkflowRunActionScopeRepetitionsClient", "listNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowRunActionScopeRepetitionsClient", "listNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client WorkflowRunActionScopeRepetitionsClient) ListComplete(ctx context.Context, resourceGroupName string, workflowName string, runName string, actionName string) (result WorkflowRunActionRepetitionDefinitionCollectionIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkflowRunActionScopeRepetitionsClient.List")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.List(ctx, resourceGroupName, workflowName, runName, actionName)
 	return
 }

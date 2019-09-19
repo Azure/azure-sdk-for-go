@@ -4291,29 +4291,6 @@ type IntegrationServiceEnvironmentAccessEndpoint struct {
 	Type IntegrationServiceEnvironmentAccessEndpointType `json:"type,omitempty"`
 }
 
-// IntegrationServiceEnvironmentDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type IntegrationServiceEnvironmentDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IntegrationServiceEnvironmentDeleteFuture) Result(client IntegrationServiceEnvironmentClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("logic.IntegrationServiceEnvironmentDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // IntegrationServiceEnvironmentListResult the list of integration service environments.
 type IntegrationServiceEnvironmentListResult struct {
 	autorest.Response `json:"-"`
@@ -4460,6 +4437,58 @@ func NewIntegrationServiceEnvironmentListResultPage(getNextPage func(context.Con
 	return IntegrationServiceEnvironmentListResultPage{fn: getNextPage}
 }
 
+// IntegrationServiceEnvironmentManagedAPIDeleteFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type IntegrationServiceEnvironmentManagedAPIDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *IntegrationServiceEnvironmentManagedAPIDeleteFuture) Result(client IntegrationServiceEnvironmentManagedAPIClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedAPIDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("logic.IntegrationServiceEnvironmentManagedAPIDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// IntegrationServiceEnvironmentManagedAPIPutFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type IntegrationServiceEnvironmentManagedAPIPutFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *IntegrationServiceEnvironmentManagedAPIPutFuture) Result(client IntegrationServiceEnvironmentManagedAPIClient) (ma ManagedAPI, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedAPIPutFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("logic.IntegrationServiceEnvironmentManagedAPIPutFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ma.Response.Response, err = future.GetResult(sender); err == nil && ma.Response.Response.StatusCode != http.StatusNoContent {
+		ma, err = client.PutResponder(ma.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedAPIPutFuture", "Result", ma.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // IntegrationServiceEnvironmentNetworkDependency the azure async operation resource.
 type IntegrationServiceEnvironmentNetworkDependency struct {
 	// Category - The network dependency category type. Possible values include: 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeNotSpecified', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeAzureStorage', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeAzureManagement', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeAzureActiveDirectory', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeSSLCertificateVerification', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeDiagnosticLogsAndMetrics', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeIntegrationServiceEnvironmentConnectors', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeRedisCache', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeAccessEndpoints', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeRecoveryService', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeSQL', 'IntegrationServiceEnvironmentNetworkDependencyCategoryTypeRegionalService'
@@ -4501,35 +4530,6 @@ type IntegrationServiceEnvironmentProperties struct {
 	EndpointsConfiguration *FlowEndpointsConfiguration `json:"endpointsConfiguration,omitempty"`
 	// NetworkConfiguration - The network configuration.
 	NetworkConfiguration *NetworkConfiguration `json:"networkConfiguration,omitempty"`
-}
-
-// IntegrationServiceEnvironmentPutFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type IntegrationServiceEnvironmentPutFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IntegrationServiceEnvironmentPutFuture) Result(client IntegrationServiceEnvironmentClient) (ma ManagedAPI, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentPutFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("logic.IntegrationServiceEnvironmentPutFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ma.Response.Response, err = future.GetResult(sender); err == nil && ma.Response.Response.StatusCode != http.StatusNoContent {
-		ma, err = client.PutResponder(ma.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentPutFuture", "Result", ma.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // IntegrationServiceEnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
@@ -6765,145 +6765,6 @@ func (wrard *WorkflowRunActionRepetitionDefinition) UnmarshalJSON(body []byte) e
 type WorkflowRunActionRepetitionDefinitionCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]WorkflowRunActionRepetitionDefinition `json:"value,omitempty"`
-}
-
-// WorkflowRunActionRepetitionDefinitionCollectionIterator provides access to a complete listing of
-// WorkflowRunActionRepetitionDefinition values.
-type WorkflowRunActionRepetitionDefinitionCollectionIterator struct {
-	i    int
-	page WorkflowRunActionRepetitionDefinitionCollectionPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *WorkflowRunActionRepetitionDefinitionCollectionIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkflowRunActionRepetitionDefinitionCollectionIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *WorkflowRunActionRepetitionDefinitionCollectionIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter WorkflowRunActionRepetitionDefinitionCollectionIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter WorkflowRunActionRepetitionDefinitionCollectionIterator) Response() WorkflowRunActionRepetitionDefinitionCollection {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter WorkflowRunActionRepetitionDefinitionCollectionIterator) Value() WorkflowRunActionRepetitionDefinition {
-	if !iter.page.NotDone() {
-		return WorkflowRunActionRepetitionDefinition{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the WorkflowRunActionRepetitionDefinitionCollectionIterator type.
-func NewWorkflowRunActionRepetitionDefinitionCollectionIterator(page WorkflowRunActionRepetitionDefinitionCollectionPage) WorkflowRunActionRepetitionDefinitionCollectionIterator {
-	return WorkflowRunActionRepetitionDefinitionCollectionIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (wrardc WorkflowRunActionRepetitionDefinitionCollection) IsEmpty() bool {
-	return wrardc.Value == nil || len(*wrardc.Value) == 0
-}
-
-// workflowRunActionRepetitionDefinitionCollectionPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (wrardc WorkflowRunActionRepetitionDefinitionCollection) workflowRunActionRepetitionDefinitionCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if wrardc.NextLink == nil || len(to.String(wrardc.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(wrardc.NextLink)))
-}
-
-// WorkflowRunActionRepetitionDefinitionCollectionPage contains a page of
-// WorkflowRunActionRepetitionDefinition values.
-type WorkflowRunActionRepetitionDefinitionCollectionPage struct {
-	fn     func(context.Context, WorkflowRunActionRepetitionDefinitionCollection) (WorkflowRunActionRepetitionDefinitionCollection, error)
-	wrardc WorkflowRunActionRepetitionDefinitionCollection
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *WorkflowRunActionRepetitionDefinitionCollectionPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkflowRunActionRepetitionDefinitionCollectionPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.wrardc)
-	if err != nil {
-		return err
-	}
-	page.wrardc = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *WorkflowRunActionRepetitionDefinitionCollectionPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page WorkflowRunActionRepetitionDefinitionCollectionPage) NotDone() bool {
-	return !page.wrardc.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page WorkflowRunActionRepetitionDefinitionCollectionPage) Response() WorkflowRunActionRepetitionDefinitionCollection {
-	return page.wrardc
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page WorkflowRunActionRepetitionDefinitionCollectionPage) Values() []WorkflowRunActionRepetitionDefinition {
-	if page.wrardc.IsEmpty() {
-		return nil
-	}
-	return *page.wrardc.Value
-}
-
-// Creates a new instance of the WorkflowRunActionRepetitionDefinitionCollectionPage type.
-func NewWorkflowRunActionRepetitionDefinitionCollectionPage(getNextPage func(context.Context, WorkflowRunActionRepetitionDefinitionCollection) (WorkflowRunActionRepetitionDefinitionCollection, error)) WorkflowRunActionRepetitionDefinitionCollectionPage {
-	return WorkflowRunActionRepetitionDefinitionCollectionPage{fn: getNextPage}
 }
 
 // WorkflowRunActionRepetitionProperties the workflow run action repetition properties definition.

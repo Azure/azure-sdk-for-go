@@ -323,7 +323,7 @@ func (client WorkflowTriggerHistoriesClient) ResubmitResponder(resp *http.Respon
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
 	return

@@ -6721,7 +6721,9 @@ func (wrard *WorkflowRunActionRepetitionDefinition) UnmarshalJSON(body []byte) e
 // WorkflowRunActionRepetitionDefinitionCollection a collection of workflow run action repetitions.
 type WorkflowRunActionRepetitionDefinitionCollection struct {
 	autorest.Response `json:"-"`
-	Value             *[]WorkflowRunActionRepetitionDefinition `json:"value,omitempty"`
+	// NextLink - The link used to get the next page of recommendations.
+	NextLink *string                                  `json:"nextLink,omitempty"`
+	Value    *[]WorkflowRunActionRepetitionDefinition `json:"value,omitempty"`
 }
 
 // WorkflowRunActionRepetitionDefinitionCollectionIterator provides access to a complete listing of

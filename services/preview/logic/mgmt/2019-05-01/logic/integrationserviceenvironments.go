@@ -506,6 +506,82 @@ func (client IntegrationServiceEnvironmentsClient) ListBySubscriptionComplete(ct
 	return
 }
 
+// Restart restarts an integration service environment.
+// Parameters:
+// resourceGroup - the resource group.
+// integrationServiceEnvironmentName - the integration service environment name.
+func (client IntegrationServiceEnvironmentsClient) Restart(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationServiceEnvironmentsClient.Restart")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.RestartPreparer(ctx, resourceGroup, integrationServiceEnvironmentName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsClient", "Restart", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.RestartSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsClient", "Restart", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.RestartResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentsClient", "Restart", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// RestartPreparer prepares the Restart request.
+func (client IntegrationServiceEnvironmentsClient) RestartPreparer(ctx context.Context, resourceGroup string, integrationServiceEnvironmentName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"integrationServiceEnvironmentName": autorest.Encode("path", integrationServiceEnvironmentName),
+		"resourceGroup":                     autorest.Encode("path", resourceGroup),
+		"subscriptionId":                    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Logic/integrationServiceEnvironments/{integrationServiceEnvironmentName}/restart", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RestartSender sends the Restart request. The method will close the
+// http.Response Body if it receives an error.
+func (client IntegrationServiceEnvironmentsClient) RestartSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// RestartResponder handles the response to the Restart request. The method always
+// closes the http.Response Body.
+func (client IntegrationServiceEnvironmentsClient) RestartResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Update updates an integration service environment.
 // Parameters:
 // resourceGroup - the resource group.

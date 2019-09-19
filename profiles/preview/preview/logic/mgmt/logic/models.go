@@ -634,7 +634,6 @@ type IntegrationAccountSku = original.IntegrationAccountSku
 type IntegrationAccountsClient = original.IntegrationAccountsClient
 type IntegrationServiceEnvironment = original.IntegrationServiceEnvironment
 type IntegrationServiceEnvironmentAccessEndpoint = original.IntegrationServiceEnvironmentAccessEndpoint
-type IntegrationServiceEnvironmentClient = original.IntegrationServiceEnvironmentClient
 type IntegrationServiceEnvironmentListResult = original.IntegrationServiceEnvironmentListResult
 type IntegrationServiceEnvironmentListResultIterator = original.IntegrationServiceEnvironmentListResultIterator
 type IntegrationServiceEnvironmentListResultPage = original.IntegrationServiceEnvironmentListResultPage
@@ -897,12 +896,6 @@ func NewIntegrationAccountsClient(subscriptionID string) IntegrationAccountsClie
 }
 func NewIntegrationAccountsClientWithBaseURI(baseURI string, subscriptionID string) IntegrationAccountsClient {
 	return original.NewIntegrationAccountsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewIntegrationServiceEnvironmentClient(subscriptionID string) IntegrationServiceEnvironmentClient {
-	return original.NewIntegrationServiceEnvironmentClient(subscriptionID)
-}
-func NewIntegrationServiceEnvironmentClientWithBaseURI(baseURI string, subscriptionID string) IntegrationServiceEnvironmentClient {
-	return original.NewIntegrationServiceEnvironmentClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewIntegrationServiceEnvironmentListResultIterator(page IntegrationServiceEnvironmentListResultPage) IntegrationServiceEnvironmentListResultIterator {
 	return original.NewIntegrationServiceEnvironmentListResultIterator(page)

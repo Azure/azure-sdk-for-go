@@ -7104,29 +7104,6 @@ type WorkflowTriggerFilter struct {
 	State WorkflowState `json:"state,omitempty"`
 }
 
-// WorkflowTriggerHistoriesResubmitFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type WorkflowTriggerHistoriesResubmitFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *WorkflowTriggerHistoriesResubmitFuture) Result(client WorkflowTriggerHistoriesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesResubmitFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("logic.WorkflowTriggerHistoriesResubmitFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // WorkflowTriggerHistory the workflow trigger history.
 type WorkflowTriggerHistory struct {
 	autorest.Response `json:"-"`

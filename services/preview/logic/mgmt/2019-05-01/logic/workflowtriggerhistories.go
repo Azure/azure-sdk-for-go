@@ -255,13 +255,13 @@ func (client WorkflowTriggerHistoriesClient) ListComplete(ctx context.Context, r
 // triggerName - the workflow trigger name.
 // historyName - the workflow trigger history name. Corresponds to the run name for triggers that resulted in a
 // run.
-func (client WorkflowTriggerHistoriesClient) Resubmit(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, historyName string) (result WorkflowTriggerHistoriesResubmitFuture, err error) {
+func (client WorkflowTriggerHistoriesClient) Resubmit(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, historyName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkflowTriggerHistoriesClient.Resubmit")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -272,10 +272,16 @@ func (client WorkflowTriggerHistoriesClient) Resubmit(ctx context.Context, resou
 		return
 	}
 
-	result, err = client.ResubmitSender(req)
+	resp, err := client.ResubmitSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Resubmit", result.Response(), "Failure sending request")
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Resubmit", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.ResubmitResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "logic.WorkflowTriggerHistoriesClient", "Resubmit", resp, "Failure responding to request")
 	}
 
 	return
@@ -306,15 +312,9 @@ func (client WorkflowTriggerHistoriesClient) ResubmitPreparer(ctx context.Contex
 
 // ResubmitSender sends the Resubmit request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkflowTriggerHistoriesClient) ResubmitSender(req *http.Request) (future WorkflowTriggerHistoriesResubmitFuture, err error) {
+func (client WorkflowTriggerHistoriesClient) ResubmitSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ResubmitResponder handles the response to the Resubmit request. The method always

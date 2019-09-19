@@ -76,7 +76,7 @@ var _ WorkflowVersionTriggersClientAPI = (*logic.WorkflowVersionTriggersClient)(
 type WorkflowTriggerHistoriesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, historyName string) (result logic.WorkflowTriggerHistory, err error)
 	List(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, top *int32, filter string) (result logic.WorkflowTriggerHistoryListResultPage, err error)
-	Resubmit(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, historyName string) (result logic.WorkflowTriggerHistoriesResubmitFuture, err error)
+	Resubmit(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, historyName string) (result autorest.Response, err error)
 }
 
 var _ WorkflowTriggerHistoriesClientAPI = (*logic.WorkflowTriggerHistoriesClient)(nil)

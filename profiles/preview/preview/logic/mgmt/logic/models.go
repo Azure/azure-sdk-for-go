@@ -749,7 +749,6 @@ type WorkflowTrigger = original.WorkflowTrigger
 type WorkflowTriggerCallbackURL = original.WorkflowTriggerCallbackURL
 type WorkflowTriggerFilter = original.WorkflowTriggerFilter
 type WorkflowTriggerHistoriesClient = original.WorkflowTriggerHistoriesClient
-type WorkflowTriggerHistoriesResubmitFuture = original.WorkflowTriggerHistoriesResubmitFuture
 type WorkflowTriggerHistory = original.WorkflowTriggerHistory
 type WorkflowTriggerHistoryFilter = original.WorkflowTriggerHistoryFilter
 type WorkflowTriggerHistoryListResult = original.WorkflowTriggerHistoryListResult

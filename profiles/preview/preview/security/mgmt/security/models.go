@@ -114,6 +114,7 @@ type EnforcementMode = original.EnforcementMode
 const (
 	Audit   EnforcementMode = original.Audit
 	Enforce EnforcementMode = original.Enforce
+	None    EnforcementMode = original.None
 )
 
 type EnforcementMode1 = original.EnforcementMode1
@@ -121,6 +122,23 @@ type EnforcementMode1 = original.EnforcementMode1
 const (
 	EnforcementMode1Audit   EnforcementMode1 = original.EnforcementMode1Audit
 	EnforcementMode1Enforce EnforcementMode1 = original.EnforcementMode1Enforce
+	EnforcementMode1None    EnforcementMode1 = original.EnforcementMode1None
+)
+
+type Exe = original.Exe
+
+const (
+	ExeAudit   Exe = original.ExeAudit
+	ExeEnforce Exe = original.ExeEnforce
+	ExeNone    Exe = original.ExeNone
+)
+
+type Executable = original.Executable
+
+const (
+	ExecutableAudit   Executable = original.ExecutableAudit
+	ExecutableEnforce Executable = original.ExecutableEnforce
+	ExecutableNone    Executable = original.ExecutableNone
 )
 
 type ExportData = original.ExportData
@@ -149,12 +167,12 @@ const (
 type FileType = original.FileType
 
 const (
-	Dll        FileType = original.Dll
-	Exe        FileType = original.Exe
-	Executable FileType = original.Executable
-	Msi        FileType = original.Msi
-	Script     FileType = original.Script
-	Unknown    FileType = original.Unknown
+	FileTypeDll        FileType = original.FileTypeDll
+	FileTypeExe        FileType = original.FileTypeExe
+	FileTypeExecutable FileType = original.FileTypeExecutable
+	FileTypeMsi        FileType = original.FileTypeMsi
+	FileTypeScript     FileType = original.FileTypeScript
+	FileTypeUnknown    FileType = original.FileTypeUnknown
 )
 
 type Issue = original.Issue
@@ -175,6 +193,14 @@ const (
 	KindATA                      KindEnum = original.KindATA
 	KindCEF                      KindEnum = original.KindCEF
 	KindExternalSecuritySolution KindEnum = original.KindExternalSecuritySolution
+)
+
+type Msi = original.Msi
+
+const (
+	MsiAudit   Msi = original.MsiAudit
+	MsiEnforce Msi = original.MsiEnforce
+	MsiNone    Msi = original.MsiNone
 )
 
 type PricingTier = original.PricingTier
@@ -273,6 +299,14 @@ const (
 	OffByPolicy   ResourceStatus = original.OffByPolicy
 )
 
+type Script = original.Script
+
+const (
+	ScriptAudit   Script = original.ScriptAudit
+	ScriptEnforce Script = original.ScriptEnforce
+	ScriptNone    Script = original.ScriptNone
+)
+
 type SettingKind = original.SettingKind
 
 const (
@@ -290,11 +324,11 @@ const (
 type SourceSystem = original.SourceSystem
 
 const (
-	AzureAppLocker    SourceSystem = original.AzureAppLocker
-	AzureAuditD       SourceSystem = original.AzureAuditD
-	NonAzureAppLocker SourceSystem = original.NonAzureAppLocker
-	NonAzureAuditD    SourceSystem = original.NonAzureAuditD
-	None              SourceSystem = original.None
+	SourceSystemAzureAppLocker    SourceSystem = original.SourceSystemAzureAppLocker
+	SourceSystemAzureAuditD       SourceSystem = original.SourceSystemAzureAuditD
+	SourceSystemNonAzureAppLocker SourceSystem = original.SourceSystemNonAzureAppLocker
+	SourceSystemNonAzureAuditD    SourceSystem = original.SourceSystemNonAzureAuditD
+	SourceSystemNone              SourceSystem = original.SourceSystemNone
 )
 
 type State = original.State
@@ -494,6 +528,7 @@ type Pricing = original.Pricing
 type PricingList = original.PricingList
 type PricingProperties = original.PricingProperties
 type PricingsClient = original.PricingsClient
+type ProtectionMode = original.ProtectionMode
 type PublisherInfo = original.PublisherInfo
 type RecommendationConfigurationProperties = original.RecommendationConfigurationProperties
 type RegulatoryComplianceAssessment = original.RegulatoryComplianceAssessment
@@ -905,6 +940,12 @@ func PossibleEnforcementMode1Values() []EnforcementMode1 {
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()
 }
+func PossibleExeValues() []Exe {
+	return original.PossibleExeValues()
+}
+func PossibleExecutableValues() []Executable {
+	return original.PossibleExecutableValues()
+}
 func PossibleExportDataValues() []ExportData {
 	return original.PossibleExportDataValues()
 }
@@ -922,6 +963,9 @@ func PossibleIssueValues() []Issue {
 }
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
+}
+func PossibleMsiValues() []Msi {
+	return original.PossibleMsiValues()
 }
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()
@@ -952,6 +996,9 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 }
 func PossibleResourceStatusValues() []ResourceStatus {
 	return original.PossibleResourceStatusValues()
+}
+func PossibleScriptValues() []Script {
+	return original.PossibleScriptValues()
 }
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()

@@ -48,17 +48,17 @@ func PossibleAggregationsKindValues() []AggregationsKind {
 type AlertRuleKind string
 
 const (
-	// Filter ...
-	Filter AlertRuleKind = "Filter"
 	// Fusion ...
 	Fusion AlertRuleKind = "Fusion"
+	// MicrosoftSecurityIncidentCreation ...
+	MicrosoftSecurityIncidentCreation AlertRuleKind = "MicrosoftSecurityIncidentCreation"
 	// Scheduled ...
 	Scheduled AlertRuleKind = "Scheduled"
 )
 
 // PossibleAlertRuleKindValues returns an array of possible values for the AlertRuleKind const type.
 func PossibleAlertRuleKindValues() []AlertRuleKind {
-	return []AlertRuleKind{Filter, Fusion, Scheduled}
+	return []AlertRuleKind{Fusion, MicrosoftSecurityIncidentCreation, Scheduled}
 }
 
 // AlertSeverity enumerates the values for alert severity.
@@ -515,13 +515,17 @@ type KindBasicAlertRule string
 const (
 	// KindAlertRule ...
 	KindAlertRule KindBasicAlertRule = "AlertRule"
+	// KindFusion ...
+	KindFusion KindBasicAlertRule = "Fusion"
+	// KindMicrosoftSecurityIncidentCreation ...
+	KindMicrosoftSecurityIncidentCreation KindBasicAlertRule = "MicrosoftSecurityIncidentCreation"
 	// KindScheduled ...
 	KindScheduled KindBasicAlertRule = "Scheduled"
 )
 
 // PossibleKindBasicAlertRuleValues returns an array of possible values for the KindBasicAlertRule const type.
 func PossibleKindBasicAlertRuleValues() []KindBasicAlertRule {
-	return []KindBasicAlertRule{KindAlertRule, KindScheduled}
+	return []KindBasicAlertRule{KindAlertRule, KindFusion, KindMicrosoftSecurityIncidentCreation, KindScheduled}
 }
 
 // KindBasicAlertRuleTemplate enumerates the values for kind basic alert rule template.
@@ -530,17 +534,17 @@ type KindBasicAlertRuleTemplate string
 const (
 	// KindBasicAlertRuleTemplateKindAlertRuleTemplate ...
 	KindBasicAlertRuleTemplateKindAlertRuleTemplate KindBasicAlertRuleTemplate = "AlertRuleTemplate"
-	// KindBasicAlertRuleTemplateKindFilter ...
-	KindBasicAlertRuleTemplateKindFilter KindBasicAlertRuleTemplate = "Filter"
 	// KindBasicAlertRuleTemplateKindFusion ...
 	KindBasicAlertRuleTemplateKindFusion KindBasicAlertRuleTemplate = "Fusion"
+	// KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation ...
+	KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation KindBasicAlertRuleTemplate = "MicrosoftSecurityIncidentCreation"
 	// KindBasicAlertRuleTemplateKindScheduled ...
 	KindBasicAlertRuleTemplateKindScheduled KindBasicAlertRuleTemplate = "Scheduled"
 )
 
 // PossibleKindBasicAlertRuleTemplateValues returns an array of possible values for the KindBasicAlertRuleTemplate const type.
 func PossibleKindBasicAlertRuleTemplateValues() []KindBasicAlertRuleTemplate {
-	return []KindBasicAlertRuleTemplate{KindBasicAlertRuleTemplateKindAlertRuleTemplate, KindBasicAlertRuleTemplateKindFilter, KindBasicAlertRuleTemplateKindFusion, KindBasicAlertRuleTemplateKindScheduled}
+	return []KindBasicAlertRuleTemplate{KindBasicAlertRuleTemplateKindAlertRuleTemplate, KindBasicAlertRuleTemplateKindFusion, KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation, KindBasicAlertRuleTemplateKindScheduled}
 }
 
 // KindBasicDataConnector enumerates the values for kind basic data connector.
@@ -645,6 +649,25 @@ const (
 // PossibleLicenseStatusValues returns an array of possible values for the LicenseStatus const type.
 func PossibleLicenseStatusValues() []LicenseStatus {
 	return []LicenseStatus{LicenseStatusDisabled, LicenseStatusEnabled}
+}
+
+// MicrosoftSecurityProductName enumerates the values for microsoft security product name.
+type MicrosoftSecurityProductName string
+
+const (
+	// AzureActiveDirectoryIdentityProtection ...
+	AzureActiveDirectoryIdentityProtection MicrosoftSecurityProductName = "Azure Active Directory Identity Protection"
+	// AzureAdvancedThreatProtection ...
+	AzureAdvancedThreatProtection MicrosoftSecurityProductName = "Azure Advanced Threat Protection"
+	// AzureSecurityCenter ...
+	AzureSecurityCenter MicrosoftSecurityProductName = "Azure Security Center"
+	// MicrosoftCloudAppSecurity ...
+	MicrosoftCloudAppSecurity MicrosoftSecurityProductName = "Microsoft Cloud App Security"
+)
+
+// PossibleMicrosoftSecurityProductNameValues returns an array of possible values for the MicrosoftSecurityProductName const type.
+func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName {
+	return []MicrosoftSecurityProductName{AzureActiveDirectoryIdentityProtection, AzureAdvancedThreatProtection, AzureSecurityCenter, MicrosoftCloudAppSecurity}
 }
 
 // OSFamily enumerates the values for os family.
@@ -794,13 +817,7 @@ func PossibleTriggerOperatorValues() []TriggerOperator {
 type AADDataConnector struct {
 	// AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
 	*AADDataConnectorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the data connector.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
@@ -890,33 +907,6 @@ func (adc *AADDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.AADDataConnectorProperties = &aADDataConnectorProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				adc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				adc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				adc.Type = &typeVar
-			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -953,13 +943,7 @@ type AADDataConnectorProperties struct {
 type AATPDataConnector struct {
 	// AATPDataConnectorProperties - AATP (Azure Advanced Threat Protection) data connector properties.
 	*AATPDataConnectorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the data connector.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
@@ -1048,33 +1032,6 @@ func (adc *AATPDataConnector) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				adc.AATPDataConnectorProperties = &aATPDataConnectorProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				adc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				adc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				adc.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -1319,10 +1276,10 @@ func (aep AccountEntityProperties) MarshalJSON() ([]byte, error) {
 // Action action for alert rule.
 type Action struct {
 	autorest.Response `json:"-"`
-	// Etag - Etag of the action.
-	Etag *string `json:"etag,omitempty"`
 	// ActionProperties - Action properties
 	*ActionProperties `json:"properties,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -1334,11 +1291,11 @@ type Action struct {
 // MarshalJSON is the custom marshaler for Action.
 func (a Action) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if a.Etag != nil {
-		objectMap["etag"] = a.Etag
-	}
 	if a.ActionProperties != nil {
 		objectMap["properties"] = a.ActionProperties
+	}
+	if a.Etag != nil {
+		objectMap["etag"] = a.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -1352,15 +1309,6 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				a.Etag = &etag
-			}
 		case "properties":
 			if v != nil {
 				var actionProperties ActionProperties
@@ -1369,6 +1317,15 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.ActionProperties = &actionProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				a.Etag = &etag
 			}
 		case "id":
 			if v != nil {
@@ -1661,6 +1618,8 @@ func (am *AggregationsModel) UnmarshalJSON(body []byte) error {
 
 // BasicAlertRule alert rule.
 type BasicAlertRule interface {
+	AsFusionAlertRule() (*FusionAlertRule, bool)
+	AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool)
 	AsScheduledAlertRule() (*ScheduledAlertRule, bool)
 	AsAlertRule() (*AlertRule, bool)
 }
@@ -1668,15 +1627,9 @@ type BasicAlertRule interface {
 // AlertRule alert rule.
 type AlertRule struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the alert rule.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -1688,6 +1641,14 @@ func unmarshalBasicAlertRule(body []byte) (BasicAlertRule, error) {
 	}
 
 	switch m["kind"] {
+	case string(KindFusion):
+		var far FusionAlertRule
+		err := json.Unmarshal(body, &far)
+		return far, err
+	case string(KindMicrosoftSecurityIncidentCreation):
+		var msicar MicrosoftSecurityIncidentCreationAlertRule
+		err := json.Unmarshal(body, &msicar)
+		return msicar, err
 	case string(KindScheduled):
 		var sar ScheduledAlertRule
 		err := json.Unmarshal(body, &sar)
@@ -1730,6 +1691,16 @@ func (ar AlertRule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsFusionAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+	return nil, false
+}
+
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for AlertRule.
+func (ar AlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
+	return nil, false
+}
+
 // AsScheduledAlertRule is the BasicAlertRule implementation for AlertRule.
 func (ar AlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
 	return nil, false
@@ -1747,7 +1718,7 @@ func (ar AlertRule) AsBasicAlertRule() (BasicAlertRule, bool) {
 
 // AlertRuleKind1 describes an Azure resource with kind.
 type AlertRuleKind1 struct {
-	// Kind - The kind of the alert rule. Possible values include: 'Scheduled', 'Filter', 'Fusion'
+	// Kind - The kind of the alert rule. Possible values include: 'Scheduled', 'MicrosoftSecurityIncidentCreation', 'Fusion'
 	Kind AlertRuleKind `json:"kind,omitempty"`
 }
 
@@ -1948,8 +1919,8 @@ func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (Al
 
 // BasicAlertRuleTemplate alert rule template.
 type BasicAlertRuleTemplate interface {
-	AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool)
 	AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool)
+	AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool)
 	AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool)
 	AsAlertRuleTemplate() (*AlertRuleTemplate, bool)
 }
@@ -1963,9 +1934,7 @@ type AlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the alert rule.
-	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFilter', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -1977,14 +1946,14 @@ func unmarshalBasicAlertRuleTemplate(body []byte) (BasicAlertRuleTemplate, error
 	}
 
 	switch m["kind"] {
-	case string(KindBasicAlertRuleTemplateKindFilter):
-		var fart FilterAlertRuleTemplate
-		err := json.Unmarshal(body, &fart)
-		return fart, err
 	case string(KindBasicAlertRuleTemplateKindFusion):
 		var fart FusionAlertRuleTemplate
 		err := json.Unmarshal(body, &fart)
 		return fart, err
+	case string(KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation):
+		var msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate
+		err := json.Unmarshal(body, &msicart)
+		return msicart, err
 	case string(KindBasicAlertRuleTemplateKindScheduled):
 		var sart ScheduledAlertRuleTemplate
 		err := json.Unmarshal(body, &sart)
@@ -2018,22 +1987,19 @@ func unmarshalBasicAlertRuleTemplateArray(body []byte) ([]BasicAlertRuleTemplate
 func (art AlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	art.Kind = KindBasicAlertRuleTemplateKindAlertRuleTemplate
 	objectMap := make(map[string]interface{})
-	if art.Etag != nil {
-		objectMap["etag"] = art.Etag
-	}
 	if art.Kind != "" {
 		objectMap["kind"] = art.Kind
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsFilterAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
-func (art AlertRuleTemplate) AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool) {
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
 	return nil, false
 }
 
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
-func (art AlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for AlertRuleTemplate.
+func (art AlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -2067,6 +2033,24 @@ func (artm *AlertRuleTemplateModel) UnmarshalJSON(body []byte) error {
 	artm.Value = art
 
 	return nil
+}
+
+// AlertRuleTemplatePropertiesBase base alert rule template property bag.
+type AlertRuleTemplatePropertiesBase struct {
+	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
+	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
+	CreatedDateUTC *date.Time `json:"createdDateUTC,omitempty"`
+	// Description - The description of the alert rule template.
+	Description *string `json:"description,omitempty"`
+	// DisplayName - The display name for alert rule template.
+	DisplayName *string `json:"displayName,omitempty"`
+	// RequiredDataConnectors - The required data connectors for this template
+	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
+	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
+	Status TemplateStatus `json:"status,omitempty"`
+	// Tactics - The tactics of the alert rule template
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 }
 
 // AlertRuleTemplatesList list all the alert rule templates.
@@ -2263,13 +2247,7 @@ type AlertsDataTypeOfDataConnectorAlerts struct {
 type ASCDataConnector struct {
 	// ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
 	*ASCDataConnectorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the data connector.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
@@ -2359,33 +2337,6 @@ func (adc *ASCDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.ASCDataConnectorProperties = &aSCDataConnectorProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				adc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				adc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				adc.Type = &typeVar
-			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -2422,13 +2373,7 @@ type ASCDataConnectorProperties struct {
 type AwsCloudTrailDataConnector struct {
 	// AwsCloudTrailDataConnectorProperties - Amazon Web Services CloudTrail data connector properties.
 	*AwsCloudTrailDataConnectorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the data connector.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
@@ -2517,33 +2462,6 @@ func (actdc *AwsCloudTrailDataConnector) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				actdc.AwsCloudTrailDataConnectorProperties = &awsCloudTrailDataConnectorProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				actdc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				actdc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				actdc.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -2778,31 +2696,13 @@ func (arep AzureResourceEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// BaseAlertRuleTemplateProperties base alert rule template property bag.
-type BaseAlertRuleTemplateProperties struct {
-	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
-	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
-	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
-	// Description - The description of the alert rule template.
-	Description *string `json:"description,omitempty"`
-	// DisplayName - The display name for alert rule template.
-	DisplayName *string `json:"displayName,omitempty"`
-	// RequiredDataConnectors - The required data connectors for this template
-	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
-	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
-	Status TemplateStatus `json:"status,omitempty"`
-	// Tactics - The tactics of the alert rule template
-	Tactics *[]AttackTactic `json:"tactics,omitempty"`
-}
-
 // Bookmark represents a bookmark in Azure Security Insights.
 type Bookmark struct {
 	autorest.Response `json:"-"`
-	// Etag - Etag of the bookmark.
-	Etag *string `json:"etag,omitempty"`
 	// BookmarkProperties - Bookmark properties
 	*BookmarkProperties `json:"properties,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -2814,11 +2714,11 @@ type Bookmark struct {
 // MarshalJSON is the custom marshaler for Bookmark.
 func (b Bookmark) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if b.Etag != nil {
-		objectMap["etag"] = b.Etag
-	}
 	if b.BookmarkProperties != nil {
 		objectMap["properties"] = b.BookmarkProperties
+	}
+	if b.Etag != nil {
+		objectMap["etag"] = b.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -2832,15 +2732,6 @@ func (b *Bookmark) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				b.Etag = &etag
-			}
 		case "properties":
 			if v != nil {
 				var bookmarkProperties BookmarkProperties
@@ -2849,6 +2740,15 @@ func (b *Bookmark) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				b.BookmarkProperties = &bookmarkProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				b.Etag = &etag
 			}
 		case "id":
 			if v != nil {
@@ -3054,10 +2954,10 @@ type BookmarkProperties struct {
 // Case represents a case in Azure Security Insights.
 type Case struct {
 	autorest.Response `json:"-"`
-	// Etag - Etag of the alert rule.
-	Etag *string `json:"etag,omitempty"`
 	// CaseProperties - Case properties
 	*CaseProperties `json:"properties,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -3069,11 +2969,11 @@ type Case struct {
 // MarshalJSON is the custom marshaler for Case.
 func (c Case) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if c.Etag != nil {
-		objectMap["etag"] = c.Etag
-	}
 	if c.CaseProperties != nil {
 		objectMap["properties"] = c.CaseProperties
+	}
+	if c.Etag != nil {
+		objectMap["etag"] = c.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -3087,15 +2987,6 @@ func (c *Case) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				c.Etag = &etag
-			}
 		case "properties":
 			if v != nil {
 				var caseProperties CaseProperties
@@ -3104,6 +2995,15 @@ func (c *Case) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				c.CaseProperties = &caseProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				c.Etag = &etag
 			}
 		case "id":
 			if v != nil {
@@ -3940,13 +3840,7 @@ type BasicDataConnector interface {
 // DataConnector data connector.
 type DataConnector struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the data connector.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
@@ -5634,65 +5528,59 @@ func (fhep FileHashEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// FilterAlertRuleTemplate represents filter alert rule template.
-type FilterAlertRuleTemplate struct {
-	// FilterAlertRuleTemplateProperties - Filter alert rule template properties
-	*FilterAlertRuleTemplateProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the alert rule.
+// FusionAlertRule represents Fusion alert rule.
+type FusionAlertRule struct {
+	// FusionAlertRuleProperties - Fusion alert rule properties
+	*FusionAlertRuleProperties `json:"properties,omitempty"`
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFilter', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindScheduled'
-	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
+	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for FilterAlertRuleTemplate.
-func (fart FilterAlertRuleTemplate) MarshalJSON() ([]byte, error) {
-	fart.Kind = KindBasicAlertRuleTemplateKindFilter
+// MarshalJSON is the custom marshaler for FusionAlertRule.
+func (far FusionAlertRule) MarshalJSON() ([]byte, error) {
+	far.Kind = KindFusion
 	objectMap := make(map[string]interface{})
-	if fart.FilterAlertRuleTemplateProperties != nil {
-		objectMap["properties"] = fart.FilterAlertRuleTemplateProperties
+	if far.FusionAlertRuleProperties != nil {
+		objectMap["properties"] = far.FusionAlertRuleProperties
 	}
-	if fart.Etag != nil {
-		objectMap["etag"] = fart.Etag
+	if far.Etag != nil {
+		objectMap["etag"] = far.Etag
 	}
-	if fart.Kind != "" {
-		objectMap["kind"] = fart.Kind
+	if far.Kind != "" {
+		objectMap["kind"] = far.Kind
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsFilterAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
-func (fart FilterAlertRuleTemplate) AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool) {
-	return &fart, true
+// AsFusionAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+	return &far, true
 }
 
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
-func (fart FilterAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
 	return nil, false
 }
 
-// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
-func (fart FilterAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+// AsScheduledAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
 	return nil, false
 }
 
-// AsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
-func (fart FilterAlertRuleTemplate) AsAlertRuleTemplate() (*AlertRuleTemplate, bool) {
+// AsAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsAlertRule() (*AlertRule, bool) {
 	return nil, false
 }
 
-// AsBasicAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FilterAlertRuleTemplate.
-func (fart FilterAlertRuleTemplate) AsBasicAlertRuleTemplate() (BasicAlertRuleTemplate, bool) {
-	return &fart, true
+// AsBasicAlertRule is the BasicAlertRule implementation for FusionAlertRule.
+func (far FusionAlertRule) AsBasicAlertRule() (BasicAlertRule, bool) {
+	return &far, true
 }
 
-// UnmarshalJSON is the custom unmarshaler for FilterAlertRuleTemplate struct.
-func (fart *FilterAlertRuleTemplate) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for FusionAlertRule struct.
+func (far *FusionAlertRule) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -5702,39 +5590,12 @@ func (fart *FilterAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var filterAlertRuleTemplateProperties FilterAlertRuleTemplateProperties
-				err = json.Unmarshal(*v, &filterAlertRuleTemplateProperties)
+				var fusionAlertRuleProperties FusionAlertRuleProperties
+				err = json.Unmarshal(*v, &fusionAlertRuleProperties)
 				if err != nil {
 					return err
 				}
-				fart.FilterAlertRuleTemplateProperties = &filterAlertRuleTemplateProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				fart.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				fart.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				fart.Type = &typeVar
+				far.FusionAlertRuleProperties = &fusionAlertRuleProperties
 			}
 		case "etag":
 			if v != nil {
@@ -5743,16 +5604,16 @@ func (fart *FilterAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				fart.Etag = &etag
+				far.Etag = &etag
 			}
 		case "kind":
 			if v != nil {
-				var kind KindBasicAlertRuleTemplate
+				var kind KindBasicAlertRule
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
 				}
-				fart.Kind = kind
+				far.Kind = kind
 			}
 		}
 	}
@@ -5760,41 +5621,25 @@ func (fart *FilterAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// FilterAlertRuleTemplateProperties filter alert rule template properties
-type FilterAlertRuleTemplateProperties struct {
-	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
-	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
-	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
-	// Description - The description of the alert rule template.
+// FusionAlertRuleProperties fusion alert rule base property bag.
+type FusionAlertRuleProperties struct {
+	// AlertRuleTemplateName - The Name of the alert rule template used to create this rule.
+	AlertRuleTemplateName *string `json:"alertRuleTemplateName,omitempty"`
+	// Description - READ-ONLY; The description of the alert rule.
 	Description *string `json:"description,omitempty"`
-	// DisplayName - The display name for alert rule template.
+	// DisplayName - READ-ONLY; The display name for alerts created by this alert rule.
 	DisplayName *string `json:"displayName,omitempty"`
-	// RequiredDataConnectors - The required data connectors for this template
-	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
-	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
-	Status TemplateStatus `json:"status,omitempty"`
-	// Tactics - The tactics of the alert rule template
+	// Enabled - Determines whether this alert rule is enabled or disabled.
+	Enabled *bool `json:"enabled,omitempty"`
+	// LastModifiedUtc - READ-ONLY; The last time that this alert has been modified.
+	LastModifiedUtc *date.Time `json:"lastModifiedUtc,omitempty"`
+	// Severity - READ-ONLY; The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
+	// Tactics - READ-ONLY; The tactics of the alert rule
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
-	// FilterProduct - The filter product name for this template rule.
-	FilterProduct *string `json:"filterProduct,omitempty"`
-	// FilterSeverities - the alert’s severities on which the cases will be generated
-	FilterSeverities *[]AlertSeverity `json:"filterSeverities,omitempty"`
-	// FilterTitles - the alert’s titles on which the cases will be generated
-	FilterTitles *[]string `json:"filterTitles,omitempty"`
 }
 
-// FilterAlertRuleTemplatePropertiesModel filter alert rule template property bag.
-type FilterAlertRuleTemplatePropertiesModel struct {
-	// FilterProduct - The filter product name for this template rule.
-	FilterProduct *string `json:"filterProduct,omitempty"`
-	// FilterSeverities - the alert’s severities on which the cases will be generated
-	FilterSeverities *[]AlertSeverity `json:"filterSeverities,omitempty"`
-	// FilterTitles - the alert’s titles on which the cases will be generated
-	FilterTitles *[]string `json:"filterTitles,omitempty"`
-}
-
-// FusionAlertRuleTemplate represents fusion alert rule template.
+// FusionAlertRuleTemplate represents Fusion alert rule template.
 type FusionAlertRuleTemplate struct {
 	// FusionAlertRuleTemplateProperties - Fusion alert rule template properties
 	*FusionAlertRuleTemplateProperties `json:"properties,omitempty"`
@@ -5804,9 +5649,7 @@ type FusionAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the alert rule.
-	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFilter', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -5817,23 +5660,20 @@ func (fart FusionAlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	if fart.FusionAlertRuleTemplateProperties != nil {
 		objectMap["properties"] = fart.FusionAlertRuleTemplateProperties
 	}
-	if fart.Etag != nil {
-		objectMap["etag"] = fart.Etag
-	}
 	if fart.Kind != "" {
 		objectMap["kind"] = fart.Kind
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsFilterAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
-func (fart FusionAlertRuleTemplate) AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool) {
-	return nil, false
-}
-
 // AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
 func (fart FusionAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
 	return &fart, true
+}
+
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
+func (fart FusionAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
+	return nil, false
 }
 
 // AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for FusionAlertRuleTemplate.
@@ -5896,15 +5736,6 @@ func (fart *FusionAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 				}
 				fart.Type = &typeVar
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				fart.Etag = &etag
-			}
 		case "kind":
 			if v != nil {
 				var kind KindBasicAlertRuleTemplate
@@ -5922,10 +5753,12 @@ func (fart *FusionAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 
 // FusionAlertRuleTemplateProperties fusion alert rule template properties
 type FusionAlertRuleTemplateProperties struct {
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
 	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	CreatedDateUTC *date.Time `json:"createdDateUTC,omitempty"`
 	// Description - The description of the alert rule template.
 	Description *string `json:"description,omitempty"`
 	// DisplayName - The display name for alert rule template.
@@ -5936,14 +5769,6 @@ type FusionAlertRuleTemplateProperties struct {
 	Status TemplateStatus `json:"status,omitempty"`
 	// Tactics - The tactics of the alert rule template
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
-	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
-	Severity AlertSeverity `json:"severity,omitempty"`
-}
-
-// FusionAlertRuleTemplatePropertiesModel filter alert rule template property bag.
-type FusionAlertRuleTemplatePropertiesModel struct {
-	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
-	Severity AlertSeverity `json:"severity,omitempty"`
 }
 
 // GeoLocation the geo-location context attached to the ip entity
@@ -6564,13 +6389,7 @@ func (mep MalwareEntityProperties) MarshalJSON() ([]byte, error) {
 type MCASDataConnector struct {
 	// MCASDataConnectorProperties - MCAS (Microsoft Cloud App Security) data connector properties.
 	*MCASDataConnectorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the data connector.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
@@ -6660,33 +6479,6 @@ func (mdc *MCASDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				mdc.MCASDataConnectorProperties = &mCASDataConnectorProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				mdc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				mdc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				mdc.Type = &typeVar
-			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -6738,13 +6530,7 @@ type MCASDataConnectorProperties struct {
 type MDATPDataConnector struct {
 	// MDATPDataConnectorProperties - MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
 	*MDATPDataConnectorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the data connector.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
@@ -6834,33 +6620,6 @@ func (mdc *MDATPDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				mdc.MDATPDataConnectorProperties = &mDATPDataConnectorProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				mdc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				mdc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				mdc.Type = &typeVar
-			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -6892,6 +6651,271 @@ type MDATPDataConnectorProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// DataTypes - The available data types for the connector.
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
+}
+
+// MicrosoftSecurityIncidentCreationAlertRule represents MicrosoftSecurityIncidentCreation rule.
+type MicrosoftSecurityIncidentCreationAlertRule struct {
+	// MicrosoftSecurityIncidentCreationAlertRuleProperties - MicrosoftSecurityIncidentCreation rule properties
+	*MicrosoftSecurityIncidentCreationAlertRuleProperties `json:"properties,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
+	Kind KindBasicAlertRule `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) MarshalJSON() ([]byte, error) {
+	msicar.Kind = KindMicrosoftSecurityIncidentCreation
+	objectMap := make(map[string]interface{})
+	if msicar.MicrosoftSecurityIncidentCreationAlertRuleProperties != nil {
+		objectMap["properties"] = msicar.MicrosoftSecurityIncidentCreationAlertRuleProperties
+	}
+	if msicar.Etag != nil {
+		objectMap["etag"] = msicar.Etag
+	}
+	if msicar.Kind != "" {
+		objectMap["kind"] = msicar.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsFusionAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+	return nil, false
+}
+
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
+	return &msicar, true
+}
+
+// AsScheduledAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsScheduledAlertRule() (*ScheduledAlertRule, bool) {
+	return nil, false
+}
+
+// AsAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsAlertRule() (*AlertRule, bool) {
+	return nil, false
+}
+
+// AsBasicAlertRule is the BasicAlertRule implementation for MicrosoftSecurityIncidentCreationAlertRule.
+func (msicar MicrosoftSecurityIncidentCreationAlertRule) AsBasicAlertRule() (BasicAlertRule, bool) {
+	return &msicar, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MicrosoftSecurityIncidentCreationAlertRule struct.
+func (msicar *MicrosoftSecurityIncidentCreationAlertRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var microsoftSecurityIncidentCreationAlertRuleProperties MicrosoftSecurityIncidentCreationAlertRuleProperties
+				err = json.Unmarshal(*v, &microsoftSecurityIncidentCreationAlertRuleProperties)
+				if err != nil {
+					return err
+				}
+				msicar.MicrosoftSecurityIncidentCreationAlertRuleProperties = &microsoftSecurityIncidentCreationAlertRuleProperties
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				msicar.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAlertRule
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				msicar.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// MicrosoftSecurityIncidentCreationAlertRuleCommonProperties microsoftSecurityIncidentCreation rule common
+// property bag.
+type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
+	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
+	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
+	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
+	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
+	// SeveritiesFilter - the alerts' severities on which the cases will be generated
+	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
+}
+
+// MicrosoftSecurityIncidentCreationAlertRuleProperties microsoftSecurityIncidentCreation rule property
+// bag.
+type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
+	// AlertRuleTemplateName - The Name of the alert rule template used to create this rule.
+	AlertRuleTemplateName *string `json:"alertRuleTemplateName,omitempty"`
+	// Description - The description of the alert rule.
+	Description *string `json:"description,omitempty"`
+	// DisplayName - The display name for alerts created by this alert rule.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Enabled - Determines whether this alert rule is enabled or disabled.
+	Enabled *bool `json:"enabled,omitempty"`
+	// LastModifiedUtc - READ-ONLY; The last time that this alert has been modified.
+	LastModifiedUtc *date.Time `json:"lastModifiedUtc,omitempty"`
+	// Tactics - The tactics of the alert rule
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
+	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
+	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
+	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
+	// SeveritiesFilter - the alerts' severities on which the cases will be generated
+	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
+}
+
+// MicrosoftSecurityIncidentCreationAlertRuleTemplate represents MicrosoftSecurityIncidentCreation rule
+// template.
+type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
+	// MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties - MicrosoftSecurityIncidentCreation rule template properties
+	*MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) MarshalJSON() ([]byte, error) {
+	msicart.Kind = KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation
+	objectMap := make(map[string]interface{})
+	if msicart.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties != nil {
+		objectMap["properties"] = msicart.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
+	}
+	if msicart.Kind != "" {
+		objectMap["kind"] = msicart.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
+	return &msicart, true
+}
+
+// AsScheduledAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsScheduledAlertRuleTemplate() (*ScheduledAlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsAlertRuleTemplate() (*AlertRuleTemplate, bool) {
+	return nil, false
+}
+
+// AsBasicAlertRuleTemplate is the BasicAlertRuleTemplate implementation for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
+func (msicart MicrosoftSecurityIncidentCreationAlertRuleTemplate) AsBasicAlertRuleTemplate() (BasicAlertRuleTemplate, bool) {
+	return &msicart, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for MicrosoftSecurityIncidentCreationAlertRuleTemplate struct.
+func (msicart *MicrosoftSecurityIncidentCreationAlertRuleTemplate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var microsoftSecurityIncidentCreationAlertRuleTemplateProperties MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
+				err = json.Unmarshal(*v, &microsoftSecurityIncidentCreationAlertRuleTemplateProperties)
+				if err != nil {
+					return err
+				}
+				msicart.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties = &microsoftSecurityIncidentCreationAlertRuleTemplateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				msicart.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				msicart.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				msicart.Type = &typeVar
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAlertRuleTemplate
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				msicart.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties microsoftSecurityIncidentCreation rule
+// template properties
+type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
+	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
+	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
+	CreatedDateUTC *date.Time `json:"createdDateUTC,omitempty"`
+	// Description - The description of the alert rule template.
+	Description *string `json:"description,omitempty"`
+	// DisplayName - The display name for alert rule template.
+	DisplayName *string `json:"displayName,omitempty"`
+	// RequiredDataConnectors - The required data connectors for this template
+	RequiredDataConnectors *[]DataConnectorStatus `json:"requiredDataConnectors,omitempty"`
+	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
+	Status TemplateStatus `json:"status,omitempty"`
+	// Tactics - The tactics of the alert rule template
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
+	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
+	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
+	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
+	// SeveritiesFilter - the alerts' severities on which the cases will be generated
+	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
 }
 
 // OfficeConsent consent for Office365 tenant that already made.
@@ -7125,13 +7149,7 @@ type OfficeConsentProperties struct {
 type OfficeDataConnector struct {
 	// OfficeDataConnectorProperties - Office data connector properties.
 	*OfficeDataConnectorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the data connector.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
@@ -7220,33 +7238,6 @@ func (odc *OfficeDataConnector) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				odc.OfficeDataConnectorProperties = &officeDataConnectorProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				odc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				odc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				odc.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -8067,19 +8058,25 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ScheduledAlertRule represents scheduled alert rule.
-type ScheduledAlertRule struct {
-	// ScheduledAlertRuleProperties - Scheduled alert rule properties
-	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
+// ResourceWithEtag an azure resource object with an Etag property
+type ResourceWithEtag struct {
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the alert rule.
+}
+
+// ScheduledAlertRule represents scheduled alert rule.
+type ScheduledAlertRule struct {
+	// ScheduledAlertRuleProperties - Scheduled alert rule properties
+	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind KindBasicAlertRule `json:"kind,omitempty"`
 }
 
@@ -8097,6 +8094,16 @@ func (sar ScheduledAlertRule) MarshalJSON() ([]byte, error) {
 		objectMap["kind"] = sar.Kind
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsFusionAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsFusionAlertRule() (*FusionAlertRule, bool) {
+	return nil, false
+}
+
+// AsMicrosoftSecurityIncidentCreationAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
+func (sar ScheduledAlertRule) AsMicrosoftSecurityIncidentCreationAlertRule() (*MicrosoftSecurityIncidentCreationAlertRule, bool) {
+	return nil, false
 }
 
 // AsScheduledAlertRule is the BasicAlertRule implementation for ScheduledAlertRule.
@@ -8132,33 +8139,6 @@ func (sar *ScheduledAlertRule) UnmarshalJSON(body []byte) error {
 				}
 				sar.ScheduledAlertRuleProperties = &scheduledAlertRuleProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				sar.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				sar.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				sar.Type = &typeVar
-			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -8183,16 +8163,8 @@ func (sar *ScheduledAlertRule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ScheduledAlertRuleProperties alert rule property bag.
-type ScheduledAlertRuleProperties struct {
-	// Description - The description of the alert rule.
-	Description *string `json:"description,omitempty"`
-	// DisplayName - The display name for alerts created by this alert rule.
-	DisplayName *string `json:"displayName,omitempty"`
-	// Enabled - Determines whether this alert rule is enabled or disabled.
-	Enabled *bool `json:"enabled,omitempty"`
-	// LastModifiedUtc - READ-ONLY; The last time that this alert has been modified.
-	LastModifiedUtc *string `json:"lastModifiedUtc,omitempty"`
+// ScheduledAlertRuleCommonProperties schedule alert rule template property bag.
+type ScheduledAlertRuleCommonProperties struct {
 	// Query - The query that creates alerts for this rule.
 	Query *string `json:"query,omitempty"`
 	// QueryFrequency - The frequency (in ISO 8601 duration format) for this alert rule to run.
@@ -8201,10 +8173,38 @@ type ScheduledAlertRuleProperties struct {
 	QueryPeriod *string `json:"queryPeriod,omitempty"`
 	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
 	Severity AlertSeverity `json:"severity,omitempty"`
+	// TriggerOperator - The operation against the threshold that triggers alert rule. Possible values include: 'GreaterThan', 'LessThan', 'Equal', 'NotEqual'
+	TriggerOperator TriggerOperator `json:"triggerOperator,omitempty"`
+	// TriggerThreshold - The threshold triggers this alert rule.
+	TriggerThreshold *int32 `json:"triggerThreshold,omitempty"`
+}
+
+// ScheduledAlertRuleProperties scheduled alert rule base property bag.
+type ScheduledAlertRuleProperties struct {
+	// AlertRuleTemplateName - The Name of the alert rule template used to create this rule.
+	AlertRuleTemplateName *string `json:"alertRuleTemplateName,omitempty"`
+	// Description - The description of the alert rule.
+	Description *string `json:"description,omitempty"`
+	// DisplayName - The display name for alerts created by this alert rule.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Enabled - Determines whether this alert rule is enabled or disabled.
+	Enabled *bool `json:"enabled,omitempty"`
+	// LastModifiedUtc - READ-ONLY; The last time that this alert rule has been modified.
+	LastModifiedUtc *date.Time `json:"lastModifiedUtc,omitempty"`
 	// SuppressionDuration - The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
 	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
 	// SuppressionEnabled - Determines whether the suppression for this alert rule is enabled or disabled.
 	SuppressionEnabled *bool `json:"suppressionEnabled,omitempty"`
+	// Tactics - The tactics of the alert rule
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+	// Query - The query that creates alerts for this rule.
+	Query *string `json:"query,omitempty"`
+	// QueryFrequency - The frequency (in ISO 8601 duration format) for this alert rule to run.
+	QueryFrequency *string `json:"queryFrequency,omitempty"`
+	// QueryPeriod - The period (in ISO 8601 duration format) that this alert rule looks at.
+	QueryPeriod *string `json:"queryPeriod,omitempty"`
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
 	// TriggerOperator - The operation against the threshold that triggers alert rule. Possible values include: 'GreaterThan', 'LessThan', 'Equal', 'NotEqual'
 	TriggerOperator TriggerOperator `json:"triggerOperator,omitempty"`
 	// TriggerThreshold - The threshold triggers this alert rule.
@@ -8221,9 +8221,7 @@ type ScheduledAlertRuleTemplate struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the alert rule.
-	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFilter', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindScheduled'
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
 	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
@@ -8234,22 +8232,19 @@ func (sart ScheduledAlertRuleTemplate) MarshalJSON() ([]byte, error) {
 	if sart.ScheduledAlertRuleTemplateProperties != nil {
 		objectMap["properties"] = sart.ScheduledAlertRuleTemplateProperties
 	}
-	if sart.Etag != nil {
-		objectMap["etag"] = sart.Etag
-	}
 	if sart.Kind != "" {
 		objectMap["kind"] = sart.Kind
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsFilterAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
-func (sart ScheduledAlertRuleTemplate) AsFilterAlertRuleTemplate() (*FilterAlertRuleTemplate, bool) {
+// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
 	return nil, false
 }
 
-// AsFusionAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
-func (sart ScheduledAlertRuleTemplate) AsFusionAlertRuleTemplate() (*FusionAlertRuleTemplate, bool) {
+// AsMicrosoftSecurityIncidentCreationAlertRuleTemplate is the BasicAlertRuleTemplate implementation for ScheduledAlertRuleTemplate.
+func (sart ScheduledAlertRuleTemplate) AsMicrosoftSecurityIncidentCreationAlertRuleTemplate() (*MicrosoftSecurityIncidentCreationAlertRuleTemplate, bool) {
 	return nil, false
 }
 
@@ -8313,15 +8308,6 @@ func (sart *ScheduledAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 				}
 				sart.Type = &typeVar
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				sart.Etag = &etag
-			}
 		case "kind":
 			if v != nil {
 				var kind KindBasicAlertRuleTemplate
@@ -8342,7 +8328,7 @@ type ScheduledAlertRuleTemplateProperties struct {
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
 	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *string `json:"createdDateUTC,omitempty"`
+	CreatedDateUTC *date.Time `json:"createdDateUTC,omitempty"`
 	// Description - The description of the alert rule template.
 	Description *string `json:"description,omitempty"`
 	// DisplayName - The display name for alert rule template.
@@ -8353,22 +8339,6 @@ type ScheduledAlertRuleTemplateProperties struct {
 	Status TemplateStatus `json:"status,omitempty"`
 	// Tactics - The tactics of the alert rule template
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
-	// Query - The query that creates alerts for this rule.
-	Query *string `json:"query,omitempty"`
-	// QueryFrequency - The frequency (in ISO 8601 duration format) for this alert rule to run.
-	QueryFrequency *string `json:"queryFrequency,omitempty"`
-	// QueryPeriod - The period (in ISO 8601 duration format) that this alert rule looks at.
-	QueryPeriod *string `json:"queryPeriod,omitempty"`
-	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
-	Severity AlertSeverity `json:"severity,omitempty"`
-	// TriggerOperator - The operation against the threshold that triggers alert rule. Possible values include: 'GreaterThan', 'LessThan', 'Equal', 'NotEqual'
-	TriggerOperator TriggerOperator `json:"triggerOperator,omitempty"`
-	// TriggerThreshold - The threshold triggers this alert rule.
-	TriggerThreshold *int32 `json:"triggerThreshold,omitempty"`
-}
-
-// ScheduledAlertRuleTemplatePropertiesModel schedule alert rule template property bag.
-type ScheduledAlertRuleTemplatePropertiesModel struct {
 	// Query - The query that creates alerts for this rule.
 	Query *string `json:"query,omitempty"`
 	// QueryFrequency - The frequency (in ISO 8601 duration format) for this alert rule to run.
@@ -8824,13 +8794,7 @@ type BasicSettings interface {
 // Settings the Setting.
 type Settings struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the alert rule.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
 	Kind KindBasicSettings `json:"kind,omitempty"`
@@ -8953,13 +8917,7 @@ type ThreatIntelligence struct {
 type TIDataConnector struct {
 	// TIDataConnectorProperties - TI (Threat Intelligence) data connector properties.
 	*TIDataConnectorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the data connector.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
@@ -9049,33 +9007,6 @@ func (tdc *TIDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				tdc.TIDataConnectorProperties = &tIDataConnectorProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				tdc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				tdc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				tdc.Type = &typeVar
-			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -9124,13 +9055,7 @@ type TIDataConnectorProperties struct {
 type ToggleSettings struct {
 	// ToggleSettingsProperties - toggle properties
 	*ToggleSettingsProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the alert rule.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
 	Kind KindBasicSettings `json:"kind,omitempty"`
@@ -9190,33 +9115,6 @@ func (ts *ToggleSettings) UnmarshalJSON(body []byte) error {
 				}
 				ts.ToggleSettingsProperties = &toggleSettingsProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				ts.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ts.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ts.Type = &typeVar
-			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -9251,13 +9149,7 @@ type ToggleSettingsProperties struct {
 type UebaSettings struct {
 	// UebaSettingsProperties - User and Entity Behavior Analytics settings properties
 	*UebaSettingsProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-	// Etag - Etag of the alert rule.
+	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
 	Kind KindBasicSettings `json:"kind,omitempty"`
@@ -9316,33 +9208,6 @@ func (us *UebaSettings) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				us.UebaSettingsProperties = &uebaSettingsProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				us.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				us.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				us.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {

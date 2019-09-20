@@ -32,13 +32,13 @@ type DedicatedCloudServicesClient struct {
 }
 
 // NewDedicatedCloudServicesClient creates an instance of the DedicatedCloudServicesClient client.
-func NewDedicatedCloudServicesClient(referer string, subscriptionID string) DedicatedCloudServicesClient {
-	return NewDedicatedCloudServicesClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewDedicatedCloudServicesClient(subscriptionID string, referer string) DedicatedCloudServicesClient {
+	return NewDedicatedCloudServicesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewDedicatedCloudServicesClientWithBaseURI creates an instance of the DedicatedCloudServicesClient client.
-func NewDedicatedCloudServicesClientWithBaseURI(baseURI string, referer string, subscriptionID string) DedicatedCloudServicesClient {
-	return DedicatedCloudServicesClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewDedicatedCloudServicesClientWithBaseURI(baseURI string, subscriptionID string, referer string) DedicatedCloudServicesClient {
+	return DedicatedCloudServicesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // CreateOrUpdate create dedicate cloud service

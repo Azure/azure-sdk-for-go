@@ -32,13 +32,13 @@ type VirtualMachinesClient struct {
 }
 
 // NewVirtualMachinesClient creates an instance of the VirtualMachinesClient client.
-func NewVirtualMachinesClient(referer string, subscriptionID string) VirtualMachinesClient {
-	return NewVirtualMachinesClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewVirtualMachinesClient(subscriptionID string, referer string) VirtualMachinesClient {
+	return NewVirtualMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewVirtualMachinesClientWithBaseURI creates an instance of the VirtualMachinesClient client.
-func NewVirtualMachinesClientWithBaseURI(baseURI string, referer string, subscriptionID string) VirtualMachinesClient {
-	return VirtualMachinesClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string, referer string) VirtualMachinesClient {
+	return VirtualMachinesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // CreateOrUpdate create Or Update Virtual Machine

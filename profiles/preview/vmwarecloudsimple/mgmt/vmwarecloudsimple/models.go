@@ -206,8 +206,8 @@ type VirtualNetworkProperties = original.VirtualNetworkProperties
 type VirtualNetworksClient = original.VirtualNetworksClient
 type VirtualNic = original.VirtualNic
 
-func New(referer string, subscriptionID string) BaseClient {
-	return original.New(referer, subscriptionID)
+func New(subscriptionID string, referer string) BaseClient {
+	return original.New(subscriptionID, referer)
 }
 func NewAvailableOperationsListResponseIterator(page AvailableOperationsListResponsePage) AvailableOperationsListResponseIterator {
 	return original.NewAvailableOperationsListResponseIterator(page)
@@ -221,11 +221,11 @@ func NewDedicatedCloudNodeListResponseIterator(page DedicatedCloudNodeListRespon
 func NewDedicatedCloudNodeListResponsePage(getNextPage func(context.Context, DedicatedCloudNodeListResponse) (DedicatedCloudNodeListResponse, error)) DedicatedCloudNodeListResponsePage {
 	return original.NewDedicatedCloudNodeListResponsePage(getNextPage)
 }
-func NewDedicatedCloudNodesClient(referer string, subscriptionID string) DedicatedCloudNodesClient {
-	return original.NewDedicatedCloudNodesClient(referer, subscriptionID)
+func NewDedicatedCloudNodesClient(subscriptionID string, referer string) DedicatedCloudNodesClient {
+	return original.NewDedicatedCloudNodesClient(subscriptionID, referer)
 }
-func NewDedicatedCloudNodesClientWithBaseURI(baseURI string, referer string, subscriptionID string) DedicatedCloudNodesClient {
-	return original.NewDedicatedCloudNodesClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewDedicatedCloudNodesClientWithBaseURI(baseURI string, subscriptionID string, referer string) DedicatedCloudNodesClient {
+	return original.NewDedicatedCloudNodesClientWithBaseURI(baseURI, subscriptionID, referer)
 }
 func NewDedicatedCloudServiceListResponseIterator(page DedicatedCloudServiceListResponsePage) DedicatedCloudServiceListResponseIterator {
 	return original.NewDedicatedCloudServiceListResponseIterator(page)
@@ -233,17 +233,17 @@ func NewDedicatedCloudServiceListResponseIterator(page DedicatedCloudServiceList
 func NewDedicatedCloudServiceListResponsePage(getNextPage func(context.Context, DedicatedCloudServiceListResponse) (DedicatedCloudServiceListResponse, error)) DedicatedCloudServiceListResponsePage {
 	return original.NewDedicatedCloudServiceListResponsePage(getNextPage)
 }
-func NewDedicatedCloudServicesClient(referer string, subscriptionID string) DedicatedCloudServicesClient {
-	return original.NewDedicatedCloudServicesClient(referer, subscriptionID)
+func NewDedicatedCloudServicesClient(subscriptionID string, referer string) DedicatedCloudServicesClient {
+	return original.NewDedicatedCloudServicesClient(subscriptionID, referer)
 }
-func NewDedicatedCloudServicesClientWithBaseURI(baseURI string, referer string, subscriptionID string) DedicatedCloudServicesClient {
-	return original.NewDedicatedCloudServicesClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewDedicatedCloudServicesClientWithBaseURI(baseURI string, subscriptionID string, referer string) DedicatedCloudServicesClient {
+	return original.NewDedicatedCloudServicesClientWithBaseURI(baseURI, subscriptionID, referer)
 }
-func NewOperationsClient(referer string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(referer, subscriptionID)
+func NewOperationsClient(subscriptionID string, referer string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, referer)
 }
-func NewOperationsClientWithBaseURI(baseURI string, referer string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, referer string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, referer)
 }
 func NewPrivateCloudListIterator(page PrivateCloudListPage) PrivateCloudListIterator {
 	return original.NewPrivateCloudListIterator(page)
@@ -251,17 +251,17 @@ func NewPrivateCloudListIterator(page PrivateCloudListPage) PrivateCloudListIter
 func NewPrivateCloudListPage(getNextPage func(context.Context, PrivateCloudList) (PrivateCloudList, error)) PrivateCloudListPage {
 	return original.NewPrivateCloudListPage(getNextPage)
 }
-func NewPrivateCloudsClient(referer string, subscriptionID string) PrivateCloudsClient {
-	return original.NewPrivateCloudsClient(referer, subscriptionID)
+func NewPrivateCloudsClient(subscriptionID string, referer string) PrivateCloudsClient {
+	return original.NewPrivateCloudsClient(subscriptionID, referer)
 }
-func NewPrivateCloudsClientWithBaseURI(baseURI string, referer string, subscriptionID string) PrivateCloudsClient {
-	return original.NewPrivateCloudsClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewPrivateCloudsClientWithBaseURI(baseURI string, subscriptionID string, referer string) PrivateCloudsClient {
+	return original.NewPrivateCloudsClientWithBaseURI(baseURI, subscriptionID, referer)
 }
-func NewResourcePoolsClient(referer string, subscriptionID string) ResourcePoolsClient {
-	return original.NewResourcePoolsClient(referer, subscriptionID)
+func NewResourcePoolsClient(subscriptionID string, referer string) ResourcePoolsClient {
+	return original.NewResourcePoolsClient(subscriptionID, referer)
 }
-func NewResourcePoolsClientWithBaseURI(baseURI string, referer string, subscriptionID string) ResourcePoolsClient {
-	return original.NewResourcePoolsClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewResourcePoolsClientWithBaseURI(baseURI string, subscriptionID string, referer string) ResourcePoolsClient {
+	return original.NewResourcePoolsClientWithBaseURI(baseURI, subscriptionID, referer)
 }
 func NewResourcePoolsListResponseIterator(page ResourcePoolsListResponsePage) ResourcePoolsListResponseIterator {
 	return original.NewResourcePoolsListResponseIterator(page)
@@ -275,11 +275,11 @@ func NewSkuAvailabilityListResponseIterator(page SkuAvailabilityListResponsePage
 func NewSkuAvailabilityListResponsePage(getNextPage func(context.Context, SkuAvailabilityListResponse) (SkuAvailabilityListResponse, error)) SkuAvailabilityListResponsePage {
 	return original.NewSkuAvailabilityListResponsePage(getNextPage)
 }
-func NewSkusAvailabilityClient(referer string, subscriptionID string) SkusAvailabilityClient {
-	return original.NewSkusAvailabilityClient(referer, subscriptionID)
+func NewSkusAvailabilityClient(subscriptionID string, referer string) SkusAvailabilityClient {
+	return original.NewSkusAvailabilityClient(subscriptionID, referer)
 }
-func NewSkusAvailabilityClientWithBaseURI(baseURI string, referer string, subscriptionID string) SkusAvailabilityClient {
-	return original.NewSkusAvailabilityClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewSkusAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, referer string) SkusAvailabilityClient {
+	return original.NewSkusAvailabilityClientWithBaseURI(baseURI, subscriptionID, referer)
 }
 func NewUsageListResponseIterator(page UsageListResponsePage) UsageListResponseIterator {
 	return original.NewUsageListResponseIterator(page)
@@ -287,11 +287,11 @@ func NewUsageListResponseIterator(page UsageListResponsePage) UsageListResponseI
 func NewUsageListResponsePage(getNextPage func(context.Context, UsageListResponse) (UsageListResponse, error)) UsageListResponsePage {
 	return original.NewUsageListResponsePage(getNextPage)
 }
-func NewUsagesClient(referer string, subscriptionID string) UsagesClient {
-	return original.NewUsagesClient(referer, subscriptionID)
+func NewUsagesClient(subscriptionID string, referer string) UsagesClient {
+	return original.NewUsagesClient(subscriptionID, referer)
 }
-func NewUsagesClientWithBaseURI(baseURI string, referer string, subscriptionID string) UsagesClient {
-	return original.NewUsagesClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string, referer string) UsagesClient {
+	return original.NewUsagesClientWithBaseURI(baseURI, subscriptionID, referer)
 }
 func NewVirtualMachineListResponseIterator(page VirtualMachineListResponsePage) VirtualMachineListResponseIterator {
 	return original.NewVirtualMachineListResponseIterator(page)
@@ -305,17 +305,17 @@ func NewVirtualMachineTemplateListResponseIterator(page VirtualMachineTemplateLi
 func NewVirtualMachineTemplateListResponsePage(getNextPage func(context.Context, VirtualMachineTemplateListResponse) (VirtualMachineTemplateListResponse, error)) VirtualMachineTemplateListResponsePage {
 	return original.NewVirtualMachineTemplateListResponsePage(getNextPage)
 }
-func NewVirtualMachineTemplatesClient(referer string, subscriptionID string) VirtualMachineTemplatesClient {
-	return original.NewVirtualMachineTemplatesClient(referer, subscriptionID)
+func NewVirtualMachineTemplatesClient(subscriptionID string, referer string) VirtualMachineTemplatesClient {
+	return original.NewVirtualMachineTemplatesClient(subscriptionID, referer)
 }
-func NewVirtualMachineTemplatesClientWithBaseURI(baseURI string, referer string, subscriptionID string) VirtualMachineTemplatesClient {
-	return original.NewVirtualMachineTemplatesClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewVirtualMachineTemplatesClientWithBaseURI(baseURI string, subscriptionID string, referer string) VirtualMachineTemplatesClient {
+	return original.NewVirtualMachineTemplatesClientWithBaseURI(baseURI, subscriptionID, referer)
 }
-func NewVirtualMachinesClient(referer string, subscriptionID string) VirtualMachinesClient {
-	return original.NewVirtualMachinesClient(referer, subscriptionID)
+func NewVirtualMachinesClient(subscriptionID string, referer string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClient(subscriptionID, referer)
 }
-func NewVirtualMachinesClientWithBaseURI(baseURI string, referer string, subscriptionID string) VirtualMachinesClient {
-	return original.NewVirtualMachinesClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string, referer string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID, referer)
 }
 func NewVirtualNetworkListResponseIterator(page VirtualNetworkListResponsePage) VirtualNetworkListResponseIterator {
 	return original.NewVirtualNetworkListResponseIterator(page)
@@ -323,14 +323,14 @@ func NewVirtualNetworkListResponseIterator(page VirtualNetworkListResponsePage) 
 func NewVirtualNetworkListResponsePage(getNextPage func(context.Context, VirtualNetworkListResponse) (VirtualNetworkListResponse, error)) VirtualNetworkListResponsePage {
 	return original.NewVirtualNetworkListResponsePage(getNextPage)
 }
-func NewVirtualNetworksClient(referer string, subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClient(referer, subscriptionID)
+func NewVirtualNetworksClient(subscriptionID string, referer string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClient(subscriptionID, referer)
 }
-func NewVirtualNetworksClientWithBaseURI(baseURI string, referer string, subscriptionID string) VirtualNetworksClient {
-	return original.NewVirtualNetworksClientWithBaseURI(baseURI, referer, subscriptionID)
+func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string, referer string) VirtualNetworksClient {
+	return original.NewVirtualNetworksClientWithBaseURI(baseURI, subscriptionID, referer)
 }
-func NewWithBaseURI(baseURI string, referer string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, referer, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, referer string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, referer)
 }
 func PossibleAggregationTypeValues() []AggregationType {
 	return original.PossibleAggregationTypeValues()

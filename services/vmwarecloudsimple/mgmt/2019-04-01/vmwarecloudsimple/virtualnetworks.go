@@ -31,13 +31,13 @@ type VirtualNetworksClient struct {
 }
 
 // NewVirtualNetworksClient creates an instance of the VirtualNetworksClient client.
-func NewVirtualNetworksClient(referer string, subscriptionID string) VirtualNetworksClient {
-	return NewVirtualNetworksClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewVirtualNetworksClient(subscriptionID string, referer string) VirtualNetworksClient {
+	return NewVirtualNetworksClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewVirtualNetworksClientWithBaseURI creates an instance of the VirtualNetworksClient client.
-func NewVirtualNetworksClientWithBaseURI(baseURI string, referer string, subscriptionID string) VirtualNetworksClient {
-	return VirtualNetworksClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string, referer string) VirtualNetworksClient {
+	return VirtualNetworksClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // Get return virtual network by its name

@@ -31,13 +31,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(referer string, subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewOperationsClient(subscriptionID string, referer string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, referer string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, referer string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // Get return an async operation

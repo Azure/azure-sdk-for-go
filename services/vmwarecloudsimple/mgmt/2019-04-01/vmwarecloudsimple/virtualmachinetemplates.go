@@ -31,13 +31,13 @@ type VirtualMachineTemplatesClient struct {
 }
 
 // NewVirtualMachineTemplatesClient creates an instance of the VirtualMachineTemplatesClient client.
-func NewVirtualMachineTemplatesClient(referer string, subscriptionID string) VirtualMachineTemplatesClient {
-	return NewVirtualMachineTemplatesClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewVirtualMachineTemplatesClient(subscriptionID string, referer string) VirtualMachineTemplatesClient {
+	return NewVirtualMachineTemplatesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewVirtualMachineTemplatesClientWithBaseURI creates an instance of the VirtualMachineTemplatesClient client.
-func NewVirtualMachineTemplatesClientWithBaseURI(baseURI string, referer string, subscriptionID string) VirtualMachineTemplatesClient {
-	return VirtualMachineTemplatesClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewVirtualMachineTemplatesClientWithBaseURI(baseURI string, subscriptionID string, referer string) VirtualMachineTemplatesClient {
+	return VirtualMachineTemplatesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // Get returns virtual machine templates by its name

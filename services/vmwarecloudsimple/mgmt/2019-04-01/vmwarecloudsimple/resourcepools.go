@@ -31,13 +31,13 @@ type ResourcePoolsClient struct {
 }
 
 // NewResourcePoolsClient creates an instance of the ResourcePoolsClient client.
-func NewResourcePoolsClient(referer string, subscriptionID string) ResourcePoolsClient {
-	return NewResourcePoolsClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewResourcePoolsClient(subscriptionID string, referer string) ResourcePoolsClient {
+	return NewResourcePoolsClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewResourcePoolsClientWithBaseURI creates an instance of the ResourcePoolsClient client.
-func NewResourcePoolsClientWithBaseURI(baseURI string, referer string, subscriptionID string) ResourcePoolsClient {
-	return ResourcePoolsClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewResourcePoolsClientWithBaseURI(baseURI string, subscriptionID string, referer string) ResourcePoolsClient {
+	return ResourcePoolsClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // Get returns resource pool templates by its name

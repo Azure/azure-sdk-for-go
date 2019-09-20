@@ -31,13 +31,13 @@ type PrivateCloudsClient struct {
 }
 
 // NewPrivateCloudsClient creates an instance of the PrivateCloudsClient client.
-func NewPrivateCloudsClient(referer string, subscriptionID string) PrivateCloudsClient {
-	return NewPrivateCloudsClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewPrivateCloudsClient(subscriptionID string, referer string) PrivateCloudsClient {
+	return NewPrivateCloudsClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewPrivateCloudsClientWithBaseURI creates an instance of the PrivateCloudsClient client.
-func NewPrivateCloudsClientWithBaseURI(baseURI string, referer string, subscriptionID string) PrivateCloudsClient {
-	return PrivateCloudsClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewPrivateCloudsClientWithBaseURI(baseURI string, subscriptionID string, referer string) PrivateCloudsClient {
+	return PrivateCloudsClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // Get returns private cloud by its name

@@ -31,13 +31,13 @@ type UsagesClient struct {
 }
 
 // NewUsagesClient creates an instance of the UsagesClient client.
-func NewUsagesClient(referer string, subscriptionID string) UsagesClient {
-	return NewUsagesClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewUsagesClient(subscriptionID string, referer string) UsagesClient {
+	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
-func NewUsagesClientWithBaseURI(baseURI string, referer string, subscriptionID string) UsagesClient {
-	return UsagesClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string, referer string) UsagesClient {
+	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // List returns list of usage in region

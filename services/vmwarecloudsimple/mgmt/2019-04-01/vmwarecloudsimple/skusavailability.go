@@ -31,13 +31,13 @@ type SkusAvailabilityClient struct {
 }
 
 // NewSkusAvailabilityClient creates an instance of the SkusAvailabilityClient client.
-func NewSkusAvailabilityClient(referer string, subscriptionID string) SkusAvailabilityClient {
-	return NewSkusAvailabilityClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewSkusAvailabilityClient(subscriptionID string, referer string) SkusAvailabilityClient {
+	return NewSkusAvailabilityClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewSkusAvailabilityClientWithBaseURI creates an instance of the SkusAvailabilityClient client.
-func NewSkusAvailabilityClientWithBaseURI(baseURI string, referer string, subscriptionID string) SkusAvailabilityClient {
-	return SkusAvailabilityClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewSkusAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, referer string) SkusAvailabilityClient {
+	return SkusAvailabilityClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // List returns list of available resources in region

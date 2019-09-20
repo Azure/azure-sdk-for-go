@@ -32,13 +32,13 @@ type DedicatedCloudNodesClient struct {
 }
 
 // NewDedicatedCloudNodesClient creates an instance of the DedicatedCloudNodesClient client.
-func NewDedicatedCloudNodesClient(referer string, subscriptionID string) DedicatedCloudNodesClient {
-	return NewDedicatedCloudNodesClientWithBaseURI(DefaultBaseURI, referer, subscriptionID)
+func NewDedicatedCloudNodesClient(subscriptionID string, referer string) DedicatedCloudNodesClient {
+	return NewDedicatedCloudNodesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
 // NewDedicatedCloudNodesClientWithBaseURI creates an instance of the DedicatedCloudNodesClient client.
-func NewDedicatedCloudNodesClientWithBaseURI(baseURI string, referer string, subscriptionID string) DedicatedCloudNodesClient {
-	return DedicatedCloudNodesClient{NewWithBaseURI(baseURI, referer, subscriptionID)}
+func NewDedicatedCloudNodesClientWithBaseURI(baseURI string, subscriptionID string, referer string) DedicatedCloudNodesClient {
+	return DedicatedCloudNodesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // CreateOrUpdate returns dedicated cloud node by its name

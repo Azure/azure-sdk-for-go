@@ -22,7 +22,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-06-01/machinelearningservices"
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-10-01/machinelearningservices"
 )
 
 const (
@@ -106,6 +106,13 @@ const (
 	Count QuotaUnit = original.Count
 )
 
+type ReasonCode = original.ReasonCode
+
+const (
+	NotAvailableForSubscription ReasonCode = original.NotAvailableForSubscription
+	QuotaID                     ReasonCode = original.QuotaID
+)
+
 type RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccess
 
 const (
@@ -127,6 +134,8 @@ const (
 	InvalidQuotaBelowClusterMinimum      Status = original.InvalidQuotaBelowClusterMinimum
 	InvalidQuotaExceedsSubscriptionLimit Status = original.InvalidQuotaExceedsSubscriptionLimit
 	InvalidVMFamilyName                  Status = original.InvalidVMFamilyName
+	OperationNotEnabledForRegion         Status = original.OperationNotEnabledForRegion
+	OperationNotSupportedForSku          Status = original.OperationNotSupportedForSku
 	Success                              Status = original.Success
 	Undefined                            Status = original.Undefined
 )
@@ -166,6 +175,7 @@ type AmlCompute = original.AmlCompute
 type AmlComputeNodeInformation = original.AmlComputeNodeInformation
 type AmlComputeNodesInformation = original.AmlComputeNodesInformation
 type AmlComputeProperties = original.AmlComputeProperties
+type AmlUserFeature = original.AmlUserFeature
 type BaseClient = original.BaseClient
 type BasicCompute = original.BasicCompute
 type BasicComputeNodesInformation = original.BasicComputeNodesInformation
@@ -189,6 +199,9 @@ type ErrorResponse = original.ErrorResponse
 type HDInsight = original.HDInsight
 type HDInsightProperties = original.HDInsightProperties
 type Identity = original.Identity
+type ListAmlUserFeatureResult = original.ListAmlUserFeatureResult
+type ListAmlUserFeatureResultIterator = original.ListAmlUserFeatureResultIterator
+type ListAmlUserFeatureResultPage = original.ListAmlUserFeatureResultPage
 type ListUsagesResult = original.ListUsagesResult
 type ListUsagesResultIterator = original.ListUsagesResultIterator
 type ListUsagesResultPage = original.ListUsagesResultPage
@@ -217,8 +230,16 @@ type Resource = original.Resource
 type ResourceID = original.ResourceID
 type ResourceName = original.ResourceName
 type ResourceQuota = original.ResourceQuota
+type ResourceSkuLocationInfo = original.ResourceSkuLocationInfo
+type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
+type Restriction = original.Restriction
+type SKUCapability = original.SKUCapability
 type ScaleSettings = original.ScaleSettings
 type ServicePrincipalCredentials = original.ServicePrincipalCredentials
+type Sku = original.Sku
+type SkuListResult = original.SkuListResult
+type SkuListResultIterator = original.SkuListResultIterator
+type SkuListResultPage = original.SkuListResultPage
 type SslConfiguration = original.SslConfiguration
 type SystemService = original.SystemService
 type UpdateWorkspaceQuotas = original.UpdateWorkspaceQuotas
@@ -235,16 +256,24 @@ type VirtualMachineSize = original.VirtualMachineSize
 type VirtualMachineSizeListResult = original.VirtualMachineSizeListResult
 type VirtualMachineSizesClient = original.VirtualMachineSizesClient
 type Workspace = original.Workspace
+type WorkspaceFeaturesClient = original.WorkspaceFeaturesClient
 type WorkspaceListResult = original.WorkspaceListResult
 type WorkspaceListResultIterator = original.WorkspaceListResultIterator
 type WorkspaceListResultPage = original.WorkspaceListResultPage
 type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacePropertiesUpdateParameters = original.WorkspacePropertiesUpdateParameters
+type WorkspaceSku = original.WorkspaceSku
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type WorkspacesClient = original.WorkspacesClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewListAmlUserFeatureResultIterator(page ListAmlUserFeatureResultPage) ListAmlUserFeatureResultIterator {
+	return original.NewListAmlUserFeatureResultIterator(page)
+}
+func NewListAmlUserFeatureResultPage(getNextPage func(context.Context, ListAmlUserFeatureResult) (ListAmlUserFeatureResult, error)) ListAmlUserFeatureResultPage {
+	return original.NewListAmlUserFeatureResultPage(getNextPage)
 }
 func NewListUsagesResultIterator(page ListUsagesResultPage) ListUsagesResultIterator {
 	return original.NewListUsagesResultIterator(page)
@@ -282,6 +311,12 @@ func NewQuotasClient(subscriptionID string) QuotasClient {
 func NewQuotasClientWithBaseURI(baseURI string, subscriptionID string) QuotasClient {
 	return original.NewQuotasClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSkuListResultIterator(page SkuListResultPage) SkuListResultIterator {
+	return original.NewSkuListResultIterator(page)
+}
+func NewSkuListResultPage(getNextPage func(context.Context, SkuListResult) (SkuListResult, error)) SkuListResultPage {
+	return original.NewSkuListResultPage(getNextPage)
+}
 func NewUsagesClient(subscriptionID string) UsagesClient {
 	return original.NewUsagesClient(subscriptionID)
 }
@@ -296,6 +331,12 @@ func NewVirtualMachineSizesClientWithBaseURI(baseURI string, subscriptionID stri
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkspaceFeaturesClient(subscriptionID string) WorkspaceFeaturesClient {
+	return original.NewWorkspaceFeaturesClient(subscriptionID)
+}
+func NewWorkspaceFeaturesClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceFeaturesClient {
+	return original.NewWorkspaceFeaturesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
 	return original.NewWorkspaceListResultIterator(page)
@@ -332,6 +373,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleQuotaUnitValues() []QuotaUnit {
 	return original.PossibleQuotaUnitValues()
+}
+func PossibleReasonCodeValues() []ReasonCode {
+	return original.PossibleReasonCodeValues()
 }
 func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
 	return original.PossibleRemoteLoginPortPublicAccessValues()

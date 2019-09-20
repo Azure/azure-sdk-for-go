@@ -14590,6 +14590,8 @@ type MigrateSQLServerSQLMITaskInput struct {
 	BackupBlobShare *BlobShare `json:"backupBlobShare,omitempty"`
 	// BackupMode - Backup Mode to specify whether to use existing backup or create new backup. If using existing backups, backup file paths are required to be provided in selectedDatabases. Possible values include: 'CreateBackup', 'ExistingBackup'
 	BackupMode BackupMode `json:"backupMode,omitempty"`
+	// AadDomainName - Azure Active Directory domain name in the format of 'contoso.com' for federated Azure AD or myaad.onmicrosoft.com for managed domain, required if and only if Windows logins are selected
+	AadDomainName *string `json:"aadDomainName,omitempty"`
 	// SourceConnectionInfo - Information for connecting to source
 	SourceConnectionInfo *SQLConnectionInfo `json:"sourceConnectionInfo,omitempty"`
 	// TargetConnectionInfo - Information for connecting to target

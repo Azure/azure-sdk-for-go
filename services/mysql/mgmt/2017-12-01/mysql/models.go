@@ -124,11 +124,13 @@ const (
 	FiveFullStopSeven ServerVersion = "5.7"
 	// FiveFullStopSix ...
 	FiveFullStopSix ServerVersion = "5.6"
+	// EightFullStopZero ...
+	EightFullStopZero ServerVersion = "8.0"
 )
 
 // PossibleServerVersionValues returns an array of possible values for the ServerVersion const type.
 func PossibleServerVersionValues() []ServerVersion {
-	return []ServerVersion{FiveFullStopSeven, FiveFullStopSix}
+	return []ServerVersion{EightFullStopZero, FiveFullStopSeven, FiveFullStopSix}
 }
 
 // SkuTier enumerates the values for sku tier.

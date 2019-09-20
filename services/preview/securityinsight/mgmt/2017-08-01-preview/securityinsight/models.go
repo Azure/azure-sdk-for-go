@@ -1301,11 +1301,10 @@ func (aep AccountEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Action action for alert rule.
-type Action struct {
-	autorest.Response `json:"-"`
-	// ActionProperties - Action properties
-	*ActionProperties `json:"properties,omitempty"`
+// ActionRequest action for alert rule.
+type ActionRequest struct {
+	// ActionRequestProperties - Action properties for put request
+	*ActionRequestProperties `json:"properties,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
@@ -1316,20 +1315,20 @@ type Action struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for Action.
-func (a Action) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ActionRequest.
+func (ar ActionRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if a.ActionProperties != nil {
-		objectMap["properties"] = a.ActionProperties
+	if ar.ActionRequestProperties != nil {
+		objectMap["properties"] = ar.ActionRequestProperties
 	}
-	if a.Etag != nil {
-		objectMap["etag"] = a.Etag
+	if ar.Etag != nil {
+		objectMap["etag"] = ar.Etag
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for Action struct.
-func (a *Action) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ActionRequest struct.
+func (ar *ActionRequest) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1339,12 +1338,12 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var actionProperties ActionProperties
-				err = json.Unmarshal(*v, &actionProperties)
+				var actionRequestProperties ActionRequestProperties
+				err = json.Unmarshal(*v, &actionRequestProperties)
 				if err != nil {
 					return err
 				}
-				a.ActionProperties = &actionProperties
+				ar.ActionRequestProperties = &actionRequestProperties
 			}
 		case "etag":
 			if v != nil {
@@ -1353,7 +1352,7 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				a.Etag = &etag
+				ar.Etag = &etag
 			}
 		case "id":
 			if v != nil {
@@ -1362,7 +1361,7 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				a.ID = &ID
+				ar.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -1371,7 +1370,7 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				a.Name = &name
+				ar.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -1380,7 +1379,7 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				a.Type = &typeVar
+				ar.Type = &typeVar
 			}
 		}
 	}
@@ -1388,10 +1387,103 @@ func (a *Action) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ActionProperties action property bag.
-type ActionProperties struct {
-	// TriggerURI - The uri for the action to trigger.
+// ActionRequestProperties action property bag.
+type ActionRequestProperties struct {
+	// TriggerURI - Logic App Callback URL for this specific workflow.
 	TriggerURI *string `json:"triggerUri,omitempty"`
+}
+
+// ActionResponse action for alert rule.
+type ActionResponse struct {
+	autorest.Response `json:"-"`
+	// Etag - Etag of the action.
+	Etag *string `json:"etag,omitempty"`
+	// ActionResponseProperties - Action properties for get request
+	*ActionResponseProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ActionResponse.
+func (ar ActionResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ar.Etag != nil {
+		objectMap["etag"] = ar.Etag
+	}
+	if ar.ActionResponseProperties != nil {
+		objectMap["properties"] = ar.ActionResponseProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ActionResponse struct.
+func (ar *ActionResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ar.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var actionResponseProperties ActionResponseProperties
+				err = json.Unmarshal(*v, &actionResponseProperties)
+				if err != nil {
+					return err
+				}
+				ar.ActionResponseProperties = &actionResponseProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ar.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ActionResponseProperties action property bag.
+type ActionResponseProperties struct {
+	// WorkflowID - The name of the logic app's workflow.
+	WorkflowID *string `json:"workflowId,omitempty"`
 }
 
 // ActionsList list all the actions.
@@ -1400,10 +1492,10 @@ type ActionsList struct {
 	// NextLink - READ-ONLY; URL to fetch the next set of actions.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of actions.
-	Value *[]Action `json:"value,omitempty"`
+	Value *[]ActionResponse `json:"value,omitempty"`
 }
 
-// ActionsListIterator provides access to a complete listing of Action values.
+// ActionsListIterator provides access to a complete listing of ActionResponse values.
 type ActionsListIterator struct {
 	i    int
 	page ActionsListPage
@@ -1454,9 +1546,9 @@ func (iter ActionsListIterator) Response() ActionsList {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter ActionsListIterator) Value() Action {
+func (iter ActionsListIterator) Value() ActionResponse {
 	if !iter.page.NotDone() {
-		return Action{}
+		return ActionResponse{}
 	}
 	return iter.page.Values()[iter.i]
 }
@@ -1483,7 +1575,7 @@ func (al ActionsList) actionsListPreparer(ctx context.Context) (*http.Request, e
 		autorest.WithBaseURL(to.String(al.NextLink)))
 }
 
-// ActionsListPage contains a page of Action values.
+// ActionsListPage contains a page of ActionResponse values.
 type ActionsListPage struct {
 	fn func(context.Context, ActionsList) (ActionsList, error)
 	al ActionsList
@@ -1528,7 +1620,7 @@ func (page ActionsListPage) Response() ActionsList {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page ActionsListPage) Values() []Action {
+func (page ActionsListPage) Values() []ActionResponse {
 	if page.al.IsEmpty() {
 		return nil
 	}

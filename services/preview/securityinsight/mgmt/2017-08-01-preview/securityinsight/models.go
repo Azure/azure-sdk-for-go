@@ -1015,6 +1015,12 @@ type AADDataConnectorProperties struct {
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
+// AATPCheckRequirements AATP (Azure Advanced Threat Protection) requirements check properties.
+type AATPCheckRequirements struct {
+	// TenantID - The tenant id to connect to, and get the data from.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // AATPDataConnector represents AATP (Azure Advanced Threat Protection) data connector.
 type AATPDataConnector struct {
 	// AATPDataConnectorProperties - AATP (Azure Advanced Threat Protection) data connector properties.
@@ -1139,12 +1145,6 @@ type AATPDataConnectorProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// DataTypes - The available data types for the connector.
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
-}
-
-// AATPRCheckRequirements AATP (Azure Advanced Threat Protection) requirements check properties.
-type AATPRCheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // AccountEntity represents an account entity.

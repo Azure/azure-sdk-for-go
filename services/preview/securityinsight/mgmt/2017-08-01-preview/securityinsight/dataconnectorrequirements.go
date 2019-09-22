@@ -49,7 +49,7 @@ func NewDataConnectorRequirementsClientWithBaseURI(baseURI string, subscriptionI
 // workspaceName - the name of the workspace.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
-// dataConnectorsCheckRequirements - the paramertes for requirements check message
+// dataConnectorsCheckRequirements - the parameters for requirements check message
 func (client DataConnectorRequirementsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, operationalInsightsResourceProvider string, dataConnectorsCheckRequirements DataConnectorsCheckRequirements) (result DataConnectorRequirementsState, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataConnectorRequirementsClient.List")

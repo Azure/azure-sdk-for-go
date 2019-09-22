@@ -419,9 +419,9 @@ const (
 type AADCheckRequirements = original.AADCheckRequirements
 type AADDataConnector = original.AADDataConnector
 type AADDataConnectorProperties = original.AADDataConnectorProperties
+type AATPCheckRequirements = original.AATPCheckRequirements
 type AATPDataConnector = original.AATPDataConnector
 type AATPDataConnectorProperties = original.AATPDataConnectorProperties
-type AATPRCheckRequirements = original.AATPRCheckRequirements
 type ASCCheckRequirements = original.ASCCheckRequirements
 type ASCDataConnector = original.ASCDataConnector
 type ASCDataConnectorProperties = original.ASCDataConnectorProperties

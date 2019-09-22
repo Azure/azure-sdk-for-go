@@ -5938,13 +5938,13 @@ type PricingProperties struct {
 // Executable is used for Linux.
 type ProtectionMode struct {
 	// Exe - Possible values include: 'ExeAudit', 'ExeEnforce', 'ExeNone'
-	Exe Exe `json:"Exe,omitempty"`
+	Exe Exe `json:"exe,omitempty"`
 	// Msi - Possible values include: 'MsiAudit', 'MsiEnforce', 'MsiNone'
-	Msi Msi `json:"Msi,omitempty"`
+	Msi Msi `json:"msi,omitempty"`
 	// Script - Possible values include: 'ScriptAudit', 'ScriptEnforce', 'ScriptNone'
-	Script Script `json:"Script,omitempty"`
+	Script Script `json:"script,omitempty"`
 	// Executable - Possible values include: 'ExecutableAudit', 'ExecutableEnforce', 'ExecutableNone'
-	Executable Executable `json:"Executable,omitempty"`
+	Executable Executable `json:"executable,omitempty"`
 }
 
 // PublisherInfo represents the publisher information of a process/rule

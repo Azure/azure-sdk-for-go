@@ -125,6 +125,13 @@ const (
 	NotFinal      ConfidenceScoreStatus = original.NotFinal
 )
 
+type DataConnectorAuthorizationState = original.DataConnectorAuthorizationState
+
+const (
+	Invalid DataConnectorAuthorizationState = original.Invalid
+	Valid   DataConnectorAuthorizationState = original.Valid
+)
+
 type DataConnectorKind = original.DataConnectorKind
 
 const (
@@ -136,6 +143,19 @@ const (
 	DataConnectorKindMicrosoftDefenderAdvancedThreatProtection DataConnectorKind = original.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection
 	DataConnectorKindOffice365                                 DataConnectorKind = original.DataConnectorKindOffice365
 	DataConnectorKindThreatIntelligence                        DataConnectorKind = original.DataConnectorKindThreatIntelligence
+)
+
+type DataConnectorLicenseState = original.DataConnectorLicenseState
+
+const (
+	DataConnectorLicenseStateAADP1OrP2LicenseRequired                                DataConnectorLicenseState = original.DataConnectorLicenseStateAADP1OrP2LicenseRequired
+	DataConnectorLicenseStateAzureAdvancedThreatProtectionLicenseRequired            DataConnectorLicenseState = original.DataConnectorLicenseStateAzureAdvancedThreatProtectionLicenseRequired
+	DataConnectorLicenseStateAzureInformationProtectionLicenseRequired               DataConnectorLicenseState = original.DataConnectorLicenseStateAzureInformationProtectionLicenseRequired
+	DataConnectorLicenseStateMicrosoftCloudAppSecurityLicenseRequired                DataConnectorLicenseState = original.DataConnectorLicenseStateMicrosoftCloudAppSecurityLicenseRequired
+	DataConnectorLicenseStateMicrosoftDefenderAdvancedThreatProtectionEnableRequired DataConnectorLicenseState = original.DataConnectorLicenseStateMicrosoftDefenderAdvancedThreatProtectionEnableRequired
+	DataConnectorLicenseStateSubscriptionStandardTierLicenseRequired                 DataConnectorLicenseState = original.DataConnectorLicenseStateSubscriptionStandardTierLicenseRequired
+	DataConnectorLicenseStateUnknown                                                 DataConnectorLicenseState = original.DataConnectorLicenseStateUnknown
+	DataConnectorLicenseStateValid                                                   DataConnectorLicenseState = original.DataConnectorLicenseStateValid
 )
 
 type DataTypeState = original.DataTypeState
@@ -352,6 +372,19 @@ const (
 	RegistryValueKindUnknown      RegistryValueKind = original.RegistryValueKindUnknown
 )
 
+type RelationNodeKind = original.RelationNodeKind
+
+const (
+	RelationNodeKindBookmark RelationNodeKind = original.RelationNodeKindBookmark
+	RelationNodeKindCase     RelationNodeKind = original.RelationNodeKindCase
+)
+
+type RelationTypes = original.RelationTypes
+
+const (
+	CasesToBookmarks RelationTypes = original.CasesToBookmarks
+)
+
 type SettingKind = original.SettingKind
 
 const (
@@ -383,16 +416,21 @@ const (
 	NotEqual    TriggerOperator = original.NotEqual
 )
 
+type AADCheckRequirements = original.AADCheckRequirements
 type AADDataConnector = original.AADDataConnector
 type AADDataConnectorProperties = original.AADDataConnectorProperties
 type AATPDataConnector = original.AATPDataConnector
 type AATPDataConnectorProperties = original.AATPDataConnectorProperties
+type AATPRCheckRequirements = original.AATPRCheckRequirements
+type ASCCheckRequirements = original.ASCCheckRequirements
 type ASCDataConnector = original.ASCDataConnector
 type ASCDataConnectorProperties = original.ASCDataConnectorProperties
 type AccountEntity = original.AccountEntity
 type AccountEntityProperties = original.AccountEntityProperties
-type Action = original.Action
-type ActionProperties = original.ActionProperties
+type ActionRequest = original.ActionRequest
+type ActionRequestProperties = original.ActionRequestProperties
+type ActionResponse = original.ActionResponse
+type ActionResponseProperties = original.ActionResponseProperties
 type ActionsClient = original.ActionsClient
 type ActionsList = original.ActionsList
 type ActionsListIterator = original.ActionsListIterator
@@ -416,6 +454,7 @@ type AlertRulesListIterator = original.AlertRulesListIterator
 type AlertRulesListPage = original.AlertRulesListPage
 type AlertsDataTypeOfDataConnector = original.AlertsDataTypeOfDataConnector
 type AlertsDataTypeOfDataConnectorAlerts = original.AlertsDataTypeOfDataConnectorAlerts
+type AwsCloudTrailCheckRequirements = original.AwsCloudTrailCheckRequirements
 type AwsCloudTrailDataConnector = original.AwsCloudTrailDataConnector
 type AwsCloudTrailDataConnectorDataTypes = original.AwsCloudTrailDataConnectorDataTypes
 type AwsCloudTrailDataConnectorDataTypesLogs = original.AwsCloudTrailDataConnectorDataTypesLogs
@@ -434,6 +473,12 @@ type BookmarkList = original.BookmarkList
 type BookmarkListIterator = original.BookmarkListIterator
 type BookmarkListPage = original.BookmarkListPage
 type BookmarkProperties = original.BookmarkProperties
+type BookmarkRelation = original.BookmarkRelation
+type BookmarkRelationList = original.BookmarkRelationList
+type BookmarkRelationListIterator = original.BookmarkRelationListIterator
+type BookmarkRelationListPage = original.BookmarkRelationListPage
+type BookmarkRelationProperties = original.BookmarkRelationProperties
+type BookmarkRelationsClient = original.BookmarkRelationsClient
 type BookmarksClient = original.BookmarksClient
 type Case = original.Case
 type CaseComment = original.CaseComment
@@ -446,6 +491,12 @@ type CaseList = original.CaseList
 type CaseListIterator = original.CaseListIterator
 type CaseListPage = original.CaseListPage
 type CaseProperties = original.CaseProperties
+type CaseRelation = original.CaseRelation
+type CaseRelationList = original.CaseRelationList
+type CaseRelationListIterator = original.CaseRelationListIterator
+type CaseRelationListPage = original.CaseRelationListPage
+type CaseRelationProperties = original.CaseRelationProperties
+type CaseRelationsClient = original.CaseRelationsClient
 type CasesAggregation = original.CasesAggregation
 type CasesAggregationBySeverityProperties = original.CasesAggregationBySeverityProperties
 type CasesAggregationByStatusProperties = original.CasesAggregationByStatusProperties
@@ -466,9 +517,12 @@ type DataConnectorList = original.DataConnectorList
 type DataConnectorListIterator = original.DataConnectorListIterator
 type DataConnectorListPage = original.DataConnectorListPage
 type DataConnectorModel = original.DataConnectorModel
+type DataConnectorRequirementsClient = original.DataConnectorRequirementsClient
+type DataConnectorRequirementsState = original.DataConnectorRequirementsState
 type DataConnectorStatus = original.DataConnectorStatus
 type DataConnectorTenantID = original.DataConnectorTenantID
 type DataConnectorWithAlertsProperties = original.DataConnectorWithAlertsProperties
+type DataConnectorsCheckRequirements = original.DataConnectorsCheckRequirements
 type DataConnectorsClient = original.DataConnectorsClient
 type EntitiesClient = original.EntitiesClient
 type Entity = original.Entity
@@ -502,10 +556,12 @@ type HostEntity = original.HostEntity
 type HostEntityProperties = original.HostEntityProperties
 type IPEntity = original.IPEntity
 type IPEntityProperties = original.IPEntityProperties
+type MCASCheckRequirements = original.MCASCheckRequirements
 type MCASDataConnector = original.MCASDataConnector
 type MCASDataConnectorDataTypes = original.MCASDataConnectorDataTypes
 type MCASDataConnectorDataTypesDiscoveryLogs = original.MCASDataConnectorDataTypesDiscoveryLogs
 type MCASDataConnectorProperties = original.MCASDataConnectorProperties
+type MDATPCheckRequirements = original.MDATPCheckRequirements
 type MDATPDataConnector = original.MDATPDataConnector
 type MDATPDataConnectorProperties = original.MDATPDataConnectorProperties
 type MalwareEntity = original.MalwareEntity
@@ -526,6 +582,7 @@ type OfficeDataConnectorDataTypes = original.OfficeDataConnectorDataTypes
 type OfficeDataConnectorDataTypesExchange = original.OfficeDataConnectorDataTypesExchange
 type OfficeDataConnectorDataTypesSharePoint = original.OfficeDataConnectorDataTypesSharePoint
 type OfficeDataConnectorProperties = original.OfficeDataConnectorProperties
+type OfficeDataConnectorRequirementsCheck = original.OfficeDataConnectorRequirementsCheck
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
@@ -539,6 +596,10 @@ type RegistryKeyEntity = original.RegistryKeyEntity
 type RegistryKeyEntityProperties = original.RegistryKeyEntityProperties
 type RegistryValueEntity = original.RegistryValueEntity
 type RegistryValueEntityProperties = original.RegistryValueEntityProperties
+type RelationBase = original.RelationBase
+type RelationNode = original.RelationNode
+type RelationsModelInput = original.RelationsModelInput
+type RelationsModelInputProperties = original.RelationsModelInputProperties
 type Resource = original.Resource
 type ResourceWithEtag = original.ResourceWithEtag
 type ScheduledAlertRule = original.ScheduledAlertRule
@@ -554,6 +615,7 @@ type SecurityGroupEntityProperties = original.SecurityGroupEntityProperties
 type Settings = original.Settings
 type SettingsKind = original.SettingsKind
 type SettingsModel = original.SettingsModel
+type TICheckRequirements = original.TICheckRequirements
 type TIDataConnector = original.TIDataConnector
 type TIDataConnectorDataTypes = original.TIDataConnectorDataTypes
 type TIDataConnectorDataTypesIndicators = original.TIDataConnectorDataTypesIndicators
@@ -612,6 +674,18 @@ func NewBookmarkListIterator(page BookmarkListPage) BookmarkListIterator {
 func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
 	return original.NewBookmarkListPage(getNextPage)
 }
+func NewBookmarkRelationListIterator(page BookmarkRelationListPage) BookmarkRelationListIterator {
+	return original.NewBookmarkRelationListIterator(page)
+}
+func NewBookmarkRelationListPage(getNextPage func(context.Context, BookmarkRelationList) (BookmarkRelationList, error)) BookmarkRelationListPage {
+	return original.NewBookmarkRelationListPage(getNextPage)
+}
+func NewBookmarkRelationsClient(subscriptionID string) BookmarkRelationsClient {
+	return original.NewBookmarkRelationsClient(subscriptionID)
+}
+func NewBookmarkRelationsClientWithBaseURI(baseURI string, subscriptionID string) BookmarkRelationsClient {
+	return original.NewBookmarkRelationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBookmarksClient(subscriptionID string) BookmarksClient {
 	return original.NewBookmarksClient(subscriptionID)
 }
@@ -636,6 +710,18 @@ func NewCaseListIterator(page CaseListPage) CaseListIterator {
 func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
 	return original.NewCaseListPage(getNextPage)
 }
+func NewCaseRelationListIterator(page CaseRelationListPage) CaseRelationListIterator {
+	return original.NewCaseRelationListIterator(page)
+}
+func NewCaseRelationListPage(getNextPage func(context.Context, CaseRelationList) (CaseRelationList, error)) CaseRelationListPage {
+	return original.NewCaseRelationListPage(getNextPage)
+}
+func NewCaseRelationsClient(subscriptionID string) CaseRelationsClient {
+	return original.NewCaseRelationsClient(subscriptionID)
+}
+func NewCaseRelationsClientWithBaseURI(baseURI string, subscriptionID string) CaseRelationsClient {
+	return original.NewCaseRelationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewCasesAggregationsClient(subscriptionID string) CasesAggregationsClient {
 	return original.NewCasesAggregationsClient(subscriptionID)
 }
@@ -659,6 +745,12 @@ func NewDataConnectorListIterator(page DataConnectorListPage) DataConnectorListI
 }
 func NewDataConnectorListPage(getNextPage func(context.Context, DataConnectorList) (DataConnectorList, error)) DataConnectorListPage {
 	return original.NewDataConnectorListPage(getNextPage)
+}
+func NewDataConnectorRequirementsClient(subscriptionID string) DataConnectorRequirementsClient {
+	return original.NewDataConnectorRequirementsClient(subscriptionID)
+}
+func NewDataConnectorRequirementsClientWithBaseURI(baseURI string, subscriptionID string) DataConnectorRequirementsClient {
+	return original.NewDataConnectorRequirementsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDataConnectorsClient(subscriptionID string) DataConnectorsClient {
 	return original.NewDataConnectorsClient(subscriptionID)
@@ -753,8 +845,14 @@ func PossibleConfidenceLevelValues() []ConfidenceLevel {
 func PossibleConfidenceScoreStatusValues() []ConfidenceScoreStatus {
 	return original.PossibleConfidenceScoreStatusValues()
 }
+func PossibleDataConnectorAuthorizationStateValues() []DataConnectorAuthorizationState {
+	return original.PossibleDataConnectorAuthorizationStateValues()
+}
 func PossibleDataConnectorKindValues() []DataConnectorKind {
 	return original.PossibleDataConnectorKindValues()
+}
+func PossibleDataConnectorLicenseStateValues() []DataConnectorLicenseState {
+	return original.PossibleDataConnectorLicenseStateValues()
 }
 func PossibleDataTypeStateValues() []DataTypeState {
 	return original.PossibleDataTypeStateValues()
@@ -809,6 +907,12 @@ func PossibleRegistryHiveValues() []RegistryHive {
 }
 func PossibleRegistryValueKindValues() []RegistryValueKind {
 	return original.PossibleRegistryValueKindValues()
+}
+func PossibleRelationNodeKindValues() []RelationNodeKind {
+	return original.PossibleRelationNodeKindValues()
+}
+func PossibleRelationTypesValues() []RelationTypes {
+	return original.PossibleRelationTypesValues()
 }
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()

@@ -8,5 +8,3 @@
 | d | Yes | Yes | v1, v2 | Yes |
 | e | Yes | No | v1, v2 | Yes |
 | f | Yes | No | None | Yes |
-| g | Yes | No | v1 | No |
-| h | Yes | Yes | v1 | No |

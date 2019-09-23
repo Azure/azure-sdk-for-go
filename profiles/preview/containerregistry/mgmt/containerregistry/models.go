@@ -189,13 +189,6 @@ const (
 	Pullrequest SourceTriggerEvent = original.Pullrequest
 )
 
-type Status = original.Status
-
-const (
-	StatusDisabled Status = original.StatusDisabled
-	StatusEnabled  Status = original.StatusEnabled
-)
-
 type TaskStatus = original.TaskStatus
 
 const (
@@ -215,6 +208,13 @@ type TokenPasswordName = original.TokenPasswordName
 const (
 	TokenPasswordNamePassword1 TokenPasswordName = original.TokenPasswordNamePassword1
 	TokenPasswordNamePassword2 TokenPasswordName = original.TokenPasswordNamePassword2
+)
+
+type TokenStatus = original.TokenStatus
+
+const (
+	TokenStatusDisabled TokenStatus = original.TokenStatusDisabled
+	TokenStatusEnabled  TokenStatus = original.TokenStatusEnabled
 )
 
 type TokenType = original.TokenType
@@ -422,7 +422,7 @@ type SourceTriggerDescriptor = original.SourceTriggerDescriptor
 type SourceTriggerUpdateParameters = original.SourceTriggerUpdateParameters
 type SourceUpdateParameters = original.SourceUpdateParameters
 type SourceUploadDefinition = original.SourceUploadDefinition
-type Status1 = original.Status1
+type Status = original.Status
 type StorageAccountProperties = original.StorageAccountProperties
 type Target = original.Target
 type Task = original.Task
@@ -643,9 +643,6 @@ func PossibleSourceRegistryLoginModeValues() []SourceRegistryLoginMode {
 func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
 	return original.PossibleSourceTriggerEventValues()
 }
-func PossibleStatusValues() []Status {
-	return original.PossibleStatusValues()
-}
 func PossibleTaskStatusValues() []TaskStatus {
 	return original.PossibleTaskStatusValues()
 }
@@ -654,6 +651,9 @@ func PossibleTokenCertificateNameValues() []TokenCertificateName {
 }
 func PossibleTokenPasswordNameValues() []TokenPasswordName {
 	return original.PossibleTokenPasswordNameValues()
+}
+func PossibleTokenStatusValues() []TokenStatus {
+	return original.PossibleTokenStatusValues()
 }
 func PossibleTokenTypeValues() []TokenType {
 	return original.PossibleTokenTypeValues()

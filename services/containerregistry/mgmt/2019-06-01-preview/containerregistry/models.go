@@ -371,21 +371,6 @@ func PossibleSourceTriggerEventValues() []SourceTriggerEvent {
 	return []SourceTriggerEvent{Commit, Pullrequest}
 }
 
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// StatusDisabled ...
-	StatusDisabled Status = "disabled"
-	// StatusEnabled ...
-	StatusEnabled Status = "enabled"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{StatusDisabled, StatusEnabled}
-}
-
 // TaskStatus enumerates the values for task status.
 type TaskStatus string
 
@@ -429,6 +414,21 @@ const (
 // PossibleTokenPasswordNameValues returns an array of possible values for the TokenPasswordName const type.
 func PossibleTokenPasswordNameValues() []TokenPasswordName {
 	return []TokenPasswordName{TokenPasswordNamePassword1, TokenPasswordNamePassword2}
+}
+
+// TokenStatus enumerates the values for token status.
+type TokenStatus string
+
+const (
+	// TokenStatusDisabled ...
+	TokenStatusDisabled TokenStatus = "disabled"
+	// TokenStatusEnabled ...
+	TokenStatusEnabled TokenStatus = "enabled"
+)
+
+// PossibleTokenStatusValues returns an array of possible values for the TokenStatus const type.
+func PossibleTokenStatusValues() []TokenStatus {
+	return []TokenStatus{TokenStatusDisabled, TokenStatusEnabled}
 }
 
 // TokenType enumerates the values for token type.
@@ -2660,7 +2660,7 @@ type RegistryProperties struct {
 	// ProvisioningState - READ-ONLY; The provisioning state of the container registry at the time the operation was called. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Status - READ-ONLY; The status of the container registry at the time the operation was called.
-	Status *Status1 `json:"status,omitempty"`
+	Status *Status `json:"status,omitempty"`
 	// AdminUserEnabled - The value that indicates whether the admin user is enabled.
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
 	// StorageAccount - The properties of the storage account for the container registry. Only applicable to Classic SKU.
@@ -3019,7 +3019,7 @@ type ReplicationProperties struct {
 	// ProvisioningState - READ-ONLY; The provisioning state of the replication at the time the operation was called. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Status - READ-ONLY; The status of the replication at the time the operation was called.
-	Status *Status1 `json:"status,omitempty"`
+	Status *Status `json:"status,omitempty"`
 }
 
 // ReplicationsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -4112,8 +4112,8 @@ type SourceUploadDefinition struct {
 	RelativePath *string `json:"relativePath,omitempty"`
 }
 
-// Status1 the status of an Azure resource at the time the operation was called.
-type Status1 struct {
+// Status the status of an Azure resource at the time the operation was called.
+type Status struct {
 	// DisplayStatus - READ-ONLY; The short label for the status.
 	DisplayStatus *string `json:"displayStatus,omitempty"`
 	// Message - READ-ONLY; The detailed message for the status, including alerts and error messages.
@@ -5309,7 +5309,7 @@ func NewTokenListResultPage(getNextPage func(context.Context, TokenListResult) (
 
 // TokenPassword the password that will be used for authenticating the token of a container registry.
 type TokenPassword struct {
-	// CreationTime - The password created datetime of the password.
+	// CreationTime - The creation datetime of the password.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// Expiry - The expiry datetime of the password.
 	Expiry *date.Time `json:"expiry,omitempty"`
@@ -5331,8 +5331,8 @@ type TokenProperties struct {
 	ObjectID *string `json:"objectId,omitempty"`
 	// Credentials - The credentials that can be used for authenticating the token.
 	Credentials *TokenCredentialsProperties `json:"credentials,omitempty"`
-	// Status - The status of the token example enabled or disabled. Possible values include: 'StatusEnabled', 'StatusDisabled'
-	Status Status `json:"status,omitempty"`
+	// Status - The status of the token example enabled or disabled. Possible values include: 'TokenStatusEnabled', 'TokenStatusDisabled'
+	Status TokenStatus `json:"status,omitempty"`
 }
 
 // TokensCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -5456,8 +5456,8 @@ func (tup *TokenUpdateParameters) UnmarshalJSON(body []byte) error {
 type TokenUpdateProperties struct {
 	// ScopeMapID - The resource ID of the scope map to which the token will be associated with.
 	ScopeMapID *string `json:"scopeMapId,omitempty"`
-	// Status - The status of the token example enabled or disabled. Possible values include: 'StatusEnabled', 'StatusDisabled'
-	Status Status `json:"status,omitempty"`
+	// Status - The status of the token example enabled or disabled. Possible values include: 'TokenStatusEnabled', 'TokenStatusDisabled'
+	Status TokenStatus `json:"status,omitempty"`
 	// Credentials - The credentials that can be used for authenticating the token.
 	Credentials *TokenCredentialsProperties `json:"credentials,omitempty"`
 }

@@ -19,7 +19,7 @@ package frontdoorapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor"
+	"github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2019-04-01/frontdoor"
 )
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
@@ -61,10 +61,17 @@ var _ EndpointsClientAPI = (*frontdoor.EndpointsClient)(nil)
 
 // PoliciesClientAPI contains the set of methods on the PoliciesClient type.
 type PoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters frontdoor.WebApplicationFirewallPolicy1) (result frontdoor.WebApplicationFirewallPolicy1, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters frontdoor.WebApplicationFirewallPolicy) (result frontdoor.PoliciesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, policyName string) (result frontdoor.PoliciesDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, policyName string) (result frontdoor.WebApplicationFirewallPolicy1, err error)
-	List(ctx context.Context, resourceGroupName string) (result frontdoor.WebApplicationFirewallPolicyListResultPage, err error)
+	Get(ctx context.Context, resourceGroupName string, policyName string) (result frontdoor.WebApplicationFirewallPolicy, err error)
+	List(ctx context.Context, resourceGroupName string) (result frontdoor.WebApplicationFirewallPolicyListPage, err error)
 }
 
 var _ PoliciesClientAPI = (*frontdoor.PoliciesClient)(nil)
+
+// ManagedRuleSetsClientAPI contains the set of methods on the ManagedRuleSetsClient type.
+type ManagedRuleSetsClientAPI interface {
+	List(ctx context.Context) (result frontdoor.ManagedRuleSetDefinitionListPage, err error)
+}
+
+var _ ManagedRuleSetsClientAPI = (*frontdoor.ManagedRuleSetsClient)(nil)

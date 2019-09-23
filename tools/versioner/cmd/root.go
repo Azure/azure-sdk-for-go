@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -151,6 +152,10 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 	if err = os.Rename(stage, mod.DestDir()); err != nil {
 		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
 	}
+	// format code
+	if err = formatCode(mod.DestDir()); err != nil {
+		return "", fmt.Errorf("failed to format code: %v", err)
+	}
 	return tag, nil
 }
 
@@ -196,7 +201,20 @@ func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 	if err := os.Rename(temp, dest); err != nil {
 		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
 	}
+	// format code
+	if err = formatCode(mod.DestDir()); err != nil {
+		return "", fmt.Errorf("failed to format code: %v", err)
+	}
 	return tag, nil
+}
+
+func formatCode(path string) error {
+	vprintf("Formatting in %s\n", path)
+	cmd := exec.Command("gofmt", "-w", path)
+	if output, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("failed to execute gofmt: %s", string(output))
+	}
+	return nil
 }
 
 func updateVersion(path, tag string) error {

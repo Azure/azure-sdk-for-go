@@ -832,6 +832,8 @@ type AccountListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Gets the list of storage accounts and their properties.
 	Value *[]Account `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Request URL that can be used to query next page of storage accounts. Returned when total number of requested storage accounts exceed maximum page size.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // AccountListResultIterator provides access to a complete listing of Account values.

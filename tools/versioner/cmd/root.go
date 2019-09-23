@@ -22,7 +22,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"runtime"
 	"sort"
 	"strings"
 
@@ -110,13 +109,6 @@ func theCommandImpl(args []string) (string, error) {
 	}
 	vprintf("Latest major version path: %v\n", lmv)
 	mod, err := modinfo.GetModuleInfo(lmv, stage)
-	// test whether go.mod file exists
-	if err := ensureGoModFileExistence(lmv); err != nil {
-		return "", fmt.Errorf("error when ensure existence of go.mod file: %v", err)
-	}
-	if err := ensureGoModFileExistence(stage); err != nil {
-		return "", fmt.Errorf("error when ensure existence of go.mod file: %v", err)
-	}
 	if err != nil {
 		return "", fmt.Errorf("failed to create module info: %v", err)
 	}
@@ -130,37 +122,6 @@ func theCommandImpl(args []string) (string, error) {
 		tag, err = forInplaceUpdate(lmv, stage, mod)
 	}
 	return tag, err
-}
-
-func ensureGoModFileExistence(path string) error {
-	goMod := filepath.Join(path, "go.mod")
-	// test if go.mod exists
-	if _, err := os.Stat(goMod); os.IsNotExist(err) {
-		// not exist
-		vprintf("File go.mod does not exist in path %s\n", path)
-		goVersion := runtime.Version()
-		goVersion = goverRegex.FindString(goVersion)
-		modName, err := getTagPrefix(path)
-		if err != nil {
-			return err
-		}
-		if index := strings.Index(modName, "/stage"); index > -1 {
-			modName = modName[0:index]
-		}
-		modName = "github.com/Azure/azure-sdk-for-go/" + modName
-		goFile, err := os.Create(goMod)
-		if err != nil {
-			return err
-		}
-		fmt.Fprintf(goFile, goModFileContent, modName, goVersion)
-		if err := goFile.Close(); err != nil {
-			return err
-		}
-		return nil
-	}
-	// exist
-	vprintf("File go.mod already exists in path %s\n", path)
-	return nil
 }
 
 // releases the module as a new side-by-side major version

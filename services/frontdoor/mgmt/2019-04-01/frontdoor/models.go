@@ -28,23 +28,25 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2019-04-01/frontdoor"
 
-// Action enumerates the values for action.
-type Action string
+// ActionType enumerates the values for action type.
+type ActionType string
 
 const (
 	// Allow ...
-	Allow Action = "Allow"
+	Allow ActionType = "Allow"
 	// Block ...
-	Block Action = "Block"
+	Block ActionType = "Block"
 	// Log ...
-	Log Action = "Log"
+	Log ActionType = "Log"
+	// Redirect ...
+	Redirect ActionType = "Redirect"
 )
 
-// PossibleActionValues returns an array of possible values for the Action const type.
-func PossibleActionValues() []Action {
-	return []Action{Allow, Block, Log}
+// PossibleActionTypeValues returns an array of possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{Allow, Block, Log, Redirect}
 }
 
 // Availability enumerates the values for availability.
@@ -60,6 +62,21 @@ const (
 // PossibleAvailabilityValues returns an array of possible values for the Availability const type.
 func PossibleAvailabilityValues() []Availability {
 	return []Availability{Available, Unavailable}
+}
+
+// BackendEnabledState enumerates the values for backend enabled state.
+type BackendEnabledState string
+
+const (
+	// Disabled ...
+	Disabled BackendEnabledState = "Disabled"
+	// Enabled ...
+	Enabled BackendEnabledState = "Enabled"
+)
+
+// PossibleBackendEnabledStateValues returns an array of possible values for the BackendEnabledState const type.
+func PossibleBackendEnabledStateValues() []BackendEnabledState {
+	return []BackendEnabledState{Disabled, Enabled}
 }
 
 // CertificateSource enumerates the values for certificate source.
@@ -94,21 +111,21 @@ func PossibleCertificateTypeValues() []CertificateType {
 type CustomHTTPSProvisioningState string
 
 const (
-	// Disabled ...
-	Disabled CustomHTTPSProvisioningState = "Disabled"
-	// Disabling ...
-	Disabling CustomHTTPSProvisioningState = "Disabling"
-	// Enabled ...
-	Enabled CustomHTTPSProvisioningState = "Enabled"
-	// Enabling ...
-	Enabling CustomHTTPSProvisioningState = "Enabling"
-	// Failed ...
-	Failed CustomHTTPSProvisioningState = "Failed"
+	// CustomHTTPSProvisioningStateDisabled ...
+	CustomHTTPSProvisioningStateDisabled CustomHTTPSProvisioningState = "Disabled"
+	// CustomHTTPSProvisioningStateDisabling ...
+	CustomHTTPSProvisioningStateDisabling CustomHTTPSProvisioningState = "Disabling"
+	// CustomHTTPSProvisioningStateEnabled ...
+	CustomHTTPSProvisioningStateEnabled CustomHTTPSProvisioningState = "Enabled"
+	// CustomHTTPSProvisioningStateEnabling ...
+	CustomHTTPSProvisioningStateEnabling CustomHTTPSProvisioningState = "Enabling"
+	// CustomHTTPSProvisioningStateFailed ...
+	CustomHTTPSProvisioningStateFailed CustomHTTPSProvisioningState = "Failed"
 )
 
 // PossibleCustomHTTPSProvisioningStateValues returns an array of possible values for the CustomHTTPSProvisioningState const type.
 func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState {
-	return []CustomHTTPSProvisioningState{Disabled, Disabling, Enabled, Enabling, Failed}
+	return []CustomHTTPSProvisioningState{CustomHTTPSProvisioningStateDisabled, CustomHTTPSProvisioningStateDisabling, CustomHTTPSProvisioningStateEnabled, CustomHTTPSProvisioningStateEnabling, CustomHTTPSProvisioningStateFailed}
 }
 
 // CustomHTTPSProvisioningSubstate enumerates the values for custom https provisioning substate.
@@ -142,6 +159,21 @@ func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSu
 	return []CustomHTTPSProvisioningSubstate{CertificateDeleted, CertificateDeployed, DeletingCertificate, DeployingCertificate, DomainControlValidationRequestApproved, DomainControlValidationRequestRejected, DomainControlValidationRequestTimedOut, IssuingCertificate, PendingDomainControlValidationREquestApproval, SubmittingDomainControlValidationRequest}
 }
 
+// CustomRuleEnabledState enumerates the values for custom rule enabled state.
+type CustomRuleEnabledState string
+
+const (
+	// CustomRuleEnabledStateDisabled ...
+	CustomRuleEnabledStateDisabled CustomRuleEnabledState = "Disabled"
+	// CustomRuleEnabledStateEnabled ...
+	CustomRuleEnabledStateEnabled CustomRuleEnabledState = "Enabled"
+)
+
+// PossibleCustomRuleEnabledStateValues returns an array of possible values for the CustomRuleEnabledState const type.
+func PossibleCustomRuleEnabledStateValues() []CustomRuleEnabledState {
+	return []CustomRuleEnabledState{CustomRuleEnabledStateDisabled, CustomRuleEnabledStateEnabled}
+}
+
 // DynamicCompressionEnabled enumerates the values for dynamic compression enabled.
 type DynamicCompressionEnabled string
 
@@ -172,19 +204,20 @@ func PossibleEnabledStateValues() []EnabledState {
 	return []EnabledState{EnabledStateDisabled, EnabledStateEnabled}
 }
 
-// EnabledStateEnum enumerates the values for enabled state enum.
-type EnabledStateEnum string
+// EnforceCertificateNameCheckEnabledState enumerates the values for enforce certificate name check enabled
+// state.
+type EnforceCertificateNameCheckEnabledState string
 
 const (
-	// EnabledStateEnumDisabled ...
-	EnabledStateEnumDisabled EnabledStateEnum = "Disabled"
-	// EnabledStateEnumEnabled ...
-	EnabledStateEnumEnabled EnabledStateEnum = "Enabled"
+	// EnforceCertificateNameCheckEnabledStateDisabled ...
+	EnforceCertificateNameCheckEnabledStateDisabled EnforceCertificateNameCheckEnabledState = "Disabled"
+	// EnforceCertificateNameCheckEnabledStateEnabled ...
+	EnforceCertificateNameCheckEnabledStateEnabled EnforceCertificateNameCheckEnabledState = "Enabled"
 )
 
-// PossibleEnabledStateEnumValues returns an array of possible values for the EnabledStateEnum const type.
-func PossibleEnabledStateEnumValues() []EnabledStateEnum {
-	return []EnabledStateEnum{EnabledStateEnumDisabled, EnabledStateEnumEnabled}
+// PossibleEnforceCertificateNameCheckEnabledStateValues returns an array of possible values for the EnforceCertificateNameCheckEnabledState const type.
+func PossibleEnforceCertificateNameCheckEnabledStateValues() []EnforceCertificateNameCheckEnabledState {
+	return []EnforceCertificateNameCheckEnabledState{EnforceCertificateNameCheckEnabledStateDisabled, EnforceCertificateNameCheckEnabledStateEnabled}
 }
 
 // ForwardingProtocol enumerates the values for forwarding protocol.
@@ -204,61 +237,82 @@ func PossibleForwardingProtocolValues() []ForwardingProtocol {
 	return []ForwardingProtocol{HTTPOnly, HTTPSOnly, MatchRequest}
 }
 
-// MatchCondition enumerates the values for match condition.
-type MatchCondition string
+// ManagedRuleEnabledState enumerates the values for managed rule enabled state.
+type ManagedRuleEnabledState string
 
 const (
-	// PostArgs ...
-	PostArgs MatchCondition = "PostArgs"
-	// QueryString ...
-	QueryString MatchCondition = "QueryString"
-	// RemoteAddr ...
-	RemoteAddr MatchCondition = "RemoteAddr"
-	// RequestBody ...
-	RequestBody MatchCondition = "RequestBody"
-	// RequestHeader ...
-	RequestHeader MatchCondition = "RequestHeader"
-	// RequestMethod ...
-	RequestMethod MatchCondition = "RequestMethod"
-	// RequestURI ...
-	RequestURI MatchCondition = "RequestUri"
+	// ManagedRuleEnabledStateDisabled ...
+	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = "Disabled"
+	// ManagedRuleEnabledStateEnabled ...
+	ManagedRuleEnabledStateEnabled ManagedRuleEnabledState = "Enabled"
 )
 
-// PossibleMatchConditionValues returns an array of possible values for the MatchCondition const type.
-func PossibleMatchConditionValues() []MatchCondition {
-	return []MatchCondition{PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, RequestURI}
+// PossibleManagedRuleEnabledStateValues returns an array of possible values for the ManagedRuleEnabledState const type.
+func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
+	return []ManagedRuleEnabledState{ManagedRuleEnabledStateDisabled, ManagedRuleEnabledStateEnabled}
 }
 
-// Mode enumerates the values for mode.
-type Mode string
+// MatchVariable enumerates the values for match variable.
+type MatchVariable string
 
 const (
-	// Detection ...
-	Detection Mode = "Detection"
-	// Prevention ...
-	Prevention Mode = "Prevention"
+	// Cookies ...
+	Cookies MatchVariable = "Cookies"
+	// PostArgs ...
+	PostArgs MatchVariable = "PostArgs"
+	// QueryString ...
+	QueryString MatchVariable = "QueryString"
+	// RemoteAddr ...
+	RemoteAddr MatchVariable = "RemoteAddr"
+	// RequestBody ...
+	RequestBody MatchVariable = "RequestBody"
+	// RequestHeader ...
+	RequestHeader MatchVariable = "RequestHeader"
+	// RequestMethod ...
+	RequestMethod MatchVariable = "RequestMethod"
+	// RequestURI ...
+	RequestURI MatchVariable = "RequestUri"
+	// SocketAddr ...
+	SocketAddr MatchVariable = "SocketAddr"
 )
 
-// PossibleModeValues returns an array of possible values for the Mode const type.
-func PossibleModeValues() []Mode {
-	return []Mode{Detection, Prevention}
+// PossibleMatchVariableValues returns an array of possible values for the MatchVariable const type.
+func PossibleMatchVariableValues() []MatchVariable {
+	return []MatchVariable{Cookies, PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, RequestURI, SocketAddr}
 }
 
 // NetworkOperationStatus enumerates the values for network operation status.
 type NetworkOperationStatus string
 
 const (
-	// NetworkOperationStatusFailed ...
-	NetworkOperationStatusFailed NetworkOperationStatus = "Failed"
-	// NetworkOperationStatusInProgress ...
-	NetworkOperationStatusInProgress NetworkOperationStatus = "InProgress"
-	// NetworkOperationStatusSucceeded ...
-	NetworkOperationStatusSucceeded NetworkOperationStatus = "Succeeded"
+	// Failed ...
+	Failed NetworkOperationStatus = "Failed"
+	// InProgress ...
+	InProgress NetworkOperationStatus = "InProgress"
+	// Succeeded ...
+	Succeeded NetworkOperationStatus = "Succeeded"
 )
 
 // PossibleNetworkOperationStatusValues returns an array of possible values for the NetworkOperationStatus const type.
 func PossibleNetworkOperationStatusValues() []NetworkOperationStatus {
-	return []NetworkOperationStatus{NetworkOperationStatusFailed, NetworkOperationStatusInProgress, NetworkOperationStatusSucceeded}
+	return []NetworkOperationStatus{Failed, InProgress, Succeeded}
+}
+
+// OdataType enumerates the values for odata type.
+type OdataType string
+
+const (
+	// OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration ...
+	OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration OdataType = "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration"
+	// OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration ...
+	OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration OdataType = "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration"
+	// OdataTypeRouteConfiguration ...
+	OdataTypeRouteConfiguration OdataType = "RouteConfiguration"
+)
+
+// PossibleOdataTypeValues returns an array of possible values for the OdataType const type.
+func PossibleOdataTypeValues() []OdataType {
+	return []OdataType{OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration, OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration, OdataTypeRouteConfiguration}
 }
 
 // Operator enumerates the values for operator.
@@ -287,11 +341,66 @@ const (
 	LessThan Operator = "LessThan"
 	// LessThanOrEqual ...
 	LessThanOrEqual Operator = "LessThanOrEqual"
+	// RegEx ...
+	RegEx Operator = "RegEx"
 )
 
 // PossibleOperatorValues returns an array of possible values for the Operator const type.
 func PossibleOperatorValues() []Operator {
-	return []Operator{Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual}
+	return []Operator{Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual, RegEx}
+}
+
+// PolicyEnabledState enumerates the values for policy enabled state.
+type PolicyEnabledState string
+
+const (
+	// PolicyEnabledStateDisabled ...
+	PolicyEnabledStateDisabled PolicyEnabledState = "Disabled"
+	// PolicyEnabledStateEnabled ...
+	PolicyEnabledStateEnabled PolicyEnabledState = "Enabled"
+)
+
+// PossiblePolicyEnabledStateValues returns an array of possible values for the PolicyEnabledState const type.
+func PossiblePolicyEnabledStateValues() []PolicyEnabledState {
+	return []PolicyEnabledState{PolicyEnabledStateDisabled, PolicyEnabledStateEnabled}
+}
+
+// PolicyMode enumerates the values for policy mode.
+type PolicyMode string
+
+const (
+	// Detection ...
+	Detection PolicyMode = "Detection"
+	// Prevention ...
+	Prevention PolicyMode = "Prevention"
+)
+
+// PossiblePolicyModeValues returns an array of possible values for the PolicyMode const type.
+func PossiblePolicyModeValues() []PolicyMode {
+	return []PolicyMode{Detection, Prevention}
+}
+
+// PolicyResourceState enumerates the values for policy resource state.
+type PolicyResourceState string
+
+const (
+	// PolicyResourceStateCreating ...
+	PolicyResourceStateCreating PolicyResourceState = "Creating"
+	// PolicyResourceStateDeleting ...
+	PolicyResourceStateDeleting PolicyResourceState = "Deleting"
+	// PolicyResourceStateDisabled ...
+	PolicyResourceStateDisabled PolicyResourceState = "Disabled"
+	// PolicyResourceStateDisabling ...
+	PolicyResourceStateDisabling PolicyResourceState = "Disabling"
+	// PolicyResourceStateEnabled ...
+	PolicyResourceStateEnabled PolicyResourceState = "Enabled"
+	// PolicyResourceStateEnabling ...
+	PolicyResourceStateEnabling PolicyResourceState = "Enabling"
+)
+
+// PossiblePolicyResourceStateValues returns an array of possible values for the PolicyResourceState const type.
+func PossiblePolicyResourceStateValues() []PolicyResourceState {
+	return []PolicyResourceState{PolicyResourceStateCreating, PolicyResourceStateDeleting, PolicyResourceStateDisabled, PolicyResourceStateDisabling, PolicyResourceStateEnabled, PolicyResourceStateEnabling}
 }
 
 // Protocol enumerates the values for protocol.
@@ -322,6 +431,42 @@ const (
 // PossibleQueryValues returns an array of possible values for the Query const type.
 func PossibleQueryValues() []Query {
 	return []Query{StripAll, StripNone}
+}
+
+// RedirectProtocol enumerates the values for redirect protocol.
+type RedirectProtocol string
+
+const (
+	// RedirectProtocolHTTPOnly ...
+	RedirectProtocolHTTPOnly RedirectProtocol = "HttpOnly"
+	// RedirectProtocolHTTPSOnly ...
+	RedirectProtocolHTTPSOnly RedirectProtocol = "HttpsOnly"
+	// RedirectProtocolMatchRequest ...
+	RedirectProtocolMatchRequest RedirectProtocol = "MatchRequest"
+)
+
+// PossibleRedirectProtocolValues returns an array of possible values for the RedirectProtocol const type.
+func PossibleRedirectProtocolValues() []RedirectProtocol {
+	return []RedirectProtocol{RedirectProtocolHTTPOnly, RedirectProtocolHTTPSOnly, RedirectProtocolMatchRequest}
+}
+
+// RedirectType enumerates the values for redirect type.
+type RedirectType string
+
+const (
+	// Found ...
+	Found RedirectType = "Found"
+	// Moved ...
+	Moved RedirectType = "Moved"
+	// PermanentRedirect ...
+	PermanentRedirect RedirectType = "PermanentRedirect"
+	// TemporaryRedirect ...
+	TemporaryRedirect RedirectType = "TemporaryRedirect"
+)
+
+// PossibleRedirectTypeValues returns an array of possible values for the RedirectType const type.
+func PossibleRedirectTypeValues() []RedirectType {
+	return []RedirectType{Found, Moved, PermanentRedirect, TemporaryRedirect}
 }
 
 // ResourceState enumerates the values for resource state.
@@ -362,34 +507,19 @@ func PossibleResourceTypeValues() []ResourceType {
 	return []ResourceType{MicrosoftNetworkfrontDoors, MicrosoftNetworkfrontDoorsfrontendEndpoints}
 }
 
-// RuleGroupOverride enumerates the values for rule group override.
-type RuleGroupOverride string
+// RoutingRuleEnabledState enumerates the values for routing rule enabled state.
+type RoutingRuleEnabledState string
 
 const (
-	// SQLInjection ...
-	SQLInjection RuleGroupOverride = "SqlInjection"
-	// XSS ...
-	XSS RuleGroupOverride = "XSS"
+	// RoutingRuleEnabledStateDisabled ...
+	RoutingRuleEnabledStateDisabled RoutingRuleEnabledState = "Disabled"
+	// RoutingRuleEnabledStateEnabled ...
+	RoutingRuleEnabledStateEnabled RoutingRuleEnabledState = "Enabled"
 )
 
-// PossibleRuleGroupOverrideValues returns an array of possible values for the RuleGroupOverride const type.
-func PossibleRuleGroupOverrideValues() []RuleGroupOverride {
-	return []RuleGroupOverride{SQLInjection, XSS}
-}
-
-// RuleSetType enumerates the values for rule set type.
-type RuleSetType string
-
-const (
-	// RuleSetTypeAzureManagedRuleSet ...
-	RuleSetTypeAzureManagedRuleSet RuleSetType = "AzureManagedRuleSet"
-	// RuleSetTypeUnknown ...
-	RuleSetTypeUnknown RuleSetType = "Unknown"
-)
-
-// PossibleRuleSetTypeValues returns an array of possible values for the RuleSetType const type.
-func PossibleRuleSetTypeValues() []RuleSetType {
-	return []RuleSetType{RuleSetTypeAzureManagedRuleSet, RuleSetTypeUnknown}
+// PossibleRoutingRuleEnabledStateValues returns an array of possible values for the RoutingRuleEnabledState const type.
+func PossibleRoutingRuleEnabledStateValues() []RoutingRuleEnabledState {
+	return []RoutingRuleEnabledState{RoutingRuleEnabledStateDisabled, RoutingRuleEnabledStateEnabled}
 }
 
 // RuleType enumerates the values for rule type.
@@ -435,52 +565,27 @@ func PossibleTLSProtocolTypeValues() []TLSProtocolType {
 	return []TLSProtocolType{ServerNameIndication}
 }
 
-// Transform enumerates the values for transform.
-type Transform string
+// TransformType enumerates the values for transform type.
+type TransformType string
 
 const (
-	// HTMLEntityDecode ...
-	HTMLEntityDecode Transform = "HtmlEntityDecode"
 	// Lowercase ...
-	Lowercase Transform = "Lowercase"
+	Lowercase TransformType = "Lowercase"
 	// RemoveNulls ...
-	RemoveNulls Transform = "RemoveNulls"
+	RemoveNulls TransformType = "RemoveNulls"
 	// Trim ...
-	Trim Transform = "Trim"
+	Trim TransformType = "Trim"
 	// Uppercase ...
-	Uppercase Transform = "Uppercase"
+	Uppercase TransformType = "Uppercase"
 	// URLDecode ...
-	URLDecode Transform = "UrlDecode"
+	URLDecode TransformType = "UrlDecode"
 	// URLEncode ...
-	URLEncode Transform = "UrlEncode"
+	URLEncode TransformType = "UrlEncode"
 )
 
-// PossibleTransformValues returns an array of possible values for the Transform const type.
-func PossibleTransformValues() []Transform {
-	return []Transform{HTMLEntityDecode, Lowercase, RemoveNulls, Trim, Uppercase, URLDecode, URLEncode}
-}
-
-// WebApplicationFirewallPolicy enumerates the values for web application firewall policy.
-type WebApplicationFirewallPolicy string
-
-const (
-	// WebApplicationFirewallPolicyCreating ...
-	WebApplicationFirewallPolicyCreating WebApplicationFirewallPolicy = "Creating"
-	// WebApplicationFirewallPolicyDeleting ...
-	WebApplicationFirewallPolicyDeleting WebApplicationFirewallPolicy = "Deleting"
-	// WebApplicationFirewallPolicyDisabled ...
-	WebApplicationFirewallPolicyDisabled WebApplicationFirewallPolicy = "Disabled"
-	// WebApplicationFirewallPolicyDisabling ...
-	WebApplicationFirewallPolicyDisabling WebApplicationFirewallPolicy = "Disabling"
-	// WebApplicationFirewallPolicyEnabled ...
-	WebApplicationFirewallPolicyEnabled WebApplicationFirewallPolicy = "Enabled"
-	// WebApplicationFirewallPolicyEnabling ...
-	WebApplicationFirewallPolicyEnabling WebApplicationFirewallPolicy = "Enabling"
-)
-
-// PossibleWebApplicationFirewallPolicyValues returns an array of possible values for the WebApplicationFirewallPolicy const type.
-func PossibleWebApplicationFirewallPolicyValues() []WebApplicationFirewallPolicy {
-	return []WebApplicationFirewallPolicy{WebApplicationFirewallPolicyCreating, WebApplicationFirewallPolicyDeleting, WebApplicationFirewallPolicyDisabled, WebApplicationFirewallPolicyDisabling, WebApplicationFirewallPolicyEnabled, WebApplicationFirewallPolicyEnabling}
+// PossibleTransformTypeValues returns an array of possible values for the TransformType const type.
+func PossibleTransformTypeValues() []TransformType {
+	return []TransformType{Lowercase, RemoveNulls, Trim, Uppercase, URLDecode, URLEncode}
 }
 
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
@@ -490,63 +595,9 @@ func PossibleWebApplicationFirewallPolicyValues() []WebApplicationFirewallPolicy
 // asynchronous operation failed, the response body includes the HTTP status code for the failed request
 // and error information regarding the failure.
 type AzureAsyncOperationResult struct {
-	// Status - Status of the Azure async operation. Possible values are: 'InProgress', 'Succeeded', and 'Failed'. Possible values include: 'NetworkOperationStatusInProgress', 'NetworkOperationStatusSucceeded', 'NetworkOperationStatusFailed'
+	// Status - Status of the Azure async operation. Possible values are: 'InProgress', 'Succeeded', and 'Failed'. Possible values include: 'InProgress', 'Succeeded', 'Failed'
 	Status NetworkOperationStatus `json:"status,omitempty"`
 	Error  *Error                 `json:"error,omitempty"`
-}
-
-// AzureManagedOverrideRuleGroup defines contents of a web application rule
-type AzureManagedOverrideRuleGroup struct {
-	// RuleGroupOverride - Describes override rule group. Possible values include: 'SQLInjection', 'XSS'
-	RuleGroupOverride RuleGroupOverride `json:"ruleGroupOverride,omitempty"`
-	// Action - Type of Actions. Possible values include: 'Allow', 'Block', 'Log'
-	Action Action `json:"action,omitempty"`
-}
-
-// AzureManagedRuleSet describes azure managed provider.
-type AzureManagedRuleSet struct {
-	// RuleGroupOverrides - List of azure managed provider override configuration (optional)
-	RuleGroupOverrides *[]AzureManagedOverrideRuleGroup `json:"ruleGroupOverrides,omitempty"`
-	// Priority - Describes priority of the rule
-	Priority *int32 `json:"priority,omitempty"`
-	// Version - defines version of the rule set
-	Version *int32 `json:"version,omitempty"`
-	// RuleSetType - Possible values include: 'RuleSetTypeUnknown', 'RuleSetTypeAzureManagedRuleSet'
-	RuleSetType RuleSetType `json:"ruleSetType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureManagedRuleSet.
-func (amrs AzureManagedRuleSet) MarshalJSON() ([]byte, error) {
-	amrs.RuleSetType = RuleSetTypeAzureManagedRuleSet
-	objectMap := make(map[string]interface{})
-	if amrs.RuleGroupOverrides != nil {
-		objectMap["ruleGroupOverrides"] = amrs.RuleGroupOverrides
-	}
-	if amrs.Priority != nil {
-		objectMap["priority"] = amrs.Priority
-	}
-	if amrs.Version != nil {
-		objectMap["version"] = amrs.Version
-	}
-	if amrs.RuleSetType != "" {
-		objectMap["ruleSetType"] = amrs.RuleSetType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureManagedRuleSet is the BasicManagedRuleSet implementation for AzureManagedRuleSet.
-func (amrs AzureManagedRuleSet) AsAzureManagedRuleSet() (*AzureManagedRuleSet, bool) {
-	return &amrs, true
-}
-
-// AsManagedRuleSet is the BasicManagedRuleSet implementation for AzureManagedRuleSet.
-func (amrs AzureManagedRuleSet) AsManagedRuleSet() (*ManagedRuleSet, bool) {
-	return nil, false
-}
-
-// AsBasicManagedRuleSet is the BasicManagedRuleSet implementation for AzureManagedRuleSet.
-func (amrs AzureManagedRuleSet) AsBasicManagedRuleSet() (BasicManagedRuleSet, bool) {
-	return &amrs, true
 }
 
 // Backend backend address of a frontDoor load balancer.
@@ -557,8 +608,8 @@ type Backend struct {
 	HTTPPort *int32 `json:"httpPort,omitempty"`
 	// HTTPSPort - The HTTPS TCP port number. Must be between 1 and 65535.
 	HTTPSPort *int32 `json:"httpsPort,omitempty"`
-	// EnabledState - Whether to enable use of this backend. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnumEnabled', 'EnabledStateEnumDisabled'
-	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
+	// EnabledState - Whether to enable use of this backend. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'
+	EnabledState BackendEnabledState `json:"enabledState,omitempty"`
 	// Priority - Priority to use for load balancing. Higher priorities will not be used for load balancing if any lower priority backend is healthy.
 	Priority *int32 `json:"priority,omitempty"`
 	// Weight - Weight of this endpoint for load balancing purposes.
@@ -664,6 +715,12 @@ type BackendPoolProperties struct {
 	LoadBalancingSettings *SubResource `json:"loadBalancingSettings,omitempty"`
 	// HealthProbeSettings - L7 health probe settings for a backend pool
 	HealthProbeSettings *SubResource `json:"healthProbeSettings,omitempty"`
+}
+
+// BackendPoolsSettings settings that apply to all backend pools.
+type BackendPoolsSettings struct {
+	// EnforceCertificateNameCheck - Whether to enforce certificate name check on HTTPS requests to all backend pools. No effect on non-HTTPS requests. Possible values include: 'EnforceCertificateNameCheckEnabledStateEnabled', 'EnforceCertificateNameCheckEnabledStateDisabled'
+	EnforceCertificateNameCheck EnforceCertificateNameCheckEnabledState `json:"enforceCertificateNameCheck,omitempty"`
 }
 
 // BackendPoolUpdateParameters a collection of backends that can be routed to.
@@ -793,28 +850,26 @@ func (chc *CustomHTTPSConfiguration) UnmarshalJSON(body []byte) error {
 
 // CustomRule defines contents of a web application rule
 type CustomRule struct {
-	// Name - Gets name of the resource that is unique within a policy. This name can be used to access the resource.
+	// Name - Describes the name of the rule.
 	Name *string `json:"name,omitempty"`
-	// Etag - READ-ONLY; Gets a unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty"`
-	// Priority - Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value
+	// Priority - Describes priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.
 	Priority *int32 `json:"priority,omitempty"`
+	// EnabledState - Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified. Possible values include: 'CustomRuleEnabledStateDisabled', 'CustomRuleEnabledStateEnabled'
+	EnabledState CustomRuleEnabledState `json:"enabledState,omitempty"`
 	// RuleType - Describes type of rule. Possible values include: 'MatchRule', 'RateLimitRule'
 	RuleType RuleType `json:"ruleType,omitempty"`
-	// RateLimitDurationInMinutes - Defines rate limit duration. Default - 1 minute
+	// RateLimitDurationInMinutes - Time window for resetting the rate limit count. Default is 1 minute.
 	RateLimitDurationInMinutes *int32 `json:"rateLimitDurationInMinutes,omitempty"`
-	// RateLimitThreshold - Defines rate limit threshold
+	// RateLimitThreshold - Number of allowed requests per client within the time window.
 	RateLimitThreshold *int32 `json:"rateLimitThreshold,omitempty"`
-	// MatchConditions - List of match conditions
-	MatchConditions *[]MatchCondition1 `json:"matchConditions,omitempty"`
-	// Action - Type of Actions. Possible values include: 'Allow', 'Block', 'Log'
-	Action Action `json:"action,omitempty"`
-	// Transforms - List of transforms
-	Transforms *[]Transform `json:"transforms,omitempty"`
+	// MatchConditions - List of match conditions.
+	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
+	// Action - Describes what action to be applied when rule matches. Possible values include: 'Allow', 'Block', 'Log', 'Redirect'
+	Action ActionType `json:"action,omitempty"`
 }
 
-// CustomRules defines contents of custom rules
-type CustomRules struct {
+// CustomRuleList defines contents of custom rules
+type CustomRuleList struct {
 	// Rules - List of rules
 	Rules *[]CustomRule `json:"rules,omitempty"`
 }
@@ -865,6 +920,62 @@ type ErrorResponse struct {
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// ForwardingConfiguration describes Forwarding Route.
+type ForwardingConfiguration struct {
+	// CustomForwardingPath - A custom path used to rewrite resource paths matched by this rule. Leave empty to use incoming path.
+	CustomForwardingPath *string `json:"customForwardingPath,omitempty"`
+	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'HTTPOnly', 'HTTPSOnly', 'MatchRequest'
+	ForwardingProtocol ForwardingProtocol `json:"forwardingProtocol,omitempty"`
+	// CacheConfiguration - The caching configuration associated with this rule.
+	CacheConfiguration *CacheConfiguration `json:"cacheConfiguration,omitempty"`
+	// BackendPool - A reference to the BackendPool which this rule routes to.
+	BackendPool *SubResource `json:"backendPool,omitempty"`
+	// OdataType - Possible values include: 'OdataTypeRouteConfiguration', 'OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration', 'OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration'
+	OdataType OdataType `json:"@odata.type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ForwardingConfiguration.
+func (fc ForwardingConfiguration) MarshalJSON() ([]byte, error) {
+	fc.OdataType = OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration
+	objectMap := make(map[string]interface{})
+	if fc.CustomForwardingPath != nil {
+		objectMap["customForwardingPath"] = fc.CustomForwardingPath
+	}
+	if fc.ForwardingProtocol != "" {
+		objectMap["forwardingProtocol"] = fc.ForwardingProtocol
+	}
+	if fc.CacheConfiguration != nil {
+		objectMap["cacheConfiguration"] = fc.CacheConfiguration
+	}
+	if fc.BackendPool != nil {
+		objectMap["backendPool"] = fc.BackendPool
+	}
+	if fc.OdataType != "" {
+		objectMap["@odata.type"] = fc.OdataType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsForwardingConfiguration is the BasicRouteConfiguration implementation for ForwardingConfiguration.
+func (fc ForwardingConfiguration) AsForwardingConfiguration() (*ForwardingConfiguration, bool) {
+	return &fc, true
+}
+
+// AsRedirectConfiguration is the BasicRouteConfiguration implementation for ForwardingConfiguration.
+func (fc ForwardingConfiguration) AsRedirectConfiguration() (*RedirectConfiguration, bool) {
+	return nil, false
+}
+
+// AsRouteConfiguration is the BasicRouteConfiguration implementation for ForwardingConfiguration.
+func (fc ForwardingConfiguration) AsRouteConfiguration() (*RouteConfiguration, bool) {
+	return nil, false
+}
+
+// AsBasicRouteConfiguration is the BasicRouteConfiguration implementation for ForwardingConfiguration.
+func (fc ForwardingConfiguration) AsBasicRouteConfiguration() (BasicRouteConfiguration, bool) {
+	return &fc, true
 }
 
 // FrontDoor front Door represents a collection of backend endpoints to route traffic to along with rules
@@ -1100,12 +1211,18 @@ func (fe *FrontendEndpoint) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// FrontendEndpointLink defines the Resource ID for a Frontend Endpoint.
+type FrontendEndpointLink struct {
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
 // FrontendEndpointProperties the JSON object that contains the properties required to create a frontend
 // endpoint.
 type FrontendEndpointProperties struct {
 	// ResourceState - Resource status. Possible values include: 'ResourceStateCreating', 'ResourceStateEnabling', 'ResourceStateEnabled', 'ResourceStateDisabling', 'ResourceStateDisabled', 'ResourceStateDeleting'
 	ResourceState ResourceState `json:"resourceState,omitempty"`
-	// CustomHTTPSProvisioningState - READ-ONLY; Provisioning status of Custom Https of the frontendEndpoint. Possible values include: 'Enabling', 'Enabled', 'Disabling', 'Disabled', 'Failed'
+	// CustomHTTPSProvisioningState - READ-ONLY; Provisioning status of Custom Https of the frontendEndpoint. Possible values include: 'CustomHTTPSProvisioningStateEnabling', 'CustomHTTPSProvisioningStateEnabled', 'CustomHTTPSProvisioningStateDisabling', 'CustomHTTPSProvisioningStateDisabled', 'CustomHTTPSProvisioningStateFailed'
 	CustomHTTPSProvisioningState CustomHTTPSProvisioningState `json:"customHttpsProvisioningState,omitempty"`
 	// CustomHTTPSProvisioningSubstate - READ-ONLY; Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. Possible values include: 'SubmittingDomainControlValidationRequest', 'PendingDomainControlValidationREquestApproval', 'DomainControlValidationRequestApproved', 'DomainControlValidationRequestRejected', 'DomainControlValidationRequestTimedOut', 'IssuingCertificate', 'DeployingCertificate', 'CertificateDeployed', 'DeletingCertificate', 'CertificateDeleted'
 	CustomHTTPSProvisioningSubstate CustomHTTPSProvisioningSubstate `json:"customHttpsProvisioningSubstate,omitempty"`
@@ -1716,98 +1833,89 @@ type LoadBalancingSettingsUpdateParameters struct {
 	AdditionalLatencyMilliseconds *int32 `json:"additionalLatencyMilliseconds,omitempty"`
 }
 
-// BasicManagedRuleSet base class for all types of ManagedRuleSet.
-type BasicManagedRuleSet interface {
-	AsAzureManagedRuleSet() (*AzureManagedRuleSet, bool)
-	AsManagedRuleSet() (*ManagedRuleSet, bool)
+// ManagedRuleDefinition describes a managed rule definition.
+type ManagedRuleDefinition struct {
+	// RuleID - READ-ONLY; Identifier for the managed rule.
+	RuleID *string `json:"ruleId,omitempty"`
+	// DefaultState - READ-ONLY; Describes the default state for the managed rule. Possible values include: 'ManagedRuleEnabledStateDisabled', 'ManagedRuleEnabledStateEnabled'
+	DefaultState ManagedRuleEnabledState `json:"defaultState,omitempty"`
+	// DefaultAction - READ-ONLY; Describes the default action to be applied when the managed rule matches. Possible values include: 'Allow', 'Block', 'Log', 'Redirect'
+	DefaultAction ActionType `json:"defaultAction,omitempty"`
+	// Description - READ-ONLY; Describes the functionality of the managed rule.
+	Description *string `json:"description,omitempty"`
 }
 
-// ManagedRuleSet base class for all types of ManagedRuleSet.
+// ManagedRuleGroupDefinition describes a managed rule group.
+type ManagedRuleGroupDefinition struct {
+	// RuleGroupName - READ-ONLY; Name of the managed rule group.
+	RuleGroupName *string `json:"ruleGroupName,omitempty"`
+	// Description - READ-ONLY; Description of the managed rule group.
+	Description *string `json:"description,omitempty"`
+	// Rules - READ-ONLY; List of rules within the managed rule group.
+	Rules *[]ManagedRuleDefinition `json:"rules,omitempty"`
+}
+
+// ManagedRuleGroupOverride defines a managed rule group override setting.
+type ManagedRuleGroupOverride struct {
+	// RuleGroupName - Describes the managed rule group to override.
+	RuleGroupName *string `json:"ruleGroupName,omitempty"`
+	// Rules - List of rules that will be disabled. If none specified, all rules in the group will be disabled.
+	Rules *[]ManagedRuleOverride `json:"rules,omitempty"`
+}
+
+// ManagedRuleOverride defines a managed rule group override setting.
+type ManagedRuleOverride struct {
+	// RuleID - Identifier for the managed rule.
+	RuleID *string `json:"ruleId,omitempty"`
+	// EnabledState - Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified. Possible values include: 'ManagedRuleEnabledStateDisabled', 'ManagedRuleEnabledStateEnabled'
+	EnabledState ManagedRuleEnabledState `json:"enabledState,omitempty"`
+	// Action - Describes the override action to be applied when rule matches. Possible values include: 'Allow', 'Block', 'Log', 'Redirect'
+	Action ActionType `json:"action,omitempty"`
+}
+
+// ManagedRuleSet defines a managed rule set.
 type ManagedRuleSet struct {
-	// Priority - Describes priority of the rule
-	Priority *int32 `json:"priority,omitempty"`
-	// Version - defines version of the rule set
-	Version *int32 `json:"version,omitempty"`
-	// RuleSetType - Possible values include: 'RuleSetTypeUnknown', 'RuleSetTypeAzureManagedRuleSet'
-	RuleSetType RuleSetType `json:"ruleSetType,omitempty"`
+	// RuleSetType - Defines the rule set type to use.
+	RuleSetType *string `json:"ruleSetType,omitempty"`
+	// RuleSetVersion - Defines the version of the rule set to use.
+	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
+	// RuleGroupOverrides - Defines the rule group overrides to apply to the rule set.
+	RuleGroupOverrides *[]ManagedRuleGroupOverride `json:"ruleGroupOverrides,omitempty"`
 }
 
-func unmarshalBasicManagedRuleSet(body []byte) (BasicManagedRuleSet, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["ruleSetType"] {
-	case string(RuleSetTypeAzureManagedRuleSet):
-		var amrs AzureManagedRuleSet
-		err := json.Unmarshal(body, &amrs)
-		return amrs, err
-	default:
-		var mrs ManagedRuleSet
-		err := json.Unmarshal(body, &mrs)
-		return mrs, err
-	}
-}
-func unmarshalBasicManagedRuleSetArray(body []byte) ([]BasicManagedRuleSet, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	mrsArray := make([]BasicManagedRuleSet, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		mrs, err := unmarshalBasicManagedRuleSet(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		mrsArray[index] = mrs
-	}
-	return mrsArray, nil
+// ManagedRuleSetDefinition describes the a managed rule set definition.
+type ManagedRuleSetDefinition struct {
+	// ManagedRuleSetDefinitionProperties - Properties for a managed rule set definition.
+	*ManagedRuleSetDefinitionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for ManagedRuleSet.
-func (mrs ManagedRuleSet) MarshalJSON() ([]byte, error) {
-	mrs.RuleSetType = RuleSetTypeUnknown
+// MarshalJSON is the custom marshaler for ManagedRuleSetDefinition.
+func (mrsd ManagedRuleSetDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mrs.Priority != nil {
-		objectMap["priority"] = mrs.Priority
+	if mrsd.ManagedRuleSetDefinitionProperties != nil {
+		objectMap["properties"] = mrsd.ManagedRuleSetDefinitionProperties
 	}
-	if mrs.Version != nil {
-		objectMap["version"] = mrs.Version
+	if mrsd.Location != nil {
+		objectMap["location"] = mrsd.Location
 	}
-	if mrs.RuleSetType != "" {
-		objectMap["ruleSetType"] = mrs.RuleSetType
+	if mrsd.Tags != nil {
+		objectMap["tags"] = mrsd.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
-// AsAzureManagedRuleSet is the BasicManagedRuleSet implementation for ManagedRuleSet.
-func (mrs ManagedRuleSet) AsAzureManagedRuleSet() (*AzureManagedRuleSet, bool) {
-	return nil, false
-}
-
-// AsManagedRuleSet is the BasicManagedRuleSet implementation for ManagedRuleSet.
-func (mrs ManagedRuleSet) AsManagedRuleSet() (*ManagedRuleSet, bool) {
-	return &mrs, true
-}
-
-// AsBasicManagedRuleSet is the BasicManagedRuleSet implementation for ManagedRuleSet.
-func (mrs ManagedRuleSet) AsBasicManagedRuleSet() (BasicManagedRuleSet, bool) {
-	return &mrs, true
-}
-
-// ManagedRuleSets defines ManagedRuleSets - array of managedRuleSet
-type ManagedRuleSets struct {
-	// RuleSets - List of rules
-	RuleSets *[]BasicManagedRuleSet `json:"ruleSets,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for ManagedRuleSets struct.
-func (mrs *ManagedRuleSets) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ManagedRuleSetDefinition struct.
+func (mrsd *ManagedRuleSetDefinition) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1815,13 +1923,59 @@ func (mrs *ManagedRuleSets) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "ruleSets":
+		case "properties":
 			if v != nil {
-				ruleSets, err := unmarshalBasicManagedRuleSetArray(*v)
+				var managedRuleSetDefinitionProperties ManagedRuleSetDefinitionProperties
+				err = json.Unmarshal(*v, &managedRuleSetDefinitionProperties)
 				if err != nil {
 					return err
 				}
-				mrs.RuleSets = &ruleSets
+				mrsd.ManagedRuleSetDefinitionProperties = &managedRuleSetDefinitionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mrsd.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mrsd.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mrsd.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				mrsd.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				mrsd.Tags = tags
 			}
 		}
 	}
@@ -1829,18 +1983,214 @@ func (mrs *ManagedRuleSets) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MatchCondition1 define match conditions
-type MatchCondition1 struct {
-	// MatchVariable - Match Variable. Possible values include: 'RemoteAddr', 'RequestMethod', 'QueryString', 'PostArgs', 'RequestURI', 'RequestHeader', 'RequestBody'
-	MatchVariable MatchCondition `json:"matchVariable,omitempty"`
-	// Selector - Name of selector in RequestHeader or RequestBody to be matched
+// ManagedRuleSetDefinitionList list of managed rule set definitions available for use in a policy.
+type ManagedRuleSetDefinitionList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of managed rule set definitions.
+	Value *[]ManagedRuleSetDefinition `json:"value,omitempty"`
+	// NextLink - URL to retrieve next set of managed rule set definitions.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedRuleSetDefinitionListIterator provides access to a complete listing of ManagedRuleSetDefinition
+// values.
+type ManagedRuleSetDefinitionListIterator struct {
+	i    int
+	page ManagedRuleSetDefinitionListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedRuleSetDefinitionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedRuleSetDefinitionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ManagedRuleSetDefinitionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedRuleSetDefinitionListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedRuleSetDefinitionListIterator) Response() ManagedRuleSetDefinitionList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedRuleSetDefinitionListIterator) Value() ManagedRuleSetDefinition {
+	if !iter.page.NotDone() {
+		return ManagedRuleSetDefinition{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ManagedRuleSetDefinitionListIterator type.
+func NewManagedRuleSetDefinitionListIterator(page ManagedRuleSetDefinitionListPage) ManagedRuleSetDefinitionListIterator {
+	return ManagedRuleSetDefinitionListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (mrsdl ManagedRuleSetDefinitionList) IsEmpty() bool {
+	return mrsdl.Value == nil || len(*mrsdl.Value) == 0
+}
+
+// managedRuleSetDefinitionListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (mrsdl ManagedRuleSetDefinitionList) managedRuleSetDefinitionListPreparer(ctx context.Context) (*http.Request, error) {
+	if mrsdl.NextLink == nil || len(to.String(mrsdl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(mrsdl.NextLink)))
+}
+
+// ManagedRuleSetDefinitionListPage contains a page of ManagedRuleSetDefinition values.
+type ManagedRuleSetDefinitionListPage struct {
+	fn    func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)
+	mrsdl ManagedRuleSetDefinitionList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedRuleSetDefinitionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedRuleSetDefinitionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.mrsdl)
+	if err != nil {
+		return err
+	}
+	page.mrsdl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ManagedRuleSetDefinitionListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedRuleSetDefinitionListPage) NotDone() bool {
+	return !page.mrsdl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedRuleSetDefinitionListPage) Response() ManagedRuleSetDefinitionList {
+	return page.mrsdl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedRuleSetDefinitionListPage) Values() []ManagedRuleSetDefinition {
+	if page.mrsdl.IsEmpty() {
+		return nil
+	}
+	return *page.mrsdl.Value
+}
+
+// Creates a new instance of the ManagedRuleSetDefinitionListPage type.
+func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
+	return ManagedRuleSetDefinitionListPage{fn: getNextPage}
+}
+
+// ManagedRuleSetDefinitionProperties properties for a managed rule set definition.
+type ManagedRuleSetDefinitionProperties struct {
+	// ProvisioningState - READ-ONLY; Provisioning state of the managed rule set.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// RuleSetType - READ-ONLY; Type of the managed rule set.
+	RuleSetType *string `json:"ruleSetType,omitempty"`
+	// RuleSetVersion - READ-ONLY; Version of the managed rule set type.
+	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
+	// RuleGroups - READ-ONLY; Rule groups of the managed rule set.
+	RuleGroups *[]ManagedRuleGroupDefinition `json:"ruleGroups,omitempty"`
+}
+
+// ManagedRuleSetList defines the list of managed rule sets for the policy.
+type ManagedRuleSetList struct {
+	// ManagedRuleSets - List of rule sets.
+	ManagedRuleSets *[]ManagedRuleSet `json:"managedRuleSets,omitempty"`
+}
+
+// MatchCondition define a match condition.
+type MatchCondition struct {
+	// MatchVariable - Request variable to compare with. Possible values include: 'RemoteAddr', 'RequestMethod', 'QueryString', 'PostArgs', 'RequestURI', 'RequestHeader', 'RequestBody', 'Cookies', 'SocketAddr'
+	MatchVariable MatchVariable `json:"matchVariable,omitempty"`
+	// Selector - Match against a specific key from the QueryString, PostArgs, RequestHeader or Cookies variables. Default is null.
 	Selector *string `json:"selector,omitempty"`
-	// Operator - Describes operator to be matched. Possible values include: 'Any', 'IPMatch', 'GeoMatch', 'Equal', 'Contains', 'LessThan', 'GreaterThan', 'LessThanOrEqual', 'GreaterThanOrEqual', 'BeginsWith', 'EndsWith'
+	// Operator - Comparison type to use for matching with the variable value. Possible values include: 'Any', 'IPMatch', 'GeoMatch', 'Equal', 'Contains', 'LessThan', 'GreaterThan', 'LessThanOrEqual', 'GreaterThanOrEqual', 'BeginsWith', 'EndsWith', 'RegEx'
 	Operator Operator `json:"operator,omitempty"`
-	// NegateCondition - Describes if this is negate condition or not
+	// NegateCondition - Describes if the result of this condition should be negated.
 	NegateCondition *bool `json:"negateCondition,omitempty"`
-	// MatchValue - Match value
+	// MatchValue - List of possible match values.
 	MatchValue *[]string `json:"matchValue,omitempty"`
+	// Transforms - List of transforms.
+	Transforms *[]TransformType `json:"transforms,omitempty"`
+}
+
+// PoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type PoliciesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *PoliciesCreateOrUpdateFuture) Result(client PoliciesClient) (wafp WebApplicationFirewallPolicy, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "frontdoor.PoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("frontdoor.PoliciesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if wafp.Response.Response, err = future.GetResult(sender); err == nil && wafp.Response.Response.StatusCode != http.StatusNoContent {
+		wafp, err = client.CreateOrUpdateResponder(wafp.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "frontdoor.PoliciesCreateOrUpdateFuture", "Result", wafp.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // PoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1866,12 +2216,18 @@ func (future *PoliciesDeleteFuture) Result(client PoliciesClient) (ar autorest.R
 	return
 }
 
-// PolicySettings defines contents of a web application firewall global configuration
+// PolicySettings defines top-level WebApplicationFirewallPolicy configuration settings.
 type PolicySettings struct {
-	// EnabledState - describes if the policy is in enabled state or disabled state. Possible values include: 'EnabledStateDisabled', 'EnabledStateEnabled'
-	EnabledState EnabledState `json:"enabledState,omitempty"`
-	// Mode - Describes if it is in detection mode  or prevention mode at policy level. Possible values include: 'Prevention', 'Detection'
-	Mode Mode `json:"mode,omitempty"`
+	// EnabledState - Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified. Possible values include: 'PolicyEnabledStateDisabled', 'PolicyEnabledStateEnabled'
+	EnabledState PolicyEnabledState `json:"enabledState,omitempty"`
+	// Mode - Describes if it is in detection mode or prevention mode at policy level. Possible values include: 'Prevention', 'Detection'
+	Mode PolicyMode `json:"mode,omitempty"`
+	// RedirectURL - If action type is redirect, this field represents redirect URL for the client.
+	RedirectURL *string `json:"redirectUrl,omitempty"`
+	// CustomBlockResponseStatusCode - If the action type is block, customer can override the response status code.
+	CustomBlockResponseStatusCode *int32 `json:"customBlockResponseStatusCode,omitempty"`
+	// CustomBlockResponseBody - If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
+	CustomBlockResponseBody *string `json:"customBlockResponseBody,omitempty"`
 }
 
 // Properties the JSON object that contains the properties required to create an endpoint.
@@ -1894,14 +2250,82 @@ type Properties struct {
 	BackendPools *[]BackendPool `json:"backendPools,omitempty"`
 	// FrontendEndpoints - Frontend endpoints available to routing rules.
 	FrontendEndpoints *[]FrontendEndpoint `json:"frontendEndpoints,omitempty"`
-	// EnabledState - Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnumEnabled', 'EnabledStateEnumDisabled'
-	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
+	// BackendPoolsSettings - Settings for all backendPools
+	BackendPoolsSettings *BackendPoolsSettings `json:"backendPoolsSettings,omitempty"`
+	// EnabledState - Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnabled', 'EnabledStateDisabled'
+	EnabledState EnabledState `json:"enabledState,omitempty"`
 }
 
 // PurgeParameters parameters required for content purge.
 type PurgeParameters struct {
 	// ContentPaths - The path to the content to be purged. Can describe a file path or a wild card directory.
 	ContentPaths *[]string `json:"contentPaths,omitempty"`
+}
+
+// RedirectConfiguration describes Redirect Route.
+type RedirectConfiguration struct {
+	// RedirectType - The redirect type the rule will use when redirecting traffic. Possible values include: 'Moved', 'Found', 'TemporaryRedirect', 'PermanentRedirect'
+	RedirectType RedirectType `json:"redirectType,omitempty"`
+	// RedirectProtocol - The protocol of the destination to where the traffic is redirected. Possible values include: 'RedirectProtocolHTTPOnly', 'RedirectProtocolHTTPSOnly', 'RedirectProtocolMatchRequest'
+	RedirectProtocol RedirectProtocol `json:"redirectProtocol,omitempty"`
+	// CustomHost - Host to redirect. Leave empty to use the incoming host as the destination host.
+	CustomHost *string `json:"customHost,omitempty"`
+	// CustomPath - The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as destination path.
+	CustomPath *string `json:"customPath,omitempty"`
+	// CustomFragment - Fragment to add to the redirect URL. Fragment is the part of the URL that comes after #. Do not include the #.
+	CustomFragment *string `json:"customFragment,omitempty"`
+	// CustomQueryString - The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query string; leave empty to preserve the incoming query string. Query string must be in <key>=<value> format. The first ? and & will be added automatically so do not include them in the front, but do separate multiple query strings with &.
+	CustomQueryString *string `json:"customQueryString,omitempty"`
+	// OdataType - Possible values include: 'OdataTypeRouteConfiguration', 'OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration', 'OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration'
+	OdataType OdataType `json:"@odata.type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RedirectConfiguration.
+func (rc RedirectConfiguration) MarshalJSON() ([]byte, error) {
+	rc.OdataType = OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration
+	objectMap := make(map[string]interface{})
+	if rc.RedirectType != "" {
+		objectMap["redirectType"] = rc.RedirectType
+	}
+	if rc.RedirectProtocol != "" {
+		objectMap["redirectProtocol"] = rc.RedirectProtocol
+	}
+	if rc.CustomHost != nil {
+		objectMap["customHost"] = rc.CustomHost
+	}
+	if rc.CustomPath != nil {
+		objectMap["customPath"] = rc.CustomPath
+	}
+	if rc.CustomFragment != nil {
+		objectMap["customFragment"] = rc.CustomFragment
+	}
+	if rc.CustomQueryString != nil {
+		objectMap["customQueryString"] = rc.CustomQueryString
+	}
+	if rc.OdataType != "" {
+		objectMap["@odata.type"] = rc.OdataType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsForwardingConfiguration is the BasicRouteConfiguration implementation for RedirectConfiguration.
+func (rc RedirectConfiguration) AsForwardingConfiguration() (*ForwardingConfiguration, bool) {
+	return nil, false
+}
+
+// AsRedirectConfiguration is the BasicRouteConfiguration implementation for RedirectConfiguration.
+func (rc RedirectConfiguration) AsRedirectConfiguration() (*RedirectConfiguration, bool) {
+	return &rc, true
+}
+
+// AsRouteConfiguration is the BasicRouteConfiguration implementation for RedirectConfiguration.
+func (rc RedirectConfiguration) AsRouteConfiguration() (*RouteConfiguration, bool) {
+	return nil, false
+}
+
+// AsBasicRouteConfiguration is the BasicRouteConfiguration implementation for RedirectConfiguration.
+func (rc RedirectConfiguration) AsBasicRouteConfiguration() (BasicRouteConfiguration, bool) {
+	return &rc, true
 }
 
 // Resource common resource representation.
@@ -1928,6 +2352,90 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// BasicRouteConfiguration base class for all types of Route.
+type BasicRouteConfiguration interface {
+	AsForwardingConfiguration() (*ForwardingConfiguration, bool)
+	AsRedirectConfiguration() (*RedirectConfiguration, bool)
+	AsRouteConfiguration() (*RouteConfiguration, bool)
+}
+
+// RouteConfiguration base class for all types of Route.
+type RouteConfiguration struct {
+	// OdataType - Possible values include: 'OdataTypeRouteConfiguration', 'OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration', 'OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration'
+	OdataType OdataType `json:"@odata.type,omitempty"`
+}
+
+func unmarshalBasicRouteConfiguration(body []byte) (BasicRouteConfiguration, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["@odata.type"] {
+	case string(OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorForwardingConfiguration):
+		var fc ForwardingConfiguration
+		err := json.Unmarshal(body, &fc)
+		return fc, err
+	case string(OdataTypeMicrosoftAzureFrontDoorModelsFrontdoorRedirectConfiguration):
+		var rc RedirectConfiguration
+		err := json.Unmarshal(body, &rc)
+		return rc, err
+	default:
+		var rc RouteConfiguration
+		err := json.Unmarshal(body, &rc)
+		return rc, err
+	}
+}
+func unmarshalBasicRouteConfigurationArray(body []byte) ([]BasicRouteConfiguration, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	rcArray := make([]BasicRouteConfiguration, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		rc, err := unmarshalBasicRouteConfiguration(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		rcArray[index] = rc
+	}
+	return rcArray, nil
+}
+
+// MarshalJSON is the custom marshaler for RouteConfiguration.
+func (rc RouteConfiguration) MarshalJSON() ([]byte, error) {
+	rc.OdataType = OdataTypeRouteConfiguration
+	objectMap := make(map[string]interface{})
+	if rc.OdataType != "" {
+		objectMap["@odata.type"] = rc.OdataType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsForwardingConfiguration is the BasicRouteConfiguration implementation for RouteConfiguration.
+func (rc RouteConfiguration) AsForwardingConfiguration() (*ForwardingConfiguration, bool) {
+	return nil, false
+}
+
+// AsRedirectConfiguration is the BasicRouteConfiguration implementation for RouteConfiguration.
+func (rc RouteConfiguration) AsRedirectConfiguration() (*RedirectConfiguration, bool) {
+	return nil, false
+}
+
+// AsRouteConfiguration is the BasicRouteConfiguration implementation for RouteConfiguration.
+func (rc RouteConfiguration) AsRouteConfiguration() (*RouteConfiguration, bool) {
+	return &rc, true
+}
+
+// AsBasicRouteConfiguration is the BasicRouteConfiguration implementation for RouteConfiguration.
+func (rc RouteConfiguration) AsBasicRouteConfiguration() (BasicRouteConfiguration, bool) {
+	return &rc, true
 }
 
 // RoutingRule a routing rule represents a specification for traffic to treat and where to send it, along
@@ -2028,16 +2536,78 @@ type RoutingRuleProperties struct {
 	AcceptedProtocols *[]Protocol `json:"acceptedProtocols,omitempty"`
 	// PatternsToMatch - The route patterns of the rule.
 	PatternsToMatch *[]string `json:"patternsToMatch,omitempty"`
-	// CustomForwardingPath - A custom path used to rewrite resource paths matched by this rule. Leave empty to use incoming path.
-	CustomForwardingPath *string `json:"customForwardingPath,omitempty"`
-	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'HTTPOnly', 'HTTPSOnly', 'MatchRequest'
-	ForwardingProtocol ForwardingProtocol `json:"forwardingProtocol,omitempty"`
-	// CacheConfiguration - The caching configuration associated with this rule.
-	CacheConfiguration *CacheConfiguration `json:"cacheConfiguration,omitempty"`
-	// BackendPool - A reference to the BackendPool which this rule routes to.
-	BackendPool *SubResource `json:"backendPool,omitempty"`
-	// EnabledState - Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnumEnabled', 'EnabledStateEnumDisabled'
-	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
+	// EnabledState - Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'RoutingRuleEnabledStateEnabled', 'RoutingRuleEnabledStateDisabled'
+	EnabledState RoutingRuleEnabledState `json:"enabledState,omitempty"`
+	// RouteConfiguration - A reference to the routing configuration.
+	RouteConfiguration BasicRouteConfiguration `json:"routeConfiguration,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RoutingRuleProperties struct.
+func (rrp *RoutingRuleProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "resourceState":
+			if v != nil {
+				var resourceState ResourceState
+				err = json.Unmarshal(*v, &resourceState)
+				if err != nil {
+					return err
+				}
+				rrp.ResourceState = resourceState
+			}
+		case "frontendEndpoints":
+			if v != nil {
+				var frontendEndpoints []SubResource
+				err = json.Unmarshal(*v, &frontendEndpoints)
+				if err != nil {
+					return err
+				}
+				rrp.FrontendEndpoints = &frontendEndpoints
+			}
+		case "acceptedProtocols":
+			if v != nil {
+				var acceptedProtocols []Protocol
+				err = json.Unmarshal(*v, &acceptedProtocols)
+				if err != nil {
+					return err
+				}
+				rrp.AcceptedProtocols = &acceptedProtocols
+			}
+		case "patternsToMatch":
+			if v != nil {
+				var patternsToMatch []string
+				err = json.Unmarshal(*v, &patternsToMatch)
+				if err != nil {
+					return err
+				}
+				rrp.PatternsToMatch = &patternsToMatch
+			}
+		case "enabledState":
+			if v != nil {
+				var enabledState RoutingRuleEnabledState
+				err = json.Unmarshal(*v, &enabledState)
+				if err != nil {
+					return err
+				}
+				rrp.EnabledState = enabledState
+			}
+		case "routeConfiguration":
+			if v != nil {
+				routeConfiguration, err := unmarshalBasicRouteConfiguration(*v)
+				if err != nil {
+					return err
+				}
+				rrp.RouteConfiguration = routeConfiguration
+			}
+		}
+	}
+
+	return nil
 }
 
 // RoutingRuleUpdateParameters routing rules to apply to an endpoint
@@ -2048,16 +2618,69 @@ type RoutingRuleUpdateParameters struct {
 	AcceptedProtocols *[]Protocol `json:"acceptedProtocols,omitempty"`
 	// PatternsToMatch - The route patterns of the rule.
 	PatternsToMatch *[]string `json:"patternsToMatch,omitempty"`
-	// CustomForwardingPath - A custom path used to rewrite resource paths matched by this rule. Leave empty to use incoming path.
-	CustomForwardingPath *string `json:"customForwardingPath,omitempty"`
-	// ForwardingProtocol - Protocol this rule will use when forwarding traffic to backends. Possible values include: 'HTTPOnly', 'HTTPSOnly', 'MatchRequest'
-	ForwardingProtocol ForwardingProtocol `json:"forwardingProtocol,omitempty"`
-	// CacheConfiguration - The caching configuration associated with this rule.
-	CacheConfiguration *CacheConfiguration `json:"cacheConfiguration,omitempty"`
-	// BackendPool - A reference to the BackendPool which this rule routes to.
-	BackendPool *SubResource `json:"backendPool,omitempty"`
-	// EnabledState - Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnumEnabled', 'EnabledStateEnumDisabled'
-	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
+	// EnabledState - Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'RoutingRuleEnabledStateEnabled', 'RoutingRuleEnabledStateDisabled'
+	EnabledState RoutingRuleEnabledState `json:"enabledState,omitempty"`
+	// RouteConfiguration - A reference to the routing configuration.
+	RouteConfiguration BasicRouteConfiguration `json:"routeConfiguration,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for RoutingRuleUpdateParameters struct.
+func (rrup *RoutingRuleUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "frontendEndpoints":
+			if v != nil {
+				var frontendEndpoints []SubResource
+				err = json.Unmarshal(*v, &frontendEndpoints)
+				if err != nil {
+					return err
+				}
+				rrup.FrontendEndpoints = &frontendEndpoints
+			}
+		case "acceptedProtocols":
+			if v != nil {
+				var acceptedProtocols []Protocol
+				err = json.Unmarshal(*v, &acceptedProtocols)
+				if err != nil {
+					return err
+				}
+				rrup.AcceptedProtocols = &acceptedProtocols
+			}
+		case "patternsToMatch":
+			if v != nil {
+				var patternsToMatch []string
+				err = json.Unmarshal(*v, &patternsToMatch)
+				if err != nil {
+					return err
+				}
+				rrup.PatternsToMatch = &patternsToMatch
+			}
+		case "enabledState":
+			if v != nil {
+				var enabledState RoutingRuleEnabledState
+				err = json.Unmarshal(*v, &enabledState)
+				if err != nil {
+					return err
+				}
+				rrup.EnabledState = enabledState
+			}
+		case "routeConfiguration":
+			if v != nil {
+				routeConfiguration, err := unmarshalBasicRouteConfiguration(*v)
+				if err != nil {
+					return err
+				}
+				rrup.RouteConfiguration = routeConfiguration
+			}
+		}
+	}
+
+	return nil
 }
 
 // SubResource reference to another subresource.
@@ -2095,8 +2718,10 @@ type UpdateParameters struct {
 	BackendPools *[]BackendPool `json:"backendPools,omitempty"`
 	// FrontendEndpoints - Frontend endpoints available to routing rules.
 	FrontendEndpoints *[]FrontendEndpoint `json:"frontendEndpoints,omitempty"`
-	// EnabledState - Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnumEnabled', 'EnabledStateEnumDisabled'
-	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
+	// BackendPoolsSettings - Settings for all backendPools
+	BackendPoolsSettings *BackendPoolsSettings `json:"backendPoolsSettings,omitempty"`
+	// EnabledState - Operational status of the Front Door load balancer. Permitted values are 'Enabled' or 'Disabled'. Possible values include: 'EnabledStateEnabled', 'EnabledStateDisabled'
+	EnabledState EnabledState `json:"enabledState,omitempty"`
 }
 
 // ValidateCustomDomainInput input of the custom domain to be validated for DNS mapping.
@@ -2116,11 +2741,11 @@ type ValidateCustomDomainOutput struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// WebApplicationFirewallPolicy1 defines web application firewall policy.
-type WebApplicationFirewallPolicy1 struct {
+// WebApplicationFirewallPolicy defines web application firewall policy.
+type WebApplicationFirewallPolicy struct {
 	autorest.Response `json:"-"`
-	// WebApplicationFirewallPolicyPropertiesFormat - Properties of the web application firewall policy.
-	*WebApplicationFirewallPolicyPropertiesFormat `json:"properties,omitempty"`
+	// WebApplicationFirewallPolicyProperties - Properties of the web application firewall policy.
+	*WebApplicationFirewallPolicyProperties `json:"properties,omitempty"`
 	// Etag - Gets a unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Resource ID.
@@ -2135,26 +2760,26 @@ type WebApplicationFirewallPolicy1 struct {
 	Tags map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicy1.
-func (wafp1 WebApplicationFirewallPolicy1) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicy.
+func (wafp WebApplicationFirewallPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if wafp1.WebApplicationFirewallPolicyPropertiesFormat != nil {
-		objectMap["properties"] = wafp1.WebApplicationFirewallPolicyPropertiesFormat
+	if wafp.WebApplicationFirewallPolicyProperties != nil {
+		objectMap["properties"] = wafp.WebApplicationFirewallPolicyProperties
 	}
-	if wafp1.Etag != nil {
-		objectMap["etag"] = wafp1.Etag
+	if wafp.Etag != nil {
+		objectMap["etag"] = wafp.Etag
 	}
-	if wafp1.Location != nil {
-		objectMap["location"] = wafp1.Location
+	if wafp.Location != nil {
+		objectMap["location"] = wafp.Location
 	}
-	if wafp1.Tags != nil {
-		objectMap["tags"] = wafp1.Tags
+	if wafp.Tags != nil {
+		objectMap["tags"] = wafp.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for WebApplicationFirewallPolicy1 struct.
-func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for WebApplicationFirewallPolicy struct.
+func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -2164,12 +2789,12 @@ func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var webApplicationFirewallPolicyPropertiesFormat WebApplicationFirewallPolicyPropertiesFormat
-				err = json.Unmarshal(*v, &webApplicationFirewallPolicyPropertiesFormat)
+				var webApplicationFirewallPolicyProperties WebApplicationFirewallPolicyProperties
+				err = json.Unmarshal(*v, &webApplicationFirewallPolicyProperties)
 				if err != nil {
 					return err
 				}
-				wafp1.WebApplicationFirewallPolicyPropertiesFormat = &webApplicationFirewallPolicyPropertiesFormat
+				wafp.WebApplicationFirewallPolicyProperties = &webApplicationFirewallPolicyProperties
 			}
 		case "etag":
 			if v != nil {
@@ -2178,7 +2803,7 @@ func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp1.Etag = &etag
+				wafp.Etag = &etag
 			}
 		case "id":
 			if v != nil {
@@ -2187,7 +2812,7 @@ func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp1.ID = &ID
+				wafp.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -2196,7 +2821,7 @@ func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp1.Name = &name
+				wafp.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -2205,7 +2830,7 @@ func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp1.Type = &typeVar
+				wafp.Type = &typeVar
 			}
 		case "location":
 			if v != nil {
@@ -2214,7 +2839,7 @@ func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp1.Location = &location
+				wafp.Location = &location
 			}
 		case "tags":
 			if v != nil {
@@ -2223,7 +2848,7 @@ func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				wafp1.Tags = tags
+				wafp.Tags = tags
 			}
 		}
 	}
@@ -2231,28 +2856,28 @@ func (wafp1 *WebApplicationFirewallPolicy1) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// WebApplicationFirewallPolicyListResult result of the request to list WebApplicationFirewallPolicies. It
-// contains a list of WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
-type WebApplicationFirewallPolicyListResult struct {
+// WebApplicationFirewallPolicyList defines a list of WebApplicationFirewallPolicies. It contains a list of
+// WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
+type WebApplicationFirewallPolicyList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of WebApplicationFirewallPolicies within a resource group.
-	Value *[]WebApplicationFirewallPolicy1 `json:"value,omitempty"`
+	Value *[]WebApplicationFirewallPolicy `json:"value,omitempty"`
 	// NextLink - URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// WebApplicationFirewallPolicyListResultIterator provides access to a complete listing of
-// WebApplicationFirewallPolicy1 values.
-type WebApplicationFirewallPolicyListResultIterator struct {
+// WebApplicationFirewallPolicyListIterator provides access to a complete listing of
+// WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListIterator struct {
 	i    int
-	page WebApplicationFirewallPolicyListResultPage
+	page WebApplicationFirewallPolicyListPage
 }
 
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *WebApplicationFirewallPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+func (iter *WebApplicationFirewallPolicyListIterator) NextWithContext(ctx context.Context) (err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListResultIterator.NextWithContext")
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListIterator.NextWithContext")
 		defer func() {
 			sc := -1
 			if iter.Response().Response.Response != nil {
@@ -2277,62 +2902,62 @@ func (iter *WebApplicationFirewallPolicyListResultIterator) NextWithContext(ctx 
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
-func (iter *WebApplicationFirewallPolicyListResultIterator) Next() error {
+func (iter *WebApplicationFirewallPolicyListIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter WebApplicationFirewallPolicyListResultIterator) NotDone() bool {
+func (iter WebApplicationFirewallPolicyListIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
 // Response returns the raw server response from the last page request.
-func (iter WebApplicationFirewallPolicyListResultIterator) Response() WebApplicationFirewallPolicyListResult {
+func (iter WebApplicationFirewallPolicyListIterator) Response() WebApplicationFirewallPolicyList {
 	return iter.page.Response()
 }
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter WebApplicationFirewallPolicyListResultIterator) Value() WebApplicationFirewallPolicy1 {
+func (iter WebApplicationFirewallPolicyListIterator) Value() WebApplicationFirewallPolicy {
 	if !iter.page.NotDone() {
-		return WebApplicationFirewallPolicy1{}
+		return WebApplicationFirewallPolicy{}
 	}
 	return iter.page.Values()[iter.i]
 }
 
-// Creates a new instance of the WebApplicationFirewallPolicyListResultIterator type.
-func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
-	return WebApplicationFirewallPolicyListResultIterator{page: page}
+// Creates a new instance of the WebApplicationFirewallPolicyListIterator type.
+func NewWebApplicationFirewallPolicyListIterator(page WebApplicationFirewallPolicyListPage) WebApplicationFirewallPolicyListIterator {
+	return WebApplicationFirewallPolicyListIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
-func (wafplr WebApplicationFirewallPolicyListResult) IsEmpty() bool {
-	return wafplr.Value == nil || len(*wafplr.Value) == 0
+func (wafpl WebApplicationFirewallPolicyList) IsEmpty() bool {
+	return wafpl.Value == nil || len(*wafpl.Value) == 0
 }
 
-// webApplicationFirewallPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// webApplicationFirewallPolicyListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (wafplr WebApplicationFirewallPolicyListResult) webApplicationFirewallPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wafplr.NextLink == nil || len(to.String(wafplr.NextLink)) < 1 {
+func (wafpl WebApplicationFirewallPolicyList) webApplicationFirewallPolicyListPreparer(ctx context.Context) (*http.Request, error) {
+	if wafpl.NextLink == nil || len(to.String(wafpl.NextLink)) < 1 {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(wafplr.NextLink)))
+		autorest.WithBaseURL(to.String(wafpl.NextLink)))
 }
 
-// WebApplicationFirewallPolicyListResultPage contains a page of WebApplicationFirewallPolicy1 values.
-type WebApplicationFirewallPolicyListResultPage struct {
-	fn     func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)
-	wafplr WebApplicationFirewallPolicyListResult
+// WebApplicationFirewallPolicyListPage contains a page of WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListPage struct {
+	fn    func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)
+	wafpl WebApplicationFirewallPolicyList
 }
 
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *WebApplicationFirewallPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+func (page *WebApplicationFirewallPolicyListPage) NextWithContext(ctx context.Context) (err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListResultPage.NextWithContext")
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListPage.NextWithContext")
 		defer func() {
 			sc := -1
 			if page.Response().Response.Response != nil {
@@ -2341,54 +2966,56 @@ func (page *WebApplicationFirewallPolicyListResultPage) NextWithContext(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wafplr)
+	next, err := page.fn(ctx, page.wafpl)
 	if err != nil {
 		return err
 	}
-	page.wafplr = next
+	page.wafpl = next
 	return nil
 }
 
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
-func (page *WebApplicationFirewallPolicyListResultPage) Next() error {
+func (page *WebApplicationFirewallPolicyListPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page WebApplicationFirewallPolicyListResultPage) NotDone() bool {
-	return !page.wafplr.IsEmpty()
+func (page WebApplicationFirewallPolicyListPage) NotDone() bool {
+	return !page.wafpl.IsEmpty()
 }
 
 // Response returns the raw server response from the last page request.
-func (page WebApplicationFirewallPolicyListResultPage) Response() WebApplicationFirewallPolicyListResult {
-	return page.wafplr
+func (page WebApplicationFirewallPolicyListPage) Response() WebApplicationFirewallPolicyList {
+	return page.wafpl
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page WebApplicationFirewallPolicyListResultPage) Values() []WebApplicationFirewallPolicy1 {
-	if page.wafplr.IsEmpty() {
+func (page WebApplicationFirewallPolicyListPage) Values() []WebApplicationFirewallPolicy {
+	if page.wafpl.IsEmpty() {
 		return nil
 	}
-	return *page.wafplr.Value
+	return *page.wafpl.Value
 }
 
-// Creates a new instance of the WebApplicationFirewallPolicyListResultPage type.
-func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
-	return WebApplicationFirewallPolicyListResultPage{fn: getNextPage}
+// Creates a new instance of the WebApplicationFirewallPolicyListPage type.
+func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
+	return WebApplicationFirewallPolicyListPage{fn: getNextPage}
 }
 
-// WebApplicationFirewallPolicyPropertiesFormat defines web application firewall policy properties
-type WebApplicationFirewallPolicyPropertiesFormat struct {
-	// PolicySettings - Describes  policySettings for policy
+// WebApplicationFirewallPolicyProperties defines web application firewall policy properties.
+type WebApplicationFirewallPolicyProperties struct {
+	// PolicySettings - Describes settings for the policy.
 	PolicySettings *PolicySettings `json:"policySettings,omitempty"`
-	// CustomRules - Describes custom rules inside the policy
-	CustomRules *CustomRules `json:"customRules,omitempty"`
-	// ManagedRules - Describes managed rules inside the policy
-	ManagedRules *ManagedRuleSets `json:"managedRules,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the WebApplicationFirewallPolicy.
+	// CustomRules - Describes custom rules inside the policy.
+	CustomRules *CustomRuleList `json:"customRules,omitempty"`
+	// ManagedRules - Describes managed rules inside the policy.
+	ManagedRules *ManagedRuleSetList `json:"managedRules,omitempty"`
+	// FrontendEndpointLinks - READ-ONLY; Describes Frontend Endpoints associated with this Web Application Firewall policy.
+	FrontendEndpointLinks *[]FrontendEndpointLink `json:"frontendEndpointLinks,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the policy.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// ResourceState - READ-ONLY; Possible values include: 'WebApplicationFirewallPolicyCreating', 'WebApplicationFirewallPolicyEnabling', 'WebApplicationFirewallPolicyEnabled', 'WebApplicationFirewallPolicyDisabling', 'WebApplicationFirewallPolicyDisabled', 'WebApplicationFirewallPolicyDeleting'
-	ResourceState WebApplicationFirewallPolicy `json:"resourceState,omitempty"`
+	// ResourceState - READ-ONLY; Possible values include: 'PolicyResourceStateCreating', 'PolicyResourceStateEnabling', 'PolicyResourceStateEnabled', 'PolicyResourceStateDisabling', 'PolicyResourceStateDisabled', 'PolicyResourceStateDeleting'
+	ResourceState PolicyResourceState `json:"resourceState,omitempty"`
 }

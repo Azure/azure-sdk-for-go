@@ -97,7 +97,7 @@ func (client FrontendEndpointsClient) DisableHTTPSPreparer(ctx context.Context, 
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-01"
+	const APIVersion = "2019-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -164,7 +164,9 @@ func (client FrontendEndpointsClient) EnableHTTPS(ctx context.Context, resourceG
 		{TargetValue: frontendEndpointName,
 			Constraints: []validation.Constraint{{Target: "frontendEndpointName", Name: validation.MaxLength, Rule: 255, Chain: nil},
 				{Target: "frontendEndpointName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}}}); err != nil {
+				{Target: "frontendEndpointName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-*[a-zA-Z0-9])*$`, Chain: nil}}},
+		{TargetValue: customHTTPSConfiguration,
+			Constraints: []validation.Constraint{{Target: "customHTTPSConfiguration.ProtocolType", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("frontdoor.FrontendEndpointsClient", "EnableHTTPS", err.Error())
 	}
 
@@ -192,7 +194,7 @@ func (client FrontendEndpointsClient) EnableHTTPSPreparer(ctx context.Context, r
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-01"
+	const APIVersion = "2019-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -294,7 +296,7 @@ func (client FrontendEndpointsClient) GetPreparer(ctx context.Context, resourceG
 		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-01"
+	const APIVersion = "2019-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -384,7 +386,7 @@ func (client FrontendEndpointsClient) ListByFrontDoorPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-08-01"
+	const APIVersion = "2019-05-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

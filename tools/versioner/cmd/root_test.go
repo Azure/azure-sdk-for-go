@@ -393,7 +393,7 @@ func Test_theCommandImplMajor(t *testing.T) {
 // scenarioa
 func Test_theCommandImplMinor(t *testing.T) {
 	cleanTestData()
-	// defer cleanTestData()
+	defer cleanTestData()
 	getTagsHook = func(root, prefix string) ([]string, error) {
 		// root doesn't matter
 		if !strings.HasSuffix(prefix, "/testdata/scenarioa/foo") {

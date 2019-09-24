@@ -158,6 +158,17 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 // releases the module as an in-place update (minor or patch)
 func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 	vprintln("This is a inplace update")
+	goMod := filepath.Join(stage, "go.mod")
+	file, err := os.OpenFile(goMod, os.O_RDWR, 0666)
+	if err != nil {
+		return "", fmt.Errorf("failed to open for read '%s': %v", goMod, err)
+	}
+	ver := modinfo.FindVersionSuffix(mod.DestDir())
+	if err = updateGoModVer(file, ver); err != nil {
+		file.Close()
+		return "", fmt.Errorf("failed to update go.mod file: %v", err)
+	}
+	file.Close()
 	// find existing tags for this module and create a new one
 	prefix, err := getTagPrefix(lmv)
 	if err != nil {
@@ -287,6 +298,9 @@ func findLatestMajorVersion(stage string) (string, error) {
 
 // updates the module version inside the go.mod file
 func updateGoModVer(goMod io.ReadWriteSeeker, newVer string) error {
+	if newVer == "" {
+		return nil
+	}
 	scanner := bufio.NewScanner(goMod)
 	scanner.Split(bufio.ScanLines)
 	lines := []string{}

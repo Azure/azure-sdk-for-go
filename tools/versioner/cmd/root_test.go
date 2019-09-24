@@ -393,7 +393,7 @@ func Test_theCommandImplMajor(t *testing.T) {
 // scenarioa
 func Test_theCommandImplMinor(t *testing.T) {
 	cleanTestData()
-	defer cleanTestData()
+	// defer cleanTestData()
 	getTagsHook = func(root, prefix string) ([]string, error) {
 		// root doesn't matter
 		if !strings.HasSuffix(prefix, "/testdata/scenarioa/foo") {
@@ -549,18 +549,12 @@ func Test_theCommandImplNewMod(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}
-	const expected = "tools/testdata/scenariof/foo/v1.0.0"
-	if tag != expected {
-		t.Fatalf("bad tag, expected '%s' got '%s'", expected, tag)
+	const expectedTag = "tools/testdata/scenariof/foo/v1.0.0"
+	if tag != expectedTag {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
 	}
-	b, err := ioutil.ReadFile("../../testdata/scenariof/foo/go.mod")
-	if err != nil {
-		t.Fatalf("failed to read go.mod file: %v", err)
-	}
-	after := "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariof/foo\n\ngo 1.12\n"
-	if !strings.EqualFold(string(b), after) {
-		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
-	}
+	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariof/foo\n\ngo 1.12\n"
+	verifyGoMod(t, "../../testdata/scenariof/foo", expectedMod)
 	if fileExists(filepath.Join("../../testdata/scenariof/foo", "CHANGELOG.md")) {
 		t.Fatal("unexpected changelog in scenariof")
 	}

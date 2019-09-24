@@ -67,8 +67,8 @@ func init() {
 	if runtime.GOOS == "windows" {
 		newline = "\r\n"
 	}
-
 }
+
 func Test_getTags(t *testing.T) {
 	if os.Getenv("TRAVIS") == "true" {
 		// travis does a shallow clone so tag count is not consistent
@@ -335,12 +335,28 @@ func verifyVersion(t *testing.T, path, version, tag string) {
 	if err != nil {
 		t.Fatalf("failed to read version.go file: %v", err)
 	}
-	after := fmt.Sprintf(versionGoFormat, version, version, tag)
-	if !strings.EqualFold(string(b), after) {
-		t.Fatalf("bad version.go file, expected '%s' got '%s'", after, string(b))
+	expected := fmt.Sprintf(versionGoFormat, version, version, tag)
+	if !fileContentEquals(expected, string(b)) {
+		t.Fatalf("bad version.go file, expected '%s' got '%s'", expected, string(b))
 	}
 }
 
+func verifyGoMod(t *testing.T, path, expected string) {
+	b, err := ioutil.ReadFile(filepath.Join(path, "go.mod"))
+	if err != nil {
+		t.Fatalf("failed to read go.mod file: %v", err)
+	}
+	if !fileContentEquals(expected, string(b)) {
+		t.Fatalf("bad go.mod file, expected '%s' got '%s'", expected, string(b))
+	}
+}
+
+func fileContentEquals(expected, content string) bool {
+	replacedContent := strings.ReplaceAll(content, "\r\n", "\n")
+	return strings.EqualFold(replacedContent, expected)
+}
+
+// scenariob
 func Test_theCommandImplMajor(t *testing.T) {
 	cleanTestData()
 	defer cleanTestData()
@@ -362,24 +378,19 @@ func Test_theCommandImplMajor(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}
-	const expected = "tools/testdata/scenariob/foo/v2.0.0"
-	if tag != expected {
-		t.Fatalf("bad tag, expected '%s' got '%s'", expected, tag)
+	const expectedTag = "tools/testdata/scenariob/foo/v2.0.0"
+	if tag != expectedTag {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
 	}
-	b, err := ioutil.ReadFile("../../testdata/scenariob/foo/v2/go.mod")
-	if err != nil {
-		t.Fatalf("failed to read go.mod file: %v", err)
-	}
-	const after = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariob/foo/v2\n\ngo 1.12\n"
-	if !strings.EqualFold(string(b), after) {
-		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
-	}
+	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariob/foo/v2\n\ngo 1.12\n"
+	verifyGoMod(t, "../../testdata/scenariob/foo/v2", expectedMod)
+	verifyVersion(t, "../../testdata/scenariob/foo/v2", "2.0.0", tag)
 	if !fileExists(filepath.Join("../../testdata/scenariob/foo/v2", "CHANGELOG.md")) {
 		t.Fatal("expected changelog in scenariob")
 	}
-	verifyVersion(t, "../../testdata/scenariob/foo/v2", "2.0.0", tag)
 }
 
+// scenarioa
 func Test_theCommandImplMinor(t *testing.T) {
 	cleanTestData()
 	defer cleanTestData()
@@ -400,24 +411,19 @@ func Test_theCommandImplMinor(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}
-	const expected = "tools/testdata/scenarioa/foo/v1.1.0"
-	if tag != expected {
-		t.Fatalf("bad tag, expected '%s' got '%s'", expected, tag)
+	const expectedTag = "tools/testdata/scenarioa/foo/v1.1.0"
+	if tag != expectedTag {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
 	}
-	b, err := ioutil.ReadFile("../../testdata/scenarioa/foo/go.mod")
-	if err != nil {
-		t.Fatalf("failed to read go.mod file: %v", err)
-	}
-	after := "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioa/foo" + newline + newline + "go 1.12" + newline
-	if !strings.EqualFold(string(b), after) {
-		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
-	}
+	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioa/foo\n\ngo 1.12\n"
+	verifyGoMod(t, "../../testdata/scenarioa/foo", expectedMod)
 	if !fileExists(filepath.Join("../../testdata/scenarioa/foo", "CHANGELOG.md")) {
 		t.Fatal("expected changelog in scenarioa")
 	}
 	verifyVersion(t, "../../testdata/scenarioa/foo", "1.1.0", tag)
 }
 
+// scenarioc
 func Test_theCommandImplPatch(t *testing.T) {
 	cleanTestData()
 	defer cleanTestData()
@@ -442,20 +448,89 @@ func Test_theCommandImplPatch(t *testing.T) {
 	if tag != expected {
 		t.Fatalf("bad tag, expected '%s' got '%s'", expected, tag)
 	}
-	b, err := ioutil.ReadFile("../../testdata/scenarioc/foo/go.mod")
-	if err != nil {
-		t.Fatalf("failed to read go.mod file: %v", err)
-	}
-	after := "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioc/foo" + newline + newline + "go 1.12" + newline
-	if !strings.EqualFold(string(b), after) {
-		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
-	}
+	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioc/foo\n\ngo 1.12\n"
+	verifyGoMod(t, "../../testdata/scenarioc/foo", expectedMod)
 	if !fileExists(filepath.Join("../../testdata/scenarioc/foo", "CHANGELOG.md")) {
 		t.Fatal("expected changelog in scenarioc")
 	}
 	verifyVersion(t, "../../testdata/scenarioc/foo", "1.0.1", tag)
 }
 
+// scenariod
+func Test_theCommandImplMajorV3(t *testing.T) {
+	cleanTestData()
+	defer cleanTestData()
+	getTagsHook = func(root, prefix string) ([]string, error) {
+		if !strings.HasSuffix(prefix, "/testdata/scenariod/foo/v2") {
+			return nil, fmt.Errorf("bad prefix '%s'", prefix)
+		}
+		return []string{
+			"tools/testdata/scenariod/foo/v1.0.0",
+			"tools/testdata/scenariod/foo/v1.0.1",
+			"tools/testdata/scenariod/foo/v1.1.0",
+			"tools/testdata/scenariod/foo/v1.2.0",
+			"tools/testdata/scenariod/foo/v2.0.0",
+			"tools/testdata/scenariod/foo/v2.1.0",
+			"tools/testdata/scenariod/foo/v2.1.1",
+		}, nil
+	}
+	pkg, err := filepath.Abs("../../testdata/scenariod/foo/stage")
+	if err != nil {
+		t.Fatalf("failed to get absolute path: %v", err)
+	}
+	tag, err := theCommandImpl([]string{pkg})
+	if err != nil {
+		t.Fatalf("failed: %v", err)
+	}
+	const expectedTag = "tools/testdata/scenariod/foo/v3.0.0"
+	if tag != expectedTag {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
+	}
+	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariod/foo/v3\n\ngo 1.12\n"
+	verifyGoMod(t, "../../testdata/scenariod/foo/v3", expectedMod)
+	if !fileExists(filepath.Join("../../testdata/scenariod/foo/v3", "CHANGELOG.md")) {
+		t.Fatalf("expected changelog in scenariod")
+	}
+	verifyVersion(t, "../../testdata/scenariod/foo/v3", "3.0.0", tag)
+}
+
+// scenarioe
+func Test_theCommandImplMajorMinor(t *testing.T) {
+	cleanTestData()
+	defer cleanTestData()
+	getTagsHook = func(root, prefix string) ([]string, error) {
+		// root doesn't matter
+		if !strings.HasSuffix(prefix, "/testdata/scenarioe/foo/v2") {
+			return nil, fmt.Errorf("bad prefix '%s'", prefix)
+		}
+		return []string{
+			"tools/testdata/scenarioe/foo/v1.0.0",
+			"tools/testdata/scenarioe/foo/v1.1.0",
+			"tools/testdata/scenarioe/foo/v2.0.0",
+			"tools/testdata/scenarioe/foo/v2.1.0",
+		}, nil
+	}
+	pkg, err := filepath.Abs("../../testdata/scenarioe/foo/stage")
+	if err != nil {
+		t.Fatalf("failed to get absolute path: %v", err)
+	}
+	tag, err := theCommandImpl([]string{pkg})
+	if err != nil {
+		t.Fatalf("failed: %v", err)
+	}
+	const expectedTag = "tools/testdata/scenarioe/foo/v2.2.0"
+	if tag != expectedTag {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
+	}
+	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioe/foo/v2\n\ngo 1.12\n"
+	verifyGoMod(t, "../../testdata/scenarioe/foo/v2", expectedMod)
+	if !fileExists(filepath.Join("../../testdata/scenarioe/foo/v2", "CHANGELOG.md")) {
+		t.Fatal("expected changelog in scenarioe")
+	}
+	verifyVersion(t, "../../testdata/scenarioe/foo/v2", "2.2.0", tag)
+}
+
+// scenariof
 func Test_theCommandImplNewMod(t *testing.T) {
 	cleanTestData()
 	defer cleanTestData()
@@ -482,7 +557,7 @@ func Test_theCommandImplNewMod(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to read go.mod file: %v", err)
 	}
-	after := "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariof/foo" + newline + newline + "go 1.12" + newline
+	after := "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariof/foo\n\ngo 1.12\n"
 	if !strings.EqualFold(string(b), after) {
 		t.Fatalf("bad go.mod file, expected '%s' got '%s'", after, string(b))
 	}

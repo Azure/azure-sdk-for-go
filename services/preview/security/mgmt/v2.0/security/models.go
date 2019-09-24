@@ -225,11 +225,13 @@ const (
 	Audit EnforcementMode = "Audit"
 	// Enforce ...
 	Enforce EnforcementMode = "Enforce"
+	// None ...
+	None EnforcementMode = "None"
 )
 
 // PossibleEnforcementModeValues returns an array of possible values for the EnforcementMode const type.
 func PossibleEnforcementModeValues() []EnforcementMode {
-	return []EnforcementMode{Audit, Enforce}
+	return []EnforcementMode{Audit, Enforce, None}
 }
 
 // EnforcementMode1 enumerates the values for enforcement mode 1.
@@ -240,11 +242,47 @@ const (
 	EnforcementMode1Audit EnforcementMode1 = "Audit"
 	// EnforcementMode1Enforce ...
 	EnforcementMode1Enforce EnforcementMode1 = "Enforce"
+	// EnforcementMode1None ...
+	EnforcementMode1None EnforcementMode1 = "None"
 )
 
 // PossibleEnforcementMode1Values returns an array of possible values for the EnforcementMode1 const type.
 func PossibleEnforcementMode1Values() []EnforcementMode1 {
-	return []EnforcementMode1{EnforcementMode1Audit, EnforcementMode1Enforce}
+	return []EnforcementMode1{EnforcementMode1Audit, EnforcementMode1Enforce, EnforcementMode1None}
+}
+
+// Exe enumerates the values for exe.
+type Exe string
+
+const (
+	// ExeAudit ...
+	ExeAudit Exe = "Audit"
+	// ExeEnforce ...
+	ExeEnforce Exe = "Enforce"
+	// ExeNone ...
+	ExeNone Exe = "None"
+)
+
+// PossibleExeValues returns an array of possible values for the Exe const type.
+func PossibleExeValues() []Exe {
+	return []Exe{ExeAudit, ExeEnforce, ExeNone}
+}
+
+// Executable enumerates the values for executable.
+type Executable string
+
+const (
+	// ExecutableAudit ...
+	ExecutableAudit Executable = "Audit"
+	// ExecutableEnforce ...
+	ExecutableEnforce Executable = "Enforce"
+	// ExecutableNone ...
+	ExecutableNone Executable = "None"
+)
+
+// PossibleExecutableValues returns an array of possible values for the Executable const type.
+func PossibleExecutableValues() []Executable {
+	return []Executable{ExecutableAudit, ExecutableEnforce, ExecutableNone}
 }
 
 // ExportData enumerates the values for export data.
@@ -300,23 +338,23 @@ func PossibleFamilyValues() []Family {
 type FileType string
 
 const (
-	// Dll ...
-	Dll FileType = "Dll"
-	// Exe ...
-	Exe FileType = "Exe"
-	// Executable ...
-	Executable FileType = "Executable"
-	// Msi ...
-	Msi FileType = "Msi"
-	// Script ...
-	Script FileType = "Script"
-	// Unknown ...
-	Unknown FileType = "Unknown"
+	// FileTypeDll ...
+	FileTypeDll FileType = "Dll"
+	// FileTypeExe ...
+	FileTypeExe FileType = "Exe"
+	// FileTypeExecutable ...
+	FileTypeExecutable FileType = "Executable"
+	// FileTypeMsi ...
+	FileTypeMsi FileType = "Msi"
+	// FileTypeScript ...
+	FileTypeScript FileType = "Script"
+	// FileTypeUnknown ...
+	FileTypeUnknown FileType = "Unknown"
 )
 
 // PossibleFileTypeValues returns an array of possible values for the FileType const type.
 func PossibleFileTypeValues() []FileType {
-	return []FileType{Dll, Exe, Executable, Msi, Script, Unknown}
+	return []FileType{FileTypeDll, FileTypeExe, FileTypeExecutable, FileTypeMsi, FileTypeScript, FileTypeUnknown}
 }
 
 // Issue enumerates the values for issue.
@@ -359,6 +397,23 @@ const (
 // PossibleKindEnumValues returns an array of possible values for the KindEnum const type.
 func PossibleKindEnumValues() []KindEnum {
 	return []KindEnum{KindAAD, KindATA, KindCEF, KindExternalSecuritySolution}
+}
+
+// Msi enumerates the values for msi.
+type Msi string
+
+const (
+	// MsiAudit ...
+	MsiAudit Msi = "Audit"
+	// MsiEnforce ...
+	MsiEnforce Msi = "Enforce"
+	// MsiNone ...
+	MsiNone Msi = "None"
+)
+
+// PossibleMsiValues returns an array of possible values for the Msi const type.
+func PossibleMsiValues() []Msi {
+	return []Msi{MsiAudit, MsiEnforce, MsiNone}
 }
 
 // PricingTier enumerates the values for pricing tier.
@@ -535,6 +590,23 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 	return []ReportedSeverity{High, Informational, Low, Medium}
 }
 
+// Script enumerates the values for script.
+type Script string
+
+const (
+	// ScriptAudit ...
+	ScriptAudit Script = "Audit"
+	// ScriptEnforce ...
+	ScriptEnforce Script = "Enforce"
+	// ScriptNone ...
+	ScriptNone Script = "None"
+)
+
+// PossibleScriptValues returns an array of possible values for the Script const type.
+func PossibleScriptValues() []Script {
+	return []Script{ScriptAudit, ScriptEnforce, ScriptNone}
+}
+
 // SettingKind enumerates the values for setting kind.
 type SettingKind string
 
@@ -569,21 +641,21 @@ func PossibleSolutionStatusValues() []SolutionStatus {
 type SourceSystem string
 
 const (
-	// AzureAppLocker ...
-	AzureAppLocker SourceSystem = "Azure_AppLocker"
-	// AzureAuditD ...
-	AzureAuditD SourceSystem = "Azure_AuditD"
-	// NonAzureAppLocker ...
-	NonAzureAppLocker SourceSystem = "NonAzure_AppLocker"
-	// NonAzureAuditD ...
-	NonAzureAuditD SourceSystem = "NonAzure_AuditD"
-	// None ...
-	None SourceSystem = "None"
+	// SourceSystemAzureAppLocker ...
+	SourceSystemAzureAppLocker SourceSystem = "Azure_AppLocker"
+	// SourceSystemAzureAuditD ...
+	SourceSystemAzureAuditD SourceSystem = "Azure_AuditD"
+	// SourceSystemNonAzureAppLocker ...
+	SourceSystemNonAzureAppLocker SourceSystem = "NonAzure_AppLocker"
+	// SourceSystemNonAzureAuditD ...
+	SourceSystemNonAzureAuditD SourceSystem = "NonAzure_AuditD"
+	// SourceSystemNone ...
+	SourceSystemNone SourceSystem = "None"
 )
 
 // PossibleSourceSystemValues returns an array of possible values for the SourceSystem const type.
 func PossibleSourceSystemValues() []SourceSystem {
-	return []SourceSystem{AzureAppLocker, AzureAuditD, NonAzureAppLocker, NonAzureAuditD, None}
+	return []SourceSystem{SourceSystemAzureAppLocker, SourceSystemAzureAuditD, SourceSystemNonAzureAppLocker, SourceSystemNonAzureAuditD, SourceSystemNone}
 }
 
 // State enumerates the values for state.
@@ -1782,14 +1854,15 @@ func (awg *AppWhitelistingGroup) UnmarshalJSON(body []byte) error {
 // AppWhitelistingGroupData represents a VM/server group and set of rules that are Recommended by Azure
 // Security Center to be allowed
 type AppWhitelistingGroupData struct {
-	// EnforcementMode - Possible values include: 'Audit', 'Enforce'
+	// EnforcementMode - Possible values include: 'Audit', 'Enforce', 'None'
 	EnforcementMode EnforcementMode `json:"enforcementMode,omitempty"`
+	ProtectionMode  *ProtectionMode `json:"protectionMode,omitempty"`
 	// ConfigurationStatus - Possible values include: 'ConfigurationStatus2Configured', 'ConfigurationStatus2NotConfigured', 'ConfigurationStatus2InProgress', 'ConfigurationStatus2Failed', 'ConfigurationStatus2NoStatus'
 	ConfigurationStatus ConfigurationStatus2 `json:"configurationStatus,omitempty"`
 	// RecommendationStatus - Possible values include: 'RecommendationStatusRecommended', 'RecommendationStatusNotRecommended', 'RecommendationStatusNotAvailable', 'RecommendationStatusNoStatus'
 	RecommendationStatus RecommendationStatus           `json:"recommendationStatus,omitempty"`
 	Issues               *[]AppWhitelistingIssueSummary `json:"issues,omitempty"`
-	// SourceSystem - Possible values include: 'AzureAppLocker', 'AzureAuditD', 'NonAzureAppLocker', 'NonAzureAuditD', 'None'
+	// SourceSystem - Possible values include: 'SourceSystemAzureAppLocker', 'SourceSystemAzureAuditD', 'SourceSystemNonAzureAppLocker', 'SourceSystemNonAzureAuditD', 'SourceSystemNone'
 	SourceSystem        SourceSystem          `json:"sourceSystem,omitempty"`
 	VMRecommendations   *[]VMRecommendation   `json:"vmRecommendations,omitempty"`
 	PathRecommendations *[]PathRecommendation `json:"pathRecommendations,omitempty"`
@@ -1812,8 +1885,10 @@ type AppWhitelistingIssueSummary struct {
 
 // AppWhitelistingPutGroupData the altered data of the recommended VM/server group policy
 type AppWhitelistingPutGroupData struct {
-	// EnforcementMode - Possible values include: 'EnforcementMode1Audit', 'EnforcementMode1Enforce'
-	EnforcementMode     EnforcementMode1      `json:"enforcementMode,omitempty"`
+	// EnforcementMode - The enforcement mode of the group. Can also be defined per collection type by using ProtectionMode. Possible values include: 'EnforcementMode1Audit', 'EnforcementMode1Enforce', 'EnforcementMode1None'
+	EnforcementMode EnforcementMode1 `json:"enforcementMode,omitempty"`
+	// ProtectionMode - The protection mode of the group per collection type. Can also be defined for all collection types by using EnforcementMode
+	ProtectionMode      *ProtectionMode       `json:"protectionMode,omitempty"`
 	VMRecommendations   *[]VMRecommendation   `json:"vmRecommendations,omitempty"`
 	PathRecommendations *[]PathRecommendation `json:"pathRecommendations,omitempty"`
 }
@@ -5822,7 +5897,7 @@ type PathRecommendation struct {
 	Common    *bool                 `json:"common,omitempty"`
 	UserSids  *[]string             `json:"userSids,omitempty"`
 	Usernames *[]UserRecommendation `json:"usernames,omitempty"`
-	// FileType - Possible values include: 'Exe', 'Dll', 'Msi', 'Script', 'Executable', 'Unknown'
+	// FileType - Possible values include: 'FileTypeExe', 'FileTypeDll', 'FileTypeMsi', 'FileTypeScript', 'FileTypeExecutable', 'FileTypeUnknown'
 	FileType FileType `json:"fileType,omitempty"`
 	// ConfigurationStatus - Possible values include: 'ConfigurationStatus1Configured', 'ConfigurationStatus1NotConfigured', 'ConfigurationStatus1InProgress', 'ConfigurationStatus1Failed', 'ConfigurationStatus1NoStatus'
 	ConfigurationStatus ConfigurationStatus1 `json:"configurationStatus,omitempty"`
@@ -5916,6 +5991,19 @@ type PricingProperties struct {
 	PricingTier PricingTier `json:"pricingTier,omitempty"`
 	// FreeTrialRemainingTime - READ-ONLY; The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
 	FreeTrialRemainingTime *string `json:"freeTrialRemainingTime,omitempty"`
+}
+
+// ProtectionMode the protection mode of the collection/file types. Exe/Msi/Script are used for Windows,
+// Executable is used for Linux.
+type ProtectionMode struct {
+	// Exe - Possible values include: 'ExeAudit', 'ExeEnforce', 'ExeNone'
+	Exe Exe `json:"exe,omitempty"`
+	// Msi - Possible values include: 'MsiAudit', 'MsiEnforce', 'MsiNone'
+	Msi Msi `json:"msi,omitempty"`
+	// Script - Possible values include: 'ScriptAudit', 'ScriptEnforce', 'ScriptNone'
+	Script Script `json:"script,omitempty"`
+	// Executable - Possible values include: 'ExecutableAudit', 'ExecutableEnforce', 'ExecutableNone'
+	Executable Executable `json:"executable,omitempty"`
 }
 
 // PublisherInfo represents the publisher information of a process/rule

@@ -68,10 +68,6 @@ var (
 	verboseFlag    bool
 )
 
-const (
-	goModFileContent = "module %s\n\ngo %s\n"
-)
-
 func init() {
 	// default to the real version
 	getTagsHook = getTags

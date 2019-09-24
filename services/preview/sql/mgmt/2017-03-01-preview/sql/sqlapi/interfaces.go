@@ -397,6 +397,7 @@ var _ ExtendedServerBlobAuditingPoliciesClientAPI = (*sql.ExtendedServerBlobAudi
 type ServerBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerBlobAuditingPolicy) (result sql.ServerBlobAuditingPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerBlobAuditingPolicy, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerBlobAuditingPolicyListResultPage, err error)
 }
 
 var _ ServerBlobAuditingPoliciesClientAPI = (*sql.ServerBlobAuditingPoliciesClient)(nil)
@@ -405,6 +406,7 @@ var _ ServerBlobAuditingPoliciesClientAPI = (*sql.ServerBlobAuditingPoliciesClie
 type DatabaseBlobAuditingPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.DatabaseBlobAuditingPolicy) (result sql.DatabaseBlobAuditingPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseBlobAuditingPolicy, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabaseBlobAuditingPolicyListResultPage, err error)
 }
 
 var _ DatabaseBlobAuditingPoliciesClientAPI = (*sql.DatabaseBlobAuditingPoliciesClient)(nil)

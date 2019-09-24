@@ -716,6 +716,7 @@ const (
 	TypeCommonDataServiceForAppsSink TypeBasicCopySink = original.TypeCommonDataServiceForAppsSink
 	TypeCopySink                     TypeBasicCopySink = original.TypeCopySink
 	TypeCosmosDbMongoDbAPISink       TypeBasicCopySink = original.TypeCosmosDbMongoDbAPISink
+	TypeCosmosDbSQLAPISink           TypeBasicCopySink = original.TypeCosmosDbSQLAPISink
 	TypeDelimitedTextSink            TypeBasicCopySink = original.TypeDelimitedTextSink
 	TypeDocumentDbCollectionSink     TypeBasicCopySink = original.TypeDocumentDbCollectionSink
 	TypeDynamicsCrmSink              TypeBasicCopySink = original.TypeDynamicsCrmSink
@@ -758,6 +759,7 @@ const (
 	TypeConcurSource                   TypeBasicCopySource = original.TypeConcurSource
 	TypeCopySource                     TypeBasicCopySource = original.TypeCopySource
 	TypeCosmosDbMongoDbAPISource       TypeBasicCopySource = original.TypeCosmosDbMongoDbAPISource
+	TypeCosmosDbSQLAPISource           TypeBasicCopySource = original.TypeCosmosDbSQLAPISource
 	TypeCouchbaseSource                TypeBasicCopySource = original.TypeCouchbaseSource
 	TypeDb2Source                      TypeBasicCopySource = original.TypeDb2Source
 	TypeDelimitedTextSource            TypeBasicCopySource = original.TypeDelimitedTextSource
@@ -869,6 +871,7 @@ const (
 	TypeCommonDataServiceForAppsEntity TypeBasicDataset = original.TypeCommonDataServiceForAppsEntity
 	TypeConcurObject                   TypeBasicDataset = original.TypeConcurObject
 	TypeCosmosDbMongoDbAPICollection   TypeBasicDataset = original.TypeCosmosDbMongoDbAPICollection
+	TypeCosmosDbSQLAPICollection       TypeBasicDataset = original.TypeCosmosDbSQLAPICollection
 	TypeCouchbaseTable                 TypeBasicDataset = original.TypeCouchbaseTable
 	TypeCustomDataset                  TypeBasicDataset = original.TypeCustomDataset
 	TypeDataset                        TypeBasicDataset = original.TypeDataset
@@ -1341,6 +1344,10 @@ type CosmosDbMongoDbAPILinkedService = original.CosmosDbMongoDbAPILinkedService
 type CosmosDbMongoDbAPILinkedServiceTypeProperties = original.CosmosDbMongoDbAPILinkedServiceTypeProperties
 type CosmosDbMongoDbAPISink = original.CosmosDbMongoDbAPISink
 type CosmosDbMongoDbAPISource = original.CosmosDbMongoDbAPISource
+type CosmosDbSQLAPICollectionDataset = original.CosmosDbSQLAPICollectionDataset
+type CosmosDbSQLAPICollectionDatasetTypeProperties = original.CosmosDbSQLAPICollectionDatasetTypeProperties
+type CosmosDbSQLAPISink = original.CosmosDbSQLAPISink
+type CosmosDbSQLAPISource = original.CosmosDbSQLAPISource
 type CouchbaseLinkedService = original.CouchbaseLinkedService
 type CouchbaseLinkedServiceTypeProperties = original.CouchbaseLinkedServiceTypeProperties
 type CouchbaseSource = original.CouchbaseSource

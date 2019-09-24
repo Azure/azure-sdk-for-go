@@ -308,6 +308,93 @@ func (client ClustersClient) DeleteResponder(resp *http.Response) (result autore
 	return
 }
 
+// DetachFollowerDatabases detaches all followers of a database owned by this cluster.
+// Parameters:
+// resourceGroupName - the name of the resource group containing the Kusto cluster.
+// clusterName - the name of the Kusto cluster.
+// followerDatabaseToRemove - the follower databases properties to remove.
+func (client ClustersClient) DetachFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition) (result ClustersDetachFollowerDatabasesFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.DetachFollowerDatabases")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: followerDatabaseToRemove,
+			Constraints: []validation.Constraint{{Target: "followerDatabaseToRemove.ClusterResourceID", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "followerDatabaseToRemove.AttachedDatabaseConfigurationName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("kusto.ClustersClient", "DetachFollowerDatabases", err.Error())
+	}
+
+	req, err := client.DetachFollowerDatabasesPreparer(ctx, resourceGroupName, clusterName, followerDatabaseToRemove)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "DetachFollowerDatabases", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DetachFollowerDatabasesSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "DetachFollowerDatabases", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DetachFollowerDatabasesPreparer prepares the DetachFollowerDatabases request.
+func (client ClustersClient) DetachFollowerDatabasesPreparer(ctx context.Context, resourceGroupName string, clusterName string, followerDatabaseToRemove FollowerDatabaseDefinition) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-09-07"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	followerDatabaseToRemove.DatabaseName = nil
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/detachFollowerDatabases", pathParameters),
+		autorest.WithJSON(followerDatabaseToRemove),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DetachFollowerDatabasesSender sends the DetachFollowerDatabases request. The method will close the
+// http.Response Body if it receives an error.
+func (client ClustersClient) DetachFollowerDatabasesSender(req *http.Request) (future ClustersDetachFollowerDatabasesFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// DetachFollowerDatabasesResponder handles the response to the DetachFollowerDatabases request. The method always
+// closes the http.Response Body.
+func (client ClustersClient) DetachFollowerDatabasesResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get gets a Kusto cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group containing the Kusto cluster.
@@ -522,6 +609,84 @@ func (client ClustersClient) ListByResourceGroupSender(req *http.Request) (*http
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
 func (client ClustersClient) ListByResourceGroupResponder(resp *http.Response) (result ClusterListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListFollowerDatabases returns a list of databases that are owned by this cluster and were followed by another
+// cluster.
+// Parameters:
+// resourceGroupName - the name of the resource group containing the Kusto cluster.
+// clusterName - the name of the Kusto cluster.
+func (client ClustersClient) ListFollowerDatabases(ctx context.Context, resourceGroupName string, clusterName string) (result FollowerDatabaseListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.ListFollowerDatabases")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListFollowerDatabasesPreparer(ctx, resourceGroupName, clusterName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "ListFollowerDatabases", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListFollowerDatabasesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "ListFollowerDatabases", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListFollowerDatabasesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "ListFollowerDatabases", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListFollowerDatabasesPreparer prepares the ListFollowerDatabases request.
+func (client ClustersClient) ListFollowerDatabasesPreparer(ctx context.Context, resourceGroupName string, clusterName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-09-07"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/listFollowerDatabases", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListFollowerDatabasesSender sends the ListFollowerDatabases request. The method will close the
+// http.Response Body if it receives an error.
+func (client ClustersClient) ListFollowerDatabasesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListFollowerDatabasesResponder handles the response to the ListFollowerDatabases request. The method always
+// closes the http.Response Body.
+func (client ClustersClient) ListFollowerDatabasesResponder(resp *http.Response) (result FollowerDatabaseListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

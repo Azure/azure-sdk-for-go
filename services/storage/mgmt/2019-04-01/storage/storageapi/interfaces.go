@@ -44,7 +44,7 @@ type AccountsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
 	Failover(ctx context.Context, resourceGroupName string, accountName string) (result storage.AccountsFailoverFuture, err error)
 	GetProperties(ctx context.Context, resourceGroupName string, accountName string, expand storage.AccountExpand) (result storage.Account, err error)
-	List(ctx context.Context) (result storage.AccountListResult, err error)
+	List(ctx context.Context) (result storage.AccountListResultPage, err error)
 	ListAccountSAS(ctx context.Context, resourceGroupName string, accountName string, parameters storage.AccountSasParameters) (result storage.ListAccountSasResponse, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result storage.AccountListResult, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result storage.AccountListKeysResult, err error)

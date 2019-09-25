@@ -282,6 +282,8 @@ type AccountCreateParameters = original.AccountCreateParameters
 type AccountKey = original.AccountKey
 type AccountListKeysResult = original.AccountListKeysResult
 type AccountListResult = original.AccountListResult
+type AccountListResultIterator = original.AccountListResultIterator
+type AccountListResultPage = original.AccountListResultPage
 type AccountProperties = original.AccountProperties
 type AccountPropertiesCreateParameters = original.AccountPropertiesCreateParameters
 type AccountPropertiesUpdateParameters = original.AccountPropertiesUpdateParameters
@@ -302,6 +304,8 @@ type BlobServicePropertiesProperties = original.BlobServicePropertiesProperties
 type BlobServicesClient = original.BlobServicesClient
 type ChangeFeed = original.ChangeFeed
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type ContainerProperties = original.ContainerProperties
 type CorsRule = original.CorsRule
 type CorsRules = original.CorsRules
@@ -314,8 +318,6 @@ type Encryption = original.Encryption
 type EncryptionService = original.EncryptionService
 type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
-type ErrorResponse = original.ErrorResponse
-type ErrorResponseBody = original.ErrorResponseBody
 type FileServiceItems = original.FileServiceItems
 type FileServiceProperties = original.FileServiceProperties
 type FileServicePropertiesProperties = original.FileServicePropertiesProperties
@@ -381,6 +383,12 @@ type VirtualNetworkRule = original.VirtualNetworkRule
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
+	return original.NewAccountListResultIterator(page)
+}
+func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(getNextPage)
 }
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)

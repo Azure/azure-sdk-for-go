@@ -29,6 +29,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/Azure/azure-amqp-common-go/v2/aad"
 	"github.com/Azure/azure-amqp-common-go/v2/auth"
 	"github.com/Azure/azure-amqp-common-go/v2/cbs"
 	"github.com/Azure/azure-amqp-common-go/v2/conn"
@@ -68,6 +69,10 @@ type (
 
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
 	NamespaceOption func(h *Namespace) error
+)
+
+const (
+	serviceBusResourceURI = "https://servicebus.azure.net/"
 )
 
 // NamespaceWithConnectionString configures a namespace with the information provided in a Service Bus connection string
@@ -116,6 +121,34 @@ func NamespaceWithUserAgent(userAgent string) NamespaceOption {
 func NamespaceWithWebSocket() NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.useWebSocket = true
+		return nil
+	}
+}
+
+// NamespaceWithEnvironmentBinding configures a namespace using the environment details. It uses one of the following methods:
+//
+// 1. Client Credentials: attempt to authenticate with a Service Principal via "AZURE_TENANT_ID", "AZURE_CLIENT_ID" and
+//    "AZURE_CLIENT_SECRET"
+//
+// 2. Client Certificate: attempt to authenticate with a Service Principal via "AZURE_TENANT_ID", "AZURE_CLIENT_ID",
+//    "AZURE_CERTIFICATE_PATH" and "AZURE_CERTIFICATE_PASSWORD"
+//
+// 3. Managed Identity (MI): attempt to authenticate via the MI assigned to the Azure resource
+//
+//
+// The Azure Environment used can be specified using the name of the Azure Environment set in "AZURE_ENVIRONMENT" var.
+func NamespaceWithEnvironmentBinding(name string) NamespaceOption {
+	return func(ns *Namespace) error {
+		provider, err := aad.NewJWTProvider(
+			aad.JWTProviderWithEnvironmentVars(),
+			aad.JWTProviderWithResourceURI(serviceBusResourceURI),
+		)
+		if err != nil {
+			return err
+		}
+
+		ns.TokenProvider = provider
+		ns.Name = name
 		return nil
 	}
 }

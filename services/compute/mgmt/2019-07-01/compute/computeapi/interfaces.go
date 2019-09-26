@@ -279,6 +279,18 @@ type SnapshotsClientAPI interface {
 
 var _ SnapshotsClientAPI = (*compute.SnapshotsClient)(nil)
 
+// DiskEncryptionSetsClientAPI contains the set of methods on the DiskEncryptionSetsClient type.
+type DiskEncryptionSetsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet compute.DiskEncryptionSet) (result compute.DiskEncryptionSetsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (result compute.DiskEncryptionSetsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (result compute.DiskEncryptionSet, err error)
+	List(ctx context.Context) (result compute.DiskEncryptionSetListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.DiskEncryptionSetListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet compute.DiskEncryptionSetUpdate) (result compute.DiskEncryptionSetsUpdateFuture, err error)
+}
+
+var _ DiskEncryptionSetsClientAPI = (*compute.DiskEncryptionSetsClient)(nil)
+
 // GalleriesClientAPI contains the set of methods on the GalleriesClient type.
 type GalleriesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery compute.Gallery) (result compute.GalleriesCreateOrUpdateFuture, err error)

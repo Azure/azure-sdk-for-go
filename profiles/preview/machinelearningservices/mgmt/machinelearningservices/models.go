@@ -36,6 +36,43 @@ const (
 	Steady   AllocationState = original.Steady
 )
 
+type AmlInstanceLastOperation = original.AmlInstanceLastOperation
+
+const (
+	Create  AmlInstanceLastOperation = original.Create
+	Delete  AmlInstanceLastOperation = original.Delete
+	Restart AmlInstanceLastOperation = original.Restart
+	Start   AmlInstanceLastOperation = original.Start
+	Stop    AmlInstanceLastOperation = original.Stop
+)
+
+type AmlInstanceLastOperationStatus = original.AmlInstanceLastOperationStatus
+
+const (
+	Failed     AmlInstanceLastOperationStatus = original.Failed
+	InProgress AmlInstanceLastOperationStatus = original.InProgress
+	Succeeded  AmlInstanceLastOperationStatus = original.Succeeded
+)
+
+type AmlInstanceState = original.AmlInstanceState
+
+const (
+	Creating        AmlInstanceState = original.Creating
+	Deleting        AmlInstanceState = original.Deleting
+	Ready           AmlInstanceState = original.Ready
+	Restarting      AmlInstanceState = original.Restarting
+	Running         AmlInstanceState = original.Running
+	SettingUp       AmlInstanceState = original.SettingUp
+	SetupFailed     AmlInstanceState = original.SetupFailed
+	Starting        AmlInstanceState = original.Starting
+	Stopped         AmlInstanceState = original.Stopped
+	Stopping        AmlInstanceState = original.Stopping
+	Unknown         AmlInstanceState = original.Unknown
+	Unusable        AmlInstanceState = original.Unusable
+	UserSettingUp   AmlInstanceState = original.UserSettingUp
+	UserSetupFailed AmlInstanceState = original.UserSetupFailed
+)
+
 type ComputeType = original.ComputeType
 
 const (
@@ -96,12 +133,12 @@ const (
 type NodeState = original.NodeState
 
 const (
-	Idle      NodeState = original.Idle
-	Leaving   NodeState = original.Leaving
-	Preempted NodeState = original.Preempted
-	Preparing NodeState = original.Preparing
-	Running   NodeState = original.Running
-	Unusable  NodeState = original.Unusable
+	NodeStateIdle      NodeState = original.NodeStateIdle
+	NodeStateLeaving   NodeState = original.NodeStateLeaving
+	NodeStatePreempted NodeState = original.NodeStatePreempted
+	NodeStatePreparing NodeState = original.NodeStatePreparing
+	NodeStateRunning   NodeState = original.NodeStateRunning
+	NodeStateUnusable  NodeState = original.NodeStateUnusable
 )
 
 type OsUpdateType = original.OsUpdateType
@@ -114,13 +151,13 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Creating  ProvisioningState = original.Creating
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
-	Unknown   ProvisioningState = original.Unknown
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUnknown   ProvisioningState = original.ProvisioningStateUnknown
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type QuotaUnit = original.QuotaUnit
@@ -171,8 +208,8 @@ const (
 type UnderlyingResourceAction = original.UnderlyingResourceAction
 
 const (
-	Delete UnderlyingResourceAction = original.Delete
-	Detach UnderlyingResourceAction = original.Detach
+	UnderlyingResourceActionDelete UnderlyingResourceAction = original.UnderlyingResourceActionDelete
+	UnderlyingResourceActionDetach UnderlyingResourceAction = original.UnderlyingResourceActionDetach
 )
 
 type UpdateOnNextStart = original.UpdateOnNextStart
@@ -359,6 +396,15 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 }
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
+}
+func PossibleAmlInstanceLastOperationStatusValues() []AmlInstanceLastOperationStatus {
+	return original.PossibleAmlInstanceLastOperationStatusValues()
+}
+func PossibleAmlInstanceLastOperationValues() []AmlInstanceLastOperation {
+	return original.PossibleAmlInstanceLastOperationValues()
+}
+func PossibleAmlInstanceStateValues() []AmlInstanceState {
+	return original.PossibleAmlInstanceStateValues()
 }
 func PossibleComputeTypeBasicComputeNodesInformationValues() []ComputeTypeBasicComputeNodesInformation {
 	return original.PossibleComputeTypeBasicComputeNodesInformationValues()

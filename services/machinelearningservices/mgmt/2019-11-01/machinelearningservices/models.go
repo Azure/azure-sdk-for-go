@@ -46,6 +46,83 @@ func PossibleAllocationStateValues() []AllocationState {
 	return []AllocationState{Resizing, Steady}
 }
 
+// AmlInstanceLastOperation enumerates the values for aml instance last operation.
+type AmlInstanceLastOperation string
+
+const (
+	// Create ...
+	Create AmlInstanceLastOperation = "Create"
+	// Delete ...
+	Delete AmlInstanceLastOperation = "Delete"
+	// Restart ...
+	Restart AmlInstanceLastOperation = "Restart"
+	// Start ...
+	Start AmlInstanceLastOperation = "Start"
+	// Stop ...
+	Stop AmlInstanceLastOperation = "Stop"
+)
+
+// PossibleAmlInstanceLastOperationValues returns an array of possible values for the AmlInstanceLastOperation const type.
+func PossibleAmlInstanceLastOperationValues() []AmlInstanceLastOperation {
+	return []AmlInstanceLastOperation{Create, Delete, Restart, Start, Stop}
+}
+
+// AmlInstanceLastOperationStatus enumerates the values for aml instance last operation status.
+type AmlInstanceLastOperationStatus string
+
+const (
+	// Failed ...
+	Failed AmlInstanceLastOperationStatus = "Failed"
+	// InProgress ...
+	InProgress AmlInstanceLastOperationStatus = "InProgress"
+	// Succeeded ...
+	Succeeded AmlInstanceLastOperationStatus = "Succeeded"
+)
+
+// PossibleAmlInstanceLastOperationStatusValues returns an array of possible values for the AmlInstanceLastOperationStatus const type.
+func PossibleAmlInstanceLastOperationStatusValues() []AmlInstanceLastOperationStatus {
+	return []AmlInstanceLastOperationStatus{Failed, InProgress, Succeeded}
+}
+
+// AmlInstanceState enumerates the values for aml instance state.
+type AmlInstanceState string
+
+const (
+	// Creating ...
+	Creating AmlInstanceState = "Creating"
+	// Deleting ...
+	Deleting AmlInstanceState = "Deleting"
+	// Ready ...
+	Ready AmlInstanceState = "Ready"
+	// Restarting ...
+	Restarting AmlInstanceState = "Restarting"
+	// Running ...
+	Running AmlInstanceState = "Running"
+	// SettingUp ...
+	SettingUp AmlInstanceState = "SettingUp"
+	// SetupFailed ...
+	SetupFailed AmlInstanceState = "SetupFailed"
+	// Starting ...
+	Starting AmlInstanceState = "Starting"
+	// Stopped ...
+	Stopped AmlInstanceState = "Stopped"
+	// Stopping ...
+	Stopping AmlInstanceState = "Stopping"
+	// Unknown ...
+	Unknown AmlInstanceState = "Unknown"
+	// Unusable ...
+	Unusable AmlInstanceState = "Unusable"
+	// UserSettingUp ...
+	UserSettingUp AmlInstanceState = "UserSettingUp"
+	// UserSetupFailed ...
+	UserSetupFailed AmlInstanceState = "UserSetupFailed"
+)
+
+// PossibleAmlInstanceStateValues returns an array of possible values for the AmlInstanceState const type.
+func PossibleAmlInstanceStateValues() []AmlInstanceState {
+	return []AmlInstanceState{Creating, Deleting, Ready, Restarting, Running, SettingUp, SetupFailed, Starting, Stopped, Stopping, Unknown, Unusable, UserSettingUp, UserSetupFailed}
+}
+
 // ComputeType enumerates the values for compute type.
 type ComputeType string
 
@@ -171,23 +248,23 @@ func PossibleDatastoreStateValues() []DatastoreState {
 type NodeState string
 
 const (
-	// Idle ...
-	Idle NodeState = "idle"
-	// Leaving ...
-	Leaving NodeState = "leaving"
-	// Preempted ...
-	Preempted NodeState = "preempted"
-	// Preparing ...
-	Preparing NodeState = "preparing"
-	// Running ...
-	Running NodeState = "running"
-	// Unusable ...
-	Unusable NodeState = "unusable"
+	// NodeStateIdle ...
+	NodeStateIdle NodeState = "idle"
+	// NodeStateLeaving ...
+	NodeStateLeaving NodeState = "leaving"
+	// NodeStatePreempted ...
+	NodeStatePreempted NodeState = "preempted"
+	// NodeStatePreparing ...
+	NodeStatePreparing NodeState = "preparing"
+	// NodeStateRunning ...
+	NodeStateRunning NodeState = "running"
+	// NodeStateUnusable ...
+	NodeStateUnusable NodeState = "unusable"
 )
 
 // PossibleNodeStateValues returns an array of possible values for the NodeState const type.
 func PossibleNodeStateValues() []NodeState {
-	return []NodeState{Idle, Leaving, Preempted, Preparing, Running, Unusable}
+	return []NodeState{NodeStateIdle, NodeStateLeaving, NodeStatePreempted, NodeStatePreparing, NodeStateRunning, NodeStateUnusable}
 }
 
 // OsUpdateType enumerates the values for os update type.
@@ -209,25 +286,25 @@ func PossibleOsUpdateTypeValues() []OsUpdateType {
 type ProvisioningState string
 
 const (
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Unknown ...
-	Unknown ProvisioningState = "Unknown"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
+	// ProvisioningStateCanceled ...
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateCreating ...
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleting ...
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUnknown ...
+	ProvisioningStateUnknown ProvisioningState = "Unknown"
+	// ProvisioningStateUpdating ...
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Unknown, Updating}
+	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateSucceeded, ProvisioningStateUnknown, ProvisioningStateUpdating}
 }
 
 // QuotaUnit enumerates the values for quota unit.
@@ -330,15 +407,15 @@ func PossibleStatus1Values() []Status1 {
 type UnderlyingResourceAction string
 
 const (
-	// Delete ...
-	Delete UnderlyingResourceAction = "Delete"
-	// Detach ...
-	Detach UnderlyingResourceAction = "Detach"
+	// UnderlyingResourceActionDelete ...
+	UnderlyingResourceActionDelete UnderlyingResourceAction = "Delete"
+	// UnderlyingResourceActionDetach ...
+	UnderlyingResourceActionDetach UnderlyingResourceAction = "Detach"
 )
 
 // PossibleUnderlyingResourceActionValues returns an array of possible values for the UnderlyingResourceAction const type.
 func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
-	return []UnderlyingResourceAction{Delete, Detach}
+	return []UnderlyingResourceAction{UnderlyingResourceActionDelete, UnderlyingResourceActionDetach}
 }
 
 // UpdateOnNextStart enumerates the values for update on next start.
@@ -390,7 +467,7 @@ type AKS struct {
 	Properties *AKSProperties `json:"properties,omitempty"`
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Description - The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -570,7 +647,7 @@ type AmlCompute struct {
 	Properties *AmlComputeProperties `json:"properties,omitempty"`
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Description - The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -670,7 +747,7 @@ type AmlComputeNodeInformation struct {
 	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 	// Port - READ-ONLY; SSH port number of the node.
 	Port *float64 `json:"port,omitempty"`
-	// NodeState - READ-ONLY; State of the compute node. Values are idle, running, preparing, unusable, leaving and preempted. Possible values include: 'Idle', 'Running', 'Preparing', 'Unusable', 'Leaving', 'Preempted'
+	// NodeState - READ-ONLY; State of the compute node. Values are idle, running, preparing, unusable, leaving and preempted. Possible values include: 'NodeStateIdle', 'NodeStateRunning', 'NodeStatePreparing', 'NodeStateUnusable', 'NodeStateLeaving', 'NodeStatePreempted'
 	NodeState NodeState `json:"nodeState,omitempty"`
 	// RunID - READ-ONLY; ID of the Experiment running on the node, if any else null.
 	RunID *string `json:"runId,omitempty"`
@@ -746,7 +823,7 @@ type AmlInstance struct {
 	Properties *AmlInstanceProperties `json:"properties,omitempty"`
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Description - The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -863,6 +940,12 @@ type AmlInstanceProperties struct {
 	SSHSettings *AmlInstancePropertiesSSHSettings `json:"sshSettings,omitempty"`
 	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.
 	Errors *[]Error `json:"errors,omitempty"`
+	// State - The current state of this AmlInstance. Possible values include: 'Creating', 'Deleting', 'Ready', 'Restarting', 'Running', 'SettingUp', 'SetupFailed', 'Starting', 'Stopped', 'Stopping', 'UserSettingUp', 'UserSetupFailed', 'Unknown', 'Unusable'
+	State AmlInstanceState `json:"state,omitempty"`
+	// LastOperation - Last operation performed on this AmlInstance. Possible values include: 'Create', 'Delete', 'Restart', 'Start', 'Stop'
+	LastOperation AmlInstanceLastOperation `json:"lastOperation,omitempty"`
+	// LastOperationStatus - Status of last operation performed on this AmlInstance. Possible values include: 'Failed', 'InProgress', 'Succeeded'
+	LastOperationStatus AmlInstanceLastOperationStatus `json:"lastOperationStatus,omitempty"`
 }
 
 // AmlInstancePropertiesCustomScriptSettings specification for initialization scripts to customize this
@@ -997,7 +1080,7 @@ type BasicCompute interface {
 type Compute struct {
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Description - The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -1453,7 +1536,7 @@ type Databricks struct {
 	Properties *DatabricksProperties `json:"properties,omitempty"`
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Description - The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -1599,7 +1682,7 @@ type DatabricksProperties struct {
 type DataFactory struct {
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Description - The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -1691,7 +1774,7 @@ type DataLakeAnalytics struct {
 	Properties *DataLakeAnalyticsProperties `json:"properties,omitempty"`
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Description - The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -1816,7 +1899,7 @@ type HDInsight struct {
 	Properties *HDInsightProperties `json:"properties,omitempty"`
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Description - The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -2695,7 +2778,7 @@ type VirtualMachine struct {
 	Properties *VirtualMachineProperties `json:"properties,omitempty"`
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Description - The description of the Machine Learning compute.
 	Description *string `json:"description,omitempty"`
@@ -3162,7 +3245,7 @@ type WorkspaceProperties struct {
 	StorageAccount *string `json:"storageAccount,omitempty"`
 	// DiscoveryURL - Url for the discovery service to identify regional endpoints for machine learning experimentation services
 	DiscoveryURL *string `json:"discoveryUrl,omitempty"`
-	// ProvisioningState - READ-ONLY; The current deployment state of workspace resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Unknown', 'Updating', 'Creating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	// ProvisioningState - READ-ONLY; The current deployment state of workspace resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 

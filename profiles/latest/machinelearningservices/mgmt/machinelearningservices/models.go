@@ -141,6 +141,13 @@ const (
 	NodeStateUnusable  NodeState = original.NodeStateUnusable
 )
 
+type OsType = original.OsType
+
+const (
+	Linux   OsType = original.Linux
+	Windows OsType = original.Windows
+)
+
 type OsUpdateType = original.OsUpdateType
 
 const (
@@ -426,6 +433,9 @@ func PossibleDatastoreStateValues() []DatastoreState {
 }
 func PossibleNodeStateValues() []NodeState {
 	return original.PossibleNodeStateValues()
+}
+func PossibleOsTypeValues() []OsType {
+	return original.PossibleOsTypeValues()
 }
 func PossibleOsUpdateTypeValues() []OsUpdateType {
 	return original.PossibleOsUpdateTypeValues()

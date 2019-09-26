@@ -267,6 +267,21 @@ func PossibleNodeStateValues() []NodeState {
 	return []NodeState{NodeStateIdle, NodeStateLeaving, NodeStatePreempted, NodeStatePreparing, NodeStateRunning, NodeStateUnusable}
 }
 
+// OsType enumerates the values for os type.
+type OsType string
+
+const (
+	// Linux ...
+	Linux OsType = "Linux"
+	// Windows ...
+	Windows OsType = "Windows"
+)
+
+// PossibleOsTypeValues returns an array of possible values for the OsType const type.
+func PossibleOsTypeValues() []OsType {
+	return []OsType{Linux, Windows}
+}
+
 // OsUpdateType enumerates the values for os update type.
 type OsUpdateType string
 
@@ -795,6 +810,10 @@ type AmlComputeProperties struct {
 	VMSize *string `json:"vmSize,omitempty"`
 	// VMPriority - Virtual Machine priority. Possible values include: 'Dedicated', 'LowPriority'
 	VMPriority VMPriority `json:"vmPriority,omitempty"`
+	// OsType - OS Type. Possible values include: 'Linux', 'Windows'
+	OsType OsType `json:"osType,omitempty"`
+	// VirtualMachineImageID - The ARM resource identifier of the virtual machine image for the compute nodes. This is of the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{gallery name}/images/{image definition name}/versions/{version id}. The virtual machine image must be in the same region and subscription as the cluster.
+	VirtualMachineImageID *ResourceID `json:"virtualMachineImageId,omitempty"`
 	// ScaleSettings - Scale settings for AML Compute
 	ScaleSettings *ScaleSettings `json:"scaleSettings,omitempty"`
 	// UserAccountCredentials - Credentials for an administrator user account that will be created on each compute node.
@@ -2767,7 +2786,7 @@ type UsageName struct {
 type UserAccountCredentials struct {
 	// AdminUserName - Name of the administrator user account which can be used to SSH to nodes.
 	AdminUserName *string `json:"adminUserName,omitempty"`
-	// AdminUserSSHPublicKey - SSH public key of the administrator user account.
+	// AdminUserSSHPublicKey - SSH public key of the administrator user account. This property is only supported on Linux based clusters.
 	AdminUserSSHPublicKey *string `json:"adminUserSshPublicKey,omitempty"`
 	// AdminUserPassword - Password of the administrator user account.
 	AdminUserPassword *string `json:"adminUserPassword,omitempty"`

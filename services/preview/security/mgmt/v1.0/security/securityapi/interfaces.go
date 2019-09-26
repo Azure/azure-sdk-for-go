@@ -23,14 +23,18 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// SubAssessmentsClientAPI contains the set of methods on the SubAssessmentsClient type.
-type SubAssessmentsClientAPI interface {
-	Get(ctx context.Context, scope string, assessmentName string, subAssessmentName string) (result security.SubAssessment, err error)
-	List(ctx context.Context, scope string, assessmentName string) (result security.SubAssessmentListPage, err error)
-	ListAll(ctx context.Context, scope string) (result security.SubAssessmentListPage, err error)
+// PlaybookConfigurationsClientAPI contains the set of methods on the PlaybookConfigurationsClient type.
+type PlaybookConfigurationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfiguration, err error)
+	Delete(ctx context.Context, resourceGroupName string, playbookConfigurationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, playbookConfigurationName string) (result security.PlaybookConfiguration, err error)
+	List(ctx context.Context) (result security.PlaybookConfigurationListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.PlaybookConfigurationListPage, err error)
+	Patch(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfiguration, err error)
+	Validate(ctx context.Context, resourceGroupName string, playbookConfigurationName string, playbookConfiguration security.PlaybookConfiguration) (result security.PlaybookConfigurationValidationStatus, err error)
 }
 
-var _ SubAssessmentsClientAPI = (*security.SubAssessmentsClient)(nil)
+var _ PlaybookConfigurationsClientAPI = (*security.PlaybookConfigurationsClient)(nil)
 
 // RegulatoryComplianceStandardsClientAPI contains the set of methods on the RegulatoryComplianceStandardsClient type.
 type RegulatoryComplianceStandardsClientAPI interface {

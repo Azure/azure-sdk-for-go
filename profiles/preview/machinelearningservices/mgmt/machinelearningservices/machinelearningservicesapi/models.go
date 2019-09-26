@@ -19,7 +19,7 @@
 
 package machinelearningservicesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-06-01/machinelearningservices/machinelearningservicesapi"
+import original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-11-01/machinelearningservices/machinelearningservicesapi"
 
 type MachineLearningComputeClientAPI = original.MachineLearningComputeClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

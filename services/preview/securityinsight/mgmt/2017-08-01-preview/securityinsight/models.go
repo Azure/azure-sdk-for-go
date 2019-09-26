@@ -235,21 +235,6 @@ func PossibleConfidenceScoreStatusValues() []ConfidenceScoreStatus {
 	return []ConfidenceScoreStatus{Final, InProcess, NotApplicable, NotFinal}
 }
 
-// DataConnectorAuthorizationState enumerates the values for data connector authorization state.
-type DataConnectorAuthorizationState string
-
-const (
-	// Invalid ...
-	Invalid DataConnectorAuthorizationState = "Invalid"
-	// Valid ...
-	Valid DataConnectorAuthorizationState = "Valid"
-)
-
-// PossibleDataConnectorAuthorizationStateValues returns an array of possible values for the DataConnectorAuthorizationState const type.
-func PossibleDataConnectorAuthorizationStateValues() []DataConnectorAuthorizationState {
-	return []DataConnectorAuthorizationState{Invalid, Valid}
-}
-
 // DataConnectorKind enumerates the values for data connector kind.
 type DataConnectorKind string
 
@@ -275,33 +260,6 @@ const (
 // PossibleDataConnectorKindValues returns an array of possible values for the DataConnectorKind const type.
 func PossibleDataConnectorKindValues() []DataConnectorKind {
 	return []DataConnectorKind{DataConnectorKindAmazonWebServicesCloudTrail, DataConnectorKindAzureActiveDirectory, DataConnectorKindAzureAdvancedThreatProtection, DataConnectorKindAzureSecurityCenter, DataConnectorKindMicrosoftCloudAppSecurity, DataConnectorKindMicrosoftDefenderAdvancedThreatProtection, DataConnectorKindOffice365, DataConnectorKindThreatIntelligence}
-}
-
-// DataConnectorLicenseState enumerates the values for data connector license state.
-type DataConnectorLicenseState string
-
-const (
-	// DataConnectorLicenseStateAADP1OrP2LicenseRequired ...
-	DataConnectorLicenseStateAADP1OrP2LicenseRequired DataConnectorLicenseState = "AADP1OrP2LicenseRequired"
-	// DataConnectorLicenseStateAzureAdvancedThreatProtectionLicenseRequired ...
-	DataConnectorLicenseStateAzureAdvancedThreatProtectionLicenseRequired DataConnectorLicenseState = "AzureAdvancedThreatProtectionLicenseRequired"
-	// DataConnectorLicenseStateAzureInformationProtectionLicenseRequired ...
-	DataConnectorLicenseStateAzureInformationProtectionLicenseRequired DataConnectorLicenseState = "AzureInformationProtectionLicenseRequired"
-	// DataConnectorLicenseStateMicrosoftCloudAppSecurityLicenseRequired ...
-	DataConnectorLicenseStateMicrosoftCloudAppSecurityLicenseRequired DataConnectorLicenseState = "MicrosoftCloudAppSecurityLicenseRequired"
-	// DataConnectorLicenseStateMicrosoftDefenderAdvancedThreatProtectionEnableRequired ...
-	DataConnectorLicenseStateMicrosoftDefenderAdvancedThreatProtectionEnableRequired DataConnectorLicenseState = "MicrosoftDefenderAdvancedThreatProtectionEnableRequired"
-	// DataConnectorLicenseStateSubscriptionStandardTierLicenseRequired ...
-	DataConnectorLicenseStateSubscriptionStandardTierLicenseRequired DataConnectorLicenseState = "SubscriptionStandardTierLicenseRequired"
-	// DataConnectorLicenseStateUnknown ...
-	DataConnectorLicenseStateUnknown DataConnectorLicenseState = "Unknown"
-	// DataConnectorLicenseStateValid ...
-	DataConnectorLicenseStateValid DataConnectorLicenseState = "Valid"
-)
-
-// PossibleDataConnectorLicenseStateValues returns an array of possible values for the DataConnectorLicenseState const type.
-func PossibleDataConnectorLicenseStateValues() []DataConnectorLicenseState {
-	return []DataConnectorLicenseState{DataConnectorLicenseStateAADP1OrP2LicenseRequired, DataConnectorLicenseStateAzureAdvancedThreatProtectionLicenseRequired, DataConnectorLicenseStateAzureInformationProtectionLicenseRequired, DataConnectorLicenseStateMicrosoftCloudAppSecurityLicenseRequired, DataConnectorLicenseStateMicrosoftDefenderAdvancedThreatProtectionEnableRequired, DataConnectorLicenseStateSubscriptionStandardTierLicenseRequired, DataConnectorLicenseStateUnknown, DataConnectorLicenseStateValid}
 }
 
 // DataTypeState enumerates the values for data type state.
@@ -883,12 +841,6 @@ func PossibleTriggerOperatorValues() []TriggerOperator {
 	return []TriggerOperator{Equal, GreaterThan, LessThan, NotEqual}
 }
 
-// AADCheckRequirements AAD (Azure Active Directory) requirements check properties.
-type AADCheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
 // AADDataConnector represents AAD (Azure Active Directory) data connector.
 type AADDataConnector struct {
 	// AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
@@ -1013,12 +965,6 @@ type AADDataConnectorProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// DataTypes - The available data types for the connector.
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
-}
-
-// AATPCheckRequirements AATP (Azure Advanced Threat Protection) requirements check properties.
-type AATPCheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // AATPDataConnector represents AATP (Azure Advanced Threat Protection) data connector.
@@ -2417,14 +2363,6 @@ type AlertsDataTypeOfDataConnectorAlerts struct {
 	State DataTypeState `json:"state,omitempty"`
 }
 
-// ASCCheckRequirements ASC (Azure Security Center) requirements check properties.
-type ASCCheckRequirements struct {
-	// SubscriptionID - The subscription id to connect to, and get the data from.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
-	Kind DataConnectorKind `json:"kind,omitempty"`
-}
-
 // ASCDataConnector represents ASC (Azure Security Center) data connector.
 type ASCDataConnector struct {
 	// ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
@@ -2549,12 +2487,6 @@ type ASCDataConnectorProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 	// DataTypes - The available data types for the connector.
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
-}
-
-// AwsCloudTrailCheckRequirements amazon Web Services CloudTrail requirements check properties.
-type AwsCloudTrailCheckRequirements struct {
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
-	Kind DataConnectorKind `json:"kind,omitempty"`
 }
 
 // AwsCloudTrailDataConnector represents Amazon Web Services CloudTrail data connector.
@@ -4883,21 +4815,6 @@ func (dcm *DataConnectorModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DataConnectorRequirementsState data connector requirements status.
-type DataConnectorRequirementsState struct {
-	autorest.Response `json:"-"`
-	// AuthorizationState - The state of the user's authorization for this connector. Possible values include: 'Valid', 'Invalid'
-	AuthorizationState DataConnectorAuthorizationState `json:"authorizationState,omitempty"`
-	// LicenseState - A list indicating the user's license state for this connector.
-	LicenseState *[]DataConnectorLicenseState `json:"licenseState,omitempty"`
-}
-
-// DataConnectorsCheckRequirements data connector requirements properties.
-type DataConnectorsCheckRequirements struct {
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
-	Kind DataConnectorKind `json:"kind,omitempty"`
-}
-
 // DataConnectorStatus alert rule template data connector status
 type DataConnectorStatus struct {
 	// ConnectorID - the connector id
@@ -7102,12 +7019,6 @@ func (mep MalwareEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MCASCheckRequirements MCAS (Microsoft Cloud App Security) requirements check properties.
-type MCASCheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
 // MCASDataConnector represents MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnector struct {
 	// MCASDataConnectorProperties - MCAS (Microsoft Cloud App Security) data connector properties.
@@ -7245,13 +7156,6 @@ type MCASDataConnectorDataTypesDiscoveryLogs struct {
 type MCASDataConnectorProperties struct {
 	// DataTypes - The available data types for the connector.
 	DataTypes *MCASDataConnectorDataTypes `json:"dataTypes,omitempty"`
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
-// MDATPCheckRequirements MDATP (Microsoft Defender Advanced Threat Protection) requirements check
-// properties.
-type MDATPCheckRequirements struct {
 	// TenantID - The tenant id to connect to, and get the data from.
 	TenantID *string `json:"tenantId,omitempty"`
 }
@@ -8017,12 +7921,6 @@ type OfficeDataConnectorDataTypesSharePoint struct {
 type OfficeDataConnectorProperties struct {
 	// DataTypes - The available data types for the connector.
 	DataTypes *OfficeDataConnectorDataTypes `json:"dataTypes,omitempty"`
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
-// OfficeDataConnectorRequirementsCheck office data connector properties.
-type OfficeDataConnectorRequirementsCheck struct {
 	// TenantID - The tenant id to connect to, and get the data from.
 	TenantID *string `json:"tenantId,omitempty"`
 }
@@ -9795,12 +9693,6 @@ type ThreatIntelligence struct {
 	ThreatName *string `json:"threatName,omitempty"`
 	// ThreatType - READ-ONLY; Threat type (e.g. "Botnet")
 	ThreatType *string `json:"threatType,omitempty"`
-}
-
-// TICheckRequirements TI (Threat Intelligence) requirements check properties.
-type TICheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // TIDataConnector represents threat intelligence data connector.

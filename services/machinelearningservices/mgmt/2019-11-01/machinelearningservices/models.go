@@ -1077,6 +1077,14 @@ func (cup *ClusterUpdateParameters) UnmarshalJSON(body []byte) error {
 type ClusterUpdateProperties struct {
 	// ScaleSettings - Desired scale settings for the amlCompute.
 	ScaleSettings *ScaleSettings `json:"scaleSettings,omitempty"`
+	// DataStoresMountSettings - Describes what data stores will be mounted on this compute instance.
+	DataStoresMountSettings *AmlInstanceDataStoresMountSettings `json:"dataStoresMountSettings,omitempty"`
+	// CustomScriptSettings - Specification for initialization scripts to customize this AmlInstance.
+	CustomScriptSettings *AmlInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
+	// SoftwareUpdateSettings - Specifies policies for operating system and Azure ML environment (example packages and SDK) updates.
+	SoftwareUpdateSettings *AmlInstanceSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
+	// SSHSettings - Specifies policy and settings for SSH access.
+	SSHSettings *AmlInstanceSSHSettings `json:"sshSettings,omitempty"`
 }
 
 // BasicCompute machine Learning compute object.

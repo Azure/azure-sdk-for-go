@@ -2864,6 +2864,8 @@ type OpenShiftManagedClusterMasterPoolProfile struct {
 type OpenShiftManagedClusterMonitorProfile struct {
 	// WorkspaceResourceID - Azure Resource Manager Resource ID for the Log Analytics workspace to integrate with.
 	WorkspaceResourceID *string `json:"workspaceResourceID,omitempty"`
+	// Enabled - If the Log analytics integration should be turned on or off
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 // OpenShiftManagedClusterProperties properties of the OpenShift managed cluster.

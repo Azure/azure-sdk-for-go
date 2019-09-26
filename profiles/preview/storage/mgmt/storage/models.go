@@ -142,6 +142,13 @@ const (
 	StorageV2        Kind = original.StorageV2
 )
 
+type LargeFileSharesState = original.LargeFileSharesState
+
+const (
+	Disabled LargeFileSharesState = original.Disabled
+	Enabled  LargeFileSharesState = original.Enabled
+)
+
 type LeaseDuration = original.LeaseDuration
 
 const (
@@ -503,6 +510,9 @@ func PossibleKeySourceValues() []KeySource {
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleLargeFileSharesStateValues() []LargeFileSharesState {
+	return original.PossibleLargeFileSharesStateValues()
 }
 func PossibleLeaseDurationValues() []LeaseDuration {
 	return original.PossibleLeaseDurationValues()

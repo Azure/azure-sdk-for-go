@@ -272,6 +272,21 @@ func PossibleKindValues() []Kind {
 	return []Kind{BlobStorage, BlockBlobStorage, FileStorage, Storage, StorageV2}
 }
 
+// LargeFileSharesState enumerates the values for large file shares state.
+type LargeFileSharesState string
+
+const (
+	// Disabled ...
+	Disabled LargeFileSharesState = "Disabled"
+	// Enabled ...
+	Enabled LargeFileSharesState = "Enabled"
+)
+
+// PossibleLargeFileSharesStateValues returns an array of possible values for the LargeFileSharesState const type.
+func PossibleLargeFileSharesStateValues() []LargeFileSharesState {
+	return []LargeFileSharesState{Disabled, Enabled}
+}
+
 // LeaseDuration enumerates the values for lease duration.
 type LeaseDuration string
 
@@ -1011,6 +1026,8 @@ type AccountProperties struct {
 	GeoReplicationStats *GeoReplicationStats `json:"geoReplicationStats,omitempty"`
 	// FailoverInProgress - READ-ONLY; If the failover is in progress, the value will be true, otherwise, it will be null.
 	FailoverInProgress *bool `json:"failoverInProgress,omitempty"`
+	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
+	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 }
 
 // AccountPropertiesCreateParameters the parameters used to create the storage account.
@@ -1029,6 +1046,8 @@ type AccountPropertiesCreateParameters struct {
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
 	// IsHnsEnabled - Account HierarchicalNamespace enabled if sets to true.
 	IsHnsEnabled *bool `json:"isHnsEnabled,omitempty"`
+	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
+	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 }
 
 // AccountPropertiesUpdateParameters the parameters used when updating a storage account.
@@ -1045,6 +1064,8 @@ type AccountPropertiesUpdateParameters struct {
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
 	// NetworkRuleSet - Network rule set
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
+	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
+	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 }
 
 // AccountRegenerateKeyParameters the parameters used to regenerate the storage account key.

@@ -97,6 +97,14 @@ const (
 	DatabasePrincipalTypeUser  DatabasePrincipalType = original.DatabasePrincipalTypeUser
 )
 
+type DefaultPrincipalsModificationKind = original.DefaultPrincipalsModificationKind
+
+const (
+	DefaultPrincipalsModificationKindNone    DefaultPrincipalsModificationKind = original.DefaultPrincipalsModificationKindNone
+	DefaultPrincipalsModificationKindReplace DefaultPrincipalsModificationKind = original.DefaultPrincipalsModificationKindReplace
+	DefaultPrincipalsModificationKindUnion   DefaultPrincipalsModificationKind = original.DefaultPrincipalsModificationKindUnion
+)
+
 type IdentityType = original.IdentityType
 
 const (
@@ -107,10 +115,26 @@ const (
 type Kind = original.Kind
 
 const (
-	KindDataConnection Kind = original.KindDataConnection
-	KindEventGrid      Kind = original.KindEventGrid
-	KindEventHub       Kind = original.KindEventHub
-	KindIotHub         Kind = original.KindIotHub
+	KindDatabase          Kind = original.KindDatabase
+	KindReadOnlyFollowing Kind = original.KindReadOnlyFollowing
+	KindReadWrite         Kind = original.KindReadWrite
+)
+
+type KindBasicDataConnection = original.KindBasicDataConnection
+
+const (
+	KindDataConnection KindBasicDataConnection = original.KindDataConnection
+	KindEventGrid      KindBasicDataConnection = original.KindEventGrid
+	KindEventHub       KindBasicDataConnection = original.KindEventHub
+	KindIotHub         KindBasicDataConnection = original.KindIotHub
+)
+
+type PrincipalsModificationKind = original.PrincipalsModificationKind
+
+const (
+	PrincipalsModificationKindNone    PrincipalsModificationKind = original.PrincipalsModificationKindNone
+	PrincipalsModificationKindReplace PrincipalsModificationKind = original.PrincipalsModificationKindReplace
+	PrincipalsModificationKindUnion   PrincipalsModificationKind = original.PrincipalsModificationKindUnion
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -145,12 +169,27 @@ const (
 	StateUpdating    State = original.StateUpdating
 )
 
+type Type = original.Type
+
+const (
+	MicrosoftKustoclustersattachedDatabaseConfigurations Type = original.MicrosoftKustoclustersattachedDatabaseConfigurations
+	MicrosoftKustoclustersdatabases                      Type = original.MicrosoftKustoclustersdatabases
+)
+
+type AttachedDatabaseConfiguration = original.AttachedDatabaseConfiguration
+type AttachedDatabaseConfigurationListResult = original.AttachedDatabaseConfigurationListResult
+type AttachedDatabaseConfigurationProperties = original.AttachedDatabaseConfigurationProperties
+type AttachedDatabaseConfigurationsClient = original.AttachedDatabaseConfigurationsClient
+type AttachedDatabaseConfigurationsCreateOrUpdateFuture = original.AttachedDatabaseConfigurationsCreateOrUpdateFuture
+type AttachedDatabaseConfigurationsDeleteFuture = original.AttachedDatabaseConfigurationsDeleteFuture
 type AzureCapacity = original.AzureCapacity
 type AzureEntityResource = original.AzureEntityResource
 type AzureResourceSku = original.AzureResourceSku
 type AzureSku = original.AzureSku
 type BaseClient = original.BaseClient
 type BasicDataConnection = original.BasicDataConnection
+type BasicDatabase = original.BasicDatabase
+type CheckNameRequest = original.CheckNameRequest
 type CheckNameResult = original.CheckNameResult
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
@@ -162,6 +201,7 @@ type ClusterUpdate = original.ClusterUpdate
 type ClustersClient = original.ClustersClient
 type ClustersCreateOrUpdateFuture = original.ClustersCreateOrUpdateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
+type ClustersDetachFollowerDatabasesFuture = original.ClustersDetachFollowerDatabasesFuture
 type ClustersStartFuture = original.ClustersStartFuture
 type ClustersStopFuture = original.ClustersStopFuture
 type ClustersUpdateFuture = original.ClustersUpdateFuture
@@ -177,14 +217,12 @@ type DataConnectionsCreateOrUpdateFuture = original.DataConnectionsCreateOrUpdat
 type DataConnectionsDeleteFuture = original.DataConnectionsDeleteFuture
 type DataConnectionsUpdateFuture = original.DataConnectionsUpdateFuture
 type Database = original.Database
-type DatabaseCheckNameRequest = original.DatabaseCheckNameRequest
 type DatabaseListResult = original.DatabaseListResult
+type DatabaseModel = original.DatabaseModel
 type DatabasePrincipal = original.DatabasePrincipal
 type DatabasePrincipalListRequest = original.DatabasePrincipalListRequest
 type DatabasePrincipalListResult = original.DatabasePrincipalListResult
-type DatabaseProperties = original.DatabaseProperties
 type DatabaseStatistics = original.DatabaseStatistics
-type DatabaseUpdate = original.DatabaseUpdate
 type DatabasesClient = original.DatabasesClient
 type DatabasesCreateOrUpdateFuture = original.DatabasesCreateOrUpdateFuture
 type DatabasesDeleteFuture = original.DatabasesDeleteFuture
@@ -193,6 +231,8 @@ type EventGridConnectionProperties = original.EventGridConnectionProperties
 type EventGridDataConnection = original.EventGridDataConnection
 type EventHubConnectionProperties = original.EventHubConnectionProperties
 type EventHubDataConnection = original.EventHubDataConnection
+type FollowerDatabaseDefinition = original.FollowerDatabaseDefinition
+type FollowerDatabaseListResult = original.FollowerDatabaseListResult
 type Identity = original.Identity
 type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type IotHubConnectionProperties = original.IotHubConnectionProperties
@@ -207,6 +247,10 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type OptimizedAutoscale = original.OptimizedAutoscale
 type ProxyResource = original.ProxyResource
+type ReadOnlyFollowingDatabase = original.ReadOnlyFollowingDatabase
+type ReadOnlyFollowingDatabaseProperties = original.ReadOnlyFollowingDatabaseProperties
+type ReadWriteDatabase = original.ReadWriteDatabase
+type ReadWriteDatabaseProperties = original.ReadWriteDatabaseProperties
 type Resource = original.Resource
 type SkuDescription = original.SkuDescription
 type SkuDescriptionList = original.SkuDescriptionList
@@ -217,6 +261,12 @@ type VirtualNetworkConfiguration = original.VirtualNetworkConfiguration
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAttachedDatabaseConfigurationsClient(subscriptionID string) AttachedDatabaseConfigurationsClient {
+	return original.NewAttachedDatabaseConfigurationsClient(subscriptionID)
+}
+func NewAttachedDatabaseConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) AttachedDatabaseConfigurationsClient {
+	return original.NewAttachedDatabaseConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -269,11 +319,20 @@ func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
 func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
 	return original.PossibleDatabasePrincipalTypeValues()
 }
+func PossibleDefaultPrincipalsModificationKindValues() []DefaultPrincipalsModificationKind {
+	return original.PossibleDefaultPrincipalsModificationKindValues()
+}
 func PossibleIdentityTypeValues() []IdentityType {
 	return original.PossibleIdentityTypeValues()
 }
+func PossibleKindBasicDataConnectionValues() []KindBasicDataConnection {
+	return original.PossibleKindBasicDataConnectionValues()
+}
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossiblePrincipalsModificationKindValues() []PrincipalsModificationKind {
+	return original.PossiblePrincipalsModificationKindValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
@@ -283,6 +342,9 @@ func PossibleReasonValues() []Reason {
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

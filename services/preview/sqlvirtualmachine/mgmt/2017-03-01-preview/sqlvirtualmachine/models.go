@@ -1645,11 +1645,11 @@ type SQLWorkloadTypeUpdateSettings struct {
 
 // StorageConfigurationSettings storage Configurations for SQL Data, Log and TempDb.
 type StorageConfigurationSettings struct {
-	// SQLDataSettings - SQL Server Data Stroage Settings.
+	// SQLDataSettings - SQL Server Data Storage Settings.
 	SQLDataSettings *SQLStorageSettings `json:"sqlDataSettings,omitempty"`
-	// SQLLogSettings - SQL Server Log Stroage Settings.
+	// SQLLogSettings - SQL Server Log Storage Settings.
 	SQLLogSettings *SQLStorageSettings `json:"sqlLogSettings,omitempty"`
-	// SQLTempDbSettings - SQL Server TempDb Stroage Settings.
+	// SQLTempDbSettings - SQL Server TempDb Storage Settings.
 	SQLTempDbSettings *SQLStorageSettings `json:"sqlTempDbSettings,omitempty"`
 	// DiskConfigurationType - Disk configuration to apply to SQL Server. Possible values include: 'NEW', 'EXTEND', 'ADD'
 	DiskConfigurationType DiskConfigurationType `json:"diskConfigurationType,omitempty"`

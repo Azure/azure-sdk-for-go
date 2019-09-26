@@ -932,6 +932,21 @@ func (ai AmlInstance) AsBasicCompute() (BasicCompute, bool) {
 	return &ai, true
 }
 
+// AmlInstanceCustomScriptSettings specification for initialization scripts to customize this AmlInstance.
+type AmlInstanceCustomScriptSettings struct {
+	// StartupScript - Specifies properties of initialization script to be run during every start of this instance.
+	StartupScript *AmlInstanceCustomScriptSettingsStartupScript `json:"startupScript,omitempty"`
+}
+
+// AmlInstanceCustomScriptSettingsStartupScript specifies properties of initialization script to be run
+// during every start of this instance.
+type AmlInstanceCustomScriptSettingsStartupScript struct {
+	// ScriptLocation - The location of customization script. Could be a URI or a relative file path in the default fileshare in the parent workspace.
+	ScriptLocation *string `json:"scriptLocation,omitempty"`
+	// ScriptParameters - Parameters required for this script if any.
+	ScriptParameters *string `json:"scriptParameters,omitempty"`
+}
+
 // AmlInstanceDatastore represents specification for datastore requested to be mounted on an AzureML
 // instance as well as its mounting status.
 type AmlInstanceDatastore struct {
@@ -943,6 +958,24 @@ type AmlInstanceDatastore struct {
 	Error *string `json:"error,omitempty"`
 }
 
+// AmlInstanceDataStoresMountSettings describes what data stores will be mounted on this compute instance.
+type AmlInstanceDataStoresMountSettings struct {
+	// DataStoreSelection - Allows users to select between mounting All vs Selected datastores from the parent workspace. The 'All' setting also implies that any datastores that later become part of the workspace will be automatically mounted to the compute instance on next start. Possible values include: 'All', 'UserSpecified'
+	DataStoreSelection DataStoreSelection `json:"dataStoreSelection,omitempty"`
+	// DataStores - Specifies the set of data stores that will be mounted on this compute instance. This should only be specified if dataStoreSelection is set to 'UserSpecified'.
+	DataStores *[]AmlInstanceDatastore `json:"dataStores,omitempty"`
+}
+
+// AmlInstanceOSUpdateSettings specifies policy for installing operation system updates.
+type AmlInstanceOSUpdateSettings struct {
+	// OsUpdateType - Possible values include: 'Critical', 'Recommended'
+	OsUpdateType OsUpdateType `json:"osUpdateType,omitempty"`
+	// UpdateFrequencyInDays - Frequency of update checks and installation. Maximum allowable frequency is 30 days.
+	UpdateFrequencyInDays *int64 `json:"updateFrequencyInDays,omitempty"`
+	// UpdateHourInUtc - Hour of the day (0-23) in Universal Time at which software updates can be installed, potentially requiring VM reboot.
+	UpdateHourInUtc *int64 `json:"updateHourInUtc,omitempty"`
+}
+
 // AmlInstanceProperties AML Instance properties
 type AmlInstanceProperties struct {
 	// VMSize - Virtual Machine Size
@@ -950,13 +983,13 @@ type AmlInstanceProperties struct {
 	// Subnet - Virtual network subnet resource ID the compute nodes belong to.
 	Subnet *ResourceID `json:"subnet,omitempty"`
 	// DataStoresMountSettings - Describes what data stores will be mounted on this compute instance.
-	DataStoresMountSettings *AmlInstancePropertiesDataStoresMountSettings `json:"dataStoresMountSettings,omitempty"`
+	DataStoresMountSettings *AmlInstanceDataStoresMountSettings `json:"dataStoresMountSettings,omitempty"`
 	// CustomScriptSettings - Specification for initialization scripts to customize this AmlInstance.
-	CustomScriptSettings *AmlInstancePropertiesCustomScriptSettings `json:"customScriptSettings,omitempty"`
+	CustomScriptSettings *AmlInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
 	// SoftwareUpdateSettings - Specifies policies for operating system and Azure ML environment (example packages and SDK) updates.
-	SoftwareUpdateSettings *AmlInstancePropertiesSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
+	SoftwareUpdateSettings *AmlInstanceSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
 	// SSHSettings - Specifies policy and settings for SSH access.
-	SSHSettings *AmlInstancePropertiesSSHSettings `json:"sshSettings,omitempty"`
+	SSHSettings *AmlInstanceSSHSettings `json:"sshSettings,omitempty"`
 	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.
 	Errors *[]Error `json:"errors,omitempty"`
 	// State - The current state of this AmlInstance. Possible values include: 'Creating', 'Deleting', 'Ready', 'Restarting', 'Running', 'SettingUp', 'SetupFailed', 'Starting', 'Stopped', 'Stopping', 'UserSettingUp', 'UserSetupFailed', 'Unknown', 'Unusable'
@@ -967,74 +1000,38 @@ type AmlInstanceProperties struct {
 	LastOperationStatus AmlInstanceLastOperationStatus `json:"lastOperationStatus,omitempty"`
 }
 
-// AmlInstancePropertiesCustomScriptSettings specification for initialization scripts to customize this
-// AmlInstance.
-type AmlInstancePropertiesCustomScriptSettings struct {
-	// StartupScript - Specifies properties of initialization script to be run during every start of this instance.
-	StartupScript *AmlInstancePropertiesCustomScriptSettingsStartupScript `json:"startupScript,omitempty"`
-}
-
-// AmlInstancePropertiesCustomScriptSettingsStartupScript specifies properties of initialization script to
-// be run during every start of this instance.
-type AmlInstancePropertiesCustomScriptSettingsStartupScript struct {
-	// ScriptLocation - The location of customization script. Could be a URI or a relative file path in the default fileshare in the parent workspace.
-	ScriptLocation *string `json:"scriptLocation,omitempty"`
-	// ScriptParameters - Parameters required for this script if any.
-	ScriptParameters *string `json:"scriptParameters,omitempty"`
-}
-
-// AmlInstancePropertiesDataStoresMountSettings describes what data stores will be mounted on this compute
-// instance.
-type AmlInstancePropertiesDataStoresMountSettings struct {
-	// DataStoreSelection - Allows users to select between mounting All vs Selected datastores from the parent workspace. The 'All' setting also implies that any datastores that later become part of the workspace will be automatically mounted to the compute instance on next start. Possible values include: 'All', 'UserSpecified'
-	DataStoreSelection DataStoreSelection `json:"dataStoreSelection,omitempty"`
-	// DataStores - Specifies the set of data stores that will be mounted on this compute instance. This should only be specified if dataStoreSelection is set to 'UserSpecified'.
-	DataStores *[]AmlInstanceDatastore `json:"dataStores,omitempty"`
-}
-
-// AmlInstancePropertiesSoftwareUpdateSettings specifies policies for operating system and Azure ML
-// environment (example packages and SDK) updates.
-type AmlInstancePropertiesSoftwareUpdateSettings struct {
-	// OsUpdateSettings - Specifies policy for installing operation system updates.
-	OsUpdateSettings *AmlInstancePropertiesSoftwareUpdateSettingsOsUpdateSettings `json:"osUpdateSettings,omitempty"`
-	// SdkUpdateSettings - Specifies policy for installing Azure ML environment (example packages and SDK) updates.
-	SdkUpdateSettings *AmlInstancePropertiesSoftwareUpdateSettingsSdkUpdateSettings `json:"sdkUpdateSettings,omitempty"`
-}
-
-// AmlInstancePropertiesSoftwareUpdateSettingsOsUpdateSettings specifies policy for installing operation
-// system updates.
-type AmlInstancePropertiesSoftwareUpdateSettingsOsUpdateSettings struct {
-	// OsUpdateType - Possible values include: 'Critical', 'Recommended'
-	OsUpdateType OsUpdateType `json:"osUpdateType,omitempty"`
-	// UpdateFrequencyInDays - Frequency of update checks and installation. Maximum allowable frequency is 30 days.
-	UpdateFrequencyInDays *int64 `json:"updateFrequencyInDays,omitempty"`
-	// UpdateHourInUtc - Hour of the day (0-23) in Universal Time at which software updates can be installed, potentially requiring VM reboot.
-	UpdateHourInUtc *int64 `json:"updateHourInUtc,omitempty"`
-}
-
-// AmlInstancePropertiesSoftwareUpdateSettingsSdkUpdateSettings specifies policy for installing Azure ML
-// environment (example packages and SDK) updates.
-type AmlInstancePropertiesSoftwareUpdateSettingsSdkUpdateSettings struct {
-	// UpdateOnNextStart - Specifies if any available Azure ML environment updates should be installed on next instance start. Possible values include: 'UpdateOnNextStartDisabled', 'UpdateOnNextStartEnabled'
-	UpdateOnNextStart UpdateOnNextStart `json:"updateOnNextStart,omitempty"`
-	// AvailableUpdates - READ-ONLY; Describes available SDK updates for this compute instance.
-	AvailableUpdates *[]AmlInstanceSdkUpdate `json:"availableUpdates,omitempty"`
-}
-
-// AmlInstancePropertiesSSHSettings specifies policy and settings for SSH access.
-type AmlInstancePropertiesSSHSettings struct {
-	// SSHPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet policy if applicable. Possible values include: 'SSHPublicAccessEnabled', 'SSHPublicAccessDisabled'
-	SSHPublicAccess SSHPublicAccess `json:"sshPublicAccess,omitempty"`
-	// AdminPublicKey - Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b 2048" to generate your SSH key pairs.
-	AdminPublicKey *string `json:"adminPublicKey,omitempty"`
-}
-
 // AmlInstanceSdkUpdate describes a specific update for AmlInstance SDK.
 type AmlInstanceSdkUpdate struct {
 	// UpdateName - Short name of the update.
 	UpdateName *string `json:"updateName,omitempty"`
 	// UpdateDescription - Detailed description of the available SDK update.
 	UpdateDescription *string `json:"updateDescription,omitempty"`
+}
+
+// AmlInstanceSdkUpdateSettings specifies policy for installing Azure ML environment (example packages and
+// SDK) updates.
+type AmlInstanceSdkUpdateSettings struct {
+	// UpdateOnNextStart - Specifies if any available Azure ML environment updates should be installed on next instance start. Possible values include: 'UpdateOnNextStartDisabled', 'UpdateOnNextStartEnabled'
+	UpdateOnNextStart UpdateOnNextStart `json:"updateOnNextStart,omitempty"`
+	// AvailableUpdates - READ-ONLY; Describes available SDK updates for this compute instance.
+	AvailableUpdates *[]AmlInstanceSdkUpdate `json:"availableUpdates,omitempty"`
+}
+
+// AmlInstanceSoftwareUpdateSettings specifies policies for operating system and Azure ML environment
+// (example packages and SDK) updates.
+type AmlInstanceSoftwareUpdateSettings struct {
+	// OsUpdateSettings - Specifies policy for installing operation system updates.
+	OsUpdateSettings *AmlInstanceOSUpdateSettings `json:"osUpdateSettings,omitempty"`
+	// SdkUpdateSettings - Specifies policy for installing Azure ML environment (example packages and SDK) updates.
+	SdkUpdateSettings *AmlInstanceSdkUpdateSettings `json:"sdkUpdateSettings,omitempty"`
+}
+
+// AmlInstanceSSHSettings specifies policy and settings for SSH access.
+type AmlInstanceSSHSettings struct {
+	// SSHPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet policy if applicable. Possible values include: 'SSHPublicAccessEnabled', 'SSHPublicAccessDisabled'
+	SSHPublicAccess SSHPublicAccess `json:"sshPublicAccess,omitempty"`
+	// AdminPublicKey - Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b 2048" to generate your SSH key pairs.
+	AdminPublicKey *string `json:"adminPublicKey,omitempty"`
 }
 
 // ClusterUpdateParameters amlCompute update parameters.

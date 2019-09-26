@@ -3194,7 +3194,9 @@ func (d *Disk) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DiskEncryptionSet disk encryption set resource.
+// DiskEncryptionSet describes the parameter of customer managed disk encryption set resource id that can
+// be specified for disk. <br><br> NOTE: The disk encryption set resource id can only be specified for
+// managed disk. Please refer https://aka.ms/mdssewithcmkoverview for more details.
 type DiskEncryptionSet struct {
 	autorest.Response        `json:"-"`
 	Identity                 *ResourceIdentity `json:"identity,omitempty"`

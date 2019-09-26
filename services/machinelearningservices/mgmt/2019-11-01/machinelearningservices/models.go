@@ -992,11 +992,11 @@ type AmlInstanceProperties struct {
 	SSHSettings *AmlInstanceSSHSettings `json:"sshSettings,omitempty"`
 	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.
 	Errors *[]Error `json:"errors,omitempty"`
-	// State - The current state of this AmlInstance. Possible values include: 'Creating', 'Deleting', 'Ready', 'Restarting', 'Running', 'SettingUp', 'SetupFailed', 'Starting', 'Stopped', 'Stopping', 'UserSettingUp', 'UserSetupFailed', 'Unknown', 'Unusable'
+	// State - READ-ONLY; The current state of this AmlInstance. Possible values include: 'Creating', 'Deleting', 'Ready', 'Restarting', 'Running', 'SettingUp', 'SetupFailed', 'Starting', 'Stopped', 'Stopping', 'UserSettingUp', 'UserSetupFailed', 'Unknown', 'Unusable'
 	State AmlInstanceState `json:"state,omitempty"`
-	// LastOperation - Last operation performed on this AmlInstance. Possible values include: 'Create', 'Delete', 'Restart', 'Start', 'Stop'
+	// LastOperation - READ-ONLY; Last operation performed on this AmlInstance. Possible values include: 'Create', 'Delete', 'Restart', 'Start', 'Stop'
 	LastOperation AmlInstanceLastOperation `json:"lastOperation,omitempty"`
-	// LastOperationStatus - Status of last operation performed on this AmlInstance. Possible values include: 'Failed', 'InProgress', 'Succeeded'
+	// LastOperationStatus - READ-ONLY; Status of last operation performed on this AmlInstance. Possible values include: 'Failed', 'InProgress', 'Succeeded'
 	LastOperationStatus AmlInstanceLastOperationStatus `json:"lastOperationStatus,omitempty"`
 }
 

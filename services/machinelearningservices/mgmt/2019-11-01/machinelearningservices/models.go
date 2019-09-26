@@ -1010,7 +1010,7 @@ type AmlInstancePropertiesSSHSettings struct {
 	AdminPublicKey *string `json:"adminPublicKey,omitempty"`
 }
 
-// AmlInstanceSdkUpdate ...
+// AmlInstanceSdkUpdate describes a specific update for AmlInstance SDK.
 type AmlInstanceSdkUpdate struct {
 	// UpdateName - Short name of the update.
 	UpdateName *string `json:"updateName,omitempty"`

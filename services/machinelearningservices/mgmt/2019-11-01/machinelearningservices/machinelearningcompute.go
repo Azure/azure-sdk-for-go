@@ -562,6 +562,243 @@ func (client MachineLearningComputeClient) ListNodesResponder(resp *http.Respons
 	return
 }
 
+// Restart posts a restart action to a compute instance
+// Parameters:
+// resourceGroupName - name of the resource group in which workspace is located.
+// workspaceName - name of Azure Machine Learning workspace.
+// computeName - name of the Azure Machine Learning compute.
+func (client MachineLearningComputeClient) Restart(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (result ComputeResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MachineLearningComputeClient.Restart")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.RestartPreparer(ctx, resourceGroupName, workspaceName, computeName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Restart", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.RestartSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Restart", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.RestartResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Restart", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// RestartPreparer prepares the Restart request.
+func (client MachineLearningComputeClient) RestartPreparer(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"computeName":       autorest.Encode("path", computeName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2019-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/restart", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RestartSender sends the Restart request. The method will close the
+// http.Response Body if it receives an error.
+func (client MachineLearningComputeClient) RestartSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// RestartResponder handles the response to the Restart request. The method always
+// closes the http.Response Body.
+func (client MachineLearningComputeClient) RestartResponder(resp *http.Response) (result ComputeResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Start posts a start action to a compute instance
+// Parameters:
+// resourceGroupName - name of the resource group in which workspace is located.
+// workspaceName - name of Azure Machine Learning workspace.
+// computeName - name of the Azure Machine Learning compute.
+func (client MachineLearningComputeClient) Start(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (result ComputeResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MachineLearningComputeClient.Start")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.StartPreparer(ctx, resourceGroupName, workspaceName, computeName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Start", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.StartSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Start", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.StartResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Start", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// StartPreparer prepares the Start request.
+func (client MachineLearningComputeClient) StartPreparer(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"computeName":       autorest.Encode("path", computeName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2019-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/start", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StartSender sends the Start request. The method will close the
+// http.Response Body if it receives an error.
+func (client MachineLearningComputeClient) StartSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// StartResponder handles the response to the Start request. The method always
+// closes the http.Response Body.
+func (client MachineLearningComputeClient) StartResponder(resp *http.Response) (result ComputeResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Stop posts a stop action to a compute instance
+// Parameters:
+// resourceGroupName - name of the resource group in which workspace is located.
+// workspaceName - name of Azure Machine Learning workspace.
+// computeName - name of the Azure Machine Learning compute.
+func (client MachineLearningComputeClient) Stop(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (result ComputeResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MachineLearningComputeClient.Stop")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.StopPreparer(ctx, resourceGroupName, workspaceName, computeName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Stop", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.StopSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Stop", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.StopResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "Stop", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// StopPreparer prepares the Stop request.
+func (client MachineLearningComputeClient) StopPreparer(ctx context.Context, resourceGroupName string, workspaceName string, computeName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"computeName":       autorest.Encode("path", computeName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":     autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2019-11-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}/stop", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// StopSender sends the Stop request. The method will close the
+// http.Response Body if it receives an error.
+func (client MachineLearningComputeClient) StopSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// StopResponder handles the response to the Stop request. The method always
+// closes the http.Response Body.
+func (client MachineLearningComputeClient) StopResponder(resp *http.Response) (result ComputeResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Update updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
 // operation.
 // Parameters:

@@ -4857,6 +4857,8 @@ type JitNetworkAccessPolicyInitiatePort struct {
 type JitNetworkAccessPolicyInitiateRequest struct {
 	// VirtualMachines - A list of virtual machines & ports to open access for
 	VirtualMachines *[]JitNetworkAccessPolicyInitiateVirtualMachine `json:"virtualMachines,omitempty"`
+	// Justification - The justification for making the initiate request
+	Justification *string `json:"justification,omitempty"`
 }
 
 // JitNetworkAccessPolicyInitiateVirtualMachine ...
@@ -4907,6 +4909,8 @@ type JitNetworkAccessRequest struct {
 	StartTimeUtc *date.Time `json:"startTimeUtc,omitempty"`
 	// Requestor - The identity of the person who made the request
 	Requestor *string `json:"requestor,omitempty"`
+	// Justification - The justification for making the initiate request
+	Justification *string `json:"justification,omitempty"`
 }
 
 // JitNetworkAccessRequestPort ...

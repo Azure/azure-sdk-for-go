@@ -187,9 +187,9 @@ var _ DataFlowsClientAPI = (*datafactory.DataFlowsClient)(nil)
 // DataFlowDebugSessionClientAPI contains the set of methods on the DataFlowDebugSessionClient type.
 type DataFlowDebugSessionClientAPI interface {
 	AddDataFlow(ctx context.Context, resourceGroupName string, factoryName string, request datafactory.DataFlowDebugPackage) (result datafactory.AddDataFlowToDebugSessionResponse, err error)
-	Create(ctx context.Context, resourceGroupName string, factoryName string, request datafactory.CreateDataFlowDebugSessionRequest) (result datafactory.CreateDataFlowDebugSessionResponse, err error)
+	Create(ctx context.Context, resourceGroupName string, factoryName string, request datafactory.CreateDataFlowDebugSessionRequest) (result datafactory.DataFlowDebugSessionCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, factoryName string, request datafactory.DeleteDataFlowDebugSessionRequest) (result autorest.Response, err error)
-	ExecuteCommand(ctx context.Context, resourceGroupName string, factoryName string, request datafactory.DataFlowDebugCommandRequest) (result datafactory.DataFlowDebugCommandResponse, err error)
+	ExecuteCommand(ctx context.Context, resourceGroupName string, factoryName string, request datafactory.DataFlowDebugCommandRequest) (result datafactory.DataFlowDebugSessionExecuteCommandFuture, err error)
 	QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.QueryDataFlowDebugSessionsResponsePage, err error)
 }
 

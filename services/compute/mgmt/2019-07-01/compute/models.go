@@ -7138,7 +7138,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceIdentity the managed identity for the disk encryption set. It should be given permisiion on the
+// ResourceIdentity the managed identity for the disk encryption set. It should be given permission on the
 // key vault before it can be used to encrypt disks.
 type ResourceIdentity struct {
 	// Type - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported. Possible values include: 'SystemAssigned'

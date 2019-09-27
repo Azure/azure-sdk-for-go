@@ -162,6 +162,12 @@ const (
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = original.DiskCreateOptionTypesFromImage
 )
 
+type DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityType
+
+const (
+	SystemAssigned DiskEncryptionSetIdentityType = original.SystemAssigned
+)
+
 type DiskState = original.DiskState
 
 const (
@@ -180,6 +186,13 @@ const (
 	StandardLRS    DiskStorageAccountTypes = original.StandardLRS
 	StandardSSDLRS DiskStorageAccountTypes = original.StandardSSDLRS
 	UltraSSDLRS    DiskStorageAccountTypes = original.UltraSSDLRS
+)
+
+type EncryptionType = original.EncryptionType
+
+const (
+	EncryptionAtRestWithCustomerKey EncryptionType = original.EncryptionAtRestWithCustomerKey
+	EncryptionAtRestWithPlatformKey EncryptionType = original.EncryptionAtRestWithPlatformKey
 )
 
 type HostCaching = original.HostCaching
@@ -713,6 +726,16 @@ type DiagnosticsProfile = original.DiagnosticsProfile
 type DiffDiskSettings = original.DiffDiskSettings
 type Disallowed = original.Disallowed
 type Disk = original.Disk
+type DiskEncryptionSet = original.DiskEncryptionSet
+type DiskEncryptionSetList = original.DiskEncryptionSetList
+type DiskEncryptionSetListIterator = original.DiskEncryptionSetListIterator
+type DiskEncryptionSetListPage = original.DiskEncryptionSetListPage
+type DiskEncryptionSetUpdate = original.DiskEncryptionSetUpdate
+type DiskEncryptionSetUpdateProperties = original.DiskEncryptionSetUpdateProperties
+type DiskEncryptionSetsClient = original.DiskEncryptionSetsClient
+type DiskEncryptionSetsCreateOrUpdateFuture = original.DiskEncryptionSetsCreateOrUpdateFuture
+type DiskEncryptionSetsDeleteFuture = original.DiskEncryptionSetsDeleteFuture
+type DiskEncryptionSetsUpdateFuture = original.DiskEncryptionSetsUpdateFuture
 type DiskEncryptionSettings = original.DiskEncryptionSettings
 type DiskInstanceView = original.DiskInstanceView
 type DiskList = original.DiskList
@@ -728,6 +751,8 @@ type DisksDeleteFuture = original.DisksDeleteFuture
 type DisksGrantAccessFuture = original.DisksGrantAccessFuture
 type DisksRevokeAccessFuture = original.DisksRevokeAccessFuture
 type DisksUpdateFuture = original.DisksUpdateFuture
+type Encryption = original.Encryption
+type EncryptionSetProperties = original.EncryptionSetProperties
 type EncryptionSettingsCollection = original.EncryptionSettingsCollection
 type EncryptionSettingsElement = original.EncryptionSettingsElement
 type GalleriesClient = original.GalleriesClient
@@ -845,6 +870,7 @@ type RegionalReplicationStatus = original.RegionalReplicationStatus
 type ReplicationStatus = original.ReplicationStatus
 type RequestRateByIntervalInput = original.RequestRateByIntervalInput
 type Resource = original.Resource
+type ResourceIdentity = original.ResourceIdentity
 type ResourceRange = original.ResourceRange
 type ResourceSku = original.ResourceSku
 type ResourceSkuCapabilities = original.ResourceSkuCapabilities
@@ -1118,6 +1144,18 @@ func NewDedicatedHostsClient(subscriptionID string) DedicatedHostsClient {
 }
 func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostsClient {
 	return original.NewDedicatedHostsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDiskEncryptionSetListIterator(page DiskEncryptionSetListPage) DiskEncryptionSetListIterator {
+	return original.NewDiskEncryptionSetListIterator(page)
+}
+func NewDiskEncryptionSetListPage(getNextPage func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error)) DiskEncryptionSetListPage {
+	return original.NewDiskEncryptionSetListPage(getNextPage)
+}
+func NewDiskEncryptionSetsClient(subscriptionID string) DiskEncryptionSetsClient {
+	return original.NewDiskEncryptionSetsClient(subscriptionID)
+}
+func NewDiskEncryptionSetsClientWithBaseURI(baseURI string, subscriptionID string) DiskEncryptionSetsClient {
+	return original.NewDiskEncryptionSetsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiskListIterator(page DiskListPage) DiskListIterator {
 	return original.NewDiskListIterator(page)
@@ -1407,11 +1445,17 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return original.PossibleDiskCreateOptionValues()
 }
+func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityType {
+	return original.PossibleDiskEncryptionSetIdentityTypeValues()
+}
 func PossibleDiskStateValues() []DiskState {
 	return original.PossibleDiskStateValues()
 }
 func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 	return original.PossibleDiskStorageAccountTypesValues()
+}
+func PossibleEncryptionTypeValues() []EncryptionType {
+	return original.PossibleEncryptionTypeValues()
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()

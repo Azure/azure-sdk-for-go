@@ -235,21 +235,6 @@ func PossibleConfidenceScoreStatusValues() []ConfidenceScoreStatus {
 	return []ConfidenceScoreStatus{Final, InProcess, NotApplicable, NotFinal}
 }
 
-// DataConnectorAuthorizationState enumerates the values for data connector authorization state.
-type DataConnectorAuthorizationState string
-
-const (
-	// Invalid ...
-	Invalid DataConnectorAuthorizationState = "Invalid"
-	// Valid ...
-	Valid DataConnectorAuthorizationState = "Valid"
-)
-
-// PossibleDataConnectorAuthorizationStateValues returns an array of possible values for the DataConnectorAuthorizationState const type.
-func PossibleDataConnectorAuthorizationStateValues() []DataConnectorAuthorizationState {
-	return []DataConnectorAuthorizationState{Invalid, Valid}
-}
-
 // DataConnectorKind enumerates the values for data connector kind.
 type DataConnectorKind string
 
@@ -275,33 +260,6 @@ const (
 // PossibleDataConnectorKindValues returns an array of possible values for the DataConnectorKind const type.
 func PossibleDataConnectorKindValues() []DataConnectorKind {
 	return []DataConnectorKind{DataConnectorKindAmazonWebServicesCloudTrail, DataConnectorKindAzureActiveDirectory, DataConnectorKindAzureAdvancedThreatProtection, DataConnectorKindAzureSecurityCenter, DataConnectorKindMicrosoftCloudAppSecurity, DataConnectorKindMicrosoftDefenderAdvancedThreatProtection, DataConnectorKindOffice365, DataConnectorKindThreatIntelligence}
-}
-
-// DataConnectorLicenseState enumerates the values for data connector license state.
-type DataConnectorLicenseState string
-
-const (
-	// DataConnectorLicenseStateAADP1OrP2LicenseRequired ...
-	DataConnectorLicenseStateAADP1OrP2LicenseRequired DataConnectorLicenseState = "AADP1OrP2LicenseRequired"
-	// DataConnectorLicenseStateAzureAdvancedThreatProtectionLicenseRequired ...
-	DataConnectorLicenseStateAzureAdvancedThreatProtectionLicenseRequired DataConnectorLicenseState = "AzureAdvancedThreatProtectionLicenseRequired"
-	// DataConnectorLicenseStateAzureInformationProtectionLicenseRequired ...
-	DataConnectorLicenseStateAzureInformationProtectionLicenseRequired DataConnectorLicenseState = "AzureInformationProtectionLicenseRequired"
-	// DataConnectorLicenseStateMicrosoftCloudAppSecurityLicenseRequired ...
-	DataConnectorLicenseStateMicrosoftCloudAppSecurityLicenseRequired DataConnectorLicenseState = "MicrosoftCloudAppSecurityLicenseRequired"
-	// DataConnectorLicenseStateMicrosoftDefenderAdvancedThreatProtectionEnableRequired ...
-	DataConnectorLicenseStateMicrosoftDefenderAdvancedThreatProtectionEnableRequired DataConnectorLicenseState = "MicrosoftDefenderAdvancedThreatProtectionEnableRequired"
-	// DataConnectorLicenseStateSubscriptionStandardTierLicenseRequired ...
-	DataConnectorLicenseStateSubscriptionStandardTierLicenseRequired DataConnectorLicenseState = "SubscriptionStandardTierLicenseRequired"
-	// DataConnectorLicenseStateUnknown ...
-	DataConnectorLicenseStateUnknown DataConnectorLicenseState = "Unknown"
-	// DataConnectorLicenseStateValid ...
-	DataConnectorLicenseStateValid DataConnectorLicenseState = "Valid"
-)
-
-// PossibleDataConnectorLicenseStateValues returns an array of possible values for the DataConnectorLicenseState const type.
-func PossibleDataConnectorLicenseStateValues() []DataConnectorLicenseState {
-	return []DataConnectorLicenseState{DataConnectorLicenseStateAADP1OrP2LicenseRequired, DataConnectorLicenseStateAzureAdvancedThreatProtectionLicenseRequired, DataConnectorLicenseStateAzureInformationProtectionLicenseRequired, DataConnectorLicenseStateMicrosoftCloudAppSecurityLicenseRequired, DataConnectorLicenseStateMicrosoftDefenderAdvancedThreatProtectionEnableRequired, DataConnectorLicenseStateSubscriptionStandardTierLicenseRequired, DataConnectorLicenseStateUnknown, DataConnectorLicenseStateValid}
 }
 
 // DataTypeState enumerates the values for data type state.
@@ -883,16 +841,16 @@ func PossibleTriggerOperatorValues() []TriggerOperator {
 	return []TriggerOperator{Equal, GreaterThan, LessThan, NotEqual}
 }
 
-// AADCheckRequirements AAD (Azure Active Directory) requirements check properties.
-type AADCheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
 // AADDataConnector represents AAD (Azure Active Directory) data connector.
 type AADDataConnector struct {
 	// AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
 	*AADDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
@@ -983,6 +941,33 @@ func (adc *AADDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.AADDataConnectorProperties = &aADDataConnectorProperties
 			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				adc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				adc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				adc.Type = &typeVar
+			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -1015,16 +1000,16 @@ type AADDataConnectorProperties struct {
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
-// AATPCheckRequirements AATP (Azure Advanced Threat Protection) requirements check properties.
-type AATPCheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
 // AATPDataConnector represents AATP (Azure Advanced Threat Protection) data connector.
 type AATPDataConnector struct {
 	// AATPDataConnectorProperties - AATP (Azure Advanced Threat Protection) data connector properties.
 	*AATPDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
@@ -1114,6 +1099,33 @@ func (adc *AATPDataConnector) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				adc.AATPDataConnectorProperties = &aATPDataConnectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				adc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				adc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				adc.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -1359,14 +1371,14 @@ func (aep AccountEntityProperties) MarshalJSON() ([]byte, error) {
 type ActionRequest struct {
 	// ActionRequestProperties - Action properties for put request
 	*ActionRequestProperties `json:"properties,omitempty"`
-	// Etag - Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ActionRequest.
@@ -1399,15 +1411,6 @@ func (ar *ActionRequest) UnmarshalJSON(body []byte) error {
 				}
 				ar.ActionRequestProperties = &actionRequestProperties
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				ar.Etag = &etag
-			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -1434,6 +1437,15 @@ func (ar *ActionRequest) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ar.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ar.Etag = &etag
 			}
 		}
 	}
@@ -1801,6 +1813,12 @@ type BasicAlertRule interface {
 // AlertRule alert rule.
 type AlertRule struct {
 	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
@@ -2417,18 +2435,16 @@ type AlertsDataTypeOfDataConnectorAlerts struct {
 	State DataTypeState `json:"state,omitempty"`
 }
 
-// ASCCheckRequirements ASC (Azure Security Center) requirements check properties.
-type ASCCheckRequirements struct {
-	// SubscriptionID - The subscription id to connect to, and get the data from.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
-	Kind DataConnectorKind `json:"kind,omitempty"`
-}
-
 // ASCDataConnector represents ASC (Azure Security Center) data connector.
 type ASCDataConnector struct {
 	// ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
 	*ASCDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
@@ -2519,6 +2535,33 @@ func (adc *ASCDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.ASCDataConnectorProperties = &aSCDataConnectorProperties
 			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				adc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				adc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				adc.Type = &typeVar
+			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -2551,16 +2594,16 @@ type ASCDataConnectorProperties struct {
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
-// AwsCloudTrailCheckRequirements amazon Web Services CloudTrail requirements check properties.
-type AwsCloudTrailCheckRequirements struct {
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
-	Kind DataConnectorKind `json:"kind,omitempty"`
-}
-
 // AwsCloudTrailDataConnector represents Amazon Web Services CloudTrail data connector.
 type AwsCloudTrailDataConnector struct {
 	// AwsCloudTrailDataConnectorProperties - Amazon Web Services CloudTrail data connector properties.
 	*AwsCloudTrailDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
@@ -2650,6 +2693,33 @@ func (actdc *AwsCloudTrailDataConnector) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				actdc.AwsCloudTrailDataConnectorProperties = &awsCloudTrailDataConnectorProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				actdc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				actdc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				actdc.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -2889,14 +2959,14 @@ type Bookmark struct {
 	autorest.Response `json:"-"`
 	// BookmarkProperties - Bookmark properties
 	*BookmarkProperties `json:"properties,omitempty"`
-	// Etag - Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Bookmark.
@@ -2929,15 +2999,6 @@ func (b *Bookmark) UnmarshalJSON(body []byte) error {
 				}
 				b.BookmarkProperties = &bookmarkProperties
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				b.Etag = &etag
-			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -2964,6 +3025,15 @@ func (b *Bookmark) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				b.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				b.Etag = &etag
 			}
 		}
 	}
@@ -3402,14 +3472,14 @@ type Case struct {
 	autorest.Response `json:"-"`
 	// CaseProperties - Case properties
 	*CaseProperties `json:"properties,omitempty"`
-	// Etag - Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Case.
@@ -3442,15 +3512,6 @@ func (c *Case) UnmarshalJSON(body []byte) error {
 				}
 				c.CaseProperties = &caseProperties
 			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				c.Etag = &etag
-			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -3477,6 +3538,15 @@ func (c *Case) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				c.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				c.Etag = &etag
 			}
 		}
 	}
@@ -4542,6 +4612,12 @@ type BasicDataConnector interface {
 // DataConnector data connector.
 type DataConnector struct {
 	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
@@ -4881,21 +4957,6 @@ func (dcm *DataConnectorModel) UnmarshalJSON(body []byte) error {
 	dcm.Value = dc
 
 	return nil
-}
-
-// DataConnectorRequirementsState data connector requirements status.
-type DataConnectorRequirementsState struct {
-	autorest.Response `json:"-"`
-	// AuthorizationState - The state of the user's authorization for this connector. Possible values include: 'Valid', 'Invalid'
-	AuthorizationState DataConnectorAuthorizationState `json:"authorizationState,omitempty"`
-	// LicenseState - A list indicating the user's license state for this connector.
-	LicenseState *[]DataConnectorLicenseState `json:"licenseState,omitempty"`
-}
-
-// DataConnectorsCheckRequirements data connector requirements properties.
-type DataConnectorsCheckRequirements struct {
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
-	Kind DataConnectorKind `json:"kind,omitempty"`
 }
 
 // DataConnectorStatus alert rule template data connector status
@@ -6249,6 +6310,12 @@ func (fhep FileHashEntityProperties) MarshalJSON() ([]byte, error) {
 type FusionAlertRule struct {
 	// FusionAlertRuleProperties - Fusion alert rule properties
 	*FusionAlertRuleProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
@@ -6313,6 +6380,33 @@ func (far *FusionAlertRule) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				far.FusionAlertRuleProperties = &fusionAlertRuleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				far.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				far.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				far.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -7102,16 +7196,16 @@ func (mep MalwareEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// MCASCheckRequirements MCAS (Microsoft Cloud App Security) requirements check properties.
-type MCASCheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
 // MCASDataConnector represents MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnector struct {
 	// MCASDataConnectorProperties - MCAS (Microsoft Cloud App Security) data connector properties.
 	*MCASDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
@@ -7202,6 +7296,33 @@ func (mdc *MCASDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				mdc.MCASDataConnectorProperties = &mCASDataConnectorProperties
 			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mdc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mdc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mdc.Type = &typeVar
+			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -7249,17 +7370,16 @@ type MCASDataConnectorProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
-// MDATPCheckRequirements MDATP (Microsoft Defender Advanced Threat Protection) requirements check
-// properties.
-type MDATPCheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
 // MDATPDataConnector represents MDATP (Microsoft Defender Advanced Threat Protection) data connector.
 type MDATPDataConnector struct {
 	// MDATPDataConnectorProperties - MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
 	*MDATPDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
@@ -7350,6 +7470,33 @@ func (mdc *MDATPDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				mdc.MDATPDataConnectorProperties = &mDATPDataConnectorProperties
 			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mdc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mdc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mdc.Type = &typeVar
+			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -7387,6 +7534,12 @@ type MDATPDataConnectorProperties struct {
 type MicrosoftSecurityIncidentCreationAlertRule struct {
 	// MicrosoftSecurityIncidentCreationAlertRuleProperties - MicrosoftSecurityIncidentCreation rule properties
 	*MicrosoftSecurityIncidentCreationAlertRuleProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
@@ -7451,6 +7604,33 @@ func (msicar *MicrosoftSecurityIncidentCreationAlertRule) UnmarshalJSON(body []b
 					return err
 				}
 				msicar.MicrosoftSecurityIncidentCreationAlertRuleProperties = &microsoftSecurityIncidentCreationAlertRuleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				msicar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				msicar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				msicar.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -7879,6 +8059,12 @@ type OfficeConsentProperties struct {
 type OfficeDataConnector struct {
 	// OfficeDataConnectorProperties - Office data connector properties.
 	*OfficeDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
@@ -7969,6 +8155,33 @@ func (odc *OfficeDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				odc.OfficeDataConnectorProperties = &officeDataConnectorProperties
 			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				odc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				odc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				odc.Type = &typeVar
+			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -8017,12 +8230,6 @@ type OfficeDataConnectorDataTypesSharePoint struct {
 type OfficeDataConnectorProperties struct {
 	// DataTypes - The available data types for the connector.
 	DataTypes *OfficeDataConnectorDataTypes `json:"dataTypes,omitempty"`
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
-// OfficeDataConnectorRequirementsCheck office data connector properties.
-type OfficeDataConnectorRequirementsCheck struct {
 	// TenantID - The tenant id to connect to, and get the data from.
 	TenantID *string `json:"tenantId,omitempty"`
 }
@@ -8944,20 +9151,26 @@ type Resource struct {
 
 // ResourceWithEtag an azure resource object with an Etag property
 type ResourceWithEtag struct {
-	// Etag - Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 }
 
 // ScheduledAlertRule represents scheduled alert rule.
 type ScheduledAlertRule struct {
 	// ScheduledAlertRuleProperties - Scheduled alert rule properties
 	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
@@ -9022,6 +9235,33 @@ func (sar *ScheduledAlertRule) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sar.ScheduledAlertRuleProperties = &scheduledAlertRuleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sar.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {
@@ -9678,6 +9918,12 @@ type BasicSettings interface {
 // Settings the Setting.
 type Settings struct {
 	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
@@ -9797,16 +10043,16 @@ type ThreatIntelligence struct {
 	ThreatType *string `json:"threatType,omitempty"`
 }
 
-// TICheckRequirements TI (Threat Intelligence) requirements check properties.
-type TICheckRequirements struct {
-	// TenantID - The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
 // TIDataConnector represents threat intelligence data connector.
 type TIDataConnector struct {
 	// TIDataConnectorProperties - TI (Threat Intelligence) data connector properties.
 	*TIDataConnectorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
@@ -9897,6 +10143,33 @@ func (tdc *TIDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				tdc.TIDataConnectorProperties = &tIDataConnectorProperties
 			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				tdc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				tdc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				tdc.Type = &typeVar
+			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -9945,6 +10218,12 @@ type TIDataConnectorProperties struct {
 type ToggleSettings struct {
 	// ToggleSettingsProperties - toggle properties
 	*ToggleSettingsProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
@@ -10005,6 +10284,33 @@ func (ts *ToggleSettings) UnmarshalJSON(body []byte) error {
 				}
 				ts.ToggleSettingsProperties = &toggleSettingsProperties
 			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ts.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ts.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ts.Type = &typeVar
+			}
 		case "etag":
 			if v != nil {
 				var etag string
@@ -10039,6 +10345,12 @@ type ToggleSettingsProperties struct {
 type UebaSettings struct {
 	// UebaSettingsProperties - User and Entity Behavior Analytics settings properties
 	*UebaSettingsProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
 	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
@@ -10098,6 +10410,33 @@ func (us *UebaSettings) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				us.UebaSettingsProperties = &uebaSettingsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				us.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				us.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				us.Type = &typeVar
 			}
 		case "etag":
 			if v != nil {

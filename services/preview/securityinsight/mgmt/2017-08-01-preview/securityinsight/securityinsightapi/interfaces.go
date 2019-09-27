@@ -123,13 +123,6 @@ type DataConnectorsClientAPI interface {
 
 var _ DataConnectorsClientAPI = (*securityinsight.DataConnectorsClient)(nil)
 
-// DataConnectorRequirementsClientAPI contains the set of methods on the DataConnectorRequirementsClient type.
-type DataConnectorRequirementsClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, workspaceName string, operationalInsightsResourceProvider string, dataConnectorsCheckRequirements securityinsight.DataConnectorsCheckRequirements) (result securityinsight.DataConnectorRequirementsState, err error)
-}
-
-var _ DataConnectorRequirementsClientAPI = (*securityinsight.DataConnectorRequirementsClient)(nil)
-
 // EntitiesClientAPI contains the set of methods on the EntitiesClient type.
 type EntitiesClientAPI interface {
 	Expand(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityExpandParameters) (result securityinsight.EntityExpandResponse, err error)

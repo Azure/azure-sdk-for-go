@@ -311,6 +311,19 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 	return []DiskCreateOptionTypes{DiskCreateOptionTypesAttach, DiskCreateOptionTypesEmpty, DiskCreateOptionTypesFromImage}
 }
 
+// DiskEncryptionSetIdentityType enumerates the values for disk encryption set identity type.
+type DiskEncryptionSetIdentityType string
+
+const (
+	// SystemAssigned ...
+	SystemAssigned DiskEncryptionSetIdentityType = "SystemAssigned"
+)
+
+// PossibleDiskEncryptionSetIdentityTypeValues returns an array of possible values for the DiskEncryptionSetIdentityType const type.
+func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityType {
+	return []DiskEncryptionSetIdentityType{SystemAssigned}
+}
+
 // DiskState enumerates the values for disk state.
 type DiskState string
 
@@ -355,6 +368,22 @@ const (
 // PossibleDiskStorageAccountTypesValues returns an array of possible values for the DiskStorageAccountTypes const type.
 func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 	return []DiskStorageAccountTypes{PremiumLRS, StandardLRS, StandardSSDLRS, UltraSSDLRS}
+}
+
+// EncryptionType enumerates the values for encryption type.
+type EncryptionType string
+
+const (
+	// EncryptionAtRestWithCustomerKey Disk is encrypted with Customer managed key at rest.
+	EncryptionAtRestWithCustomerKey EncryptionType = "EncryptionAtRestWithCustomerKey"
+	// EncryptionAtRestWithPlatformKey Disk is encrypted with XStore managed key at rest. It is the default
+	// encryption type.
+	EncryptionAtRestWithPlatformKey EncryptionType = "EncryptionAtRestWithPlatformKey"
+)
+
+// PossibleEncryptionTypeValues returns an array of possible values for the EncryptionType const type.
+func PossibleEncryptionTypeValues() []EncryptionType {
+	return []EncryptionType{EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformKey}
 }
 
 // HostCaching enumerates the values for host caching.
@@ -3166,6 +3195,346 @@ func (d *Disk) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// DiskEncryptionSet disk encryption set resource.
+type DiskEncryptionSet struct {
+	autorest.Response        `json:"-"`
+	Identity                 *ResourceIdentity `json:"identity,omitempty"`
+	*EncryptionSetProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DiskEncryptionSet.
+func (desVar DiskEncryptionSet) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if desVar.Identity != nil {
+		objectMap["identity"] = desVar.Identity
+	}
+	if desVar.EncryptionSetProperties != nil {
+		objectMap["properties"] = desVar.EncryptionSetProperties
+	}
+	if desVar.Location != nil {
+		objectMap["location"] = desVar.Location
+	}
+	if desVar.Tags != nil {
+		objectMap["tags"] = desVar.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DiskEncryptionSet struct.
+func (desVar *DiskEncryptionSet) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity ResourceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				desVar.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var encryptionSetProperties EncryptionSetProperties
+				err = json.Unmarshal(*v, &encryptionSetProperties)
+				if err != nil {
+					return err
+				}
+				desVar.EncryptionSetProperties = &encryptionSetProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				desVar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				desVar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				desVar.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				desVar.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				desVar.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// DiskEncryptionSetList the List disk encryption set operation response.
+type DiskEncryptionSetList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of disk encryption sets.
+	Value *[]DiskEncryptionSet `json:"value,omitempty"`
+	// NextLink - The uri to fetch the next page of disk encryption sets. Call ListNext() with this to fetch the next page of disk encryption sets.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// DiskEncryptionSetListIterator provides access to a complete listing of DiskEncryptionSet values.
+type DiskEncryptionSetListIterator struct {
+	i    int
+	page DiskEncryptionSetListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DiskEncryptionSetListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DiskEncryptionSetListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DiskEncryptionSetListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DiskEncryptionSetListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DiskEncryptionSetListIterator) Response() DiskEncryptionSetList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DiskEncryptionSetListIterator) Value() DiskEncryptionSet {
+	if !iter.page.NotDone() {
+		return DiskEncryptionSet{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DiskEncryptionSetListIterator type.
+func NewDiskEncryptionSetListIterator(page DiskEncryptionSetListPage) DiskEncryptionSetListIterator {
+	return DiskEncryptionSetListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (desl DiskEncryptionSetList) IsEmpty() bool {
+	return desl.Value == nil || len(*desl.Value) == 0
+}
+
+// diskEncryptionSetListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (desl DiskEncryptionSetList) diskEncryptionSetListPreparer(ctx context.Context) (*http.Request, error) {
+	if desl.NextLink == nil || len(to.String(desl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(desl.NextLink)))
+}
+
+// DiskEncryptionSetListPage contains a page of DiskEncryptionSet values.
+type DiskEncryptionSetListPage struct {
+	fn   func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error)
+	desl DiskEncryptionSetList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DiskEncryptionSetListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DiskEncryptionSetListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.desl)
+	if err != nil {
+		return err
+	}
+	page.desl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DiskEncryptionSetListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DiskEncryptionSetListPage) NotDone() bool {
+	return !page.desl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DiskEncryptionSetListPage) Response() DiskEncryptionSetList {
+	return page.desl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DiskEncryptionSetListPage) Values() []DiskEncryptionSet {
+	if page.desl.IsEmpty() {
+		return nil
+	}
+	return *page.desl.Value
+}
+
+// Creates a new instance of the DiskEncryptionSetListPage type.
+func NewDiskEncryptionSetListPage(getNextPage func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error)) DiskEncryptionSetListPage {
+	return DiskEncryptionSetListPage{fn: getNextPage}
+}
+
+// DiskEncryptionSetsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DiskEncryptionSetsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DiskEncryptionSetsCreateOrUpdateFuture) Result(client DiskEncryptionSetsClient) (desVar DiskEncryptionSet, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.DiskEncryptionSetsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if desVar.Response.Response, err = future.GetResult(sender); err == nil && desVar.Response.Response.StatusCode != http.StatusNoContent {
+		desVar, err = client.CreateOrUpdateResponder(desVar.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsCreateOrUpdateFuture", "Result", desVar.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// DiskEncryptionSetsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DiskEncryptionSetsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DiskEncryptionSetsDeleteFuture) Result(client DiskEncryptionSetsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.DiskEncryptionSetsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// DiskEncryptionSetsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DiskEncryptionSetsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *DiskEncryptionSetsUpdateFuture) Result(client DiskEncryptionSetsClient) (desVar DiskEncryptionSet, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.DiskEncryptionSetsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if desVar.Response.Response, err = future.GetResult(sender); err == nil && desVar.Response.Response.StatusCode != http.StatusNoContent {
+		desVar, err = client.UpdateResponder(desVar.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.DiskEncryptionSetsUpdateFuture", "Result", desVar.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // DiskEncryptionSettings describes a Encryption Settings for a Disk
 type DiskEncryptionSettings struct {
 	// DiskEncryptionKey - Specifies the location of the disk encryption key, which is a Key Vault Secret.
@@ -3174,6 +3543,63 @@ type DiskEncryptionSettings struct {
 	KeyEncryptionKey *KeyVaultKeyReference `json:"keyEncryptionKey,omitempty"`
 	// Enabled - Specifies whether disk encryption should be enabled on the virtual machine.
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// DiskEncryptionSetUpdate disk encryption set update resource.
+type DiskEncryptionSetUpdate struct {
+	*DiskEncryptionSetUpdateProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DiskEncryptionSetUpdate.
+func (desu DiskEncryptionSetUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if desu.DiskEncryptionSetUpdateProperties != nil {
+		objectMap["properties"] = desu.DiskEncryptionSetUpdateProperties
+	}
+	if desu.Tags != nil {
+		objectMap["tags"] = desu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DiskEncryptionSetUpdate struct.
+func (desu *DiskEncryptionSetUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var diskEncryptionSetUpdateProperties DiskEncryptionSetUpdateProperties
+				err = json.Unmarshal(*v, &diskEncryptionSetUpdateProperties)
+				if err != nil {
+					return err
+				}
+				desu.DiskEncryptionSetUpdateProperties = &diskEncryptionSetUpdateProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				desu.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// DiskEncryptionSetUpdateProperties disk encryption set resource update properties.
+type DiskEncryptionSetUpdateProperties struct {
+	ActiveKey *KeyVaultAndKeyReference `json:"activeKey,omitempty"`
 }
 
 // DiskInstanceView the instance view of the disk.
@@ -3358,6 +3784,8 @@ type DiskProperties struct {
 	DiskMBpsReadWrite *int32 `json:"diskMBpsReadWrite,omitempty"`
 	// DiskState - READ-ONLY; The state of the disk. Possible values include: 'Unattached', 'Attached', 'Reserved', 'ActiveSAS', 'ReadyToUpload', 'ActiveUpload'
 	DiskState DiskState `json:"diskState,omitempty"`
+	// Encryption - Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
+	Encryption *Encryption `json:"encryption,omitempty"`
 }
 
 // DisksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -3576,6 +4004,26 @@ type DiskUpdateProperties struct {
 	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
 	// DiskMBpsReadWrite - The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
 	DiskMBpsReadWrite *int32 `json:"diskMBpsReadWrite,omitempty"`
+}
+
+// Encryption encryption at rest settings for disk or snapshot
+type Encryption struct {
+	// DiskEncryptionSetID - ResourceId of the disk encryption set to use for enabling encryption at rest.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	// Type - The type of key used to encrypt the data of the disk. Possible values include: 'EncryptionAtRestWithPlatformKey', 'EncryptionAtRestWithCustomerKey'
+	Type EncryptionType `json:"type,omitempty"`
+}
+
+// EncryptionSetProperties ...
+type EncryptionSetProperties struct {
+	// ActiveKey - The key vault key which is currently used by this disk encryption set.
+	ActiveKey *KeyVaultAndKeyReference `json:"activeKey,omitempty"`
+	// PreviousKeys - READ-ONLY; A readonly collection of key vault keys previously used by this disk encryption set while a key rotation is in progress. It will be empty if there is no ongoing key rotation.
+	PreviousKeys *[]KeyVaultAndKeyReference `json:"previousKeys,omitempty"`
+	// ProvisioningState - READ-ONLY; The disk encryption set provisioning state.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// UniqueID - READ-ONLY; Unique Guid identifying the resource.
+	UniqueID *string `json:"uniqueId,omitempty"`
 }
 
 // EncryptionSettingsCollection encryption settings for disk or snapshot
@@ -6690,6 +7138,17 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ResourceIdentity the managed identity for the disk encryption set. It should be given permission on the
+// key vault before it can be used to encrypt disks.
+type ResourceIdentity struct {
+	// Type - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported. Possible values include: 'SystemAssigned'
+	Type DiskEncryptionSetIdentityType `json:"type,omitempty"`
+	// PrincipalID - The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit) identity
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // ResourceRange describes the resource range.
 type ResourceRange struct {
 	// Min - The minimum number of the resource.
@@ -7631,6 +8090,8 @@ type SnapshotProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Incremental - Whether a snapshot is incremental. Incremental snapshots on the same disk occupy less space than full snapshots and can be diffed.
 	Incremental *bool `json:"incremental,omitempty"`
+	// Encryption - Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
+	Encryption *Encryption `json:"encryption,omitempty"`
 }
 
 // SnapshotsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

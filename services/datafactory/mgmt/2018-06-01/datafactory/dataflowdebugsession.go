@@ -148,13 +148,13 @@ func (client DataFlowDebugSessionClient) AddDataFlowResponder(resp *http.Respons
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
 // request - data flow debug session definition
-func (client DataFlowDebugSessionClient) Create(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest) (result CreateDataFlowDebugSessionResponse, err error) {
+func (client DataFlowDebugSessionClient) Create(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest) (result DataFlowDebugSessionCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataFlowDebugSessionClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -180,16 +180,10 @@ func (client DataFlowDebugSessionClient) Create(ctx context.Context, resourceGro
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	result, err = client.CreateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "Create", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
@@ -220,9 +214,15 @@ func (client DataFlowDebugSessionClient) CreatePreparer(ctx context.Context, res
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataFlowDebugSessionClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client DataFlowDebugSessionClient) CreateSender(req *http.Request) (future DataFlowDebugSessionCreateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -334,13 +334,13 @@ func (client DataFlowDebugSessionClient) DeleteResponder(resp *http.Response) (r
 // resourceGroupName - the resource group name.
 // factoryName - the factory name.
 // request - data flow debug command definition.
-func (client DataFlowDebugSessionClient) ExecuteCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest) (result DataFlowDebugCommandResponse, err error) {
+func (client DataFlowDebugSessionClient) ExecuteCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest) (result DataFlowDebugSessionExecuteCommandFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataFlowDebugSessionClient.ExecuteCommand")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -366,16 +366,10 @@ func (client DataFlowDebugSessionClient) ExecuteCommand(ctx context.Context, res
 		return
 	}
 
-	resp, err := client.ExecuteCommandSender(req)
+	result, err = client.ExecuteCommandSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "ExecuteCommand", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "ExecuteCommand", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.ExecuteCommandResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionClient", "ExecuteCommand", resp, "Failure responding to request")
 	}
 
 	return
@@ -406,9 +400,15 @@ func (client DataFlowDebugSessionClient) ExecuteCommandPreparer(ctx context.Cont
 
 // ExecuteCommandSender sends the ExecuteCommand request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataFlowDebugSessionClient) ExecuteCommandSender(req *http.Request) (*http.Response, error) {
+func (client DataFlowDebugSessionClient) ExecuteCommandSender(req *http.Request) (future DataFlowDebugSessionExecuteCommandFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // ExecuteCommandResponder handles the response to the ExecuteCommand request. The method always

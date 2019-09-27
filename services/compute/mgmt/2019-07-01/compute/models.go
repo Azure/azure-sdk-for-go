@@ -374,9 +374,10 @@ func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 type EncryptionType string
 
 const (
-	// EncryptionAtRestWithCustomerKey ...
+	// EncryptionAtRestWithCustomerKey Disk is encrypted with Customer managed key at rest.
 	EncryptionAtRestWithCustomerKey EncryptionType = "EncryptionAtRestWithCustomerKey"
-	// EncryptionAtRestWithPlatformKey ...
+	// EncryptionAtRestWithPlatformKey Disk is encrypted with XStore managed key at rest. It is the default
+	// encryption type.
 	EncryptionAtRestWithPlatformKey EncryptionType = "EncryptionAtRestWithPlatformKey"
 )
 
@@ -3194,9 +3195,7 @@ func (d *Disk) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DiskEncryptionSet describes the parameter of customer managed disk encryption set resource id that can
-// be specified for disk. <br><br> NOTE: The disk encryption set resource id can only be specified for
-// managed disk. Please refer https://aka.ms/mdssewithcmkoverview for more details.
+// DiskEncryptionSet disk encryption set resource.
 type DiskEncryptionSet struct {
 	autorest.Response        `json:"-"`
 	Identity                 *ResourceIdentity `json:"identity,omitempty"`
@@ -4011,12 +4010,13 @@ type DiskUpdateProperties struct {
 type Encryption struct {
 	// DiskEncryptionSetID - ResourceId of the disk encryption set to use for enabling encryption at rest.
 	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
-	// Type - The type of key used for encryption at rest of the disk. Possible values include: 'EncryptionAtRestWithPlatformKey', 'EncryptionAtRestWithCustomerKey'
+	// Type - The type of key used to encrypt the data of the disk. Possible values include: 'EncryptionAtRestWithPlatformKey', 'EncryptionAtRestWithCustomerKey'
 	Type EncryptionType `json:"type,omitempty"`
 }
 
 // EncryptionSetProperties ...
 type EncryptionSetProperties struct {
+	// ActiveKey - The key vault key which is currently used by this disk encryption set.
 	ActiveKey *KeyVaultAndKeyReference `json:"activeKey,omitempty"`
 	// PreviousKeys - READ-ONLY; A readonly collection of key vault keys previously used by this disk encryption set while a key rotation is in progress. It will be empty if there is no ongoing key rotation.
 	PreviousKeys *[]KeyVaultAndKeyReference `json:"previousKeys,omitempty"`
@@ -7138,7 +7138,8 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceIdentity ...
+// ResourceIdentity the managed identity for the disk encryption set. It should be given permisiion on the
+// key vault before it can be used to encrypt disks.
 type ResourceIdentity struct {
 	// Type - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported. Possible values include: 'SystemAssigned'
 	Type DiskEncryptionSetIdentityType `json:"type,omitempty"`

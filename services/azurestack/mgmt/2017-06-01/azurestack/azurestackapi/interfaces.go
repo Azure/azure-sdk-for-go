@@ -23,6 +23,14 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	GetProduct(ctx context.Context, resourceGroup string, registrationName string, productName string, deviceConfiguration *azurestack.DeviceConfiguration) (result azurestack.Product, err error)
+	Uploadproductlog(ctx context.Context, resourceGroup string, registrationName string, productName string, marketplaceProductLogUpdate *azurestack.MarketplaceProductLogUpdate) (result azurestack.ProductLog, err error)
+}
+
+var _ BaseClientAPI = (*azurestack.BaseClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result azurestack.OperationListPage, err error)
@@ -38,6 +46,13 @@ type ProductsClientAPI interface {
 }
 
 var _ ProductsClientAPI = (*azurestack.ProductsClient)(nil)
+
+// GetProductsClientAPI contains the set of methods on the GetProductsClient type.
+type GetProductsClientAPI interface {
+	List(ctx context.Context, resourceGroup string, registrationName string, deviceConfiguration *azurestack.DeviceConfiguration) (result azurestack.ProductList, err error)
+}
+
+var _ GetProductsClientAPI = (*azurestack.GetProductsClient)(nil)
 
 // RegistrationsClientAPI contains the set of methods on the RegistrationsClient type.
 type RegistrationsClientAPI interface {

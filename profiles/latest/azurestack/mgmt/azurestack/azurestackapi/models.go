@@ -21,7 +21,9 @@ package azurestackapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack/azurestackapi"
 
+type BaseClientAPI = original.BaseClientAPI
 type CustomerSubscriptionsClientAPI = original.CustomerSubscriptionsClientAPI
+type GetProductsClientAPI = original.GetProductsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ProductsClientAPI = original.ProductsClientAPI
 type RegistrationsClientAPI = original.RegistrationsClientAPI

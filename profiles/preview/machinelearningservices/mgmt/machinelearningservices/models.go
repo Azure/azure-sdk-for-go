@@ -22,7 +22,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-06-01/machinelearningservices"
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-11-01/machinelearningservices"
 )
 
 const (
@@ -36,11 +36,49 @@ const (
 	Steady   AllocationState = original.Steady
 )
 
+type AmlInstanceLastOperation = original.AmlInstanceLastOperation
+
+const (
+	Create  AmlInstanceLastOperation = original.Create
+	Delete  AmlInstanceLastOperation = original.Delete
+	Restart AmlInstanceLastOperation = original.Restart
+	Start   AmlInstanceLastOperation = original.Start
+	Stop    AmlInstanceLastOperation = original.Stop
+)
+
+type AmlInstanceLastOperationStatus = original.AmlInstanceLastOperationStatus
+
+const (
+	Failed     AmlInstanceLastOperationStatus = original.Failed
+	InProgress AmlInstanceLastOperationStatus = original.InProgress
+	Succeeded  AmlInstanceLastOperationStatus = original.Succeeded
+)
+
+type AmlInstanceState = original.AmlInstanceState
+
+const (
+	Creating        AmlInstanceState = original.Creating
+	Deleting        AmlInstanceState = original.Deleting
+	Ready           AmlInstanceState = original.Ready
+	Restarting      AmlInstanceState = original.Restarting
+	Running         AmlInstanceState = original.Running
+	SettingUp       AmlInstanceState = original.SettingUp
+	SetupFailed     AmlInstanceState = original.SetupFailed
+	Starting        AmlInstanceState = original.Starting
+	Stopped         AmlInstanceState = original.Stopped
+	Stopping        AmlInstanceState = original.Stopping
+	Unknown         AmlInstanceState = original.Unknown
+	Unusable        AmlInstanceState = original.Unusable
+	UserSettingUp   AmlInstanceState = original.UserSettingUp
+	UserSetupFailed AmlInstanceState = original.UserSetupFailed
+)
+
 type ComputeType = original.ComputeType
 
 const (
 	ComputeTypeAKS               ComputeType = original.ComputeTypeAKS
 	ComputeTypeAmlCompute        ComputeType = original.ComputeTypeAmlCompute
+	ComputeTypeAmlInstance       ComputeType = original.ComputeTypeAmlInstance
 	ComputeTypeDatabricks        ComputeType = original.ComputeTypeDatabricks
 	ComputeTypeDataFactory       ComputeType = original.ComputeTypeDataFactory
 	ComputeTypeDataLakeAnalytics ComputeType = original.ComputeTypeDataLakeAnalytics
@@ -53,6 +91,7 @@ type ComputeTypeBasicCompute = original.ComputeTypeBasicCompute
 const (
 	ComputeTypeAKS1               ComputeTypeBasicCompute = original.ComputeTypeAKS1
 	ComputeTypeAmlCompute1        ComputeTypeBasicCompute = original.ComputeTypeAmlCompute1
+	ComputeTypeAmlInstance1       ComputeTypeBasicCompute = original.ComputeTypeAmlInstance1
 	ComputeTypeCompute            ComputeTypeBasicCompute = original.ComputeTypeCompute
 	ComputeTypeDatabricks1        ComputeTypeBasicCompute = original.ComputeTypeDatabricks1
 	ComputeTypeDataFactory1       ComputeTypeBasicCompute = original.ComputeTypeDataFactory1
@@ -77,27 +116,56 @@ const (
 	ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ComputeTypeBasicComputeSecrets = original.ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine
 )
 
+type DataStoreSelection = original.DataStoreSelection
+
+const (
+	All           DataStoreSelection = original.All
+	UserSpecified DataStoreSelection = original.UserSpecified
+)
+
+type DatastoreState = original.DatastoreState
+
+const (
+	Mounted     DatastoreState = original.Mounted
+	MountFailed DatastoreState = original.MountFailed
+	Unmounted   DatastoreState = original.Unmounted
+)
+
 type NodeState = original.NodeState
 
 const (
-	Idle      NodeState = original.Idle
-	Leaving   NodeState = original.Leaving
-	Preempted NodeState = original.Preempted
-	Preparing NodeState = original.Preparing
-	Running   NodeState = original.Running
-	Unusable  NodeState = original.Unusable
+	NodeStateIdle      NodeState = original.NodeStateIdle
+	NodeStateLeaving   NodeState = original.NodeStateLeaving
+	NodeStatePreempted NodeState = original.NodeStatePreempted
+	NodeStatePreparing NodeState = original.NodeStatePreparing
+	NodeStateRunning   NodeState = original.NodeStateRunning
+	NodeStateUnusable  NodeState = original.NodeStateUnusable
+)
+
+type OsType = original.OsType
+
+const (
+	Linux   OsType = original.Linux
+	Windows OsType = original.Windows
+)
+
+type OsUpdateType = original.OsUpdateType
+
+const (
+	Critical    OsUpdateType = original.Critical
+	Recommended OsUpdateType = original.Recommended
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Creating  ProvisioningState = original.Creating
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
-	Unknown   ProvisioningState = original.Unknown
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUnknown   ProvisioningState = original.ProvisioningStateUnknown
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type QuotaUnit = original.QuotaUnit
@@ -118,6 +186,13 @@ type ResourceIdentityType = original.ResourceIdentityType
 
 const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
+)
+
+type SSHPublicAccess = original.SSHPublicAccess
+
+const (
+	SSHPublicAccessDisabled SSHPublicAccess = original.SSHPublicAccessDisabled
+	SSHPublicAccessEnabled  SSHPublicAccess = original.SSHPublicAccessEnabled
 )
 
 type Status = original.Status
@@ -141,8 +216,15 @@ const (
 type UnderlyingResourceAction = original.UnderlyingResourceAction
 
 const (
-	Delete UnderlyingResourceAction = original.Delete
-	Detach UnderlyingResourceAction = original.Detach
+	UnderlyingResourceActionDelete UnderlyingResourceAction = original.UnderlyingResourceActionDelete
+	UnderlyingResourceActionDetach UnderlyingResourceAction = original.UnderlyingResourceActionDetach
+)
+
+type UpdateOnNextStart = original.UpdateOnNextStart
+
+const (
+	UpdateOnNextStartDisabled UpdateOnNextStart = original.UpdateOnNextStartDisabled
+	UpdateOnNextStartEnabled  UpdateOnNextStart = original.UpdateOnNextStartEnabled
 )
 
 type UsageUnit = original.UsageUnit
@@ -166,6 +248,17 @@ type AmlCompute = original.AmlCompute
 type AmlComputeNodeInformation = original.AmlComputeNodeInformation
 type AmlComputeNodesInformation = original.AmlComputeNodesInformation
 type AmlComputeProperties = original.AmlComputeProperties
+type AmlInstance = original.AmlInstance
+type AmlInstanceCustomScriptSettings = original.AmlInstanceCustomScriptSettings
+type AmlInstanceCustomScriptSettingsStartupScript = original.AmlInstanceCustomScriptSettingsStartupScript
+type AmlInstanceDataStoresMountSettings = original.AmlInstanceDataStoresMountSettings
+type AmlInstanceDatastore = original.AmlInstanceDatastore
+type AmlInstanceOSUpdateSettings = original.AmlInstanceOSUpdateSettings
+type AmlInstanceProperties = original.AmlInstanceProperties
+type AmlInstanceSSHSettings = original.AmlInstanceSSHSettings
+type AmlInstanceSdkUpdate = original.AmlInstanceSdkUpdate
+type AmlInstanceSdkUpdateSettings = original.AmlInstanceSdkUpdateSettings
+type AmlInstanceSoftwareUpdateSettings = original.AmlInstanceSoftwareUpdateSettings
 type BaseClient = original.BaseClient
 type BasicCompute = original.BasicCompute
 type BasicComputeNodesInformation = original.BasicComputeNodesInformation
@@ -312,6 +405,15 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
 }
+func PossibleAmlInstanceLastOperationStatusValues() []AmlInstanceLastOperationStatus {
+	return original.PossibleAmlInstanceLastOperationStatusValues()
+}
+func PossibleAmlInstanceLastOperationValues() []AmlInstanceLastOperation {
+	return original.PossibleAmlInstanceLastOperationValues()
+}
+func PossibleAmlInstanceStateValues() []AmlInstanceState {
+	return original.PossibleAmlInstanceStateValues()
+}
 func PossibleComputeTypeBasicComputeNodesInformationValues() []ComputeTypeBasicComputeNodesInformation {
 	return original.PossibleComputeTypeBasicComputeNodesInformationValues()
 }
@@ -324,8 +426,20 @@ func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
 func PossibleComputeTypeValues() []ComputeType {
 	return original.PossibleComputeTypeValues()
 }
+func PossibleDataStoreSelectionValues() []DataStoreSelection {
+	return original.PossibleDataStoreSelectionValues()
+}
+func PossibleDatastoreStateValues() []DatastoreState {
+	return original.PossibleDatastoreStateValues()
+}
 func PossibleNodeStateValues() []NodeState {
 	return original.PossibleNodeStateValues()
+}
+func PossibleOsTypeValues() []OsType {
+	return original.PossibleOsTypeValues()
+}
+func PossibleOsUpdateTypeValues() []OsUpdateType {
+	return original.PossibleOsUpdateTypeValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
@@ -339,6 +453,9 @@ func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
+func PossibleSSHPublicAccessValues() []SSHPublicAccess {
+	return original.PossibleSSHPublicAccessValues()
+}
 func PossibleStatus1Values() []Status1 {
 	return original.PossibleStatus1Values()
 }
@@ -347,6 +464,9 @@ func PossibleStatusValues() []Status {
 }
 func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
 	return original.PossibleUnderlyingResourceActionValues()
+}
+func PossibleUpdateOnNextStartValues() []UpdateOnNextStart {
+	return original.PossibleUpdateOnNextStartValues()
 }
 func PossibleUsageUnitValues() []UsageUnit {
 	return original.PossibleUsageUnitValues()

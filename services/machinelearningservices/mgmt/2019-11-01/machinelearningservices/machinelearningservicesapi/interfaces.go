@@ -19,9 +19,16 @@ package machinelearningservicesapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-06-01/machinelearningservices"
+	"github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-11-01/machinelearningservices"
 	"github.com/Azure/go-autorest/autorest"
 )
+
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	ListSkus(ctx context.Context) (result machinelearningservices.SkuListResultPage, err error)
+}
+
+var _ BaseClientAPI = (*machinelearningservices.BaseClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
@@ -43,6 +50,13 @@ type WorkspacesClientAPI interface {
 }
 
 var _ WorkspacesClientAPI = (*machinelearningservices.WorkspacesClient)(nil)
+
+// WorkspaceFeaturesClientAPI contains the set of methods on the WorkspaceFeaturesClient type.
+type WorkspaceFeaturesClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, workspaceName string) (result machinelearningservices.ListAmlUserFeatureResultPage, err error)
+}
+
+var _ WorkspaceFeaturesClientAPI = (*machinelearningservices.WorkspaceFeaturesClient)(nil)
 
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {

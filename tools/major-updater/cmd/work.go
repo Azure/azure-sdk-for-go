@@ -20,29 +20,24 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 	"time"
 )
 
-const (
-	autorestArgsPattern = "--use=@microsoft.azure/autorest.go@~2.1.99 %s --go --multiapi --go-sdk-folder=%s --use-onever"
-)
-
 type work struct {
-	filename  string
-	sdkFolder string
+	filename string
+	options  []string
 }
 
-func autorestCommand(file string, sdk string) *exec.Cmd {
-	autorestArgs := fmt.Sprintf(autorestArgsPattern, file, sdk)
-	c := exec.Command("autorest", strings.Split(autorestArgs, " ")...)
+func autorestCommand(file string, options []string) *exec.Cmd {
+	options = append(options, file)
+	c := exec.Command("autorest", options...)
 	return c
 }
 
 func worker(id int, jobs <-chan work, results chan<- error) {
 	for work := range jobs {
 		start := time.Now()
-		c := autorestCommand(work.filename, work.sdkFolder)
+		c := autorestCommand(work.filename, work.options)
 		vprintf("worker %d is starting on file %s\nparameters: %v\n", id, work.filename, c.Args)
 		output, err := c.CombinedOutput()
 		if err == nil {

@@ -15,7 +15,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -38,6 +40,10 @@ var autorestCmd = &cobra.Command{
 	},
 }
 
+const (
+	configFileName = "swagger_to_sdk_config.json"
+)
+
 func init() {
 	rootCmd.AddCommand(autorestCmd)
 }
@@ -57,6 +63,15 @@ func theAutorestCommand(sdk, spec string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get the directory of specs: %v", err)
 	}
+	// read options from config file
+	file, err := os.Open(filepath.Join(absolutePathOfSDK, configFileName))
+	if err != nil {
+		return fmt.Errorf("failed to open config file %s: %v", configFileName, err)
+	}
+	options, err := expandAutorestOptions(file, absolutePathOfSDK)
+	if err != nil {
+		return err
+	}
 	// get every single readme.md file in the directory
 	files, err := selectFilesWithName(absolutePathOfSpec, readme)
 	vprintf("Found %d readme.md files\n", len(files))
@@ -67,8 +82,8 @@ func theAutorestCommand(sdk, spec string) error {
 	}
 	for _, file := range files {
 		w := work{
-			filename:  file,
-			sdkFolder: absolutePathOfSDK,
+			filename: file,
+			options:  options,
 		}
 		jobs <- w
 	}
@@ -78,4 +93,39 @@ func theAutorestCommand(sdk, spec string) error {
 	}
 	vprintln("autorest finished")
 	return nil
+}
+
+const (
+	optionPattern = "--%s=%s"
+	flagPattern   = "--%s"
+)
+
+func expandAutorestOptions(file *os.File, absolutePathOfSDK string) ([]string, error) {
+	b, _ := ioutil.ReadAll(file)
+	var config map[string]*json.RawMessage
+	if err := json.Unmarshal(b, &config); err != nil {
+		return nil, fmt.Errorf("failed to resolve config file: %v", err)
+	}
+	var meta map[string]*json.RawMessage
+	if err := json.Unmarshal(*config["meta"], &meta); err != nil {
+		return nil, fmt.Errorf("failed to resolve config file: %v", err)
+	}
+	var autorestOptions map[string]*json.RawMessage
+	if err := json.Unmarshal(*meta["autorest_options"], &autorestOptions); err != nil {
+		return nil, fmt.Errorf("failed to resolve config file: %v", err)
+	}
+	options := make([]string, 6)
+	for k, v := range autorestOptions {
+		if k == "sdkrel:go-sdk-folder" {
+			continue
+		}
+		v := string(*v)
+		if v == "\"\"" {
+			options = append(options, fmt.Sprintf(flagPattern, k))
+		} else {
+			options = append(options, fmt.Sprintf(optionPattern, k, v))
+		}
+	}
+	options = append(options, fmt.Sprintf(optionPattern, "go-sdk-folder", absolutePathOfSDK))
+	return options, nil
 }

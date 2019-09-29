@@ -28,9 +28,9 @@ import (
 )
 
 const (
-	tagPrefix = "// tag: "
-	versionFile = "version.go"
-	profileFolder = "profiles"
+	tagPrefix         = "// tag: "
+	versionFile       = "version.go"
+	profileFolder     = "profiles"
 	messageForProfile = "Update profiles"
 )
 

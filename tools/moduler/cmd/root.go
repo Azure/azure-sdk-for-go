@@ -78,7 +78,7 @@ func theCommand(args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to list tags: %v", err)
 	}
-	vprintf("Get %d tags\n", len(tags))
+	vprintf("Get %d tags from remote\n", len(tags))
 	// find all version.go files
 	files, err := findAllFiles(path, versionFile)
 	if err != nil {
@@ -88,18 +88,20 @@ func theCommand(args []string) error {
 	if err := readAndAddTags(tags, files); err != nil {
 		return fmt.Errorf("failed during reading and pushing new tags: %v", err)
 	}
-	// push new tags
-	if err := pushNewTags(); err != nil {
-		return fmt.Errorf("failed to push tags: %v", err)
-	}
-	// generate profiles
-	profilePath := filepath.Join(path, profileFolder)
-	if err := generateProfiles(profilePath); err != nil {
-		return fmt.Errorf("failed during generating profiles: %v", err)
-	}
-	// push repo
-	if err := pushRepo(profilePath, messageForProfile); err != nil {
-		return fmt.Errorf("failed during add and commit new files: %v", err)
+	if !dryRunFlag {
+		// push new tags
+		if err := pushNewTags(); err != nil {
+			return fmt.Errorf("failed to push tags: %v", err)
+		}
+		// generate profiles
+		profilePath := filepath.Join(path, profileFolder)
+		if err := generateProfiles(profilePath); err != nil {
+			return fmt.Errorf("failed during generating profiles: %v", err)
+		}
+		// push repo
+		if err := pushRepo(profilePath, messageForProfile); err != nil {
+			return fmt.Errorf("failed during add and commit new files: %v", err)
+		}
 	}
 	return nil
 }

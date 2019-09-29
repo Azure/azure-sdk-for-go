@@ -189,7 +189,7 @@ func (client PathClient) CreatePreparer(ctx context.Context, filesystem string, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}/{path}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(cacheControl) > 0 {
@@ -418,7 +418,7 @@ func (client PathClient) DeletePreparer(ctx context.Context, filesystem string, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}/{path}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xMsLeaseID) > 0 {
@@ -565,7 +565,7 @@ func (client PathClient) GetPropertiesPreparer(ctx context.Context, filesystem s
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsHead(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}/{path}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(ifMatch) > 0 {
@@ -725,7 +725,7 @@ func (client PathClient) LeasePreparer(ctx context.Context, xMsLeaseAction PathL
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}/{path}", pathParameters),
 		autorest.WithQueryParameters(queryParameters),
 		autorest.WithHeader("x-ms-lease-action", autorest.String(xMsLeaseAction)))
@@ -890,7 +890,7 @@ func (client PathClient) ListPreparer(ctx context.Context, recursive bool, files
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(xMsClientRequestID) > 0 {
@@ -1014,7 +1014,7 @@ func (client PathClient) ReadPreparer(ctx context.Context, filesystem string, pa
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}/{path}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if len(rangeParameter) > 0 {
@@ -1235,7 +1235,7 @@ func (client PathClient) UpdatePreparer(ctx context.Context, action PathUpdateAc
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPatch(),
-		autorest.WithCustomBaseURL("http://{accountName}.{dnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("https://{accountName}.{dnsSuffix}", urlParameters),
 		autorest.WithPathParameters("/{filesystem}/{path}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if requestBody != nil {

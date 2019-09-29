@@ -97,6 +97,14 @@ const (
 	TWO         CassandraSourceReadConsistencyLevels = original.TWO
 )
 
+type DataFlowComputeType = original.DataFlowComputeType
+
+const (
+	ComputeOptimized DataFlowComputeType = original.ComputeOptimized
+	General          DataFlowComputeType = original.General
+	MemoryOptimized  DataFlowComputeType = original.MemoryOptimized
+)
+
 type DataFlowDebugCommandType = original.DataFlowDebugCommandType
 
 const (
@@ -1369,6 +1377,8 @@ type DataFlowDebugCommandResponse = original.DataFlowDebugCommandResponse
 type DataFlowDebugPackage = original.DataFlowDebugPackage
 type DataFlowDebugPackageDebugSettings = original.DataFlowDebugPackageDebugSettings
 type DataFlowDebugSessionClient = original.DataFlowDebugSessionClient
+type DataFlowDebugSessionCreateFuture = original.DataFlowDebugSessionCreateFuture
+type DataFlowDebugSessionExecuteCommandFuture = original.DataFlowDebugSessionExecuteCommandFuture
 type DataFlowDebugSessionInfo = original.DataFlowDebugSessionInfo
 type DataFlowFolder = original.DataFlowFolder
 type DataFlowListResponse = original.DataFlowListResponse
@@ -1573,6 +1583,7 @@ type IntegrationRuntimeAuthKeys = original.IntegrationRuntimeAuthKeys
 type IntegrationRuntimeComputeProperties = original.IntegrationRuntimeComputeProperties
 type IntegrationRuntimeConnectionInfo = original.IntegrationRuntimeConnectionInfo
 type IntegrationRuntimeCustomSetupScriptProperties = original.IntegrationRuntimeCustomSetupScriptProperties
+type IntegrationRuntimeDataFlowProperties = original.IntegrationRuntimeDataFlowProperties
 type IntegrationRuntimeDataProxyProperties = original.IntegrationRuntimeDataProxyProperties
 type IntegrationRuntimeListResponse = original.IntegrationRuntimeListResponse
 type IntegrationRuntimeListResponseIterator = original.IntegrationRuntimeListResponseIterator
@@ -2165,6 +2176,9 @@ func PossibleBlobEventTypesValues() []BlobEventTypes {
 }
 func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
 	return original.PossibleCassandraSourceReadConsistencyLevelsValues()
+}
+func PossibleDataFlowComputeTypeValues() []DataFlowComputeType {
+	return original.PossibleDataFlowComputeTypeValues()
 }
 func PossibleDataFlowDebugCommandTypeValues() []DataFlowDebugCommandType {
 	return original.PossibleDataFlowDebugCommandTypeValues()

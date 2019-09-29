@@ -47,6 +47,8 @@ const (
 	Blob               DataSetType = original.Blob
 	BlobFolder         DataSetType = original.BlobFolder
 	Container          DataSetType = original.Container
+	SQLDBTable         DataSetType = original.SQLDBTable
+	SQLDWTable         DataSetType = original.SQLDWTable
 )
 
 type InvitationStatus = original.InvitationStatus
@@ -70,6 +72,8 @@ const (
 	KindBlobFolder         Kind = original.KindBlobFolder
 	KindContainer          Kind = original.KindContainer
 	KindDataSet            Kind = original.KindDataSet
+	KindSQLDBTable         Kind = original.KindSQLDBTable
+	KindSQLDWTable         Kind = original.KindSQLDWTable
 )
 
 type KindBasicDataSetMapping = original.KindBasicDataSetMapping
@@ -82,6 +86,8 @@ const (
 	KindBasicDataSetMappingKindBlobFolder         KindBasicDataSetMapping = original.KindBasicDataSetMappingKindBlobFolder
 	KindBasicDataSetMappingKindContainer          KindBasicDataSetMapping = original.KindBasicDataSetMappingKindContainer
 	KindBasicDataSetMappingKindDataSetMapping     KindBasicDataSetMapping = original.KindBasicDataSetMappingKindDataSetMapping
+	KindBasicDataSetMappingKindSQLDBTable         KindBasicDataSetMapping = original.KindBasicDataSetMappingKindSQLDBTable
+	KindBasicDataSetMappingKindSQLDWTable         KindBasicDataSetMapping = original.KindBasicDataSetMappingKindSQLDWTable
 )
 
 type KindBasicSourceShareSynchronizationSetting = original.KindBasicSourceShareSynchronizationSetting
@@ -103,6 +109,13 @@ type KindBasicTrigger = original.KindBasicTrigger
 const (
 	KindBasicTriggerKindScheduleBased KindBasicTrigger = original.KindBasicTriggerKindScheduleBased
 	KindBasicTriggerKindTrigger       KindBasicTrigger = original.KindBasicTriggerKindTrigger
+)
+
+type OutputType = original.OutputType
+
+const (
+	Csv     OutputType = original.Csv
+	Parquet OutputType = original.Parquet
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -266,6 +279,14 @@ type ProviderShareSubscriptionProperties = original.ProviderShareSubscriptionPro
 type ProviderShareSubscriptionsClient = original.ProviderShareSubscriptionsClient
 type ProviderShareSubscriptionsRevokeFuture = original.ProviderShareSubscriptionsRevokeFuture
 type ProxyDto = original.ProxyDto
+type SQLDBTableDataSet = original.SQLDBTableDataSet
+type SQLDBTableDataSetMapping = original.SQLDBTableDataSetMapping
+type SQLDBTableDataSetMappingProperties = original.SQLDBTableDataSetMappingProperties
+type SQLDBTableProperties = original.SQLDBTableProperties
+type SQLDWTableDataSet = original.SQLDWTableDataSet
+type SQLDWTableDataSetMapping = original.SQLDWTableDataSetMapping
+type SQLDWTableDataSetMappingProperties = original.SQLDWTableDataSetMappingProperties
+type SQLDWTableProperties = original.SQLDWTableProperties
 type ScheduledSourceShareSynchronizationSettingProperties = original.ScheduledSourceShareSynchronizationSettingProperties
 type ScheduledSourceSynchronizationSetting = original.ScheduledSourceSynchronizationSetting
 type ScheduledSynchronizationSetting = original.ScheduledSynchronizationSetting
@@ -518,6 +539,9 @@ func PossibleKindBasicTriggerValues() []KindBasicTrigger {
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleOutputTypeValues() []OutputType {
+	return original.PossibleOutputTypeValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

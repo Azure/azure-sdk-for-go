@@ -22,7 +22,7 @@ package peering
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-08-01-preview/peering"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-09-01-preview/peering"
 )
 
 const (
@@ -68,9 +68,9 @@ const (
 type LearnedType = original.LearnedType
 
 const (
-	LearnedTypeNone       LearnedType = original.LearnedTypeNone
-	LearnedTypeViaPartner LearnedType = original.LearnedTypeViaPartner
-	LearnedTypeViaSession LearnedType = original.LearnedTypeViaSession
+	LearnedTypeNone               LearnedType = original.LearnedTypeNone
+	LearnedTypeViaServiceProvider LearnedType = original.LearnedTypeViaServiceProvider
+	LearnedTypeViaSession         LearnedType = original.LearnedTypeViaSession
 )
 
 type Name = original.Name
@@ -93,6 +93,7 @@ const (
 	PrefixValidationStatePending  PrefixValidationState = original.PrefixValidationStatePending
 	PrefixValidationStateUnknown  PrefixValidationState = original.PrefixValidationStateUnknown
 	PrefixValidationStateVerified PrefixValidationState = original.PrefixValidationStateVerified
+	PrefixValidationStateWarning  PrefixValidationState = original.PrefixValidationStateWarning
 )
 
 type ProvisioningState = original.ProvisioningState

@@ -1,98 +1,56 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cmd
 
 import (
 	"bufio"
 	"errors"
 	"fmt"
-	"io"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"regexp"
-	"sort"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
+	"io"
+	"os"
+	"path/filepath"
+	"regexp"
+	"sort"
+	"strings"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "versioner <staging dir> [initial module version]",
+var unstageCmd = &cobra.Command{
+	Use:   "unstage <staging dir> [initial module version]",
 	Short: "Creates or updates the latest major version for a package from staged content.",
-	Long: `This tool will compare a staged package against its latest major version to detect
+	Long:  `This tool will compare a staged package against its latest major version to detect
 breaking changes.  If there are no breaking changes the latest major version is updated
 with the staged content.  If there are breaking changes the staged content becomes the
 next latest major vesion and the go.mod file is updated.
 The default version for new modules is v1.0.0 or the value specified for [initial module version].
 `,
-	Args: func(cmd *cobra.Command, args []string) error {
-		if err := cobra.MinimumNArgs(1)(cmd, args); err != nil {
-			return err
-		}
-		if err := cobra.MaximumNArgs(2)(cmd, args); err != nil {
-			return err
-		}
-		return nil
-	},
+	Args: cobra.RangeArgs(1, 2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cmd.SilenceUsage = true
-		return theCommand(args)
+		_, err := theUnstageCommand(args)
+		return err
 	},
 }
 
 var (
 	semverRegex    = regexp.MustCompile(`v\d+\.\d+\.\d+$`)
-	goverRegex     = regexp.MustCompile(`\d+\.\d+$`)
 	versionGoRegex = regexp.MustCompile(`\d+\.\d+\.\d+`)
-	// this is used so tests can hook getTags() to return whatever tags
-	getTagsHook func(string, string) ([]string, error)
 	// default version to start a module at if not specified
 	startingModVer = "v1.0.0"
-	quietFlag      bool
-	verboseFlag    bool
+	// this is used so tests can hook getTags() to return whatever tags
+	getTagsHook func(string, string) ([]string, error)
 )
 
 func init() {
 	// default to the real version
 	getTagsHook = getTags
-	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
-	rootCmd.PersistentFlags().BoolVarP(&quietFlag, "quiet", "q", false, "quiet output")
+	rootCmd.AddCommand(unstageCmd)
 }
 
-// Execute executes the specified command.
-func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		os.Exit(1)
-	}
-}
-
-// wrapper for cobra, prints tag to stdout
-func theCommand(args []string) error {
-	_, err := theCommandImpl(args)
-	return err
-}
-
-// does the actual work
-func theCommandImpl(args []string) (string, error) {
+func theUnstageCommand(args []string) (string, error) {
 	stage, err := filepath.Abs(args[0])
 	if err != nil {
-		return "", fmt.Errorf("failed to get absolute path from %s: %v", args[0], err)
+		return "", fmt.Errorf("failed to get absolute path from '%s': %v", args[0], err)
 	}
 	if len(args) == 2 {
 		if !modinfo.IsValidModuleVersion(args[1]) {
@@ -102,14 +60,14 @@ func theCommandImpl(args []string) (string, error) {
 	}
 	lmv, err := findLatestMajorVersion(stage)
 	if err != nil {
-		return "", fmt.Errorf("failed to find latest major version: %v", err)
+		return "", fmt.Errorf("failed to find latest major version in '%s': %v", stage, err)
 	}
 	vprintf("Latest major version path: %v\n", lmv)
 	mod, err := modinfo.GetModuleInfo(lmv, stage)
 	if err != nil {
 		return "", fmt.Errorf("failed to create module info: %v", err)
 	}
-	if err = writeChangelog(stage, mod); err != nil {
+	if err := writeChangelog(stage, mod); err != nil {
 		return "", fmt.Errorf("failed to write changelog: %v", err)
 	}
 	var tag string
@@ -120,6 +78,7 @@ func theCommandImpl(args []string) (string, error) {
 	}
 	return tag, err
 }
+
 
 // releases the module as a new side-by-side major version
 func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
@@ -147,10 +106,6 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 	// move staging to new LMV directory
 	if err = os.Rename(stage, mod.DestDir()); err != nil {
 		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
-	}
-	// format code
-	if err = formatCode(mod.DestDir()); err != nil {
-		return "", fmt.Errorf("failed to format code: %v", err)
 	}
 	return tag, nil
 }
@@ -208,20 +163,7 @@ func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 	if err := os.Rename(temp, dest); err != nil {
 		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
 	}
-	// format code
-	if err = formatCode(mod.DestDir()); err != nil {
-		return "", fmt.Errorf("failed to format code: %v", err)
-	}
 	return tag, nil
-}
-
-func formatCode(path string) error {
-	vprintf("Formatting in %s\n", path)
-	cmd := exec.Command("gofmt", "-w", path)
-	if output, err := cmd.CombinedOutput(); err != nil {
-		return fmt.Errorf("failed to execute gofmt: %s", string(output))
-	}
-	return nil
 }
 
 func updateVersion(path, tag string) error {

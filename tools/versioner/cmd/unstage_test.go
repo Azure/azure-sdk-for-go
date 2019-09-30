@@ -374,7 +374,7 @@ func Test_theCommandImplMajor(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get absolute path: %v", err)
 	}
-	tag, err := theCommandImpl([]string{pkg})
+	tag, err := theUnstageCommand([]string{pkg})
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}
@@ -407,7 +407,7 @@ func Test_theCommandImplMinor(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get absolute path: %v", err)
 	}
-	tag, err := theCommandImpl([]string{pkg})
+	tag, err := theUnstageCommand([]string{pkg})
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}
@@ -440,7 +440,7 @@ func Test_theCommandImplPatch(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get absolute path: %v", err)
 	}
-	tag, err := theCommandImpl([]string{pkg})
+	tag, err := theUnstageCommand([]string{pkg})
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}
@@ -478,7 +478,7 @@ func Test_theCommandImplMajorV3(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get absolute path: %v", err)
 	}
-	tag, err := theCommandImpl([]string{pkg})
+	tag, err := theUnstageCommand([]string{pkg})
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}
@@ -514,7 +514,7 @@ func Test_theCommandImplMajorMinor(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get absolute path: %v", err)
 	}
-	tag, err := theCommandImpl([]string{pkg})
+	tag, err := theUnstageCommand([]string{pkg})
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}
@@ -545,7 +545,7 @@ func Test_theCommandImplNewMod(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get absolute path: %v", err)
 	}
-	tag, err := theCommandImpl([]string{pkg})
+	tag, err := theUnstageCommand([]string{pkg})
 	if err != nil {
 		t.Fatalf("failed: %v", err)
 	}

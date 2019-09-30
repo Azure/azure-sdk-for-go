@@ -32,10 +32,11 @@ const (
 	versionFile       = "version.go"
 	profileFolder     = "profiles"
 	messageForProfile = "Update profiles"
+	vendorPath        = "vendor"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "module-releaser <sdk root path>",
+	Use:   "moduler <sdk root path>",
 	Short: "Release a new module by pushing new tags to github",
 	Long: `This tool search the whole SDK folder for tags in version.go files which are produced by the versioner tool, 
 and push the new tags to github.`,
@@ -49,12 +50,14 @@ var (
 	getTagsHook func(string) ([]string, error)
 	dryRunFlag  bool
 	verboseFlag bool
+	profileFlag bool
 )
 
 func init() {
 	getTagsHook = getTags
 	rootCmd.PersistentFlags().BoolVarP(&dryRunFlag, "dry-run", "d", false, "dry run, only list the detected tags, do not add or push them")
 	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
+	rootCmd.PersistentFlags().BoolVarP(&profileFlag, "profiles", "p", false, "generate profiles")
 }
 
 // Execute the tool
@@ -69,45 +72,44 @@ func theCommand(args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get absolute path: %v", err)
 	}
-	// update local repo
-	if err := updateLocalRepo(path); err != nil {
-		return fmt.Errorf("failed to update local repo: %v", err)
-	}
 	// get list of all existing tags
 	tags, err := getTagsHook(path)
 	if err != nil {
 		return fmt.Errorf("failed to list tags: %v", err)
 	}
-	vprintf("Get %d tags from remote\n", len(tags))
+	printf("Get %d tags from remote\n", len(tags))
+	vprintln(strings.Join(tags, "\n"))
 	// find all version.go files
 	files, err := findAllFiles(path, versionFile)
 	if err != nil {
 		return fmt.Errorf("failed to find all version.go files: %v", err)
 	}
 	// read new tags and push them in version.go
-	if err := readAndAddTags(tags, files); err != nil {
+	newTags, err := readTags(tags, files)
+	if err != nil {
 		return fmt.Errorf("failed during reading and pushing new tags: %v", err)
 	}
-	if !dryRunFlag {
+	if dryRunFlag {
+		println("Found new tags:")
+		println(strings.Join(newTags, "\n"))
+	} else {
 		// push new tags
-		if err := pushNewTags(); err != nil {
+		if err := pushNewTags(newTags); err != nil {
 			return fmt.Errorf("failed to push tags: %v", err)
 		}
-		// generate profiles
-		profilePath := filepath.Join(path, profileFolder)
-		if err := generateProfiles(profilePath); err != nil {
-			return fmt.Errorf("failed during generating profiles: %v", err)
-		}
-		// push repo
-		if err := pushRepo(profilePath, messageForProfile); err != nil {
-			return fmt.Errorf("failed during add and commit new files: %v", err)
+		if profileFlag {
+			// generate profiles
+			profilePath := filepath.Join(path, profileFolder)
+			if err := generateProfiles(profilePath); err != nil {
+				return fmt.Errorf("failed during generating profiles: %v", err)
+			}
+			// push repo
+			if err := pushRepo(profilePath, messageForProfile); err != nil {
+				return fmt.Errorf("failed during add and commit new files: %v", err)
+			}
 		}
 	}
 	return nil
-}
-
-func updateLocalRepo(repoPath string) error {
-	return executeCommand("git", "pull", "--tags")
 }
 
 func getTags(repoPath string) ([]string, error) {
@@ -129,7 +131,15 @@ func tagExists(tags []string, tag string) bool {
 
 func findAllFiles(root, filename string) ([]string, error) {
 	files := make([]string, 0)
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+	absVendor, err := filepath.Abs(filepath.Join(root, vendorPath))
+	if err != nil {
+		return nil, err
+	}
+	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if strings.HasPrefix(path, absVendor) {
+			// ignore everything in vendor folder
+			return filepath.SkipDir
+		}
 		if err == nil && !info.IsDir() && info.Name() == filename {
 			files = append(files, path)
 			return nil
@@ -139,30 +149,25 @@ func findAllFiles(root, filename string) ([]string, error) {
 	return files, err
 }
 
-func readAndAddTags(tags []string, files []string) error {
+func readTags(tags []string, files []string) ([]string, error) {
+	var newTags []string
 	for _, file := range files {
 		newTag, err := findNewTagInFile(file)
 		if err != nil {
-			return fmt.Errorf("failed to read tag in file '%s': %v", file, err)
+			return nil, fmt.Errorf("failed to read tag in file '%s': %v", file, err)
 		}
 		if newTag == "" {
 			printf("Found empty tag in file '%s'\n", file)
 			continue
-		} else {
-			vprintf("Found tag '%s' in file '%s'\n", newTag, file)
-		}
-		if tagExists(tags, newTag) {
-			vprintf("Tag '%s' already exists, skipping", newTag)
+		} else if tagExists(tags, newTag) {
+			vprintf("Found existed tag '%s' in file '%s'\n", newTag, file)
 			continue
 		}
 		// add new tag to list
 		tags = append(tags, newTag)
-		// add new tag to git
-		if err := addNewTag(newTag); err != nil {
-			return fmt.Errorf("failed to push tag '%s': %v", newTag, err)
-		}
+		newTags = append(newTags, newTag)
 	}
-	return nil
+	return newTags, nil
 }
 
 func findNewTagInFile(path string) (string, error) {
@@ -184,19 +189,20 @@ func findNewTagInFile(path string) (string, error) {
 }
 
 func addNewTag(newTag string) error {
-	if dryRunFlag {
-		vprintf("Found new tag '%s'\n", newTag)
-	} else {
-		vprintf("Adding new tag '%s'\n", newTag)
-		if err := executeCommand("git", "tag", "-a", newTag, "-m", newTag); err != nil {
-			return err
-		}
+	vprintf("Adding new tag '%s'\n", newTag)
+	if err := executeCommand("git", "tag", "-a", newTag, "-m", newTag); err != nil {
+		return err
 	}
 	return nil
 }
 
-func pushNewTags() error {
+func pushNewTags(newTags []string) error {
 	vprintln("Pushing new tags")
+	for _, tag := range newTags {
+		if err := addNewTag(tag); err != nil {
+			return err
+		}
+	}
 	return executeCommand("git", "push", "origin", "--tags")
 }
 

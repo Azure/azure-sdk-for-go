@@ -38,9 +38,9 @@ const (
 type AlertRuleKind = original.AlertRuleKind
 
 const (
-	Filter    AlertRuleKind = original.Filter
-	Fusion    AlertRuleKind = original.Fusion
-	Scheduled AlertRuleKind = original.Scheduled
+	Fusion                            AlertRuleKind = original.Fusion
+	MicrosoftSecurityIncidentCreation AlertRuleKind = original.MicrosoftSecurityIncidentCreation
+	Scheduled                         AlertRuleKind = original.Scheduled
 )
 
 type AlertSeverity = original.AlertSeverity
@@ -72,6 +72,7 @@ const (
 	Discovery           AttackTactic = original.Discovery
 	Execution           AttackTactic = original.Execution
 	Exfiltration        AttackTactic = original.Exfiltration
+	Impact              AttackTactic = original.Impact
 	InitialAccess       AttackTactic = original.InitialAccess
 	LateralMovement     AttackTactic = original.LateralMovement
 	Persistence         AttackTactic = original.Persistence
@@ -233,24 +234,26 @@ const (
 type Kind = original.Kind
 
 const (
-	KindAlertRule Kind = original.KindAlertRule
-	KindScheduled Kind = original.KindScheduled
+	KindAggregations     Kind = original.KindAggregations
+	KindCasesAggregation Kind = original.KindCasesAggregation
 )
 
-type KindBasicAggregations = original.KindBasicAggregations
+type KindBasicAlertRule = original.KindBasicAlertRule
 
 const (
-	KindAggregations     KindBasicAggregations = original.KindAggregations
-	KindCasesAggregation KindBasicAggregations = original.KindCasesAggregation
+	KindAlertRule                         KindBasicAlertRule = original.KindAlertRule
+	KindFusion                            KindBasicAlertRule = original.KindFusion
+	KindMicrosoftSecurityIncidentCreation KindBasicAlertRule = original.KindMicrosoftSecurityIncidentCreation
+	KindScheduled                         KindBasicAlertRule = original.KindScheduled
 )
 
 type KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplate
 
 const (
-	KindBasicAlertRuleTemplateKindAlertRuleTemplate KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindAlertRuleTemplate
-	KindBasicAlertRuleTemplateKindFilter            KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindFilter
-	KindBasicAlertRuleTemplateKindFusion            KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindFusion
-	KindBasicAlertRuleTemplateKindScheduled         KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindScheduled
+	KindBasicAlertRuleTemplateKindAlertRuleTemplate                 KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindAlertRuleTemplate
+	KindBasicAlertRuleTemplateKindFusion                            KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindFusion
+	KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation
+	KindBasicAlertRuleTemplateKindScheduled                         KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplateKindScheduled
 )
 
 type KindBasicDataConnector = original.KindBasicDataConnector
@@ -303,6 +306,15 @@ const (
 	LicenseStatusEnabled  LicenseStatus = original.LicenseStatusEnabled
 )
 
+type MicrosoftSecurityProductName = original.MicrosoftSecurityProductName
+
+const (
+	AzureActiveDirectoryIdentityProtection MicrosoftSecurityProductName = original.AzureActiveDirectoryIdentityProtection
+	AzureAdvancedThreatProtection          MicrosoftSecurityProductName = original.AzureAdvancedThreatProtection
+	AzureSecurityCenter                    MicrosoftSecurityProductName = original.AzureSecurityCenter
+	MicrosoftCloudAppSecurity              MicrosoftSecurityProductName = original.MicrosoftCloudAppSecurity
+)
+
 type OSFamily = original.OSFamily
 
 const (
@@ -338,6 +350,19 @@ const (
 	RegistryValueKindQWord        RegistryValueKind = original.RegistryValueKindQWord
 	RegistryValueKindString       RegistryValueKind = original.RegistryValueKindString
 	RegistryValueKindUnknown      RegistryValueKind = original.RegistryValueKindUnknown
+)
+
+type RelationNodeKind = original.RelationNodeKind
+
+const (
+	RelationNodeKindBookmark RelationNodeKind = original.RelationNodeKindBookmark
+	RelationNodeKindCase     RelationNodeKind = original.RelationNodeKindCase
+)
+
+type RelationTypes = original.RelationTypes
+
+const (
+	CasesToBookmarks RelationTypes = original.CasesToBookmarks
 )
 
 type SettingKind = original.SettingKind
@@ -379,8 +404,10 @@ type ASCDataConnector = original.ASCDataConnector
 type ASCDataConnectorProperties = original.ASCDataConnectorProperties
 type AccountEntity = original.AccountEntity
 type AccountEntityProperties = original.AccountEntityProperties
-type Action = original.Action
-type ActionProperties = original.ActionProperties
+type ActionRequest = original.ActionRequest
+type ActionRequestProperties = original.ActionRequestProperties
+type ActionResponse = original.ActionResponse
+type ActionResponseProperties = original.ActionResponseProperties
 type ActionsClient = original.ActionsClient
 type ActionsList = original.ActionsList
 type ActionsListIterator = original.ActionsListIterator
@@ -393,6 +420,7 @@ type AlertRuleKind1 = original.AlertRuleKind1
 type AlertRuleModel = original.AlertRuleModel
 type AlertRuleTemplate = original.AlertRuleTemplate
 type AlertRuleTemplateModel = original.AlertRuleTemplateModel
+type AlertRuleTemplatePropertiesBase = original.AlertRuleTemplatePropertiesBase
 type AlertRuleTemplatesClient = original.AlertRuleTemplatesClient
 type AlertRuleTemplatesList = original.AlertRuleTemplatesList
 type AlertRuleTemplatesListIterator = original.AlertRuleTemplatesListIterator
@@ -409,7 +437,6 @@ type AwsCloudTrailDataConnectorDataTypesLogs = original.AwsCloudTrailDataConnect
 type AwsCloudTrailDataConnectorProperties = original.AwsCloudTrailDataConnectorProperties
 type AzureResourceEntity = original.AzureResourceEntity
 type AzureResourceEntityProperties = original.AzureResourceEntityProperties
-type BaseAlertRuleTemplateProperties = original.BaseAlertRuleTemplateProperties
 type BaseClient = original.BaseClient
 type BasicAggregations = original.BasicAggregations
 type BasicAlertRule = original.BasicAlertRule
@@ -422,6 +449,12 @@ type BookmarkList = original.BookmarkList
 type BookmarkListIterator = original.BookmarkListIterator
 type BookmarkListPage = original.BookmarkListPage
 type BookmarkProperties = original.BookmarkProperties
+type BookmarkRelation = original.BookmarkRelation
+type BookmarkRelationList = original.BookmarkRelationList
+type BookmarkRelationListIterator = original.BookmarkRelationListIterator
+type BookmarkRelationListPage = original.BookmarkRelationListPage
+type BookmarkRelationProperties = original.BookmarkRelationProperties
+type BookmarkRelationsClient = original.BookmarkRelationsClient
 type BookmarksClient = original.BookmarksClient
 type Case = original.Case
 type CaseComment = original.CaseComment
@@ -434,6 +467,12 @@ type CaseList = original.CaseList
 type CaseListIterator = original.CaseListIterator
 type CaseListPage = original.CaseListPage
 type CaseProperties = original.CaseProperties
+type CaseRelation = original.CaseRelation
+type CaseRelationList = original.CaseRelationList
+type CaseRelationListIterator = original.CaseRelationListIterator
+type CaseRelationListPage = original.CaseRelationListPage
+type CaseRelationProperties = original.CaseRelationProperties
+type CaseRelationsClient = original.CaseRelationsClient
 type CasesAggregation = original.CasesAggregation
 type CasesAggregationBySeverityProperties = original.CasesAggregationBySeverityProperties
 type CasesAggregationByStatusProperties = original.CasesAggregationByStatusProperties
@@ -481,12 +520,10 @@ type FileEntity = original.FileEntity
 type FileEntityProperties = original.FileEntityProperties
 type FileHashEntity = original.FileHashEntity
 type FileHashEntityProperties = original.FileHashEntityProperties
-type FilterAlertRuleTemplate = original.FilterAlertRuleTemplate
-type FilterAlertRuleTemplateProperties = original.FilterAlertRuleTemplateProperties
-type FilterAlertRuleTemplatePropertiesModel = original.FilterAlertRuleTemplatePropertiesModel
+type FusionAlertRule = original.FusionAlertRule
+type FusionAlertRuleProperties = original.FusionAlertRuleProperties
 type FusionAlertRuleTemplate = original.FusionAlertRuleTemplate
 type FusionAlertRuleTemplateProperties = original.FusionAlertRuleTemplateProperties
-type FusionAlertRuleTemplatePropertiesModel = original.FusionAlertRuleTemplatePropertiesModel
 type GeoLocation = original.GeoLocation
 type HostEntity = original.HostEntity
 type HostEntityProperties = original.HostEntityProperties
@@ -500,6 +537,11 @@ type MDATPDataConnector = original.MDATPDataConnector
 type MDATPDataConnectorProperties = original.MDATPDataConnectorProperties
 type MalwareEntity = original.MalwareEntity
 type MalwareEntityProperties = original.MalwareEntityProperties
+type MicrosoftSecurityIncidentCreationAlertRule = original.MicrosoftSecurityIncidentCreationAlertRule
+type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties = original.MicrosoftSecurityIncidentCreationAlertRuleCommonProperties
+type MicrosoftSecurityIncidentCreationAlertRuleProperties = original.MicrosoftSecurityIncidentCreationAlertRuleProperties
+type MicrosoftSecurityIncidentCreationAlertRuleTemplate = original.MicrosoftSecurityIncidentCreationAlertRuleTemplate
+type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties = original.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
 type OfficeConsent = original.OfficeConsent
 type OfficeConsentList = original.OfficeConsentList
 type OfficeConsentListIterator = original.OfficeConsentListIterator
@@ -524,12 +566,17 @@ type RegistryKeyEntity = original.RegistryKeyEntity
 type RegistryKeyEntityProperties = original.RegistryKeyEntityProperties
 type RegistryValueEntity = original.RegistryValueEntity
 type RegistryValueEntityProperties = original.RegistryValueEntityProperties
+type RelationBase = original.RelationBase
+type RelationNode = original.RelationNode
+type RelationsModelInput = original.RelationsModelInput
+type RelationsModelInputProperties = original.RelationsModelInputProperties
 type Resource = original.Resource
+type ResourceWithEtag = original.ResourceWithEtag
 type ScheduledAlertRule = original.ScheduledAlertRule
+type ScheduledAlertRuleCommonProperties = original.ScheduledAlertRuleCommonProperties
 type ScheduledAlertRuleProperties = original.ScheduledAlertRuleProperties
 type ScheduledAlertRuleTemplate = original.ScheduledAlertRuleTemplate
 type ScheduledAlertRuleTemplateProperties = original.ScheduledAlertRuleTemplateProperties
-type ScheduledAlertRuleTemplatePropertiesModel = original.ScheduledAlertRuleTemplatePropertiesModel
 type SecurityAlert = original.SecurityAlert
 type SecurityAlertProperties = original.SecurityAlertProperties
 type SecurityAlertPropertiesConfidenceReasonsItem = original.SecurityAlertPropertiesConfidenceReasonsItem
@@ -596,6 +643,18 @@ func NewBookmarkListIterator(page BookmarkListPage) BookmarkListIterator {
 func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
 	return original.NewBookmarkListPage(getNextPage)
 }
+func NewBookmarkRelationListIterator(page BookmarkRelationListPage) BookmarkRelationListIterator {
+	return original.NewBookmarkRelationListIterator(page)
+}
+func NewBookmarkRelationListPage(getNextPage func(context.Context, BookmarkRelationList) (BookmarkRelationList, error)) BookmarkRelationListPage {
+	return original.NewBookmarkRelationListPage(getNextPage)
+}
+func NewBookmarkRelationsClient(subscriptionID string) BookmarkRelationsClient {
+	return original.NewBookmarkRelationsClient(subscriptionID)
+}
+func NewBookmarkRelationsClientWithBaseURI(baseURI string, subscriptionID string) BookmarkRelationsClient {
+	return original.NewBookmarkRelationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBookmarksClient(subscriptionID string) BookmarksClient {
 	return original.NewBookmarksClient(subscriptionID)
 }
@@ -619,6 +678,18 @@ func NewCaseListIterator(page CaseListPage) CaseListIterator {
 }
 func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
 	return original.NewCaseListPage(getNextPage)
+}
+func NewCaseRelationListIterator(page CaseRelationListPage) CaseRelationListIterator {
+	return original.NewCaseRelationListIterator(page)
+}
+func NewCaseRelationListPage(getNextPage func(context.Context, CaseRelationList) (CaseRelationList, error)) CaseRelationListPage {
+	return original.NewCaseRelationListPage(getNextPage)
+}
+func NewCaseRelationsClient(subscriptionID string) CaseRelationsClient {
+	return original.NewCaseRelationsClient(subscriptionID)
+}
+func NewCaseRelationsClientWithBaseURI(baseURI string, subscriptionID string) CaseRelationsClient {
+	return original.NewCaseRelationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCasesAggregationsClient(subscriptionID string) CasesAggregationsClient {
 	return original.NewCasesAggregationsClient(subscriptionID)
@@ -761,11 +832,11 @@ func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 func PossibleKillChainIntentValues() []KillChainIntent {
 	return original.PossibleKillChainIntentValues()
 }
-func PossibleKindBasicAggregationsValues() []KindBasicAggregations {
-	return original.PossibleKindBasicAggregationsValues()
-}
 func PossibleKindBasicAlertRuleTemplateValues() []KindBasicAlertRuleTemplate {
 	return original.PossibleKindBasicAlertRuleTemplateValues()
+}
+func PossibleKindBasicAlertRuleValues() []KindBasicAlertRule {
+	return original.PossibleKindBasicAlertRuleValues()
 }
 func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
 	return original.PossibleKindBasicDataConnectorValues()
@@ -782,6 +853,9 @@ func PossibleKindValues() []Kind {
 func PossibleLicenseStatusValues() []LicenseStatus {
 	return original.PossibleLicenseStatusValues()
 }
+func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName {
+	return original.PossibleMicrosoftSecurityProductNameValues()
+}
 func PossibleOSFamilyValues() []OSFamily {
 	return original.PossibleOSFamilyValues()
 }
@@ -790,6 +864,12 @@ func PossibleRegistryHiveValues() []RegistryHive {
 }
 func PossibleRegistryValueKindValues() []RegistryValueKind {
 	return original.PossibleRegistryValueKindValues()
+}
+func PossibleRelationNodeKindValues() []RelationNodeKind {
+	return original.PossibleRelationNodeKindValues()
+}
+func PossibleRelationTypesValues() []RelationTypes {
+	return original.PossibleRelationTypesValues()
 }
 func PossibleSettingKindValues() []SettingKind {
 	return original.PossibleSettingKindValues()

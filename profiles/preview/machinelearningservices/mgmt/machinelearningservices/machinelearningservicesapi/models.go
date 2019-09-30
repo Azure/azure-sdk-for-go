@@ -23,6 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/machinelearningservi
 
 type MachineLearningComputeClientAPI = original.MachineLearningComputeClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type QuotasClientAPI = original.QuotasClientAPI
 type UsagesClientAPI = original.UsagesClientAPI
 type VirtualMachineSizesClientAPI = original.VirtualMachineSizesClientAPI
 type WorkspacesClientAPI = original.WorkspacesClientAPI

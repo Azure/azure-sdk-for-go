@@ -1,5 +1,86 @@
 # CHANGELOG
 
+## `v34.0.0`
+
+### New Packages                                                                                                                              
+| Package Name | API Version |
+| -----------: | :---------: |
+| databox | 2019-09-01 |
+| databoxedge | 2019-03-01<br/>2019-07-01 |
+| frontdoor | 2019-04-01<br/>2019-05-01 |
+| healthcareapis | 2019-09-16 |
+| kusto | 2019-09-07 |
+| logic | 2019-05-01 |
+| maintenance | 2018-06-01-preview |
+| storagedatalake | 2019-10-31 |
+| subscriptions | 2019-06-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appconfiguration | 2019-02-01-preview |
+| datashare | 2018-11-01-preview |
+| eventgrid | 2018-01-01 |
+| eventhub | 2017-04-01 |
+| kusto | 2019-05-15 |
+| network | 2018-07-01<br/>2018-08-01<br/>2018-10-01<br/>2018-11-01<br/>2018-12-01<br/>2019-02-01 |
+| servicebus | 2017-04-01 |
+| sql | 2015-05-01-preview<br/>2017-03-01-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-01-01 |
+| compute | 2016-03-30<br/>2017-03-30<br/>2017-12-01<br/>2018-04-01<br/>2018-06-01<br/>2018-10-01<br/>2019-03-01<br/>2019-07-01 |
+| containerregistry | 2019-05-01-preview<br/>2019-06-01-preview |
+| containerservice | 2019-06-01<br/>2019-08-01 |
+| datafactory | 2018-06-01 |
+| datamigration | 2018-03-31-preview<br/>2018-04-19<br/>2018-07-15-preview |
+| documentdb | 2015-04-08 |
+| frontdoor | 2018-08-01-preview |
+| machinelearningservices | 2019-06-01 |
+| managednetwork | 2019-06-01-preview |
+| network | 2019-04-01 |
+| reservations | 2019-04-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| securityinsight | 2017-08-01-preview |
+| storage | 2019-04-01 |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| affinitygroup | management |
+| anomalyfinder | v2.0 |
+| auth | keyvault |
+| batch | 2015-12-01.2.2<br/>2016-02-01.3.0<br/>2016-07-01.3.1<br/>2017-01-01.4.0<br/>2017-06-01.5.1<br/>2017-09-01.6.0 |
+| computervision | v1.0 |
+| devspaces | 2018-06-01-preview<br/>2019-01-01-preview |
+| edgegateway | 2019-03-01 |
+| frontdoor | preview/2019-04-01<br/>preview/2019-05-01 |
+| hostedservice | management |
+| insights | v1 |
+| location | management |
+| mobileengagement | 2014-12-01 |
+| mongodb | cosmos-db |
+| networksecuritygroup | management |
+| osimage | management |
+| peering | 2019-03-01-preview |
+| portal | 2015-11-01-preview |
+| programmatic | luis |
+| servicefabric | 2019-03-01 |
+| services | 2018-03-01-preview |
+| sql | management |
+| storageservice | management |
+| testutils | management |
+| virtualmachine | management |
+| virtualmachinedisk | management |
+| virtualmachineimage | management |
+| virtualnetwork | management |
+| vmutils | management |
+
 ## `v33.4.0`
 
 ### New Packages

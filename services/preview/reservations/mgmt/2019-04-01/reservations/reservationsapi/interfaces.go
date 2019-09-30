@@ -46,7 +46,7 @@ var _ ClientAPI = (*reservations.Client)(nil)
 // OrderClientAPI contains the set of methods on the OrderClient type.
 type OrderClientAPI interface {
 	Calculate(ctx context.Context, body reservations.PurchaseRequest) (result reservations.CalculatePriceResponse, err error)
-	Get(ctx context.Context, reservationOrderID string) (result reservations.OrderResponse, err error)
+	Get(ctx context.Context, reservationOrderID string, expand string) (result reservations.OrderResponse, err error)
 	List(ctx context.Context) (result reservations.OrderListPage, err error)
 	Purchase(ctx context.Context, reservationOrderID string, body reservations.PurchaseRequest) (result reservations.OrderPurchaseFuture, err error)
 }

@@ -46,7 +46,7 @@ var _ WorkspacesClientAPI = (*machinelearningservices.WorkspacesClient)(nil)
 
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {
-	List(ctx context.Context, location string) (result machinelearningservices.ListUsagesResultPage, err error)
+	List(ctx context.Context, location string, expandChildren string) (result machinelearningservices.ListUsagesResultPage, err error)
 }
 
 var _ UsagesClientAPI = (*machinelearningservices.UsagesClient)(nil)
@@ -57,6 +57,14 @@ type VirtualMachineSizesClientAPI interface {
 }
 
 var _ VirtualMachineSizesClientAPI = (*machinelearningservices.VirtualMachineSizesClient)(nil)
+
+// QuotasClientAPI contains the set of methods on the QuotasClient type.
+type QuotasClientAPI interface {
+	List(ctx context.Context, location string) (result machinelearningservices.ListWorkspaceQuotasPage, err error)
+	Update(ctx context.Context, location string, parameters machinelearningservices.QuotaUpdateParameters) (result machinelearningservices.UpdateWorkspaceQuotasResult, err error)
+}
+
+var _ QuotasClientAPI = (*machinelearningservices.QuotasClient)(nil)
 
 // MachineLearningComputeClientAPI contains the set of methods on the MachineLearningComputeClient type.
 type MachineLearningComputeClientAPI interface {

@@ -4173,8 +4173,6 @@ type HTTPVersionMatchConditionParameters struct {
 	NegateCondition *bool `json:"negateCondition,omitempty"`
 	// MatchValues - The match value for the condition of the delivery rule
 	MatchValues *[]string `json:"matchValues,omitempty"`
-	// Transforms - List of transforms
-	Transforms *[]Transform `json:"transforms,omitempty"`
 }
 
 // IPAddressGroup CDN Ip address group

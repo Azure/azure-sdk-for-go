@@ -2164,7 +2164,7 @@ type AzureFileshareProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -2230,7 +2230,7 @@ func (afpi AzureFileshareProtectedItem) MarshalJSON() ([]byte, error) {
 		objectMap["deferredDeleteTimeRemaining"] = afpi.DeferredDeleteTimeRemaining
 	}
 	if afpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = afpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = afpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if afpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = afpi.IsRehydrate
@@ -2997,7 +2997,7 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -3075,7 +3075,7 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) MarshalJSON() ([]byte, er
 		objectMap["deferredDeleteTimeRemaining"] = aisccvpi.DeferredDeleteTimeRemaining
 	}
 	if aisccvpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = aisccvpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = aisccvpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if aisccvpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = aisccvpi.IsRehydrate
@@ -3472,7 +3472,7 @@ type AzureIaaSComputeVMProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -3550,7 +3550,7 @@ func (aiscvpi AzureIaaSComputeVMProtectedItem) MarshalJSON() ([]byte, error) {
 		objectMap["deferredDeleteTimeRemaining"] = aiscvpi.DeferredDeleteTimeRemaining
 	}
 	if aiscvpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = aiscvpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = aiscvpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if aiscvpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = aiscvpi.IsRehydrate
@@ -3890,7 +3890,7 @@ type AzureIaaSVMProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -4009,7 +4009,7 @@ func (aispi AzureIaaSVMProtectedItem) MarshalJSON() ([]byte, error) {
 		objectMap["deferredDeleteTimeRemaining"] = aispi.DeferredDeleteTimeRemaining
 	}
 	if aispi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = aispi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = aispi.IsDeferredDeleteScheduleUpcoming
 	}
 	if aispi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = aispi.IsRehydrate
@@ -4763,7 +4763,7 @@ type AzureSQLProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -4817,7 +4817,7 @@ func (aspi AzureSQLProtectedItem) MarshalJSON() ([]byte, error) {
 		objectMap["deferredDeleteTimeRemaining"] = aspi.DeferredDeleteTimeRemaining
 	}
 	if aspi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = aspi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = aspi.IsDeferredDeleteScheduleUpcoming
 	}
 	if aspi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = aspi.IsRehydrate
@@ -6095,7 +6095,7 @@ type AzureVMWorkloadProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -6221,7 +6221,7 @@ func (avwpi AzureVMWorkloadProtectedItem) MarshalJSON() ([]byte, error) {
 		objectMap["deferredDeleteTimeRemaining"] = avwpi.DeferredDeleteTimeRemaining
 	}
 	if avwpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = avwpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = avwpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if avwpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = avwpi.IsRehydrate
@@ -6531,7 +6531,7 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -6612,7 +6612,7 @@ func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte
 		objectMap["deferredDeleteTimeRemaining"] = avwsadpi.DeferredDeleteTimeRemaining
 	}
 	if avwsadpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = avwsadpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = avwsadpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if avwsadpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = avwsadpi.IsRehydrate
@@ -7293,7 +7293,7 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -7374,7 +7374,7 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byt
 		objectMap["deferredDeleteTimeRemaining"] = avwshdpi.DeferredDeleteTimeRemaining
 	}
 	if avwshdpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = avwshdpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = avwshdpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if avwshdpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = avwshdpi.IsRehydrate
@@ -8213,7 +8213,7 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -8294,7 +8294,7 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, er
 		objectMap["deferredDeleteTimeRemaining"] = avwsdpi.DeferredDeleteTimeRemaining
 	}
 	if avwsdpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = avwsdpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = avwsdpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if avwsdpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = avwsdpi.IsRehydrate
@@ -11884,7 +11884,7 @@ type DPMProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -11941,7 +11941,7 @@ func (dpi DPMProtectedItem) MarshalJSON() ([]byte, error) {
 		objectMap["deferredDeleteTimeRemaining"] = dpi.DeferredDeleteTimeRemaining
 	}
 	if dpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = dpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = dpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if dpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = dpi.IsRehydrate
@@ -12888,7 +12888,7 @@ type GenericProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -12951,7 +12951,7 @@ func (gpi GenericProtectedItem) MarshalJSON() ([]byte, error) {
 		objectMap["deferredDeleteTimeRemaining"] = gpi.DeferredDeleteTimeRemaining
 	}
 	if gpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = gpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = gpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if gpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = gpi.IsRehydrate
@@ -15023,7 +15023,7 @@ type MabFileFolderProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -15089,7 +15089,7 @@ func (mffpi MabFileFolderProtectedItem) MarshalJSON() ([]byte, error) {
 		objectMap["deferredDeleteTimeRemaining"] = mffpi.DeferredDeleteTimeRemaining
 	}
 	if mffpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = mffpi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = mffpi.IsDeferredDeleteScheduleUpcoming
 	}
 	if mffpi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = mffpi.IsRehydrate
@@ -16516,7 +16516,7 @@ type ProtectedItem struct {
 	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
 	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
 	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"IsDeferredDeleteScheduleUpcoming,omitempty"`
+	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
 	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
@@ -16642,7 +16642,7 @@ func (pi ProtectedItem) MarshalJSON() ([]byte, error) {
 		objectMap["deferredDeleteTimeRemaining"] = pi.DeferredDeleteTimeRemaining
 	}
 	if pi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["IsDeferredDeleteScheduleUpcoming"] = pi.IsDeferredDeleteScheduleUpcoming
+		objectMap["isDeferredDeleteScheduleUpcoming"] = pi.IsDeferredDeleteScheduleUpcoming
 	}
 	if pi.IsRehydrate != nil {
 		objectMap["isRehydrate"] = pi.IsRehydrate

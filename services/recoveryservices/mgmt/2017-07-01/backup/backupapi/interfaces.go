@@ -32,6 +32,13 @@ type ProtectedItemsClientAPI interface {
 
 var _ ProtectedItemsClientAPI = (*backup.ProtectedItemsClient)(nil)
 
+// ProtectedItemOperationResultsClientAPI contains the set of methods on the ProtectedItemOperationResultsClient type.
+type ProtectedItemOperationResultsClientAPI interface {
+	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, operationID string) (result backup.ProtectedItemResource, err error)
+}
+
+var _ ProtectedItemOperationResultsClientAPI = (*backup.ProtectedItemOperationResultsClient)(nil)
+
 // RecoveryPointsClientAPI contains the set of methods on the RecoveryPointsClient type.
 type RecoveryPointsClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.RecoveryPointResource, err error)
@@ -135,13 +142,6 @@ type UsageSummariesClientAPI interface {
 }
 
 var _ UsageSummariesClientAPI = (*backup.UsageSummariesClient)(nil)
-
-// ProtectedItemOperationResultsClientAPI contains the set of methods on the ProtectedItemOperationResultsClient type.
-type ProtectedItemOperationResultsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, operationID string) (result backup.ProtectedItemResource, err error)
-}
-
-var _ ProtectedItemOperationResultsClientAPI = (*backup.ProtectedItemOperationResultsClient)(nil)
 
 // OperationClientAPI contains the set of methods on the OperationClient type.
 type OperationClientAPI interface {

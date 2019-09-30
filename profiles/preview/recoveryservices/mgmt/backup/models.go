@@ -272,6 +272,7 @@ const (
 	JobOperationTypeInvalid          JobOperationType = original.JobOperationTypeInvalid
 	JobOperationTypeRegister         JobOperationType = original.JobOperationTypeRegister
 	JobOperationTypeRestore          JobOperationType = original.JobOperationTypeRestore
+	JobOperationTypeUndelete         JobOperationType = original.JobOperationTypeUndelete
 	JobOperationTypeUnRegister       JobOperationType = original.JobOperationTypeUnRegister
 )
 
@@ -355,7 +356,6 @@ const (
 	BackupManagementTypeAzureIaasVM             ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeAzureIaasVM
 	BackupManagementTypeAzureSQL                ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeAzureSQL
 	BackupManagementTypeAzureStorage            ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeAzureStorage
-	BackupManagementTypeAzureWorkload           ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeAzureWorkload
 	BackupManagementTypeGenericProtectionPolicy ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeGenericProtectionPolicy
 	BackupManagementTypeMAB                     ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeMAB
 	BackupManagementTypeProtectionPolicy        ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeProtectionPolicy
@@ -382,9 +382,16 @@ const (
 type ObjectType = original.ObjectType
 
 const (
-	ObjectTypeExportJobsOperationResultInfo ObjectType = original.ObjectTypeExportJobsOperationResultInfo
-	ObjectTypeOperationResultInfo           ObjectType = original.ObjectTypeOperationResultInfo
-	ObjectTypeOperationResultInfoBase       ObjectType = original.ObjectTypeOperationResultInfoBase
+	ObjectTypeAzureFileShareRecoveryPoint                  ObjectType = original.ObjectTypeAzureFileShareRecoveryPoint
+	ObjectTypeAzureWorkloadPointInTimeRecoveryPoint        ObjectType = original.ObjectTypeAzureWorkloadPointInTimeRecoveryPoint
+	ObjectTypeAzureWorkloadRecoveryPoint                   ObjectType = original.ObjectTypeAzureWorkloadRecoveryPoint
+	ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ObjectType = original.ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint
+	ObjectTypeAzureWorkloadSAPHanaRecoveryPoint            ObjectType = original.ObjectTypeAzureWorkloadSAPHanaRecoveryPoint
+	ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint     ObjectType = original.ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint
+	ObjectTypeAzureWorkloadSQLRecoveryPoint                ObjectType = original.ObjectTypeAzureWorkloadSQLRecoveryPoint
+	ObjectTypeGenericRecoveryPoint                         ObjectType = original.ObjectTypeGenericRecoveryPoint
+	ObjectTypeIaasVMRecoveryPoint                          ObjectType = original.ObjectTypeIaasVMRecoveryPoint
+	ObjectTypeRecoveryPoint                                ObjectType = original.ObjectTypeRecoveryPoint
 )
 
 type ObjectTypeBasicILRRequest = original.ObjectTypeBasicILRRequest
@@ -394,6 +401,14 @@ const (
 	ObjectTypeILRRequest                   ObjectTypeBasicILRRequest = original.ObjectTypeILRRequest
 )
 
+type ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeBasicOperationResultInfoBase
+
+const (
+	ObjectTypeExportJobsOperationResultInfo ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeExportJobsOperationResultInfo
+	ObjectTypeOperationResultInfo           ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeOperationResultInfo
+	ObjectTypeOperationResultInfoBase       ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeOperationResultInfoBase
+)
+
 type ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeBasicOperationStatusExtendedInfo
 
 const (
@@ -401,21 +416,6 @@ const (
 	ObjectTypeOperationStatusJobExtendedInfo          ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobExtendedInfo
 	ObjectTypeOperationStatusJobsExtendedInfo         ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
 	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
-)
-
-type ObjectTypeBasicRecoveryPoint = original.ObjectTypeBasicRecoveryPoint
-
-const (
-	ObjectTypeAzureFileShareRecoveryPoint                  ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureFileShareRecoveryPoint
-	ObjectTypeAzureWorkloadPointInTimeRecoveryPoint        ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadPointInTimeRecoveryPoint
-	ObjectTypeAzureWorkloadRecoveryPoint                   ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadRecoveryPoint
-	ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint
-	ObjectTypeAzureWorkloadSAPHanaRecoveryPoint            ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadSAPHanaRecoveryPoint
-	ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint     ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint
-	ObjectTypeAzureWorkloadSQLRecoveryPoint                ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadSQLRecoveryPoint
-	ObjectTypeGenericRecoveryPoint                         ObjectTypeBasicRecoveryPoint = original.ObjectTypeGenericRecoveryPoint
-	ObjectTypeIaasVMRecoveryPoint                          ObjectTypeBasicRecoveryPoint = original.ObjectTypeIaasVMRecoveryPoint
-	ObjectTypeRecoveryPoint                                ObjectTypeBasicRecoveryPoint = original.ObjectTypeRecoveryPoint
 )
 
 type ObjectTypeBasicRequest = original.ObjectTypeBasicRequest
@@ -603,6 +603,7 @@ type RecoveryType = original.RecoveryType
 const (
 	RecoveryTypeAlternateLocation RecoveryType = original.RecoveryTypeAlternateLocation
 	RecoveryTypeInvalid           RecoveryType = original.RecoveryTypeInvalid
+	RecoveryTypeOffline           RecoveryType = original.RecoveryTypeOffline
 	RecoveryTypeOriginalLocation  RecoveryType = original.RecoveryTypeOriginalLocation
 	RecoveryTypeRestoreDisks      RecoveryType = original.RecoveryTypeRestoreDisks
 )
@@ -850,7 +851,6 @@ type AzureVMWorkloadItem = original.AzureVMWorkloadItem
 type AzureVMWorkloadProtectableItem = original.AzureVMWorkloadProtectableItem
 type AzureVMWorkloadProtectedItem = original.AzureVMWorkloadProtectedItem
 type AzureVMWorkloadProtectedItemExtendedInfo = original.AzureVMWorkloadProtectedItemExtendedInfo
-type AzureVMWorkloadProtectionPolicy = original.AzureVMWorkloadProtectionPolicy
 type AzureVMWorkloadSAPAseDatabaseProtectableItem = original.AzureVMWorkloadSAPAseDatabaseProtectableItem
 type AzureVMWorkloadSAPAseDatabaseProtectedItem = original.AzureVMWorkloadSAPAseDatabaseProtectedItem
 type AzureVMWorkloadSAPAseDatabaseWorkloadItem = original.AzureVMWorkloadSAPAseDatabaseWorkloadItem
@@ -953,6 +953,8 @@ type DPMProtectedItemExtendedInfo = original.DPMProtectedItemExtendedInfo
 type DailyRetentionFormat = original.DailyRetentionFormat
 type DailyRetentionSchedule = original.DailyRetentionSchedule
 type Day = original.Day
+type DiskExclusionProperties = original.DiskExclusionProperties
+type DiskInformation = original.DiskInformation
 type DistributedNodesInfo = original.DistributedNodesInfo
 type DpmBackupEngine = original.DpmBackupEngine
 type DpmContainer = original.DpmContainer
@@ -971,6 +973,7 @@ type EnginesClient = original.EnginesClient
 type ErrorDetail = original.ErrorDetail
 type ExportJobsOperationResultInfo = original.ExportJobsOperationResultInfo
 type ExportJobsOperationResultsClient = original.ExportJobsOperationResultsClient
+type ExtendedProperties = original.ExtendedProperties
 type FeatureSupportClient = original.FeatureSupportClient
 type FeatureSupportRequest = original.FeatureSupportRequest
 type GenericContainer = original.GenericContainer
@@ -1084,6 +1087,7 @@ type ProtectionPolicyResourceList = original.ProtectionPolicyResourceList
 type ProtectionPolicyResourceListIterator = original.ProtectionPolicyResourceListIterator
 type ProtectionPolicyResourceListPage = original.ProtectionPolicyResourceListPage
 type RecoveryPoint = original.RecoveryPoint
+type RecoveryPointDiskConfiguration = original.RecoveryPointDiskConfiguration
 type RecoveryPointResource = original.RecoveryPointResource
 type RecoveryPointResourceList = original.RecoveryPointResourceList
 type RecoveryPointResourceListIterator = original.RecoveryPointResourceListIterator
@@ -1523,11 +1527,11 @@ func PossibleMonthOfYearValues() []MonthOfYear {
 func PossibleObjectTypeBasicILRRequestValues() []ObjectTypeBasicILRRequest {
 	return original.PossibleObjectTypeBasicILRRequestValues()
 }
+func PossibleObjectTypeBasicOperationResultInfoBaseValues() []ObjectTypeBasicOperationResultInfoBase {
+	return original.PossibleObjectTypeBasicOperationResultInfoBaseValues()
+}
 func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() []ObjectTypeBasicOperationStatusExtendedInfo {
 	return original.PossibleObjectTypeBasicOperationStatusExtendedInfoValues()
-}
-func PossibleObjectTypeBasicRecoveryPointValues() []ObjectTypeBasicRecoveryPoint {
-	return original.PossibleObjectTypeBasicRecoveryPointValues()
 }
 func PossibleObjectTypeBasicRequestValues() []ObjectTypeBasicRequest {
 	return original.PossibleObjectTypeBasicRequestValues()

@@ -80,9 +80,7 @@ var _ ProtectionContainerOperationResultsClientAPI = (*backup.ProtectionContaine
 
 // ProtectedItemsClientAPI contains the set of methods on the ProtectedItemsClient type.
 type ProtectedItemsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters backup.ProtectedItemResource) (result backup.ProtectedItemResource, err error)
 	Delete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string) (result autorest.Response, err error)
-	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.ProtectedItemResource, err error)
 }
 
 var _ ProtectedItemsClientAPI = (*backup.ProtectedItemsClient)(nil)
@@ -108,14 +106,6 @@ type ProtectedItemOperationStatusesClientAPI interface {
 
 var _ ProtectedItemOperationStatusesClientAPI = (*backup.ProtectedItemOperationStatusesClient)(nil)
 
-// RecoveryPointsClientAPI contains the set of methods on the RecoveryPointsClient type.
-type RecoveryPointsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.RecoveryPointResource, err error)
-	List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
-}
-
-var _ RecoveryPointsClientAPI = (*backup.RecoveryPointsClient)(nil)
-
 // ItemLevelRecoveryConnectionsClientAPI contains the set of methods on the ItemLevelRecoveryConnectionsClient type.
 type ItemLevelRecoveryConnectionsClientAPI interface {
 	Provision(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters backup.ILRRequestResource) (result autorest.Response, err error)
@@ -123,13 +113,6 @@ type ItemLevelRecoveryConnectionsClientAPI interface {
 }
 
 var _ ItemLevelRecoveryConnectionsClientAPI = (*backup.ItemLevelRecoveryConnectionsClient)(nil)
-
-// RestoresClientAPI contains the set of methods on the RestoresClient type.
-type RestoresClientAPI interface {
-	Trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters backup.RestoreRequestResource) (result autorest.Response, err error)
-}
-
-var _ RestoresClientAPI = (*backup.RestoresClient)(nil)
 
 // JobCancellationsClientAPI contains the set of methods on the JobCancellationsClient type.
 type JobCancellationsClientAPI interface {
@@ -161,7 +144,6 @@ var _ OperationStatusesClientAPI = (*backup.OperationStatusesClient)(nil)
 
 // ProtectionPoliciesClientAPI contains the set of methods on the ProtectionPoliciesClient type.
 type ProtectionPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, policyName string, parameters backup.ProtectionPolicyResource) (result backup.ProtectionPolicyResource, err error)
 	Delete(ctx context.Context, vaultName string, resourceGroupName string, policyName string) (result autorest.Response, err error)
 	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string) (result backup.ProtectionPolicyResource, err error)
 }

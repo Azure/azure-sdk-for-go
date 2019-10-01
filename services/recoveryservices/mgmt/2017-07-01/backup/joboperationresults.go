@@ -41,7 +41,6 @@ func NewJobOperationResultsClientWithBaseURI(baseURI string, subscriptionID stri
 }
 
 // Get fetches the result of any operation.
-// the operation.
 // Parameters:
 // vaultName - the name of the recovery services vault.
 // resourceGroupName - the name of the resource group where the recovery services vault is present.

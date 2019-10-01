@@ -2337,7 +2337,7 @@ type AzureFileshareProtectedItemExtendedInfo struct {
 	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
 	// PolicyState - Indicates consistency of policy object and policy applied to this backup item.
 	PolicyState *string `json:"policyState,omitempty"`
-	// ResourceState - Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeletd, Deleted}
+	// ResourceState - Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted, Deleted}
 	ResourceState *string `json:"resourceState,omitempty"`
 	// ResourceStateSyncTime - The resource state sync time for this backup item.
 	ResourceStateSyncTime *date.Time `json:"resourceStateSyncTime,omitempty"`
@@ -5922,9 +5922,6 @@ type AzureVMWorkloadProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -6025,9 +6022,6 @@ func (avwpi AzureVMWorkloadProtectableItem) MarshalJSON() ([]byte, error) {
 	}
 	if avwpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwpi.Prebackupvalidation
-	}
-	if avwpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwpi.IsProtectable
 	}
 	if avwpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwpi.BackupManagementType
@@ -6513,9 +6507,6 @@ type AzureVMWorkloadSAPAseDatabaseProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -6555,9 +6546,6 @@ func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) MarshalJSON() ([]by
 	}
 	if avwsadpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsadpi.Prebackupvalidation
-	}
-	if avwsadpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsadpi.IsProtectable
 	}
 	if avwsadpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsadpi.BackupManagementType
@@ -7011,9 +6999,6 @@ type AzureVMWorkloadSAPAseSystemProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -7053,9 +7038,6 @@ func (avwsaspi AzureVMWorkloadSAPAseSystemProtectableItem) MarshalJSON() ([]byte
 	}
 	if avwsaspi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsaspi.Prebackupvalidation
-	}
-	if avwsaspi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsaspi.IsProtectable
 	}
 	if avwsaspi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsaspi.BackupManagementType
@@ -7287,9 +7269,6 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -7329,9 +7308,6 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) MarshalJSON() ([]b
 	}
 	if avwshdpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwshdpi.Prebackupvalidation
-	}
-	if avwshdpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwshdpi.IsProtectable
 	}
 	if avwshdpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwshdpi.BackupManagementType
@@ -7785,9 +7761,6 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -7827,9 +7800,6 @@ func (avwshspi AzureVMWorkloadSAPHanaSystemProtectableItem) MarshalJSON() ([]byt
 	}
 	if avwshspi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwshspi.Prebackupvalidation
-	}
-	if avwshspi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwshspi.IsProtectable
 	}
 	if avwshspi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwshspi.BackupManagementType
@@ -8061,9 +8031,6 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -8103,9 +8070,6 @@ func (avwsagpi AzureVMWorkloadSQLAvailabilityGroupProtectableItem) MarshalJSON()
 	}
 	if avwsagpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsagpi.Prebackupvalidation
-	}
-	if avwsagpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsagpi.IsProtectable
 	}
 	if avwsagpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsagpi.BackupManagementType
@@ -8225,9 +8189,6 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -8267,9 +8228,6 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) MarshalJSON() ([]byte, 
 	}
 	if avwsdpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsdpi.Prebackupvalidation
-	}
-	if avwsdpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsdpi.IsProtectable
 	}
 	if avwsdpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsdpi.BackupManagementType
@@ -8723,9 +8681,6 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -8765,9 +8720,6 @@ func (avwsipi AzureVMWorkloadSQLInstanceProtectableItem) MarshalJSON() ([]byte, 
 	}
 	if avwsipi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsipi.Prebackupvalidation
-	}
-	if avwsipi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsipi.IsProtectable
 	}
 	if avwsipi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsipi.BackupManagementType

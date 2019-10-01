@@ -667,12 +667,6 @@ const (
 	ProtectedItemTypeAzureIaaSVMProtectedItem ProtectedItemType = "AzureIaaSVMProtectedItem"
 	// ProtectedItemTypeAzureVMWorkloadProtectedItem ...
 	ProtectedItemTypeAzureVMWorkloadProtectedItem ProtectedItemType = "AzureVmWorkloadProtectedItem"
-	// ProtectedItemTypeAzureVMWorkloadSAPAseDatabase ...
-	ProtectedItemTypeAzureVMWorkloadSAPAseDatabase ProtectedItemType = "AzureVmWorkloadSAPAseDatabase"
-	// ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase ...
-	ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase ProtectedItemType = "AzureVmWorkloadSAPHanaDatabase"
-	// ProtectedItemTypeAzureVMWorkloadSQLDatabase ...
-	ProtectedItemTypeAzureVMWorkloadSQLDatabase ProtectedItemType = "AzureVmWorkloadSQLDatabase"
 	// ProtectedItemTypeDPMProtectedItem ...
 	ProtectedItemTypeDPMProtectedItem ProtectedItemType = "DPMProtectedItem"
 	// ProtectedItemTypeGenericProtectedItem ...
@@ -691,7 +685,7 @@ const (
 
 // PossibleProtectedItemTypeValues returns an array of possible values for the ProtectedItemType const type.
 func PossibleProtectedItemTypeValues() []ProtectedItemType {
-	return []ProtectedItemType{ProtectedItemTypeAzureFileShareProtectedItem, ProtectedItemTypeAzureIaaSVMProtectedItem, ProtectedItemTypeAzureVMWorkloadProtectedItem, ProtectedItemTypeAzureVMWorkloadSAPAseDatabase, ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase, ProtectedItemTypeAzureVMWorkloadSQLDatabase, ProtectedItemTypeDPMProtectedItem, ProtectedItemTypeGenericProtectedItem, ProtectedItemTypeMabFileFolderProtectedItem, ProtectedItemTypeMicrosoftClassicComputevirtualMachines, ProtectedItemTypeMicrosoftComputevirtualMachines, ProtectedItemTypeMicrosoftSqlserversdatabases, ProtectedItemTypeProtectedItem}
+	return []ProtectedItemType{ProtectedItemTypeAzureFileShareProtectedItem, ProtectedItemTypeAzureIaaSVMProtectedItem, ProtectedItemTypeAzureVMWorkloadProtectedItem, ProtectedItemTypeDPMProtectedItem, ProtectedItemTypeGenericProtectedItem, ProtectedItemTypeMabFileFolderProtectedItem, ProtectedItemTypeMicrosoftClassicComputevirtualMachines, ProtectedItemTypeMicrosoftComputevirtualMachines, ProtectedItemTypeMicrosoftSqlserversdatabases, ProtectedItemTypeProtectedItem}
 }
 
 // ProtectionState enumerates the values for protection state.
@@ -1493,7 +1487,7 @@ type AzureFileshareProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
 
@@ -1602,26 +1596,6 @@ func (afpi AzureFileshareProtectedItem) AsAzureVMWorkloadProtectedItem() (*Azure
 	return nil, false
 }
 
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureFileshareProtectedItem.
-func (afpi AzureFileshareProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for AzureFileshareProtectedItem.
-func (afpi AzureFileshareProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for AzureFileshareProtectedItem.
-func (afpi AzureFileshareProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for AzureFileshareProtectedItem.
-func (afpi AzureFileshareProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
 // AsDPMProtectedItem is the BasicProtectedItem implementation for AzureFileshareProtectedItem.
 func (afpi AzureFileshareProtectedItem) AsDPMProtectedItem() (*DPMProtectedItem, bool) {
 	return nil, false
@@ -1655,7 +1629,7 @@ type AzureFileshareProtectedItemExtendedInfo struct {
 	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
 	// PolicyState - Indicates consistency of policy object and policy applied to this backup item.
 	PolicyState *string `json:"policyState,omitempty"`
-	// ResourceState - Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeletd, Deleted}
+	// ResourceState - Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted, Deleted}
 	ResourceState *string `json:"resourceState,omitempty"`
 	// ResourceStateSyncTime - The resource state sync time for this backup item.
 	ResourceStateSyncTime *date.Time `json:"resourceStateSyncTime,omitempty"`
@@ -2161,7 +2135,7 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
 
@@ -2279,26 +2253,6 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) AsAzureSQLProtectedItem()
 
 // AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureIaaSClassicComputeVMProtectedItem.
 func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureIaaSClassicComputeVMProtectedItem.
-func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for AzureIaaSClassicComputeVMProtectedItem.
-func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for AzureIaaSClassicComputeVMProtectedItem.
-func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for AzureIaaSClassicComputeVMProtectedItem.
-func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
 	return nil, false
 }
 
@@ -2636,7 +2590,7 @@ type AzureIaaSComputeVMProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
 
@@ -2757,26 +2711,6 @@ func (aiscvpi AzureIaaSComputeVMProtectedItem) AsAzureVMWorkloadProtectedItem() 
 	return nil, false
 }
 
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureIaaSComputeVMProtectedItem.
-func (aiscvpi AzureIaaSComputeVMProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for AzureIaaSComputeVMProtectedItem.
-func (aiscvpi AzureIaaSComputeVMProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for AzureIaaSComputeVMProtectedItem.
-func (aiscvpi AzureIaaSComputeVMProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for AzureIaaSComputeVMProtectedItem.
-func (aiscvpi AzureIaaSComputeVMProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
 // AsDPMProtectedItem is the BasicProtectedItem implementation for AzureIaaSComputeVMProtectedItem.
 func (aiscvpi AzureIaaSComputeVMProtectedItem) AsDPMProtectedItem() (*DPMProtectedItem, bool) {
 	return nil, false
@@ -2870,7 +2804,7 @@ type AzureIaaSVMProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
 
@@ -3029,26 +2963,6 @@ func (aispi AzureIaaSVMProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLProtec
 
 // AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureIaaSVMProtectedItem.
 func (aispi AzureIaaSVMProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureIaaSVMProtectedItem.
-func (aispi AzureIaaSVMProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for AzureIaaSVMProtectedItem.
-func (aispi AzureIaaSVMProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for AzureIaaSVMProtectedItem.
-func (aispi AzureIaaSVMProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for AzureIaaSVMProtectedItem.
-func (aispi AzureIaaSVMProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
 	return nil, false
 }
 
@@ -3545,7 +3459,7 @@ type AzureSQLProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
 
@@ -3639,26 +3553,6 @@ func (aspi AzureSQLProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLProtectedI
 
 // AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureSQLProtectedItem.
 func (aspi AzureSQLProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureSQLProtectedItem.
-func (aspi AzureSQLProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for AzureSQLProtectedItem.
-func (aspi AzureSQLProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for AzureSQLProtectedItem.
-func (aspi AzureSQLProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for AzureSQLProtectedItem.
-func (aspi AzureSQLProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
 	return nil, false
 }
 
@@ -4411,9 +4305,6 @@ type AzureVMWorkloadProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -4515,9 +4406,6 @@ func (avwpi AzureVMWorkloadProtectableItem) MarshalJSON() ([]byte, error) {
 	if avwpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwpi.Prebackupvalidation
 	}
-	if avwpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwpi.IsProtectable
-	}
 	if avwpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwpi.BackupManagementType
 	}
@@ -4616,14 +4504,6 @@ func (avwpi AzureVMWorkloadProtectableItem) AsBasicWorkloadProtectableItem() (Ba
 	return &avwpi, true
 }
 
-// BasicAzureVMWorkloadProtectedItem azure VM workload-specific protected item.
-type BasicAzureVMWorkloadProtectedItem interface {
-	AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool)
-	AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool)
-	AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool)
-	AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool)
-}
-
 // AzureVMWorkloadProtectedItem azure VM workload-specific protected item.
 type AzureVMWorkloadProtectedItem struct {
 	// FriendlyName - Friendly name of the DB represented by this backup item.
@@ -4676,53 +4556,8 @@ type AzureVMWorkloadProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
-}
-
-func unmarshalBasicAzureVMWorkloadProtectedItem(body []byte) (BasicAzureVMWorkloadProtectedItem, error) {
-	var m map[string]interface{}
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return nil, err
-	}
-
-	switch m["protectedItemType"] {
-	case string(ProtectedItemTypeAzureVMWorkloadSAPAseDatabase):
-		var avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem
-		err := json.Unmarshal(body, &avwsadpi)
-		return avwsadpi, err
-	case string(ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase):
-		var avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem
-		err := json.Unmarshal(body, &avwshdpi)
-		return avwshdpi, err
-	case string(ProtectedItemTypeAzureVMWorkloadSQLDatabase):
-		var avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem
-		err := json.Unmarshal(body, &avwsdpi)
-		return avwsdpi, err
-	default:
-		var avwpi AzureVMWorkloadProtectedItem
-		err := json.Unmarshal(body, &avwpi)
-		return avwpi, err
-	}
-}
-func unmarshalBasicAzureVMWorkloadProtectedItemArray(body []byte) ([]BasicAzureVMWorkloadProtectedItem, error) {
-	var rawMessages []*json.RawMessage
-	err := json.Unmarshal(body, &rawMessages)
-	if err != nil {
-		return nil, err
-	}
-
-	avwpiArray := make([]BasicAzureVMWorkloadProtectedItem, len(rawMessages))
-
-	for index, rawMessage := range rawMessages {
-		avwpi, err := unmarshalBasicAzureVMWorkloadProtectedItem(*rawMessage)
-		if err != nil {
-			return nil, err
-		}
-		avwpiArray[index] = avwpi
-	}
-	return avwpiArray, nil
 }
 
 // MarshalJSON is the custom marshaler for AzureVMWorkloadProtectedItem.
@@ -4843,26 +4678,6 @@ func (avwpi AzureVMWorkloadProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLPr
 // AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadProtectedItem.
 func (avwpi AzureVMWorkloadProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
 	return &avwpi, true
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadProtectedItem.
-func (avwpi AzureVMWorkloadProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return &avwpi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadProtectedItem.
-func (avwpi AzureVMWorkloadProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadProtectedItem.
-func (avwpi AzureVMWorkloadProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadProtectedItem.
-func (avwpi AzureVMWorkloadProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
-	return nil, false
 }
 
 // AsDPMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadProtectedItem.
@@ -5002,9 +4817,6 @@ type AzureVMWorkloadSAPAseDatabaseProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -5044,9 +4856,6 @@ func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) MarshalJSON() ([]by
 	}
 	if avwsadpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsadpi.Prebackupvalidation
-	}
-	if avwsadpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsadpi.IsProtectable
 	}
 	if avwsadpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsadpi.BackupManagementType
@@ -5143,228 +4952,6 @@ func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsWorkloadProtectab
 
 // AsBasicWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
 func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsBasicWorkloadProtectableItem() (BasicWorkloadProtectableItem, bool) {
-	return &avwsadpi, true
-}
-
-// AzureVMWorkloadSAPAseDatabaseProtectedItem azure VM workload-specific protected item representing SAP
-// ASE Database.
-type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
-	// FriendlyName - Friendly name of the DB represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// ServerName - Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
-	// ParentName - Parent name of the DB such as Instance or Availability Group.
-	ParentName *string `json:"parentName,omitempty"`
-	// ParentType - Parent type of protected item, example: for a DB, standalone server or distributed
-	ParentType *string `json:"parentType,omitempty"`
-	// ProtectionStatus - Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
-	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStateInvalid', 'ProtectionStateIRPending', 'ProtectionStateProtected', 'ProtectionStateProtectionError', 'ProtectionStateProtectionStopped', 'ProtectionStateProtectionPaused'
-	ProtectionState ProtectionState `json:"protectionState,omitempty"`
-	// LastBackupStatus - Last backup operation status. Possible values: Healthy, Unhealthy. Possible values include: 'LastBackupStatusInvalid', 'LastBackupStatusHealthy', 'LastBackupStatusUnhealthy', 'LastBackupStatusIRPending'
-	LastBackupStatus LastBackupStatus `json:"lastBackupStatus,omitempty"`
-	// LastBackupTime - Timestamp of the last backup operation on this backup item.
-	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
-	// LastBackupErrorDetail - Error details in last backup
-	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
-	// ProtectedItemDataSourceID - Data ID of the protected item.
-	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
-	// ProtectedItemHealthStatus - Health status of the backup item, evaluated based on last heartbeat received. Possible values include: 'ProtectedItemHealthStatusInvalid', 'ProtectedItemHealthStatusHealthy', 'ProtectedItemHealthStatusUnhealthy', 'ProtectedItemHealthStatusNotReachable', 'ProtectedItemHealthStatusIRPending'
-	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
-	// ExtendedInfo - Additional information for this backup item.
-	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
-	WorkloadType DataSourceType `json:"workloadType,omitempty"`
-	// ContainerName - Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
-	// SourceResourceID - ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
-	// PolicyID - ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
-	// LastRecoveryPoint - Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *date.Time `json:"lastRecoveryPoint,omitempty"`
-	// BackupSetName - Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
-	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
-	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
-	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
-	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
-	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
-	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) MarshalJSON() ([]byte, error) {
-	avwsadpi.ProtectedItemType = ProtectedItemTypeAzureVMWorkloadSAPAseDatabase
-	objectMap := make(map[string]interface{})
-	if avwsadpi.FriendlyName != nil {
-		objectMap["friendlyName"] = avwsadpi.FriendlyName
-	}
-	if avwsadpi.ServerName != nil {
-		objectMap["serverName"] = avwsadpi.ServerName
-	}
-	if avwsadpi.ParentName != nil {
-		objectMap["parentName"] = avwsadpi.ParentName
-	}
-	if avwsadpi.ParentType != nil {
-		objectMap["parentType"] = avwsadpi.ParentType
-	}
-	if avwsadpi.ProtectionStatus != nil {
-		objectMap["protectionStatus"] = avwsadpi.ProtectionStatus
-	}
-	if avwsadpi.ProtectionState != "" {
-		objectMap["protectionState"] = avwsadpi.ProtectionState
-	}
-	if avwsadpi.LastBackupStatus != "" {
-		objectMap["lastBackupStatus"] = avwsadpi.LastBackupStatus
-	}
-	if avwsadpi.LastBackupTime != nil {
-		objectMap["lastBackupTime"] = avwsadpi.LastBackupTime
-	}
-	if avwsadpi.LastBackupErrorDetail != nil {
-		objectMap["lastBackupErrorDetail"] = avwsadpi.LastBackupErrorDetail
-	}
-	if avwsadpi.ProtectedItemDataSourceID != nil {
-		objectMap["protectedItemDataSourceId"] = avwsadpi.ProtectedItemDataSourceID
-	}
-	if avwsadpi.ProtectedItemHealthStatus != "" {
-		objectMap["protectedItemHealthStatus"] = avwsadpi.ProtectedItemHealthStatus
-	}
-	if avwsadpi.ExtendedInfo != nil {
-		objectMap["extendedInfo"] = avwsadpi.ExtendedInfo
-	}
-	if avwsadpi.BackupManagementType != "" {
-		objectMap["backupManagementType"] = avwsadpi.BackupManagementType
-	}
-	if avwsadpi.WorkloadType != "" {
-		objectMap["workloadType"] = avwsadpi.WorkloadType
-	}
-	if avwsadpi.ContainerName != nil {
-		objectMap["containerName"] = avwsadpi.ContainerName
-	}
-	if avwsadpi.SourceResourceID != nil {
-		objectMap["sourceResourceId"] = avwsadpi.SourceResourceID
-	}
-	if avwsadpi.PolicyID != nil {
-		objectMap["policyId"] = avwsadpi.PolicyID
-	}
-	if avwsadpi.LastRecoveryPoint != nil {
-		objectMap["lastRecoveryPoint"] = avwsadpi.LastRecoveryPoint
-	}
-	if avwsadpi.BackupSetName != nil {
-		objectMap["backupSetName"] = avwsadpi.BackupSetName
-	}
-	if avwsadpi.CreateMode != "" {
-		objectMap["createMode"] = avwsadpi.CreateMode
-	}
-	if avwsadpi.DeferredDeleteTimeInUTC != nil {
-		objectMap["deferredDeleteTimeInUTC"] = avwsadpi.DeferredDeleteTimeInUTC
-	}
-	if avwsadpi.IsScheduledForDeferredDelete != nil {
-		objectMap["isScheduledForDeferredDelete"] = avwsadpi.IsScheduledForDeferredDelete
-	}
-	if avwsadpi.DeferredDeleteTimeRemaining != nil {
-		objectMap["deferredDeleteTimeRemaining"] = avwsadpi.DeferredDeleteTimeRemaining
-	}
-	if avwsadpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["isDeferredDeleteScheduleUpcoming"] = avwsadpi.IsDeferredDeleteScheduleUpcoming
-	}
-	if avwsadpi.IsRehydrate != nil {
-		objectMap["isRehydrate"] = avwsadpi.IsRehydrate
-	}
-	if avwsadpi.ProtectedItemType != "" {
-		objectMap["protectedItemType"] = avwsadpi.ProtectedItemType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureFileshareProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsAzureFileshareProtectedItem() (*AzureFileshareProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSClassicComputeVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsAzureIaaSClassicComputeVMProtectedItem() (*AzureIaaSClassicComputeVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSComputeVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsAzureIaaSComputeVMProtectedItem() (*AzureIaaSComputeVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsAzureIaaSVMProtectedItem() (*AzureIaaSVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureIaaSVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsBasicAzureIaaSVMProtectedItem() (BasicAzureIaaSVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureSQLProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return &avwsadpi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return &avwsadpi, true
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsDPMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsDPMProtectedItem() (*DPMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsGenericProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsGenericProtectedItem() (*GenericProtectedItem, bool) {
-	return nil, false
-}
-
-// AsMabFileFolderProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsMabFileFolderProtectedItem() (*MabFileFolderProtectedItem, bool) {
-	return nil, false
-}
-
-// AsProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsProtectedItem() (*ProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPAseDatabaseProtectedItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem) AsBasicProtectedItem() (BasicProtectedItem, bool) {
 	return &avwsadpi, true
 }
 
@@ -5500,9 +5087,6 @@ type AzureVMWorkloadSAPAseSystemProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -5542,9 +5126,6 @@ func (avwsaspi AzureVMWorkloadSAPAseSystemProtectableItem) MarshalJSON() ([]byte
 	}
 	if avwsaspi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsaspi.Prebackupvalidation
-	}
-	if avwsaspi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsaspi.IsProtectable
 	}
 	if avwsaspi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsaspi.BackupManagementType
@@ -5776,9 +5357,6 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -5818,9 +5396,6 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) MarshalJSON() ([]b
 	}
 	if avwshdpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwshdpi.Prebackupvalidation
-	}
-	if avwshdpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwshdpi.IsProtectable
 	}
 	if avwshdpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwshdpi.BackupManagementType
@@ -5917,228 +5492,6 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) AsWorkloadProtecta
 
 // AsBasicWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectableItem.
 func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) AsBasicWorkloadProtectableItem() (BasicWorkloadProtectableItem, bool) {
-	return &avwshdpi, true
-}
-
-// AzureVMWorkloadSAPHanaDatabaseProtectedItem azure VM workload-specific protected item representing SAP
-// HANA Database.
-type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
-	// FriendlyName - Friendly name of the DB represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// ServerName - Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
-	// ParentName - Parent name of the DB such as Instance or Availability Group.
-	ParentName *string `json:"parentName,omitempty"`
-	// ParentType - Parent type of protected item, example: for a DB, standalone server or distributed
-	ParentType *string `json:"parentType,omitempty"`
-	// ProtectionStatus - Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
-	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStateInvalid', 'ProtectionStateIRPending', 'ProtectionStateProtected', 'ProtectionStateProtectionError', 'ProtectionStateProtectionStopped', 'ProtectionStateProtectionPaused'
-	ProtectionState ProtectionState `json:"protectionState,omitempty"`
-	// LastBackupStatus - Last backup operation status. Possible values: Healthy, Unhealthy. Possible values include: 'LastBackupStatusInvalid', 'LastBackupStatusHealthy', 'LastBackupStatusUnhealthy', 'LastBackupStatusIRPending'
-	LastBackupStatus LastBackupStatus `json:"lastBackupStatus,omitempty"`
-	// LastBackupTime - Timestamp of the last backup operation on this backup item.
-	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
-	// LastBackupErrorDetail - Error details in last backup
-	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
-	// ProtectedItemDataSourceID - Data ID of the protected item.
-	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
-	// ProtectedItemHealthStatus - Health status of the backup item, evaluated based on last heartbeat received. Possible values include: 'ProtectedItemHealthStatusInvalid', 'ProtectedItemHealthStatusHealthy', 'ProtectedItemHealthStatusUnhealthy', 'ProtectedItemHealthStatusNotReachable', 'ProtectedItemHealthStatusIRPending'
-	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
-	// ExtendedInfo - Additional information for this backup item.
-	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
-	WorkloadType DataSourceType `json:"workloadType,omitempty"`
-	// ContainerName - Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
-	// SourceResourceID - ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
-	// PolicyID - ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
-	// LastRecoveryPoint - Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *date.Time `json:"lastRecoveryPoint,omitempty"`
-	// BackupSetName - Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
-	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
-	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
-	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
-	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
-	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
-	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) MarshalJSON() ([]byte, error) {
-	avwshdpi.ProtectedItemType = ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase
-	objectMap := make(map[string]interface{})
-	if avwshdpi.FriendlyName != nil {
-		objectMap["friendlyName"] = avwshdpi.FriendlyName
-	}
-	if avwshdpi.ServerName != nil {
-		objectMap["serverName"] = avwshdpi.ServerName
-	}
-	if avwshdpi.ParentName != nil {
-		objectMap["parentName"] = avwshdpi.ParentName
-	}
-	if avwshdpi.ParentType != nil {
-		objectMap["parentType"] = avwshdpi.ParentType
-	}
-	if avwshdpi.ProtectionStatus != nil {
-		objectMap["protectionStatus"] = avwshdpi.ProtectionStatus
-	}
-	if avwshdpi.ProtectionState != "" {
-		objectMap["protectionState"] = avwshdpi.ProtectionState
-	}
-	if avwshdpi.LastBackupStatus != "" {
-		objectMap["lastBackupStatus"] = avwshdpi.LastBackupStatus
-	}
-	if avwshdpi.LastBackupTime != nil {
-		objectMap["lastBackupTime"] = avwshdpi.LastBackupTime
-	}
-	if avwshdpi.LastBackupErrorDetail != nil {
-		objectMap["lastBackupErrorDetail"] = avwshdpi.LastBackupErrorDetail
-	}
-	if avwshdpi.ProtectedItemDataSourceID != nil {
-		objectMap["protectedItemDataSourceId"] = avwshdpi.ProtectedItemDataSourceID
-	}
-	if avwshdpi.ProtectedItemHealthStatus != "" {
-		objectMap["protectedItemHealthStatus"] = avwshdpi.ProtectedItemHealthStatus
-	}
-	if avwshdpi.ExtendedInfo != nil {
-		objectMap["extendedInfo"] = avwshdpi.ExtendedInfo
-	}
-	if avwshdpi.BackupManagementType != "" {
-		objectMap["backupManagementType"] = avwshdpi.BackupManagementType
-	}
-	if avwshdpi.WorkloadType != "" {
-		objectMap["workloadType"] = avwshdpi.WorkloadType
-	}
-	if avwshdpi.ContainerName != nil {
-		objectMap["containerName"] = avwshdpi.ContainerName
-	}
-	if avwshdpi.SourceResourceID != nil {
-		objectMap["sourceResourceId"] = avwshdpi.SourceResourceID
-	}
-	if avwshdpi.PolicyID != nil {
-		objectMap["policyId"] = avwshdpi.PolicyID
-	}
-	if avwshdpi.LastRecoveryPoint != nil {
-		objectMap["lastRecoveryPoint"] = avwshdpi.LastRecoveryPoint
-	}
-	if avwshdpi.BackupSetName != nil {
-		objectMap["backupSetName"] = avwshdpi.BackupSetName
-	}
-	if avwshdpi.CreateMode != "" {
-		objectMap["createMode"] = avwshdpi.CreateMode
-	}
-	if avwshdpi.DeferredDeleteTimeInUTC != nil {
-		objectMap["deferredDeleteTimeInUTC"] = avwshdpi.DeferredDeleteTimeInUTC
-	}
-	if avwshdpi.IsScheduledForDeferredDelete != nil {
-		objectMap["isScheduledForDeferredDelete"] = avwshdpi.IsScheduledForDeferredDelete
-	}
-	if avwshdpi.DeferredDeleteTimeRemaining != nil {
-		objectMap["deferredDeleteTimeRemaining"] = avwshdpi.DeferredDeleteTimeRemaining
-	}
-	if avwshdpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["isDeferredDeleteScheduleUpcoming"] = avwshdpi.IsDeferredDeleteScheduleUpcoming
-	}
-	if avwshdpi.IsRehydrate != nil {
-		objectMap["isRehydrate"] = avwshdpi.IsRehydrate
-	}
-	if avwshdpi.ProtectedItemType != "" {
-		objectMap["protectedItemType"] = avwshdpi.ProtectedItemType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureFileshareProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsAzureFileshareProtectedItem() (*AzureFileshareProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSClassicComputeVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsAzureIaaSClassicComputeVMProtectedItem() (*AzureIaaSClassicComputeVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSComputeVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsAzureIaaSComputeVMProtectedItem() (*AzureIaaSComputeVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsAzureIaaSVMProtectedItem() (*AzureIaaSVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureIaaSVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsBasicAzureIaaSVMProtectedItem() (BasicAzureIaaSVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureSQLProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return &avwshdpi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return &avwshdpi, true
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsDPMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsDPMProtectedItem() (*DPMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsGenericProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsGenericProtectedItem() (*GenericProtectedItem, bool) {
-	return nil, false
-}
-
-// AsMabFileFolderProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsMabFileFolderProtectedItem() (*MabFileFolderProtectedItem, bool) {
-	return nil, false
-}
-
-// AsProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsProtectedItem() (*ProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectedItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem) AsBasicProtectedItem() (BasicProtectedItem, bool) {
 	return &avwshdpi, true
 }
 
@@ -6274,9 +5627,6 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -6316,9 +5666,6 @@ func (avwshspi AzureVMWorkloadSAPHanaSystemProtectableItem) MarshalJSON() ([]byt
 	}
 	if avwshspi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwshspi.Prebackupvalidation
-	}
-	if avwshspi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwshspi.IsProtectable
 	}
 	if avwshspi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwshspi.BackupManagementType
@@ -6550,9 +5897,6 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -6592,9 +5936,6 @@ func (avwsagpi AzureVMWorkloadSQLAvailabilityGroupProtectableItem) MarshalJSON()
 	}
 	if avwsagpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsagpi.Prebackupvalidation
-	}
-	if avwsagpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsagpi.IsProtectable
 	}
 	if avwsagpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsagpi.BackupManagementType
@@ -6714,9 +6055,6 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -6756,9 +6094,6 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) MarshalJSON() ([]byte, 
 	}
 	if avwsdpi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsdpi.Prebackupvalidation
-	}
-	if avwsdpi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsdpi.IsProtectable
 	}
 	if avwsdpi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsdpi.BackupManagementType
@@ -6855,228 +6190,6 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) AsWorkloadProtectableIt
 
 // AsBasicWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLDatabaseProtectableItem.
 func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) AsBasicWorkloadProtectableItem() (BasicWorkloadProtectableItem, bool) {
-	return &avwsdpi, true
-}
-
-// AzureVMWorkloadSQLDatabaseProtectedItem azure VM workload-specific protected item representing SQL
-// Database.
-type AzureVMWorkloadSQLDatabaseProtectedItem struct {
-	// FriendlyName - Friendly name of the DB represented by this backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// ServerName - Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
-	// ParentName - Parent name of the DB such as Instance or Availability Group.
-	ParentName *string `json:"parentName,omitempty"`
-	// ParentType - Parent type of protected item, example: for a DB, standalone server or distributed
-	ParentType *string `json:"parentType,omitempty"`
-	// ProtectionStatus - Backup status of this backup item.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
-	// ProtectionState - Backup state of this backup item. Possible values include: 'ProtectionStateInvalid', 'ProtectionStateIRPending', 'ProtectionStateProtected', 'ProtectionStateProtectionError', 'ProtectionStateProtectionStopped', 'ProtectionStateProtectionPaused'
-	ProtectionState ProtectionState `json:"protectionState,omitempty"`
-	// LastBackupStatus - Last backup operation status. Possible values: Healthy, Unhealthy. Possible values include: 'LastBackupStatusInvalid', 'LastBackupStatusHealthy', 'LastBackupStatusUnhealthy', 'LastBackupStatusIRPending'
-	LastBackupStatus LastBackupStatus `json:"lastBackupStatus,omitempty"`
-	// LastBackupTime - Timestamp of the last backup operation on this backup item.
-	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
-	// LastBackupErrorDetail - Error details in last backup
-	LastBackupErrorDetail *ErrorDetail `json:"lastBackupErrorDetail,omitempty"`
-	// ProtectedItemDataSourceID - Data ID of the protected item.
-	ProtectedItemDataSourceID *string `json:"protectedItemDataSourceId,omitempty"`
-	// ProtectedItemHealthStatus - Health status of the backup item, evaluated based on last heartbeat received. Possible values include: 'ProtectedItemHealthStatusInvalid', 'ProtectedItemHealthStatusHealthy', 'ProtectedItemHealthStatusUnhealthy', 'ProtectedItemHealthStatusNotReachable', 'ProtectedItemHealthStatusIRPending'
-	ProtectedItemHealthStatus ProtectedItemHealthStatus `json:"protectedItemHealthStatus,omitempty"`
-	// ExtendedInfo - Additional information for this backup item.
-	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
-	// BackupManagementType - Type of backup management for the backed up item. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
-	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// WorkloadType - Type of workload this item represents. Possible values include: 'DataSourceTypeInvalid', 'DataSourceTypeVM', 'DataSourceTypeFileFolder', 'DataSourceTypeAzureSQLDb', 'DataSourceTypeSQLDB', 'DataSourceTypeExchange', 'DataSourceTypeSharepoint', 'DataSourceTypeVMwareVM', 'DataSourceTypeSystemState', 'DataSourceTypeClient', 'DataSourceTypeGenericDataSource', 'DataSourceTypeSQLDataBase', 'DataSourceTypeAzureFileShare', 'DataSourceTypeSAPHanaDatabase', 'DataSourceTypeSAPAseDatabase'
-	WorkloadType DataSourceType `json:"workloadType,omitempty"`
-	// ContainerName - Unique name of container
-	ContainerName *string `json:"containerName,omitempty"`
-	// SourceResourceID - ARM ID of the resource to be backed up.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
-	// PolicyID - ID of the backup policy with which this item is backed up.
-	PolicyID *string `json:"policyId,omitempty"`
-	// LastRecoveryPoint - Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *date.Time `json:"lastRecoveryPoint,omitempty"`
-	// BackupSetName - Name of the backup set the backup item belongs to
-	BackupSetName *string `json:"backupSetName,omitempty"`
-	// CreateMode - Create mode to indicate recovery of existing soft deleted data source or creation of new data source. Possible values include: 'CreateModeInvalid', 'CreateModeDefault', 'CreateModeRecover'
-	CreateMode CreateMode `json:"createMode,omitempty"`
-	// DeferredDeleteTimeInUTC - Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *date.Time `json:"deferredDeleteTimeInUTC,omitempty"`
-	// IsScheduledForDeferredDelete - Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool `json:"isScheduledForDeferredDelete,omitempty"`
-	// DeferredDeleteTimeRemaining - Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string `json:"deferredDeleteTimeRemaining,omitempty"`
-	// IsDeferredDeleteScheduleUpcoming - Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
-	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
-	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) MarshalJSON() ([]byte, error) {
-	avwsdpi.ProtectedItemType = ProtectedItemTypeAzureVMWorkloadSQLDatabase
-	objectMap := make(map[string]interface{})
-	if avwsdpi.FriendlyName != nil {
-		objectMap["friendlyName"] = avwsdpi.FriendlyName
-	}
-	if avwsdpi.ServerName != nil {
-		objectMap["serverName"] = avwsdpi.ServerName
-	}
-	if avwsdpi.ParentName != nil {
-		objectMap["parentName"] = avwsdpi.ParentName
-	}
-	if avwsdpi.ParentType != nil {
-		objectMap["parentType"] = avwsdpi.ParentType
-	}
-	if avwsdpi.ProtectionStatus != nil {
-		objectMap["protectionStatus"] = avwsdpi.ProtectionStatus
-	}
-	if avwsdpi.ProtectionState != "" {
-		objectMap["protectionState"] = avwsdpi.ProtectionState
-	}
-	if avwsdpi.LastBackupStatus != "" {
-		objectMap["lastBackupStatus"] = avwsdpi.LastBackupStatus
-	}
-	if avwsdpi.LastBackupTime != nil {
-		objectMap["lastBackupTime"] = avwsdpi.LastBackupTime
-	}
-	if avwsdpi.LastBackupErrorDetail != nil {
-		objectMap["lastBackupErrorDetail"] = avwsdpi.LastBackupErrorDetail
-	}
-	if avwsdpi.ProtectedItemDataSourceID != nil {
-		objectMap["protectedItemDataSourceId"] = avwsdpi.ProtectedItemDataSourceID
-	}
-	if avwsdpi.ProtectedItemHealthStatus != "" {
-		objectMap["protectedItemHealthStatus"] = avwsdpi.ProtectedItemHealthStatus
-	}
-	if avwsdpi.ExtendedInfo != nil {
-		objectMap["extendedInfo"] = avwsdpi.ExtendedInfo
-	}
-	if avwsdpi.BackupManagementType != "" {
-		objectMap["backupManagementType"] = avwsdpi.BackupManagementType
-	}
-	if avwsdpi.WorkloadType != "" {
-		objectMap["workloadType"] = avwsdpi.WorkloadType
-	}
-	if avwsdpi.ContainerName != nil {
-		objectMap["containerName"] = avwsdpi.ContainerName
-	}
-	if avwsdpi.SourceResourceID != nil {
-		objectMap["sourceResourceId"] = avwsdpi.SourceResourceID
-	}
-	if avwsdpi.PolicyID != nil {
-		objectMap["policyId"] = avwsdpi.PolicyID
-	}
-	if avwsdpi.LastRecoveryPoint != nil {
-		objectMap["lastRecoveryPoint"] = avwsdpi.LastRecoveryPoint
-	}
-	if avwsdpi.BackupSetName != nil {
-		objectMap["backupSetName"] = avwsdpi.BackupSetName
-	}
-	if avwsdpi.CreateMode != "" {
-		objectMap["createMode"] = avwsdpi.CreateMode
-	}
-	if avwsdpi.DeferredDeleteTimeInUTC != nil {
-		objectMap["deferredDeleteTimeInUTC"] = avwsdpi.DeferredDeleteTimeInUTC
-	}
-	if avwsdpi.IsScheduledForDeferredDelete != nil {
-		objectMap["isScheduledForDeferredDelete"] = avwsdpi.IsScheduledForDeferredDelete
-	}
-	if avwsdpi.DeferredDeleteTimeRemaining != nil {
-		objectMap["deferredDeleteTimeRemaining"] = avwsdpi.DeferredDeleteTimeRemaining
-	}
-	if avwsdpi.IsDeferredDeleteScheduleUpcoming != nil {
-		objectMap["isDeferredDeleteScheduleUpcoming"] = avwsdpi.IsDeferredDeleteScheduleUpcoming
-	}
-	if avwsdpi.IsRehydrate != nil {
-		objectMap["isRehydrate"] = avwsdpi.IsRehydrate
-	}
-	if avwsdpi.ProtectedItemType != "" {
-		objectMap["protectedItemType"] = avwsdpi.ProtectedItemType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureFileshareProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsAzureFileshareProtectedItem() (*AzureFileshareProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSClassicComputeVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsAzureIaaSClassicComputeVMProtectedItem() (*AzureIaaSClassicComputeVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSComputeVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsAzureIaaSComputeVMProtectedItem() (*AzureIaaSComputeVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsAzureIaaSVMProtectedItem() (*AzureIaaSVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureIaaSVMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsBasicAzureIaaSVMProtectedItem() (BasicAzureIaaSVMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureSQLProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return &avwsdpi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
-	return &avwsdpi, true
-}
-
-// AsDPMProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsDPMProtectedItem() (*DPMProtectedItem, bool) {
-	return nil, false
-}
-
-// AsGenericProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsGenericProtectedItem() (*GenericProtectedItem, bool) {
-	return nil, false
-}
-
-// AsMabFileFolderProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsMabFileFolderProtectedItem() (*MabFileFolderProtectedItem, bool) {
-	return nil, false
-}
-
-// AsProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsProtectedItem() (*ProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicProtectedItem is the BasicProtectedItem implementation for AzureVMWorkloadSQLDatabaseProtectedItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem) AsBasicProtectedItem() (BasicProtectedItem, bool) {
 	return &avwsdpi, true
 }
 
@@ -7212,9 +6325,6 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// IsProtectable - Indicated if item present in inquiry is protectable.
-	// If this is unprotectable, preBackupValidation will have the additional details why its unprotectable.
-	IsProtectable *bool `json:"IsProtectable,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
 	// WorkloadType - Type of workload for the backup management
@@ -7254,9 +6364,6 @@ func (avwsipi AzureVMWorkloadSQLInstanceProtectableItem) MarshalJSON() ([]byte, 
 	}
 	if avwsipi.Prebackupvalidation != nil {
 		objectMap["prebackupvalidation"] = avwsipi.Prebackupvalidation
-	}
-	if avwsipi.IsProtectable != nil {
-		objectMap["IsProtectable"] = avwsipi.IsProtectable
 	}
 	if avwsipi.BackupManagementType != nil {
 		objectMap["backupManagementType"] = avwsipi.BackupManagementType
@@ -8215,7 +7322,7 @@ type DPMProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
 
@@ -8312,26 +7419,6 @@ func (dpi DPMProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLProtectedItem, b
 
 // AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for DPMProtectedItem.
 func (dpi DPMProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for DPMProtectedItem.
-func (dpi DPMProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for DPMProtectedItem.
-func (dpi DPMProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for DPMProtectedItem.
-func (dpi DPMProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for DPMProtectedItem.
-func (dpi DPMProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
 	return nil, false
 }
 
@@ -9077,7 +8164,7 @@ type GenericProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
 
@@ -9180,26 +8267,6 @@ func (gpi GenericProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLProtectedIte
 
 // AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for GenericProtectedItem.
 func (gpi GenericProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for GenericProtectedItem.
-func (gpi GenericProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for GenericProtectedItem.
-func (gpi GenericProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for GenericProtectedItem.
-func (gpi GenericProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for GenericProtectedItem.
-func (gpi GenericProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
 	return nil, false
 }
 
@@ -10359,7 +9426,7 @@ type MabFileFolderProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
 
@@ -10465,26 +9532,6 @@ func (mffpi MabFileFolderProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLProt
 
 // AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for MabFileFolderProtectedItem.
 func (mffpi MabFileFolderProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for MabFileFolderProtectedItem.
-func (mffpi MabFileFolderProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for MabFileFolderProtectedItem.
-func (mffpi MabFileFolderProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for MabFileFolderProtectedItem.
-func (mffpi MabFileFolderProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for MabFileFolderProtectedItem.
-func (mffpi MabFileFolderProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
 	return nil, false
 }
 
@@ -11497,10 +10544,6 @@ type BasicProtectedItem interface {
 	AsBasicAzureIaaSVMProtectedItem() (BasicAzureIaaSVMProtectedItem, bool)
 	AsAzureSQLProtectedItem() (*AzureSQLProtectedItem, bool)
 	AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool)
-	AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool)
-	AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool)
-	AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool)
-	AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool)
 	AsDPMProtectedItem() (*DPMProtectedItem, bool)
 	AsGenericProtectedItem() (*GenericProtectedItem, bool)
 	AsMabFileFolderProtectedItem() (*MabFileFolderProtectedItem, bool)
@@ -11535,7 +10578,7 @@ type ProtectedItem struct {
 	IsDeferredDeleteScheduleUpcoming *bool `json:"isDeferredDeleteScheduleUpcoming,omitempty"`
 	// IsRehydrate - Flag to identify that deferred deleted DS is to be moved into Pause state
 	IsRehydrate *bool `json:"isRehydrate,omitempty"`
-	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeAzureVMWorkloadSAPAseDatabase', 'ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase', 'ProtectedItemTypeAzureVMWorkloadSQLDatabase', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
+	// ProtectedItemType - Possible values include: 'ProtectedItemTypeProtectedItem', 'ProtectedItemTypeAzureFileShareProtectedItem', 'ProtectedItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectedItemTypeMicrosoftComputevirtualMachines', 'ProtectedItemTypeAzureIaaSVMProtectedItem', 'ProtectedItemTypeMicrosoftSqlserversdatabases', 'ProtectedItemTypeAzureVMWorkloadProtectedItem', 'ProtectedItemTypeDPMProtectedItem', 'ProtectedItemTypeGenericProtectedItem', 'ProtectedItemTypeMabFileFolderProtectedItem'
 	ProtectedItemType ProtectedItemType `json:"protectedItemType,omitempty"`
 }
 
@@ -11571,18 +10614,6 @@ func unmarshalBasicProtectedItem(body []byte) (BasicProtectedItem, error) {
 		var avwpi AzureVMWorkloadProtectedItem
 		err := json.Unmarshal(body, &avwpi)
 		return avwpi, err
-	case string(ProtectedItemTypeAzureVMWorkloadSAPAseDatabase):
-		var avwsadpi AzureVMWorkloadSAPAseDatabaseProtectedItem
-		err := json.Unmarshal(body, &avwsadpi)
-		return avwsadpi, err
-	case string(ProtectedItemTypeAzureVMWorkloadSAPHanaDatabase):
-		var avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectedItem
-		err := json.Unmarshal(body, &avwshdpi)
-		return avwshdpi, err
-	case string(ProtectedItemTypeAzureVMWorkloadSQLDatabase):
-		var avwsdpi AzureVMWorkloadSQLDatabaseProtectedItem
-		err := json.Unmarshal(body, &avwsdpi)
-		return avwsdpi, err
 	case string(ProtectedItemTypeDPMProtectedItem):
 		var dpi DPMProtectedItem
 		err := json.Unmarshal(body, &dpi)
@@ -11701,26 +10732,6 @@ func (pi ProtectedItem) AsAzureSQLProtectedItem() (*AzureSQLProtectedItem, bool)
 
 // AsAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for ProtectedItem.
 func (pi ProtectedItem) AsAzureVMWorkloadProtectedItem() (*AzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectedItem is the BasicProtectedItem implementation for ProtectedItem.
-func (pi ProtectedItem) AsBasicAzureVMWorkloadProtectedItem() (BasicAzureVMWorkloadProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectedItem is the BasicProtectedItem implementation for ProtectedItem.
-func (pi ProtectedItem) AsAzureVMWorkloadSAPAseDatabaseProtectedItem() (*AzureVMWorkloadSAPAseDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectedItem is the BasicProtectedItem implementation for ProtectedItem.
-func (pi ProtectedItem) AsAzureVMWorkloadSAPHanaDatabaseProtectedItem() (*AzureVMWorkloadSAPHanaDatabaseProtectedItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectedItem is the BasicProtectedItem implementation for ProtectedItem.
-func (pi ProtectedItem) AsAzureVMWorkloadSQLDatabaseProtectedItem() (*AzureVMWorkloadSQLDatabaseProtectedItem, bool) {
 	return nil, false
 }
 

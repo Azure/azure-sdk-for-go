@@ -107,7 +107,7 @@ func (client BaseClient) GetProductPreparer(ctx context.Context, resourceGroup s
 	}
 
 	deviceConfiguration.DeviceVersion = nil
-	deviceConfiguration.IdentitySystem = nil
+	deviceConfiguration.IdentitySystem = ""
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),

@@ -29,6 +29,21 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
 
+// Category enumerates the values for category.
+type Category string
+
+const (
+	// ADFS ...
+	ADFS Category = "ADFS"
+	// AzureAD ...
+	AzureAD Category = "AzureAD"
+)
+
+// PossibleCategoryValues returns an array of possible values for the Category const type.
+func PossibleCategoryValues() []Category {
+	return []Category{ADFS, AzureAD}
+}
+
 // CompatibilityIssue enumerates the values for compatibility issue.
 type CompatibilityIssue string
 
@@ -396,8 +411,8 @@ type DataDiskImage struct {
 type DeviceConfiguration struct {
 	// DeviceVersion - READ-ONLY; Version of the device.
 	DeviceVersion *string `json:"deviceVersion,omitempty"`
-	// IdentitySystem - READ-ONLY; Identity system of the device.
-	IdentitySystem *string `json:"identitySystem,omitempty"`
+	// IdentitySystem - READ-ONLY; Identity system of the device. Possible values include: 'AzureAD', 'ADFS'
+	IdentitySystem Category `json:"identitySystem,omitempty"`
 }
 
 // Display contains the localized display information for this particular operation or action.

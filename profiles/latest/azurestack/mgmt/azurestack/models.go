@@ -29,6 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type Category = original.Category
+
+const (
+	ADFS    Category = original.ADFS
+	AzureAD Category = original.AzureAD
+)
+
 type CompatibilityIssue = original.CompatibilityIssue
 
 const (
@@ -182,6 +189,9 @@ func NewRegistrationsClientWithBaseURI(baseURI string, subscriptionID string) Re
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCategoryValues() []Category {
+	return original.PossibleCategoryValues()
 }
 func PossibleCompatibilityIssueValues() []CompatibilityIssue {
 	return original.PossibleCompatibilityIssueValues()

@@ -521,6 +521,8 @@ const (
 	JobOperationTypeBackup JobOperationType = "Backup"
 	// JobOperationTypeConfigureBackup ...
 	JobOperationTypeConfigureBackup JobOperationType = "ConfigureBackup"
+	// JobOperationTypeCrossRegionRestore ...
+	JobOperationTypeCrossRegionRestore JobOperationType = "CrossRegionRestore"
 	// JobOperationTypeDeleteBackupData ...
 	JobOperationTypeDeleteBackupData JobOperationType = "DeleteBackupData"
 	// JobOperationTypeDisableBackup ...
@@ -539,7 +541,7 @@ const (
 
 // PossibleJobOperationTypeValues returns an array of possible values for the JobOperationType const type.
 func PossibleJobOperationTypeValues() []JobOperationType {
-	return []JobOperationType{JobOperationTypeBackup, JobOperationTypeConfigureBackup, JobOperationTypeDeleteBackupData, JobOperationTypeDisableBackup, JobOperationTypeInvalid, JobOperationTypeRegister, JobOperationTypeRestore, JobOperationTypeUndelete, JobOperationTypeUnRegister}
+	return []JobOperationType{JobOperationTypeBackup, JobOperationTypeConfigureBackup, JobOperationTypeCrossRegionRestore, JobOperationTypeDeleteBackupData, JobOperationTypeDisableBackup, JobOperationTypeInvalid, JobOperationTypeRegister, JobOperationTypeRestore, JobOperationTypeUndelete, JobOperationTypeUnRegister}
 }
 
 // JobStatus enumerates the values for job status.
@@ -793,6 +795,8 @@ func PossibleObjectTypeValues() []ObjectType {
 type ObjectTypeBasicILRRequest string
 
 const (
+	// ObjectTypeAzureFileShareProvisionILRRequest ...
+	ObjectTypeAzureFileShareProvisionILRRequest ObjectTypeBasicILRRequest = "AzureFileShareProvisionILRRequest"
 	// ObjectTypeIaasVMILRRegistrationRequest ...
 	ObjectTypeIaasVMILRRegistrationRequest ObjectTypeBasicILRRequest = "IaasVMILRRegistrationRequest"
 	// ObjectTypeILRRequest ...
@@ -801,7 +805,7 @@ const (
 
 // PossibleObjectTypeBasicILRRequestValues returns an array of possible values for the ObjectTypeBasicILRRequest const type.
 func PossibleObjectTypeBasicILRRequestValues() []ObjectTypeBasicILRRequest {
-	return []ObjectTypeBasicILRRequest{ObjectTypeIaasVMILRRegistrationRequest, ObjectTypeILRRequest}
+	return []ObjectTypeBasicILRRequest{ObjectTypeAzureFileShareProvisionILRRequest, ObjectTypeIaasVMILRRegistrationRequest, ObjectTypeILRRequest}
 }
 
 // ObjectTypeBasicOperationResultInfoBase enumerates the values for object type basic operation result info
@@ -835,11 +839,13 @@ const (
 	ObjectTypeOperationStatusJobsExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusJobsExtendedInfo"
 	// ObjectTypeOperationStatusProvisionILRExtendedInfo ...
 	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusProvisionILRExtendedInfo"
+	// ObjectTypeOperationStatusRecoveryPointExtendedInfo ...
+	ObjectTypeOperationStatusRecoveryPointExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusRecoveryPointExtendedInfo"
 )
 
 // PossibleObjectTypeBasicOperationStatusExtendedInfoValues returns an array of possible values for the ObjectTypeBasicOperationStatusExtendedInfo const type.
 func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() []ObjectTypeBasicOperationStatusExtendedInfo {
-	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo}
+	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo, ObjectTypeOperationStatusRecoveryPointExtendedInfo}
 }
 
 // ObjectTypeBasicRequest enumerates the values for object type basic request.
@@ -1878,7 +1884,7 @@ type AzureBackupServerEngine struct {
 	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
 	// IsDpmUpgradeAvailable - To check if backup engine upgrade available
 	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
-	// ExtendedInfo - Extended info of the backup engine
+	// ExtendedInfo - Extended info of the backupengine
 	ExtendedInfo *EngineExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupEngineType - Possible values include: 'BackupEngineTypeBackupEngineBase', 'BackupEngineTypeAzureBackupServerEngine', 'BackupEngineTypeDpmBackupEngine'
 	BackupEngineType EngineType `json:"backupEngineType,omitempty"`
@@ -2349,7 +2355,7 @@ type AzureFileShareProtectionPolicy struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -2379,11 +2385,6 @@ func (afspp AzureFileShareProtectionPolicy) AsAzureFileShareProtectionPolicy() (
 	return &afspp, true
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureFileShareProtectionPolicy.
-func (afspp AzureFileShareProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureIaaSVMProtectionPolicy is the BasicProtectionPolicy implementation for AzureFileShareProtectionPolicy.
 func (afspp AzureFileShareProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtectionPolicy, bool) {
 	return nil, false
@@ -2391,6 +2392,11 @@ func (afspp AzureFileShareProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*Az
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for AzureFileShareProtectionPolicy.
 func (afspp AzureFileShareProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureFileShareProtectionPolicy.
+func (afspp AzureFileShareProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 
@@ -2479,6 +2485,53 @@ func (afspp *AzureFileShareProtectionPolicy) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// AzureFileShareProvisionILRRequest update snapshot Uri with the correct friendly Name of the source Azure
+// file share.
+type AzureFileShareProvisionILRRequest struct {
+	// RecoveryPointID - Recovery point ID.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// SourceResourceID - Source Storage account ARM Id
+	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	// ObjectType - Possible values include: 'ObjectTypeILRRequest', 'ObjectTypeAzureFileShareProvisionILRRequest', 'ObjectTypeIaasVMILRRegistrationRequest'
+	ObjectType ObjectTypeBasicILRRequest `json:"objectType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureFileShareProvisionILRRequest.
+func (afspir AzureFileShareProvisionILRRequest) MarshalJSON() ([]byte, error) {
+	afspir.ObjectType = ObjectTypeAzureFileShareProvisionILRRequest
+	objectMap := make(map[string]interface{})
+	if afspir.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = afspir.RecoveryPointID
+	}
+	if afspir.SourceResourceID != nil {
+		objectMap["sourceResourceId"] = afspir.SourceResourceID
+	}
+	if afspir.ObjectType != "" {
+		objectMap["objectType"] = afspir.ObjectType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAzureFileShareProvisionILRRequest is the BasicILRRequest implementation for AzureFileShareProvisionILRRequest.
+func (afspir AzureFileShareProvisionILRRequest) AsAzureFileShareProvisionILRRequest() (*AzureFileShareProvisionILRRequest, bool) {
+	return &afspir, true
+}
+
+// AsIaasVMILRRegistrationRequest is the BasicILRRequest implementation for AzureFileShareProvisionILRRequest.
+func (afspir AzureFileShareProvisionILRRequest) AsIaasVMILRRegistrationRequest() (*IaasVMILRRegistrationRequest, bool) {
+	return nil, false
+}
+
+// AsILRRequest is the BasicILRRequest implementation for AzureFileShareProvisionILRRequest.
+func (afspir AzureFileShareProvisionILRRequest) AsILRRequest() (*ILRRequest, bool) {
+	return nil, false
+}
+
+// AsBasicILRRequest is the BasicILRRequest implementation for AzureFileShareProvisionILRRequest.
+func (afspir AzureFileShareProvisionILRRequest) AsBasicILRRequest() (BasicILRRequest, bool) {
+	return &afspir, true
 }
 
 // AzureFileShareRecoveryPoint azure File Share workload specific backup copy.
@@ -4119,6 +4172,7 @@ type AzureIaaSVMProtectedItemExtendedInfo struct {
 
 // AzureIaaSVMProtectionPolicy iaaS VM workload-specific backup policy.
 type AzureIaaSVMProtectionPolicy struct {
+	InstantRPDetails *InstantRPAdditionalDetails `json:"instantRPDetails,omitempty"`
 	// SchedulePolicy - Backup schedule specified as part of backup policy.
 	SchedulePolicy BasicSchedulePolicy `json:"schedulePolicy,omitempty"`
 	// RetentionPolicy - Retention policy with the details on backup copy retention ranges.
@@ -4129,7 +4183,7 @@ type AzureIaaSVMProtectionPolicy struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -4137,6 +4191,9 @@ type AzureIaaSVMProtectionPolicy struct {
 func (aispp AzureIaaSVMProtectionPolicy) MarshalJSON() ([]byte, error) {
 	aispp.BackupManagementType = BackupManagementTypeAzureIaasVM
 	objectMap := make(map[string]interface{})
+	if aispp.InstantRPDetails != nil {
+		objectMap["instantRPDetails"] = aispp.InstantRPDetails
+	}
 	objectMap["schedulePolicy"] = aispp.SchedulePolicy
 	objectMap["retentionPolicy"] = aispp.RetentionPolicy
 	if aispp.InstantRpRetentionRangeInDays != nil {
@@ -4159,11 +4216,6 @@ func (aispp AzureIaaSVMProtectionPolicy) AsAzureFileShareProtectionPolicy() (*Az
 	return nil, false
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureIaaSVMProtectionPolicy.
-func (aispp AzureIaaSVMProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureIaaSVMProtectionPolicy is the BasicProtectionPolicy implementation for AzureIaaSVMProtectionPolicy.
 func (aispp AzureIaaSVMProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtectionPolicy, bool) {
 	return &aispp, true
@@ -4171,6 +4223,11 @@ func (aispp AzureIaaSVMProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*Azure
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for AzureIaaSVMProtectionPolicy.
 func (aispp AzureIaaSVMProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureIaaSVMProtectionPolicy.
+func (aispp AzureIaaSVMProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 
@@ -4203,6 +4260,15 @@ func (aispp *AzureIaaSVMProtectionPolicy) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "instantRPDetails":
+			if v != nil {
+				var instantRPDetails InstantRPAdditionalDetails
+				err = json.Unmarshal(*v, &instantRPDetails)
+				if err != nil {
+					return err
+				}
+				aispp.InstantRPDetails = &instantRPDetails
+			}
 		case "schedulePolicy":
 			if v != nil {
 				schedulePolicy, err := unmarshalBasicSchedulePolicy(*v)
@@ -4936,7 +5002,7 @@ type AzureSQLProtectionPolicy struct {
 	RetentionPolicy BasicRetentionPolicy `json:"retentionPolicy,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -4959,11 +5025,6 @@ func (aspp AzureSQLProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureF
 	return nil, false
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
-func (aspp AzureSQLProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureIaaSVMProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
 func (aspp AzureSQLProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtectionPolicy, bool) {
 	return nil, false
@@ -4972,6 +5033,11 @@ func (aspp AzureSQLProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaS
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
 func (aspp AzureSQLProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
 	return &aspp, true
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
+func (aspp AzureSQLProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
+	return nil, false
 }
 
 // AsGenericProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
@@ -5665,9 +5731,9 @@ type AzureVMWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
@@ -5850,9 +5916,9 @@ type AzureVMWorkloadProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
@@ -6348,9 +6414,11 @@ type AzureVMWorkloadProtectionPolicy struct {
 	Settings *Settings `json:"settings,omitempty"`
 	// SubProtectionPolicy - List of sub-protection policies which includes schedule and retention
 	SubProtectionPolicy *[]SubProtectionPolicy `json:"subProtectionPolicy,omitempty"`
+	// MakePolicyConsistent - Fix the policy inconsistency
+	MakePolicyConsistent *bool `json:"makePolicyConsistent,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -6367,6 +6435,9 @@ func (avwpp AzureVMWorkloadProtectionPolicy) MarshalJSON() ([]byte, error) {
 	if avwpp.SubProtectionPolicy != nil {
 		objectMap["subProtectionPolicy"] = avwpp.SubProtectionPolicy
 	}
+	if avwpp.MakePolicyConsistent != nil {
+		objectMap["makePolicyConsistent"] = avwpp.MakePolicyConsistent
+	}
 	if avwpp.ProtectedItemsCount != nil {
 		objectMap["protectedItemsCount"] = avwpp.ProtectedItemsCount
 	}
@@ -6381,11 +6452,6 @@ func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureFileShareProtectionPolicy() 
 	return nil, false
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
-func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return &avwpp, true
-}
-
 // AsAzureIaaSVMProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
 func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtectionPolicy, bool) {
 	return nil, false
@@ -6394,6 +6460,11 @@ func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*A
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
 func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
 	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
+func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
+	return &avwpp, true
 }
 
 // AsGenericProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
@@ -6430,9 +6501,9 @@ type AzureVMWorkloadSAPAseDatabaseProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
@@ -6805,9 +6876,9 @@ type AzureVMWorkloadSAPAseDatabaseWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
@@ -6922,9 +6993,9 @@ type AzureVMWorkloadSAPAseSystemProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
@@ -7075,9 +7146,9 @@ type AzureVMWorkloadSAPAseSystemWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
@@ -7192,9 +7263,9 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
@@ -7567,9 +7638,9 @@ type AzureVMWorkloadSAPHanaDatabaseWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
@@ -7684,9 +7755,9 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
@@ -7837,9 +7908,9 @@ type AzureVMWorkloadSAPHanaSystemWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
@@ -7954,9 +8025,9 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
@@ -8112,9 +8183,9 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
@@ -8487,9 +8558,9 @@ type AzureVMWorkloadSQLDatabaseWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
@@ -8604,9 +8675,9 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
 	// IsAutoProtected - Indicates if protectable item is auto-protected
 	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DBs to be protected
+	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
 	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
 	// Prebackupvalidation - Pre-backup validation for protectable objects
 	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
@@ -8759,9 +8830,9 @@ type AzureVMWorkloadSQLInstanceWorkloadItem struct {
 	ServerName *string `json:"serverName,omitempty"`
 	// IsAutoProtectable - Indicates if workload item is auto-protectable
 	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DBs present
+	// Subinquireditemcount - For instance or AG, indicates number of DB's present
 	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// SubWorkloadItemCount - For instance or AG, indicates number of DBs to be protected
+	// SubWorkloadItemCount - For instance or AG, indicates number of DB's to be protected
 	SubWorkloadItemCount *int32 `json:"subWorkloadItemCount,omitempty"`
 	// BackupManagementType - Type of backup management to backup an item.
 	BackupManagementType *string `json:"backupManagementType,omitempty"`
@@ -11489,7 +11560,7 @@ type DpmBackupEngine struct {
 	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
 	// IsDpmUpgradeAvailable - To check if backup engine upgrade available
 	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
-	// ExtendedInfo - Extended info of the backup engine
+	// ExtendedInfo - Extended info of the backupengine
 	ExtendedInfo *EngineExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupEngineType - Possible values include: 'BackupEngineTypeBackupEngineBase', 'BackupEngineTypeAzureBackupServerEngine', 'BackupEngineTypeDpmBackupEngine'
 	BackupEngineType EngineType `json:"backupEngineType,omitempty"`
@@ -12250,7 +12321,7 @@ type EngineBase struct {
 	IsAzureBackupAgentUpgradeAvailable *bool `json:"isAzureBackupAgentUpgradeAvailable,omitempty"`
 	// IsDpmUpgradeAvailable - To check if backup engine upgrade available
 	IsDpmUpgradeAvailable *bool `json:"isDpmUpgradeAvailable,omitempty"`
-	// ExtendedInfo - Extended info of the backup engine
+	// ExtendedInfo - Extended info of the backupengine
 	ExtendedInfo *EngineExtendedInfo `json:"extendedInfo,omitempty"`
 	// BackupEngineType - Possible values include: 'BackupEngineTypeBackupEngineBase', 'BackupEngineTypeAzureBackupServerEngine', 'BackupEngineTypeDpmBackupEngine'
 	BackupEngineType EngineType `json:"backupEngineType,omitempty"`
@@ -12640,6 +12711,8 @@ type EngineExtendedInfo struct {
 	RefreshedAt *date.Time `json:"refreshedAt,omitempty"`
 	// AzureProtectedInstances - Protected instances in the backup engine.
 	AzureProtectedInstances *int32 `json:"azureProtectedInstances,omitempty"`
+	// IsSyncEnabled - Indicates if DS was synced to BMS or not
+	IsSyncEnabled *bool `json:"isSyncEnabled,omitempty"`
 }
 
 // ErrorDetail error Detail class which encapsulates Code, Message and Recommendations.
@@ -12658,6 +12731,10 @@ type ExportJobsOperationResultInfo struct {
 	BlobURL *string `json:"blobUrl,omitempty"`
 	// BlobSasKey - SAS key to access the blob. It expires in 15 mins.
 	BlobSasKey *string `json:"blobSasKey,omitempty"`
+	// ExcelFileBlobURL - URL of the blob into which the ExcelFile is uploaded.
+	ExcelFileBlobURL *string `json:"excelFileBlobUrl,omitempty"`
+	// ExcelFileBlobSasKey - SAS key to access the blob. It expires in 15 mins.
+	ExcelFileBlobSasKey *string `json:"excelFileBlobSasKey,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeOperationResultInfoBase', 'ObjectTypeExportJobsOperationResultInfo', 'ObjectTypeOperationResultInfo'
 	ObjectType ObjectTypeBasicOperationResultInfoBase `json:"objectType,omitempty"`
 }
@@ -12671,6 +12748,12 @@ func (ejori ExportJobsOperationResultInfo) MarshalJSON() ([]byte, error) {
 	}
 	if ejori.BlobSasKey != nil {
 		objectMap["blobSasKey"] = ejori.BlobSasKey
+	}
+	if ejori.ExcelFileBlobURL != nil {
+		objectMap["excelFileBlobUrl"] = ejori.ExcelFileBlobURL
+	}
+	if ejori.ExcelFileBlobSasKey != nil {
+		objectMap["excelFileBlobSasKey"] = ejori.ExcelFileBlobSasKey
 	}
 	if ejori.ObjectType != "" {
 		objectMap["objectType"] = ejori.ObjectType
@@ -13145,7 +13228,7 @@ type GenericProtectionPolicy struct {
 	FabricName *string `json:"fabricName,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -13176,11 +13259,6 @@ func (gpp GenericProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFil
 	return nil, false
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for GenericProtectionPolicy.
-func (gpp GenericProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureIaaSVMProtectionPolicy is the BasicProtectionPolicy implementation for GenericProtectionPolicy.
 func (gpp GenericProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtectionPolicy, bool) {
 	return nil, false
@@ -13188,6 +13266,11 @@ func (gpp GenericProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVM
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for GenericProtectionPolicy.
 func (gpp GenericProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for GenericProtectionPolicy.
+func (gpp GenericProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 
@@ -13563,7 +13646,7 @@ type IaasVMILRRegistrationRequest struct {
 	InitiatorName *string `json:"initiatorName,omitempty"`
 	// RenewExistingRegistration - Whether to renew existing registration with the iSCSI server.
 	RenewExistingRegistration *bool `json:"renewExistingRegistration,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeILRRequest', 'ObjectTypeIaasVMILRRegistrationRequest'
+	// ObjectType - Possible values include: 'ObjectTypeILRRequest', 'ObjectTypeAzureFileShareProvisionILRRequest', 'ObjectTypeIaasVMILRRegistrationRequest'
 	ObjectType ObjectTypeBasicILRRequest `json:"objectType,omitempty"`
 }
 
@@ -13587,6 +13670,11 @@ func (ivrr IaasVMILRRegistrationRequest) MarshalJSON() ([]byte, error) {
 		objectMap["objectType"] = ivrr.ObjectType
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsAzureFileShareProvisionILRRequest is the BasicILRRequest implementation for IaasVMILRRegistrationRequest.
+func (ivrr IaasVMILRRegistrationRequest) AsAzureFileShareProvisionILRRequest() (*AzureFileShareProvisionILRRequest, bool) {
+	return nil, false
 }
 
 // AsIaasVMILRRegistrationRequest is the BasicILRRequest implementation for IaasVMILRRegistrationRequest.
@@ -14087,15 +14175,16 @@ func (ivrr IaasVMRestoreRequest) AsBasicRestoreRequest() (BasicRestoreRequest, b
 	return &ivrr, true
 }
 
-// BasicILRRequest parameters to restore file/folders API.
+// BasicILRRequest parameters to Provision ILR API.
 type BasicILRRequest interface {
+	AsAzureFileShareProvisionILRRequest() (*AzureFileShareProvisionILRRequest, bool)
 	AsIaasVMILRRegistrationRequest() (*IaasVMILRRegistrationRequest, bool)
 	AsILRRequest() (*ILRRequest, bool)
 }
 
-// ILRRequest parameters to restore file/folders API.
+// ILRRequest parameters to Provision ILR API.
 type ILRRequest struct {
-	// ObjectType - Possible values include: 'ObjectTypeILRRequest', 'ObjectTypeIaasVMILRRegistrationRequest'
+	// ObjectType - Possible values include: 'ObjectTypeILRRequest', 'ObjectTypeAzureFileShareProvisionILRRequest', 'ObjectTypeIaasVMILRRegistrationRequest'
 	ObjectType ObjectTypeBasicILRRequest `json:"objectType,omitempty"`
 }
 
@@ -14107,6 +14196,10 @@ func unmarshalBasicILRRequest(body []byte) (BasicILRRequest, error) {
 	}
 
 	switch m["objectType"] {
+	case string(ObjectTypeAzureFileShareProvisionILRRequest):
+		var afspir AzureFileShareProvisionILRRequest
+		err := json.Unmarshal(body, &afspir)
+		return afspir, err
 	case string(ObjectTypeIaasVMILRRegistrationRequest):
 		var ivrr IaasVMILRRegistrationRequest
 		err := json.Unmarshal(body, &ivrr)
@@ -14146,6 +14239,11 @@ func (ir ILRRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AsAzureFileShareProvisionILRRequest is the BasicILRRequest implementation for ILRRequest.
+func (ir ILRRequest) AsAzureFileShareProvisionILRRequest() (*AzureFileShareProvisionILRRequest, bool) {
+	return nil, false
+}
+
 // AsIaasVMILRRegistrationRequest is the BasicILRRequest implementation for ILRRequest.
 func (ir ILRRequest) AsIaasVMILRRegistrationRequest() (*IaasVMILRRegistrationRequest, bool) {
 	return nil, false
@@ -14161,7 +14259,7 @@ func (ir ILRRequest) AsBasicILRRequest() (BasicILRRequest, bool) {
 	return &ir, true
 }
 
-// ILRRequestResource parameters to restore file/folders API.
+// ILRRequestResource parameters to Provision ILR API.
 type ILRRequestResource struct {
 	// Properties - ILRRequestResource properties
 	Properties BasicILRRequest `json:"properties,omitempty"`
@@ -14290,12 +14388,20 @@ type InquiryValidation struct {
 	Status *string `json:"status,omitempty"`
 	// ErrorDetail - Error Detail in case the status is non-success.
 	ErrorDetail *ErrorDetail `json:"errorDetail,omitempty"`
+	// AdditionalDetail - Error Additional Detail in case the status is non-success.
+	AdditionalDetail *string `json:"additionalDetail,omitempty"`
 }
 
 // InstantItemRecoveryTarget target details for file / folder restore.
 type InstantItemRecoveryTarget struct {
 	// ClientScripts - List of client scripts.
 	ClientScripts *[]ClientScriptForConnect `json:"clientScripts,omitempty"`
+}
+
+// InstantRPAdditionalDetails ...
+type InstantRPAdditionalDetails struct {
+	AzureBackupRGNamePrefix *string `json:"azureBackupRGNamePrefix,omitempty"`
+	AzureBackupRGNameSuffix *string `json:"azureBackupRGNameSuffix,omitempty"`
 }
 
 // BasicJob defines workload agnostic properties for a job.
@@ -14453,7 +14559,7 @@ type JobQueryObject struct {
 	Status JobStatus `json:"status,omitempty"`
 	// BackupManagementType - Type of backup management for the job. Possible values include: 'ManagementTypeInvalid', 'ManagementTypeAzureIaasVM', 'ManagementTypeMAB', 'ManagementTypeDPM', 'ManagementTypeAzureBackupServer', 'ManagementTypeAzureSQL', 'ManagementTypeAzureStorage', 'ManagementTypeAzureWorkload', 'ManagementTypeDefaultBackup'
 	BackupManagementType ManagementType `json:"backupManagementType,omitempty"`
-	// Operation - Type of operation. Possible values include: 'JobOperationTypeInvalid', 'JobOperationTypeRegister', 'JobOperationTypeUnRegister', 'JobOperationTypeConfigureBackup', 'JobOperationTypeBackup', 'JobOperationTypeRestore', 'JobOperationTypeDisableBackup', 'JobOperationTypeDeleteBackupData', 'JobOperationTypeUndelete'
+	// Operation - Type of operation. Possible values include: 'JobOperationTypeInvalid', 'JobOperationTypeRegister', 'JobOperationTypeUnRegister', 'JobOperationTypeConfigureBackup', 'JobOperationTypeBackup', 'JobOperationTypeRestore', 'JobOperationTypeDisableBackup', 'JobOperationTypeDeleteBackupData', 'JobOperationTypeCrossRegionRestore', 'JobOperationTypeUndelete'
 	Operation JobOperationType `json:"operation,omitempty"`
 	// JobID - JobID represents the job uniquely.
 	JobID *string `json:"jobId,omitempty"`
@@ -15060,6 +15166,10 @@ type MabContainerExtendedInfo struct {
 	PolicyName *string `json:"policyName,omitempty"`
 	// LastBackupStatus - Latest backup status of this container.
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
+	// IsSyncEnabled - Indicates if DS was synced to BMS or not
+	IsSyncEnabled *bool `json:"isSyncEnabled,omitempty"`
+	// ProtectedItemsCount - Number of protected items in the container.
+	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
 }
 
 // MABContainerHealthDetails MAB workload-specific Health Details.
@@ -15094,7 +15204,7 @@ type MabFileFolderProtectedItem struct {
 	LastBackupTime *date.Time `json:"lastBackupTime,omitempty"`
 	// ProtectionState - Protected, ProtectionStopped, IRPending or ProtectionError
 	ProtectionState *string `json:"protectionState,omitempty"`
-	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion.
+	// DeferredDeleteSyncTimeInUTC - Sync time for deferred deletion in UTC
 	DeferredDeleteSyncTimeInUTC *int64 `json:"deferredDeleteSyncTimeInUTC,omitempty"`
 	// ExtendedInfo - Additional information with this backup item.
 	ExtendedInfo *MabFileFolderProtectedItemExtendedInfo `json:"extendedInfo,omitempty"`
@@ -15456,7 +15566,7 @@ type MabProtectionPolicy struct {
 	RetentionPolicy BasicRetentionPolicy `json:"retentionPolicy,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -15480,11 +15590,6 @@ func (mpp MabProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFileSha
 	return nil, false
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for MabProtectionPolicy.
-func (mpp MabProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureIaaSVMProtectionPolicy is the BasicProtectionPolicy implementation for MabProtectionPolicy.
 func (mpp MabProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtectionPolicy, bool) {
 	return nil, false
@@ -15492,6 +15597,11 @@ func (mpp MabProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProt
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for MabProtectionPolicy.
 func (mpp MabProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for MabProtectionPolicy.
+func (mpp MabProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 
@@ -15901,6 +16011,8 @@ type OperationStatusError struct {
 	Code *string `json:"code,omitempty"`
 	// Message - Error message displayed if the operation failure.
 	Message *string `json:"message,omitempty"`
+	// Recommendation - Recommended action displayed in case operation fails.
+	Recommendation *string `json:"recommendation,omitempty"`
 }
 
 // BasicOperationStatusExtendedInfo base class for additional information of operation status.
@@ -15908,12 +16020,13 @@ type BasicOperationStatusExtendedInfo interface {
 	AsOperationStatusJobExtendedInfo() (*OperationStatusJobExtendedInfo, bool)
 	AsOperationStatusJobsExtendedInfo() (*OperationStatusJobsExtendedInfo, bool)
 	AsOperationStatusProvisionILRExtendedInfo() (*OperationStatusProvisionILRExtendedInfo, bool)
+	AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool)
 	AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool)
 }
 
 // OperationStatusExtendedInfo base class for additional information of operation status.
 type OperationStatusExtendedInfo struct {
-	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -15937,6 +16050,10 @@ func unmarshalBasicOperationStatusExtendedInfo(body []byte) (BasicOperationStatu
 		var ospiei OperationStatusProvisionILRExtendedInfo
 		err := json.Unmarshal(body, &ospiei)
 		return ospiei, err
+	case string(ObjectTypeOperationStatusRecoveryPointExtendedInfo):
+		var osrpei OperationStatusRecoveryPointExtendedInfo
+		err := json.Unmarshal(body, &osrpei)
+		return osrpei, err
 	default:
 		var osei OperationStatusExtendedInfo
 		err := json.Unmarshal(body, &osei)
@@ -15987,6 +16104,11 @@ func (osei OperationStatusExtendedInfo) AsOperationStatusProvisionILRExtendedInf
 	return nil, false
 }
 
+// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusExtendedInfo.
+func (osei OperationStatusExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
+	return nil, false
+}
+
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusExtendedInfo.
 func (osei OperationStatusExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return &osei, true
@@ -16001,7 +16123,7 @@ func (osei OperationStatusExtendedInfo) AsBasicOperationStatusExtendedInfo() (Ba
 type OperationStatusJobExtendedInfo struct {
 	// JobID - ID of the job created for this protected item.
 	JobID *string `json:"jobId,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16033,6 +16155,11 @@ func (osjei OperationStatusJobExtendedInfo) AsOperationStatusProvisionILRExtende
 	return nil, false
 }
 
+// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobExtendedInfo.
+func (osjei OperationStatusJobExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
+	return nil, false
+}
+
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobExtendedInfo.
 func (osjei OperationStatusJobExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return nil, false
@@ -16049,7 +16176,7 @@ type OperationStatusJobsExtendedInfo struct {
 	JobIds *[]string `json:"jobIds,omitempty"`
 	// FailedJobsError - Stores all the failed jobs along with the corresponding error codes.
 	FailedJobsError map[string]*string `json:"failedJobsError"`
-	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16084,6 +16211,11 @@ func (osjei OperationStatusJobsExtendedInfo) AsOperationStatusProvisionILRExtend
 	return nil, false
 }
 
+// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobsExtendedInfo.
+func (osjei OperationStatusJobsExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
+	return nil, false
+}
+
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobsExtendedInfo.
 func (osjei OperationStatusJobsExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return nil, false
@@ -16098,7 +16230,7 @@ func (osjei OperationStatusJobsExtendedInfo) AsBasicOperationStatusExtendedInfo(
 type OperationStatusProvisionILRExtendedInfo struct {
 	// RecoveryTarget - Target details for file / folder restore.
 	RecoveryTarget *InstantItemRecoveryTarget `json:"recoveryTarget,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16130,6 +16262,11 @@ func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusProvision
 	return &ospiei, true
 }
 
+// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusProvisionILRExtendedInfo.
+func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
+	return nil, false
+}
+
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusProvisionILRExtendedInfo.
 func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return nil, false
@@ -16138,6 +16275,101 @@ func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusExtendedI
 // AsBasicOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusProvisionILRExtendedInfo.
 func (ospiei OperationStatusProvisionILRExtendedInfo) AsBasicOperationStatusExtendedInfo() (BasicOperationStatusExtendedInfo, bool) {
 	return &ospiei, true
+}
+
+// OperationStatusRecoveryPointExtendedInfo operation status extended info for Updated Recovery Point.
+type OperationStatusRecoveryPointExtendedInfo struct {
+	// UpdatedRecoveryPoint - Recovery Point info with updated source snapshot URI
+	UpdatedRecoveryPoint BasicRecoveryPoint `json:"updatedRecoveryPoint,omitempty"`
+	// DeletedBackupItemVersion - In case the share is in soft-deleted state, populate this field with deleted backup item
+	DeletedBackupItemVersion *string `json:"deletedBackupItemVersion,omitempty"`
+	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
+	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationStatusRecoveryPointExtendedInfo.
+func (osrpei OperationStatusRecoveryPointExtendedInfo) MarshalJSON() ([]byte, error) {
+	osrpei.ObjectType = ObjectTypeOperationStatusRecoveryPointExtendedInfo
+	objectMap := make(map[string]interface{})
+	objectMap["updatedRecoveryPoint"] = osrpei.UpdatedRecoveryPoint
+	if osrpei.DeletedBackupItemVersion != nil {
+		objectMap["deletedBackupItemVersion"] = osrpei.DeletedBackupItemVersion
+	}
+	if osrpei.ObjectType != "" {
+		objectMap["objectType"] = osrpei.ObjectType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsOperationStatusJobExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
+func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusJobExtendedInfo() (*OperationStatusJobExtendedInfo, bool) {
+	return nil, false
+}
+
+// AsOperationStatusJobsExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
+func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusJobsExtendedInfo() (*OperationStatusJobsExtendedInfo, bool) {
+	return nil, false
+}
+
+// AsOperationStatusProvisionILRExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
+func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusProvisionILRExtendedInfo() (*OperationStatusProvisionILRExtendedInfo, bool) {
+	return nil, false
+}
+
+// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
+func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
+	return &osrpei, true
+}
+
+// AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
+func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
+	return nil, false
+}
+
+// AsBasicOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
+func (osrpei OperationStatusRecoveryPointExtendedInfo) AsBasicOperationStatusExtendedInfo() (BasicOperationStatusExtendedInfo, bool) {
+	return &osrpei, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for OperationStatusRecoveryPointExtendedInfo struct.
+func (osrpei *OperationStatusRecoveryPointExtendedInfo) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "updatedRecoveryPoint":
+			if v != nil {
+				updatedRecoveryPoint, err := unmarshalBasicRecoveryPoint(*v)
+				if err != nil {
+					return err
+				}
+				osrpei.UpdatedRecoveryPoint = updatedRecoveryPoint
+			}
+		case "deletedBackupItemVersion":
+			if v != nil {
+				var deletedBackupItemVersion string
+				err = json.Unmarshal(*v, &deletedBackupItemVersion)
+				if err != nil {
+					return err
+				}
+				osrpei.DeletedBackupItemVersion = &deletedBackupItemVersion
+			}
+		case "objectType":
+			if v != nil {
+				var objectType ObjectTypeBasicOperationStatusExtendedInfo
+				err = json.Unmarshal(*v, &objectType)
+				if err != nil {
+					return err
+				}
+				osrpei.ObjectType = objectType
+			}
+		}
+	}
+
+	return nil
 }
 
 // OperationWorkerResponse this is the base class for operation result responses.
@@ -16189,7 +16421,7 @@ type PreValidateEnableBackupRequest struct {
 	ResourceType DataSourceType `json:"resourceType,omitempty"`
 	// ResourceID - ARM Virtual Machine Id
 	ResourceID *string `json:"resourceId,omitempty"`
-	// VaultID - Specifies the arm resource id of the vault
+	// VaultID - ARM id of the Recovery Services Vault
 	VaultID *string `json:"vaultId,omitempty"`
 	// Properties - Configuration of VM if any needs to be validated like OS type etc
 	Properties *string `json:"properties,omitempty"`
@@ -18015,9 +18247,9 @@ func NewProtectionIntentResourceListPage(getNextPage func(context.Context, Prote
 // BasicProtectionPolicy base class for backup policy. Workload-specific backup policies are derived from this class.
 type BasicProtectionPolicy interface {
 	AsAzureFileShareProtectionPolicy() (*AzureFileShareProtectionPolicy, bool)
-	AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool)
 	AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtectionPolicy, bool)
 	AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool)
+	AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool)
 	AsGenericProtectionPolicy() (*GenericProtectionPolicy, bool)
 	AsMabProtectionPolicy() (*MabProtectionPolicy, bool)
 	AsProtectionPolicy() (*ProtectionPolicy, bool)
@@ -18028,7 +18260,7 @@ type BasicProtectionPolicy interface {
 type ProtectionPolicy struct {
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -18044,10 +18276,6 @@ func unmarshalBasicProtectionPolicy(body []byte) (BasicProtectionPolicy, error) 
 		var afspp AzureFileShareProtectionPolicy
 		err := json.Unmarshal(body, &afspp)
 		return afspp, err
-	case string(BackupManagementTypeAzureWorkload):
-		var avwpp AzureVMWorkloadProtectionPolicy
-		err := json.Unmarshal(body, &avwpp)
-		return avwpp, err
 	case string(BackupManagementTypeAzureIaasVM):
 		var aispp AzureIaaSVMProtectionPolicy
 		err := json.Unmarshal(body, &aispp)
@@ -18056,6 +18284,10 @@ func unmarshalBasicProtectionPolicy(body []byte) (BasicProtectionPolicy, error) 
 		var aspp AzureSQLProtectionPolicy
 		err := json.Unmarshal(body, &aspp)
 		return aspp, err
+	case string(BackupManagementTypeAzureWorkload):
+		var avwpp AzureVMWorkloadProtectionPolicy
+		err := json.Unmarshal(body, &avwpp)
+		return avwpp, err
 	case string(BackupManagementTypeGenericProtectionPolicy):
 		var gpp GenericProtectionPolicy
 		err := json.Unmarshal(body, &gpp)
@@ -18107,11 +18339,6 @@ func (pp ProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFileSharePr
 	return nil, false
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for ProtectionPolicy.
-func (pp ProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureIaaSVMProtectionPolicy is the BasicProtectionPolicy implementation for ProtectionPolicy.
 func (pp ProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtectionPolicy, bool) {
 	return nil, false
@@ -18119,6 +18346,11 @@ func (pp ProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtecti
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for ProtectionPolicy.
 func (pp ProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for ProtectionPolicy.
+func (pp ProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 
@@ -18410,6 +18642,12 @@ func (page ProtectionPolicyResourceListPage) Values() []ProtectionPolicyResource
 // Creates a new instance of the ProtectionPolicyResourceListPage type.
 func NewProtectionPolicyResourceListPage(getNextPage func(context.Context, ProtectionPolicyResourceList) (ProtectionPolicyResourceList, error)) ProtectionPolicyResourceListPage {
 	return ProtectionPolicyResourceListPage{fn: getNextPage}
+}
+
+// PublicURI base class for Public Uri.
+type PublicURI struct {
+	// PublicURIType - public uri type.
+	PublicURIType *string `json:"publicUriType,omitempty"`
 }
 
 // BasicRecoveryPoint base class for backup copies. Workload-specific backup copies are derived from this class.
@@ -19108,6 +19346,8 @@ type ResourceConfig struct {
 	StorageType StorageType `json:"storageType,omitempty"`
 	// StorageTypeState - Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked. Possible values include: 'StorageTypeStateInvalid', 'StorageTypeStateLocked', 'StorageTypeStateUnlocked'
 	StorageTypeState StorageTypeState `json:"storageTypeState,omitempty"`
+	// CrossRegionRestoreFlag - Opt in details of Cross Region Restore feature.
+	CrossRegionRestoreFlag *bool `json:"crossRegionRestoreFlag,omitempty"`
 }
 
 // ResourceConfigResource the resource storage details.
@@ -19817,6 +20057,8 @@ type StatusRequest struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 	// PoLogicalName - Protectable Item Logical Name
 	PoLogicalName *string `json:"poLogicalName,omitempty"`
+	// PoPublicURI - Public URI of the resource if available.
+	PoPublicURI *PublicURI `json:"poPublicUri,omitempty"`
 }
 
 // StatusResponse backupStatus response.

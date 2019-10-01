@@ -265,15 +265,16 @@ const (
 type JobOperationType = original.JobOperationType
 
 const (
-	JobOperationTypeBackup           JobOperationType = original.JobOperationTypeBackup
-	JobOperationTypeConfigureBackup  JobOperationType = original.JobOperationTypeConfigureBackup
-	JobOperationTypeDeleteBackupData JobOperationType = original.JobOperationTypeDeleteBackupData
-	JobOperationTypeDisableBackup    JobOperationType = original.JobOperationTypeDisableBackup
-	JobOperationTypeInvalid          JobOperationType = original.JobOperationTypeInvalid
-	JobOperationTypeRegister         JobOperationType = original.JobOperationTypeRegister
-	JobOperationTypeRestore          JobOperationType = original.JobOperationTypeRestore
-	JobOperationTypeUndelete         JobOperationType = original.JobOperationTypeUndelete
-	JobOperationTypeUnRegister       JobOperationType = original.JobOperationTypeUnRegister
+	JobOperationTypeBackup             JobOperationType = original.JobOperationTypeBackup
+	JobOperationTypeConfigureBackup    JobOperationType = original.JobOperationTypeConfigureBackup
+	JobOperationTypeCrossRegionRestore JobOperationType = original.JobOperationTypeCrossRegionRestore
+	JobOperationTypeDeleteBackupData   JobOperationType = original.JobOperationTypeDeleteBackupData
+	JobOperationTypeDisableBackup      JobOperationType = original.JobOperationTypeDisableBackup
+	JobOperationTypeInvalid            JobOperationType = original.JobOperationTypeInvalid
+	JobOperationTypeRegister           JobOperationType = original.JobOperationTypeRegister
+	JobOperationTypeRestore            JobOperationType = original.JobOperationTypeRestore
+	JobOperationTypeUndelete           JobOperationType = original.JobOperationTypeUndelete
+	JobOperationTypeUnRegister         JobOperationType = original.JobOperationTypeUnRegister
 )
 
 type JobStatus = original.JobStatus
@@ -398,8 +399,9 @@ const (
 type ObjectTypeBasicILRRequest = original.ObjectTypeBasicILRRequest
 
 const (
-	ObjectTypeIaasVMILRRegistrationRequest ObjectTypeBasicILRRequest = original.ObjectTypeIaasVMILRRegistrationRequest
-	ObjectTypeILRRequest                   ObjectTypeBasicILRRequest = original.ObjectTypeILRRequest
+	ObjectTypeAzureFileShareProvisionILRRequest ObjectTypeBasicILRRequest = original.ObjectTypeAzureFileShareProvisionILRRequest
+	ObjectTypeIaasVMILRRegistrationRequest      ObjectTypeBasicILRRequest = original.ObjectTypeIaasVMILRRegistrationRequest
+	ObjectTypeILRRequest                        ObjectTypeBasicILRRequest = original.ObjectTypeILRRequest
 )
 
 type ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeBasicOperationResultInfoBase
@@ -413,10 +415,11 @@ const (
 type ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeBasicOperationStatusExtendedInfo
 
 const (
-	ObjectTypeOperationStatusExtendedInfo             ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusExtendedInfo
-	ObjectTypeOperationStatusJobExtendedInfo          ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobExtendedInfo
-	ObjectTypeOperationStatusJobsExtendedInfo         ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
-	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
+	ObjectTypeOperationStatusExtendedInfo              ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusExtendedInfo
+	ObjectTypeOperationStatusJobExtendedInfo           ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobExtendedInfo
+	ObjectTypeOperationStatusJobsExtendedInfo          ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
+	ObjectTypeOperationStatusProvisionILRExtendedInfo  ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
+	ObjectTypeOperationStatusRecoveryPointExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusRecoveryPointExtendedInfo
 )
 
 type ObjectTypeBasicRequest = original.ObjectTypeBasicRequest
@@ -813,6 +816,7 @@ type AzureBackupServerEngine = original.AzureBackupServerEngine
 type AzureFileShareBackupRequest = original.AzureFileShareBackupRequest
 type AzureFileShareProtectableItem = original.AzureFileShareProtectableItem
 type AzureFileShareProtectionPolicy = original.AzureFileShareProtectionPolicy
+type AzureFileShareProvisionILRRequest = original.AzureFileShareProvisionILRRequest
 type AzureFileShareRecoveryPoint = original.AzureFileShareRecoveryPoint
 type AzureFileShareRestoreRequest = original.AzureFileShareRestoreRequest
 type AzureFileshareProtectedItem = original.AzureFileshareProtectedItem
@@ -995,6 +999,7 @@ type IaasVMRestoreRequest = original.IaasVMRestoreRequest
 type InquiryInfo = original.InquiryInfo
 type InquiryValidation = original.InquiryValidation
 type InstantItemRecoveryTarget = original.InstantItemRecoveryTarget
+type InstantRPAdditionalDetails = original.InstantRPAdditionalDetails
 type ItemLevelRecoveryConnectionsClient = original.ItemLevelRecoveryConnectionsClient
 type Job = original.Job
 type JobCancellationsClient = original.JobCancellationsClient
@@ -1037,6 +1042,7 @@ type OperationStatusExtendedInfo = original.OperationStatusExtendedInfo
 type OperationStatusJobExtendedInfo = original.OperationStatusJobExtendedInfo
 type OperationStatusJobsExtendedInfo = original.OperationStatusJobsExtendedInfo
 type OperationStatusProvisionILRExtendedInfo = original.OperationStatusProvisionILRExtendedInfo
+type OperationStatusRecoveryPointExtendedInfo = original.OperationStatusRecoveryPointExtendedInfo
 type OperationStatusesClient = original.OperationStatusesClient
 type OperationWorkerResponse = original.OperationWorkerResponse
 type OperationsClient = original.OperationsClient
@@ -1088,6 +1094,7 @@ type ProtectionPolicyResource = original.ProtectionPolicyResource
 type ProtectionPolicyResourceList = original.ProtectionPolicyResourceList
 type ProtectionPolicyResourceListIterator = original.ProtectionPolicyResourceListIterator
 type ProtectionPolicyResourceListPage = original.ProtectionPolicyResourceListPage
+type PublicURI = original.PublicURI
 type RecoveryPoint = original.RecoveryPoint
 type RecoveryPointDiskConfiguration = original.RecoveryPointDiskConfiguration
 type RecoveryPointResource = original.RecoveryPointResource

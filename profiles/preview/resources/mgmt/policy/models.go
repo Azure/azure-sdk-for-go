@@ -22,7 +22,7 @@ package policy
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-06-01/policy"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-09-01/policy"
 )
 
 const (
@@ -49,6 +49,7 @@ const (
 	BuiltIn      Type = original.BuiltIn
 	Custom       Type = original.Custom
 	NotSpecified Type = original.NotSpecified
+	Static       Type = original.Static
 )
 
 type Assignment = original.Assignment
@@ -58,13 +59,16 @@ type AssignmentListResultPage = original.AssignmentListResultPage
 type AssignmentProperties = original.AssignmentProperties
 type AssignmentsClient = original.AssignmentsClient
 type BaseClient = original.BaseClient
+type CloudError = original.CloudError
 type Definition = original.Definition
+type DefinitionGroup = original.DefinitionGroup
 type DefinitionListResult = original.DefinitionListResult
 type DefinitionListResultIterator = original.DefinitionListResultIterator
 type DefinitionListResultPage = original.DefinitionListResultPage
 type DefinitionProperties = original.DefinitionProperties
 type DefinitionReference = original.DefinitionReference
 type DefinitionsClient = original.DefinitionsClient
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
 type Identity = original.Identity
 type SetDefinition = original.SetDefinition

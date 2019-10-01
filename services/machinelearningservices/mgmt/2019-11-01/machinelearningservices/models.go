@@ -46,64 +46,32 @@ func PossibleAllocationStateValues() []AllocationState {
 	return []AllocationState{Resizing, Steady}
 }
 
-// AmlInstanceLastOperation enumerates the values for aml instance last operation.
-type AmlInstanceLastOperation string
-
-const (
-	// Create ...
-	Create AmlInstanceLastOperation = "Create"
-	// Delete ...
-	Delete AmlInstanceLastOperation = "Delete"
-	// Restart ...
-	Restart AmlInstanceLastOperation = "Restart"
-	// Start ...
-	Start AmlInstanceLastOperation = "Start"
-	// Stop ...
-	Stop AmlInstanceLastOperation = "Stop"
-)
-
-// PossibleAmlInstanceLastOperationValues returns an array of possible values for the AmlInstanceLastOperation const type.
-func PossibleAmlInstanceLastOperationValues() []AmlInstanceLastOperation {
-	return []AmlInstanceLastOperation{Create, Delete, Restart, Start, Stop}
-}
-
-// AmlInstanceLastOperationStatus enumerates the values for aml instance last operation status.
-type AmlInstanceLastOperationStatus string
-
-const (
-	// Failed ...
-	Failed AmlInstanceLastOperationStatus = "Failed"
-	// InProgress ...
-	InProgress AmlInstanceLastOperationStatus = "InProgress"
-	// Succeeded ...
-	Succeeded AmlInstanceLastOperationStatus = "Succeeded"
-)
-
-// PossibleAmlInstanceLastOperationStatusValues returns an array of possible values for the AmlInstanceLastOperationStatus const type.
-func PossibleAmlInstanceLastOperationStatusValues() []AmlInstanceLastOperationStatus {
-	return []AmlInstanceLastOperationStatus{Failed, InProgress, Succeeded}
-}
-
 // AmlInstanceState enumerates the values for aml instance state.
 type AmlInstanceState string
 
 const (
+	// CreateFailed ...
+	CreateFailed AmlInstanceState = "CreateFailed"
 	// Creating ...
 	Creating AmlInstanceState = "Creating"
 	// Deleting ...
 	Deleting AmlInstanceState = "Deleting"
 	// Ready ...
 	Ready AmlInstanceState = "Ready"
+	// RestartFailed ...
+	RestartFailed AmlInstanceState = "RestartFailed"
 	// Restarting ...
 	Restarting AmlInstanceState = "Restarting"
 	// Running ...
 	Running AmlInstanceState = "Running"
 	// SettingUp ...
 	SettingUp AmlInstanceState = "SettingUp"
-	// SetupFailed ...
-	SetupFailed AmlInstanceState = "SetupFailed"
+	// StartFailed ...
+	StartFailed AmlInstanceState = "StartFailed"
 	// Starting ...
 	Starting AmlInstanceState = "Starting"
+	// StopFailed ...
+	StopFailed AmlInstanceState = "StopFailed"
 	// Stopped ...
 	Stopped AmlInstanceState = "Stopped"
 	// Stopping ...
@@ -114,13 +82,11 @@ const (
 	Unusable AmlInstanceState = "Unusable"
 	// UserSettingUp ...
 	UserSettingUp AmlInstanceState = "UserSettingUp"
-	// UserSetupFailed ...
-	UserSetupFailed AmlInstanceState = "UserSetupFailed"
 )
 
 // PossibleAmlInstanceStateValues returns an array of possible values for the AmlInstanceState const type.
 func PossibleAmlInstanceStateValues() []AmlInstanceState {
-	return []AmlInstanceState{Creating, Deleting, Ready, Restarting, Running, SettingUp, SetupFailed, Starting, Stopped, Stopping, Unknown, Unusable, UserSettingUp, UserSetupFailed}
+	return []AmlInstanceState{CreateFailed, Creating, Deleting, Ready, RestartFailed, Restarting, Running, SettingUp, StartFailed, Starting, StopFailed, Stopped, Stopping, Unknown, Unusable, UserSettingUp}
 }
 
 // ComputeType enumerates the values for compute type.
@@ -214,19 +180,19 @@ func PossibleComputeTypeBasicComputeSecretsValues() []ComputeTypeBasicComputeSec
 	return []ComputeTypeBasicComputeSecrets{ComputeTypeBasicComputeSecretsComputeTypeAKS, ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets, ComputeTypeBasicComputeSecretsComputeTypeDatabricks, ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine}
 }
 
-// DataStoreSelection enumerates the values for data store selection.
-type DataStoreSelection string
+// DatastoreSelection enumerates the values for datastore selection.
+type DatastoreSelection string
 
 const (
 	// All ...
-	All DataStoreSelection = "All"
+	All DatastoreSelection = "All"
 	// UserSpecified ...
-	UserSpecified DataStoreSelection = "UserSpecified"
+	UserSpecified DatastoreSelection = "UserSpecified"
 )
 
-// PossibleDataStoreSelectionValues returns an array of possible values for the DataStoreSelection const type.
-func PossibleDataStoreSelectionValues() []DataStoreSelection {
-	return []DataStoreSelection{All, UserSpecified}
+// PossibleDatastoreSelectionValues returns an array of possible values for the DatastoreSelection const type.
+func PossibleDatastoreSelectionValues() []DatastoreSelection {
+	return []DatastoreSelection{All, UserSpecified}
 }
 
 // DatastoreState enumerates the values for datastore state.
@@ -424,15 +390,15 @@ func PossibleStatus1Values() []Status1 {
 type UnderlyingResourceAction string
 
 const (
-	// UnderlyingResourceActionDelete ...
-	UnderlyingResourceActionDelete UnderlyingResourceAction = "Delete"
-	// UnderlyingResourceActionDetach ...
-	UnderlyingResourceActionDetach UnderlyingResourceAction = "Detach"
+	// Delete ...
+	Delete UnderlyingResourceAction = "Delete"
+	// Detach ...
+	Detach UnderlyingResourceAction = "Detach"
 )
 
 // PossibleUnderlyingResourceActionValues returns an array of possible values for the UnderlyingResourceAction const type.
 func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
-	return []UnderlyingResourceAction{UnderlyingResourceActionDelete, UnderlyingResourceActionDetach}
+	return []UnderlyingResourceAction{Delete, Detach}
 }
 
 // UpdateOnNextStart enumerates the values for update on next start.
@@ -970,12 +936,10 @@ type AmlInstanceCustomScriptSettings struct {
 // AmlInstanceCustomScriptSettingsStartupScript specifies properties of initialization script to be run
 // during every start of this instance.
 type AmlInstanceCustomScriptSettingsStartupScript struct {
-	// ScriptLocation - The location of customization script. Could be a URI or a relative file path in the default fileshare in the parent workspace.
+	// ScriptLocation - The location of customization script. This is a relative file path in the default fileshare in the parent workspace.
 	ScriptLocation *string `json:"scriptLocation,omitempty"`
 	// ScriptParameters - Parameters required for this script if any.
 	ScriptParameters *string `json:"scriptParameters,omitempty"`
-	// ScriptLogLocation - READ-ONLY; Location of the script's output logs in the default fileshare.
-	ScriptLogLocation *string `json:"scriptLogLocation,omitempty"`
 }
 
 // AmlInstanceDatastore represents specification for datastore requested to be mounted on an AzureML
@@ -989,22 +953,22 @@ type AmlInstanceDatastore struct {
 	Error *string `json:"error,omitempty"`
 }
 
-// AmlInstanceDataStoresMountSettings describes what data stores will be mounted on this compute instance.
-type AmlInstanceDataStoresMountSettings struct {
-	// DataStoreSelection - Allows users to select between mounting All vs Selected datastores from the parent workspace. The 'All' setting also implies that any datastores that later become part of the workspace will be automatically mounted to the compute instance on next start. Possible values include: 'All', 'UserSpecified'
-	DataStoreSelection DataStoreSelection `json:"dataStoreSelection,omitempty"`
-	// DataStores - Specifies the set of data stores that will be mounted on this compute instance. This should only be specified if dataStoreSelection is set to 'UserSpecified'.
-	DataStores *[]AmlInstanceDatastore `json:"dataStores,omitempty"`
+// AmlInstanceDatastoresMountSettings describes what data stores will be mounted on this compute instance.
+type AmlInstanceDatastoresMountSettings struct {
+	// DatastoreSelection - Allows users to select between mounting All vs Selected datastores from the parent workspace. The 'All' setting also implies that any datastores that later become part of the workspace will be automatically mounted to the compute instance on next start. Possible values include: 'All', 'UserSpecified'
+	DatastoreSelection DatastoreSelection `json:"datastoreSelection,omitempty"`
+	// Datastores - Specifies the set of data stores that will be mounted on this compute instance. This should only be specified if dataStoreSelection is set to 'UserSpecified'.
+	Datastores *[]AmlInstanceDatastore `json:"datastores,omitempty"`
 }
 
 // AmlInstanceOSUpdateSettings specifies policy for installing operation system updates.
 type AmlInstanceOSUpdateSettings struct {
 	// OsUpdateType - Possible values include: 'Critical', 'Recommended'
 	OsUpdateType OsUpdateType `json:"osUpdateType,omitempty"`
-	// UpdateFrequencyInDays - Frequency of update checks and installation. Maximum allowable frequency is 30 days.
-	UpdateFrequencyInDays *int64 `json:"updateFrequencyInDays,omitempty"`
-	// UpdateHourInUtc - Hour of the day (0-23) in Universal Time at which software updates can be installed, potentially requiring VM reboot.
-	UpdateHourInUtc *int64 `json:"updateHourInUtc,omitempty"`
+	// UpdateFrequencyInDays - Frequency of update checks and installation. Maximum allowable frequency is 30 days. Default frequency will be 14 days.
+	UpdateFrequencyInDays *int32 `json:"updateFrequencyInDays,omitempty"`
+	// UpdateHourInUtc - Hour of the day (0-23) in Universal Time at which software updates can be installed, potentially requiring VM reboot. Default update hour will be 2 AM UTC.
+	UpdateHourInUtc *int32 `json:"updateHourInUtc,omitempty"`
 }
 
 // AmlInstanceProperties AML Instance properties
@@ -1013,8 +977,8 @@ type AmlInstanceProperties struct {
 	VMSize *string `json:"vmSize,omitempty"`
 	// Subnet - Virtual network subnet resource ID the compute nodes belong to.
 	Subnet *ResourceID `json:"subnet,omitempty"`
-	// DataStoresMountSettings - Describes what data stores will be mounted on this compute instance.
-	DataStoresMountSettings *AmlInstanceDataStoresMountSettings `json:"dataStoresMountSettings,omitempty"`
+	// DatastoresMountSettings - Describes what data stores will be mounted on this compute instance.
+	DatastoresMountSettings *AmlInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
 	// CustomScriptSettings - Specification for initialization scripts to customize this AmlInstance.
 	CustomScriptSettings *AmlInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
 	// SoftwareUpdateSettings - Specifies policies for operating system and Azure ML environment (example packages and SDK) updates.
@@ -1027,12 +991,8 @@ type AmlInstanceProperties struct {
 	CreatedBy *AmlInstanceCreatedBy `json:"createdBy,omitempty"`
 	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.
 	Errors *[]Error `json:"errors,omitempty"`
-	// State - READ-ONLY; The current state of this AmlInstance. Possible values include: 'Creating', 'Deleting', 'Ready', 'Restarting', 'Running', 'SettingUp', 'SetupFailed', 'Starting', 'Stopped', 'Stopping', 'UserSettingUp', 'UserSetupFailed', 'Unknown', 'Unusable'
+	// State - READ-ONLY; The current state of this AmlInstance. Possible values include: 'Creating', 'CreateFailed', 'Deleting', 'Ready', 'Restarting', 'RestartFailed', 'Running', 'SettingUp', 'Starting', 'StartFailed', 'StopFailed', 'Stopped', 'Stopping', 'UserSettingUp', 'Unknown', 'Unusable'
 	State AmlInstanceState `json:"state,omitempty"`
-	// LastOperation - READ-ONLY; Last operation performed on this AmlInstance. Possible values include: 'Create', 'Delete', 'Restart', 'Start', 'Stop'
-	LastOperation AmlInstanceLastOperation `json:"lastOperation,omitempty"`
-	// LastOperationStatus - READ-ONLY; Status of last operation performed on this AmlInstance. Possible values include: 'Failed', 'InProgress', 'Succeeded'
-	LastOperationStatus AmlInstanceLastOperationStatus `json:"lastOperationStatus,omitempty"`
 }
 
 // AmlInstanceSdkUpdate describes a specific update for AmlInstance SDK.
@@ -1041,6 +1001,8 @@ type AmlInstanceSdkUpdate struct {
 	UpdateName *string `json:"updateName,omitempty"`
 	// UpdateDescription - Detailed description of the available SDK update.
 	UpdateDescription *string `json:"updateDescription,omitempty"`
+	// UpdateVersion - Version of this available update.
+	UpdateVersion *string `json:"updateVersion,omitempty"`
 }
 
 // AmlInstanceSdkUpdateSettings specifies policy for installing Azure ML environment (example packages and
@@ -1112,8 +1074,8 @@ func (cup *ClusterUpdateParameters) UnmarshalJSON(body []byte) error {
 type ClusterUpdateProperties struct {
 	// ScaleSettings - Desired scale settings for the amlCompute.
 	ScaleSettings *ScaleSettings `json:"scaleSettings,omitempty"`
-	// DataStoresMountSettings - Describes what data stores will be mounted on this compute instance.
-	DataStoresMountSettings *AmlInstanceDataStoresMountSettings `json:"dataStoresMountSettings,omitempty"`
+	// DatastoresMountSettings - Describes what data stores will be mounted on this compute instance.
+	DatastoresMountSettings *AmlInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
 	// CustomScriptSettings - Specification for initialization scripts to customize this AmlInstance.
 	CustomScriptSettings *AmlInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
 	// SoftwareUpdateSettings - Specifies policies for operating system and Azure ML environment (example packages and SDK) updates.

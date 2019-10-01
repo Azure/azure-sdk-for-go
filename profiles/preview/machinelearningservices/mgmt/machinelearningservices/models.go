@@ -36,41 +36,25 @@ const (
 	Steady   AllocationState = original.Steady
 )
 
-type AmlInstanceLastOperation = original.AmlInstanceLastOperation
-
-const (
-	Create  AmlInstanceLastOperation = original.Create
-	Delete  AmlInstanceLastOperation = original.Delete
-	Restart AmlInstanceLastOperation = original.Restart
-	Start   AmlInstanceLastOperation = original.Start
-	Stop    AmlInstanceLastOperation = original.Stop
-)
-
-type AmlInstanceLastOperationStatus = original.AmlInstanceLastOperationStatus
-
-const (
-	Failed     AmlInstanceLastOperationStatus = original.Failed
-	InProgress AmlInstanceLastOperationStatus = original.InProgress
-	Succeeded  AmlInstanceLastOperationStatus = original.Succeeded
-)
-
 type AmlInstanceState = original.AmlInstanceState
 
 const (
-	Creating        AmlInstanceState = original.Creating
-	Deleting        AmlInstanceState = original.Deleting
-	Ready           AmlInstanceState = original.Ready
-	Restarting      AmlInstanceState = original.Restarting
-	Running         AmlInstanceState = original.Running
-	SettingUp       AmlInstanceState = original.SettingUp
-	SetupFailed     AmlInstanceState = original.SetupFailed
-	Starting        AmlInstanceState = original.Starting
-	Stopped         AmlInstanceState = original.Stopped
-	Stopping        AmlInstanceState = original.Stopping
-	Unknown         AmlInstanceState = original.Unknown
-	Unusable        AmlInstanceState = original.Unusable
-	UserSettingUp   AmlInstanceState = original.UserSettingUp
-	UserSetupFailed AmlInstanceState = original.UserSetupFailed
+	CreateFailed  AmlInstanceState = original.CreateFailed
+	Creating      AmlInstanceState = original.Creating
+	Deleting      AmlInstanceState = original.Deleting
+	Ready         AmlInstanceState = original.Ready
+	RestartFailed AmlInstanceState = original.RestartFailed
+	Restarting    AmlInstanceState = original.Restarting
+	Running       AmlInstanceState = original.Running
+	SettingUp     AmlInstanceState = original.SettingUp
+	StartFailed   AmlInstanceState = original.StartFailed
+	Starting      AmlInstanceState = original.Starting
+	StopFailed    AmlInstanceState = original.StopFailed
+	Stopped       AmlInstanceState = original.Stopped
+	Stopping      AmlInstanceState = original.Stopping
+	Unknown       AmlInstanceState = original.Unknown
+	Unusable      AmlInstanceState = original.Unusable
+	UserSettingUp AmlInstanceState = original.UserSettingUp
 )
 
 type ComputeType = original.ComputeType
@@ -116,11 +100,11 @@ const (
 	ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ComputeTypeBasicComputeSecrets = original.ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine
 )
 
-type DataStoreSelection = original.DataStoreSelection
+type DatastoreSelection = original.DatastoreSelection
 
 const (
-	All           DataStoreSelection = original.All
-	UserSpecified DataStoreSelection = original.UserSpecified
+	All           DatastoreSelection = original.All
+	UserSpecified DatastoreSelection = original.UserSpecified
 )
 
 type DatastoreState = original.DatastoreState
@@ -216,8 +200,8 @@ const (
 type UnderlyingResourceAction = original.UnderlyingResourceAction
 
 const (
-	UnderlyingResourceActionDelete UnderlyingResourceAction = original.UnderlyingResourceActionDelete
-	UnderlyingResourceActionDetach UnderlyingResourceAction = original.UnderlyingResourceActionDetach
+	Delete UnderlyingResourceAction = original.Delete
+	Detach UnderlyingResourceAction = original.Detach
 )
 
 type UpdateOnNextStart = original.UpdateOnNextStart
@@ -254,8 +238,8 @@ type AmlInstanceConnectivityEndpoints = original.AmlInstanceConnectivityEndpoint
 type AmlInstanceCreatedBy = original.AmlInstanceCreatedBy
 type AmlInstanceCustomScriptSettings = original.AmlInstanceCustomScriptSettings
 type AmlInstanceCustomScriptSettingsStartupScript = original.AmlInstanceCustomScriptSettingsStartupScript
-type AmlInstanceDataStoresMountSettings = original.AmlInstanceDataStoresMountSettings
 type AmlInstanceDatastore = original.AmlInstanceDatastore
+type AmlInstanceDatastoresMountSettings = original.AmlInstanceDatastoresMountSettings
 type AmlInstanceOSUpdateSettings = original.AmlInstanceOSUpdateSettings
 type AmlInstanceProperties = original.AmlInstanceProperties
 type AmlInstanceSSHSettings = original.AmlInstanceSSHSettings
@@ -408,12 +392,6 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
 }
-func PossibleAmlInstanceLastOperationStatusValues() []AmlInstanceLastOperationStatus {
-	return original.PossibleAmlInstanceLastOperationStatusValues()
-}
-func PossibleAmlInstanceLastOperationValues() []AmlInstanceLastOperation {
-	return original.PossibleAmlInstanceLastOperationValues()
-}
 func PossibleAmlInstanceStateValues() []AmlInstanceState {
 	return original.PossibleAmlInstanceStateValues()
 }
@@ -429,8 +407,8 @@ func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
 func PossibleComputeTypeValues() []ComputeType {
 	return original.PossibleComputeTypeValues()
 }
-func PossibleDataStoreSelectionValues() []DataStoreSelection {
-	return original.PossibleDataStoreSelectionValues()
+func PossibleDatastoreSelectionValues() []DatastoreSelection {
+	return original.PossibleDatastoreSelectionValues()
 }
 func PossibleDatastoreStateValues() []DatastoreState {
 	return original.PossibleDatastoreStateValues()

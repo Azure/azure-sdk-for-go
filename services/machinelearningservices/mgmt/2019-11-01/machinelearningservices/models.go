@@ -934,6 +934,33 @@ func (ai AmlInstance) AsBasicCompute() (BasicCompute, bool) {
 	return &ai, true
 }
 
+// AmlInstanceApplicationURI defines an Aml Instance application and its connectivity endpoint URI.
+type AmlInstanceApplicationURI struct {
+	// ApplicationName - Name of the AmlInstance application.
+	ApplicationName *string `json:"applicationName,omitempty"`
+	// ApplicationURI - Application' endpoint URI.
+	ApplicationURI *string `json:"applicationUri,omitempty"`
+}
+
+// AmlInstanceConnectivityEndpoints defines all connectivity endpoints and properties for an AmlInstance
+// compute.
+type AmlInstanceConnectivityEndpoints struct {
+	// PublicIPAddress - READ-ONLY; Public IP Address of this AmlInstance.
+	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
+	// ApplicationUris - READ-ONLY; Describes available applications and their connectivity endpoint URIs.
+	ApplicationUris *[]AmlInstanceApplicationURI `json:"applicationUris,omitempty"`
+}
+
+// AmlInstanceCreatedBy describes information on user who created this AmlInstance compute.
+type AmlInstanceCreatedBy struct {
+	// UserName - READ-ONLY; Name of the user.
+	UserName *string `json:"userName,omitempty"`
+	// UserOrgID - READ-ONLY; Uniquely identifies user' Azure Active Directory organization.
+	UserOrgID *string `json:"userOrgId,omitempty"`
+	// UserID - READ-ONLY; Uniquely identifies the user within his/her organization.
+	UserID *string `json:"userId,omitempty"`
+}
+
 // AmlInstanceCustomScriptSettings specification for initialization scripts to customize this AmlInstance.
 type AmlInstanceCustomScriptSettings struct {
 	// StartupScript - Specifies properties of initialization script to be run during every start of this instance.
@@ -994,6 +1021,10 @@ type AmlInstanceProperties struct {
 	SoftwareUpdateSettings *AmlInstanceSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
 	// SSHSettings - Specifies policy and settings for SSH access.
 	SSHSettings *AmlInstanceSSHSettings `json:"sshSettings,omitempty"`
+	// ConnectivityEndpoints - READ-ONLY; Describes all connectivity endpoints available for this AmlInstance compute.
+	ConnectivityEndpoints *AmlInstanceConnectivityEndpoints `json:"connectivityEndpoints,omitempty"`
+	// CreatedBy - READ-ONLY; Describes information on user who created this AmlInstance compute.
+	CreatedBy *AmlInstanceCreatedBy `json:"createdBy,omitempty"`
 	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.
 	Errors *[]Error `json:"errors,omitempty"`
 	// State - READ-ONLY; The current state of this AmlInstance. Possible values include: 'Creating', 'Deleting', 'Ready', 'Restarting', 'Running', 'SettingUp', 'SetupFailed', 'Starting', 'Stopped', 'Stopping', 'UserSettingUp', 'UserSetupFailed', 'Unknown', 'Unusable'

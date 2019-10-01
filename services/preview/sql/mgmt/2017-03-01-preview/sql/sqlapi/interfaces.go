@@ -582,9 +582,9 @@ var _ SensitivityLabelsClientAPI = (*sql.SensitivityLabelsClient)(nil)
 
 // ManagedInstanceAdministratorsClientAPI contains the set of methods on the ManagedInstanceAdministratorsClient type.
 type ManagedInstanceAdministratorsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName string, parameters sql.ManagedInstanceAdministrator) (result sql.ManagedInstanceAdministratorsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName string) (result sql.ManagedInstanceAdministratorsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, administratorName string) (result sql.ManagedInstanceAdministrator, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceAdministrator) (result sql.ManagedInstanceAdministratorsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceAdministratorsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceAdministrator, err error)
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceAdministratorListResultPage, err error)
 }
 

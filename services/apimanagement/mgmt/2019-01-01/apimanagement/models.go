@@ -4598,6 +4598,8 @@ type HTTPMessageDiagnostic struct {
 type IdentityProviderBaseParameters struct {
 	// Type - Identity Provider Type identifier. Possible values include: 'Facebook', 'Google', 'Microsoft', 'Twitter', 'Aad', 'AadB2C'
 	Type IdentityProviderType `json:"type,omitempty"`
+	// SigninTenant - The TenantId to use instead of Common when logging into Active Directory
+	SigninTenant *string `json:"signinTenant,omitempty"`
 	// AllowedTenants - List of Allowed Tenants when configuring Azure Active Directory login.
 	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
 	// Authority - OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
@@ -4695,6 +4697,8 @@ type IdentityProviderContractProperties struct {
 	ClientSecret *string `json:"clientSecret,omitempty"`
 	// Type - Identity Provider Type identifier. Possible values include: 'Facebook', 'Google', 'Microsoft', 'Twitter', 'Aad', 'AadB2C'
 	Type IdentityProviderType `json:"type,omitempty"`
+	// SigninTenant - The TenantId to use instead of Common when logging into Active Directory
+	SigninTenant *string `json:"signinTenant,omitempty"`
 	// AllowedTenants - List of Allowed Tenants when configuring Azure Active Directory login.
 	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
 	// Authority - OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
@@ -4902,6 +4906,8 @@ type IdentityProviderUpdateProperties struct {
 	ClientSecret *string `json:"clientSecret,omitempty"`
 	// Type - Identity Provider Type identifier. Possible values include: 'Facebook', 'Google', 'Microsoft', 'Twitter', 'Aad', 'AadB2C'
 	Type IdentityProviderType `json:"type,omitempty"`
+	// SigninTenant - The TenantId to use instead of Common when logging into Active Directory
+	SigninTenant *string `json:"signinTenant,omitempty"`
 	// AllowedTenants - List of Allowed Tenants when configuring Azure Active Directory login.
 	AllowedTenants *[]string `json:"allowedTenants,omitempty"`
 	// Authority - OpenID Connect discovery endpoint hostname for AAD or AAD B2C.

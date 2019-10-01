@@ -356,6 +356,7 @@ const (
 	BackupManagementTypeAzureIaasVM             ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeAzureIaasVM
 	BackupManagementTypeAzureSQL                ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeAzureSQL
 	BackupManagementTypeAzureStorage            ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeAzureStorage
+	BackupManagementTypeAzureWorkload           ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeAzureWorkload
 	BackupManagementTypeGenericProtectionPolicy ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeGenericProtectionPolicy
 	BackupManagementTypeMAB                     ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeMAB
 	BackupManagementTypeProtectionPolicy        ManagementTypeBasicProtectionPolicy = original.BackupManagementTypeProtectionPolicy
@@ -851,6 +852,7 @@ type AzureVMWorkloadItem = original.AzureVMWorkloadItem
 type AzureVMWorkloadProtectableItem = original.AzureVMWorkloadProtectableItem
 type AzureVMWorkloadProtectedItem = original.AzureVMWorkloadProtectedItem
 type AzureVMWorkloadProtectedItemExtendedInfo = original.AzureVMWorkloadProtectedItemExtendedInfo
+type AzureVMWorkloadProtectionPolicy = original.AzureVMWorkloadProtectionPolicy
 type AzureVMWorkloadSAPAseDatabaseProtectableItem = original.AzureVMWorkloadSAPAseDatabaseProtectableItem
 type AzureVMWorkloadSAPAseDatabaseProtectedItem = original.AzureVMWorkloadSAPAseDatabaseProtectedItem
 type AzureVMWorkloadSAPAseDatabaseWorkloadItem = original.AzureVMWorkloadSAPAseDatabaseWorkloadItem

@@ -10848,14 +10848,14 @@ func (awspitrr AzureWorkloadSQLPointInTimeRestoreRequest) AsBasicRestoreRequest(
 }
 
 // BasicAzureWorkloadSQLRecoveryPoint SQL specific recoverypoint, specifically encapsulates full/diff recoverypoint
-// alongwith extended info
+// along with extended info
 type BasicAzureWorkloadSQLRecoveryPoint interface {
 	AsAzureWorkloadSQLPointInTimeRecoveryPoint() (*AzureWorkloadSQLPointInTimeRecoveryPoint, bool)
 	AsAzureWorkloadSQLRecoveryPoint() (*AzureWorkloadSQLRecoveryPoint, bool)
 }
 
 // AzureWorkloadSQLRecoveryPoint SQL specific recoverypoint, specifically encapsulates full/diff recoverypoint
-// alongwith extended info
+// along with extended info
 type AzureWorkloadSQLRecoveryPoint struct {
 	// ExtendedInfo - Extended Info that provides data directory details. Will be populated in two cases:
 	// When a specific recovery point is accessed using GetRecoveryPoint

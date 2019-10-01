@@ -85,7 +85,7 @@ type PrefixesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix peering.ServicePrefix) (result peering.ServicePrefix, err error)
 	Delete(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, expand string) (result peering.ServicePrefix, err error)
-	ListByPeeringService(ctx context.Context, resourceGroupName string, peeringServiceName string) (result peering.ServicePrefixListResultPage, err error)
+	ListByPeeringService(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (result peering.ServicePrefixListResultPage, err error)
 }
 
 var _ PrefixesClientAPI = (*peering.PrefixesClient)(nil)

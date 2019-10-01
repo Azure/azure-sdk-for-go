@@ -1990,26 +1990,26 @@ func (sp *ServicePrefix) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicePrefixEvent the peering service prefix event class.
+// ServicePrefixEvent the details of the event associated with a prefix.
 type ServicePrefixEvent struct {
-	// EventType - READ-ONLY; The event type of the peering service prefix event
+	// EventTimestamp - READ-ONLY; The timestamp of the event associated with a prefix.
+	EventTimestamp *date.Time `json:"eventTimestamp,omitempty"`
+	// EventType - READ-ONLY; The type of the event associated with a prefix.
 	EventType *string `json:"eventType,omitempty"`
-	// EventTimeStamp - READ-ONLY; The event timestamp of the peering service prefix event
-	EventTimeStamp *date.Time `json:"eventTimeStamp,omitempty"`
-	// Description - READ-ONLY; The event description of the peering service prefix event
-	Description *string `json:"description,omitempty"`
-	// EventLevel - READ-ONLY; The event level of the peering service prefix event
+	// EventSummary - READ-ONLY; The summary of the event associated with a prefix.
+	EventSummary *string `json:"eventSummary,omitempty"`
+	// EventLevel - READ-ONLY; The level of the event associated with a prefix.
 	EventLevel *string `json:"eventLevel,omitempty"`
-	// AdditionalInfo - READ-ONLY; Additional information for the peering service prefix event
-	AdditionalInfo *string `json:"additionalInfo,omitempty"`
+	// EventDescription - READ-ONLY; The description of the event associated with a prefix.
+	EventDescription *string `json:"eventDescription,omitempty"`
 }
 
-// ServicePrefixListResult the paginated list of [T].
+// ServicePrefixListResult the paginated list of peering service prefixes.
 type ServicePrefixListResult struct {
 	autorest.Response `json:"-"`
-	// Value - The list of [T].
+	// Value - The list of peering service prefixes.
 	Value *[]ServicePrefix `json:"value,omitempty"`
-	// NextLink - The link to fetch the next page of [T].
+	// NextLink - The link to fetch the next page of peering service prefixes.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 

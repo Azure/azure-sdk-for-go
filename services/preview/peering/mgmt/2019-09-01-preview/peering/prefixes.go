@@ -290,7 +290,8 @@ func (client PrefixesClient) GetResponder(resp *http.Response) (result ServicePr
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // peeringServiceName - the name of the peering service.
-func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceGroupName string, peeringServiceName string) (result ServicePrefixListResultPage, err error) {
+// expand - the properties to be expanded.
+func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (result ServicePrefixListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.ListByPeeringService")
 		defer func() {
@@ -302,7 +303,7 @@ func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceG
 		}()
 	}
 	result.fn = client.listByPeeringServiceNextResults
-	req, err := client.ListByPeeringServicePreparer(ctx, resourceGroupName, peeringServiceName)
+	req, err := client.ListByPeeringServicePreparer(ctx, resourceGroupName, peeringServiceName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "ListByPeeringService", nil, "Failure preparing request")
 		return
@@ -324,7 +325,7 @@ func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceG
 }
 
 // ListByPeeringServicePreparer prepares the ListByPeeringService request.
-func (client PrefixesClient) ListByPeeringServicePreparer(ctx context.Context, resourceGroupName string, peeringServiceName string) (*http.Request, error) {
+func (client PrefixesClient) ListByPeeringServicePreparer(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"peeringServiceName": autorest.Encode("path", peeringServiceName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -334,6 +335,9 @@ func (client PrefixesClient) ListByPeeringServicePreparer(ctx context.Context, r
 	const APIVersion = "2019-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -386,7 +390,7 @@ func (client PrefixesClient) listByPeeringServiceNextResults(ctx context.Context
 }
 
 // ListByPeeringServiceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PrefixesClient) ListByPeeringServiceComplete(ctx context.Context, resourceGroupName string, peeringServiceName string) (result ServicePrefixListResultIterator, err error) {
+func (client PrefixesClient) ListByPeeringServiceComplete(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (result ServicePrefixListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.ListByPeeringService")
 		defer func() {
@@ -397,6 +401,6 @@ func (client PrefixesClient) ListByPeeringServiceComplete(ctx context.Context, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByPeeringService(ctx, resourceGroupName, peeringServiceName)
+	result.page, err = client.ListByPeeringService(ctx, resourceGroupName, peeringServiceName, expand)
 	return
 }

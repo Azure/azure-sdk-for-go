@@ -40,10 +40,256 @@ func NewPrefixesClientWithBaseURI(baseURI string, subscriptionID string) Prefixe
 	return PrefixesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListByPeeringService lists the peerings prefix in the resource group.
+// CreateOrUpdate creates a new prefix with the specified name under the given subscription, resource group and peering
+// service.
 // Parameters:
-// resourceGroupName - the resource group name.
-// peeringServiceName - the peering service name.
+// resourceGroupName - the name of the resource group.
+// peeringServiceName - the name of the peering service.
+// prefixName - the name of the prefix.
+// peeringServicePrefix - the properties needed to create a prefix.
+func (client PrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix ServicePrefix) (result ServicePrefix, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.CreateOrUpdate")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "CreateOrUpdate", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CreateOrUpdateSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "CreateOrUpdate", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client PrefixesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix ServicePrefix) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"peeringServiceName": autorest.Encode("path", peeringServiceName),
+		"prefixName":         autorest.Encode("path", prefixName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}", pathParameters),
+		autorest.WithJSON(peeringServicePrefix),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrefixesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// closes the http.Response Body.
+func (client PrefixesClient) CreateOrUpdateResponder(resp *http.Response) (result ServicePrefix, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete deletes an existing prefix with the specified name under the given subscription, resource group and peering
+// service.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// peeringServiceName - the name of the peering service.
+// prefixName - the name of the prefix.
+func (client PrefixesClient) Delete(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeletePreparer(ctx, resourceGroupName, peeringServiceName, prefixName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client PrefixesClient) DeletePreparer(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"peeringServiceName": autorest.Encode("path", peeringServiceName),
+		"prefixName":         autorest.Encode("path", prefixName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrefixesClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client PrefixesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Get gets an existing prefix with the specified name under the given subscription, resource group and peering
+// service.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// peeringServiceName - the name of the peering service.
+// prefixName - the name of the prefix.
+// expand - the properties to be expanded.
+func (client PrefixesClient) Get(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, expand string) (result ServicePrefix, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetPreparer(ctx, resourceGroupName, peeringServiceName, prefixName, expand)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Get", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Get", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Get", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client PrefixesClient) GetPreparer(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, expand string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"peeringServiceName": autorest.Encode("path", peeringServiceName),
+		"prefixName":         autorest.Encode("path", prefixName),
+		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
+		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-09-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrefixesClient) GetSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client PrefixesClient) GetResponder(resp *http.Response) (result ServicePrefix, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListByPeeringService lists all prefixes under the given subscription, resource group and peering service.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// peeringServiceName - the name of the peering service.
 func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceGroupName string, peeringServiceName string) (result ServicePrefixListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.ListByPeeringService")

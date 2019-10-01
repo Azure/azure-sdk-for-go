@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
@@ -1989,6 +1990,20 @@ func (sp *ServicePrefix) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ServicePrefixEvent the peering service prefix event class.
+type ServicePrefixEvent struct {
+	// EventType - READ-ONLY; The event type of the peering service prefix event
+	EventType *string `json:"eventType,omitempty"`
+	// EventTimeStamp - READ-ONLY; The event timestamp of the peering service prefix event
+	EventTimeStamp *date.Time `json:"eventTimeStamp,omitempty"`
+	// Description - READ-ONLY; The event description of the peering service prefix event
+	Description *string `json:"description,omitempty"`
+	// EventLevel - READ-ONLY; The event level of the peering service prefix event
+	EventLevel *string `json:"eventLevel,omitempty"`
+	// AdditionalInfo - READ-ONLY; Additional information for the peering service prefix event
+	AdditionalInfo *string `json:"additionalInfo,omitempty"`
+}
+
 // ServicePrefixListResult the paginated list of [T].
 type ServicePrefixListResult struct {
 	autorest.Response `json:"-"`
@@ -2145,6 +2160,8 @@ type ServicePrefixProperties struct {
 	LearnedType LearnedType `json:"learnedType,omitempty"`
 	// ErrorMessage - READ-ONLY; The error message for validation state
 	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// Events - READ-ONLY; The list of events for peering service prefix
+	Events *[]ServicePrefixEvent `json:"events,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }

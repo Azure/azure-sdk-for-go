@@ -29,6 +29,5 @@ type PeerAsnsClientAPI = original.PeerAsnsClientAPI
 type PeeringsClientAPI = original.PeeringsClientAPI
 type PrefixesClientAPI = original.PrefixesClientAPI
 type ServiceLocationsClientAPI = original.ServiceLocationsClientAPI
-type ServicePrefixesClientAPI = original.ServicePrefixesClientAPI
 type ServiceProvidersClientAPI = original.ServiceProvidersClientAPI
 type ServicesClientAPI = original.ServicesClientAPI

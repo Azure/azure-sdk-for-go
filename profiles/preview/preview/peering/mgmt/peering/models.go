@@ -221,11 +221,11 @@ type ServiceLocationListResultPage = original.ServiceLocationListResultPage
 type ServiceLocationProperties = original.ServiceLocationProperties
 type ServiceLocationsClient = original.ServiceLocationsClient
 type ServicePrefix = original.ServicePrefix
+type ServicePrefixEvent = original.ServicePrefixEvent
 type ServicePrefixListResult = original.ServicePrefixListResult
 type ServicePrefixListResultIterator = original.ServicePrefixListResultIterator
 type ServicePrefixListResultPage = original.ServicePrefixListResultPage
 type ServicePrefixProperties = original.ServicePrefixProperties
-type ServicePrefixesClient = original.ServicePrefixesClient
 type ServiceProperties = original.ServiceProperties
 type ServiceProvider = original.ServiceProvider
 type ServiceProviderListResult = original.ServiceProviderListResult
@@ -324,12 +324,6 @@ func NewServicePrefixListResultIterator(page ServicePrefixListResultPage) Servic
 }
 func NewServicePrefixListResultPage(getNextPage func(context.Context, ServicePrefixListResult) (ServicePrefixListResult, error)) ServicePrefixListResultPage {
 	return original.NewServicePrefixListResultPage(getNextPage)
-}
-func NewServicePrefixesClient(subscriptionID string) ServicePrefixesClient {
-	return original.NewServicePrefixesClient(subscriptionID)
-}
-func NewServicePrefixesClientWithBaseURI(baseURI string, subscriptionID string) ServicePrefixesClient {
-	return original.NewServicePrefixesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServiceProviderListResultIterator(page ServiceProviderListResultPage) ServiceProviderListResultIterator {
 	return original.NewServiceProviderListResultIterator(page)

@@ -1734,7 +1734,7 @@ type GenerateCredentialsParameters struct {
 	TokenID *string `json:"tokenId,omitempty"`
 	// Expiry - The expiry date of the generated credentials after which the credentials become invalid.
 	Expiry *date.Time `json:"expiry,omitempty"`
-	// Name - Specifies name of the password which should be regenerated if any -- password or password2. Possible values include: 'TokenPasswordNamePassword1', 'TokenPasswordNamePassword2'
+	// Name - Specifies name of the password which should be regenerated if any -- password1 or password2. Possible values include: 'TokenPasswordNamePassword1', 'TokenPasswordNamePassword2'
 	Name TokenPasswordName `json:"name,omitempty"`
 }
 
@@ -3854,8 +3854,8 @@ type ScopeMapProperties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Actions - The list of scoped permissions for registry artifacts.
-	// E.g. repositories/repository-name/pull,
-	// repositories/repository-name/delete
+	// E.g. repositories/repository-name/content/read,
+	// repositories/repository-name/metadata/write
 	Actions *[]string `json:"actions,omitempty"`
 }
 
@@ -5313,7 +5313,7 @@ type TokenPassword struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// Expiry - The expiry datetime of the password.
 	Expiry *date.Time `json:"expiry,omitempty"`
-	// Name - The password name "password" or "password2". Possible values include: 'TokenPasswordNamePassword1', 'TokenPasswordNamePassword2'
+	// Name - The password name "password1" or "password2". Possible values include: 'TokenPasswordNamePassword1', 'TokenPasswordNamePassword2'
 	Name TokenPasswordName `json:"name,omitempty"`
 	// Value - READ-ONLY; The password value.
 	Value *string `json:"value,omitempty"`

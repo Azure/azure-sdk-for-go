@@ -1,4 +1,4 @@
-// Package peering implements the Azure ARM Peering service API version 2019-08-01-preview.
+// Package peering implements the Azure ARM Peering service API version 2019-09-01-preview.
 //
 // Peering Client
 package peering
@@ -57,8 +57,8 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 // CheckServiceProviderAvailability checks if the peering service provider is present within 1000 miles of customer's
 // location
 // Parameters:
-// checkServiceProviderAvailabilityInput - the CheckServiceProviderAvailabilityInput
-// indicating customer location and service provider.
+// checkServiceProviderAvailabilityInput - the CheckServiceProviderAvailabilityInput indicating customer
+// location and service provider.
 func (client BaseClient) CheckServiceProviderAvailability(ctx context.Context, checkServiceProviderAvailabilityInput CheckServiceProviderAvailabilityInput) (result String, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckServiceProviderAvailability")
@@ -97,7 +97,7 @@ func (client BaseClient) CheckServiceProviderAvailabilityPreparer(ctx context.Co
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-08-01-preview"
+	const APIVersion = "2019-09-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -22,6 +22,6 @@ package sdk
 // https://github.com/golang/go/wiki/Modules#how-can-i-track-tool-dependencies-for-a-module
 
 import (
-	_ "github.com/HewlettPackard/gas"
+	_ "github.com/securego/gosec"
 	_ "golang.org/x/lint/golint"
 )

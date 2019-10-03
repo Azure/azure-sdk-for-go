@@ -19,8 +19,7 @@ steps:
   displayName: 'Create Go Workspace'
 - script: |
     set -e
-    curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-    dep ensure -v
+    go mod vendor
     go get -u golang.org/x/lint/golint
   workingDirectory: '$(sdkPath)'
   displayName: 'Install Dependencies'

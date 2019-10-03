@@ -32,6 +32,13 @@ type ProtectedItemsClientAPI interface {
 
 var _ ProtectedItemsClientAPI = (*backup.ProtectedItemsClient)(nil)
 
+// ProtectedItemOperationResultsClientAPI contains the set of methods on the ProtectedItemOperationResultsClient type.
+type ProtectedItemOperationResultsClientAPI interface {
+	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, operationID string) (result backup.ProtectedItemResource, err error)
+}
+
+var _ ProtectedItemOperationResultsClientAPI = (*backup.ProtectedItemOperationResultsClient)(nil)
+
 // RecoveryPointsClientAPI contains the set of methods on the RecoveryPointsClient type.
 type RecoveryPointsClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.RecoveryPointResource, err error)
@@ -54,12 +61,26 @@ type JobsClientAPI interface {
 
 var _ JobsClientAPI = (*backup.JobsClient)(nil)
 
+// JobsGroupClientAPI contains the set of methods on the JobsGroupClient type.
+type JobsGroupClientAPI interface {
+	Export(ctx context.Context, vaultName string, resourceGroupName string, filter string) (result autorest.Response, err error)
+}
+
+var _ JobsGroupClientAPI = (*backup.JobsGroupClient)(nil)
+
 // ProtectedItemsGroupClientAPI contains the set of methods on the ProtectedItemsGroupClient type.
 type ProtectedItemsGroupClientAPI interface {
 	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListPage, err error)
 }
 
 var _ ProtectedItemsGroupClientAPI = (*backup.ProtectedItemsGroupClient)(nil)
+
+// OperationClientAPI contains the set of methods on the OperationClient type.
+type OperationClientAPI interface {
+	Validate(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.BasicValidateOperationRequest) (result backup.ValidateOperationsResponse, err error)
+}
+
+var _ OperationClientAPI = (*backup.OperationClient)(nil)
 
 // ProtectionIntentClientAPI contains the set of methods on the ProtectionIntentClient type.
 type ProtectionIntentClientAPI interface {
@@ -99,13 +120,6 @@ type ExportJobsOperationResultsClientAPI interface {
 
 var _ ExportJobsOperationResultsClientAPI = (*backup.ExportJobsOperationResultsClient)(nil)
 
-// JobsGroupClientAPI contains the set of methods on the JobsGroupClient type.
-type JobsGroupClientAPI interface {
-	Export(ctx context.Context, vaultName string, resourceGroupName string, filter string) (result autorest.Response, err error)
-}
-
-var _ JobsGroupClientAPI = (*backup.JobsGroupClient)(nil)
-
 // PoliciesClientAPI contains the set of methods on the PoliciesClient type.
 type PoliciesClientAPI interface {
 	List(ctx context.Context, vaultName string, resourceGroupName string, filter string) (result backup.ProtectionPolicyResourceListPage, err error)
@@ -122,6 +136,13 @@ type ProtectionPoliciesClientAPI interface {
 
 var _ ProtectionPoliciesClientAPI = (*backup.ProtectionPoliciesClient)(nil)
 
+// ProtectionPolicyOperationResultsClientAPI contains the set of methods on the ProtectionPolicyOperationResultsClient type.
+type ProtectionPolicyOperationResultsClientAPI interface {
+	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string) (result backup.ProtectionPolicyResource, err error)
+}
+
+var _ ProtectionPolicyOperationResultsClientAPI = (*backup.ProtectionPolicyOperationResultsClient)(nil)
+
 // ProtectionIntentGroupClientAPI contains the set of methods on the ProtectionIntentGroupClient type.
 type ProtectionIntentGroupClientAPI interface {
 	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectionIntentResourceListPage, err error)
@@ -135,13 +156,6 @@ type UsageSummariesClientAPI interface {
 }
 
 var _ UsageSummariesClientAPI = (*backup.UsageSummariesClient)(nil)
-
-// OperationClientAPI contains the set of methods on the OperationClient type.
-type OperationClientAPI interface {
-	Validate(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.BasicValidateOperationRequest) (result backup.ValidateOperationsResponse, err error)
-}
-
-var _ OperationClientAPI = (*backup.OperationClient)(nil)
 
 // ResourceVaultConfigsClientAPI contains the set of methods on the ResourceVaultConfigsClient type.
 type ResourceVaultConfigsClientAPI interface {
@@ -205,13 +219,6 @@ type BackupsClientAPI interface {
 
 var _ BackupsClientAPI = (*backup.BackupsClient)(nil)
 
-// ProtectedItemOperationResultsClientAPI contains the set of methods on the ProtectedItemOperationResultsClient type.
-type ProtectedItemOperationResultsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, operationID string) (result backup.ProtectedItemResource, err error)
-}
-
-var _ ProtectedItemOperationResultsClientAPI = (*backup.ProtectedItemOperationResultsClient)(nil)
-
 // ProtectedItemOperationStatusesClientAPI contains the set of methods on the ProtectedItemOperationStatusesClient type.
 type ProtectedItemOperationStatusesClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, operationID string) (result backup.OperationStatus, err error)
@@ -254,13 +261,6 @@ type OperationStatusesClientAPI interface {
 }
 
 var _ OperationStatusesClientAPI = (*backup.OperationStatusesClient)(nil)
-
-// ProtectionPolicyOperationResultsClientAPI contains the set of methods on the ProtectionPolicyOperationResultsClient type.
-type ProtectionPolicyOperationResultsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string) (result backup.ProtectionPolicyResource, err error)
-}
-
-var _ ProtectionPolicyOperationResultsClientAPI = (*backup.ProtectionPolicyOperationResultsClient)(nil)
 
 // ProtectionPolicyOperationStatusesClientAPI contains the set of methods on the ProtectionPolicyOperationStatusesClient type.
 type ProtectionPolicyOperationStatusesClientAPI interface {

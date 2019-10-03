@@ -839,13 +839,11 @@ const (
 	ObjectTypeOperationStatusJobsExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusJobsExtendedInfo"
 	// ObjectTypeOperationStatusProvisionILRExtendedInfo ...
 	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusProvisionILRExtendedInfo"
-	// ObjectTypeOperationStatusRecoveryPointExtendedInfo ...
-	ObjectTypeOperationStatusRecoveryPointExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusRecoveryPointExtendedInfo"
 )
 
 // PossibleObjectTypeBasicOperationStatusExtendedInfoValues returns an array of possible values for the ObjectTypeBasicOperationStatusExtendedInfo const type.
 func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() []ObjectTypeBasicOperationStatusExtendedInfo {
-	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo, ObjectTypeOperationStatusRecoveryPointExtendedInfo}
+	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo}
 }
 
 // ObjectTypeBasicRequest enumerates the values for object type basic request.
@@ -1021,8 +1019,6 @@ const (
 	ProtectableItemTypeMicrosoftClassicComputevirtualMachines ProtectableItemType = "Microsoft.ClassicCompute/virtualMachines"
 	// ProtectableItemTypeMicrosoftComputevirtualMachines ...
 	ProtectableItemTypeMicrosoftComputevirtualMachines ProtectableItemType = "Microsoft.Compute/virtualMachines"
-	// ProtectableItemTypeSAPAseDatabase ...
-	ProtectableItemTypeSAPAseDatabase ProtectableItemType = "SAPAseDatabase"
 	// ProtectableItemTypeSAPAseSystem ...
 	ProtectableItemTypeSAPAseSystem ProtectableItemType = "SAPAseSystem"
 	// ProtectableItemTypeSAPHanaDatabase ...
@@ -1041,7 +1037,7 @@ const (
 
 // PossibleProtectableItemTypeValues returns an array of possible values for the ProtectableItemType const type.
 func PossibleProtectableItemTypeValues() []ProtectableItemType {
-	return []ProtectableItemType{ProtectableItemTypeAzureFileShare, ProtectableItemTypeAzureVMWorkloadProtectableItem, ProtectableItemTypeIaaSVMProtectableItem, ProtectableItemTypeMicrosoftClassicComputevirtualMachines, ProtectableItemTypeMicrosoftComputevirtualMachines, ProtectableItemTypeSAPAseDatabase, ProtectableItemTypeSAPAseSystem, ProtectableItemTypeSAPHanaDatabase, ProtectableItemTypeSAPHanaSystem, ProtectableItemTypeSQLAvailabilityGroupContainer, ProtectableItemTypeSQLDataBase, ProtectableItemTypeSQLInstance, ProtectableItemTypeWorkloadProtectableItem}
+	return []ProtectableItemType{ProtectableItemTypeAzureFileShare, ProtectableItemTypeAzureVMWorkloadProtectableItem, ProtectableItemTypeIaaSVMProtectableItem, ProtectableItemTypeMicrosoftClassicComputevirtualMachines, ProtectableItemTypeMicrosoftComputevirtualMachines, ProtectableItemTypeSAPAseSystem, ProtectableItemTypeSAPHanaDatabase, ProtectableItemTypeSAPHanaSystem, ProtectableItemTypeSQLAvailabilityGroupContainer, ProtectableItemTypeSQLDataBase, ProtectableItemTypeSQLInstance, ProtectableItemTypeWorkloadProtectableItem}
 }
 
 // ProtectedItemHealthStatus enumerates the values for protected item health status.
@@ -1188,6 +1184,23 @@ const (
 // PossibleProtectionStatusValues returns an array of possible values for the ProtectionStatus const type.
 func PossibleProtectionStatusValues() []ProtectionStatus {
 	return []ProtectionStatus{ProtectionStatusInvalid, ProtectionStatusNotProtected, ProtectionStatusProtected, ProtectionStatusProtecting, ProtectionStatusProtectionFailed}
+}
+
+// RecoveryMode enumerates the values for recovery mode.
+type RecoveryMode string
+
+const (
+	// RecoveryModeFileRecovery ...
+	RecoveryModeFileRecovery RecoveryMode = "FileRecovery"
+	// RecoveryModeInvalid ...
+	RecoveryModeInvalid RecoveryMode = "Invalid"
+	// RecoveryModeWorkloadRecovery ...
+	RecoveryModeWorkloadRecovery RecoveryMode = "WorkloadRecovery"
+)
+
+// PossibleRecoveryModeValues returns an array of possible values for the RecoveryMode const type.
+func PossibleRecoveryModeValues() []RecoveryMode {
+	return []RecoveryMode{RecoveryModeFileRecovery, RecoveryModeInvalid, RecoveryModeWorkloadRecovery}
 }
 
 // RecoveryPointTierStatus enumerates the values for recovery point tier status.
@@ -2018,7 +2031,7 @@ type AzureFileShareProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -2075,11 +2088,6 @@ func (afspi AzureFileShareProtectableItem) AsAzureVMWorkloadProtectableItem() (*
 
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureFileShareProtectableItem.
 func (afspi AzureFileShareProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureFileShareProtectableItem.
-func (afspi AzureFileShareProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
 	return nil, false
 }
 
@@ -2901,7 +2909,7 @@ type AzureIaaSClassicComputeVMProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -2952,11 +2960,6 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectableItem) AsAzureVMWorkloadProtec
 
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureIaaSClassicComputeVMProtectableItem.
 func (aisccvpi AzureIaaSClassicComputeVMProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureIaaSClassicComputeVMProtectableItem.
-func (aisccvpi AzureIaaSClassicComputeVMProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
 	return nil, false
 }
 
@@ -3376,7 +3379,7 @@ type AzureIaaSComputeVMProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -3427,11 +3430,6 @@ func (aiscvpi AzureIaaSComputeVMProtectableItem) AsAzureVMWorkloadProtectableIte
 
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureIaaSComputeVMProtectableItem.
 func (aiscvpi AzureIaaSComputeVMProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureIaaSComputeVMProtectableItem.
-func (aiscvpi AzureIaaSComputeVMProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
 	return nil, false
 }
 
@@ -5893,7 +5891,6 @@ func (avwi AzureVMWorkloadItem) AsBasicWorkloadItem() (BasicWorkloadItem, bool) 
 
 // BasicAzureVMWorkloadProtectableItem azure VM workload-specific protectable item.
 type BasicAzureVMWorkloadProtectableItem interface {
-	AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool)
 	AsAzureVMWorkloadSAPAseSystemProtectableItem() (*AzureVMWorkloadSAPAseSystemProtectableItem, bool)
 	AsAzureVMWorkloadSAPHanaDatabaseProtectableItem() (*AzureVMWorkloadSAPHanaDatabaseProtectableItem, bool)
 	AsAzureVMWorkloadSAPHanaSystemProtectableItem() (*AzureVMWorkloadSAPHanaSystemProtectableItem, bool)
@@ -5930,7 +5927,7 @@ type AzureVMWorkloadProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -5942,10 +5939,6 @@ func unmarshalBasicAzureVMWorkloadProtectableItem(body []byte) (BasicAzureVMWork
 	}
 
 	switch m["protectableItemType"] {
-	case string(ProtectableItemTypeSAPAseDatabase):
-		var avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem
-		err := json.Unmarshal(body, &avwsadpi)
-		return avwsadpi, err
 	case string(ProtectableItemTypeSAPAseSystem):
 		var avwsaspi AzureVMWorkloadSAPAseSystemProtectableItem
 		err := json.Unmarshal(body, &avwsaspi)
@@ -6064,11 +6057,6 @@ func (avwpi AzureVMWorkloadProtectableItem) AsAzureVMWorkloadProtectableItem() (
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadProtectableItem.
 func (avwpi AzureVMWorkloadProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
 	return &avwpi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadProtectableItem.
-func (avwpi AzureVMWorkloadProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
-	return nil, false
 }
 
 // AsAzureVMWorkloadSAPAseSystemProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadProtectableItem.
@@ -6487,164 +6475,6 @@ func (avwpp AzureVMWorkloadProtectionPolicy) AsBasicProtectionPolicy() (BasicPro
 	return &avwpp, true
 }
 
-// AzureVMWorkloadSAPAseDatabaseProtectableItem azure VM workload-specific protectable item representing
-// SAP ASE Database.
-type AzureVMWorkloadSAPAseDatabaseProtectableItem struct {
-	// ParentName - Name for instance or AG
-	ParentName *string `json:"parentName,omitempty"`
-	// ParentUniqueName - Parent Unique Name is added to provide the service formatted URI Name of the Parent
-	// Only Applicable for data bases where the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string `json:"parentUniqueName,omitempty"`
-	// ServerName - Host/Cluster Name for instance or AG
-	ServerName *string `json:"serverName,omitempty"`
-	// IsAutoProtectable - Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool `json:"isAutoProtectable,omitempty"`
-	// IsAutoProtected - Indicates if protectable item is auto-protected
-	IsAutoProtected *bool `json:"isAutoProtected,omitempty"`
-	// Subinquireditemcount - For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32 `json:"subinquireditemcount,omitempty"`
-	// Subprotectableitemcount - For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32 `json:"subprotectableitemcount,omitempty"`
-	// Prebackupvalidation - Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation `json:"prebackupvalidation,omitempty"`
-	// BackupManagementType - Type of backup management to backup an item.
-	BackupManagementType *string `json:"backupManagementType,omitempty"`
-	// WorkloadType - Type of workload for the backup management
-	WorkloadType *string `json:"workloadType,omitempty"`
-	// FriendlyName - Friendly name of the backup item.
-	FriendlyName *string `json:"friendlyName,omitempty"`
-	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
-	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
-	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) MarshalJSON() ([]byte, error) {
-	avwsadpi.ProtectableItemType = ProtectableItemTypeSAPAseDatabase
-	objectMap := make(map[string]interface{})
-	if avwsadpi.ParentName != nil {
-		objectMap["parentName"] = avwsadpi.ParentName
-	}
-	if avwsadpi.ParentUniqueName != nil {
-		objectMap["parentUniqueName"] = avwsadpi.ParentUniqueName
-	}
-	if avwsadpi.ServerName != nil {
-		objectMap["serverName"] = avwsadpi.ServerName
-	}
-	if avwsadpi.IsAutoProtectable != nil {
-		objectMap["isAutoProtectable"] = avwsadpi.IsAutoProtectable
-	}
-	if avwsadpi.IsAutoProtected != nil {
-		objectMap["isAutoProtected"] = avwsadpi.IsAutoProtected
-	}
-	if avwsadpi.Subinquireditemcount != nil {
-		objectMap["subinquireditemcount"] = avwsadpi.Subinquireditemcount
-	}
-	if avwsadpi.Subprotectableitemcount != nil {
-		objectMap["subprotectableitemcount"] = avwsadpi.Subprotectableitemcount
-	}
-	if avwsadpi.Prebackupvalidation != nil {
-		objectMap["prebackupvalidation"] = avwsadpi.Prebackupvalidation
-	}
-	if avwsadpi.BackupManagementType != nil {
-		objectMap["backupManagementType"] = avwsadpi.BackupManagementType
-	}
-	if avwsadpi.WorkloadType != nil {
-		objectMap["workloadType"] = avwsadpi.WorkloadType
-	}
-	if avwsadpi.FriendlyName != nil {
-		objectMap["friendlyName"] = avwsadpi.FriendlyName
-	}
-	if avwsadpi.ProtectionState != "" {
-		objectMap["protectionState"] = avwsadpi.ProtectionState
-	}
-	if avwsadpi.ProtectableItemType != "" {
-		objectMap["protectableItemType"] = avwsadpi.ProtectableItemType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAzureFileShareProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureFileShareProtectableItem() (*AzureFileShareProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSClassicComputeVMProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureIaaSClassicComputeVMProtectableItem() (*AzureIaaSClassicComputeVMProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureIaaSComputeVMProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureIaaSComputeVMProtectableItem() (*AzureIaaSComputeVMProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureVMWorkloadProtectableItem() (*AzureVMWorkloadProtectableItem, bool) {
-	return nil, false
-}
-
-// AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
-	return &avwsadpi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
-	return &avwsadpi, true
-}
-
-// AsAzureVMWorkloadSAPAseSystemProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureVMWorkloadSAPAseSystemProtectableItem() (*AzureVMWorkloadSAPAseSystemProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureVMWorkloadSAPHanaDatabaseProtectableItem() (*AzureVMWorkloadSAPHanaDatabaseProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPHanaSystemProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureVMWorkloadSAPHanaSystemProtectableItem() (*AzureVMWorkloadSAPHanaSystemProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLAvailabilityGroupProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureVMWorkloadSQLAvailabilityGroupProtectableItem() (*AzureVMWorkloadSQLAvailabilityGroupProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureVMWorkloadSQLDatabaseProtectableItem() (*AzureVMWorkloadSQLDatabaseProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSQLInstanceProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsAzureVMWorkloadSQLInstanceProtectableItem() (*AzureVMWorkloadSQLInstanceProtectableItem, bool) {
-	return nil, false
-}
-
-// AsIaaSVMProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsIaaSVMProtectableItem() (*IaaSVMProtectableItem, bool) {
-	return nil, false
-}
-
-// AsBasicIaaSVMProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsBasicIaaSVMProtectableItem() (BasicIaaSVMProtectableItem, bool) {
-	return nil, false
-}
-
-// AsWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsWorkloadProtectableItem() (*WorkloadProtectableItem, bool) {
-	return nil, false
-}
-
-// AsBasicWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseDatabaseProtectableItem.
-func (avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem) AsBasicWorkloadProtectableItem() (BasicWorkloadProtectableItem, bool) {
-	return &avwsadpi, true
-}
-
 // AzureVMWorkloadSAPAseDatabaseProtectedItem azure VM workload-specific protected item representing SAP
 // ASE Database.
 type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
@@ -7007,7 +6837,7 @@ type AzureVMWorkloadSAPAseSystemProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -7080,11 +6910,6 @@ func (avwsaspi AzureVMWorkloadSAPAseSystemProtectableItem) AsAzureVMWorkloadProt
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseSystemProtectableItem.
 func (avwsaspi AzureVMWorkloadSAPAseSystemProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
 	return &avwsaspi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseSystemProtectableItem.
-func (avwsaspi AzureVMWorkloadSAPAseSystemProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
-	return nil, false
 }
 
 // AsAzureVMWorkloadSAPAseSystemProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPAseSystemProtectableItem.
@@ -7277,7 +7102,7 @@ type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -7350,11 +7175,6 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) AsAzureVMWorkloadP
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectableItem.
 func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
 	return &avwshdpi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectableItem.
-func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
-	return nil, false
 }
 
 // AsAzureVMWorkloadSAPAseSystemProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPHanaDatabaseProtectableItem.
@@ -7769,7 +7589,7 @@ type AzureVMWorkloadSAPHanaSystemProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -7842,11 +7662,6 @@ func (avwshspi AzureVMWorkloadSAPHanaSystemProtectableItem) AsAzureVMWorkloadPro
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPHanaSystemProtectableItem.
 func (avwshspi AzureVMWorkloadSAPHanaSystemProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
 	return &avwshspi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPHanaSystemProtectableItem.
-func (avwshspi AzureVMWorkloadSAPHanaSystemProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
-	return nil, false
 }
 
 // AsAzureVMWorkloadSAPAseSystemProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSAPHanaSystemProtectableItem.
@@ -8039,7 +7854,7 @@ type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -8112,11 +7927,6 @@ func (avwsagpi AzureVMWorkloadSQLAvailabilityGroupProtectableItem) AsAzureVMWork
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
 func (avwsagpi AzureVMWorkloadSQLAvailabilityGroupProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
 	return &avwsagpi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
-func (avwsagpi AzureVMWorkloadSQLAvailabilityGroupProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
-	return nil, false
 }
 
 // AsAzureVMWorkloadSAPAseSystemProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLAvailabilityGroupProtectableItem.
@@ -8197,7 +8007,7 @@ type AzureVMWorkloadSQLDatabaseProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -8270,11 +8080,6 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) AsAzureVMWorkloadProtec
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLDatabaseProtectableItem.
 func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
 	return &avwsdpi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLDatabaseProtectableItem.
-func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
-	return nil, false
 }
 
 // AsAzureVMWorkloadSAPAseSystemProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLDatabaseProtectableItem.
@@ -8689,7 +8494,7 @@ type AzureVMWorkloadSQLInstanceProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -8762,11 +8567,6 @@ func (avwsipi AzureVMWorkloadSQLInstanceProtectableItem) AsAzureVMWorkloadProtec
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLInstanceProtectableItem.
 func (avwsipi AzureVMWorkloadSQLInstanceProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
 	return &avwsipi, true
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLInstanceProtectableItem.
-func (avwsipi AzureVMWorkloadSQLInstanceProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
-	return nil, false
 }
 
 // AsAzureVMWorkloadSAPAseSystemProtectableItem is the BasicWorkloadProtectableItem implementation for AzureVMWorkloadSQLInstanceProtectableItem.
@@ -9635,8 +9435,8 @@ type AzureWorkloadPointInTimeRestoreRequest struct {
 	PropertyBag map[string]*string `json:"propertyBag"`
 	// TargetInfo - Details of target database
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
-	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *string `json:"recoveryMode,omitempty"`
+	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
+	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRestoreRequest', 'ObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeIaasVMRestoreRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -9660,7 +9460,7 @@ func (awpitrr AzureWorkloadPointInTimeRestoreRequest) MarshalJSON() ([]byte, err
 	if awpitrr.TargetInfo != nil {
 		objectMap["targetInfo"] = awpitrr.TargetInfo
 	}
-	if awpitrr.RecoveryMode != nil {
+	if awpitrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awpitrr.RecoveryMode
 	}
 	if awpitrr.ObjectType != "" {
@@ -9918,8 +9718,8 @@ type AzureWorkloadRestoreRequest struct {
 	PropertyBag map[string]*string `json:"propertyBag"`
 	// TargetInfo - Details of target database
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
-	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *string `json:"recoveryMode,omitempty"`
+	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
+	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRestoreRequest', 'ObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeIaasVMRestoreRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -9993,7 +9793,7 @@ func (awrr AzureWorkloadRestoreRequest) MarshalJSON() ([]byte, error) {
 	if awrr.TargetInfo != nil {
 		objectMap["targetInfo"] = awrr.TargetInfo
 	}
-	if awrr.RecoveryMode != nil {
+	if awrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awrr.RecoveryMode
 	}
 	if awrr.ObjectType != "" {
@@ -10181,8 +9981,8 @@ type AzureWorkloadSAPHanaPointInTimeRestoreRequest struct {
 	PropertyBag map[string]*string `json:"propertyBag"`
 	// TargetInfo - Details of target database
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
-	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *string `json:"recoveryMode,omitempty"`
+	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
+	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRestoreRequest', 'ObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeIaasVMRestoreRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -10206,7 +10006,7 @@ func (awshpitrr AzureWorkloadSAPHanaPointInTimeRestoreRequest) MarshalJSON() ([]
 	if awshpitrr.TargetInfo != nil {
 		objectMap["targetInfo"] = awshpitrr.TargetInfo
 	}
-	if awshpitrr.RecoveryMode != nil {
+	if awshpitrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awshpitrr.RecoveryMode
 	}
 	if awshpitrr.ObjectType != "" {
@@ -10393,8 +10193,8 @@ type AzureWorkloadSAPHanaRestoreRequest struct {
 	PropertyBag map[string]*string `json:"propertyBag"`
 	// TargetInfo - Details of target database
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
-	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *string `json:"recoveryMode,omitempty"`
+	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
+	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRestoreRequest', 'ObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeIaasVMRestoreRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -10452,7 +10252,7 @@ func (awshrr AzureWorkloadSAPHanaRestoreRequest) MarshalJSON() ([]byte, error) {
 	if awshrr.TargetInfo != nil {
 		objectMap["targetInfo"] = awshrr.TargetInfo
 	}
-	if awshrr.RecoveryMode != nil {
+	if awshrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awshrr.RecoveryMode
 	}
 	if awshrr.ObjectType != "" {
@@ -10739,8 +10539,8 @@ type AzureWorkloadSQLPointInTimeRestoreRequest struct {
 	PropertyBag map[string]*string `json:"propertyBag"`
 	// TargetInfo - Details of target database
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
-	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *string `json:"recoveryMode,omitempty"`
+	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
+	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRestoreRequest', 'ObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeIaasVMRestoreRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -10773,7 +10573,7 @@ func (awspitrr AzureWorkloadSQLPointInTimeRestoreRequest) MarshalJSON() ([]byte,
 	if awspitrr.TargetInfo != nil {
 		objectMap["targetInfo"] = awspitrr.TargetInfo
 	}
-	if awspitrr.RecoveryMode != nil {
+	if awspitrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awspitrr.RecoveryMode
 	}
 	if awspitrr.ObjectType != "" {
@@ -11025,8 +10825,8 @@ type AzureWorkloadSQLRestoreRequest struct {
 	PropertyBag map[string]*string `json:"propertyBag"`
 	// TargetInfo - Details of target database
 	TargetInfo *TargetRestoreInfo `json:"targetInfo,omitempty"`
-	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore
-	RecoveryMode *string `json:"recoveryMode,omitempty"`
+	// RecoveryMode - Defines whether the current recovery mode is file restore or database restore. Possible values include: 'RecoveryModeInvalid', 'RecoveryModeFileRecovery', 'RecoveryModeWorkloadRecovery'
+	RecoveryMode RecoveryMode `json:"recoveryMode,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRestoreRequest', 'ObjectTypeAzureFileShareRestoreRequest', 'ObjectTypeAzureWorkloadPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSAPHanaRestoreRequest', 'ObjectTypeAzureWorkloadSQLPointInTimeRestoreRequest', 'ObjectTypeAzureWorkloadSQLRestoreRequest', 'ObjectTypeIaasVMRestoreRequest'
 	ObjectType ObjectTypeBasicRestoreRequest `json:"objectType,omitempty"`
 }
@@ -11093,7 +10893,7 @@ func (awsrr AzureWorkloadSQLRestoreRequest) MarshalJSON() ([]byte, error) {
 	if awsrr.TargetInfo != nil {
 		objectMap["targetInfo"] = awsrr.TargetInfo
 	}
-	if awsrr.RecoveryMode != nil {
+	if awsrr.RecoveryMode != "" {
 		objectMap["recoveryMode"] = awsrr.RecoveryMode
 	}
 	if awsrr.ObjectType != "" {
@@ -13711,7 +13511,7 @@ type IaaSVMProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -13806,11 +13606,6 @@ func (ispi IaaSVMProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (Basic
 	return nil, false
 }
 
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for IaaSVMProtectableItem.
-func (ispi IaaSVMProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
-	return nil, false
-}
-
 // AsAzureVMWorkloadSAPAseSystemProtectableItem is the BasicWorkloadProtectableItem implementation for IaaSVMProtectableItem.
 func (ispi IaaSVMProtectableItem) AsAzureVMWorkloadSAPAseSystemProtectableItem() (*AzureVMWorkloadSAPAseSystemProtectableItem, bool) {
 	return nil, false
@@ -13887,8 +13682,8 @@ type IaasVMRecoveryPoint struct {
 	OriginalStorageAccountOption *bool `json:"originalStorageAccountOption,omitempty"`
 	// OsType - OS type
 	OsType *string `json:"osType,omitempty"`
-	// RpDiskConfiguration - Disk configuration
-	RpDiskConfiguration *RecoveryPointDiskConfiguration `json:"rpDiskConfiguration,omitempty"`
+	// RecoveryPointDiskConfiguration - Disk configuration
+	RecoveryPointDiskConfiguration *RecoveryPointDiskConfiguration `json:"recoveryPointDiskConfiguration,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
@@ -13933,8 +13728,8 @@ func (ivrp IaasVMRecoveryPoint) MarshalJSON() ([]byte, error) {
 	if ivrp.OsType != nil {
 		objectMap["osType"] = ivrp.OsType
 	}
-	if ivrp.RpDiskConfiguration != nil {
-		objectMap["rpDiskConfiguration"] = ivrp.RpDiskConfiguration
+	if ivrp.RecoveryPointDiskConfiguration != nil {
+		objectMap["recoveryPointDiskConfiguration"] = ivrp.RecoveryPointDiskConfiguration
 	}
 	if ivrp.ObjectType != "" {
 		objectMap["objectType"] = ivrp.ObjectType
@@ -14567,8 +14362,6 @@ type JobQueryObject struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - Job has ended at this time. Value is in UTC.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// GenerateExcelFileForExportJobs - True if excel file should be generated.
-	GenerateExcelFileForExportJobs *bool `json:"generateExcelFileForExportJobs,omitempty"`
 }
 
 // JobResource defines workload agnostic properties for a job.
@@ -16020,13 +15813,12 @@ type BasicOperationStatusExtendedInfo interface {
 	AsOperationStatusJobExtendedInfo() (*OperationStatusJobExtendedInfo, bool)
 	AsOperationStatusJobsExtendedInfo() (*OperationStatusJobsExtendedInfo, bool)
 	AsOperationStatusProvisionILRExtendedInfo() (*OperationStatusProvisionILRExtendedInfo, bool)
-	AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool)
 	AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool)
 }
 
 // OperationStatusExtendedInfo base class for additional information of operation status.
 type OperationStatusExtendedInfo struct {
-	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16050,10 +15842,6 @@ func unmarshalBasicOperationStatusExtendedInfo(body []byte) (BasicOperationStatu
 		var ospiei OperationStatusProvisionILRExtendedInfo
 		err := json.Unmarshal(body, &ospiei)
 		return ospiei, err
-	case string(ObjectTypeOperationStatusRecoveryPointExtendedInfo):
-		var osrpei OperationStatusRecoveryPointExtendedInfo
-		err := json.Unmarshal(body, &osrpei)
-		return osrpei, err
 	default:
 		var osei OperationStatusExtendedInfo
 		err := json.Unmarshal(body, &osei)
@@ -16104,11 +15892,6 @@ func (osei OperationStatusExtendedInfo) AsOperationStatusProvisionILRExtendedInf
 	return nil, false
 }
 
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusExtendedInfo.
-func (osei OperationStatusExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return nil, false
-}
-
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusExtendedInfo.
 func (osei OperationStatusExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return &osei, true
@@ -16123,7 +15906,7 @@ func (osei OperationStatusExtendedInfo) AsBasicOperationStatusExtendedInfo() (Ba
 type OperationStatusJobExtendedInfo struct {
 	// JobID - ID of the job created for this protected item.
 	JobID *string `json:"jobId,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16155,11 +15938,6 @@ func (osjei OperationStatusJobExtendedInfo) AsOperationStatusProvisionILRExtende
 	return nil, false
 }
 
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobExtendedInfo.
-func (osjei OperationStatusJobExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return nil, false
-}
-
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobExtendedInfo.
 func (osjei OperationStatusJobExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return nil, false
@@ -16176,7 +15954,7 @@ type OperationStatusJobsExtendedInfo struct {
 	JobIds *[]string `json:"jobIds,omitempty"`
 	// FailedJobsError - Stores all the failed jobs along with the corresponding error codes.
 	FailedJobsError map[string]*string `json:"failedJobsError"`
-	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16211,11 +15989,6 @@ func (osjei OperationStatusJobsExtendedInfo) AsOperationStatusProvisionILRExtend
 	return nil, false
 }
 
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobsExtendedInfo.
-func (osjei OperationStatusJobsExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return nil, false
-}
-
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusJobsExtendedInfo.
 func (osjei OperationStatusJobsExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return nil, false
@@ -16230,7 +16003,7 @@ func (osjei OperationStatusJobsExtendedInfo) AsBasicOperationStatusExtendedInfo(
 type OperationStatusProvisionILRExtendedInfo struct {
 	// RecoveryTarget - Target details for file / folder restore.
 	RecoveryTarget *InstantItemRecoveryTarget `json:"recoveryTarget,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
+	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo'
 	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
 }
 
@@ -16262,11 +16035,6 @@ func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusProvision
 	return &ospiei, true
 }
 
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusProvisionILRExtendedInfo.
-func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return nil, false
-}
-
 // AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusProvisionILRExtendedInfo.
 func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
 	return nil, false
@@ -16275,101 +16043,6 @@ func (ospiei OperationStatusProvisionILRExtendedInfo) AsOperationStatusExtendedI
 // AsBasicOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusProvisionILRExtendedInfo.
 func (ospiei OperationStatusProvisionILRExtendedInfo) AsBasicOperationStatusExtendedInfo() (BasicOperationStatusExtendedInfo, bool) {
 	return &ospiei, true
-}
-
-// OperationStatusRecoveryPointExtendedInfo operation status extended info for Updated Recovery Point.
-type OperationStatusRecoveryPointExtendedInfo struct {
-	// UpdatedRecoveryPoint - Recovery Point info with updated source snapshot URI
-	UpdatedRecoveryPoint BasicRecoveryPoint `json:"updatedRecoveryPoint,omitempty"`
-	// DeletedBackupItemVersion - In case the share is in soft-deleted state, populate this field with deleted backup item
-	DeletedBackupItemVersion *string `json:"deletedBackupItemVersion,omitempty"`
-	// ObjectType - Possible values include: 'ObjectTypeOperationStatusExtendedInfo', 'ObjectTypeOperationStatusJobExtendedInfo', 'ObjectTypeOperationStatusJobsExtendedInfo', 'ObjectTypeOperationStatusProvisionILRExtendedInfo', 'ObjectTypeOperationStatusRecoveryPointExtendedInfo'
-	ObjectType ObjectTypeBasicOperationStatusExtendedInfo `json:"objectType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) MarshalJSON() ([]byte, error) {
-	osrpei.ObjectType = ObjectTypeOperationStatusRecoveryPointExtendedInfo
-	objectMap := make(map[string]interface{})
-	objectMap["updatedRecoveryPoint"] = osrpei.UpdatedRecoveryPoint
-	if osrpei.DeletedBackupItemVersion != nil {
-		objectMap["deletedBackupItemVersion"] = osrpei.DeletedBackupItemVersion
-	}
-	if osrpei.ObjectType != "" {
-		objectMap["objectType"] = osrpei.ObjectType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsOperationStatusJobExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusJobExtendedInfo() (*OperationStatusJobExtendedInfo, bool) {
-	return nil, false
-}
-
-// AsOperationStatusJobsExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusJobsExtendedInfo() (*OperationStatusJobsExtendedInfo, bool) {
-	return nil, false
-}
-
-// AsOperationStatusProvisionILRExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusProvisionILRExtendedInfo() (*OperationStatusProvisionILRExtendedInfo, bool) {
-	return nil, false
-}
-
-// AsOperationStatusRecoveryPointExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusRecoveryPointExtendedInfo() (*OperationStatusRecoveryPointExtendedInfo, bool) {
-	return &osrpei, true
-}
-
-// AsOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsOperationStatusExtendedInfo() (*OperationStatusExtendedInfo, bool) {
-	return nil, false
-}
-
-// AsBasicOperationStatusExtendedInfo is the BasicOperationStatusExtendedInfo implementation for OperationStatusRecoveryPointExtendedInfo.
-func (osrpei OperationStatusRecoveryPointExtendedInfo) AsBasicOperationStatusExtendedInfo() (BasicOperationStatusExtendedInfo, bool) {
-	return &osrpei, true
-}
-
-// UnmarshalJSON is the custom unmarshaler for OperationStatusRecoveryPointExtendedInfo struct.
-func (osrpei *OperationStatusRecoveryPointExtendedInfo) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "updatedRecoveryPoint":
-			if v != nil {
-				updatedRecoveryPoint, err := unmarshalBasicRecoveryPoint(*v)
-				if err != nil {
-					return err
-				}
-				osrpei.UpdatedRecoveryPoint = updatedRecoveryPoint
-			}
-		case "deletedBackupItemVersion":
-			if v != nil {
-				var deletedBackupItemVersion string
-				err = json.Unmarshal(*v, &deletedBackupItemVersion)
-				if err != nil {
-					return err
-				}
-				osrpei.DeletedBackupItemVersion = &deletedBackupItemVersion
-			}
-		case "objectType":
-			if v != nil {
-				var objectType ObjectTypeBasicOperationStatusExtendedInfo
-				err = json.Unmarshal(*v, &objectType)
-				if err != nil {
-					return err
-				}
-				osrpei.ObjectType = objectType
-			}
-		}
-	}
-
-	return nil
 }
 
 // OperationWorkerResponse this is the base class for operation result responses.
@@ -18644,12 +18317,6 @@ func NewProtectionPolicyResourceListPage(getNextPage func(context.Context, Prote
 	return ProtectionPolicyResourceListPage{fn: getNextPage}
 }
 
-// PublicURI base class for Public Uri.
-type PublicURI struct {
-	// PublicURIType - public uri type.
-	PublicURIType *string `json:"publicUriType,omitempty"`
-}
-
 // BasicRecoveryPoint base class for backup copies. Workload-specific backup copies are derived from this class.
 type BasicRecoveryPoint interface {
 	AsAzureFileShareRecoveryPoint() (*AzureFileShareRecoveryPoint, bool)
@@ -20057,8 +19724,6 @@ type StatusRequest struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 	// PoLogicalName - Protectable Item Logical Name
 	PoLogicalName *string `json:"poLogicalName,omitempty"`
-	// PoPublicURI - Public URI of the resource if available.
-	PoPublicURI *PublicURI `json:"poPublicUri,omitempty"`
 }
 
 // StatusResponse backupStatus response.
@@ -20150,26 +19815,6 @@ type TargetRestoreInfo struct {
 	ContainerID *string `json:"containerId,omitempty"`
 	// DatabaseName - Database name InstanceName/DataBaseName for SQL or System/DbName for SAP Hana
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// TargetDirectoryMapping - This will contain the target folder mapping for the Full/Diff/Log/Incremental pits.
-	TargetDirectoryMapping map[string]*string `json:"targetDirectoryMapping"`
-}
-
-// MarshalJSON is the custom marshaler for TargetRestoreInfo.
-func (tri TargetRestoreInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tri.OverwriteOption != "" {
-		objectMap["overwriteOption"] = tri.OverwriteOption
-	}
-	if tri.ContainerID != nil {
-		objectMap["containerId"] = tri.ContainerID
-	}
-	if tri.DatabaseName != nil {
-		objectMap["databaseName"] = tri.DatabaseName
-	}
-	if tri.TargetDirectoryMapping != nil {
-		objectMap["targetDirectoryMapping"] = tri.TargetDirectoryMapping
-	}
-	return json.Marshal(objectMap)
 }
 
 // TokenInformation the token information details.
@@ -20933,7 +20578,6 @@ type BasicWorkloadProtectableItem interface {
 	AsAzureIaaSComputeVMProtectableItem() (*AzureIaaSComputeVMProtectableItem, bool)
 	AsAzureVMWorkloadProtectableItem() (*AzureVMWorkloadProtectableItem, bool)
 	AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool)
-	AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool)
 	AsAzureVMWorkloadSAPAseSystemProtectableItem() (*AzureVMWorkloadSAPAseSystemProtectableItem, bool)
 	AsAzureVMWorkloadSAPHanaDatabaseProtectableItem() (*AzureVMWorkloadSAPHanaDatabaseProtectableItem, bool)
 	AsAzureVMWorkloadSAPHanaSystemProtectableItem() (*AzureVMWorkloadSAPHanaSystemProtectableItem, bool)
@@ -20956,7 +20600,7 @@ type WorkloadProtectableItem struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// ProtectionState - State of the back up item. Possible values include: 'ProtectionStatusInvalid', 'ProtectionStatusNotProtected', 'ProtectionStatusProtecting', 'ProtectionStatusProtected', 'ProtectionStatusProtectionFailed'
 	ProtectionState ProtectionStatus `json:"protectionState,omitempty"`
-	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseDatabase', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
+	// ProtectableItemType - Possible values include: 'ProtectableItemTypeWorkloadProtectableItem', 'ProtectableItemTypeAzureFileShare', 'ProtectableItemTypeMicrosoftClassicComputevirtualMachines', 'ProtectableItemTypeMicrosoftComputevirtualMachines', 'ProtectableItemTypeAzureVMWorkloadProtectableItem', 'ProtectableItemTypeSAPAseSystem', 'ProtectableItemTypeSAPHanaDatabase', 'ProtectableItemTypeSAPHanaSystem', 'ProtectableItemTypeSQLAvailabilityGroupContainer', 'ProtectableItemTypeSQLDataBase', 'ProtectableItemTypeSQLInstance', 'ProtectableItemTypeIaaSVMProtectableItem'
 	ProtectableItemType ProtectableItemType `json:"protectableItemType,omitempty"`
 }
 
@@ -20984,10 +20628,6 @@ func unmarshalBasicWorkloadProtectableItem(body []byte) (BasicWorkloadProtectabl
 		var avwpi AzureVMWorkloadProtectableItem
 		err := json.Unmarshal(body, &avwpi)
 		return avwpi, err
-	case string(ProtectableItemTypeSAPAseDatabase):
-		var avwsadpi AzureVMWorkloadSAPAseDatabaseProtectableItem
-		err := json.Unmarshal(body, &avwsadpi)
-		return avwsadpi, err
 	case string(ProtectableItemTypeSAPAseSystem):
 		var avwsaspi AzureVMWorkloadSAPAseSystemProtectableItem
 		err := json.Unmarshal(body, &avwsaspi)
@@ -21085,11 +20725,6 @@ func (wpi WorkloadProtectableItem) AsAzureVMWorkloadProtectableItem() (*AzureVMW
 
 // AsBasicAzureVMWorkloadProtectableItem is the BasicWorkloadProtectableItem implementation for WorkloadProtectableItem.
 func (wpi WorkloadProtectableItem) AsBasicAzureVMWorkloadProtectableItem() (BasicAzureVMWorkloadProtectableItem, bool) {
-	return nil, false
-}
-
-// AsAzureVMWorkloadSAPAseDatabaseProtectableItem is the BasicWorkloadProtectableItem implementation for WorkloadProtectableItem.
-func (wpi WorkloadProtectableItem) AsAzureVMWorkloadSAPAseDatabaseProtectableItem() (*AzureVMWorkloadSAPAseDatabaseProtectableItem, bool) {
 	return nil, false
 }
 

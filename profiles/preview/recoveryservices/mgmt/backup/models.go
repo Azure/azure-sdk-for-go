@@ -415,11 +415,10 @@ const (
 type ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeBasicOperationStatusExtendedInfo
 
 const (
-	ObjectTypeOperationStatusExtendedInfo              ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusExtendedInfo
-	ObjectTypeOperationStatusJobExtendedInfo           ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobExtendedInfo
-	ObjectTypeOperationStatusJobsExtendedInfo          ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
-	ObjectTypeOperationStatusProvisionILRExtendedInfo  ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
-	ObjectTypeOperationStatusRecoveryPointExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusRecoveryPointExtendedInfo
+	ObjectTypeOperationStatusExtendedInfo             ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusExtendedInfo
+	ObjectTypeOperationStatusJobExtendedInfo          ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobExtendedInfo
+	ObjectTypeOperationStatusJobsExtendedInfo         ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
+	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
 )
 
 type ObjectTypeBasicRequest = original.ObjectTypeBasicRequest
@@ -505,7 +504,6 @@ const (
 	ProtectableItemTypeIaaSVMProtectableItem                  ProtectableItemType = original.ProtectableItemTypeIaaSVMProtectableItem
 	ProtectableItemTypeMicrosoftClassicComputevirtualMachines ProtectableItemType = original.ProtectableItemTypeMicrosoftClassicComputevirtualMachines
 	ProtectableItemTypeMicrosoftComputevirtualMachines        ProtectableItemType = original.ProtectableItemTypeMicrosoftComputevirtualMachines
-	ProtectableItemTypeSAPAseDatabase                         ProtectableItemType = original.ProtectableItemTypeSAPAseDatabase
 	ProtectableItemTypeSAPAseSystem                           ProtectableItemType = original.ProtectableItemTypeSAPAseSystem
 	ProtectableItemTypeSAPHanaDatabase                        ProtectableItemType = original.ProtectableItemTypeSAPHanaDatabase
 	ProtectableItemTypeSAPHanaSystem                          ProtectableItemType = original.ProtectableItemTypeSAPHanaSystem
@@ -583,6 +581,14 @@ const (
 	ProtectionStatusProtected        ProtectionStatus = original.ProtectionStatusProtected
 	ProtectionStatusProtecting       ProtectionStatus = original.ProtectionStatusProtecting
 	ProtectionStatusProtectionFailed ProtectionStatus = original.ProtectionStatusProtectionFailed
+)
+
+type RecoveryMode = original.RecoveryMode
+
+const (
+	RecoveryModeFileRecovery     RecoveryMode = original.RecoveryModeFileRecovery
+	RecoveryModeInvalid          RecoveryMode = original.RecoveryModeInvalid
+	RecoveryModeWorkloadRecovery RecoveryMode = original.RecoveryModeWorkloadRecovery
 )
 
 type RecoveryPointTierStatus = original.RecoveryPointTierStatus
@@ -857,7 +863,6 @@ type AzureVMWorkloadProtectableItem = original.AzureVMWorkloadProtectableItem
 type AzureVMWorkloadProtectedItem = original.AzureVMWorkloadProtectedItem
 type AzureVMWorkloadProtectedItemExtendedInfo = original.AzureVMWorkloadProtectedItemExtendedInfo
 type AzureVMWorkloadProtectionPolicy = original.AzureVMWorkloadProtectionPolicy
-type AzureVMWorkloadSAPAseDatabaseProtectableItem = original.AzureVMWorkloadSAPAseDatabaseProtectableItem
 type AzureVMWorkloadSAPAseDatabaseProtectedItem = original.AzureVMWorkloadSAPAseDatabaseProtectedItem
 type AzureVMWorkloadSAPAseDatabaseWorkloadItem = original.AzureVMWorkloadSAPAseDatabaseWorkloadItem
 type AzureVMWorkloadSAPAseSystemProtectableItem = original.AzureVMWorkloadSAPAseSystemProtectableItem
@@ -1042,7 +1047,6 @@ type OperationStatusExtendedInfo = original.OperationStatusExtendedInfo
 type OperationStatusJobExtendedInfo = original.OperationStatusJobExtendedInfo
 type OperationStatusJobsExtendedInfo = original.OperationStatusJobsExtendedInfo
 type OperationStatusProvisionILRExtendedInfo = original.OperationStatusProvisionILRExtendedInfo
-type OperationStatusRecoveryPointExtendedInfo = original.OperationStatusRecoveryPointExtendedInfo
 type OperationStatusesClient = original.OperationStatusesClient
 type OperationWorkerResponse = original.OperationWorkerResponse
 type OperationsClient = original.OperationsClient
@@ -1094,7 +1098,6 @@ type ProtectionPolicyResource = original.ProtectionPolicyResource
 type ProtectionPolicyResourceList = original.ProtectionPolicyResourceList
 type ProtectionPolicyResourceListIterator = original.ProtectionPolicyResourceListIterator
 type ProtectionPolicyResourceListPage = original.ProtectionPolicyResourceListPage
-type PublicURI = original.PublicURI
 type RecoveryPoint = original.RecoveryPoint
 type RecoveryPointDiskConfiguration = original.RecoveryPointDiskConfiguration
 type RecoveryPointResource = original.RecoveryPointResource
@@ -1589,6 +1592,9 @@ func PossibleProtectionStateValues() []ProtectionState {
 }
 func PossibleProtectionStatusValues() []ProtectionStatus {
 	return original.PossibleProtectionStatusValues()
+}
+func PossibleRecoveryModeValues() []RecoveryMode {
+	return original.PossibleRecoveryModeValues()
 }
 func PossibleRecoveryPointTierStatusValues() []RecoveryPointTierStatus {
 	return original.PossibleRecoveryPointTierStatusValues()

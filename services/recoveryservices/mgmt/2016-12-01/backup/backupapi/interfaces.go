@@ -92,13 +92,6 @@ type BackupsClientAPI interface {
 
 var _ BackupsClientAPI = (*backup.BackupsClient)(nil)
 
-// ProtectedItemOperationResultsClientAPI contains the set of methods on the ProtectedItemOperationResultsClient type.
-type ProtectedItemOperationResultsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, operationID string) (result backup.ProtectedItemResource, err error)
-}
-
-var _ ProtectedItemOperationResultsClientAPI = (*backup.ProtectedItemOperationResultsClient)(nil)
-
 // ProtectedItemOperationStatusesClientAPI contains the set of methods on the ProtectedItemOperationStatusesClient type.
 type ProtectedItemOperationStatusesClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, operationID string) (result backup.OperationStatus, err error)
@@ -145,17 +138,9 @@ var _ OperationStatusesClientAPI = (*backup.OperationStatusesClient)(nil)
 // ProtectionPoliciesClientAPI contains the set of methods on the ProtectionPoliciesClient type.
 type ProtectionPoliciesClientAPI interface {
 	Delete(ctx context.Context, vaultName string, resourceGroupName string, policyName string) (result autorest.Response, err error)
-	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string) (result backup.ProtectionPolicyResource, err error)
 }
 
 var _ ProtectionPoliciesClientAPI = (*backup.ProtectionPoliciesClient)(nil)
-
-// ProtectionPolicyOperationResultsClientAPI contains the set of methods on the ProtectionPolicyOperationResultsClient type.
-type ProtectionPolicyOperationResultsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string) (result backup.ProtectionPolicyResource, err error)
-}
-
-var _ ProtectionPolicyOperationResultsClientAPI = (*backup.ProtectionPolicyOperationResultsClient)(nil)
 
 // ProtectionPolicyOperationStatusesClientAPI contains the set of methods on the ProtectionPolicyOperationStatusesClient type.
 type ProtectionPolicyOperationStatusesClientAPI interface {

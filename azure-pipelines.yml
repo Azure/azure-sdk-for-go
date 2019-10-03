@@ -20,7 +20,7 @@ steps:
 - script: |
     set -e
     go mod vendor
-    go get -u golang.org/x/lint/golint
+    go install golang.org/x/lint/golint
   workingDirectory: '$(sdkPath)'
   displayName: 'Install Dependencies'
 - script: go vet $(go list ./... | grep -v vendor)

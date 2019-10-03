@@ -4,6 +4,7 @@ pool:
 variables:
   GOROOT: '/usr/local/go1.12'
   GOPATH: '$(system.defaultWorkingDirectory)/work'
+  GO111MODULE: 'on'
   sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
   IGNORE_BREAKING_CHANGES: true
 

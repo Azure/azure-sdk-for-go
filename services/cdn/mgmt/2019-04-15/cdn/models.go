@@ -79,6 +79,35 @@ func PossibleCertificateTypeValues() []CertificateType {
 	return []CertificateType{Dedicated, Shared}
 }
 
+// CookiesOperator enumerates the values for cookies operator.
+type CookiesOperator string
+
+const (
+	// Any ...
+	Any CookiesOperator = "Any"
+	// BeginsWith ...
+	BeginsWith CookiesOperator = "BeginsWith"
+	// Contains ...
+	Contains CookiesOperator = "Contains"
+	// EndsWith ...
+	EndsWith CookiesOperator = "EndsWith"
+	// Equal ...
+	Equal CookiesOperator = "Equal"
+	// GreaterThan ...
+	GreaterThan CookiesOperator = "GreaterThan"
+	// GreaterThanOrEqual ...
+	GreaterThanOrEqual CookiesOperator = "GreaterThanOrEqual"
+	// LessThan ...
+	LessThan CookiesOperator = "LessThan"
+	// LessThanOrEqual ...
+	LessThanOrEqual CookiesOperator = "LessThanOrEqual"
+)
+
+// PossibleCookiesOperatorValues returns an array of possible values for the CookiesOperator const type.
+func PossibleCookiesOperatorValues() []CookiesOperator {
+	return []CookiesOperator{Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual}
+}
+
 // CustomDomainResourceState enumerates the values for custom domain resource state.
 type CustomDomainResourceState string
 
@@ -224,8 +253,12 @@ func PossibleHeaderActionValues() []HeaderAction {
 type Name string
 
 const (
+	// NameCookies ...
+	NameCookies Name = "Cookies"
 	// NameDeliveryRuleCondition ...
 	NameDeliveryRuleCondition Name = "DeliveryRuleCondition"
+	// NameHTTPVersion ...
+	NameHTTPVersion Name = "HttpVersion"
 	// NameIsDevice ...
 	NameIsDevice Name = "IsDevice"
 	// NamePostArgs ...
@@ -254,7 +287,7 @@ const (
 
 // PossibleNameValues returns an array of possible values for the Name const type.
 func PossibleNameValues() []Name {
-	return []Name{NameDeliveryRuleCondition, NameIsDevice, NamePostArgs, NameQueryString, NameRemoteAddress, NameRequestBody, NameRequestHeader, NameRequestMethod, NameRequestScheme, NameRequestURI, NameURLFileExtension, NameURLFileName, NameURLPath}
+	return []Name{NameCookies, NameDeliveryRuleCondition, NameHTTPVersion, NameIsDevice, NamePostArgs, NameQueryString, NameRemoteAddress, NameRequestBody, NameRequestHeader, NameRequestMethod, NameRequestScheme, NameRequestURI, NameURLFileExtension, NameURLFileName, NameURLPath}
 }
 
 // NameBasicDeliveryRuleAction enumerates the values for name basic delivery rule action.
@@ -324,29 +357,29 @@ func PossibleOriginResourceStateValues() []OriginResourceState {
 type PostArgsOperator string
 
 const (
-	// Any ...
-	Any PostArgsOperator = "Any"
-	// BeginsWith ...
-	BeginsWith PostArgsOperator = "BeginsWith"
-	// Contains ...
-	Contains PostArgsOperator = "Contains"
-	// EndsWith ...
-	EndsWith PostArgsOperator = "EndsWith"
-	// Equal ...
-	Equal PostArgsOperator = "Equal"
-	// GreaterThan ...
-	GreaterThan PostArgsOperator = "GreaterThan"
-	// GreaterThanOrEqual ...
-	GreaterThanOrEqual PostArgsOperator = "GreaterThanOrEqual"
-	// LessThan ...
-	LessThan PostArgsOperator = "LessThan"
-	// LessThanOrEqual ...
-	LessThanOrEqual PostArgsOperator = "LessThanOrEqual"
+	// PostArgsOperatorAny ...
+	PostArgsOperatorAny PostArgsOperator = "Any"
+	// PostArgsOperatorBeginsWith ...
+	PostArgsOperatorBeginsWith PostArgsOperator = "BeginsWith"
+	// PostArgsOperatorContains ...
+	PostArgsOperatorContains PostArgsOperator = "Contains"
+	// PostArgsOperatorEndsWith ...
+	PostArgsOperatorEndsWith PostArgsOperator = "EndsWith"
+	// PostArgsOperatorEqual ...
+	PostArgsOperatorEqual PostArgsOperator = "Equal"
+	// PostArgsOperatorGreaterThan ...
+	PostArgsOperatorGreaterThan PostArgsOperator = "GreaterThan"
+	// PostArgsOperatorGreaterThanOrEqual ...
+	PostArgsOperatorGreaterThanOrEqual PostArgsOperator = "GreaterThanOrEqual"
+	// PostArgsOperatorLessThan ...
+	PostArgsOperatorLessThan PostArgsOperator = "LessThan"
+	// PostArgsOperatorLessThanOrEqual ...
+	PostArgsOperatorLessThanOrEqual PostArgsOperator = "LessThanOrEqual"
 )
 
 // PossiblePostArgsOperatorValues returns an array of possible values for the PostArgsOperator const type.
 func PossiblePostArgsOperatorValues() []PostArgsOperator {
-	return []PostArgsOperator{Any, BeginsWith, Contains, EndsWith, Equal, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual}
+	return []PostArgsOperator{PostArgsOperatorAny, PostArgsOperatorBeginsWith, PostArgsOperatorContains, PostArgsOperatorEndsWith, PostArgsOperatorEqual, PostArgsOperatorGreaterThan, PostArgsOperatorGreaterThanOrEqual, PostArgsOperatorLessThan, PostArgsOperatorLessThanOrEqual}
 }
 
 // ProfileResourceState enumerates the values for profile resource state.
@@ -768,6 +801,21 @@ type CidrIPAddress struct {
 	BaseIPAddress *string `json:"baseIpAddress,omitempty"`
 	// PrefixLength - The length of the prefix of the ip address.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
+}
+
+// CookiesMatchConditionParameters defines the parameters for Cookies match conditions
+type CookiesMatchConditionParameters struct {
+	OdataType *string `json:"@odata.type,omitempty"`
+	// Selector - Name of Cookies to be matched
+	Selector *string `json:"selector,omitempty"`
+	// Operator - Describes operator to be matched. Possible values include: 'Any', 'Equal', 'Contains', 'BeginsWith', 'EndsWith', 'LessThan', 'LessThanOrEqual', 'GreaterThan', 'GreaterThanOrEqual'
+	Operator CookiesOperator `json:"operator,omitempty"`
+	// NegateCondition - Describes if this is negate condition or not
+	NegateCondition *bool `json:"negateCondition,omitempty"`
+	// MatchValues - The match value for the condition of the delivery rule
+	MatchValues *[]string `json:"matchValues,omitempty"`
+	// Transforms - List of transforms
+	Transforms *[]Transform `json:"transforms,omitempty"`
 }
 
 // CustomDomain friendly domain name mapping to the endpoint hostname that the customer provides for
@@ -1580,13 +1628,15 @@ type BasicDeliveryRuleCondition interface {
 	AsDeliveryRuleURLPathCondition() (*DeliveryRuleURLPathCondition, bool)
 	AsDeliveryRuleURLFileExtensionCondition() (*DeliveryRuleURLFileExtensionCondition, bool)
 	AsDeliveryRuleURLFileNameCondition() (*DeliveryRuleURLFileNameCondition, bool)
+	AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool)
+	AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool)
 	AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool)
 	AsDeliveryRuleCondition() (*DeliveryRuleCondition, bool)
 }
 
 // DeliveryRuleCondition a condition for the delivery rule.
 type DeliveryRuleCondition struct {
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -1642,6 +1692,14 @@ func unmarshalBasicDeliveryRuleCondition(body []byte) (BasicDeliveryRuleConditio
 		var drufnc DeliveryRuleURLFileNameCondition
 		err := json.Unmarshal(body, &drufnc)
 		return drufnc, err
+	case string(NameHTTPVersion):
+		var drhvc DeliveryRuleHTTPVersionCondition
+		err := json.Unmarshal(body, &drhvc)
+		return drhvc, err
+	case string(NameCookies):
+		var drcc DeliveryRuleCookiesCondition
+		err := json.Unmarshal(body, &drcc)
+		return drcc, err
 	case string(NameIsDevice):
 		var dridc DeliveryRuleIsDeviceCondition
 		err := json.Unmarshal(body, &dridc)
@@ -1736,6 +1794,16 @@ func (drc DeliveryRuleCondition) AsDeliveryRuleURLFileNameCondition() (*Delivery
 	return nil, false
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCondition.
+func (drc DeliveryRuleCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCondition.
+func (drc DeliveryRuleCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCondition.
 func (drc DeliveryRuleCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return nil, false
@@ -1751,11 +1819,213 @@ func (drc DeliveryRuleCondition) AsBasicDeliveryRuleCondition() (BasicDeliveryRu
 	return &drc, true
 }
 
+// DeliveryRuleCookiesCondition defines the Cookies condition for the delivery rule.
+type DeliveryRuleCookiesCondition struct {
+	// Parameters - Defines the parameters for the condition.
+	Parameters *CookiesMatchConditionParameters `json:"parameters,omitempty"`
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
+	Name Name `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) MarshalJSON() ([]byte, error) {
+	drcc.Name = NameCookies
+	objectMap := make(map[string]interface{})
+	if drcc.Parameters != nil {
+		objectMap["parameters"] = drcc.Parameters
+	}
+	if drcc.Name != "" {
+		objectMap["name"] = drcc.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDeliveryRuleRemoteAddressCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleRemoteAddressCondition() (*DeliveryRuleRemoteAddressCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestMethodCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleRequestMethodCondition() (*DeliveryRuleRequestMethodCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleQueryStringCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleQueryStringCondition() (*DeliveryRuleQueryStringCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRulePostArgsCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRulePostArgsCondition() (*DeliveryRulePostArgsCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestURICondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleRequestURICondition() (*DeliveryRuleRequestURICondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestHeaderCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleRequestHeaderCondition() (*DeliveryRuleRequestHeaderCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestBodyCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleRequestBodyCondition() (*DeliveryRuleRequestBodyCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestSchemeCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleRequestSchemeCondition() (*DeliveryRuleRequestSchemeCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleURLPathCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleURLPathCondition() (*DeliveryRuleURLPathCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleURLFileExtensionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleURLFileExtensionCondition() (*DeliveryRuleURLFileExtensionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleURLFileNameCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleURLFileNameCondition() (*DeliveryRuleURLFileNameCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return &drcc, true
+}
+
+// AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsDeliveryRuleCondition() (*DeliveryRuleCondition, bool) {
+	return nil, false
+}
+
+// AsBasicDeliveryRuleCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleCookiesCondition.
+func (drcc DeliveryRuleCookiesCondition) AsBasicDeliveryRuleCondition() (BasicDeliveryRuleCondition, bool) {
+	return &drcc, true
+}
+
+// DeliveryRuleHTTPVersionCondition defines the HttpVersion condition for the delivery rule.
+type DeliveryRuleHTTPVersionCondition struct {
+	// Parameters - Defines the parameters for the condition.
+	Parameters *HTTPVersionMatchConditionParameters `json:"parameters,omitempty"`
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
+	Name Name `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) MarshalJSON() ([]byte, error) {
+	drhvc.Name = NameHTTPVersion
+	objectMap := make(map[string]interface{})
+	if drhvc.Parameters != nil {
+		objectMap["parameters"] = drhvc.Parameters
+	}
+	if drhvc.Name != "" {
+		objectMap["name"] = drhvc.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsDeliveryRuleRemoteAddressCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleRemoteAddressCondition() (*DeliveryRuleRemoteAddressCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestMethodCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleRequestMethodCondition() (*DeliveryRuleRequestMethodCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleQueryStringCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleQueryStringCondition() (*DeliveryRuleQueryStringCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRulePostArgsCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRulePostArgsCondition() (*DeliveryRulePostArgsCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestURICondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleRequestURICondition() (*DeliveryRuleRequestURICondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestHeaderCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleRequestHeaderCondition() (*DeliveryRuleRequestHeaderCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestBodyCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleRequestBodyCondition() (*DeliveryRuleRequestBodyCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestSchemeCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleRequestSchemeCondition() (*DeliveryRuleRequestSchemeCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleURLPathCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleURLPathCondition() (*DeliveryRuleURLPathCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleURLFileExtensionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleURLFileExtensionCondition() (*DeliveryRuleURLFileExtensionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleURLFileNameCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleURLFileNameCondition() (*DeliveryRuleURLFileNameCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return &drhvc, true
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsDeliveryRuleCondition() (*DeliveryRuleCondition, bool) {
+	return nil, false
+}
+
+// AsBasicDeliveryRuleCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleHTTPVersionCondition.
+func (drhvc DeliveryRuleHTTPVersionCondition) AsBasicDeliveryRuleCondition() (BasicDeliveryRuleCondition, bool) {
+	return &drhvc, true
+}
+
 // DeliveryRuleIsDeviceCondition defines the IsDevice condition for the delivery rule.
 type DeliveryRuleIsDeviceCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *IsDeviceMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -1827,6 +2097,16 @@ func (dridc DeliveryRuleIsDeviceCondition) AsDeliveryRuleURLFileNameCondition() 
 	return nil, false
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleIsDeviceCondition.
+func (dridc DeliveryRuleIsDeviceCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleIsDeviceCondition.
+func (dridc DeliveryRuleIsDeviceCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleIsDeviceCondition.
 func (dridc DeliveryRuleIsDeviceCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return &dridc, true
@@ -1846,7 +2126,7 @@ func (dridc DeliveryRuleIsDeviceCondition) AsBasicDeliveryRuleCondition() (Basic
 type DeliveryRulePostArgsCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *PostArgsMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -1918,6 +2198,16 @@ func (drpac DeliveryRulePostArgsCondition) AsDeliveryRuleURLFileNameCondition() 
 	return nil, false
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRulePostArgsCondition.
+func (drpac DeliveryRulePostArgsCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRulePostArgsCondition.
+func (drpac DeliveryRulePostArgsCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRulePostArgsCondition.
 func (drpac DeliveryRulePostArgsCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return nil, false
@@ -1937,7 +2227,7 @@ func (drpac DeliveryRulePostArgsCondition) AsBasicDeliveryRuleCondition() (Basic
 type DeliveryRuleQueryStringCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *QueryStringMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2009,6 +2299,16 @@ func (drqsc DeliveryRuleQueryStringCondition) AsDeliveryRuleURLFileNameCondition
 	return nil, false
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleQueryStringCondition.
+func (drqsc DeliveryRuleQueryStringCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleQueryStringCondition.
+func (drqsc DeliveryRuleQueryStringCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleQueryStringCondition.
 func (drqsc DeliveryRuleQueryStringCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return nil, false
@@ -2028,7 +2328,7 @@ func (drqsc DeliveryRuleQueryStringCondition) AsBasicDeliveryRuleCondition() (Ba
 type DeliveryRuleRemoteAddressCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *RemoteAddressMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2100,6 +2400,16 @@ func (drrac DeliveryRuleRemoteAddressCondition) AsDeliveryRuleURLFileNameConditi
 	return nil, false
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRemoteAddressCondition.
+func (drrac DeliveryRuleRemoteAddressCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRemoteAddressCondition.
+func (drrac DeliveryRuleRemoteAddressCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRemoteAddressCondition.
 func (drrac DeliveryRuleRemoteAddressCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return nil, false
@@ -2119,7 +2429,7 @@ func (drrac DeliveryRuleRemoteAddressCondition) AsBasicDeliveryRuleCondition() (
 type DeliveryRuleRequestBodyCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *RequestBodyMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2188,6 +2498,16 @@ func (drrbc DeliveryRuleRequestBodyCondition) AsDeliveryRuleURLFileExtensionCond
 
 // AsDeliveryRuleURLFileNameCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestBodyCondition.
 func (drrbc DeliveryRuleRequestBodyCondition) AsDeliveryRuleURLFileNameCondition() (*DeliveryRuleURLFileNameCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestBodyCondition.
+func (drrbc DeliveryRuleRequestBodyCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestBodyCondition.
+func (drrbc DeliveryRuleRequestBodyCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
 	return nil, false
 }
 
@@ -2271,7 +2591,7 @@ func (drrha DeliveryRuleRequestHeaderAction) AsBasicDeliveryRuleAction() (BasicD
 type DeliveryRuleRequestHeaderCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *RequestHeaderMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2343,6 +2663,16 @@ func (drrhc DeliveryRuleRequestHeaderCondition) AsDeliveryRuleURLFileNameConditi
 	return nil, false
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestHeaderCondition.
+func (drrhc DeliveryRuleRequestHeaderCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestHeaderCondition.
+func (drrhc DeliveryRuleRequestHeaderCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestHeaderCondition.
 func (drrhc DeliveryRuleRequestHeaderCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return nil, false
@@ -2362,7 +2692,7 @@ func (drrhc DeliveryRuleRequestHeaderCondition) AsBasicDeliveryRuleCondition() (
 type DeliveryRuleRequestMethodCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *RequestMethodMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2434,6 +2764,16 @@ func (drrmc DeliveryRuleRequestMethodCondition) AsDeliveryRuleURLFileNameConditi
 	return nil, false
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestMethodCondition.
+func (drrmc DeliveryRuleRequestMethodCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestMethodCondition.
+func (drrmc DeliveryRuleRequestMethodCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestMethodCondition.
 func (drrmc DeliveryRuleRequestMethodCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return nil, false
@@ -2453,7 +2793,7 @@ func (drrmc DeliveryRuleRequestMethodCondition) AsBasicDeliveryRuleCondition() (
 type DeliveryRuleRequestSchemeCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *RequestSchemeMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2525,6 +2865,16 @@ func (drrsc DeliveryRuleRequestSchemeCondition) AsDeliveryRuleURLFileNameConditi
 	return nil, false
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestSchemeCondition.
+func (drrsc DeliveryRuleRequestSchemeCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestSchemeCondition.
+func (drrsc DeliveryRuleRequestSchemeCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestSchemeCondition.
 func (drrsc DeliveryRuleRequestSchemeCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return nil, false
@@ -2544,7 +2894,7 @@ func (drrsc DeliveryRuleRequestSchemeCondition) AsBasicDeliveryRuleCondition() (
 type DeliveryRuleRequestURICondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *RequestURIMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2613,6 +2963,16 @@ func (drruc DeliveryRuleRequestURICondition) AsDeliveryRuleURLFileExtensionCondi
 
 // AsDeliveryRuleURLFileNameCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestURICondition.
 func (drruc DeliveryRuleRequestURICondition) AsDeliveryRuleURLFileNameCondition() (*DeliveryRuleURLFileNameCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestURICondition.
+func (drruc DeliveryRuleRequestURICondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleRequestURICondition.
+func (drruc DeliveryRuleRequestURICondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
 	return nil, false
 }
 
@@ -2696,7 +3056,7 @@ func (drrha DeliveryRuleResponseHeaderAction) AsBasicDeliveryRuleAction() (Basic
 type DeliveryRuleURLFileExtensionCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *URLFileExtensionMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2768,6 +3128,16 @@ func (drufec DeliveryRuleURLFileExtensionCondition) AsDeliveryRuleURLFileNameCon
 	return nil, false
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleURLFileExtensionCondition.
+func (drufec DeliveryRuleURLFileExtensionCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleURLFileExtensionCondition.
+func (drufec DeliveryRuleURLFileExtensionCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleURLFileExtensionCondition.
 func (drufec DeliveryRuleURLFileExtensionCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return nil, false
@@ -2787,7 +3157,7 @@ func (drufec DeliveryRuleURLFileExtensionCondition) AsBasicDeliveryRuleCondition
 type DeliveryRuleURLFileNameCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *URLFileNameMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2859,6 +3229,16 @@ func (drufnc DeliveryRuleURLFileNameCondition) AsDeliveryRuleURLFileNameConditio
 	return &drufnc, true
 }
 
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleURLFileNameCondition.
+func (drufnc DeliveryRuleURLFileNameCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleURLFileNameCondition.
+func (drufnc DeliveryRuleURLFileNameCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
+	return nil, false
+}
+
 // AsDeliveryRuleIsDeviceCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleURLFileNameCondition.
 func (drufnc DeliveryRuleURLFileNameCondition) AsDeliveryRuleIsDeviceCondition() (*DeliveryRuleIsDeviceCondition, bool) {
 	return nil, false
@@ -2878,7 +3258,7 @@ func (drufnc DeliveryRuleURLFileNameCondition) AsBasicDeliveryRuleCondition() (B
 type DeliveryRuleURLPathCondition struct {
 	// Parameters - Defines the parameters for the condition.
 	Parameters *URLPathMatchConditionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameIsDevice'
+	// Name - Possible values include: 'NameDeliveryRuleCondition', 'NameRemoteAddress', 'NameRequestMethod', 'NameQueryString', 'NamePostArgs', 'NameRequestURI', 'NameRequestHeader', 'NameRequestBody', 'NameRequestScheme', 'NameURLPath', 'NameURLFileExtension', 'NameURLFileName', 'NameHTTPVersion', 'NameCookies', 'NameIsDevice'
 	Name Name `json:"name,omitempty"`
 }
 
@@ -2947,6 +3327,16 @@ func (drupc DeliveryRuleURLPathCondition) AsDeliveryRuleURLFileExtensionConditio
 
 // AsDeliveryRuleURLFileNameCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleURLPathCondition.
 func (drupc DeliveryRuleURLPathCondition) AsDeliveryRuleURLFileNameCondition() (*DeliveryRuleURLFileNameCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleHTTPVersionCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleURLPathCondition.
+func (drupc DeliveryRuleURLPathCondition) AsDeliveryRuleHTTPVersionCondition() (*DeliveryRuleHTTPVersionCondition, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCookiesCondition is the BasicDeliveryRuleCondition implementation for DeliveryRuleURLPathCondition.
+func (drupc DeliveryRuleURLPathCondition) AsDeliveryRuleCookiesCondition() (*DeliveryRuleCookiesCondition, bool) {
 	return nil, false
 }
 
@@ -3774,6 +4164,17 @@ type HeaderActionParameters struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// HTTPVersionMatchConditionParameters defines the parameters for HttpVersion match conditions
+type HTTPVersionMatchConditionParameters struct {
+	OdataType *string `json:"@odata.type,omitempty"`
+	// Operator - Describes operator to be matched
+	Operator *string `json:"operator,omitempty"`
+	// NegateCondition - Describes if this is negate condition or not
+	NegateCondition *bool `json:"negateCondition,omitempty"`
+	// MatchValues - The match value for the condition of the delivery rule
+	MatchValues *[]string `json:"matchValues,omitempty"`
+}
+
 // IPAddressGroup CDN Ip address group
 type IPAddressGroup struct {
 	// DeliveryRegion - The delivery region of the ip address group
@@ -4380,7 +4781,7 @@ type PostArgsMatchConditionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
 	// Selector - Name of PostArg to be matched
 	Selector *string `json:"selector,omitempty"`
-	// Operator - Describes operator to be matched. Possible values include: 'Any', 'Equal', 'Contains', 'BeginsWith', 'EndsWith', 'LessThan', 'LessThanOrEqual', 'GreaterThan', 'GreaterThanOrEqual'
+	// Operator - Describes operator to be matched. Possible values include: 'PostArgsOperatorAny', 'PostArgsOperatorEqual', 'PostArgsOperatorContains', 'PostArgsOperatorBeginsWith', 'PostArgsOperatorEndsWith', 'PostArgsOperatorLessThan', 'PostArgsOperatorLessThanOrEqual', 'PostArgsOperatorGreaterThan', 'PostArgsOperatorGreaterThanOrEqual'
 	Operator PostArgsOperator `json:"operator,omitempty"`
 	// NegateCondition - Describes if this is negate condition or not
 	NegateCondition *bool `json:"negateCondition,omitempty"`

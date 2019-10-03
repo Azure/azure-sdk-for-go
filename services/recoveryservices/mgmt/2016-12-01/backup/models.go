@@ -142,23 +142,6 @@ func PossibleEngineTypeValues() []EngineType {
 	return []EngineType{BackupEngineTypeAzureBackupServerEngine, BackupEngineTypeBackupEngineBase, BackupEngineTypeDpmBackupEngine}
 }
 
-// EnhancedSecurityState enumerates the values for enhanced security state.
-type EnhancedSecurityState string
-
-const (
-	// EnhancedSecurityStateDisabled ...
-	EnhancedSecurityStateDisabled EnhancedSecurityState = "Disabled"
-	// EnhancedSecurityStateEnabled ...
-	EnhancedSecurityStateEnabled EnhancedSecurityState = "Enabled"
-	// EnhancedSecurityStateInvalid ...
-	EnhancedSecurityStateInvalid EnhancedSecurityState = "Invalid"
-)
-
-// PossibleEnhancedSecurityStateValues returns an array of possible values for the EnhancedSecurityState const type.
-func PossibleEnhancedSecurityStateValues() []EnhancedSecurityState {
-	return []EnhancedSecurityState{EnhancedSecurityStateDisabled, EnhancedSecurityStateEnabled, EnhancedSecurityStateInvalid}
-}
-
 // InquiryStatus enumerates the values for inquiry status.
 type InquiryStatus string
 
@@ -7914,55 +7897,6 @@ func (rcr ResourceConfigResource) MarshalJSON() ([]byte, error) {
 type ResourceList struct {
 	// NextLink - The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// ResourceVaultConfig backup resource vault config details.
-type ResourceVaultConfig struct {
-	// StorageModelType - Storage type. Possible values include: 'StorageTypeInvalid', 'StorageTypeGeoRedundant', 'StorageTypeLocallyRedundant'
-	StorageModelType StorageType `json:"storageModelType,omitempty"`
-	// StorageType - Storage type. Possible values include: 'StorageTypeInvalid', 'StorageTypeGeoRedundant', 'StorageTypeLocallyRedundant'
-	StorageType StorageType `json:"storageType,omitempty"`
-	// StorageTypeState - Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked. Possible values include: 'StorageTypeStateInvalid', 'StorageTypeStateLocked', 'StorageTypeStateUnlocked'
-	StorageTypeState StorageTypeState `json:"storageTypeState,omitempty"`
-	// EnhancedSecurityState - Enabled or Disabled. Possible values include: 'EnhancedSecurityStateInvalid', 'EnhancedSecurityStateEnabled', 'EnhancedSecurityStateDisabled'
-	EnhancedSecurityState EnhancedSecurityState `json:"enhancedSecurityState,omitempty"`
-}
-
-// ResourceVaultConfigResource backup resource vault config details.
-type ResourceVaultConfigResource struct {
-	autorest.Response `json:"-"`
-	// Properties - BackupResourceVaultConfigResource properties
-	Properties *ResourceVaultConfig `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/...
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ETag - Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ResourceVaultConfigResource.
-func (rvcr ResourceVaultConfigResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if rvcr.Properties != nil {
-		objectMap["properties"] = rvcr.Properties
-	}
-	if rvcr.Location != nil {
-		objectMap["location"] = rvcr.Location
-	}
-	if rvcr.Tags != nil {
-		objectMap["tags"] = rvcr.Tags
-	}
-	if rvcr.ETag != nil {
-		objectMap["eTag"] = rvcr.ETag
-	}
-	return json.Marshal(objectMap)
 }
 
 // SQLDataDirectory sQLDataDirectory info

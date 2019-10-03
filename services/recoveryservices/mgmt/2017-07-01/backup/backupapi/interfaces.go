@@ -23,6 +23,14 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// ResourceVaultConfigsClientAPI contains the set of methods on the ResourceVaultConfigsClient type.
+type ResourceVaultConfigsClientAPI interface {
+	Get(ctx context.Context, vaultName string, resourceGroupName string) (result backup.ResourceVaultConfigResource, err error)
+	Update(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceVaultConfigResource) (result backup.ResourceVaultConfigResource, err error)
+}
+
+var _ ResourceVaultConfigsClientAPI = (*backup.ResourceVaultConfigsClient)(nil)
+
 // ProtectedItemsClientAPI contains the set of methods on the ProtectedItemsClient type.
 type ProtectedItemsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters backup.ProtectedItemResource) (result backup.ProtectedItemResource, err error)
@@ -156,14 +164,6 @@ type UsageSummariesClientAPI interface {
 }
 
 var _ UsageSummariesClientAPI = (*backup.UsageSummariesClient)(nil)
-
-// ResourceVaultConfigsClientAPI contains the set of methods on the ResourceVaultConfigsClient type.
-type ResourceVaultConfigsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string) (result backup.ResourceVaultConfigResource, err error)
-	Update(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceVaultConfigResource) (result backup.ResourceVaultConfigResource, err error)
-}
-
-var _ ResourceVaultConfigsClientAPI = (*backup.ResourceVaultConfigsClient)(nil)
 
 // EnginesClientAPI contains the set of methods on the EnginesClient type.
 type EnginesClientAPI interface {

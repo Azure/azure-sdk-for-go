@@ -23,14 +23,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// ResourceVaultConfigsClientAPI contains the set of methods on the ResourceVaultConfigsClient type.
-type ResourceVaultConfigsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string) (result backup.ResourceVaultConfigResource, err error)
-	Update(ctx context.Context, vaultName string, resourceGroupName string, parameters backup.ResourceVaultConfigResource) (result backup.ResourceVaultConfigResource, err error)
-}
-
-var _ ResourceVaultConfigsClientAPI = (*backup.ResourceVaultConfigsClient)(nil)
-
 // EnginesClientAPI contains the set of methods on the EnginesClient type.
 type EnginesClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, backupEngineName string, filter string, skipToken string) (result backup.EngineBaseResource, err error)

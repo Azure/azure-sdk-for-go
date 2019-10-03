@@ -1410,6 +1410,23 @@ func PossibleScheduleRunTypeValues() []ScheduleRunType {
 	return []ScheduleRunType{ScheduleRunTypeDaily, ScheduleRunTypeInvalid, ScheduleRunTypeWeekly}
 }
 
+// SoftDeleteState enumerates the values for soft delete state.
+type SoftDeleteState string
+
+const (
+	// SoftDeleteStateDisabled ...
+	SoftDeleteStateDisabled SoftDeleteState = "Disabled"
+	// SoftDeleteStateEnabled ...
+	SoftDeleteStateEnabled SoftDeleteState = "Enabled"
+	// SoftDeleteStateInvalid ...
+	SoftDeleteStateInvalid SoftDeleteState = "Invalid"
+)
+
+// PossibleSoftDeleteStateValues returns an array of possible values for the SoftDeleteState const type.
+func PossibleSoftDeleteStateValues() []SoftDeleteState {
+	return []SoftDeleteState{SoftDeleteStateDisabled, SoftDeleteStateEnabled, SoftDeleteStateInvalid}
+}
+
 // SQLDataDirectoryType enumerates the values for sql data directory type.
 type SQLDataDirectoryType string
 
@@ -19070,6 +19087,8 @@ type ResourceVaultConfig struct {
 	StorageTypeState StorageTypeState `json:"storageTypeState,omitempty"`
 	// EnhancedSecurityState - Enabled or Disabled. Possible values include: 'EnhancedSecurityStateInvalid', 'EnhancedSecurityStateEnabled', 'EnhancedSecurityStateDisabled'
 	EnhancedSecurityState EnhancedSecurityState `json:"enhancedSecurityState,omitempty"`
+	// SoftDeleteState - Soft Delete feature state. Possible values include: 'SoftDeleteStateInvalid', 'SoftDeleteStateEnabled', 'SoftDeleteStateDisabled'
+	SoftDeleteState SoftDeleteState `json:"softDeleteState,omitempty"`
 }
 
 // ResourceVaultConfigResource backup resource vault config details.

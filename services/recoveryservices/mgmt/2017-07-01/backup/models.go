@@ -764,31 +764,17 @@ func PossibleMonthOfYearValues() []MonthOfYear {
 type ObjectType string
 
 const (
-	// ObjectTypeAzureFileShareRecoveryPoint ...
-	ObjectTypeAzureFileShareRecoveryPoint ObjectType = "AzureFileShareRecoveryPoint"
-	// ObjectTypeAzureWorkloadPointInTimeRecoveryPoint ...
-	ObjectTypeAzureWorkloadPointInTimeRecoveryPoint ObjectType = "AzureWorkloadPointInTimeRecoveryPoint"
-	// ObjectTypeAzureWorkloadRecoveryPoint ...
-	ObjectTypeAzureWorkloadRecoveryPoint ObjectType = "AzureWorkloadRecoveryPoint"
-	// ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ...
-	ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ObjectType = "AzureWorkloadSAPHanaPointInTimeRecoveryPoint"
-	// ObjectTypeAzureWorkloadSAPHanaRecoveryPoint ...
-	ObjectTypeAzureWorkloadSAPHanaRecoveryPoint ObjectType = "AzureWorkloadSAPHanaRecoveryPoint"
-	// ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint ...
-	ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint ObjectType = "AzureWorkloadSQLPointInTimeRecoveryPoint"
-	// ObjectTypeAzureWorkloadSQLRecoveryPoint ...
-	ObjectTypeAzureWorkloadSQLRecoveryPoint ObjectType = "AzureWorkloadSQLRecoveryPoint"
-	// ObjectTypeGenericRecoveryPoint ...
-	ObjectTypeGenericRecoveryPoint ObjectType = "GenericRecoveryPoint"
-	// ObjectTypeIaasVMRecoveryPoint ...
-	ObjectTypeIaasVMRecoveryPoint ObjectType = "IaasVMRecoveryPoint"
-	// ObjectTypeRecoveryPoint ...
-	ObjectTypeRecoveryPoint ObjectType = "RecoveryPoint"
+	// ObjectTypeExportJobsOperationResultInfo ...
+	ObjectTypeExportJobsOperationResultInfo ObjectType = "ExportJobsOperationResultInfo"
+	// ObjectTypeOperationResultInfo ...
+	ObjectTypeOperationResultInfo ObjectType = "OperationResultInfo"
+	// ObjectTypeOperationResultInfoBase ...
+	ObjectTypeOperationResultInfoBase ObjectType = "OperationResultInfoBase"
 )
 
 // PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
 func PossibleObjectTypeValues() []ObjectType {
-	return []ObjectType{ObjectTypeAzureFileShareRecoveryPoint, ObjectTypeAzureWorkloadPointInTimeRecoveryPoint, ObjectTypeAzureWorkloadRecoveryPoint, ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint, ObjectTypeAzureWorkloadSAPHanaRecoveryPoint, ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint, ObjectTypeAzureWorkloadSQLRecoveryPoint, ObjectTypeGenericRecoveryPoint, ObjectTypeIaasVMRecoveryPoint, ObjectTypeRecoveryPoint}
+	return []ObjectType{ObjectTypeExportJobsOperationResultInfo, ObjectTypeOperationResultInfo, ObjectTypeOperationResultInfoBase}
 }
 
 // ObjectTypeBasicILRRequest enumerates the values for object type basic ilr request.
@@ -806,24 +792,6 @@ const (
 // PossibleObjectTypeBasicILRRequestValues returns an array of possible values for the ObjectTypeBasicILRRequest const type.
 func PossibleObjectTypeBasicILRRequestValues() []ObjectTypeBasicILRRequest {
 	return []ObjectTypeBasicILRRequest{ObjectTypeAzureFileShareProvisionILRRequest, ObjectTypeIaasVMILRRegistrationRequest, ObjectTypeILRRequest}
-}
-
-// ObjectTypeBasicOperationResultInfoBase enumerates the values for object type basic operation result info
-// base.
-type ObjectTypeBasicOperationResultInfoBase string
-
-const (
-	// ObjectTypeExportJobsOperationResultInfo ...
-	ObjectTypeExportJobsOperationResultInfo ObjectTypeBasicOperationResultInfoBase = "ExportJobsOperationResultInfo"
-	// ObjectTypeOperationResultInfo ...
-	ObjectTypeOperationResultInfo ObjectTypeBasicOperationResultInfoBase = "OperationResultInfo"
-	// ObjectTypeOperationResultInfoBase ...
-	ObjectTypeOperationResultInfoBase ObjectTypeBasicOperationResultInfoBase = "OperationResultInfoBase"
-)
-
-// PossibleObjectTypeBasicOperationResultInfoBaseValues returns an array of possible values for the ObjectTypeBasicOperationResultInfoBase const type.
-func PossibleObjectTypeBasicOperationResultInfoBaseValues() []ObjectTypeBasicOperationResultInfoBase {
-	return []ObjectTypeBasicOperationResultInfoBase{ObjectTypeExportJobsOperationResultInfo, ObjectTypeOperationResultInfo, ObjectTypeOperationResultInfoBase}
 }
 
 // ObjectTypeBasicOperationStatusExtendedInfo enumerates the values for object type basic operation status
@@ -844,6 +812,37 @@ const (
 // PossibleObjectTypeBasicOperationStatusExtendedInfoValues returns an array of possible values for the ObjectTypeBasicOperationStatusExtendedInfo const type.
 func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() []ObjectTypeBasicOperationStatusExtendedInfo {
 	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo}
+}
+
+// ObjectTypeBasicRecoveryPoint enumerates the values for object type basic recovery point.
+type ObjectTypeBasicRecoveryPoint string
+
+const (
+	// ObjectTypeAzureFileShareRecoveryPoint ...
+	ObjectTypeAzureFileShareRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureFileShareRecoveryPoint"
+	// ObjectTypeAzureWorkloadPointInTimeRecoveryPoint ...
+	ObjectTypeAzureWorkloadPointInTimeRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadPointInTimeRecoveryPoint"
+	// ObjectTypeAzureWorkloadRecoveryPoint ...
+	ObjectTypeAzureWorkloadRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadRecoveryPoint"
+	// ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ...
+	ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadSAPHanaPointInTimeRecoveryPoint"
+	// ObjectTypeAzureWorkloadSAPHanaRecoveryPoint ...
+	ObjectTypeAzureWorkloadSAPHanaRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadSAPHanaRecoveryPoint"
+	// ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint ...
+	ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadSQLPointInTimeRecoveryPoint"
+	// ObjectTypeAzureWorkloadSQLRecoveryPoint ...
+	ObjectTypeAzureWorkloadSQLRecoveryPoint ObjectTypeBasicRecoveryPoint = "AzureWorkloadSQLRecoveryPoint"
+	// ObjectTypeGenericRecoveryPoint ...
+	ObjectTypeGenericRecoveryPoint ObjectTypeBasicRecoveryPoint = "GenericRecoveryPoint"
+	// ObjectTypeIaasVMRecoveryPoint ...
+	ObjectTypeIaasVMRecoveryPoint ObjectTypeBasicRecoveryPoint = "IaasVMRecoveryPoint"
+	// ObjectTypeRecoveryPoint ...
+	ObjectTypeRecoveryPoint ObjectTypeBasicRecoveryPoint = "RecoveryPoint"
+)
+
+// PossibleObjectTypeBasicRecoveryPointValues returns an array of possible values for the ObjectTypeBasicRecoveryPoint const type.
+func PossibleObjectTypeBasicRecoveryPointValues() []ObjectTypeBasicRecoveryPoint {
+	return []ObjectTypeBasicRecoveryPoint{ObjectTypeAzureFileShareRecoveryPoint, ObjectTypeAzureWorkloadPointInTimeRecoveryPoint, ObjectTypeAzureWorkloadRecoveryPoint, ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint, ObjectTypeAzureWorkloadSAPHanaRecoveryPoint, ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint, ObjectTypeAzureWorkloadSQLRecoveryPoint, ObjectTypeGenericRecoveryPoint, ObjectTypeIaasVMRecoveryPoint, ObjectTypeRecoveryPoint}
 }
 
 // ObjectTypeBasicRequest enumerates the values for object type basic request.
@@ -2362,9 +2361,9 @@ type AzureFileshareProtectedItemExtendedInfo struct {
 	RecoveryPointCount *int32 `json:"recoveryPointCount,omitempty"`
 	// PolicyState - Indicates consistency of policy object and policy applied to this backup item.
 	PolicyState *string `json:"policyState,omitempty"`
-	// ResourceState - Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted, Deleted}
+	// ResourceState - READ-ONLY; Indicates the state of this resource. Possible values are from enum ResourceState {Invalid, Active, SoftDeleted, Deleted}
 	ResourceState *string `json:"resourceState,omitempty"`
-	// ResourceStateSyncTime - The resource state sync time for this backup item.
+	// ResourceStateSyncTime - READ-ONLY; The resource state sync time for this backup item.
 	ResourceStateSyncTime *date.Time `json:"resourceStateSyncTime,omitempty"`
 }
 
@@ -2561,34 +2560,22 @@ func (afspir AzureFileShareProvisionILRRequest) AsBasicILRRequest() (BasicILRReq
 
 // AzureFileShareRecoveryPoint azure File Share workload specific backup copy.
 type AzureFileShareRecoveryPoint struct {
-	// RecoveryPointType - Type of the backup copy. Specifies whether it is a crash consistent backup or app consistent.
+	// RecoveryPointType - READ-ONLY; Type of the backup copy. Specifies whether it is a crash consistent backup or app consistent.
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
-	// RecoveryPointTime - Time at which this backup copy was created.
+	// RecoveryPointTime - READ-ONLY; Time at which this backup copy was created.
 	RecoveryPointTime *date.Time `json:"recoveryPointTime,omitempty"`
-	// FileShareSnapshotURI - Contains Url to the snapshot of fileshare, if applicable
+	// FileShareSnapshotURI - READ-ONLY; Contains Url to the snapshot of fileshare, if applicable
 	FileShareSnapshotURI *string `json:"fileShareSnapshotUri,omitempty"`
-	// RecoveryPointSizeInGB - Contains recovery point size
+	// RecoveryPointSizeInGB - READ-ONLY; Contains recovery point size
 	RecoveryPointSizeInGB *int32 `json:"recoveryPointSizeInGB,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AzureFileShareRecoveryPoint.
 func (afsrp AzureFileShareRecoveryPoint) MarshalJSON() ([]byte, error) {
 	afsrp.ObjectType = ObjectTypeAzureFileShareRecoveryPoint
 	objectMap := make(map[string]interface{})
-	if afsrp.RecoveryPointType != nil {
-		objectMap["recoveryPointType"] = afsrp.RecoveryPointType
-	}
-	if afsrp.RecoveryPointTime != nil {
-		objectMap["recoveryPointTime"] = afsrp.RecoveryPointTime
-	}
-	if afsrp.FileShareSnapshotURI != nil {
-		objectMap["fileShareSnapshotUri"] = afsrp.FileShareSnapshotURI
-	}
-	if afsrp.RecoveryPointSizeInGB != nil {
-		objectMap["recoveryPointSizeInGB"] = afsrp.RecoveryPointSizeInGB
-	}
 	if afsrp.ObjectType != "" {
 		objectMap["objectType"] = afsrp.ObjectType
 	}
@@ -3718,25 +3705,25 @@ func (aiscvpi AzureIaaSComputeVMProtectedItem) AsBasicProtectedItem() (BasicProt
 
 // AzureIaaSVMErrorInfo azure IaaS VM workload-specific error information.
 type AzureIaaSVMErrorInfo struct {
-	// ErrorCode - Error code.
+	// ErrorCode - READ-ONLY; Error code.
 	ErrorCode *int32 `json:"errorCode,omitempty"`
-	// ErrorTitle - Title: Typically, the entity that the error pertains to.
+	// ErrorTitle - READ-ONLY; Title: Typically, the entity that the error pertains to.
 	ErrorTitle *string `json:"errorTitle,omitempty"`
-	// ErrorString - Localized error string.
+	// ErrorString - READ-ONLY; Localized error string.
 	ErrorString *string `json:"errorString,omitempty"`
-	// Recommendations - List of localized recommendations for above error code.
+	// Recommendations - READ-ONLY; List of localized recommendations for above error code.
 	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 
 // AzureIaaSVMHealthDetails azure IaaS VM workload-specific Health Details.
 type AzureIaaSVMHealthDetails struct {
-	// Code - Health Code
+	// Code - READ-ONLY; Health Code
 	Code *int32 `json:"code,omitempty"`
-	// Title - Health Title
+	// Title - READ-ONLY; Health Title
 	Title *string `json:"title,omitempty"`
-	// Message - Health Message
+	// Message - READ-ONLY; Health Message
 	Message *string `json:"message,omitempty"`
-	// Recommendations - Health Recommended Actions
+	// Recommendations - READ-ONLY; Health Recommended Actions
 	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 
@@ -9305,12 +9292,12 @@ type BasicAzureWorkloadPointInTimeRecoveryPoint interface {
 type AzureWorkloadPointInTimeRecoveryPoint struct {
 	// TimeRanges - List of log ranges
 	TimeRanges *[]PointInTimeRange `json:"timeRanges,omitempty"`
-	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
+	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 func unmarshalBasicAzureWorkloadPointInTimeRecoveryPoint(body []byte) (BasicAzureWorkloadPointInTimeRecoveryPoint, error) {
@@ -9356,12 +9343,6 @@ func (awpitrp AzureWorkloadPointInTimeRecoveryPoint) MarshalJSON() ([]byte, erro
 	objectMap := make(map[string]interface{})
 	if awpitrp.TimeRanges != nil {
 		objectMap["timeRanges"] = awpitrp.TimeRanges
-	}
-	if awpitrp.RecoveryPointTimeInUTC != nil {
-		objectMap["recoveryPointTimeInUTC"] = awpitrp.RecoveryPointTimeInUTC
-	}
-	if awpitrp.Type != "" {
-		objectMap["type"] = awpitrp.Type
 	}
 	if awpitrp.ObjectType != "" {
 		objectMap["objectType"] = awpitrp.ObjectType
@@ -9566,12 +9547,12 @@ type BasicAzureWorkloadRecoveryPoint interface {
 // AzureWorkloadRecoveryPoint workload specific recovery point, specifically encapsulates full/diff recovery
 // point
 type AzureWorkloadRecoveryPoint struct {
-	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
+	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 func unmarshalBasicAzureWorkloadRecoveryPoint(body []byte) (BasicAzureWorkloadRecoveryPoint, error) {
@@ -9631,12 +9612,6 @@ func unmarshalBasicAzureWorkloadRecoveryPointArray(body []byte) ([]BasicAzureWor
 func (awrp AzureWorkloadRecoveryPoint) MarshalJSON() ([]byte, error) {
 	awrp.ObjectType = ObjectTypeAzureWorkloadRecoveryPoint
 	objectMap := make(map[string]interface{})
-	if awrp.RecoveryPointTimeInUTC != nil {
-		objectMap["recoveryPointTimeInUTC"] = awrp.RecoveryPointTimeInUTC
-	}
-	if awrp.Type != "" {
-		objectMap["type"] = awrp.Type
-	}
 	if awrp.ObjectType != "" {
 		objectMap["objectType"] = awrp.ObjectType
 	}
@@ -9888,12 +9863,12 @@ func (awrr AzureWorkloadRestoreRequest) AsBasicRestoreRequest() (BasicRestoreReq
 type AzureWorkloadSAPHanaPointInTimeRecoveryPoint struct {
 	// TimeRanges - List of log ranges
 	TimeRanges *[]PointInTimeRange `json:"timeRanges,omitempty"`
-	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
+	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AzureWorkloadSAPHanaPointInTimeRecoveryPoint.
@@ -9902,12 +9877,6 @@ func (awshpitrp AzureWorkloadSAPHanaPointInTimeRecoveryPoint) MarshalJSON() ([]b
 	objectMap := make(map[string]interface{})
 	if awshpitrp.TimeRanges != nil {
 		objectMap["timeRanges"] = awshpitrp.TimeRanges
-	}
-	if awshpitrp.RecoveryPointTimeInUTC != nil {
-		objectMap["recoveryPointTimeInUTC"] = awshpitrp.RecoveryPointTimeInUTC
-	}
-	if awshpitrp.Type != "" {
-		objectMap["type"] = awshpitrp.Type
 	}
 	if awshpitrp.ObjectType != "" {
 		objectMap["objectType"] = awshpitrp.ObjectType
@@ -10100,24 +10069,18 @@ func (awshpitrr AzureWorkloadSAPHanaPointInTimeRestoreRequest) AsBasicRestoreReq
 // AzureWorkloadSAPHanaRecoveryPoint sAPHana specific recoverypoint, specifically encapsulates full/diff
 // recoverypoints
 type AzureWorkloadSAPHanaRecoveryPoint struct {
-	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
+	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AzureWorkloadSAPHanaRecoveryPoint.
 func (awshrp AzureWorkloadSAPHanaRecoveryPoint) MarshalJSON() ([]byte, error) {
 	awshrp.ObjectType = ObjectTypeAzureWorkloadSAPHanaRecoveryPoint
 	objectMap := make(map[string]interface{})
-	if awshrp.RecoveryPointTimeInUTC != nil {
-		objectMap["recoveryPointTimeInUTC"] = awshrp.RecoveryPointTimeInUTC
-	}
-	if awshrp.Type != "" {
-		objectMap["type"] = awshrp.Type
-	}
 	if awshrp.ObjectType != "" {
 		objectMap["objectType"] = awshrp.ObjectType
 	}
@@ -10437,12 +10400,12 @@ type AzureWorkloadSQLPointInTimeRecoveryPoint struct {
 	// When a specific recovery point is accessed using GetRecoveryPoint
 	// Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
 	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
-	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
+	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AzureWorkloadSQLPointInTimeRecoveryPoint.
@@ -10454,12 +10417,6 @@ func (awspitrp AzureWorkloadSQLPointInTimeRecoveryPoint) MarshalJSON() ([]byte, 
 	}
 	if awspitrp.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = awspitrp.ExtendedInfo
-	}
-	if awspitrp.RecoveryPointTimeInUTC != nil {
-		objectMap["recoveryPointTimeInUTC"] = awspitrp.RecoveryPointTimeInUTC
-	}
-	if awspitrp.Type != "" {
-		objectMap["type"] = awspitrp.Type
 	}
 	if awspitrp.ObjectType != "" {
 		objectMap["objectType"] = awspitrp.ObjectType
@@ -10678,12 +10635,12 @@ type AzureWorkloadSQLRecoveryPoint struct {
 	// When a specific recovery point is accessed using GetRecoveryPoint
 	// Or when ListRecoveryPoints is called for Log RP only with ExtendedInfo query filter
 	ExtendedInfo *AzureWorkloadSQLRecoveryPointExtendedInfo `json:"extendedInfo,omitempty"`
-	// RecoveryPointTimeInUTC - UTC time at which recovery point was created
+	// RecoveryPointTimeInUTC - READ-ONLY; UTC time at which recovery point was created
 	RecoveryPointTimeInUTC *date.Time `json:"recoveryPointTimeInUTC,omitempty"`
-	// Type - Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
+	// Type - READ-ONLY; Type of restore point. Possible values include: 'RestorePointTypeInvalid', 'RestorePointTypeFull', 'RestorePointTypeLog', 'RestorePointTypeDifferential'
 	Type RestorePointType `json:"type,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 func unmarshalBasicAzureWorkloadSQLRecoveryPoint(body []byte) (BasicAzureWorkloadSQLRecoveryPoint, error) {
@@ -10729,12 +10686,6 @@ func (awsrp AzureWorkloadSQLRecoveryPoint) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if awsrp.ExtendedInfo != nil {
 		objectMap["extendedInfo"] = awsrp.ExtendedInfo
-	}
-	if awsrp.RecoveryPointTimeInUTC != nil {
-		objectMap["recoveryPointTimeInUTC"] = awsrp.RecoveryPointTimeInUTC
-	}
-	if awsrp.Type != "" {
-		objectMap["type"] = awsrp.Type
 	}
 	if awsrp.ObjectType != "" {
 		objectMap["objectType"] = awsrp.ObjectType
@@ -10814,9 +10765,9 @@ func (awsrp AzureWorkloadSQLRecoveryPoint) AsBasicRecoveryPoint() (BasicRecovery
 
 // AzureWorkloadSQLRecoveryPointExtendedInfo extended info class details
 type AzureWorkloadSQLRecoveryPointExtendedInfo struct {
-	// DataDirectoryTimeInUTC - UTC time at which data directory info was captured
+	// DataDirectoryTimeInUTC - READ-ONLY; UTC time at which data directory info was captured
 	DataDirectoryTimeInUTC *date.Time `json:"dataDirectoryTimeInUTC,omitempty"`
-	// DataDirectoryPaths - List of data directory paths during restore operation.
+	// DataDirectoryPaths - READ-ONLY; List of data directory paths during restore operation.
 	DataDirectoryPaths *[]SQLDataDirectory `json:"dataDirectoryPaths,omitempty"`
 }
 
@@ -12534,11 +12485,11 @@ type EngineExtendedInfo struct {
 
 // ErrorDetail error Detail class which encapsulates Code, Message and Recommendations.
 type ErrorDetail struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error Message related to the Code.
+	// Message - READ-ONLY; Error Message related to the Code.
 	Message *string `json:"message,omitempty"`
-	// Recommendations - List of recommendation strings.
+	// Recommendations - READ-ONLY; List of recommendation strings.
 	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 
@@ -12553,7 +12504,7 @@ type ExportJobsOperationResultInfo struct {
 	// ExcelFileBlobSasKey - SAS key to access the blob. It expires in 15 mins.
 	ExcelFileBlobSasKey *string `json:"excelFileBlobSasKey,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeOperationResultInfoBase', 'ObjectTypeExportJobsOperationResultInfo', 'ObjectTypeOperationResultInfo'
-	ObjectType ObjectTypeBasicOperationResultInfoBase `json:"objectType,omitempty"`
+	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ExportJobsOperationResultInfo.
@@ -13122,7 +13073,7 @@ type GenericRecoveryPoint struct {
 	// RecoveryPointAdditionalInfo - Additional information associated with this backup copy.
 	RecoveryPointAdditionalInfo *string `json:"recoveryPointAdditionalInfo,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GenericRecoveryPoint.
@@ -13675,15 +13626,15 @@ func (ispi IaaSVMProtectableItem) AsBasicWorkloadProtectableItem() (BasicWorkloa
 
 // IaasVMRecoveryPoint iaaS VM workload specific backup copy.
 type IaasVMRecoveryPoint struct {
-	// RecoveryPointType - Type of the backup copy.
+	// RecoveryPointType - READ-ONLY; Type of the backup copy.
 	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
-	// RecoveryPointTime - Time at which this backup copy was created.
+	// RecoveryPointTime - READ-ONLY; Time at which this backup copy was created.
 	RecoveryPointTime *date.Time `json:"recoveryPointTime,omitempty"`
-	// RecoveryPointAdditionalInfo - Additional information associated with this backup copy.
+	// RecoveryPointAdditionalInfo - READ-ONLY; Additional information associated with this backup copy.
 	RecoveryPointAdditionalInfo *string `json:"recoveryPointAdditionalInfo,omitempty"`
-	// SourceVMStorageType - Storage type of the VM whose backup copy is created.
+	// SourceVMStorageType - READ-ONLY; Storage type of the VM whose backup copy is created.
 	SourceVMStorageType *string `json:"sourceVMStorageType,omitempty"`
-	// IsSourceVMEncrypted - Identifies whether the VM was encrypted when the backup copy is created.
+	// IsSourceVMEncrypted - READ-ONLY; Identifies whether the VM was encrypted when the backup copy is created.
 	IsSourceVMEncrypted *bool `json:"isSourceVMEncrypted,omitempty"`
 	// KeyAndSecret - Required details for recovering an encrypted VM. Applicable only when IsSourceVMEncrypted is true.
 	KeyAndSecret *KeyAndSecretDetails `json:"keyAndSecret,omitempty"`
@@ -13702,28 +13653,13 @@ type IaasVMRecoveryPoint struct {
 	// RecoveryPointDiskConfiguration - Disk configuration
 	RecoveryPointDiskConfiguration *RecoveryPointDiskConfiguration `json:"recoveryPointDiskConfiguration,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IaasVMRecoveryPoint.
 func (ivrp IaasVMRecoveryPoint) MarshalJSON() ([]byte, error) {
 	ivrp.ObjectType = ObjectTypeIaasVMRecoveryPoint
 	objectMap := make(map[string]interface{})
-	if ivrp.RecoveryPointType != nil {
-		objectMap["recoveryPointType"] = ivrp.RecoveryPointType
-	}
-	if ivrp.RecoveryPointTime != nil {
-		objectMap["recoveryPointTime"] = ivrp.RecoveryPointTime
-	}
-	if ivrp.RecoveryPointAdditionalInfo != nil {
-		objectMap["recoveryPointAdditionalInfo"] = ivrp.RecoveryPointAdditionalInfo
-	}
-	if ivrp.SourceVMStorageType != nil {
-		objectMap["sourceVMStorageType"] = ivrp.SourceVMStorageType
-	}
-	if ivrp.IsSourceVMEncrypted != nil {
-		objectMap["isSourceVMEncrypted"] = ivrp.IsSourceVMEncrypted
-	}
 	if ivrp.KeyAndSecret != nil {
 		objectMap["keyAndSecret"] = ivrp.KeyAndSecret
 	}
@@ -14996,9 +14932,9 @@ type MABContainerHealthDetails struct {
 
 // MabErrorInfo MAB workload-specific error information.
 type MabErrorInfo struct {
-	// ErrorString - Localized error string.
+	// ErrorString - READ-ONLY; Localized error string.
 	ErrorString *string `json:"errorString,omitempty"`
-	// Recommendations - List of localized recommendations.
+	// Recommendations - READ-ONLY; List of localized recommendations.
 	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 
@@ -15534,7 +15470,7 @@ type OperationResultInfo struct {
 	// JobList - List of jobs created by this operation.
 	JobList *[]string `json:"jobList,omitempty"`
 	// ObjectType - Possible values include: 'ObjectTypeOperationResultInfoBase', 'ObjectTypeExportJobsOperationResultInfo', 'ObjectTypeOperationResultInfo'
-	ObjectType ObjectTypeBasicOperationResultInfoBase `json:"objectType,omitempty"`
+	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for OperationResultInfo.
@@ -15580,7 +15516,7 @@ type BasicOperationResultInfoBase interface {
 // OperationResultInfoBase base class for operation result info.
 type OperationResultInfoBase struct {
 	// ObjectType - Possible values include: 'ObjectTypeOperationResultInfoBase', 'ObjectTypeExportJobsOperationResultInfo', 'ObjectTypeOperationResultInfo'
-	ObjectType ObjectTypeBasicOperationResultInfoBase `json:"objectType,omitempty"`
+	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
 func unmarshalBasicOperationResultInfoBase(body []byte) (BasicOperationResultInfoBase, error) {
@@ -18354,7 +18290,7 @@ type BasicRecoveryPoint interface {
 // RecoveryPoint base class for backup copies. Workload-specific backup copies are derived from this class.
 type RecoveryPoint struct {
 	// ObjectType - Possible values include: 'ObjectTypeRecoveryPoint', 'ObjectTypeAzureFileShareRecoveryPoint', 'ObjectTypeAzureWorkloadPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSAPHanaRecoveryPoint', 'ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint', 'ObjectTypeAzureWorkloadSQLRecoveryPoint', 'ObjectTypeGenericRecoveryPoint', 'ObjectTypeIaasVMRecoveryPoint'
-	ObjectType ObjectType `json:"objectType,omitempty"`
+	ObjectType ObjectTypeBasicRecoveryPoint `json:"objectType,omitempty"`
 }
 
 func unmarshalBasicRecoveryPoint(body []byte) (BasicRecoveryPoint, error) {

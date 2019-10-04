@@ -5321,11 +5321,11 @@ type EngineExtendedInfo struct {
 
 // ErrorDetail error Detail class which encapsulates Code, Message and Recommendations.
 type ErrorDetail struct {
-	// Code - Error code.
+	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
-	// Message - Error Message related to the Code.
+	// Message - READ-ONLY; Error Message related to the Code.
 	Message *string `json:"message,omitempty"`
-	// Recommendations - List of recommendation strings.
+	// Recommendations - READ-ONLY; List of recommendation strings.
 	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 

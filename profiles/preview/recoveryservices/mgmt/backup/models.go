@@ -384,16 +384,9 @@ const (
 type ObjectType = original.ObjectType
 
 const (
-	ObjectTypeAzureFileShareRecoveryPoint                  ObjectType = original.ObjectTypeAzureFileShareRecoveryPoint
-	ObjectTypeAzureWorkloadPointInTimeRecoveryPoint        ObjectType = original.ObjectTypeAzureWorkloadPointInTimeRecoveryPoint
-	ObjectTypeAzureWorkloadRecoveryPoint                   ObjectType = original.ObjectTypeAzureWorkloadRecoveryPoint
-	ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ObjectType = original.ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint
-	ObjectTypeAzureWorkloadSAPHanaRecoveryPoint            ObjectType = original.ObjectTypeAzureWorkloadSAPHanaRecoveryPoint
-	ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint     ObjectType = original.ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint
-	ObjectTypeAzureWorkloadSQLRecoveryPoint                ObjectType = original.ObjectTypeAzureWorkloadSQLRecoveryPoint
-	ObjectTypeGenericRecoveryPoint                         ObjectType = original.ObjectTypeGenericRecoveryPoint
-	ObjectTypeIaasVMRecoveryPoint                          ObjectType = original.ObjectTypeIaasVMRecoveryPoint
-	ObjectTypeRecoveryPoint                                ObjectType = original.ObjectTypeRecoveryPoint
+	ObjectTypeExportJobsOperationResultInfo ObjectType = original.ObjectTypeExportJobsOperationResultInfo
+	ObjectTypeOperationResultInfo           ObjectType = original.ObjectTypeOperationResultInfo
+	ObjectTypeOperationResultInfoBase       ObjectType = original.ObjectTypeOperationResultInfoBase
 )
 
 type ObjectTypeBasicILRRequest = original.ObjectTypeBasicILRRequest
@@ -404,14 +397,6 @@ const (
 	ObjectTypeILRRequest                        ObjectTypeBasicILRRequest = original.ObjectTypeILRRequest
 )
 
-type ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeBasicOperationResultInfoBase
-
-const (
-	ObjectTypeExportJobsOperationResultInfo ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeExportJobsOperationResultInfo
-	ObjectTypeOperationResultInfo           ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeOperationResultInfo
-	ObjectTypeOperationResultInfoBase       ObjectTypeBasicOperationResultInfoBase = original.ObjectTypeOperationResultInfoBase
-)
-
 type ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeBasicOperationStatusExtendedInfo
 
 const (
@@ -419,6 +404,21 @@ const (
 	ObjectTypeOperationStatusJobExtendedInfo          ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobExtendedInfo
 	ObjectTypeOperationStatusJobsExtendedInfo         ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
 	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
+)
+
+type ObjectTypeBasicRecoveryPoint = original.ObjectTypeBasicRecoveryPoint
+
+const (
+	ObjectTypeAzureFileShareRecoveryPoint                  ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureFileShareRecoveryPoint
+	ObjectTypeAzureWorkloadPointInTimeRecoveryPoint        ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadPointInTimeRecoveryPoint
+	ObjectTypeAzureWorkloadRecoveryPoint                   ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadRecoveryPoint
+	ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadSAPHanaPointInTimeRecoveryPoint
+	ObjectTypeAzureWorkloadSAPHanaRecoveryPoint            ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadSAPHanaRecoveryPoint
+	ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint     ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadSQLPointInTimeRecoveryPoint
+	ObjectTypeAzureWorkloadSQLRecoveryPoint                ObjectTypeBasicRecoveryPoint = original.ObjectTypeAzureWorkloadSQLRecoveryPoint
+	ObjectTypeGenericRecoveryPoint                         ObjectTypeBasicRecoveryPoint = original.ObjectTypeGenericRecoveryPoint
+	ObjectTypeIaasVMRecoveryPoint                          ObjectTypeBasicRecoveryPoint = original.ObjectTypeIaasVMRecoveryPoint
+	ObjectTypeRecoveryPoint                                ObjectTypeBasicRecoveryPoint = original.ObjectTypeRecoveryPoint
 )
 
 type ObjectTypeBasicRequest = original.ObjectTypeBasicRequest
@@ -1547,11 +1547,11 @@ func PossibleMonthOfYearValues() []MonthOfYear {
 func PossibleObjectTypeBasicILRRequestValues() []ObjectTypeBasicILRRequest {
 	return original.PossibleObjectTypeBasicILRRequestValues()
 }
-func PossibleObjectTypeBasicOperationResultInfoBaseValues() []ObjectTypeBasicOperationResultInfoBase {
-	return original.PossibleObjectTypeBasicOperationResultInfoBaseValues()
-}
 func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() []ObjectTypeBasicOperationStatusExtendedInfo {
 	return original.PossibleObjectTypeBasicOperationStatusExtendedInfoValues()
+}
+func PossibleObjectTypeBasicRecoveryPointValues() []ObjectTypeBasicRecoveryPoint {
+	return original.PossibleObjectTypeBasicRecoveryPointValues()
 }
 func PossibleObjectTypeBasicRequestValues() []ObjectTypeBasicRequest {
 	return original.PossibleObjectTypeBasicRequestValues()

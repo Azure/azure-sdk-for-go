@@ -70,13 +70,6 @@ type ProtectionContainerOperationResultsClientAPI interface {
 
 var _ ProtectionContainerOperationResultsClientAPI = (*backup.ProtectionContainerOperationResultsClient)(nil)
 
-// ProtectedItemsClientAPI contains the set of methods on the ProtectedItemsClient type.
-type ProtectedItemsClientAPI interface {
-	Delete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string) (result autorest.Response, err error)
-}
-
-var _ ProtectedItemsClientAPI = (*backup.ProtectedItemsClient)(nil)
-
 // BackupsClientAPI contains the set of methods on the BackupsClient type.
 type BackupsClientAPI interface {
 	Trigger(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters backup.RequestResource) (result autorest.Response, err error)
@@ -98,20 +91,6 @@ type ItemLevelRecoveryConnectionsClientAPI interface {
 }
 
 var _ ItemLevelRecoveryConnectionsClientAPI = (*backup.ItemLevelRecoveryConnectionsClient)(nil)
-
-// JobCancellationsClientAPI contains the set of methods on the JobCancellationsClient type.
-type JobCancellationsClientAPI interface {
-	Trigger(ctx context.Context, vaultName string, resourceGroupName string, jobName string) (result autorest.Response, err error)
-}
-
-var _ JobCancellationsClientAPI = (*backup.JobCancellationsClient)(nil)
-
-// JobOperationResultsClientAPI contains the set of methods on the JobOperationResultsClient type.
-type JobOperationResultsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, operationID string) (result autorest.Response, err error)
-}
-
-var _ JobOperationResultsClientAPI = (*backup.JobOperationResultsClient)(nil)
 
 // OperationResultsClientAPI contains the set of methods on the OperationResultsClient type.
 type OperationResultsClientAPI interface {

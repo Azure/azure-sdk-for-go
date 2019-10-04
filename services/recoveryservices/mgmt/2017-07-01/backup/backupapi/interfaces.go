@@ -69,6 +69,34 @@ type JobsClientAPI interface {
 
 var _ JobsClientAPI = (*backup.JobsClient)(nil)
 
+// JobDetailsClientAPI contains the set of methods on the JobDetailsClient type.
+type JobDetailsClientAPI interface {
+	Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string) (result backup.JobResource, err error)
+}
+
+var _ JobDetailsClientAPI = (*backup.JobDetailsClient)(nil)
+
+// JobCancellationsClientAPI contains the set of methods on the JobCancellationsClient type.
+type JobCancellationsClientAPI interface {
+	Trigger(ctx context.Context, vaultName string, resourceGroupName string, jobName string) (result autorest.Response, err error)
+}
+
+var _ JobCancellationsClientAPI = (*backup.JobCancellationsClient)(nil)
+
+// JobOperationResultsClientAPI contains the set of methods on the JobOperationResultsClient type.
+type JobOperationResultsClientAPI interface {
+	Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, operationID string) (result autorest.Response, err error)
+}
+
+var _ JobOperationResultsClientAPI = (*backup.JobOperationResultsClient)(nil)
+
+// ExportJobsOperationResultsClientAPI contains the set of methods on the ExportJobsOperationResultsClient type.
+type ExportJobsOperationResultsClientAPI interface {
+	Get(ctx context.Context, vaultName string, resourceGroupName string, operationID string) (result backup.OperationResultInfoBaseResource, err error)
+}
+
+var _ ExportJobsOperationResultsClientAPI = (*backup.ExportJobsOperationResultsClient)(nil)
+
 // JobsGroupClientAPI contains the set of methods on the JobsGroupClient type.
 type JobsGroupClientAPI interface {
 	Export(ctx context.Context, vaultName string, resourceGroupName string, filter string) (result autorest.Response, err error)
@@ -113,20 +141,6 @@ type FeatureSupportClientAPI interface {
 }
 
 var _ FeatureSupportClientAPI = (*backup.FeatureSupportClient)(nil)
-
-// JobDetailsClientAPI contains the set of methods on the JobDetailsClient type.
-type JobDetailsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string) (result backup.JobResource, err error)
-}
-
-var _ JobDetailsClientAPI = (*backup.JobDetailsClient)(nil)
-
-// ExportJobsOperationResultsClientAPI contains the set of methods on the ExportJobsOperationResultsClient type.
-type ExportJobsOperationResultsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, operationID string) (result backup.OperationResultInfoBaseResource, err error)
-}
-
-var _ ExportJobsOperationResultsClientAPI = (*backup.ExportJobsOperationResultsClient)(nil)
 
 // PoliciesClientAPI contains the set of methods on the PoliciesClient type.
 type PoliciesClientAPI interface {
@@ -233,20 +247,6 @@ type ItemLevelRecoveryConnectionsClientAPI interface {
 }
 
 var _ ItemLevelRecoveryConnectionsClientAPI = (*backup.ItemLevelRecoveryConnectionsClient)(nil)
-
-// JobCancellationsClientAPI contains the set of methods on the JobCancellationsClient type.
-type JobCancellationsClientAPI interface {
-	Trigger(ctx context.Context, vaultName string, resourceGroupName string, jobName string) (result autorest.Response, err error)
-}
-
-var _ JobCancellationsClientAPI = (*backup.JobCancellationsClient)(nil)
-
-// JobOperationResultsClientAPI contains the set of methods on the JobOperationResultsClient type.
-type JobOperationResultsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, operationID string) (result autorest.Response, err error)
-}
-
-var _ JobOperationResultsClientAPI = (*backup.JobOperationResultsClient)(nil)
 
 // OperationResultsClientAPI contains the set of methods on the OperationResultsClient type.
 type OperationResultsClientAPI interface {

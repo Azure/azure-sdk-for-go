@@ -28807,8 +28807,6 @@ type VirtualHubProperties struct {
 	AzureFirewall *SubResource `json:"azureFirewall,omitempty"`
 	// VirtualNetworkConnections - List of all vnet connections with this VirtualHub.
 	VirtualNetworkConnections *[]HubVirtualNetworkConnection `json:"virtualNetworkConnections,omitempty"`
-	// VirtualHubRouteTableV2s - List of all virtual hub route table v2s associated with this VirtualHub.
-	VirtualHubRouteTableV2s *[]VirtualHubRouteTableV2 `json:"virtualHubRouteTableV2s,omitempty"`
 	// AddressPrefix - Address-prefix for this VirtualHub.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
 	// RouteTable - The routeTable associated with this virtual hub.
@@ -28817,6 +28815,8 @@ type VirtualHubProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// SecurityProviderName - The Security Provider name.
 	SecurityProviderName *string `json:"securityProviderName,omitempty"`
+	// VirtualHubRouteTableV2s - List of all virtual hub route table v2s associated with this VirtualHub.
+	VirtualHubRouteTableV2s *[]VirtualHubRouteTableV2 `json:"virtualHubRouteTableV2s,omitempty"`
 }
 
 // VirtualHubRoute virtualHub route.
@@ -28918,7 +28918,7 @@ type VirtualHubRouteTableV2Properties struct {
 	Routes *[]VirtualHubRouteV2 `json:"routes,omitempty"`
 	// AttachedConnections - List of all connections attached to this route table v2.
 	AttachedConnections *[]string `json:"attachedConnections,omitempty"`
-	// ProvisioningState - The provisioning state of the virtual hub route table v2 resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual hub route table v2 resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 

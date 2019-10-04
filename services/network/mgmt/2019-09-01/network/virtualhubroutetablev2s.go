@@ -202,6 +202,85 @@ func (client VirtualHubRouteTableV2sClient) DeleteResponder(resp *http.Response)
 	return
 }
 
+// Get retrieves the details of a VirtualHubRouteTableV2.
+// Parameters:
+// resourceGroupName - the resource group name of the VirtualHubRouteTableV2.
+// virtualHubName - the name of the VirtualHub.
+// routeTableName - the name of the VirtualHubRouteTableV2.
+func (client VirtualHubRouteTableV2sClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (result VirtualHubRouteTableV2, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubRouteTableV2sClient.Get")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetPreparer(ctx, resourceGroupName, virtualHubName, routeTableName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sClient", "Get", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sClient", "Get", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sClient", "Get", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPreparer prepares the Get request.
+func (client VirtualHubRouteTableV2sClient) GetPreparer(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"routeTableName":    autorest.Encode("path", routeTableName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"virtualHubName":    autorest.Encode("path", virtualHubName),
+	}
+
+	const APIVersion = "2019-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetSender sends the Get request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualHubRouteTableV2sClient) GetSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetResponder handles the response to the Get request. The method always
+// closes the http.Response Body.
+func (client VirtualHubRouteTableV2sClient) GetResponder(resp *http.Response) (result VirtualHubRouteTableV2, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List retrieves the details of all VirtualHubRouteTableV2s.
 // Parameters:
 // resourceGroupName - the resource group name of the VirtualHub.

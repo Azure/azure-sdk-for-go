@@ -1868,7 +1868,6 @@ type VirtualHubRouteTableV2sClient = original.VirtualHubRouteTableV2sClient
 type VirtualHubRouteTableV2sCreateOrUpdateFuture = original.VirtualHubRouteTableV2sCreateOrUpdateFuture
 type VirtualHubRouteTableV2sDeleteFuture = original.VirtualHubRouteTableV2sDeleteFuture
 type VirtualHubRouteV2 = original.VirtualHubRouteV2
-type VirtualHubTableV2sClient = original.VirtualHubTableV2sClient
 type VirtualHubsClient = original.VirtualHubsClient
 type VirtualHubsCreateOrUpdateFuture = original.VirtualHubsCreateOrUpdateFuture
 type VirtualHubsDeleteFuture = original.VirtualHubsDeleteFuture
@@ -2850,12 +2849,6 @@ func NewVirtualHubRouteTableV2sClient(subscriptionID string) VirtualHubRouteTabl
 }
 func NewVirtualHubRouteTableV2sClientWithBaseURI(baseURI string, subscriptionID string) VirtualHubRouteTableV2sClient {
 	return original.NewVirtualHubRouteTableV2sClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewVirtualHubTableV2sClient(subscriptionID string) VirtualHubTableV2sClient {
-	return original.NewVirtualHubTableV2sClient(subscriptionID)
-}
-func NewVirtualHubTableV2sClientWithBaseURI(baseURI string, subscriptionID string) VirtualHubTableV2sClient {
-	return original.NewVirtualHubTableV2sClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualHubsClient(subscriptionID string) VirtualHubsClient {
 	return original.NewVirtualHubsClient(subscriptionID)

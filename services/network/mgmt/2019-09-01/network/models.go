@@ -6565,14 +6565,14 @@ type AzureFirewallApplicationRule struct {
 	Description *string `json:"description,omitempty"`
 	// SourceAddresses - List of source IP addresses for this rule.
 	SourceAddresses *[]string `json:"sourceAddresses,omitempty"`
-	// SourceIPTags - List of source IP Tags for this rule.
-	SourceIPTags *[]string `json:"sourceIpTags,omitempty"`
 	// Protocols - Array of ApplicationRuleProtocols.
 	Protocols *[]AzureFirewallApplicationRuleProtocol `json:"protocols,omitempty"`
 	// TargetFqdns - List of FQDNs for this rule.
 	TargetFqdns *[]string `json:"targetFqdns,omitempty"`
 	// FqdnTags - List of FQDN Tags for this rule.
 	FqdnTags *[]string `json:"fqdnTags,omitempty"`
+	// SourceIPTags - List of source IP Tags for this rule.
+	SourceIPTags *[]string `json:"sourceIpTags,omitempty"`
 }
 
 // AzureFirewallApplicationRuleCollection application rule collection resource.
@@ -7194,8 +7194,6 @@ type AzureFirewallNatRule struct {
 	SourceAddresses *[]string `json:"sourceAddresses,omitempty"`
 	// DestinationAddresses - List of destination IP addresses for this rule. Supports IP ranges, prefixes, and service tags.
 	DestinationAddresses *[]string `json:"destinationAddresses,omitempty"`
-	// SourceIPTags - List of source IP Tags for this rule.
-	SourceIPTags *[]string `json:"sourceIpTags,omitempty"`
 	// DestinationPorts - List of destination ports.
 	DestinationPorts *[]string `json:"destinationPorts,omitempty"`
 	// Protocols - Array of AzureFirewallNetworkRuleProtocols applicable to this NAT rule.
@@ -7204,6 +7202,8 @@ type AzureFirewallNatRule struct {
 	TranslatedAddress *string `json:"translatedAddress,omitempty"`
 	// TranslatedPort - The translated port for this NAT rule.
 	TranslatedPort *string `json:"translatedPort,omitempty"`
+	// SourceIPTags - List of source IP Tags for this rule.
+	SourceIPTags *[]string `json:"sourceIpTags,omitempty"`
 }
 
 // AzureFirewallNatRuleCollection NAT rule collection resource.
@@ -7308,12 +7308,12 @@ type AzureFirewallNetworkRule struct {
 	SourceAddresses *[]string `json:"sourceAddresses,omitempty"`
 	// DestinationAddresses - List of destination IP addresses.
 	DestinationAddresses *[]string `json:"destinationAddresses,omitempty"`
+	// DestinationPorts - List of destination ports.
+	DestinationPorts *[]string `json:"destinationPorts,omitempty"`
 	// SourceIPTags - List of source IP Tags for this rule.
 	SourceIPTags *[]string `json:"sourceIpTags,omitempty"`
 	// DestinationIPTags - List of destination IP Tags for this rule.
 	DestinationIPTags *[]string `json:"destinationIpTags,omitempty"`
-	// DestinationPorts - List of destination ports.
-	DestinationPorts *[]string `json:"destinationPorts,omitempty"`
 }
 
 // AzureFirewallNetworkRuleCollection network rule collection resource.
@@ -17645,9 +17645,9 @@ func NewIPTagsListResultPage(getNextPage func(context.Context, IPTagsListResult)
 	return IPTagsListResultPage{fn: getNextPage}
 }
 
-// IPTagsPropertiesFormat ...
+// IPTagsPropertiesFormat the Iptags property information.
 type IPTagsPropertiesFormat struct {
-	// ProvisioningState - The provisioning state of the IpTags resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the IpTags resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IPAddresses - IpAddresses/IpAddressPrefixes in the IpTags resource.
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`

@@ -46,47 +46,47 @@ func PossibleAllocationStateValues() []AllocationState {
 	return []AllocationState{Resizing, Steady}
 }
 
-// AmlInstanceState enumerates the values for aml instance state.
-type AmlInstanceState string
+// ComputeInstanceState enumerates the values for compute instance state.
+type ComputeInstanceState string
 
 const (
 	// CreateFailed ...
-	CreateFailed AmlInstanceState = "CreateFailed"
+	CreateFailed ComputeInstanceState = "CreateFailed"
 	// Creating ...
-	Creating AmlInstanceState = "Creating"
+	Creating ComputeInstanceState = "Creating"
 	// Deleting ...
-	Deleting AmlInstanceState = "Deleting"
+	Deleting ComputeInstanceState = "Deleting"
 	// Ready ...
-	Ready AmlInstanceState = "Ready"
+	Ready ComputeInstanceState = "Ready"
 	// RestartFailed ...
-	RestartFailed AmlInstanceState = "RestartFailed"
+	RestartFailed ComputeInstanceState = "RestartFailed"
 	// Restarting ...
-	Restarting AmlInstanceState = "Restarting"
+	Restarting ComputeInstanceState = "Restarting"
 	// Running ...
-	Running AmlInstanceState = "Running"
+	Running ComputeInstanceState = "Running"
 	// SettingUp ...
-	SettingUp AmlInstanceState = "SettingUp"
+	SettingUp ComputeInstanceState = "SettingUp"
 	// StartFailed ...
-	StartFailed AmlInstanceState = "StartFailed"
+	StartFailed ComputeInstanceState = "StartFailed"
 	// Starting ...
-	Starting AmlInstanceState = "Starting"
+	Starting ComputeInstanceState = "Starting"
 	// StopFailed ...
-	StopFailed AmlInstanceState = "StopFailed"
+	StopFailed ComputeInstanceState = "StopFailed"
 	// Stopped ...
-	Stopped AmlInstanceState = "Stopped"
+	Stopped ComputeInstanceState = "Stopped"
 	// Stopping ...
-	Stopping AmlInstanceState = "Stopping"
+	Stopping ComputeInstanceState = "Stopping"
 	// Unknown ...
-	Unknown AmlInstanceState = "Unknown"
+	Unknown ComputeInstanceState = "Unknown"
 	// Unusable ...
-	Unusable AmlInstanceState = "Unusable"
+	Unusable ComputeInstanceState = "Unusable"
 	// UserSettingUp ...
-	UserSettingUp AmlInstanceState = "UserSettingUp"
+	UserSettingUp ComputeInstanceState = "UserSettingUp"
 )
 
-// PossibleAmlInstanceStateValues returns an array of possible values for the AmlInstanceState const type.
-func PossibleAmlInstanceStateValues() []AmlInstanceState {
-	return []AmlInstanceState{CreateFailed, Creating, Deleting, Ready, RestartFailed, Restarting, Running, SettingUp, StartFailed, Starting, StopFailed, Stopped, Stopping, Unknown, Unusable, UserSettingUp}
+// PossibleComputeInstanceStateValues returns an array of possible values for the ComputeInstanceState const type.
+func PossibleComputeInstanceStateValues() []ComputeInstanceState {
+	return []ComputeInstanceState{CreateFailed, Creating, Deleting, Ready, RestartFailed, Restarting, Running, SettingUp, StartFailed, Starting, StopFailed, Stopped, Stopping, Unknown, Unusable, UserSettingUp}
 }
 
 // ComputeType enumerates the values for compute type.
@@ -97,8 +97,8 @@ const (
 	ComputeTypeAKS ComputeType = "AKS"
 	// ComputeTypeAmlCompute ...
 	ComputeTypeAmlCompute ComputeType = "AmlCompute"
-	// ComputeTypeAmlInstance ...
-	ComputeTypeAmlInstance ComputeType = "AmlInstance"
+	// ComputeTypeComputeInstance ...
+	ComputeTypeComputeInstance ComputeType = "ComputeInstance"
 	// ComputeTypeDatabricks ...
 	ComputeTypeDatabricks ComputeType = "Databricks"
 	// ComputeTypeDataFactory ...
@@ -113,7 +113,7 @@ const (
 
 // PossibleComputeTypeValues returns an array of possible values for the ComputeType const type.
 func PossibleComputeTypeValues() []ComputeType {
-	return []ComputeType{ComputeTypeAKS, ComputeTypeAmlCompute, ComputeTypeAmlInstance, ComputeTypeDatabricks, ComputeTypeDataFactory, ComputeTypeDataLakeAnalytics, ComputeTypeHDInsight, ComputeTypeVirtualMachine}
+	return []ComputeType{ComputeTypeAKS, ComputeTypeAmlCompute, ComputeTypeComputeInstance, ComputeTypeDatabricks, ComputeTypeDataFactory, ComputeTypeDataLakeAnalytics, ComputeTypeHDInsight, ComputeTypeVirtualMachine}
 }
 
 // ComputeTypeBasicCompute enumerates the values for compute type basic compute.
@@ -124,10 +124,10 @@ const (
 	ComputeTypeAKS1 ComputeTypeBasicCompute = "AKS"
 	// ComputeTypeAmlCompute1 ...
 	ComputeTypeAmlCompute1 ComputeTypeBasicCompute = "AmlCompute"
-	// ComputeTypeAmlInstance1 ...
-	ComputeTypeAmlInstance1 ComputeTypeBasicCompute = "AmlInstance"
 	// ComputeTypeCompute ...
 	ComputeTypeCompute ComputeTypeBasicCompute = "Compute"
+	// ComputeTypeComputeInstance1 ...
+	ComputeTypeComputeInstance1 ComputeTypeBasicCompute = "ComputeInstance"
 	// ComputeTypeDatabricks1 ...
 	ComputeTypeDatabricks1 ComputeTypeBasicCompute = "Databricks"
 	// ComputeTypeDataFactory1 ...
@@ -142,7 +142,7 @@ const (
 
 // PossibleComputeTypeBasicComputeValues returns an array of possible values for the ComputeTypeBasicCompute const type.
 func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
-	return []ComputeTypeBasicCompute{ComputeTypeAKS1, ComputeTypeAmlCompute1, ComputeTypeAmlInstance1, ComputeTypeCompute, ComputeTypeDatabricks1, ComputeTypeDataFactory1, ComputeTypeDataLakeAnalytics1, ComputeTypeHDInsight1, ComputeTypeVirtualMachine1}
+	return []ComputeTypeBasicCompute{ComputeTypeAKS1, ComputeTypeAmlCompute1, ComputeTypeCompute, ComputeTypeComputeInstance1, ComputeTypeDatabricks1, ComputeTypeDataFactory1, ComputeTypeDataLakeAnalytics1, ComputeTypeHDInsight1, ComputeTypeVirtualMachine1}
 }
 
 // ComputeTypeBasicComputeNodesInformation enumerates the values for compute type basic compute nodes
@@ -254,15 +254,15 @@ func PossibleOsTypeValues() []OsType {
 type OsUpdateType string
 
 const (
-	// Critical ...
-	Critical OsUpdateType = "Critical"
 	// Recommended ...
 	Recommended OsUpdateType = "Recommended"
+	// Security ...
+	Security OsUpdateType = "Security"
 )
 
 // PossibleOsUpdateTypeValues returns an array of possible values for the OsUpdateType const type.
 func PossibleOsUpdateTypeValues() []OsUpdateType {
-	return []OsUpdateType{Critical, Recommended}
+	return []OsUpdateType{Recommended, Security}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -464,7 +464,7 @@ type AKS struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeAmlInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeComputeInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -500,8 +500,8 @@ func (a AKS) AsAmlCompute() (*AmlCompute, bool) {
 	return nil, false
 }
 
-// AsAmlInstance is the BasicCompute implementation for AKS.
-func (a AKS) AsAmlInstance() (*AmlInstance, bool) {
+// AsComputeInstance is the BasicCompute implementation for AKS.
+func (a AKS) AsComputeInstance() (*ComputeInstance, bool) {
 	return nil, false
 }
 
@@ -644,7 +644,7 @@ type AmlCompute struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeAmlInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeComputeInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -680,8 +680,8 @@ func (ac AmlCompute) AsAmlCompute() (*AmlCompute, bool) {
 	return &ac, true
 }
 
-// AsAmlInstance is the BasicCompute implementation for AmlCompute.
-func (ac AmlCompute) AsAmlInstance() (*AmlInstance, bool) {
+// AsComputeInstance is the BasicCompute implementation for AmlCompute.
+func (ac AmlCompute) AsComputeInstance() (*ComputeInstance, bool) {
 	return nil, false
 }
 
@@ -804,235 +804,6 @@ type AmlComputeProperties struct {
 	NodeStateCounts *NodeStateCounts `json:"nodeStateCounts,omitempty"`
 }
 
-// AmlInstance an Azure Machine Learning instance.
-type AmlInstance struct {
-	// Properties - AML Instance properties
-	Properties *AmlInstanceProperties `json:"properties,omitempty"`
-	// ComputeLocation - Location for the underlying compute
-	ComputeLocation *string `json:"computeLocation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
-	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// Description - The description of the Machine Learning compute.
-	Description *string `json:"description,omitempty"`
-	// CreatedOn - READ-ONLY; The date and time when the compute was created.
-	CreatedOn *date.Time `json:"createdOn,omitempty"`
-	// ModifiedOn - READ-ONLY; The date and time when the compute was last modified.
-	ModifiedOn *date.Time `json:"modifiedOn,omitempty"`
-	// ResourceID - ARM resource id of the underlying compute
-	ResourceID *string `json:"resourceId,omitempty"`
-	// ProvisioningErrors - READ-ONLY; Errors during provisioning
-	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
-	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
-	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeAmlInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
-	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AmlInstance.
-func (ai AmlInstance) MarshalJSON() ([]byte, error) {
-	ai.ComputeType = ComputeTypeAmlInstance1
-	objectMap := make(map[string]interface{})
-	if ai.Properties != nil {
-		objectMap["properties"] = ai.Properties
-	}
-	if ai.ComputeLocation != nil {
-		objectMap["computeLocation"] = ai.ComputeLocation
-	}
-	if ai.Description != nil {
-		objectMap["description"] = ai.Description
-	}
-	if ai.ResourceID != nil {
-		objectMap["resourceId"] = ai.ResourceID
-	}
-	if ai.ComputeType != "" {
-		objectMap["computeType"] = ai.ComputeType
-	}
-	return json.Marshal(objectMap)
-}
-
-// AsAKS is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsAKS() (*AKS, bool) {
-	return nil, false
-}
-
-// AsAmlCompute is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsAmlCompute() (*AmlCompute, bool) {
-	return nil, false
-}
-
-// AsAmlInstance is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsAmlInstance() (*AmlInstance, bool) {
-	return &ai, true
-}
-
-// AsVirtualMachine is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsVirtualMachine() (*VirtualMachine, bool) {
-	return nil, false
-}
-
-// AsHDInsight is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsHDInsight() (*HDInsight, bool) {
-	return nil, false
-}
-
-// AsDataFactory is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsDataFactory() (*DataFactory, bool) {
-	return nil, false
-}
-
-// AsDatabricks is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsDatabricks() (*Databricks, bool) {
-	return nil, false
-}
-
-// AsDataLakeAnalytics is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
-	return nil, false
-}
-
-// AsCompute is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsCompute() (*Compute, bool) {
-	return nil, false
-}
-
-// AsBasicCompute is the BasicCompute implementation for AmlInstance.
-func (ai AmlInstance) AsBasicCompute() (BasicCompute, bool) {
-	return &ai, true
-}
-
-// AmlInstanceApplicationURI defines an Aml Instance application and its connectivity endpoint URI.
-type AmlInstanceApplicationURI struct {
-	// ApplicationName - Name of the AmlInstance application.
-	ApplicationName *string `json:"applicationName,omitempty"`
-	// ApplicationURI - Application' endpoint URI.
-	ApplicationURI *string `json:"applicationUri,omitempty"`
-}
-
-// AmlInstanceConnectivityEndpoints defines all connectivity endpoints and properties for an AmlInstance
-// compute.
-type AmlInstanceConnectivityEndpoints struct {
-	// PublicIPAddress - READ-ONLY; Public IP Address of this AmlInstance.
-	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
-	// ApplicationUris - READ-ONLY; Describes available applications and their connectivity endpoint URIs.
-	ApplicationUris *[]AmlInstanceApplicationURI `json:"applicationUris,omitempty"`
-}
-
-// AmlInstanceCreatedBy describes information on user who created this AmlInstance compute.
-type AmlInstanceCreatedBy struct {
-	// UserName - READ-ONLY; Name of the user.
-	UserName *string `json:"userName,omitempty"`
-	// UserOrgID - READ-ONLY; Uniquely identifies user' Azure Active Directory organization.
-	UserOrgID *string `json:"userOrgId,omitempty"`
-	// UserID - READ-ONLY; Uniquely identifies the user within his/her organization.
-	UserID *string `json:"userId,omitempty"`
-}
-
-// AmlInstanceCustomScriptSettings specification for initialization scripts to customize this AmlInstance.
-type AmlInstanceCustomScriptSettings struct {
-	// StartupScript - Specifies properties of initialization script to be run during every start of this instance.
-	StartupScript *AmlInstanceCustomScriptSettingsStartupScript `json:"startupScript,omitempty"`
-}
-
-// AmlInstanceCustomScriptSettingsStartupScript specifies properties of initialization script to be run
-// during every start of this instance.
-type AmlInstanceCustomScriptSettingsStartupScript struct {
-	// ScriptLocation - The location of customization script. This is a relative file path in the default fileshare in the parent workspace.
-	ScriptLocation *string `json:"scriptLocation,omitempty"`
-	// ScriptParameters - Parameters required for this script if any.
-	ScriptParameters *string `json:"scriptParameters,omitempty"`
-}
-
-// AmlInstanceDatastore represents specification for datastore requested to be mounted on an AzureML
-// instance as well as its mounting status.
-type AmlInstanceDatastore struct {
-	// Name - Name of the datastore to be mounted on an AzureML instance.
-	Name *string `json:"name,omitempty"`
-	// State - READ-ONLY; Current state of the datastore on the parent AzureML instance. Possible values include: 'Mounted', 'MountFailed', 'Unmounted'
-	State DatastoreState `json:"state,omitempty"`
-	// Error - READ-ONLY; Describes the error if datastore could not be successfully mounted on the parent AzureML instance.
-	Error *string `json:"error,omitempty"`
-}
-
-// AmlInstanceDatastoresMountSettings describes what data stores will be mounted on this compute instance.
-type AmlInstanceDatastoresMountSettings struct {
-	// DatastoreSelection - Allows users to select between mounting All vs Selected datastores from the parent workspace. The 'All' setting also implies that any datastores that later become part of the workspace will be automatically mounted to the compute instance on next start. Possible values include: 'All', 'UserSpecified'
-	DatastoreSelection DatastoreSelection `json:"datastoreSelection,omitempty"`
-	// Datastores - Specifies the set of data stores that will be mounted on this compute instance. This should only be specified if dataStoreSelection is set to 'UserSpecified'.
-	Datastores *[]AmlInstanceDatastore `json:"datastores,omitempty"`
-}
-
-// AmlInstanceOSUpdateSettings specifies policy for installing operation system updates.
-type AmlInstanceOSUpdateSettings struct {
-	// OsUpdateType - Possible values include: 'Critical', 'Recommended'
-	OsUpdateType OsUpdateType `json:"osUpdateType,omitempty"`
-	// UpdateFrequencyInDays - Frequency of update checks and installation. Maximum allowable frequency is 30 days. Default frequency will be 14 days.
-	UpdateFrequencyInDays *int32 `json:"updateFrequencyInDays,omitempty"`
-	// UpdateHourInUtc - Hour of the day (0-23) in Universal Time at which software updates can be installed, potentially requiring VM reboot. Default update hour will be 2 AM UTC.
-	UpdateHourInUtc *int32 `json:"updateHourInUtc,omitempty"`
-}
-
-// AmlInstanceProperties AML Instance properties
-type AmlInstanceProperties struct {
-	// VMSize - Virtual Machine Size
-	VMSize *string `json:"vmSize,omitempty"`
-	// Subnet - Virtual network subnet resource ID the compute nodes belong to.
-	Subnet *ResourceID `json:"subnet,omitempty"`
-	// DatastoresMountSettings - Describes what data stores will be mounted on this compute instance.
-	DatastoresMountSettings *AmlInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
-	// CustomScriptSettings - Specification for initialization scripts to customize this AmlInstance.
-	CustomScriptSettings *AmlInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
-	// SoftwareUpdateSettings - Specifies policies for operating system and Azure ML environment (example packages and SDK) updates.
-	SoftwareUpdateSettings *AmlInstanceSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
-	// SSHSettings - Specifies policy and settings for SSH access.
-	SSHSettings *AmlInstanceSSHSettings `json:"sshSettings,omitempty"`
-	// ConnectivityEndpoints - READ-ONLY; Describes all connectivity endpoints available for this AmlInstance compute.
-	ConnectivityEndpoints *AmlInstanceConnectivityEndpoints `json:"connectivityEndpoints,omitempty"`
-	// CreatedBy - READ-ONLY; Describes information on user who created this AmlInstance compute.
-	CreatedBy *AmlInstanceCreatedBy `json:"createdBy,omitempty"`
-	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.
-	Errors *[]Error `json:"errors,omitempty"`
-	// State - READ-ONLY; The current state of this AmlInstance. Possible values include: 'Creating', 'CreateFailed', 'Deleting', 'Ready', 'Restarting', 'RestartFailed', 'Running', 'SettingUp', 'Starting', 'StartFailed', 'StopFailed', 'Stopped', 'Stopping', 'UserSettingUp', 'Unknown', 'Unusable'
-	State AmlInstanceState `json:"state,omitempty"`
-}
-
-// AmlInstanceSdkUpdate describes a specific update for AmlInstance SDK.
-type AmlInstanceSdkUpdate struct {
-	// UpdateName - Short name of the update.
-	UpdateName *string `json:"updateName,omitempty"`
-	// UpdateDescription - Detailed description of the available SDK update.
-	UpdateDescription *string `json:"updateDescription,omitempty"`
-	// UpdateVersion - Version of this available update.
-	UpdateVersion *string `json:"updateVersion,omitempty"`
-}
-
-// AmlInstanceSdkUpdateSettings specifies policy for installing Azure ML environment (example packages and
-// SDK) updates.
-type AmlInstanceSdkUpdateSettings struct {
-	// UpdateOnNextStart - Specifies if any available Azure ML environment updates should be installed on next instance start. Possible values include: 'UpdateOnNextStartDisabled', 'UpdateOnNextStartEnabled'
-	UpdateOnNextStart UpdateOnNextStart `json:"updateOnNextStart,omitempty"`
-	// AvailableUpdates - READ-ONLY; Describes available SDK updates for this compute instance.
-	AvailableUpdates *[]AmlInstanceSdkUpdate `json:"availableUpdates,omitempty"`
-}
-
-// AmlInstanceSoftwareUpdateSettings specifies policies for operating system and Azure ML environment
-// (example packages and SDK) updates.
-type AmlInstanceSoftwareUpdateSettings struct {
-	// OsUpdateSettings - Specifies policy for installing operation system updates.
-	OsUpdateSettings *AmlInstanceOSUpdateSettings `json:"osUpdateSettings,omitempty"`
-	// SdkUpdateSettings - Specifies policy for installing Azure ML environment (example packages and SDK) updates.
-	SdkUpdateSettings *AmlInstanceSdkUpdateSettings `json:"sdkUpdateSettings,omitempty"`
-}
-
-// AmlInstanceSSHSettings specifies policy and settings for SSH access.
-type AmlInstanceSSHSettings struct {
-	// SSHPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet policy if applicable. Possible values include: 'SSHPublicAccessEnabled', 'SSHPublicAccessDisabled'
-	SSHPublicAccess SSHPublicAccess `json:"sshPublicAccess,omitempty"`
-	// AdminUserName - READ-ONLY; Describes the admin user name.
-	AdminUserName *string `json:"adminUserName,omitempty"`
-	// AdminPublicKey - Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b 2048" to generate your SSH key pairs.
-	AdminPublicKey *string `json:"adminPublicKey,omitempty"`
-}
-
 // ClusterUpdateParameters amlCompute update parameters.
 type ClusterUpdateParameters struct {
 	// ClusterUpdateProperties - The properties of the amlCompute.
@@ -1077,20 +848,20 @@ type ClusterUpdateProperties struct {
 	// ScaleSettings - Desired scale settings for the amlCompute.
 	ScaleSettings *ScaleSettings `json:"scaleSettings,omitempty"`
 	// DatastoresMountSettings - Describes what data stores will be mounted on this compute instance.
-	DatastoresMountSettings *AmlInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
-	// CustomScriptSettings - Specification for initialization scripts to customize this AmlInstance.
-	CustomScriptSettings *AmlInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
+	DatastoresMountSettings *ComputeInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
+	// CustomScriptSettings - Specification for initialization scripts to customize this ComputeInstance.
+	CustomScriptSettings *ComputeInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
 	// SoftwareUpdateSettings - Specifies policies for operating system and Azure ML environment (example packages and SDK) updates.
-	SoftwareUpdateSettings *AmlInstanceSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
+	SoftwareUpdateSettings *ComputeInstanceSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
 	// SSHSettings - Specifies policy and settings for SSH access.
-	SSHSettings *AmlInstanceSSHSettings `json:"sshSettings,omitempty"`
+	SSHSettings *ComputeInstanceSSHSettings `json:"sshSettings,omitempty"`
 }
 
 // BasicCompute machine Learning compute object.
 type BasicCompute interface {
 	AsAKS() (*AKS, bool)
 	AsAmlCompute() (*AmlCompute, bool)
-	AsAmlInstance() (*AmlInstance, bool)
+	AsComputeInstance() (*ComputeInstance, bool)
 	AsVirtualMachine() (*VirtualMachine, bool)
 	AsHDInsight() (*HDInsight, bool)
 	AsDataFactory() (*DataFactory, bool)
@@ -1117,7 +888,7 @@ type Compute struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeAmlInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeComputeInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -1137,10 +908,10 @@ func unmarshalBasicCompute(body []byte) (BasicCompute, error) {
 		var ac AmlCompute
 		err := json.Unmarshal(body, &ac)
 		return ac, err
-	case string(ComputeTypeAmlInstance1):
-		var ai AmlInstance
-		err := json.Unmarshal(body, &ai)
-		return ai, err
+	case string(ComputeTypeComputeInstance1):
+		var ci ComputeInstance
+		err := json.Unmarshal(body, &ci)
+		return ci, err
 	case string(ComputeTypeVirtualMachine1):
 		var VM VirtualMachine
 		err := json.Unmarshal(body, &VM)
@@ -1215,8 +986,8 @@ func (c Compute) AsAmlCompute() (*AmlCompute, bool) {
 	return nil, false
 }
 
-// AsAmlInstance is the BasicCompute implementation for Compute.
-func (c Compute) AsAmlInstance() (*AmlInstance, bool) {
+// AsComputeInstance is the BasicCompute implementation for Compute.
+func (c Compute) AsComputeInstance() (*ComputeInstance, bool) {
 	return nil, false
 }
 
@@ -1253,6 +1024,237 @@ func (c Compute) AsCompute() (*Compute, bool) {
 // AsBasicCompute is the BasicCompute implementation for Compute.
 func (c Compute) AsBasicCompute() (BasicCompute, bool) {
 	return &c, true
+}
+
+// ComputeInstance an Azure Machine Learning instance.
+type ComputeInstance struct {
+	// Properties - AML Instance properties
+	Properties *ComputeInstanceProperties `json:"properties,omitempty"`
+	// ComputeLocation - Location for the underlying compute
+	ComputeLocation *string `json:"computeLocation,omitempty"`
+	// ProvisioningState - READ-ONLY; The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and Failed. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateUpdating', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Description - The description of the Machine Learning compute.
+	Description *string `json:"description,omitempty"`
+	// CreatedOn - READ-ONLY; The date and time when the compute was created.
+	CreatedOn *date.Time `json:"createdOn,omitempty"`
+	// ModifiedOn - READ-ONLY; The date and time when the compute was last modified.
+	ModifiedOn *date.Time `json:"modifiedOn,omitempty"`
+	// ResourceID - ARM resource id of the underlying compute
+	ResourceID *string `json:"resourceId,omitempty"`
+	// ProvisioningErrors - READ-ONLY; Errors during provisioning
+	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
+	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
+	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeComputeInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ComputeInstance.
+func (ci ComputeInstance) MarshalJSON() ([]byte, error) {
+	ci.ComputeType = ComputeTypeComputeInstance1
+	objectMap := make(map[string]interface{})
+	if ci.Properties != nil {
+		objectMap["properties"] = ci.Properties
+	}
+	if ci.ComputeLocation != nil {
+		objectMap["computeLocation"] = ci.ComputeLocation
+	}
+	if ci.Description != nil {
+		objectMap["description"] = ci.Description
+	}
+	if ci.ResourceID != nil {
+		objectMap["resourceId"] = ci.ResourceID
+	}
+	if ci.ComputeType != "" {
+		objectMap["computeType"] = ci.ComputeType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAKS is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsAKS() (*AKS, bool) {
+	return nil, false
+}
+
+// AsAmlCompute is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsAmlCompute() (*AmlCompute, bool) {
+	return nil, false
+}
+
+// AsComputeInstance is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsComputeInstance() (*ComputeInstance, bool) {
+	return &ci, true
+}
+
+// AsVirtualMachine is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsVirtualMachine() (*VirtualMachine, bool) {
+	return nil, false
+}
+
+// AsHDInsight is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsHDInsight() (*HDInsight, bool) {
+	return nil, false
+}
+
+// AsDataFactory is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsDataFactory() (*DataFactory, bool) {
+	return nil, false
+}
+
+// AsDatabricks is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsDatabricks() (*Databricks, bool) {
+	return nil, false
+}
+
+// AsDataLakeAnalytics is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsDataLakeAnalytics() (*DataLakeAnalytics, bool) {
+	return nil, false
+}
+
+// AsCompute is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsCompute() (*Compute, bool) {
+	return nil, false
+}
+
+// AsBasicCompute is the BasicCompute implementation for ComputeInstance.
+func (ci ComputeInstance) AsBasicCompute() (BasicCompute, bool) {
+	return &ci, true
+}
+
+// ComputeInstanceApplicationURI defines an Aml Instance application and its connectivity endpoint URI.
+type ComputeInstanceApplicationURI struct {
+	// ApplicationName - Name of the ComputeInstance application.
+	ApplicationName *string `json:"applicationName,omitempty"`
+	// ApplicationURI - Application' endpoint URI.
+	ApplicationURI *string `json:"applicationUri,omitempty"`
+}
+
+// ComputeInstanceConnectivityEndpoints defines all connectivity endpoints and properties for an
+// ComputeInstance.
+type ComputeInstanceConnectivityEndpoints struct {
+	// PublicIPAddress - READ-ONLY; Public IP Address of this ComputeInstance.
+	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
+	// ApplicationUris - READ-ONLY; Describes available applications and their connectivity endpoint URIs.
+	ApplicationUris *[]ComputeInstanceApplicationURI `json:"applicationUris,omitempty"`
+}
+
+// ComputeInstanceCreatedBy describes information on user who created this ComputeInstance.
+type ComputeInstanceCreatedBy struct {
+	// UserName - READ-ONLY; Name of the user.
+	UserName *string `json:"userName,omitempty"`
+	// UserOrgID - READ-ONLY; Uniquely identifies user' Azure Active Directory organization.
+	UserOrgID *string `json:"userOrgId,omitempty"`
+	// UserID - READ-ONLY; Uniquely identifies the user within his/her organization.
+	UserID *string `json:"userId,omitempty"`
+}
+
+// ComputeInstanceCustomScriptSettings specification for initialization scripts to customize this
+// ComputeInstance.
+type ComputeInstanceCustomScriptSettings struct {
+	// StartupScript - Specifies properties of initialization script to be run during every start of this instance.
+	StartupScript *ComputeInstanceCustomScriptSettingsStartupScript `json:"startupScript,omitempty"`
+}
+
+// ComputeInstanceCustomScriptSettingsStartupScript specifies properties of initialization script to be run
+// during every start of this instance.
+type ComputeInstanceCustomScriptSettingsStartupScript struct {
+	// ScriptLocation - The location of customization script. This is a relative file path in the default fileshare in the parent workspace.
+	ScriptLocation *string `json:"scriptLocation,omitempty"`
+	// ScriptParameters - Parameters required for this script if any.
+	ScriptParameters *string `json:"scriptParameters,omitempty"`
+}
+
+// ComputeInstanceDatastore represents specification for datastore requested to be mounted on an AzureML
+// instance as well as its mounting status.
+type ComputeInstanceDatastore struct {
+	// Name - Name of the datastore to be mounted on an AzureML instance.
+	Name *string `json:"name,omitempty"`
+	// State - READ-ONLY; Current state of the datastore on the parent AzureML instance. Possible values include: 'Mounted', 'MountFailed', 'Unmounted'
+	State DatastoreState `json:"state,omitempty"`
+	// Error - READ-ONLY; Describes the error if datastore could not be successfully mounted on the parent AzureML instance.
+	Error *string `json:"error,omitempty"`
+}
+
+// ComputeInstanceDatastoresMountSettings describes what data stores will be mounted on this compute
+// instance.
+type ComputeInstanceDatastoresMountSettings struct {
+	// DatastoreSelection - Allows users to select between mounting All vs Selected datastores from the parent workspace. The 'All' setting also implies that any datastores that later become part of the workspace will be automatically mounted to the compute instance on next start. Possible values include: 'All', 'UserSpecified'
+	DatastoreSelection DatastoreSelection `json:"datastoreSelection,omitempty"`
+	// Datastores - Specifies the set of data stores that will be mounted on this compute instance. This should only be specified if dataStoreSelection is set to 'UserSpecified'.
+	Datastores *[]ComputeInstanceDatastore `json:"datastores,omitempty"`
+}
+
+// ComputeInstanceOSUpdateSettings specifies policy for installing operation system updates.
+type ComputeInstanceOSUpdateSettings struct {
+	// OsUpdateType - Possible values include: 'Security', 'Recommended'
+	OsUpdateType OsUpdateType `json:"osUpdateType,omitempty"`
+	// UpdateFrequencyInDays - Frequency of update checks and installation. Maximum allowable frequency is 30 days. Default frequency will be 14 days.
+	UpdateFrequencyInDays *int32 `json:"updateFrequencyInDays,omitempty"`
+	// UpdateHourInUtc - Hour of the day (0-23) in Universal Time at which software updates can be installed, potentially requiring VM reboot. Default update hour will be 2 AM UTC.
+	UpdateHourInUtc *int32 `json:"updateHourInUtc,omitempty"`
+}
+
+// ComputeInstanceProperties AML Instance properties
+type ComputeInstanceProperties struct {
+	// VMSize - Virtual Machine Size
+	VMSize *string `json:"vmSize,omitempty"`
+	// Subnet - Virtual network subnet resource ID the compute nodes belong to.
+	Subnet *ResourceID `json:"subnet,omitempty"`
+	// DatastoresMountSettings - Describes what data stores will be mounted on this compute instance.
+	DatastoresMountSettings *ComputeInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
+	// CustomScriptSettings - Specification for initialization scripts to customize this ComputeInstance.
+	CustomScriptSettings *ComputeInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
+	// SoftwareUpdateSettings - Specifies policies for operating system and Azure ML environment (example packages and SDK) updates.
+	SoftwareUpdateSettings *ComputeInstanceSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
+	// SSHSettings - Specifies policy and settings for SSH access.
+	SSHSettings *ComputeInstanceSSHSettings `json:"sshSettings,omitempty"`
+	// ConnectivityEndpoints - READ-ONLY; Describes all connectivity endpoints available for this ComputeInstance.
+	ConnectivityEndpoints *ComputeInstanceConnectivityEndpoints `json:"connectivityEndpoints,omitempty"`
+	// CreatedBy - READ-ONLY; Describes information on user who created this ComputeInstance.
+	CreatedBy *ComputeInstanceCreatedBy `json:"createdBy,omitempty"`
+	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.
+	Errors *[]Error `json:"errors,omitempty"`
+	// State - READ-ONLY; The current state of this ComputeInstance. Possible values include: 'Creating', 'CreateFailed', 'Deleting', 'Ready', 'Restarting', 'RestartFailed', 'Running', 'SettingUp', 'Starting', 'StartFailed', 'StopFailed', 'Stopped', 'Stopping', 'UserSettingUp', 'Unknown', 'Unusable'
+	State ComputeInstanceState `json:"state,omitempty"`
+}
+
+// ComputeInstanceSdkUpdate describes a specific update for ComputeInstance SDK.
+type ComputeInstanceSdkUpdate struct {
+	// UpdateName - Short name of the update.
+	UpdateName *string `json:"updateName,omitempty"`
+	// UpdateDescription - Detailed description of the available SDK update.
+	UpdateDescription *string `json:"updateDescription,omitempty"`
+	// UpdateVersion - Version of this available update.
+	UpdateVersion *string `json:"updateVersion,omitempty"`
+}
+
+// ComputeInstanceSdkUpdateSettings specifies policy for installing Azure ML environment (example packages
+// and SDK) updates.
+type ComputeInstanceSdkUpdateSettings struct {
+	// UpdateOnNextStart - Specifies if any available Azure ML environment updates should be installed on next instance start. Possible values include: 'UpdateOnNextStartDisabled', 'UpdateOnNextStartEnabled'
+	UpdateOnNextStart UpdateOnNextStart `json:"updateOnNextStart,omitempty"`
+	// AvailableUpdates - READ-ONLY; Describes available SDK updates for this compute instance.
+	AvailableUpdates *[]ComputeInstanceSdkUpdate `json:"availableUpdates,omitempty"`
+}
+
+// ComputeInstanceSoftwareUpdateSettings specifies policies for operating system and Azure ML environment
+// (example packages and SDK) updates.
+type ComputeInstanceSoftwareUpdateSettings struct {
+	// OsUpdateSettings - Specifies policy for installing operation system updates.
+	OsUpdateSettings *ComputeInstanceOSUpdateSettings `json:"osUpdateSettings,omitempty"`
+	// SdkUpdateSettings - Specifies policy for installing Azure ML environment (example packages and SDK) updates.
+	SdkUpdateSettings *ComputeInstanceSdkUpdateSettings `json:"sdkUpdateSettings,omitempty"`
+}
+
+// ComputeInstanceSSHSettings specifies policy and settings for SSH access.
+type ComputeInstanceSSHSettings struct {
+	// SSHPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet policy if applicable. Possible values include: 'SSHPublicAccessEnabled', 'SSHPublicAccessDisabled'
+	SSHPublicAccess SSHPublicAccess `json:"sshPublicAccess,omitempty"`
+	// AdminUserName - READ-ONLY; Describes the admin user name.
+	AdminUserName *string `json:"adminUserName,omitempty"`
+	// AdminPublicKey - Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b 2048" to generate your SSH key pairs.
+	AdminPublicKey *string `json:"adminPublicKey,omitempty"`
 }
 
 // BasicComputeNodesInformation compute nodes information related to a Machine Learning compute. Might differ for every
@@ -1573,7 +1575,7 @@ type Databricks struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeAmlInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeComputeInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -1609,8 +1611,8 @@ func (d Databricks) AsAmlCompute() (*AmlCompute, bool) {
 	return nil, false
 }
 
-// AsAmlInstance is the BasicCompute implementation for Databricks.
-func (d Databricks) AsAmlInstance() (*AmlInstance, bool) {
+// AsComputeInstance is the BasicCompute implementation for Databricks.
+func (d Databricks) AsComputeInstance() (*ComputeInstance, bool) {
 	return nil, false
 }
 
@@ -1719,7 +1721,7 @@ type DataFactory struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeAmlInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeComputeInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -1752,8 +1754,8 @@ func (df DataFactory) AsAmlCompute() (*AmlCompute, bool) {
 	return nil, false
 }
 
-// AsAmlInstance is the BasicCompute implementation for DataFactory.
-func (df DataFactory) AsAmlInstance() (*AmlInstance, bool) {
+// AsComputeInstance is the BasicCompute implementation for DataFactory.
+func (df DataFactory) AsComputeInstance() (*ComputeInstance, bool) {
 	return nil, false
 }
 
@@ -1811,7 +1813,7 @@ type DataLakeAnalytics struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeAmlInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeComputeInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -1847,8 +1849,8 @@ func (dla DataLakeAnalytics) AsAmlCompute() (*AmlCompute, bool) {
 	return nil, false
 }
 
-// AsAmlInstance is the BasicCompute implementation for DataLakeAnalytics.
-func (dla DataLakeAnalytics) AsAmlInstance() (*AmlInstance, bool) {
+// AsComputeInstance is the BasicCompute implementation for DataLakeAnalytics.
+func (dla DataLakeAnalytics) AsComputeInstance() (*ComputeInstance, bool) {
 	return nil, false
 }
 
@@ -1936,7 +1938,7 @@ type HDInsight struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeAmlInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeComputeInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -1972,8 +1974,8 @@ func (hi HDInsight) AsAmlCompute() (*AmlCompute, bool) {
 	return nil, false
 }
 
-// AsAmlInstance is the BasicCompute implementation for HDInsight.
-func (hi HDInsight) AsAmlInstance() (*AmlInstance, bool) {
+// AsComputeInstance is the BasicCompute implementation for HDInsight.
+func (hi HDInsight) AsComputeInstance() (*ComputeInstance, bool) {
 	return nil, false
 }
 
@@ -2815,7 +2817,7 @@ type VirtualMachine struct {
 	ProvisioningErrors *[]Error `json:"provisioningErrors,omitempty"`
 	// IsAttachedCompute - READ-ONLY; Indicating whether the compute was provisioned by user and brought from outside if true, or machine learning service provisioned it if false.
 	IsAttachedCompute *bool `json:"isAttachedCompute,omitempty"`
-	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeAmlInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
+	// ComputeType - Possible values include: 'ComputeTypeCompute', 'ComputeTypeAKS1', 'ComputeTypeAmlCompute1', 'ComputeTypeComputeInstance1', 'ComputeTypeVirtualMachine1', 'ComputeTypeHDInsight1', 'ComputeTypeDataFactory1', 'ComputeTypeDatabricks1', 'ComputeTypeDataLakeAnalytics1'
 	ComputeType ComputeTypeBasicCompute `json:"computeType,omitempty"`
 }
 
@@ -2851,8 +2853,8 @@ func (VM VirtualMachine) AsAmlCompute() (*AmlCompute, bool) {
 	return nil, false
 }
 
-// AsAmlInstance is the BasicCompute implementation for VirtualMachine.
-func (VM VirtualMachine) AsAmlInstance() (*AmlInstance, bool) {
+// AsComputeInstance is the BasicCompute implementation for VirtualMachine.
+func (VM VirtualMachine) AsComputeInstance() (*ComputeInstance, bool) {
 	return nil, false
 }
 

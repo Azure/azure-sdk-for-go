@@ -36,25 +36,25 @@ const (
 	Steady   AllocationState = original.Steady
 )
 
-type AmlInstanceState = original.AmlInstanceState
+type ComputeInstanceState = original.ComputeInstanceState
 
 const (
-	CreateFailed  AmlInstanceState = original.CreateFailed
-	Creating      AmlInstanceState = original.Creating
-	Deleting      AmlInstanceState = original.Deleting
-	Ready         AmlInstanceState = original.Ready
-	RestartFailed AmlInstanceState = original.RestartFailed
-	Restarting    AmlInstanceState = original.Restarting
-	Running       AmlInstanceState = original.Running
-	SettingUp     AmlInstanceState = original.SettingUp
-	StartFailed   AmlInstanceState = original.StartFailed
-	Starting      AmlInstanceState = original.Starting
-	StopFailed    AmlInstanceState = original.StopFailed
-	Stopped       AmlInstanceState = original.Stopped
-	Stopping      AmlInstanceState = original.Stopping
-	Unknown       AmlInstanceState = original.Unknown
-	Unusable      AmlInstanceState = original.Unusable
-	UserSettingUp AmlInstanceState = original.UserSettingUp
+	CreateFailed  ComputeInstanceState = original.CreateFailed
+	Creating      ComputeInstanceState = original.Creating
+	Deleting      ComputeInstanceState = original.Deleting
+	Ready         ComputeInstanceState = original.Ready
+	RestartFailed ComputeInstanceState = original.RestartFailed
+	Restarting    ComputeInstanceState = original.Restarting
+	Running       ComputeInstanceState = original.Running
+	SettingUp     ComputeInstanceState = original.SettingUp
+	StartFailed   ComputeInstanceState = original.StartFailed
+	Starting      ComputeInstanceState = original.Starting
+	StopFailed    ComputeInstanceState = original.StopFailed
+	Stopped       ComputeInstanceState = original.Stopped
+	Stopping      ComputeInstanceState = original.Stopping
+	Unknown       ComputeInstanceState = original.Unknown
+	Unusable      ComputeInstanceState = original.Unusable
+	UserSettingUp ComputeInstanceState = original.UserSettingUp
 )
 
 type ComputeType = original.ComputeType
@@ -62,7 +62,7 @@ type ComputeType = original.ComputeType
 const (
 	ComputeTypeAKS               ComputeType = original.ComputeTypeAKS
 	ComputeTypeAmlCompute        ComputeType = original.ComputeTypeAmlCompute
-	ComputeTypeAmlInstance       ComputeType = original.ComputeTypeAmlInstance
+	ComputeTypeComputeInstance   ComputeType = original.ComputeTypeComputeInstance
 	ComputeTypeDatabricks        ComputeType = original.ComputeTypeDatabricks
 	ComputeTypeDataFactory       ComputeType = original.ComputeTypeDataFactory
 	ComputeTypeDataLakeAnalytics ComputeType = original.ComputeTypeDataLakeAnalytics
@@ -75,8 +75,8 @@ type ComputeTypeBasicCompute = original.ComputeTypeBasicCompute
 const (
 	ComputeTypeAKS1               ComputeTypeBasicCompute = original.ComputeTypeAKS1
 	ComputeTypeAmlCompute1        ComputeTypeBasicCompute = original.ComputeTypeAmlCompute1
-	ComputeTypeAmlInstance1       ComputeTypeBasicCompute = original.ComputeTypeAmlInstance1
 	ComputeTypeCompute            ComputeTypeBasicCompute = original.ComputeTypeCompute
+	ComputeTypeComputeInstance1   ComputeTypeBasicCompute = original.ComputeTypeComputeInstance1
 	ComputeTypeDatabricks1        ComputeTypeBasicCompute = original.ComputeTypeDatabricks1
 	ComputeTypeDataFactory1       ComputeTypeBasicCompute = original.ComputeTypeDataFactory1
 	ComputeTypeDataLakeAnalytics1 ComputeTypeBasicCompute = original.ComputeTypeDataLakeAnalytics1
@@ -136,8 +136,8 @@ const (
 type OsUpdateType = original.OsUpdateType
 
 const (
-	Critical    OsUpdateType = original.Critical
 	Recommended OsUpdateType = original.Recommended
+	Security    OsUpdateType = original.Security
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -232,20 +232,6 @@ type AmlCompute = original.AmlCompute
 type AmlComputeNodeInformation = original.AmlComputeNodeInformation
 type AmlComputeNodesInformation = original.AmlComputeNodesInformation
 type AmlComputeProperties = original.AmlComputeProperties
-type AmlInstance = original.AmlInstance
-type AmlInstanceApplicationURI = original.AmlInstanceApplicationURI
-type AmlInstanceConnectivityEndpoints = original.AmlInstanceConnectivityEndpoints
-type AmlInstanceCreatedBy = original.AmlInstanceCreatedBy
-type AmlInstanceCustomScriptSettings = original.AmlInstanceCustomScriptSettings
-type AmlInstanceCustomScriptSettingsStartupScript = original.AmlInstanceCustomScriptSettingsStartupScript
-type AmlInstanceDatastore = original.AmlInstanceDatastore
-type AmlInstanceDatastoresMountSettings = original.AmlInstanceDatastoresMountSettings
-type AmlInstanceOSUpdateSettings = original.AmlInstanceOSUpdateSettings
-type AmlInstanceProperties = original.AmlInstanceProperties
-type AmlInstanceSSHSettings = original.AmlInstanceSSHSettings
-type AmlInstanceSdkUpdate = original.AmlInstanceSdkUpdate
-type AmlInstanceSdkUpdateSettings = original.AmlInstanceSdkUpdateSettings
-type AmlInstanceSoftwareUpdateSettings = original.AmlInstanceSoftwareUpdateSettings
 type BaseClient = original.BaseClient
 type BasicCompute = original.BasicCompute
 type BasicComputeNodesInformation = original.BasicComputeNodesInformation
@@ -253,6 +239,20 @@ type BasicComputeSecrets = original.BasicComputeSecrets
 type ClusterUpdateParameters = original.ClusterUpdateParameters
 type ClusterUpdateProperties = original.ClusterUpdateProperties
 type Compute = original.Compute
+type ComputeInstance = original.ComputeInstance
+type ComputeInstanceApplicationURI = original.ComputeInstanceApplicationURI
+type ComputeInstanceConnectivityEndpoints = original.ComputeInstanceConnectivityEndpoints
+type ComputeInstanceCreatedBy = original.ComputeInstanceCreatedBy
+type ComputeInstanceCustomScriptSettings = original.ComputeInstanceCustomScriptSettings
+type ComputeInstanceCustomScriptSettingsStartupScript = original.ComputeInstanceCustomScriptSettingsStartupScript
+type ComputeInstanceDatastore = original.ComputeInstanceDatastore
+type ComputeInstanceDatastoresMountSettings = original.ComputeInstanceDatastoresMountSettings
+type ComputeInstanceOSUpdateSettings = original.ComputeInstanceOSUpdateSettings
+type ComputeInstanceProperties = original.ComputeInstanceProperties
+type ComputeInstanceSSHSettings = original.ComputeInstanceSSHSettings
+type ComputeInstanceSdkUpdate = original.ComputeInstanceSdkUpdate
+type ComputeInstanceSdkUpdateSettings = original.ComputeInstanceSdkUpdateSettings
+type ComputeInstanceSoftwareUpdateSettings = original.ComputeInstanceSoftwareUpdateSettings
 type ComputeNodesInformation = original.ComputeNodesInformation
 type ComputeResource = original.ComputeResource
 type ComputeSecrets = original.ComputeSecrets
@@ -392,8 +392,8 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
 }
-func PossibleAmlInstanceStateValues() []AmlInstanceState {
-	return original.PossibleAmlInstanceStateValues()
+func PossibleComputeInstanceStateValues() []ComputeInstanceState {
+	return original.PossibleComputeInstanceStateValues()
 }
 func PossibleComputeTypeBasicComputeNodesInformationValues() []ComputeTypeBasicComputeNodesInformation {
 	return original.PossibleComputeTypeBasicComputeNodesInformationValues()

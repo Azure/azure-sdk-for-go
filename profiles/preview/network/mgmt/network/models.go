@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-08-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-09-01/network"
 )
 
 const (
@@ -1478,6 +1478,14 @@ type IPConfigurationProfile = original.IPConfigurationProfile
 type IPConfigurationProfilePropertiesFormat = original.IPConfigurationProfilePropertiesFormat
 type IPConfigurationPropertiesFormat = original.IPConfigurationPropertiesFormat
 type IPTag = original.IPTag
+type IPTags = original.IPTags
+type IPTagsClient = original.IPTagsClient
+type IPTagsCreateOrUpdateFuture = original.IPTagsCreateOrUpdateFuture
+type IPTagsDeleteFuture = original.IPTagsDeleteFuture
+type IPTagsListResult = original.IPTagsListResult
+type IPTagsListResultIterator = original.IPTagsListResultIterator
+type IPTagsListResultPage = original.IPTagsListResultPage
+type IPTagsPropertiesFormat = original.IPTagsPropertiesFormat
 type InboundNatPool = original.InboundNatPool
 type InboundNatPoolPropertiesFormat = original.InboundNatPoolPropertiesFormat
 type InboundNatRule = original.InboundNatRule
@@ -2381,6 +2389,18 @@ func NewHubVirtualNetworkConnectionsClient(subscriptionID string) HubVirtualNetw
 }
 func NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HubVirtualNetworkConnectionsClient {
 	return original.NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIPTagsClient(subscriptionID string) IPTagsClient {
+	return original.NewIPTagsClient(subscriptionID)
+}
+func NewIPTagsClientWithBaseURI(baseURI string, subscriptionID string) IPTagsClient {
+	return original.NewIPTagsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewIPTagsListResultIterator(page IPTagsListResultPage) IPTagsListResultIterator {
+	return original.NewIPTagsListResultIterator(page)
+}
+func NewIPTagsListResultPage(getNextPage func(context.Context, IPTagsListResult) (IPTagsListResult, error)) IPTagsListResultPage {
+	return original.NewIPTagsListResultPage(getNextPage)
 }
 func NewInboundNatRuleListResultIterator(page InboundNatRuleListResultPage) InboundNatRuleListResultIterator {
 	return original.NewInboundNatRuleListResultIterator(page)

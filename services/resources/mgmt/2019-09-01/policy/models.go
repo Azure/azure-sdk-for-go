@@ -623,8 +623,8 @@ type DefinitionReference struct {
 	Parameters interface{} `json:"parameters,omitempty"`
 	// PolicyDefinitionReferenceID - A unique id (within the policy set definition) for this policy definition reference.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
-	// GroupName - The name of the group that this policy definition reference belongs to.
-	GroupName *string `json:"groupName,omitempty"`
+	// GroupNames - The name of the groups that this policy definition reference belongs to.
+	GroupNames *[]string `json:"groupNames,omitempty"`
 }
 
 // ErrorAdditionalInfo the resource management error additional info.

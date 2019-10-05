@@ -212,6 +212,21 @@ func PossibleDatastoreStateValues() []DatastoreState {
 	return []DatastoreState{Mounted, MountFailed, Unmounted}
 }
 
+// InstanceSharing enumerates the values for instance sharing.
+type InstanceSharing string
+
+const (
+	// Disabled ...
+	Disabled InstanceSharing = "Disabled"
+	// Enabled ...
+	Enabled InstanceSharing = "Enabled"
+)
+
+// PossibleInstanceSharingValues returns an array of possible values for the InstanceSharing const type.
+func PossibleInstanceSharingValues() []InstanceSharing {
+	return []InstanceSharing{Disabled, Enabled}
+}
+
 // NodeState enumerates the values for node state.
 type NodeState string
 
@@ -307,17 +322,17 @@ func PossibleQuotaUnitValues() []QuotaUnit {
 type RemoteLoginPortPublicAccess string
 
 const (
-	// Disabled ...
-	Disabled RemoteLoginPortPublicAccess = "Disabled"
-	// Enabled ...
-	Enabled RemoteLoginPortPublicAccess = "Enabled"
-	// NotSpecified ...
-	NotSpecified RemoteLoginPortPublicAccess = "NotSpecified"
+	// RemoteLoginPortPublicAccessDisabled ...
+	RemoteLoginPortPublicAccessDisabled RemoteLoginPortPublicAccess = "Disabled"
+	// RemoteLoginPortPublicAccessEnabled ...
+	RemoteLoginPortPublicAccessEnabled RemoteLoginPortPublicAccess = "Enabled"
+	// RemoteLoginPortPublicAccessNotSpecified ...
+	RemoteLoginPortPublicAccessNotSpecified RemoteLoginPortPublicAccess = "NotSpecified"
 )
 
 // PossibleRemoteLoginPortPublicAccessValues returns an array of possible values for the RemoteLoginPortPublicAccess const type.
 func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
-	return []RemoteLoginPortPublicAccess{Disabled, Enabled, NotSpecified}
+	return []RemoteLoginPortPublicAccess{RemoteLoginPortPublicAccessDisabled, RemoteLoginPortPublicAccessEnabled, RemoteLoginPortPublicAccessNotSpecified}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.
@@ -788,7 +803,7 @@ type AmlComputeProperties struct {
 	UserAccountCredentials *UserAccountCredentials `json:"userAccountCredentials,omitempty"`
 	// Subnet - Virtual network subnet resource ID the compute nodes belong to.
 	Subnet *ResourceID `json:"subnet,omitempty"`
-	// RemoteLoginPortPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can be default only during cluster creation time, after creation it will be either enabled or disabled. Possible values include: 'Enabled', 'Disabled', 'NotSpecified'
+	// RemoteLoginPortPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can be default only during cluster creation time, after creation it will be either enabled or disabled. Possible values include: 'RemoteLoginPortPublicAccessEnabled', 'RemoteLoginPortPublicAccessDisabled', 'RemoteLoginPortPublicAccessNotSpecified'
 	RemoteLoginPortPublicAccess RemoteLoginPortPublicAccess `json:"remoteLoginPortPublicAccess,omitempty"`
 	// AllocationState - READ-ONLY; Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There are no changes to the number of compute nodes in the compute in progress. A compute enters this state when it is created and when no operations are being performed on the compute to change the number of compute nodes. resizing - Indicates that the compute is resizing; that is, compute nodes are being added to or removed from the compute. Possible values include: 'Steady', 'Resizing'
 	AllocationState AllocationState `json:"allocationState,omitempty"`
@@ -1026,9 +1041,9 @@ func (c Compute) AsBasicCompute() (BasicCompute, bool) {
 	return &c, true
 }
 
-// ComputeInstance an Azure Machine Learning instance.
+// ComputeInstance an Azure Machine Learning compute instance.
 type ComputeInstance struct {
-	// Properties - AML Instance properties
+	// Properties - Compute Instance properties
 	Properties *ComputeInstanceProperties `json:"properties,omitempty"`
 	// ComputeLocation - Location for the underlying compute
 	ComputeLocation *string `json:"computeLocation,omitempty"`
@@ -1195,12 +1210,14 @@ type ComputeInstanceOSUpdateSettings struct {
 	UpdateHourInUtc *int32 `json:"updateHourInUtc,omitempty"`
 }
 
-// ComputeInstanceProperties AML Instance properties
+// ComputeInstanceProperties compute Instance properties
 type ComputeInstanceProperties struct {
 	// VMSize - Virtual Machine Size
 	VMSize *string `json:"vmSize,omitempty"`
 	// Subnet - Virtual network subnet resource ID the compute nodes belong to.
 	Subnet *ResourceID `json:"subnet,omitempty"`
+	// InstanceSharing - Policy for sharing this compute instance among users of parent workspace. If Disabled, only the creator can access applications on this compute instance. When enabled any workspace user can access applications on this instance depending on his/her assigned role. Possible values include: 'Enabled', 'Disabled'
+	InstanceSharing InstanceSharing `json:"instanceSharing,omitempty"`
 	// DatastoresMountSettings - Describes what data stores will be mounted on this compute instance.
 	DatastoresMountSettings *ComputeInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
 	// CustomScriptSettings - Specification for initialization scripts to customize this ComputeInstance.

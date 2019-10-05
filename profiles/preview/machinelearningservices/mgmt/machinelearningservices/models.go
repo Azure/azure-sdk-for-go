@@ -115,6 +115,13 @@ const (
 	Unmounted   DatastoreState = original.Unmounted
 )
 
+type InstanceSharing = original.InstanceSharing
+
+const (
+	Disabled InstanceSharing = original.Disabled
+	Enabled  InstanceSharing = original.Enabled
+)
+
 type NodeState = original.NodeState
 
 const (
@@ -161,9 +168,9 @@ const (
 type RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccess
 
 const (
-	Disabled     RemoteLoginPortPublicAccess = original.Disabled
-	Enabled      RemoteLoginPortPublicAccess = original.Enabled
-	NotSpecified RemoteLoginPortPublicAccess = original.NotSpecified
+	RemoteLoginPortPublicAccessDisabled     RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccessDisabled
+	RemoteLoginPortPublicAccessEnabled      RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccessEnabled
+	RemoteLoginPortPublicAccessNotSpecified RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccessNotSpecified
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -412,6 +419,9 @@ func PossibleDatastoreSelectionValues() []DatastoreSelection {
 }
 func PossibleDatastoreStateValues() []DatastoreState {
 	return original.PossibleDatastoreStateValues()
+}
+func PossibleInstanceSharingValues() []InstanceSharing {
+	return original.PossibleInstanceSharingValues()
 }
 func PossibleNodeStateValues() []NodeState {
 	return original.PossibleNodeStateValues()

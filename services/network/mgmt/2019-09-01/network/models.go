@@ -28817,6 +28817,8 @@ type VirtualHubProperties struct {
 	SecurityProviderName *string `json:"securityProviderName,omitempty"`
 	// VirtualHubRouteTableV2s - List of all virtual hub route table v2s associated with this VirtualHub.
 	VirtualHubRouteTableV2s *[]VirtualHubRouteTableV2 `json:"virtualHubRouteTableV2s,omitempty"`
+	// Sku - The sku of this VirtualHub.
+	Sku *string `json:"sku,omitempty"`
 }
 
 // VirtualHubRoute virtualHub route.
@@ -32714,6 +32716,8 @@ type VirtualWanProperties struct {
 	Office365LocalBreakoutCategory OfficeTrafficCategory `json:"office365LocalBreakoutCategory,omitempty"`
 	// ProvisioningState - The provisioning state of the virtual WAN resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Type - The type of the VirtualWAN.
+	Type *string `json:"type,omitempty"`
 }
 
 // VirtualWansCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

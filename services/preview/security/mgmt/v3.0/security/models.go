@@ -827,6 +827,21 @@ func PossibleTypeValues() []Type {
 	return []Type{BinarySignature, File, FileHash, ProductSignature, PublisherSignature, VersionAndAboveSignature}
 }
 
+// UnmaskedIPLoggingStatus enumerates the values for unmasked ip logging status.
+type UnmaskedIPLoggingStatus string
+
+const (
+	// UnmaskedIPLoggingStatusDisabled Unmasked IP logging is disabled
+	UnmaskedIPLoggingStatusDisabled UnmaskedIPLoggingStatus = "Disabled"
+	// UnmaskedIPLoggingStatusEnabled Unmasked IP logging is enabled
+	UnmaskedIPLoggingStatusEnabled UnmaskedIPLoggingStatus = "Enabled"
+)
+
+// PossibleUnmaskedIPLoggingStatusValues returns an array of possible values for the UnmaskedIPLoggingStatus const type.
+func PossibleUnmaskedIPLoggingStatusValues() []UnmaskedIPLoggingStatus {
+	return []UnmaskedIPLoggingStatus{UnmaskedIPLoggingStatusDisabled, UnmaskedIPLoggingStatusEnabled}
+}
+
 // ValueType enumerates the values for value type.
 type ValueType string
 
@@ -5454,6 +5469,8 @@ type IoTSecuritySolutionProperties struct {
 	// AutoDiscoveredResources - READ-ONLY; List of resources that were automatically discovered as relevant to the security solution.
 	AutoDiscoveredResources      *[]string                                `json:"autoDiscoveredResources,omitempty"`
 	RecommendationsConfiguration *[]RecommendationConfigurationProperties `json:"recommendationsConfiguration,omitempty"`
+	// UnmaskedIPLoggingStatus - Unmasked IP address logging status. Possible values include: 'UnmaskedIPLoggingStatusDisabled', 'UnmaskedIPLoggingStatusEnabled'
+	UnmaskedIPLoggingStatus UnmaskedIPLoggingStatus `json:"unmaskedIpLoggingStatus,omitempty"`
 }
 
 // IoTSecuritySolutionsList list of IoT Security solutions.

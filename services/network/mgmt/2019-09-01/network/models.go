@@ -8434,7 +8434,7 @@ type ConfigurationDiagnosticProfile struct {
 	Source *string `json:"source,omitempty"`
 	// Destination - Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
 	Destination *string `json:"destination,omitempty"`
-	// DestinationPort - Traffic destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
+	// DestinationPort - Traffic destination port. Accepted values are '*' and a single port in the range (0 - 65535).
 	DestinationPort *string `json:"destinationPort,omitempty"`
 }
 

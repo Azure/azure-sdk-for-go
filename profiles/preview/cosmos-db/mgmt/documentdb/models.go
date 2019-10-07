@@ -149,6 +149,7 @@ const (
 	Seconds        UnitType = original.Seconds
 )
 
+type ARMProxyResource = original.ARMProxyResource
 type ARMResourceProperties = original.ARMResourceProperties
 type BaseClient = original.BaseClient
 type Capability = original.Capability

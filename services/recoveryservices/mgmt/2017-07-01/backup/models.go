@@ -1409,21 +1409,21 @@ func PossibleScheduleRunTypeValues() []ScheduleRunType {
 	return []ScheduleRunType{ScheduleRunTypeDaily, ScheduleRunTypeInvalid, ScheduleRunTypeWeekly}
 }
 
-// SoftDeleteState enumerates the values for soft delete state.
-type SoftDeleteState string
+// SoftDeleteFeatureState enumerates the values for soft delete feature state.
+type SoftDeleteFeatureState string
 
 const (
-	// SoftDeleteStateDisabled ...
-	SoftDeleteStateDisabled SoftDeleteState = "Disabled"
-	// SoftDeleteStateEnabled ...
-	SoftDeleteStateEnabled SoftDeleteState = "Enabled"
-	// SoftDeleteStateInvalid ...
-	SoftDeleteStateInvalid SoftDeleteState = "Invalid"
+	// SoftDeleteFeatureStateDisabled ...
+	SoftDeleteFeatureStateDisabled SoftDeleteFeatureState = "Disabled"
+	// SoftDeleteFeatureStateEnabled ...
+	SoftDeleteFeatureStateEnabled SoftDeleteFeatureState = "Enabled"
+	// SoftDeleteFeatureStateInvalid ...
+	SoftDeleteFeatureStateInvalid SoftDeleteFeatureState = "Invalid"
 )
 
-// PossibleSoftDeleteStateValues returns an array of possible values for the SoftDeleteState const type.
-func PossibleSoftDeleteStateValues() []SoftDeleteState {
-	return []SoftDeleteState{SoftDeleteStateDisabled, SoftDeleteStateEnabled, SoftDeleteStateInvalid}
+// PossibleSoftDeleteFeatureStateValues returns an array of possible values for the SoftDeleteFeatureState const type.
+func PossibleSoftDeleteFeatureStateValues() []SoftDeleteFeatureState {
+	return []SoftDeleteFeatureState{SoftDeleteFeatureStateDisabled, SoftDeleteFeatureStateEnabled, SoftDeleteFeatureStateInvalid}
 }
 
 // SQLDataDirectoryType enumerates the values for sql data directory type.
@@ -19023,8 +19023,8 @@ type ResourceVaultConfig struct {
 	StorageTypeState StorageTypeState `json:"storageTypeState,omitempty"`
 	// EnhancedSecurityState - Enabled or Disabled. Possible values include: 'EnhancedSecurityStateInvalid', 'EnhancedSecurityStateEnabled', 'EnhancedSecurityStateDisabled'
 	EnhancedSecurityState EnhancedSecurityState `json:"enhancedSecurityState,omitempty"`
-	// SoftDeleteState - Soft Delete feature state. Possible values include: 'SoftDeleteStateInvalid', 'SoftDeleteStateEnabled', 'SoftDeleteStateDisabled'
-	SoftDeleteState SoftDeleteState `json:"softDeleteState,omitempty"`
+	// SoftDeleteFeatureState - Soft Delete feature state. Possible values include: 'SoftDeleteFeatureStateInvalid', 'SoftDeleteFeatureStateEnabled', 'SoftDeleteFeatureStateDisabled'
+	SoftDeleteFeatureState SoftDeleteFeatureState `json:"softDeleteFeatureState,omitempty"`
 }
 
 // ResourceVaultConfigResource backup resource vault config details.

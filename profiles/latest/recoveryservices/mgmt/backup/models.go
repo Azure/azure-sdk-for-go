@@ -697,12 +697,12 @@ const (
 	ScheduleRunTypeWeekly  ScheduleRunType = original.ScheduleRunTypeWeekly
 )
 
-type SoftDeleteState = original.SoftDeleteState
+type SoftDeleteFeatureState = original.SoftDeleteFeatureState
 
 const (
-	SoftDeleteStateDisabled SoftDeleteState = original.SoftDeleteStateDisabled
-	SoftDeleteStateEnabled  SoftDeleteState = original.SoftDeleteStateEnabled
-	SoftDeleteStateInvalid  SoftDeleteState = original.SoftDeleteStateInvalid
+	SoftDeleteFeatureStateDisabled SoftDeleteFeatureState = original.SoftDeleteFeatureStateDisabled
+	SoftDeleteFeatureStateEnabled  SoftDeleteFeatureState = original.SoftDeleteFeatureStateEnabled
+	SoftDeleteFeatureStateInvalid  SoftDeleteFeatureState = original.SoftDeleteFeatureStateInvalid
 )
 
 type StorageType = original.StorageType
@@ -1640,8 +1640,8 @@ func PossibleSchedulePolicyTypeValues() []SchedulePolicyType {
 func PossibleScheduleRunTypeValues() []ScheduleRunType {
 	return original.PossibleScheduleRunTypeValues()
 }
-func PossibleSoftDeleteStateValues() []SoftDeleteState {
-	return original.PossibleSoftDeleteStateValues()
+func PossibleSoftDeleteFeatureStateValues() []SoftDeleteFeatureState {
+	return original.PossibleSoftDeleteFeatureStateValues()
 }
 func PossibleStorageTypeStateValues() []StorageTypeState {
 	return original.PossibleStorageTypeStateValues()

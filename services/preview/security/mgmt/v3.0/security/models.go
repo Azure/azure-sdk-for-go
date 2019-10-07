@@ -4946,8 +4946,8 @@ type IoTSecurityAggregatedAlertPropertiesTopDevicesListItem struct {
 	DeviceID *string `json:"deviceId,omitempty"`
 	// AlertsCount - READ-ONLY; Number of alerts raised for this device.
 	AlertsCount *int32 `json:"alertsCount,omitempty"`
-	// LastOccurrenceTime - READ-ONLY; Most recent time this alert was raised for this device, on this day.
-	LastOccurrenceTime *string `json:"lastOccurrenceTime,omitempty"`
+	// LastOccurrence - READ-ONLY; Most recent time this alert was raised for this device, on this day.
+	LastOccurrence *string `json:"lastOccurrence,omitempty"`
 }
 
 // IoTSecurityAggregatedRecommendation ioT Security solution recommendation information.

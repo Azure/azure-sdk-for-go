@@ -230,6 +230,8 @@ type SkuName string
 const (
 	// L1 ...
 	L1 SkuName = "L1"
+	// P1 ...
+	P1 SkuName = "P1"
 	// S1 ...
 	S1 SkuName = "S1"
 	// S2 ...
@@ -238,7 +240,7 @@ const (
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
-	return []SkuName{L1, S1, S2}
+	return []SkuName{L1, P1, S1, S2}
 }
 
 // StorageLimitExceededBehavior enumerates the values for storage limit exceeded behavior.
@@ -254,6 +256,23 @@ const (
 // PossibleStorageLimitExceededBehaviorValues returns an array of possible values for the StorageLimitExceededBehavior const type.
 func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
 	return []StorageLimitExceededBehavior{PauseIngress, PurgeOldData}
+}
+
+// WarmStoragePropertiesState enumerates the values for warm storage properties state.
+type WarmStoragePropertiesState string
+
+const (
+	// WarmStoragePropertiesStateError ...
+	WarmStoragePropertiesStateError WarmStoragePropertiesState = "Error"
+	// WarmStoragePropertiesStateOk ...
+	WarmStoragePropertiesStateOk WarmStoragePropertiesState = "Ok"
+	// WarmStoragePropertiesStateUnknown ...
+	WarmStoragePropertiesStateUnknown WarmStoragePropertiesState = "Unknown"
+)
+
+// PossibleWarmStoragePropertiesStateValues returns an array of possible values for the WarmStoragePropertiesState const type.
+func PossibleWarmStoragePropertiesStateValues() []WarmStoragePropertiesState {
+	return []WarmStoragePropertiesState{WarmStoragePropertiesStateError, WarmStoragePropertiesStateOk, WarmStoragePropertiesStateUnknown}
 }
 
 // AccessPolicyCreateOrUpdateParameters ...
@@ -794,6 +813,8 @@ type EnvironmentStateDetails struct {
 type EnvironmentStatus struct {
 	// Ingress - An object that represents the status of ingress on an environment.
 	Ingress *IngressEnvironmentStatus `json:"ingress,omitempty"`
+	// WarmStorage - An object that represents the status of warm storage on an environment.
+	WarmStorage *WarmStorageEnvironmentStatus `json:"warmStorage,omitempty"`
 }
 
 // EnvironmentsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1990,6 +2011,8 @@ type LongTermEnvironmentCreationProperties struct {
 	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
 	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
 	StorageConfiguration *LongTermStorageConfigurationInput `json:"storageConfiguration,omitempty"`
+	// WarmStoreConfiguration - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	WarmStoreConfiguration *WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
 }
 
 // LongTermEnvironmentMutableProperties an object that represents a set of mutable long-term environment
@@ -1997,8 +2020,8 @@ type LongTermEnvironmentCreationProperties struct {
 type LongTermEnvironmentMutableProperties struct {
 	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
 	StorageConfiguration *LongTermStorageConfigurationMutableProperties `json:"storageConfiguration,omitempty"`
-	// TimeSeriesIDProperties - The list of event properties which will be used to partition data in the environment.
-	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
+	// WarmStoreConfiguration - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	WarmStoreConfiguration *WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
 }
 
 // LongTermEnvironmentResource an environment is a set of time-series data available for query, and is the
@@ -2167,6 +2190,8 @@ type LongTermEnvironmentResourceProperties struct {
 	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
 	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
 	StorageConfiguration *LongTermStorageConfigurationOutput `json:"storageConfiguration,omitempty"`
+	// WarmStoreConfiguration - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	WarmStoreConfiguration *WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
 }
 
 // LongTermEnvironmentUpdateParameters parameters supplied to the Update Environment operation to update a
@@ -2657,7 +2682,7 @@ type ResourceProperties struct {
 // standard environments the sku determines the capacity of the environment, the ingress rate, and the
 // billing rate.
 type Sku struct {
-	// Name - The name of this SKU. Possible values include: 'S1', 'S2', 'L1'
+	// Name - The name of this SKU. Possible values include: 'S1', 'S2', 'P1', 'L1'
 	Name SkuName `json:"name,omitempty"`
 	// Capacity - The capacity of the sku. For standard environments, this value can be changed to support scale out of environments after they have been created.
 	Capacity *int32 `json:"capacity,omitempty"`
@@ -3070,4 +3095,34 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = tr.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// WarmStorageEnvironmentStatus an object that represents the status of warm storage on an environment.
+type WarmStorageEnvironmentStatus struct {
+	// PropertiesUsage - An object that contains the status of warm storage properties usage.
+	PropertiesUsage *WarmStoragePropertiesUsage `json:"propertiesUsage,omitempty"`
+}
+
+// WarmStoragePropertiesUsage an object that contains the status of warm storage properties usage.
+type WarmStoragePropertiesUsage struct {
+	// State - This string represents the state of warm storage properties usage. It can be "Ok", "Error", "Unknown". Possible values include: 'WarmStoragePropertiesStateOk', 'WarmStoragePropertiesStateError', 'WarmStoragePropertiesStateUnknown'
+	State WarmStoragePropertiesState `json:"state,omitempty"`
+	// StateDetails - An object that contains the details about warm storage properties usage state.
+	StateDetails *WarmStoragePropertiesUsageStateDetails `json:"stateDetails,omitempty"`
+}
+
+// WarmStoragePropertiesUsageStateDetails an object that contains the details about warm storage properties
+// usage state.
+type WarmStoragePropertiesUsageStateDetails struct {
+	// CurrentCount - A value that represents the number of properties used by the environment for S1/S2 SKU and number of properties used by Warm Store for PAYG SKU
+	CurrentCount *int32 `json:"currentCount,omitempty"`
+	// MaxCount - A value that represents the maximum number of properties used allowed by the environment for S1/S2 SKU and maximum number of properties allowed by Warm Store for PAYG SKU.
+	MaxCount *int32 `json:"maxCount,omitempty"`
+}
+
+// WarmStoreConfigurationProperties the warm store configuration provides the details to create a warm
+// store cache that will retain a copy of the environment's data available for faster query.
+type WarmStoreConfigurationProperties struct {
+	// DataRetention - ISO8601 timespan specifying the number of days the environment's events will be available for query from the warm store.
+	DataRetention *string `json:"dataRetention,omitempty"`
 }

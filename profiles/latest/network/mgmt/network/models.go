@@ -1477,15 +1477,15 @@ type IPConfiguration = original.IPConfiguration
 type IPConfigurationProfile = original.IPConfigurationProfile
 type IPConfigurationProfilePropertiesFormat = original.IPConfigurationProfilePropertiesFormat
 type IPConfigurationPropertiesFormat = original.IPConfigurationPropertiesFormat
+type IPGroups = original.IPGroups
+type IPGroupsClient = original.IPGroupsClient
+type IPGroupsCreateOrUpdateFuture = original.IPGroupsCreateOrUpdateFuture
+type IPGroupsDeleteFuture = original.IPGroupsDeleteFuture
+type IPGroupsListResult = original.IPGroupsListResult
+type IPGroupsListResultIterator = original.IPGroupsListResultIterator
+type IPGroupsListResultPage = original.IPGroupsListResultPage
+type IPGroupsPropertiesFormat = original.IPGroupsPropertiesFormat
 type IPTag = original.IPTag
-type IPTags = original.IPTags
-type IPTagsClient = original.IPTagsClient
-type IPTagsCreateOrUpdateFuture = original.IPTagsCreateOrUpdateFuture
-type IPTagsDeleteFuture = original.IPTagsDeleteFuture
-type IPTagsListResult = original.IPTagsListResult
-type IPTagsListResultIterator = original.IPTagsListResultIterator
-type IPTagsListResultPage = original.IPTagsListResultPage
-type IPTagsPropertiesFormat = original.IPTagsPropertiesFormat
 type InboundNatPool = original.InboundNatPool
 type InboundNatPoolPropertiesFormat = original.InboundNatPoolPropertiesFormat
 type InboundNatRule = original.InboundNatRule
@@ -2390,17 +2390,17 @@ func NewHubVirtualNetworkConnectionsClient(subscriptionID string) HubVirtualNetw
 func NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HubVirtualNetworkConnectionsClient {
 	return original.NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewIPTagsClient(subscriptionID string) IPTagsClient {
-	return original.NewIPTagsClient(subscriptionID)
+func NewIPGroupsClient(subscriptionID string) IPGroupsClient {
+	return original.NewIPGroupsClient(subscriptionID)
 }
-func NewIPTagsClientWithBaseURI(baseURI string, subscriptionID string) IPTagsClient {
-	return original.NewIPTagsClientWithBaseURI(baseURI, subscriptionID)
+func NewIPGroupsClientWithBaseURI(baseURI string, subscriptionID string) IPGroupsClient {
+	return original.NewIPGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewIPTagsListResultIterator(page IPTagsListResultPage) IPTagsListResultIterator {
-	return original.NewIPTagsListResultIterator(page)
+func NewIPGroupsListResultIterator(page IPGroupsListResultPage) IPGroupsListResultIterator {
+	return original.NewIPGroupsListResultIterator(page)
 }
-func NewIPTagsListResultPage(getNextPage func(context.Context, IPTagsListResult) (IPTagsListResult, error)) IPTagsListResultPage {
-	return original.NewIPTagsListResultPage(getNextPage)
+func NewIPGroupsListResultPage(getNextPage func(context.Context, IPGroupsListResult) (IPGroupsListResult, error)) IPGroupsListResultPage {
+	return original.NewIPGroupsListResultPage(getNextPage)
 }
 func NewInboundNatRuleListResultIterator(page InboundNatRuleListResultPage) InboundNatRuleListResultIterator {
 	return original.NewInboundNatRuleListResultIterator(page)

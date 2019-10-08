@@ -6571,8 +6571,8 @@ type AzureFirewallApplicationRule struct {
 	TargetFqdns *[]string `json:"targetFqdns,omitempty"`
 	// FqdnTags - List of FQDN Tags for this rule.
 	FqdnTags *[]string `json:"fqdnTags,omitempty"`
-	// SourceIPTags - List of source IP Tags for this rule.
-	SourceIPTags *[]string `json:"sourceIpTags,omitempty"`
+	// SourceIPGroups - List of source IpGroups for this rule.
+	SourceIPGroups *[]string `json:"sourceIpGroups,omitempty"`
 }
 
 // AzureFirewallApplicationRuleCollection application rule collection resource.
@@ -7202,8 +7202,8 @@ type AzureFirewallNatRule struct {
 	TranslatedAddress *string `json:"translatedAddress,omitempty"`
 	// TranslatedPort - The translated port for this NAT rule.
 	TranslatedPort *string `json:"translatedPort,omitempty"`
-	// SourceIPTags - List of source IP Tags for this rule.
-	SourceIPTags *[]string `json:"sourceIpTags,omitempty"`
+	// SourceIPGroups - List of source IpGroups for this rule.
+	SourceIPGroups *[]string `json:"sourceIpGroups,omitempty"`
 }
 
 // AzureFirewallNatRuleCollection NAT rule collection resource.
@@ -7310,10 +7310,10 @@ type AzureFirewallNetworkRule struct {
 	DestinationAddresses *[]string `json:"destinationAddresses,omitempty"`
 	// DestinationPorts - List of destination ports.
 	DestinationPorts *[]string `json:"destinationPorts,omitempty"`
-	// SourceIPTags - List of source IP Tags for this rule.
-	SourceIPTags *[]string `json:"sourceIpTags,omitempty"`
-	// DestinationIPTags - List of destination IP Tags for this rule.
-	DestinationIPTags *[]string `json:"destinationIpTags,omitempty"`
+	// SourceIPGroups - List of source IpGroups for this rule.
+	SourceIPGroups *[]string `json:"sourceIpGroups,omitempty"`
+	// DestinationIPGroups - List of destination IpGroups for this rule.
+	DestinationIPGroups *[]string `json:"destinationIpGroups,omitempty"`
 }
 
 // AzureFirewallNetworkRuleCollection network rule collection resource.
@@ -17305,6 +17305,329 @@ type IPConfigurationPropertiesFormat struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// IPGroups the IpGroups resource information.
+type IPGroups struct {
+	autorest.Response `json:"-"`
+	// IPGroupsPropertiesFormat - Properties of the IpGroups.
+	*IPGroupsPropertiesFormat `json:"properties,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for IPGroups.
+func (ig IPGroups) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ig.IPGroupsPropertiesFormat != nil {
+		objectMap["properties"] = ig.IPGroupsPropertiesFormat
+	}
+	if ig.ID != nil {
+		objectMap["id"] = ig.ID
+	}
+	if ig.Location != nil {
+		objectMap["location"] = ig.Location
+	}
+	if ig.Tags != nil {
+		objectMap["tags"] = ig.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IPGroups struct.
+func (ig *IPGroups) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var IPGroupsPropertiesFormat IPGroupsPropertiesFormat
+				err = json.Unmarshal(*v, &IPGroupsPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				ig.IPGroupsPropertiesFormat = &IPGroupsPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ig.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ig.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ig.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ig.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ig.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ig.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// IPGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type IPGroupsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *IPGroupsCreateOrUpdateFuture) Result(client IPGroupsClient) (ig IPGroups, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.IPGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.IPGroupsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ig.Response.Response, err = future.GetResult(sender); err == nil && ig.Response.Response.StatusCode != http.StatusNoContent {
+		ig, err = client.CreateOrUpdateResponder(ig.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.IPGroupsCreateOrUpdateFuture", "Result", ig.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// IPGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type IPGroupsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *IPGroupsDeleteFuture) Result(client IPGroupsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.IPGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.IPGroupsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// IPGroupsListResult response for the ListIpGroups API service call.
+type IPGroupsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of IpGroups information resources.
+	Value *[]IPGroups `json:"value,omitempty"`
+	// NextLink - URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IPGroupsListResultIterator provides access to a complete listing of IPGroups values.
+type IPGroupsListResultIterator struct {
+	i    int
+	page IPGroupsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IPGroupsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IPGroupsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IPGroupsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IPGroupsListResultIterator) Response() IPGroupsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IPGroupsListResultIterator) Value() IPGroups {
+	if !iter.page.NotDone() {
+		return IPGroups{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IPGroupsListResultIterator type.
+func NewIPGroupsListResultIterator(page IPGroupsListResultPage) IPGroupsListResultIterator {
+	return IPGroupsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (iglr IPGroupsListResult) IsEmpty() bool {
+	return iglr.Value == nil || len(*iglr.Value) == 0
+}
+
+// iPGroupsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (iglr IPGroupsListResult) iPGroupsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if iglr.NextLink == nil || len(to.String(iglr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(iglr.NextLink)))
+}
+
+// IPGroupsListResultPage contains a page of IPGroups values.
+type IPGroupsListResultPage struct {
+	fn   func(context.Context, IPGroupsListResult) (IPGroupsListResult, error)
+	iglr IPGroupsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IPGroupsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iglr)
+	if err != nil {
+		return err
+	}
+	page.iglr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IPGroupsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IPGroupsListResultPage) NotDone() bool {
+	return !page.iglr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IPGroupsListResultPage) Response() IPGroupsListResult {
+	return page.iglr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IPGroupsListResultPage) Values() []IPGroups {
+	if page.iglr.IsEmpty() {
+		return nil
+	}
+	return *page.iglr.Value
+}
+
+// Creates a new instance of the IPGroupsListResultPage type.
+func NewIPGroupsListResultPage(getNextPage func(context.Context, IPGroupsListResult) (IPGroupsListResult, error)) IPGroupsListResultPage {
+	return IPGroupsListResultPage{fn: getNextPage}
+}
+
+// IPGroupsPropertiesFormat the IpGroups property information.
+type IPGroupsPropertiesFormat struct {
+	// ProvisioningState - READ-ONLY; The provisioning state of the IpGroups resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// IPAddresses - IpAddresses/IpAddressPrefixes in the IpGroups resource.
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+	// ReferenceResources - READ-ONLY; List of references to Azure resources that this IpGroups is associated with
+	ReferenceResources *[]SubResource `json:"referenceResources,omitempty"`
+}
+
 // IpsecPolicy an IPSec Policy configuration for a virtual network gateway connection.
 type IpsecPolicy struct {
 	// SaLifeTimeSeconds - The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site VPN tunnel.
@@ -17331,328 +17654,6 @@ type IPTag struct {
 	IPTagType *string `json:"ipTagType,omitempty"`
 	// Tag - The value of the IP tag associated with the public IP. Example: SQL.
 	Tag *string `json:"tag,omitempty"`
-}
-
-// IPTags the IpTags resource information.
-type IPTags struct {
-	autorest.Response `json:"-"`
-	// IPTagsPropertiesFormat - Properties of the IpTags.
-	*IPTagsPropertiesFormat `json:"properties,omitempty"`
-	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty"`
-	// ID - Resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for IPTags.
-func (it IPTags) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if it.IPTagsPropertiesFormat != nil {
-		objectMap["properties"] = it.IPTagsPropertiesFormat
-	}
-	if it.ID != nil {
-		objectMap["id"] = it.ID
-	}
-	if it.Location != nil {
-		objectMap["location"] = it.Location
-	}
-	if it.Tags != nil {
-		objectMap["tags"] = it.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IPTags struct.
-func (it *IPTags) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var IPTagsPropertiesFormat IPTagsPropertiesFormat
-				err = json.Unmarshal(*v, &IPTagsPropertiesFormat)
-				if err != nil {
-					return err
-				}
-				it.IPTagsPropertiesFormat = &IPTagsPropertiesFormat
-			}
-		case "etag":
-			if v != nil {
-				var etag string
-				err = json.Unmarshal(*v, &etag)
-				if err != nil {
-					return err
-				}
-				it.Etag = &etag
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				it.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				it.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				it.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				it.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				it.Tags = tags
-			}
-		}
-	}
-
-	return nil
-}
-
-// IPTagsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type IPTagsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IPTagsCreateOrUpdateFuture) Result(client IPTagsClient) (it IPTags, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.IPTagsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if it.Response.Response, err = future.GetResult(sender); err == nil && it.Response.Response.StatusCode != http.StatusNoContent {
-		it, err = client.CreateOrUpdateResponder(it.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.IPTagsCreateOrUpdateFuture", "Result", it.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// IPTagsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type IPTagsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IPTagsDeleteFuture) Result(client IPTagsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.IPTagsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// IPTagsListResult response for the ListIpTags API service call.
-type IPTagsListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of Iptags information resources.
-	Value *[]IPTags `json:"value,omitempty"`
-	// NextLink - URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IPTagsListResultIterator provides access to a complete listing of IPTags values.
-type IPTagsListResultIterator struct {
-	i    int
-	page IPTagsListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IPTagsListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *IPTagsListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IPTagsListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IPTagsListResultIterator) Response() IPTagsListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IPTagsListResultIterator) Value() IPTags {
-	if !iter.page.NotDone() {
-		return IPTags{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the IPTagsListResultIterator type.
-func NewIPTagsListResultIterator(page IPTagsListResultPage) IPTagsListResultIterator {
-	return IPTagsListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (itlr IPTagsListResult) IsEmpty() bool {
-	return itlr.Value == nil || len(*itlr.Value) == 0
-}
-
-// iPTagsListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (itlr IPTagsListResult) iPTagsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if itlr.NextLink == nil || len(to.String(itlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(itlr.NextLink)))
-}
-
-// IPTagsListResultPage contains a page of IPTags values.
-type IPTagsListResultPage struct {
-	fn   func(context.Context, IPTagsListResult) (IPTagsListResult, error)
-	itlr IPTagsListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IPTagsListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.itlr)
-	if err != nil {
-		return err
-	}
-	page.itlr = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *IPTagsListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IPTagsListResultPage) NotDone() bool {
-	return !page.itlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IPTagsListResultPage) Response() IPTagsListResult {
-	return page.itlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IPTagsListResultPage) Values() []IPTags {
-	if page.itlr.IsEmpty() {
-		return nil
-	}
-	return *page.itlr.Value
-}
-
-// Creates a new instance of the IPTagsListResultPage type.
-func NewIPTagsListResultPage(getNextPage func(context.Context, IPTagsListResult) (IPTagsListResult, error)) IPTagsListResultPage {
-	return IPTagsListResultPage{fn: getNextPage}
-}
-
-// IPTagsPropertiesFormat the Iptags property information.
-type IPTagsPropertiesFormat struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the IpTags resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// IPAddresses - IpAddresses/IpAddressPrefixes in the IpTags resource.
-	IPAddresses *[]string `json:"ipAddresses,omitempty"`
-	// ReferenceResources - READ-ONLY; List of references to Azure resources that this IpTags is associated with
-	ReferenceResources *[]SubResource `json:"referenceResources,omitempty"`
 }
 
 // Ipv6ExpressRouteCircuitPeeringConfig contains IPv6 peering config.

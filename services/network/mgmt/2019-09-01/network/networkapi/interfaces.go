@@ -304,17 +304,17 @@ type FirewallPolicyRuleGroupsClientAPI interface {
 
 var _ FirewallPolicyRuleGroupsClientAPI = (*network.FirewallPolicyRuleGroupsClient)(nil)
 
-// IPTagsClientAPI contains the set of methods on the IPTagsClient type.
-type IPTagsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, IPTagName string, parameters network.IPTags) (result network.IPTagsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, IPTagName string) (result network.IPTagsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, IPTagName string, expand string) (result network.IPTags, err error)
-	List(ctx context.Context) (result network.IPTagsListResultPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.IPTagsListResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, IPTagName string, parameters network.TagsObject) (result network.IPTags, err error)
+// IPGroupsClientAPI contains the set of methods on the IPGroupsClient type.
+type IPGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.IPGroups) (result network.IPGroupsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, IPGroupsName string) (result network.IPGroupsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, IPGroupsName string, expand string) (result network.IPGroups, err error)
+	List(ctx context.Context) (result network.IPGroupsListResultPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.IPGroupsListResultPage, err error)
+	UpdateGroups(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.TagsObject) (result network.IPGroups, err error)
 }
 
-var _ IPTagsClientAPI = (*network.IPTagsClient)(nil)
+var _ IPGroupsClientAPI = (*network.IPGroupsClient)(nil)
 
 // LoadBalancersClientAPI contains the set of methods on the LoadBalancersClient type.
 type LoadBalancersClientAPI interface {

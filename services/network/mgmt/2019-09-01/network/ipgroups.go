@@ -25,29 +25,29 @@ import (
 	"net/http"
 )
 
-// IPTagsClient is the network Client
-type IPTagsClient struct {
+// IPGroupsClient is the network Client
+type IPGroupsClient struct {
 	BaseClient
 }
 
-// NewIPTagsClient creates an instance of the IPTagsClient client.
-func NewIPTagsClient(subscriptionID string) IPTagsClient {
-	return NewIPTagsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewIPGroupsClient creates an instance of the IPGroupsClient client.
+func NewIPGroupsClient(subscriptionID string) IPGroupsClient {
+	return NewIPGroupsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIPTagsClientWithBaseURI creates an instance of the IPTagsClient client.
-func NewIPTagsClientWithBaseURI(baseURI string, subscriptionID string) IPTagsClient {
-	return IPTagsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewIPGroupsClientWithBaseURI creates an instance of the IPGroupsClient client.
+func NewIPGroupsClientWithBaseURI(baseURI string, subscriptionID string) IPGroupsClient {
+	return IPGroupsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates an ipTag in a specified resource group.
+// CreateOrUpdate creates or updates an ipGroups in a specified resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// IPTagName - the name of the ipTag.
-// parameters - parameters supplied to the create or update IpTags operation.
-func (client IPTagsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, IPTagName string, parameters IPTags) (result IPTagsCreateOrUpdateFuture, err error) {
+// IPGroupsName - the name of the ipGroups.
+// parameters - parameters supplied to the create or update IpGroups operation.
+func (client IPGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters IPGroups) (result IPGroupsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -56,15 +56,15 @@ func (client IPTagsClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, IPTagName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, IPGroupsName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -72,9 +72,9 @@ func (client IPTagsClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client IPTagsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, IPTagName string, parameters IPTags) (*http.Request, error) {
+func (client IPGroupsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters IPGroups) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"ipTagName":         autorest.Encode("path", IPTagName),
+		"ipGroupsName":      autorest.Encode("path", IPGroupsName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -89,7 +89,7 @@ func (client IPTagsClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipTags/{ipTagName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups/{ipGroupsName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -97,7 +97,7 @@ func (client IPTagsClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client IPTagsClient) CreateOrUpdateSender(req *http.Request) (future IPTagsCreateOrUpdateFuture, err error) {
+func (client IPGroupsClient) CreateOrUpdateSender(req *http.Request) (future IPGroupsCreateOrUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -110,7 +110,7 @@ func (client IPTagsClient) CreateOrUpdateSender(req *http.Request) (future IPTag
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client IPTagsClient) CreateOrUpdateResponder(resp *http.Response) (result IPTags, err error) {
+func (client IPGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result IPGroups, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -121,13 +121,13 @@ func (client IPTagsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 	return
 }
 
-// Delete deletes the specified ipTag.
+// Delete deletes the specified ipGroups.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// IPTagName - the name of the ipTag.
-func (client IPTagsClient) Delete(ctx context.Context, resourceGroupName string, IPTagName string) (result IPTagsDeleteFuture, err error) {
+// IPGroupsName - the name of the ipGroups.
+func (client IPGroupsClient) Delete(ctx context.Context, resourceGroupName string, IPGroupsName string) (result IPGroupsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -136,15 +136,15 @@ func (client IPTagsClient) Delete(ctx context.Context, resourceGroupName string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, IPTagName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, IPGroupsName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -152,9 +152,9 @@ func (client IPTagsClient) Delete(ctx context.Context, resourceGroupName string,
 }
 
 // DeletePreparer prepares the Delete request.
-func (client IPTagsClient) DeletePreparer(ctx context.Context, resourceGroupName string, IPTagName string) (*http.Request, error) {
+func (client IPGroupsClient) DeletePreparer(ctx context.Context, resourceGroupName string, IPGroupsName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"ipTagName":         autorest.Encode("path", IPTagName),
+		"ipGroupsName":      autorest.Encode("path", IPGroupsName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -167,14 +167,14 @@ func (client IPTagsClient) DeletePreparer(ctx context.Context, resourceGroupName
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipTags/{ipTagName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups/{ipGroupsName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client IPTagsClient) DeleteSender(req *http.Request) (future IPTagsDeleteFuture, err error) {
+func (client IPGroupsClient) DeleteSender(req *http.Request) (future IPGroupsDeleteFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -187,7 +187,7 @@ func (client IPTagsClient) DeleteSender(req *http.Request) (future IPTagsDeleteF
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client IPTagsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client IPGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -197,15 +197,15 @@ func (client IPTagsClient) DeleteResponder(resp *http.Response) (result autorest
 	return
 }
 
-// Get gets the specified ipTag.
+// Get gets the specified ipGroups.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// IPTagName - the name of the ipTag.
-// expand - expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpTags
+// IPGroupsName - the name of the ipGroups.
+// expand - expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
 // resource.
-func (client IPTagsClient) Get(ctx context.Context, resourceGroupName string, IPTagName string, expand string) (result IPTags, err error) {
+func (client IPGroupsClient) Get(ctx context.Context, resourceGroupName string, IPGroupsName string, expand string) (result IPGroups, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -214,31 +214,31 @@ func (client IPTagsClient) Get(ctx context.Context, resourceGroupName string, IP
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, IPTagName, expand)
+	req, err := client.GetPreparer(ctx, resourceGroupName, IPGroupsName, expand)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client IPTagsClient) GetPreparer(ctx context.Context, resourceGroupName string, IPTagName string, expand string) (*http.Request, error) {
+func (client IPGroupsClient) GetPreparer(ctx context.Context, resourceGroupName string, IPGroupsName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"ipTagName":         autorest.Encode("path", IPTagName),
+		"ipGroupsName":      autorest.Encode("path", IPGroupsName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -254,21 +254,21 @@ func (client IPTagsClient) GetPreparer(ctx context.Context, resourceGroupName st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipTags/{ipTagName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups/{ipGroupsName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client IPTagsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client IPGroupsClient) GetSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client IPTagsClient) GetResponder(resp *http.Response) (result IPTags, err error) {
+func (client IPGroupsClient) GetResponder(resp *http.Response) (result IPGroups, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -279,14 +279,14 @@ func (client IPTagsClient) GetResponder(resp *http.Response) (result IPTags, err
 	return
 }
 
-// List gets all IpTags in a subscription.
-func (client IPTagsClient) List(ctx context.Context) (result IPTagsListResultPage, err error) {
+// List gets all IpGroups in a subscription.
+func (client IPGroupsClient) List(ctx context.Context) (result IPGroupsListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.List")
 		defer func() {
 			sc := -1
-			if result.itlr.Response.Response != nil {
-				sc = result.itlr.Response.Response.StatusCode
+			if result.iglr.Response.Response != nil {
+				sc = result.iglr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -294,27 +294,27 @@ func (client IPTagsClient) List(ctx context.Context) (result IPTagsListResultPag
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.itlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "List", resp, "Failure sending request")
+		result.iglr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.itlr, err = client.ListResponder(resp)
+	result.iglr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client IPTagsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client IPGroupsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -327,21 +327,21 @@ func (client IPTagsClient) ListPreparer(ctx context.Context) (*http.Request, err
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/ipTags", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Network/ipGroups", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client IPTagsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client IPGroupsClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client IPTagsClient) ListResponder(resp *http.Response) (result IPTagsListResult, err error) {
+func (client IPGroupsClient) ListResponder(resp *http.Response) (result IPGroupsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -353,10 +353,10 @@ func (client IPTagsClient) ListResponder(resp *http.Response) (result IPTagsList
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client IPTagsClient) listNextResults(ctx context.Context, lastResults IPTagsListResult) (result IPTagsListResult, err error) {
-	req, err := lastResults.iPTagsListResultPreparer(ctx)
+func (client IPGroupsClient) listNextResults(ctx context.Context, lastResults IPGroupsListResult) (result IPGroupsListResult, err error) {
+	req, err := lastResults.iPGroupsListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.IPTagsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "network.IPGroupsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -364,19 +364,19 @@ func (client IPTagsClient) listNextResults(ctx context.Context, lastResults IPTa
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network.IPTagsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "network.IPGroupsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client IPTagsClient) ListComplete(ctx context.Context) (result IPTagsListResultIterator, err error) {
+func (client IPGroupsClient) ListComplete(ctx context.Context) (result IPGroupsListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -389,16 +389,16 @@ func (client IPTagsClient) ListComplete(ctx context.Context) (result IPTagsListR
 	return
 }
 
-// ListByResourceGroup gets all IpTags in a resource group.
+// ListByResourceGroup gets all IpGroups in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-func (client IPTagsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result IPTagsListResultPage, err error) {
+func (client IPGroupsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result IPGroupsListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
-			if result.itlr.Response.Response != nil {
-				sc = result.itlr.Response.Response.StatusCode
+			if result.iglr.Response.Response != nil {
+				sc = result.iglr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -406,27 +406,27 @@ func (client IPTagsClient) ListByResourceGroup(ctx context.Context, resourceGrou
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
-		result.itlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "ListByResourceGroup", resp, "Failure sending request")
+		result.iglr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
-	result.itlr, err = client.ListByResourceGroupResponder(resp)
+	result.iglr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client IPTagsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client IPGroupsClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -440,21 +440,21 @@ func (client IPTagsClient) ListByResourceGroupPreparer(ctx context.Context, reso
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipTags", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client IPTagsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client IPGroupsClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client IPTagsClient) ListByResourceGroupResponder(resp *http.Response) (result IPTagsListResult, err error) {
+func (client IPGroupsClient) ListByResourceGroupResponder(resp *http.Response) (result IPGroupsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -466,10 +466,10 @@ func (client IPTagsClient) ListByResourceGroupResponder(resp *http.Response) (re
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client IPTagsClient) listByResourceGroupNextResults(ctx context.Context, lastResults IPTagsListResult) (result IPTagsListResult, err error) {
-	req, err := lastResults.iPTagsListResultPreparer(ctx)
+func (client IPGroupsClient) listByResourceGroupNextResults(ctx context.Context, lastResults IPGroupsListResult) (result IPGroupsListResult, err error) {
+	req, err := lastResults.iPGroupsListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "network.IPTagsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "network.IPGroupsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -477,19 +477,19 @@ func (client IPTagsClient) listByResourceGroupNextResults(ctx context.Context, l
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "network.IPTagsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "network.IPGroupsClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client IPTagsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result IPTagsListResultIterator, err error) {
+func (client IPGroupsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result IPGroupsListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -502,14 +502,14 @@ func (client IPTagsClient) ListByResourceGroupComplete(ctx context.Context, reso
 	return
 }
 
-// UpdateTags updates an ipTag Tags.
+// UpdateGroups updates an IpGroups
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// IPTagName - the name of the ipTag.
-// parameters - parameters supplied to the update ipTag operation.
-func (client IPTagsClient) UpdateTags(ctx context.Context, resourceGroupName string, IPTagName string, parameters TagsObject) (result IPTags, err error) {
+// IPGroupsName - the name of the ipGroups.
+// parameters - parameters supplied to the update ipGroups operation.
+func (client IPGroupsClient) UpdateGroups(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters TagsObject) (result IPGroups, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPTagsClient.UpdateTags")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.UpdateGroups")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -518,31 +518,31 @@ func (client IPTagsClient) UpdateTags(ctx context.Context, resourceGroupName str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, IPTagName, parameters)
+	req, err := client.UpdateGroupsPreparer(ctx, resourceGroupName, IPGroupsName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "UpdateTags", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "UpdateGroups", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.UpdateTagsSender(req)
+	resp, err := client.UpdateGroupsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "UpdateTags", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "UpdateGroups", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.UpdateTagsResponder(resp)
+	result, err = client.UpdateGroupsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.IPTagsClient", "UpdateTags", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network.IPGroupsClient", "UpdateGroups", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdateTagsPreparer prepares the UpdateTags request.
-func (client IPTagsClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, IPTagName string, parameters TagsObject) (*http.Request, error) {
+// UpdateGroupsPreparer prepares the UpdateGroups request.
+func (client IPGroupsClient) UpdateGroupsPreparer(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters TagsObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"ipTagName":         autorest.Encode("path", IPTagName),
+		"ipGroupsName":      autorest.Encode("path", IPGroupsName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -556,22 +556,22 @@ func (client IPTagsClient) UpdateTagsPreparer(ctx context.Context, resourceGroup
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipTags/{ipTagName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ipGroups/{ipGroupsName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateTagsSender sends the UpdateTags request. The method will close the
+// UpdateGroupsSender sends the UpdateGroups request. The method will close the
 // http.Response Body if it receives an error.
-func (client IPTagsClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
+func (client IPGroupsClient) UpdateGroupsSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// UpdateTagsResponder handles the response to the UpdateTags request. The method always
+// UpdateGroupsResponder handles the response to the UpdateGroups request. The method always
 // closes the http.Response Body.
-func (client IPTagsClient) UpdateTagsResponder(resp *http.Response) (result IPTags, err error) {
+func (client IPGroupsClient) UpdateGroupsResponder(resp *http.Response) (result IPGroups, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

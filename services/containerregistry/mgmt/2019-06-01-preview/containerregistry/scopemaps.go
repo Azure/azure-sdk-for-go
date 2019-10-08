@@ -68,7 +68,7 @@ func (client ScopeMapsClient) Create(ctx context.Context, resourceGroupName stri
 		{TargetValue: scopeMapName,
 			Constraints: []validation.Constraint{{Target: "scopeMapName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "scopeMapName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "scopeMapName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]*$`, Chain: nil}}},
+				{Target: "scopeMapName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-_]*$`, Chain: nil}}},
 		{TargetValue: scopeMapCreateParameters,
 			Constraints: []validation.Constraint{{Target: "scopeMapCreateParameters.ScopeMapProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "scopeMapCreateParameters.ScopeMapProperties.Actions", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
@@ -166,7 +166,7 @@ func (client ScopeMapsClient) Delete(ctx context.Context, resourceGroupName stri
 		{TargetValue: scopeMapName,
 			Constraints: []validation.Constraint{{Target: "scopeMapName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "scopeMapName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "scopeMapName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]*$`, Chain: nil}}}}); err != nil {
+				{Target: "scopeMapName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-_]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerregistry.ScopeMapsClient", "Delete", err.Error())
 	}
 
@@ -258,7 +258,7 @@ func (client ScopeMapsClient) Get(ctx context.Context, resourceGroupName string,
 		{TargetValue: scopeMapName,
 			Constraints: []validation.Constraint{{Target: "scopeMapName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "scopeMapName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "scopeMapName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]*$`, Chain: nil}}}}); err != nil {
+				{Target: "scopeMapName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-_]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerregistry.ScopeMapsClient", "Get", err.Error())
 	}
 
@@ -477,7 +477,7 @@ func (client ScopeMapsClient) Update(ctx context.Context, resourceGroupName stri
 		{TargetValue: scopeMapName,
 			Constraints: []validation.Constraint{{Target: "scopeMapName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "scopeMapName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "scopeMapName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]*$`, Chain: nil}}}}); err != nil {
+				{Target: "scopeMapName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-_]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerregistry.ScopeMapsClient", "Update", err.Error())
 	}
 

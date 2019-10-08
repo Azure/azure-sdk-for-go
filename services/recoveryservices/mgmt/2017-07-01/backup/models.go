@@ -4174,7 +4174,6 @@ type AzureIaaSVMProtectedItemExtendedInfo struct {
 
 // AzureIaaSVMProtectionPolicy iaaS VM workload-specific backup policy.
 type AzureIaaSVMProtectionPolicy struct {
-	InstantRPDetails *InstantRPAdditionalDetails `json:"instantRPDetails,omitempty"`
 	// SchedulePolicy - Backup schedule specified as part of backup policy.
 	SchedulePolicy BasicSchedulePolicy `json:"schedulePolicy,omitempty"`
 	// RetentionPolicy - Retention policy with the details on backup copy retention ranges.
@@ -4193,9 +4192,6 @@ type AzureIaaSVMProtectionPolicy struct {
 func (aispp AzureIaaSVMProtectionPolicy) MarshalJSON() ([]byte, error) {
 	aispp.BackupManagementType = BackupManagementTypeAzureIaasVM
 	objectMap := make(map[string]interface{})
-	if aispp.InstantRPDetails != nil {
-		objectMap["instantRPDetails"] = aispp.InstantRPDetails
-	}
 	objectMap["schedulePolicy"] = aispp.SchedulePolicy
 	objectMap["retentionPolicy"] = aispp.RetentionPolicy
 	if aispp.InstantRpRetentionRangeInDays != nil {
@@ -4262,15 +4258,6 @@ func (aispp *AzureIaaSVMProtectionPolicy) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "instantRPDetails":
-			if v != nil {
-				var instantRPDetails InstantRPAdditionalDetails
-				err = json.Unmarshal(*v, &instantRPDetails)
-				if err != nil {
-					return err
-				}
-				aispp.InstantRPDetails = &instantRPDetails
-			}
 		case "schedulePolicy":
 			if v != nil {
 				schedulePolicy, err := unmarshalBasicSchedulePolicy(*v)
@@ -12479,8 +12466,6 @@ type EngineExtendedInfo struct {
 	RefreshedAt *date.Time `json:"refreshedAt,omitempty"`
 	// AzureProtectedInstances - Protected instances in the backup engine.
 	AzureProtectedInstances *int32 `json:"azureProtectedInstances,omitempty"`
-	// IsSyncEnabled - Indicates if DS was synced to BMS or not
-	IsSyncEnabled *bool `json:"isSyncEnabled,omitempty"`
 }
 
 // ErrorDetail error Detail class which encapsulates Code, Message and Recommendations.
@@ -14912,10 +14897,6 @@ type MabContainerExtendedInfo struct {
 	PolicyName *string `json:"policyName,omitempty"`
 	// LastBackupStatus - Latest backup status of this container.
 	LastBackupStatus *string `json:"lastBackupStatus,omitempty"`
-	// IsSyncEnabled - Indicates if DS was synced to BMS or not
-	IsSyncEnabled *bool `json:"isSyncEnabled,omitempty"`
-	// ProtectedItemsCount - Number of protected items in the container.
-	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
 }
 
 // MABContainerHealthDetails MAB workload-specific Health Details.
@@ -15757,8 +15738,6 @@ type OperationStatusError struct {
 	Code *string `json:"code,omitempty"`
 	// Message - Error message displayed if the operation failure.
 	Message *string `json:"message,omitempty"`
-	// Recommendation - Recommended action displayed in case operation fails.
-	Recommendation *string `json:"recommendation,omitempty"`
 }
 
 // BasicOperationStatusExtendedInfo base class for additional information of operation status.
@@ -18966,8 +18945,6 @@ type ResourceConfig struct {
 	StorageType StorageType `json:"storageType,omitempty"`
 	// StorageTypeState - Locked or Unlocked. Once a machine is registered against a resource, the storageTypeState is always Locked. Possible values include: 'StorageTypeStateInvalid', 'StorageTypeStateLocked', 'StorageTypeStateUnlocked'
 	StorageTypeState StorageTypeState `json:"storageTypeState,omitempty"`
-	// CrossRegionRestoreFlag - Opt in details of Cross Region Restore feature.
-	CrossRegionRestoreFlag *bool `json:"crossRegionRestoreFlag,omitempty"`
 }
 
 // ResourceConfigResource the resource storage details.

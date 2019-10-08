@@ -11712,6 +11712,8 @@ type ExpressRouteConnectionProperties struct {
 	AuthorizationKey *string `json:"authorizationKey,omitempty"`
 	// RoutingWeight - The routing weight associated to the connection.
 	RoutingWeight *int32 `json:"routingWeight,omitempty"`
+	// EnableInternetSecurity - Enable internet security.
+	EnableInternetSecurity *bool `json:"enableInternetSecurity,omitempty"`
 }
 
 // ExpressRouteConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
@@ -28813,6 +28815,10 @@ type VirtualHubProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// SecurityProviderName - The Security Provider name.
 	SecurityProviderName *string `json:"securityProviderName,omitempty"`
+	// VirtualHubRouteTableV2s - List of all virtual hub route table v2s associated with this VirtualHub.
+	VirtualHubRouteTableV2s *[]VirtualHubRouteTableV2 `json:"virtualHubRouteTableV2s,omitempty"`
+	// Sku - The sku of this VirtualHub.
+	Sku *string `json:"sku,omitempty"`
 }
 
 // VirtualHubRoute virtualHub route.
@@ -28827,6 +28833,159 @@ type VirtualHubRoute struct {
 type VirtualHubRouteTable struct {
 	// Routes - List of all routes.
 	Routes *[]VirtualHubRoute `json:"routes,omitempty"`
+}
+
+// VirtualHubRouteTableV2 virtualHubRouteTableV2 Resource.
+type VirtualHubRouteTableV2 struct {
+	autorest.Response `json:"-"`
+	// VirtualHubRouteTableV2Properties - Properties of the virtual hub route table v2.
+	*VirtualHubRouteTableV2Properties `json:"properties,omitempty"`
+	// Name - The name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualHubRouteTableV2.
+func (vhrtv VirtualHubRouteTableV2) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vhrtv.VirtualHubRouteTableV2Properties != nil {
+		objectMap["properties"] = vhrtv.VirtualHubRouteTableV2Properties
+	}
+	if vhrtv.Name != nil {
+		objectMap["name"] = vhrtv.Name
+	}
+	if vhrtv.ID != nil {
+		objectMap["id"] = vhrtv.ID
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualHubRouteTableV2 struct.
+func (vhrtv *VirtualHubRouteTableV2) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var virtualHubRouteTableV2Properties VirtualHubRouteTableV2Properties
+				err = json.Unmarshal(*v, &virtualHubRouteTableV2Properties)
+				if err != nil {
+					return err
+				}
+				vhrtv.VirtualHubRouteTableV2Properties = &virtualHubRouteTableV2Properties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vhrtv.Name = &name
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				vhrtv.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vhrtv.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
+// VirtualHubRouteTableV2Properties parameters for VirtualHubRouteTableV2.
+type VirtualHubRouteTableV2Properties struct {
+	// Routes - List of all routes.
+	Routes *[]VirtualHubRouteV2 `json:"routes,omitempty"`
+	// AttachedConnections - List of all connections attached to this route table v2.
+	AttachedConnections *[]string `json:"attachedConnections,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual hub route table v2 resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// VirtualHubRouteTableV2sCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type VirtualHubRouteTableV2sCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualHubRouteTableV2sCreateOrUpdateFuture) Result(client VirtualHubRouteTableV2sClient) (vhrtv VirtualHubRouteTableV2, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.VirtualHubRouteTableV2sCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if vhrtv.Response.Response, err = future.GetResult(sender); err == nil && vhrtv.Response.Response.StatusCode != http.StatusNoContent {
+		vhrtv, err = client.CreateOrUpdateResponder(vhrtv.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sCreateOrUpdateFuture", "Result", vhrtv.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// VirtualHubRouteTableV2sDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualHubRouteTableV2sDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualHubRouteTableV2sDeleteFuture) Result(client VirtualHubRouteTableV2sClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.VirtualHubRouteTableV2sDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// VirtualHubRouteV2 virtualHubRouteTableV2 route.
+type VirtualHubRouteV2 struct {
+	// DestinationType - The type of destinations
+	DestinationType *string `json:"destinationType,omitempty"`
+	// Destinations - List of all destinations.
+	Destinations *[]string `json:"destinations,omitempty"`
+	// NextHopType - The type of next hops
+	NextHopType *string `json:"nextHopType,omitempty"`
+	// NextHops - NextHops ip address.
+	NextHops *[]string `json:"nextHops,omitempty"`
 }
 
 // VirtualHubsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -32557,6 +32716,8 @@ type VirtualWanProperties struct {
 	Office365LocalBreakoutCategory OfficeTrafficCategory `json:"office365LocalBreakoutCategory,omitempty"`
 	// ProvisioningState - The provisioning state of the virtual WAN resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Type - The type of the VirtualWAN.
+	Type *string `json:"type,omitempty"`
 }
 
 // VirtualWansCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a

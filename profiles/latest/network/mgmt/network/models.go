@@ -1862,6 +1862,12 @@ type VirtualHubID = original.VirtualHubID
 type VirtualHubProperties = original.VirtualHubProperties
 type VirtualHubRoute = original.VirtualHubRoute
 type VirtualHubRouteTable = original.VirtualHubRouteTable
+type VirtualHubRouteTableV2 = original.VirtualHubRouteTableV2
+type VirtualHubRouteTableV2Properties = original.VirtualHubRouteTableV2Properties
+type VirtualHubRouteTableV2sClient = original.VirtualHubRouteTableV2sClient
+type VirtualHubRouteTableV2sCreateOrUpdateFuture = original.VirtualHubRouteTableV2sCreateOrUpdateFuture
+type VirtualHubRouteTableV2sDeleteFuture = original.VirtualHubRouteTableV2sDeleteFuture
+type VirtualHubRouteV2 = original.VirtualHubRouteV2
 type VirtualHubsClient = original.VirtualHubsClient
 type VirtualHubsCreateOrUpdateFuture = original.VirtualHubsCreateOrUpdateFuture
 type VirtualHubsDeleteFuture = original.VirtualHubsDeleteFuture
@@ -2837,6 +2843,12 @@ func NewUsagesListResultIterator(page UsagesListResultPage) UsagesListResultIter
 }
 func NewUsagesListResultPage(getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
 	return original.NewUsagesListResultPage(getNextPage)
+}
+func NewVirtualHubRouteTableV2sClient(subscriptionID string) VirtualHubRouteTableV2sClient {
+	return original.NewVirtualHubRouteTableV2sClient(subscriptionID)
+}
+func NewVirtualHubRouteTableV2sClientWithBaseURI(baseURI string, subscriptionID string) VirtualHubRouteTableV2sClient {
+	return original.NewVirtualHubRouteTableV2sClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualHubsClient(subscriptionID string) VirtualHubsClient {
 	return original.NewVirtualHubsClient(subscriptionID)

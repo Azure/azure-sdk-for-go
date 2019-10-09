@@ -88,6 +88,7 @@ type ServiceEndpointPolicyDefinitionsClientAPI = original.ServiceEndpointPolicyD
 type ServiceTagsClientAPI = original.ServiceTagsClientAPI
 type SubnetsClientAPI = original.SubnetsClientAPI
 type UsagesClientAPI = original.UsagesClientAPI
+type VirtualHubRouteTableV2sClientAPI = original.VirtualHubRouteTableV2sClientAPI
 type VirtualHubsClientAPI = original.VirtualHubsClientAPI
 type VirtualNetworkGatewayConnectionsClientAPI = original.VirtualNetworkGatewayConnectionsClientAPI
 type VirtualNetworkGatewaysClientAPI = original.VirtualNetworkGatewaysClientAPI

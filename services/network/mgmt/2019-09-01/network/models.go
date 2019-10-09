@@ -7200,6 +7200,8 @@ type AzureFirewallNatRule struct {
 	TranslatedAddress *string `json:"translatedAddress,omitempty"`
 	// TranslatedPort - The translated port for this NAT rule.
 	TranslatedPort *string `json:"translatedPort,omitempty"`
+	// TranslatedFqdn - The translated FQDN for this NAT rule.
+	TranslatedFqdn *string `json:"translatedFqdn,omitempty"`
 }
 
 // AzureFirewallNatRuleCollection NAT rule collection resource.
@@ -7306,6 +7308,8 @@ type AzureFirewallNetworkRule struct {
 	DestinationAddresses *[]string `json:"destinationAddresses,omitempty"`
 	// DestinationPorts - List of destination ports.
 	DestinationPorts *[]string `json:"destinationPorts,omitempty"`
+	// DestinationFqdns - List of destination FQDNs.
+	DestinationFqdns *[]string `json:"destinationFqdns,omitempty"`
 }
 
 // AzureFirewallNetworkRuleCollection network rule collection resource.

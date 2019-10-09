@@ -1175,10 +1175,89 @@ type CustomDomainProperties struct {
 	CustomHTTPSProvisioningState CustomHTTPSProvisioningState `json:"customHttpsProvisioningState,omitempty"`
 	// CustomHTTPSProvisioningSubstate - READ-ONLY; Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. Possible values include: 'SubmittingDomainControlValidationRequest', 'PendingDomainControlValidationREquestApproval', 'DomainControlValidationRequestApproved', 'DomainControlValidationRequestRejected', 'DomainControlValidationRequestTimedOut', 'IssuingCertificate', 'DeployingCertificate', 'CertificateDeployed', 'DeletingCertificate', 'CertificateDeleted'
 	CustomHTTPSProvisioningSubstate CustomHTTPSProvisioningSubstate `json:"customHttpsProvisioningSubstate,omitempty"`
+	// CustomHTTPSParameters - Certificate parameters for securing custom HTTPS
+	CustomHTTPSParameters BasicCustomDomainHTTPSParameters `json:"customHttpsParameters,omitempty"`
 	// ValidationData - Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in China.
 	ValidationData *string `json:"validationData,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning status of the custom domain.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomDomainProperties struct.
+func (cdp *CustomDomainProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "hostName":
+			if v != nil {
+				var hostName string
+				err = json.Unmarshal(*v, &hostName)
+				if err != nil {
+					return err
+				}
+				cdp.HostName = &hostName
+			}
+		case "resourceState":
+			if v != nil {
+				var resourceState CustomDomainResourceState
+				err = json.Unmarshal(*v, &resourceState)
+				if err != nil {
+					return err
+				}
+				cdp.ResourceState = resourceState
+			}
+		case "customHttpsProvisioningState":
+			if v != nil {
+				var customHTTPSProvisioningState CustomHTTPSProvisioningState
+				err = json.Unmarshal(*v, &customHTTPSProvisioningState)
+				if err != nil {
+					return err
+				}
+				cdp.CustomHTTPSProvisioningState = customHTTPSProvisioningState
+			}
+		case "customHttpsProvisioningSubstate":
+			if v != nil {
+				var customHTTPSProvisioningSubstate CustomHTTPSProvisioningSubstate
+				err = json.Unmarshal(*v, &customHTTPSProvisioningSubstate)
+				if err != nil {
+					return err
+				}
+				cdp.CustomHTTPSProvisioningSubstate = customHTTPSProvisioningSubstate
+			}
+		case "customHttpsParameters":
+			if v != nil {
+				customHTTPSParameters, err := unmarshalBasicCustomDomainHTTPSParameters(*v)
+				if err != nil {
+					return err
+				}
+				cdp.CustomHTTPSParameters = customHTTPSParameters
+			}
+		case "validationData":
+			if v != nil {
+				var validationData string
+				err = json.Unmarshal(*v, &validationData)
+				if err != nil {
+					return err
+				}
+				cdp.ValidationData = &validationData
+			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState string
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				cdp.ProvisioningState = &provisioningState
+			}
+		}
+	}
+
+	return nil
 }
 
 // CustomDomainPropertiesParameters the JSON object that contains the properties of the custom domain to

@@ -24,23 +24,28 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/serialconsole/mgmt/2018-05-01/serialconsole"
 
-// DeploymentValidateResult details on Failure
-type DeploymentValidateResult struct {
-	// ErrorMessage - Error message
-	ErrorMessage *string `json:"errorMessage,omitempty"`
-}
-
-// GetDisabledResult returns whether or not Serial Console is disabled for this given subscription
-type GetDisabledResult struct {
-	autorest.Response `json:"-"`
-	// Disabled - Disabled result
-	Disabled *bool `json:"disabled,omitempty"`
-}
-
-// GetResult returns whether or not Serial Console is disabled.
-type GetResult struct {
+// DisableSerialConsoleResult returns whether or not Serial Console is disabled.
+type DisableSerialConsoleResult struct {
 	// Value - Whether or not Serial Console is disabled.
 	Value *bool `json:"value,omitempty"`
+}
+
+// EnableSerialConsoleResult returns whether or not Serial Console is disabled (enabled).
+type EnableSerialConsoleResult struct {
+	// Value - Whether or not Serial Console is disabled (enabled).
+	Value *bool `json:"value,omitempty"`
+}
+
+// GetSerialConsoleResult returns whether or not Serial Console is disabled.
+type GetSerialConsoleResult struct {
+	// Value - Whether or not Serial Console is disabled.
+	Value *bool `json:"value,omitempty"`
+}
+
+// GetSerialConsoleSubscriptionNotFound error saying that the provided subscription could not be found
+type GetSerialConsoleSubscriptionNotFound struct {
+	// Value - Error saying that the provided subscription could not be found
+	Value *string `json:"value,omitempty"`
 }
 
 // Operations serial Console operations
@@ -50,10 +55,8 @@ type Operations struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// SetDisabledResult sets disable status and returns whether or not Serial Console is now disabled for this
-// given subscription
-type SetDisabledResult struct {
+// SetObject ...
+type SetObject struct {
 	autorest.Response `json:"-"`
-	// Disabled - Disabled result
-	Disabled *bool `json:"disabled,omitempty"`
+	Value             interface{} `json:"value,omitempty"`
 }

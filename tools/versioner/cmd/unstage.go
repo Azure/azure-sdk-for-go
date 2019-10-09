@@ -36,7 +36,7 @@ var unstageCmd = &cobra.Command{
 	Long: `This tool will compare a staged package against its latest major version to detect
 breaking changes.  If there are no breaking changes the latest major version is updated
 with the staged content.  If there are breaking changes the staged content becomes the
-next latest major vesion and the go.mod file is updated.
+next latest major version and the go.mod file is updated.
 The default version for new modules is v1.0.0 or the value specified for [initial module version].
 `,
 	Args: cobra.RangeArgs(1, 2),

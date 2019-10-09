@@ -4936,6 +4936,18 @@ type IoTSecurityAggregatedAlertProperties struct {
 	ActionTaken *string `json:"actionTaken,omitempty"`
 	// LogAnalyticsQuery - READ-ONLY; Log analytics query for getting the list of affected devices/alerts.
 	LogAnalyticsQuery *string `json:"logAnalyticsQuery,omitempty"`
+	// TopDevicesList - READ-ONLY; 10 devices with the highest number of occurrences of this alert type, on this day.
+	TopDevicesList *[]IoTSecurityAggregatedAlertPropertiesTopDevicesListItem `json:"topDevicesList,omitempty"`
+}
+
+// IoTSecurityAggregatedAlertPropertiesTopDevicesListItem ...
+type IoTSecurityAggregatedAlertPropertiesTopDevicesListItem struct {
+	// DeviceID - READ-ONLY; Name of the device.
+	DeviceID *string `json:"deviceId,omitempty"`
+	// AlertsCount - READ-ONLY; Number of alerts raised for this device.
+	AlertsCount *int32 `json:"alertsCount,omitempty"`
+	// LastOccurrence - READ-ONLY; Most recent time this alert was raised for this device, on this day.
+	LastOccurrence *string `json:"lastOccurrence,omitempty"`
 }
 
 // IoTSecurityAggregatedRecommendation ioT Security solution recommendation information.

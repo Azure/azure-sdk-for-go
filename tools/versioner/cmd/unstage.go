@@ -33,7 +33,7 @@ import (
 var unstageCmd = &cobra.Command{
 	Use:   "unstage <staging dir> [initial module version]",
 	Short: "Creates or updates the latest major version for a package from staged content.",
-	Long:  `This tool will compare a staged package against its latest major version to detect
+	Long: `This tool will compare a staged package against its latest major version to detect
 breaking changes.  If there are no breaking changes the latest major version is updated
 with the staged content.  If there are breaking changes the staged content becomes the
 next latest major vesion and the go.mod file is updated.
@@ -92,7 +92,6 @@ func theUnstageCommand(args []string) (string, error) {
 	}
 	return tag, err
 }
-
 
 // releases the module as a new side-by-side major version
 func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {

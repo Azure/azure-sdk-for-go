@@ -40,8 +40,8 @@ The default version for new modules is v1.0.0 or the value specified for [initia
 }
 
 var (
-	quietFlag      bool
-	verboseFlag    bool
+	quietFlag   bool
+	verboseFlag bool
 )
 
 const (

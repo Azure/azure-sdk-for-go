@@ -107,21 +107,6 @@ const (
 	ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ComputeTypeBasicComputeSecrets = original.ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine
 )
 
-type DatastoreSelection = original.DatastoreSelection
-
-const (
-	All           DatastoreSelection = original.All
-	UserSpecified DatastoreSelection = original.UserSpecified
-)
-
-type DatastoreState = original.DatastoreState
-
-const (
-	Mounted     DatastoreState = original.Mounted
-	MountFailed DatastoreState = original.MountFailed
-	Unmounted   DatastoreState = original.Unmounted
-)
-
 type NodeState = original.NodeState
 
 const (
@@ -138,13 +123,6 @@ type OsType = original.OsType
 const (
 	Linux   OsType = original.Linux
 	Windows OsType = original.Windows
-)
-
-type OsUpdateType = original.OsUpdateType
-
-const (
-	Recommended OsUpdateType = original.Recommended
-	Security    OsUpdateType = original.Security
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -211,13 +189,6 @@ const (
 	Detach UnderlyingResourceAction = original.Detach
 )
 
-type UpdateOnNextStart = original.UpdateOnNextStart
-
-const (
-	UpdateOnNextStartDisabled UpdateOnNextStart = original.UpdateOnNextStartDisabled
-	UpdateOnNextStartEnabled  UpdateOnNextStart = original.UpdateOnNextStartEnabled
-)
-
 type UsageUnit = original.UsageUnit
 
 const (
@@ -250,16 +221,8 @@ type ComputeInstance = original.ComputeInstance
 type ComputeInstanceApplicationURI = original.ComputeInstanceApplicationURI
 type ComputeInstanceConnectivityEndpoints = original.ComputeInstanceConnectivityEndpoints
 type ComputeInstanceCreatedBy = original.ComputeInstanceCreatedBy
-type ComputeInstanceCustomScriptSettings = original.ComputeInstanceCustomScriptSettings
-type ComputeInstanceCustomScriptSettingsStartupScript = original.ComputeInstanceCustomScriptSettingsStartupScript
-type ComputeInstanceDatastore = original.ComputeInstanceDatastore
-type ComputeInstanceDatastoresMountSettings = original.ComputeInstanceDatastoresMountSettings
-type ComputeInstanceOSUpdateSettings = original.ComputeInstanceOSUpdateSettings
 type ComputeInstanceProperties = original.ComputeInstanceProperties
 type ComputeInstanceSSHSettings = original.ComputeInstanceSSHSettings
-type ComputeInstanceSdkUpdate = original.ComputeInstanceSdkUpdate
-type ComputeInstanceSdkUpdateSettings = original.ComputeInstanceSdkUpdateSettings
-type ComputeInstanceSoftwareUpdateSettings = original.ComputeInstanceSoftwareUpdateSettings
 type ComputeNodesInformation = original.ComputeNodesInformation
 type ComputeResource = original.ComputeResource
 type ComputeSecrets = original.ComputeSecrets
@@ -417,20 +380,11 @@ func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
 func PossibleComputeTypeValues() []ComputeType {
 	return original.PossibleComputeTypeValues()
 }
-func PossibleDatastoreSelectionValues() []DatastoreSelection {
-	return original.PossibleDatastoreSelectionValues()
-}
-func PossibleDatastoreStateValues() []DatastoreState {
-	return original.PossibleDatastoreStateValues()
-}
 func PossibleNodeStateValues() []NodeState {
 	return original.PossibleNodeStateValues()
 }
 func PossibleOsTypeValues() []OsType {
 	return original.PossibleOsTypeValues()
-}
-func PossibleOsUpdateTypeValues() []OsUpdateType {
-	return original.PossibleOsUpdateTypeValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
@@ -455,9 +409,6 @@ func PossibleStatusValues() []Status {
 }
 func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
 	return original.PossibleUnderlyingResourceActionValues()
-}
-func PossibleUpdateOnNextStartValues() []UpdateOnNextStart {
-	return original.PossibleUpdateOnNextStartValues()
 }
 func PossibleUsageUnitValues() []UsageUnit {
 	return original.PossibleUsageUnitValues()

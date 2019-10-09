@@ -195,38 +195,6 @@ func PossibleComputeTypeBasicComputeSecretsValues() []ComputeTypeBasicComputeSec
 	return []ComputeTypeBasicComputeSecrets{ComputeTypeBasicComputeSecretsComputeTypeAKS, ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets, ComputeTypeBasicComputeSecretsComputeTypeDatabricks, ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine}
 }
 
-// DatastoreSelection enumerates the values for datastore selection.
-type DatastoreSelection string
-
-const (
-	// All ...
-	All DatastoreSelection = "All"
-	// UserSpecified ...
-	UserSpecified DatastoreSelection = "UserSpecified"
-)
-
-// PossibleDatastoreSelectionValues returns an array of possible values for the DatastoreSelection const type.
-func PossibleDatastoreSelectionValues() []DatastoreSelection {
-	return []DatastoreSelection{All, UserSpecified}
-}
-
-// DatastoreState enumerates the values for datastore state.
-type DatastoreState string
-
-const (
-	// Mounted ...
-	Mounted DatastoreState = "Mounted"
-	// MountFailed ...
-	MountFailed DatastoreState = "MountFailed"
-	// Unmounted ...
-	Unmounted DatastoreState = "Unmounted"
-)
-
-// PossibleDatastoreStateValues returns an array of possible values for the DatastoreState const type.
-func PossibleDatastoreStateValues() []DatastoreState {
-	return []DatastoreState{Mounted, MountFailed, Unmounted}
-}
-
 // NodeState enumerates the values for node state.
 type NodeState string
 
@@ -263,21 +231,6 @@ const (
 // PossibleOsTypeValues returns an array of possible values for the OsType const type.
 func PossibleOsTypeValues() []OsType {
 	return []OsType{Linux, Windows}
-}
-
-// OsUpdateType enumerates the values for os update type.
-type OsUpdateType string
-
-const (
-	// Recommended ...
-	Recommended OsUpdateType = "Recommended"
-	// Security ...
-	Security OsUpdateType = "Security"
-)
-
-// PossibleOsUpdateTypeValues returns an array of possible values for the OsUpdateType const type.
-func PossibleOsUpdateTypeValues() []OsUpdateType {
-	return []OsUpdateType{Recommended, Security}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -414,21 +367,6 @@ const (
 // PossibleUnderlyingResourceActionValues returns an array of possible values for the UnderlyingResourceAction const type.
 func PossibleUnderlyingResourceActionValues() []UnderlyingResourceAction {
 	return []UnderlyingResourceAction{Delete, Detach}
-}
-
-// UpdateOnNextStart enumerates the values for update on next start.
-type UpdateOnNextStart string
-
-const (
-	// UpdateOnNextStartDisabled ...
-	UpdateOnNextStartDisabled UpdateOnNextStart = "Disabled"
-	// UpdateOnNextStartEnabled ...
-	UpdateOnNextStartEnabled UpdateOnNextStart = "Enabled"
-)
-
-// PossibleUpdateOnNextStartValues returns an array of possible values for the UpdateOnNextStart const type.
-func PossibleUpdateOnNextStartValues() []UpdateOnNextStart {
-	return []UpdateOnNextStart{UpdateOnNextStartDisabled, UpdateOnNextStartEnabled}
 }
 
 // UsageUnit enumerates the values for usage unit.
@@ -862,14 +800,6 @@ func (cup *ClusterUpdateParameters) UnmarshalJSON(body []byte) error {
 type ClusterUpdateProperties struct {
 	// ScaleSettings - Desired scale settings for the amlCompute.
 	ScaleSettings *ScaleSettings `json:"scaleSettings,omitempty"`
-	// DatastoresMountSettings - Describes what data stores will be mounted on this compute instance.
-	DatastoresMountSettings *ComputeInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
-	// CustomScriptSettings - Specification for initialization scripts to customize this ComputeInstance.
-	CustomScriptSettings *ComputeInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
-	// SoftwareUpdateSettings - Specifies policies for operating system and Azure ML environment (example packages and SDK) updates.
-	SoftwareUpdateSettings *ComputeInstanceSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
-	// SSHSettings - Specifies policy and settings for SSH access.
-	SSHSettings *ComputeInstanceSSHSettings `json:"sshSettings,omitempty"`
 }
 
 // BasicCompute machine Learning compute object.
@@ -1164,52 +1094,6 @@ type ComputeInstanceCreatedBy struct {
 	UserID *string `json:"userId,omitempty"`
 }
 
-// ComputeInstanceCustomScriptSettings specification for initialization scripts to customize this
-// ComputeInstance.
-type ComputeInstanceCustomScriptSettings struct {
-	// StartupScript - Specifies properties of initialization script to be run during every start of this instance.
-	StartupScript *ComputeInstanceCustomScriptSettingsStartupScript `json:"startupScript,omitempty"`
-}
-
-// ComputeInstanceCustomScriptSettingsStartupScript specifies properties of initialization script to be run
-// during every start of this instance.
-type ComputeInstanceCustomScriptSettingsStartupScript struct {
-	// ScriptLocation - The location of customization script. This is a relative file path in the default fileshare in the parent workspace.
-	ScriptLocation *string `json:"scriptLocation,omitempty"`
-	// ScriptParameters - Parameters required for this script if any.
-	ScriptParameters *string `json:"scriptParameters,omitempty"`
-}
-
-// ComputeInstanceDatastore represents specification for datastore requested to be mounted on an AzureML
-// instance as well as its mounting status.
-type ComputeInstanceDatastore struct {
-	// Name - Name of the datastore to be mounted on an AzureML instance.
-	Name *string `json:"name,omitempty"`
-	// State - READ-ONLY; Current state of the datastore on the parent AzureML instance. Possible values include: 'Mounted', 'MountFailed', 'Unmounted'
-	State DatastoreState `json:"state,omitempty"`
-	// Error - READ-ONLY; Describes the error if datastore could not be successfully mounted on the parent AzureML instance.
-	Error *string `json:"error,omitempty"`
-}
-
-// ComputeInstanceDatastoresMountSettings describes what data stores will be mounted on this compute
-// instance.
-type ComputeInstanceDatastoresMountSettings struct {
-	// DatastoreSelection - Allows users to select between mounting All vs Selected datastores from the parent workspace. The 'All' setting also implies that any datastores that later become part of the workspace will be automatically mounted to the compute instance on next start. Possible values include: 'All', 'UserSpecified'
-	DatastoreSelection DatastoreSelection `json:"datastoreSelection,omitempty"`
-	// Datastores - Specifies the set of data stores that will be mounted on this compute instance. This should only be specified if dataStoreSelection is set to 'UserSpecified'.
-	Datastores *[]ComputeInstanceDatastore `json:"datastores,omitempty"`
-}
-
-// ComputeInstanceOSUpdateSettings specifies policy for installing operation system updates.
-type ComputeInstanceOSUpdateSettings struct {
-	// OsUpdateType - Possible values include: 'Security', 'Recommended'
-	OsUpdateType OsUpdateType `json:"osUpdateType,omitempty"`
-	// UpdateFrequencyInDays - Frequency of update checks and installation. Maximum allowable frequency is 30 days. Default frequency will be 14 days.
-	UpdateFrequencyInDays *int32 `json:"updateFrequencyInDays,omitempty"`
-	// UpdateHourInUtc - Hour of the day (0-23) in Universal Time at which software updates can be installed, potentially requiring VM reboot. Default update hour will be 2 AM UTC.
-	UpdateHourInUtc *int32 `json:"updateHourInUtc,omitempty"`
-}
-
 // ComputeInstanceProperties compute Instance properties
 type ComputeInstanceProperties struct {
 	// VMSize - Virtual Machine Size
@@ -1218,12 +1102,6 @@ type ComputeInstanceProperties struct {
 	Subnet *ResourceID `json:"subnet,omitempty"`
 	// ApplicationSharingPolicy - Policy for sharing applications on this compute instance among users of parent workspace. If Personal, only the creator can access applications on this compute instance. When Shared, any workspace user can access applications on this instance depending on his/her assigned role. Possible values include: 'Personal', 'Shared'
 	ApplicationSharingPolicy ApplicationSharingPolicy `json:"applicationSharingPolicy,omitempty"`
-	// DatastoresMountSettings - Describes what data stores will be mounted on this compute instance.
-	DatastoresMountSettings *ComputeInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
-	// CustomScriptSettings - Specification for initialization scripts to customize this ComputeInstance.
-	CustomScriptSettings *ComputeInstanceCustomScriptSettings `json:"customScriptSettings,omitempty"`
-	// SoftwareUpdateSettings - Specifies policies for operating system and Azure ML environment (example packages and SDK) updates.
-	SoftwareUpdateSettings *ComputeInstanceSoftwareUpdateSettings `json:"softwareUpdateSettings,omitempty"`
 	// SSHSettings - Specifies policy and settings for SSH access.
 	SSHSettings *ComputeInstanceSSHSettings `json:"sshSettings,omitempty"`
 	// ConnectivityEndpoints - READ-ONLY; Describes all connectivity endpoints available for this ComputeInstance.
@@ -1236,34 +1114,6 @@ type ComputeInstanceProperties struct {
 	Errors *[]Error `json:"errors,omitempty"`
 	// State - READ-ONLY; The current state of this ComputeInstance. Possible values include: 'Creating', 'CreateFailed', 'Deleting', 'Ready', 'Restarting', 'RestartFailed', 'Running', 'SettingUp', 'Starting', 'StartFailed', 'StopFailed', 'Stopped', 'Stopping', 'UserSettingUp', 'Unknown', 'Unusable'
 	State ComputeInstanceState `json:"state,omitempty"`
-}
-
-// ComputeInstanceSdkUpdate describes a specific update for ComputeInstance SDK.
-type ComputeInstanceSdkUpdate struct {
-	// UpdateName - Short name of the update.
-	UpdateName *string `json:"updateName,omitempty"`
-	// UpdateDescription - Detailed description of the available SDK update.
-	UpdateDescription *string `json:"updateDescription,omitempty"`
-	// UpdateVersion - Version of this available update.
-	UpdateVersion *string `json:"updateVersion,omitempty"`
-}
-
-// ComputeInstanceSdkUpdateSettings specifies policy for installing Azure ML environment (example packages
-// and SDK) updates.
-type ComputeInstanceSdkUpdateSettings struct {
-	// UpdateOnNextStart - Specifies if any available Azure ML environment updates should be installed on next instance start. Possible values include: 'UpdateOnNextStartDisabled', 'UpdateOnNextStartEnabled'
-	UpdateOnNextStart UpdateOnNextStart `json:"updateOnNextStart,omitempty"`
-	// AvailableUpdates - READ-ONLY; Describes available SDK updates for this compute instance.
-	AvailableUpdates *[]ComputeInstanceSdkUpdate `json:"availableUpdates,omitempty"`
-}
-
-// ComputeInstanceSoftwareUpdateSettings specifies policies for operating system and Azure ML environment
-// (example packages and SDK) updates.
-type ComputeInstanceSoftwareUpdateSettings struct {
-	// OsUpdateSettings - Specifies policy for installing operation system updates.
-	OsUpdateSettings *ComputeInstanceOSUpdateSettings `json:"osUpdateSettings,omitempty"`
-	// SdkUpdateSettings - Specifies policy for installing Azure ML environment (example packages and SDK) updates.
-	SdkUpdateSettings *ComputeInstanceSdkUpdateSettings `json:"sdkUpdateSettings,omitempty"`
 }
 
 // ComputeInstanceSSHSettings specifies policy and settings for SSH access.

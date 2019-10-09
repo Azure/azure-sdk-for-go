@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## `v34.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| affinitygroup | management |
+| auth | keyvault |
+| hostedservice | management |
+| location | management |
+| mongodb | cosmos-db |
+| network | 2019-08-01 |
+| networksecuritygroup | management |
+| osimage | management |
+| programmatic | luis |
+| sql | management |
+| storageservice | management |
+| testutils | management |
+| virtualmachine | management |
+| virtualmachinedisk | management |
+| virtualmachineimage | management |
+| virtualnetwork | management |
+| vmutils | management |
+
+Revert deletion of packages in `classic\management` and `keyvault\auth` 
+
 ## `v34.0.0`
 
 ### New Packages                                                                                                                              

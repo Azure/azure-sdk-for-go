@@ -6146,7 +6146,7 @@ type InquiryValidation struct {
 	Status *string `json:"status,omitempty"`
 	// ErrorDetail - Error Detail in case the status is non-success.
 	ErrorDetail *ErrorDetail `json:"errorDetail,omitempty"`
-	// AdditionalDetail - Error Additional Detail in case the status is non-success.
+	// AdditionalDetail - READ-ONLY; Error Additional Detail in case the status is non-success.
 	AdditionalDetail *string `json:"additionalDetail,omitempty"`
 }
 

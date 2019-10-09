@@ -84,7 +84,7 @@ func theCommand(args []string) ([]string, error) {
 func findAllSubDirectories(root, stage string) ([]string, error) {
 	stages := make([]string, 0)
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() && info.Name() == stageName {
+		if info.IsDir() && info.Name() == stage {
 			stages = append(stages, path)
 			return nil
 		}

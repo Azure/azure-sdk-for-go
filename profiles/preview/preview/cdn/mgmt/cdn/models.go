@@ -61,6 +61,20 @@ const (
 	Shared    CertificateType = original.Shared
 )
 
+type CookiesOperator = original.CookiesOperator
+
+const (
+	Any                CookiesOperator = original.Any
+	BeginsWith         CookiesOperator = original.BeginsWith
+	Contains           CookiesOperator = original.Contains
+	EndsWith           CookiesOperator = original.EndsWith
+	Equal              CookiesOperator = original.Equal
+	GreaterThan        CookiesOperator = original.GreaterThan
+	GreaterThanOrEqual CookiesOperator = original.GreaterThanOrEqual
+	LessThan           CookiesOperator = original.LessThan
+	LessThanOrEqual    CookiesOperator = original.LessThanOrEqual
+)
+
 type CustomDomainResourceState = original.CustomDomainResourceState
 
 const (
@@ -159,7 +173,9 @@ const (
 type Name = original.Name
 
 const (
+	NameCookies               Name = original.NameCookies
 	NameDeliveryRuleCondition Name = original.NameDeliveryRuleCondition
+	NameHTTPVersion           Name = original.NameHTTPVersion
 	NameIsDevice              Name = original.NameIsDevice
 	NamePostArgs              Name = original.NamePostArgs
 	NameQueryString           Name = original.NameQueryString
@@ -178,27 +194,29 @@ type NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleAction
 
 const (
 	NameCacheExpiration      NameBasicDeliveryRuleAction = original.NameCacheExpiration
+	NameCacheKeyQueryString  NameBasicDeliveryRuleAction = original.NameCacheKeyQueryString
 	NameDeliveryRuleAction   NameBasicDeliveryRuleAction = original.NameDeliveryRuleAction
 	NameModifyRequestHeader  NameBasicDeliveryRuleAction = original.NameModifyRequestHeader
 	NameModifyResponseHeader NameBasicDeliveryRuleAction = original.NameModifyResponseHeader
 	NameURLRedirect          NameBasicDeliveryRuleAction = original.NameURLRedirect
+	NameURLRewrite           NameBasicDeliveryRuleAction = original.NameURLRewrite
 )
 
 type Operator = original.Operator
 
 const (
-	Any                Operator = original.Any
-	BeginsWith         Operator = original.BeginsWith
-	Contains           Operator = original.Contains
-	EndsWith           Operator = original.EndsWith
-	Equal              Operator = original.Equal
-	GeoMatch           Operator = original.GeoMatch
-	GreaterThan        Operator = original.GreaterThan
-	GreaterThanOrEqual Operator = original.GreaterThanOrEqual
-	IPMatch            Operator = original.IPMatch
-	LessThan           Operator = original.LessThan
-	LessThanOrEqual    Operator = original.LessThanOrEqual
-	RegEx              Operator = original.RegEx
+	OperatorAny                Operator = original.OperatorAny
+	OperatorBeginsWith         Operator = original.OperatorBeginsWith
+	OperatorContains           Operator = original.OperatorContains
+	OperatorEndsWith           Operator = original.OperatorEndsWith
+	OperatorEqual              Operator = original.OperatorEqual
+	OperatorGeoMatch           Operator = original.OperatorGeoMatch
+	OperatorGreaterThan        Operator = original.OperatorGreaterThan
+	OperatorGreaterThanOrEqual Operator = original.OperatorGreaterThanOrEqual
+	OperatorIPMatch            Operator = original.OperatorIPMatch
+	OperatorLessThan           Operator = original.OperatorLessThan
+	OperatorLessThanOrEqual    Operator = original.OperatorLessThanOrEqual
+	OperatorRegEx              Operator = original.OperatorRegEx
 )
 
 type OptimizationType = original.OptimizationType
@@ -280,6 +298,15 @@ const (
 	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
 	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
 	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+)
+
+type QueryStringBehavior = original.QueryStringBehavior
+
+const (
+	Exclude    QueryStringBehavior = original.Exclude
+	ExcludeAll QueryStringBehavior = original.ExcludeAll
+	Include    QueryStringBehavior = original.Include
+	IncludeAll QueryStringBehavior = original.IncludeAll
 )
 
 type QueryStringCachingBehavior = original.QueryStringCachingBehavior
@@ -437,10 +464,12 @@ type BasicCustomDomainHTTPSParameters = original.BasicCustomDomainHTTPSParameter
 type BasicDeliveryRuleAction = original.BasicDeliveryRuleAction
 type BasicDeliveryRuleCondition = original.BasicDeliveryRuleCondition
 type CacheExpirationActionParameters = original.CacheExpirationActionParameters
+type CacheKeyQueryStringActionParameters = original.CacheKeyQueryStringActionParameters
 type CertificateSourceParameters = original.CertificateSourceParameters
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
 type CheckNameAvailabilityOutput = original.CheckNameAvailabilityOutput
 type CidrIPAddress = original.CidrIPAddress
+type CookiesMatchConditionParameters = original.CookiesMatchConditionParameters
 type CustomDomain = original.CustomDomain
 type CustomDomainHTTPSParameters = original.CustomDomainHTTPSParameters
 type CustomDomainListResult = original.CustomDomainListResult
@@ -459,7 +488,10 @@ type DeepCreatedOriginProperties = original.DeepCreatedOriginProperties
 type DeliveryRule = original.DeliveryRule
 type DeliveryRuleAction = original.DeliveryRuleAction
 type DeliveryRuleCacheExpirationAction = original.DeliveryRuleCacheExpirationAction
+type DeliveryRuleCacheKeyQueryStringAction = original.DeliveryRuleCacheKeyQueryStringAction
 type DeliveryRuleCondition = original.DeliveryRuleCondition
+type DeliveryRuleCookiesCondition = original.DeliveryRuleCookiesCondition
+type DeliveryRuleHTTPVersionCondition = original.DeliveryRuleHTTPVersionCondition
 type DeliveryRuleIsDeviceCondition = original.DeliveryRuleIsDeviceCondition
 type DeliveryRulePostArgsCondition = original.DeliveryRulePostArgsCondition
 type DeliveryRuleQueryStringCondition = original.DeliveryRuleQueryStringCondition
@@ -500,6 +532,7 @@ type EndpointsStopFuture = original.EndpointsStopFuture
 type EndpointsUpdateFuture = original.EndpointsUpdateFuture
 type ErrorResponse = original.ErrorResponse
 type GeoFilter = original.GeoFilter
+type HTTPVersionMatchConditionParameters = original.HTTPVersionMatchConditionParameters
 type HeaderActionParameters = original.HeaderActionParameters
 type IPAddressGroup = original.IPAddressGroup
 type IsDeviceMatchConditionParameters = original.IsDeviceMatchConditionParameters
@@ -575,6 +608,8 @@ type URLFileNameMatchConditionParameters = original.URLFileNameMatchConditionPar
 type URLPathMatchConditionParameters = original.URLPathMatchConditionParameters
 type URLRedirectAction = original.URLRedirectAction
 type URLRedirectActionParameters = original.URLRedirectActionParameters
+type URLRewriteAction = original.URLRewriteAction
+type URLRewriteActionParameters = original.URLRewriteActionParameters
 type UserManagedHTTPSParameters = original.UserManagedHTTPSParameters
 type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
@@ -713,6 +748,9 @@ func PossibleCertificateSourceValues() []CertificateSource {
 func PossibleCertificateTypeValues() []CertificateType {
 	return original.PossibleCertificateTypeValues()
 }
+func PossibleCookiesOperatorValues() []CookiesOperator {
+	return original.PossibleCookiesOperatorValues()
+}
 func PossibleCustomDomainResourceStateValues() []CustomDomainResourceState {
 	return original.PossibleCustomDomainResourceStateValues()
 }
@@ -778,6 +816,9 @@ func PossibleProtocolTypeValues() []ProtocolType {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossibleQueryStringBehaviorValues() []QueryStringBehavior {
+	return original.PossibleQueryStringBehaviorValues()
 }
 func PossibleQueryStringCachingBehaviorValues() []QueryStringCachingBehavior {
 	return original.PossibleQueryStringCachingBehaviorValues()

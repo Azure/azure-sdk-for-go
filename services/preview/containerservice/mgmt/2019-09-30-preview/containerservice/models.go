@@ -2226,6 +2226,29 @@ func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client M
 	return
 }
 
+// ManagedClustersRotateClusterCertificatesFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type ManagedClustersRotateClusterCertificatesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedClustersRotateClusterCertificatesFuture) Result(client ManagedClustersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersRotateClusterCertificatesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersRotateClusterCertificatesFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ManagedClustersUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ManagedClustersUpdateTagsFuture struct {

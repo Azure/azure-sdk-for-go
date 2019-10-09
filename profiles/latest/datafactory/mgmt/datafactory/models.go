@@ -700,6 +700,7 @@ const (
 	TypeLookup                   TypeBasicActivity = original.TypeLookup
 	TypeSetVariable              TypeBasicActivity = original.TypeSetVariable
 	TypeSQLServerStoredProcedure TypeBasicActivity = original.TypeSQLServerStoredProcedure
+	TypeSwitch                   TypeBasicActivity = original.TypeSwitch
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
 	TypeValidation               TypeBasicActivity = original.TypeValidation
 	TypeWait                     TypeBasicActivity = original.TypeWait
@@ -1943,6 +1944,9 @@ type StoreWriteSettings = original.StoreWriteSettings
 type StoredProcedureParameter = original.StoredProcedureParameter
 type SubResource = original.SubResource
 type SubResourceDebugResource = original.SubResourceDebugResource
+type SwitchActivity = original.SwitchActivity
+type SwitchActivityTypeProperties = original.SwitchActivityTypeProperties
+type SwitchCase = original.SwitchCase
 type SybaseLinkedService = original.SybaseLinkedService
 type SybaseLinkedServiceTypeProperties = original.SybaseLinkedServiceTypeProperties
 type SybaseSource = original.SybaseSource

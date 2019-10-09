@@ -36,6 +36,13 @@ const (
 	Steady   AllocationState = original.Steady
 )
 
+type ApplicationSharingPolicy = original.ApplicationSharingPolicy
+
+const (
+	Personal ApplicationSharingPolicy = original.Personal
+	Shared   ApplicationSharingPolicy = original.Shared
+)
+
 type ComputeInstanceState = original.ComputeInstanceState
 
 const (
@@ -115,13 +122,6 @@ const (
 	Unmounted   DatastoreState = original.Unmounted
 )
 
-type InstanceSharing = original.InstanceSharing
-
-const (
-	Disabled InstanceSharing = original.Disabled
-	Enabled  InstanceSharing = original.Enabled
-)
-
 type NodeState = original.NodeState
 
 const (
@@ -168,9 +168,9 @@ const (
 type RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccess
 
 const (
-	RemoteLoginPortPublicAccessDisabled     RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccessDisabled
-	RemoteLoginPortPublicAccessEnabled      RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccessEnabled
-	RemoteLoginPortPublicAccessNotSpecified RemoteLoginPortPublicAccess = original.RemoteLoginPortPublicAccessNotSpecified
+	Disabled     RemoteLoginPortPublicAccess = original.Disabled
+	Enabled      RemoteLoginPortPublicAccess = original.Enabled
+	NotSpecified RemoteLoginPortPublicAccess = original.NotSpecified
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -399,6 +399,9 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
 }
+func PossibleApplicationSharingPolicyValues() []ApplicationSharingPolicy {
+	return original.PossibleApplicationSharingPolicyValues()
+}
 func PossibleComputeInstanceStateValues() []ComputeInstanceState {
 	return original.PossibleComputeInstanceStateValues()
 }
@@ -419,9 +422,6 @@ func PossibleDatastoreSelectionValues() []DatastoreSelection {
 }
 func PossibleDatastoreStateValues() []DatastoreState {
 	return original.PossibleDatastoreStateValues()
-}
-func PossibleInstanceSharingValues() []InstanceSharing {
-	return original.PossibleInstanceSharingValues()
 }
 func PossibleNodeStateValues() []NodeState {
 	return original.PossibleNodeStateValues()

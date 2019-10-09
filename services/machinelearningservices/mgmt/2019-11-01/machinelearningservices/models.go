@@ -46,6 +46,21 @@ func PossibleAllocationStateValues() []AllocationState {
 	return []AllocationState{Resizing, Steady}
 }
 
+// ApplicationSharingPolicy enumerates the values for application sharing policy.
+type ApplicationSharingPolicy string
+
+const (
+	// Personal ...
+	Personal ApplicationSharingPolicy = "Personal"
+	// Shared ...
+	Shared ApplicationSharingPolicy = "Shared"
+)
+
+// PossibleApplicationSharingPolicyValues returns an array of possible values for the ApplicationSharingPolicy const type.
+func PossibleApplicationSharingPolicyValues() []ApplicationSharingPolicy {
+	return []ApplicationSharingPolicy{Personal, Shared}
+}
+
 // ComputeInstanceState enumerates the values for compute instance state.
 type ComputeInstanceState string
 
@@ -212,21 +227,6 @@ func PossibleDatastoreStateValues() []DatastoreState {
 	return []DatastoreState{Mounted, MountFailed, Unmounted}
 }
 
-// InstanceSharing enumerates the values for instance sharing.
-type InstanceSharing string
-
-const (
-	// Disabled ...
-	Disabled InstanceSharing = "Disabled"
-	// Enabled ...
-	Enabled InstanceSharing = "Enabled"
-)
-
-// PossibleInstanceSharingValues returns an array of possible values for the InstanceSharing const type.
-func PossibleInstanceSharingValues() []InstanceSharing {
-	return []InstanceSharing{Disabled, Enabled}
-}
-
 // NodeState enumerates the values for node state.
 type NodeState string
 
@@ -322,17 +322,17 @@ func PossibleQuotaUnitValues() []QuotaUnit {
 type RemoteLoginPortPublicAccess string
 
 const (
-	// RemoteLoginPortPublicAccessDisabled ...
-	RemoteLoginPortPublicAccessDisabled RemoteLoginPortPublicAccess = "Disabled"
-	// RemoteLoginPortPublicAccessEnabled ...
-	RemoteLoginPortPublicAccessEnabled RemoteLoginPortPublicAccess = "Enabled"
-	// RemoteLoginPortPublicAccessNotSpecified ...
-	RemoteLoginPortPublicAccessNotSpecified RemoteLoginPortPublicAccess = "NotSpecified"
+	// Disabled ...
+	Disabled RemoteLoginPortPublicAccess = "Disabled"
+	// Enabled ...
+	Enabled RemoteLoginPortPublicAccess = "Enabled"
+	// NotSpecified ...
+	NotSpecified RemoteLoginPortPublicAccess = "NotSpecified"
 )
 
 // PossibleRemoteLoginPortPublicAccessValues returns an array of possible values for the RemoteLoginPortPublicAccess const type.
 func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
-	return []RemoteLoginPortPublicAccess{RemoteLoginPortPublicAccessDisabled, RemoteLoginPortPublicAccessEnabled, RemoteLoginPortPublicAccessNotSpecified}
+	return []RemoteLoginPortPublicAccess{Disabled, Enabled, NotSpecified}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.
@@ -803,7 +803,7 @@ type AmlComputeProperties struct {
 	UserAccountCredentials *UserAccountCredentials `json:"userAccountCredentials,omitempty"`
 	// Subnet - Virtual network subnet resource ID the compute nodes belong to.
 	Subnet *ResourceID `json:"subnet,omitempty"`
-	// RemoteLoginPortPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can be default only during cluster creation time, after creation it will be either enabled or disabled. Possible values include: 'RemoteLoginPortPublicAccessEnabled', 'RemoteLoginPortPublicAccessDisabled', 'RemoteLoginPortPublicAccessNotSpecified'
+	// RemoteLoginPortPublicAccess - State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all public nodes. It can be default only during cluster creation time, after creation it will be either enabled or disabled. Possible values include: 'Enabled', 'Disabled', 'NotSpecified'
 	RemoteLoginPortPublicAccess RemoteLoginPortPublicAccess `json:"remoteLoginPortPublicAccess,omitempty"`
 	// AllocationState - READ-ONLY; Allocation state of the compute. Possible values are: steady - Indicates that the compute is not resizing. There are no changes to the number of compute nodes in the compute in progress. A compute enters this state when it is created and when no operations are being performed on the compute to change the number of compute nodes. resizing - Indicates that the compute is resizing; that is, compute nodes are being added to or removed from the compute. Possible values include: 'Steady', 'Resizing'
 	AllocationState AllocationState `json:"allocationState,omitempty"`
@@ -1150,8 +1150,8 @@ type ComputeInstanceApplicationURI struct {
 type ComputeInstanceConnectivityEndpoints struct {
 	// PublicIPAddress - READ-ONLY; Public IP Address of this ComputeInstance.
 	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
-	// ApplicationUris - READ-ONLY; Describes available applications and their connectivity endpoint URIs.
-	ApplicationUris *[]ComputeInstanceApplicationURI `json:"applicationUris,omitempty"`
+	// PrivateIPAddress - READ-ONLY; Private IP Address of this ComputeInstance (local to the VNET in which the compute instance is deployed).
+	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
 }
 
 // ComputeInstanceCreatedBy describes information on user who created this ComputeInstance.
@@ -1216,8 +1216,8 @@ type ComputeInstanceProperties struct {
 	VMSize *string `json:"vmSize,omitempty"`
 	// Subnet - Virtual network subnet resource ID the compute nodes belong to.
 	Subnet *ResourceID `json:"subnet,omitempty"`
-	// InstanceSharing - Policy for sharing this compute instance among users of parent workspace. If Disabled, only the creator can access applications on this compute instance. When enabled any workspace user can access applications on this instance depending on his/her assigned role. Possible values include: 'Enabled', 'Disabled'
-	InstanceSharing InstanceSharing `json:"instanceSharing,omitempty"`
+	// ApplicationSharingPolicy - Policy for sharing applications on this compute instance among users of parent workspace. If Personal, only the creator can access applications on this compute instance. When Shared, any workspace user can access applications on this instance depending on his/her assigned role. Possible values include: 'Personal', 'Shared'
+	ApplicationSharingPolicy ApplicationSharingPolicy `json:"applicationSharingPolicy,omitempty"`
 	// DatastoresMountSettings - Describes what data stores will be mounted on this compute instance.
 	DatastoresMountSettings *ComputeInstanceDatastoresMountSettings `json:"datastoresMountSettings,omitempty"`
 	// CustomScriptSettings - Specification for initialization scripts to customize this ComputeInstance.
@@ -1228,6 +1228,8 @@ type ComputeInstanceProperties struct {
 	SSHSettings *ComputeInstanceSSHSettings `json:"sshSettings,omitempty"`
 	// ConnectivityEndpoints - READ-ONLY; Describes all connectivity endpoints available for this ComputeInstance.
 	ConnectivityEndpoints *ComputeInstanceConnectivityEndpoints `json:"connectivityEndpoints,omitempty"`
+	// ApplicationUris - READ-ONLY; Describes available applications and their endpoints on this ComputeInstance.
+	ApplicationUris *[]ComputeInstanceApplicationURI `json:"applicationUris,omitempty"`
 	// CreatedBy - READ-ONLY; Describes information on user who created this ComputeInstance.
 	CreatedBy *ComputeInstanceCreatedBy `json:"createdBy,omitempty"`
 	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.
@@ -1270,6 +1272,8 @@ type ComputeInstanceSSHSettings struct {
 	SSHPublicAccess SSHPublicAccess `json:"sshPublicAccess,omitempty"`
 	// AdminUserName - READ-ONLY; Describes the admin user name.
 	AdminUserName *string `json:"adminUserName,omitempty"`
+	// SSHPort - READ-ONLY; Describes the port for connecting through SSH.
+	SSHPort *int32 `json:"sshPort,omitempty"`
 	// AdminPublicKey - Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b 2048" to generate your SSH key pairs.
 	AdminPublicKey *string `json:"adminPublicKey,omitempty"`
 }

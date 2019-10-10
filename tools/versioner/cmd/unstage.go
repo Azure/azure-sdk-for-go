@@ -55,6 +55,7 @@ var (
 	getTagsHook TagsHookFunc
 )
 
+// TagsHookFunc is a func used for get tags from remote
 type TagsHookFunc func(string, string) ([]string, error)
 
 func init() {

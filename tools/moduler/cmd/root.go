@@ -67,26 +67,13 @@ func Execute() {
 }
 
 func theCommand(args []string) error {
-	path, err := filepath.Abs(args[0])
+	root, err := filepath.Abs(args[0])
 	if err != nil {
-		return fmt.Errorf("failed to get absolute path: %v", err)
+		return fmt.Errorf("failed to get absolute root: %v", err)
 	}
-	// get list of all existing tags
-	tags, err := getTagsHook(path)
+	newTags, err := readNewTags(root)
 	if err != nil {
-		return fmt.Errorf("failed to list tags: %v", err)
-	}
-	printf("Get %d tags from remote\n", len(tags))
-	vprintln(strings.Join(tags, "\n"))
-	// find all version.go files
-	files, err := findAllFiles(path, versionFile)
-	if err != nil {
-		return fmt.Errorf("failed to find all version.go files: %v", err)
-	}
-	// read new tags and push them in version.go
-	newTags, err := readTags(tags, files)
-	if err != nil {
-		return fmt.Errorf("failed during reading and pushing new tags: %v", err)
+		return err
 	}
 	if dryRunFlag {
 		println("Found new tags:")
@@ -98,7 +85,7 @@ func theCommand(args []string) error {
 		}
 		if profileFlag {
 			// generate profiles
-			profilePath := filepath.Join(path, profileFolder)
+			profilePath := filepath.Join(root, profileFolder)
 			if err := generateProfiles(profilePath); err != nil {
 				return fmt.Errorf("failed during generating profiles: %v", err)
 			}
@@ -109,6 +96,27 @@ func theCommand(args []string) error {
 		}
 	}
 	return nil
+}
+
+func readNewTags(root string) ([]string, error) {
+	// get list of all existing tags
+	tags, err := getTagsHook(root)
+	if err != nil {
+		return nil, fmt.Errorf("failed to list tags: %v", err)
+	}
+	printf("Get %d tags from remote\n", len(tags))
+	vprintln(strings.Join(tags, "\n"))
+	// find all version.go files
+	files, err := findAllFiles(root, versionFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to find all version.go files: %v", err)
+	}
+	// read new tags in version.go
+	newTags, err := readTags(tags, files)
+	if err != nil {
+		return nil, fmt.Errorf("failed during reading new tags: %v", err)
+	}
+	return newTags, nil
 }
 
 func getTags(repoPath string) ([]string, error) {
@@ -147,7 +155,7 @@ func findAllFiles(root, filename string) ([]string, error) {
 func readTags(tags []string, files []string) ([]string, error) {
 	var newTags []string
 	for _, file := range files {
-		newTag, err := findNewTagInFile(file)
+		newTag, err := readNewTagInFile(file)
 		if err != nil {
 			return nil, fmt.Errorf("failed to read tag in file '%s': %v", file, err)
 		}
@@ -165,8 +173,9 @@ func readTags(tags []string, files []string) ([]string, error) {
 	return newTags, nil
 }
 
-func findNewTagInFile(path string) (string, error) {
+func readNewTagInFile(path string) (string, error) {
 	file, err := os.OpenFile(path, os.O_RDWR, 0666)
+	defer file.Close()
 	if err != nil {
 		return "", err
 	}

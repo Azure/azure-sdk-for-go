@@ -52,13 +52,23 @@ var (
 	// default version to start a module at if not specified
 	startingModVer = "v1.0.0"
 	// this is used so tests can hook getTags() to return whatever tags
-	getTagsHook func(string, string) ([]string, error)
+	getTagsHook TagsHookFunc
 )
+
+type TagsHookFunc func(string, string) ([]string, error)
 
 func init() {
 	// default to the real version
 	getTagsHook = getTags
 	rootCmd.AddCommand(unstageCmd)
+}
+
+// ExecuteUnstageCommand is used for programmatically call in other tools
+func ExecuteUnstageCommand(stage string, tagsHook TagsHookFunc) (string, error) {
+	if tagsHook != nil {
+		getTagsHook = tagsHook
+	}
+	return theUnstageCommand([]string{stage})
 }
 
 func theUnstageCommand(args []string) (string, error) {

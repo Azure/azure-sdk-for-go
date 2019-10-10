@@ -60,6 +60,14 @@ func Execute() {
 	}
 }
 
+// ExecuteVersioner is used for programmatically call in other tools
+func ExecuteVersioner(root string, tagsHook TagsHookFunc) ([]string, error) {
+	if tagsHook != nil {
+		getTagsHook = tagsHook
+	}
+	return theCommand([]string{root})
+}
+
 // wrapper for cobra, prints tag to stdout
 func theCommand(args []string) ([]string, error) {
 	root, err := filepath.Abs(args[0])

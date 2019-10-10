@@ -393,6 +393,14 @@ const (
 	OraclePartitionOptionPhysicalPartitionsOfTable OraclePartitionOption = original.OraclePartitionOptionPhysicalPartitionsOfTable
 )
 
+type OrcCompressionCodec = original.OrcCompressionCodec
+
+const (
+	OrcCompressionCodecNone   OrcCompressionCodec = original.OrcCompressionCodecNone
+	OrcCompressionCodecSnappy OrcCompressionCodec = original.OrcCompressionCodecSnappy
+	OrcCompressionCodecZlib   OrcCompressionCodec = original.OrcCompressionCodecZlib
+)
+
 type ParameterType = original.ParameterType
 
 const (
@@ -674,6 +682,7 @@ const (
 	TypeAzureDataExplorerCommand TypeBasicActivity = original.TypeAzureDataExplorerCommand
 	TypeAzureFunctionActivity    TypeBasicActivity = original.TypeAzureFunctionActivity
 	TypeAzureMLBatchExecution    TypeBasicActivity = original.TypeAzureMLBatchExecution
+	TypeAzureMLExecutePipeline   TypeBasicActivity = original.TypeAzureMLExecutePipeline
 	TypeAzureMLUpdateResource    TypeBasicActivity = original.TypeAzureMLUpdateResource
 	TypeContainer                TypeBasicActivity = original.TypeContainer
 	TypeCopy                     TypeBasicActivity = original.TypeCopy
@@ -1021,6 +1030,7 @@ const (
 	TypeAzureKeyVault            TypeBasicLinkedService = original.TypeAzureKeyVault
 	TypeAzureMariaDB             TypeBasicLinkedService = original.TypeAzureMariaDB
 	TypeAzureML                  TypeBasicLinkedService = original.TypeAzureML
+	TypeAzureMLService           TypeBasicLinkedService = original.TypeAzureMLService
 	TypeAzureMySQL               TypeBasicLinkedService = original.TypeAzureMySQL
 	TypeAzurePostgreSQL          TypeBasicLinkedService = original.TypeAzurePostgreSQL
 	TypeAzureSearch              TypeBasicLinkedService = original.TypeAzureSearch
@@ -1241,8 +1251,12 @@ type AzureKeyVaultLinkedServiceTypeProperties = original.AzureKeyVaultLinkedServ
 type AzureKeyVaultSecretReference = original.AzureKeyVaultSecretReference
 type AzureMLBatchExecutionActivity = original.AzureMLBatchExecutionActivity
 type AzureMLBatchExecutionActivityTypeProperties = original.AzureMLBatchExecutionActivityTypeProperties
+type AzureMLExecutePipelineActivity = original.AzureMLExecutePipelineActivity
+type AzureMLExecutePipelineActivityTypeProperties = original.AzureMLExecutePipelineActivityTypeProperties
 type AzureMLLinkedService = original.AzureMLLinkedService
 type AzureMLLinkedServiceTypeProperties = original.AzureMLLinkedServiceTypeProperties
+type AzureMLServiceLinkedService = original.AzureMLServiceLinkedService
+type AzureMLServiceLinkedServiceTypeProperties = original.AzureMLServiceLinkedServiceTypeProperties
 type AzureMLUpdateResourceActivity = original.AzureMLUpdateResourceActivity
 type AzureMLUpdateResourceActivityTypeProperties = original.AzureMLUpdateResourceActivityTypeProperties
 type AzureMLWebServiceFile = original.AzureMLWebServiceFile
@@ -2303,6 +2317,9 @@ func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
 }
 func PossibleOraclePartitionOptionValues() []OraclePartitionOption {
 	return original.PossibleOraclePartitionOptionValues()
+}
+func PossibleOrcCompressionCodecValues() []OrcCompressionCodec {
+	return original.PossibleOrcCompressionCodecValues()
 }
 func PossibleParameterTypeValues() []ParameterType {
 	return original.PossibleParameterTypeValues()

@@ -28,9 +28,11 @@ const (
 type BaseClient = original.BaseClient
 type DisableSerialConsoleResult = original.DisableSerialConsoleResult
 type EnableSerialConsoleResult = original.EnableSerialConsoleResult
-type GetSerialConsoleResult = original.GetSerialConsoleResult
+type GetSerialConsoleDisabledResult = original.GetSerialConsoleDisabledResult
 type GetSerialConsoleSubscriptionNotFound = original.GetSerialConsoleSubscriptionNotFound
 type Operations = original.Operations
+type OperationsValueItem = original.OperationsValueItem
+type OperationsValueItemDisplay = original.OperationsValueItemDisplay
 type SetObject = original.SetObject
 
 func New(subscriptionID string) BaseClient {

@@ -26,33 +26,50 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/serialconsole/mgmt/2018
 
 // DisableSerialConsoleResult returns whether or not Serial Console is disabled.
 type DisableSerialConsoleResult struct {
-	// Value - Whether or not Serial Console is disabled.
-	Value *bool `json:"value,omitempty"`
+	// Disabled - Whether or not Serial Console is disabled.
+	Disabled *bool `json:"disabled,omitempty"`
 }
 
 // EnableSerialConsoleResult returns whether or not Serial Console is disabled (enabled).
 type EnableSerialConsoleResult struct {
-	// Value - Whether or not Serial Console is disabled (enabled).
-	Value *bool `json:"value,omitempty"`
+	// Disabled - Whether or not Serial Console is disabled (enabled).
+	Disabled *bool `json:"disabled,omitempty"`
 }
 
-// GetSerialConsoleResult returns whether or not Serial Console is disabled.
-type GetSerialConsoleResult struct {
-	// Value - Whether or not Serial Console is disabled.
-	Value *bool `json:"value,omitempty"`
+// GetSerialConsoleDisabledResult returns whether or not Serial Console is disabled.
+type GetSerialConsoleDisabledResult struct {
+	// Disabled - Whether or not Serial Console is disabled.
+	Disabled *bool `json:"disabled,omitempty"`
 }
 
 // GetSerialConsoleSubscriptionNotFound error saying that the provided subscription could not be found
 type GetSerialConsoleSubscriptionNotFound struct {
-	// Value - Error saying that the provided subscription could not be found
-	Value *string `json:"value,omitempty"`
+	// Code - Error code
+	Code *string `json:"code,omitempty"`
+	// Message - Subscription not found message
+	Message *string `json:"message,omitempty"`
 }
 
 // Operations serial Console operations
 type Operations struct {
 	autorest.Response `json:"-"`
-	// Value - Serial Console operations
-	Value *string `json:"value,omitempty"`
+	// Value - A list of Serial Console operations
+	Value *[]OperationsValueItem `json:"value,omitempty"`
+}
+
+// OperationsValueItem ...
+type OperationsValueItem struct {
+	Name         *string                     `json:"name,omitempty"`
+	IsDataAction *string                     `json:"isDataAction,omitempty"`
+	Display      *OperationsValueItemDisplay `json:"display,omitempty"`
+}
+
+// OperationsValueItemDisplay ...
+type OperationsValueItemDisplay struct {
+	Provider    *string `json:"provider,omitempty"`
+	Resource    *string `json:"resource,omitempty"`
+	Operation   *string `json:"operation,omitempty"`
+	Description *string `json:"description,omitempty"`
 }
 
 // SetObject ...

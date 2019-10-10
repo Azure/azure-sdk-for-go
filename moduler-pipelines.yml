@@ -1,0 +1,53 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+variables:
+  GOROOT: '/usr/local/go1.12'
+  GOPATH: '$(system.defaultWorkingDirectory)/work'
+  sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+
+pr: none
+
+steps:
+  - script: |
+      # Enable bash verbose logging
+      set -x
+      mkdir -p '$(GOPATH)/bin'
+      mkdir -p '$(sdkPath)'
+      shopt -s dotglob extglob
+      mv !(work) '$(sdkPath)'
+      echo '##vso[task.prependpath]$(GOROOT)/bin'
+      echo '##vso[task.prependpath]$(GOPATH)/bin'
+    displayName: 'Create Go Workspace'
+  - script: |
+      set -e
+      curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+      dep ensure -v
+      go get -u golang.org/x/lint/golint
+    workingDirectory: '$(sdkPath)'
+    displayName: 'Install Dependencies'
+  - script: |
+      # Echo error if github-pat is empty
+      [ -z $(github-pat) ] && echo "github-pat is empty!" && exit -1
+      echo
+      # Enable bash verbose logging
+      set -x
+
+      git config user.email "azuresdkci@microsoft.com"
+      git config user.name "azuresdkci"
+      git config credential.helper store
+      echo https://$(github-pat):x-oauth-basic@github.com > ~/.git-credentials
+    displayName: 'Setup github'
+    workingDirectory: '$(sdkPath)'
+  - script: go vet $(go list ./... | grep -v vendor)
+    workingDirectory: '$(sdkPath)'
+    displayName: 'Vet'
+  - script: go run ./tools/moduler/main.go ./ -v
+    displayName: 'Detecting new tag and push'
+    workingDirectory: '$(sdkPath)'

@@ -6,12 +6,13 @@
 
 | Package Name | API Version |
 | -----------: | :---------: |
+| features | 2019-07-01 |
+| network | 2019-08-01 |
 | affinitygroup | management |
 | auth | keyvault |
 | hostedservice | management |
 | location | management |
 | mongodb | cosmos-db |
-| network | 2019-08-01 |
 | networksecuritygroup | management |
 | osimage | management |
 | programmatic | luis |
@@ -23,6 +24,12 @@
 | virtualmachineimage | management |
 | virtualnetwork | management |
 | vmutils | management |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| compute | 2019-03-01<br/>2019-07-01 |
 
 Revert deletion of packages in `classic\management` and `keyvault\auth` 
 

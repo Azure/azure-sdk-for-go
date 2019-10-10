@@ -21,15 +21,12 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 )
-
-var newline = "\n"
 
 const versionGoFormat = `package foo
 
@@ -62,12 +59,6 @@ func Version() string {
 
 // tag: %s
 `
-
-func init() {
-	if runtime.GOOS == "windows" {
-		newline = "\r\n"
-	}
-}
 
 func Test_getTags(t *testing.T) {
 	if os.Getenv("TRAVIS") == "true" {

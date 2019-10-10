@@ -3577,6 +3577,8 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	Protocol ApplicationGatewayProtocol `json:"protocol,omitempty"`
 	// HostName - Host name of HTTP listener.
 	HostName *string `json:"hostName,omitempty"`
+	// Hostnames - List of Host names for HTTP Listener that allows special wildcard characters as well.
+	Hostnames *[]string `json:"hostnames,omitempty"`
 	// SslCertificate - SSL certificate resource of an application gateway.
 	SslCertificate *SubResource `json:"sslCertificate,omitempty"`
 	// RequireServerNameIndication - Applicable only if protocol is https. Enables SNI for multi-hosting.

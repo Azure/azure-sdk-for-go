@@ -3585,6 +3585,8 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CustomErrorConfigurations - Custom error configurations of the HTTP listener.
 	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
+	// FirewallPolicy - Reference to the FirewallPolicy resource.
+	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
 }
 
 // ApplicationGatewayIPConfiguration IP configuration of an application gateway. Currently 1 public and 1
@@ -3967,6 +3969,8 @@ type ApplicationGatewayPathRulePropertiesFormat struct {
 	RewriteRuleSet *SubResource `json:"rewriteRuleSet,omitempty"`
 	// ProvisioningState - The provisioning state of the path rule resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// FirewallPolicy - Reference to the FirewallPolicy resource.
+	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
 }
 
 // ApplicationGatewayProbe probe of the application gateway.
@@ -35127,4 +35131,8 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 	ResourceState WebApplicationFirewallPolicyResourceState `json:"resourceState,omitempty"`
 	// ManagedRules - Describes the managedRules structure
 	ManagedRules *ManagedRulesDefinition `json:"managedRules,omitempty"`
+	// HTTPListeners - READ-ONLY; A collection of references to application gateway http listeners.
+	HTTPListeners *[]SubResource `json:"httpListeners,omitempty"`
+	// PathBasedRules - READ-ONLY; A collection of references to application gateway path rules.
+	PathBasedRules *[]SubResource `json:"pathBasedRules,omitempty"`
 }

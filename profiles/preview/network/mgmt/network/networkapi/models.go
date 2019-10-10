@@ -19,7 +19,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-07-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-08-01/network/networkapi"
 
 type ApplicationGatewaysClientAPI = original.ApplicationGatewaysClientAPI
 type ApplicationSecurityGroupsClientAPI = original.ApplicationSecurityGroupsClientAPI
@@ -27,6 +27,7 @@ type AvailableDelegationsClientAPI = original.AvailableDelegationsClientAPI
 type AvailableEndpointServicesClientAPI = original.AvailableEndpointServicesClientAPI
 type AvailablePrivateEndpointTypesClientAPI = original.AvailablePrivateEndpointTypesClientAPI
 type AvailableResourceGroupDelegationsClientAPI = original.AvailableResourceGroupDelegationsClientAPI
+type AvailableServiceAliasesClientAPI = original.AvailableServiceAliasesClientAPI
 type AzureFirewallFqdnTagsClientAPI = original.AzureFirewallFqdnTagsClientAPI
 type AzureFirewallsClientAPI = original.AzureFirewallsClientAPI
 type BaseClientAPI = original.BaseClientAPI
@@ -67,7 +68,6 @@ type LocalNetworkGatewaysClientAPI = original.LocalNetworkGatewaysClientAPI
 type NatGatewaysClientAPI = original.NatGatewaysClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type P2sVpnGatewaysClientAPI = original.P2sVpnGatewaysClientAPI
-type P2sVpnServerConfigurationsClientAPI = original.P2sVpnServerConfigurationsClientAPI
 type PacketCapturesClientAPI = original.PacketCapturesClientAPI
 type PeerExpressRouteCircuitConnectionsClientAPI = original.PeerExpressRouteCircuitConnectionsClientAPI
 type PrivateEndpointsClientAPI = original.PrivateEndpointsClientAPI
@@ -100,6 +100,8 @@ type VirtualWansClientAPI = original.VirtualWansClientAPI
 type VpnConnectionsClientAPI = original.VpnConnectionsClientAPI
 type VpnGatewaysClientAPI = original.VpnGatewaysClientAPI
 type VpnLinkConnectionsClientAPI = original.VpnLinkConnectionsClientAPI
+type VpnServerConfigurationsAssociatedWithVirtualWanClientAPI = original.VpnServerConfigurationsAssociatedWithVirtualWanClientAPI
+type VpnServerConfigurationsClientAPI = original.VpnServerConfigurationsClientAPI
 type VpnSiteLinkConnectionsClientAPI = original.VpnSiteLinkConnectionsClientAPI
 type VpnSiteLinksClientAPI = original.VpnSiteLinksClientAPI
 type VpnSitesClientAPI = original.VpnSitesClientAPI

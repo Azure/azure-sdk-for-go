@@ -1531,6 +1531,9 @@ type ListP2SVpnGatewaysResult = original.ListP2SVpnGatewaysResult
 type ListP2SVpnGatewaysResultIterator = original.ListP2SVpnGatewaysResultIterator
 type ListP2SVpnGatewaysResultPage = original.ListP2SVpnGatewaysResultPage
 type ListString = original.ListString
+type ListVirtualHubRouteTableV2sResult = original.ListVirtualHubRouteTableV2sResult
+type ListVirtualHubRouteTableV2sResultIterator = original.ListVirtualHubRouteTableV2sResultIterator
+type ListVirtualHubRouteTableV2sResultPage = original.ListVirtualHubRouteTableV2sResultPage
 type ListVirtualHubsResult = original.ListVirtualHubsResult
 type ListVirtualHubsResultIterator = original.ListVirtualHubsResultIterator
 type ListVirtualHubsResultPage = original.ListVirtualHubsResultPage
@@ -2459,6 +2462,12 @@ func NewListP2SVpnGatewaysResultIterator(page ListP2SVpnGatewaysResultPage) List
 }
 func NewListP2SVpnGatewaysResultPage(getNextPage func(context.Context, ListP2SVpnGatewaysResult) (ListP2SVpnGatewaysResult, error)) ListP2SVpnGatewaysResultPage {
 	return original.NewListP2SVpnGatewaysResultPage(getNextPage)
+}
+func NewListVirtualHubRouteTableV2sResultIterator(page ListVirtualHubRouteTableV2sResultPage) ListVirtualHubRouteTableV2sResultIterator {
+	return original.NewListVirtualHubRouteTableV2sResultIterator(page)
+}
+func NewListVirtualHubRouteTableV2sResultPage(getNextPage func(context.Context, ListVirtualHubRouteTableV2sResult) (ListVirtualHubRouteTableV2sResult, error)) ListVirtualHubRouteTableV2sResultPage {
+	return original.NewListVirtualHubRouteTableV2sResultPage(getNextPage)
 }
 func NewListVirtualHubsResultIterator(page ListVirtualHubsResultPage) ListVirtualHubsResultIterator {
 	return original.NewListVirtualHubsResultIterator(page)

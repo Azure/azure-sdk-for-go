@@ -953,7 +953,7 @@ type VirtualHubRouteTableV2sClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters network.VirtualHubRouteTableV2) (result network.VirtualHubRouteTableV2sCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (result network.VirtualHubRouteTableV2sDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (result network.VirtualHubRouteTableV2, err error)
-	List(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListHubVirtualNetworkConnectionsResultPage, err error)
+	List(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListVirtualHubRouteTableV2sResultPage, err error)
 }
 
 var _ VirtualHubRouteTableV2sClientAPI = (*network.VirtualHubRouteTableV2sClient)(nil)

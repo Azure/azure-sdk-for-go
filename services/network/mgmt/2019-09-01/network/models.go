@@ -17646,6 +17646,154 @@ type ListString struct {
 	Value             *[]string `json:"value,omitempty"`
 }
 
+// ListVirtualHubRouteTableV2sResult list of VirtualHubRouteTableV2s and a URL nextLink to get the next set
+// of results.
+type ListVirtualHubRouteTableV2sResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of VirtualHubRouteTableV2s.
+	Value *[]VirtualHubRouteTableV2 `json:"value,omitempty"`
+	// NextLink - URL to get the next set of operation list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ListVirtualHubRouteTableV2sResultIterator provides access to a complete listing of
+// VirtualHubRouteTableV2 values.
+type ListVirtualHubRouteTableV2sResultIterator struct {
+	i    int
+	page ListVirtualHubRouteTableV2sResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ListVirtualHubRouteTableV2sResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListVirtualHubRouteTableV2sResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ListVirtualHubRouteTableV2sResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ListVirtualHubRouteTableV2sResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ListVirtualHubRouteTableV2sResultIterator) Response() ListVirtualHubRouteTableV2sResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ListVirtualHubRouteTableV2sResultIterator) Value() VirtualHubRouteTableV2 {
+	if !iter.page.NotDone() {
+		return VirtualHubRouteTableV2{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ListVirtualHubRouteTableV2sResultIterator type.
+func NewListVirtualHubRouteTableV2sResultIterator(page ListVirtualHubRouteTableV2sResultPage) ListVirtualHubRouteTableV2sResultIterator {
+	return ListVirtualHubRouteTableV2sResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lvhrtvr ListVirtualHubRouteTableV2sResult) IsEmpty() bool {
+	return lvhrtvr.Value == nil || len(*lvhrtvr.Value) == 0
+}
+
+// listVirtualHubRouteTableV2sResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lvhrtvr ListVirtualHubRouteTableV2sResult) listVirtualHubRouteTableV2sResultPreparer(ctx context.Context) (*http.Request, error) {
+	if lvhrtvr.NextLink == nil || len(to.String(lvhrtvr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lvhrtvr.NextLink)))
+}
+
+// ListVirtualHubRouteTableV2sResultPage contains a page of VirtualHubRouteTableV2 values.
+type ListVirtualHubRouteTableV2sResultPage struct {
+	fn      func(context.Context, ListVirtualHubRouteTableV2sResult) (ListVirtualHubRouteTableV2sResult, error)
+	lvhrtvr ListVirtualHubRouteTableV2sResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ListVirtualHubRouteTableV2sResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListVirtualHubRouteTableV2sResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.lvhrtvr)
+	if err != nil {
+		return err
+	}
+	page.lvhrtvr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ListVirtualHubRouteTableV2sResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ListVirtualHubRouteTableV2sResultPage) NotDone() bool {
+	return !page.lvhrtvr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ListVirtualHubRouteTableV2sResultPage) Response() ListVirtualHubRouteTableV2sResult {
+	return page.lvhrtvr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ListVirtualHubRouteTableV2sResultPage) Values() []VirtualHubRouteTableV2 {
+	if page.lvhrtvr.IsEmpty() {
+		return nil
+	}
+	return *page.lvhrtvr.Value
+}
+
+// Creates a new instance of the ListVirtualHubRouteTableV2sResultPage type.
+func NewListVirtualHubRouteTableV2sResultPage(getNextPage func(context.Context, ListVirtualHubRouteTableV2sResult) (ListVirtualHubRouteTableV2sResult, error)) ListVirtualHubRouteTableV2sResultPage {
+	return ListVirtualHubRouteTableV2sResultPage{fn: getNextPage}
+}
+
 // ListVirtualHubsResult result of the request to list VirtualHubs. It contains a list of VirtualHubs and a
 // URL nextLink to get the next set of results.
 type ListVirtualHubsResult struct {

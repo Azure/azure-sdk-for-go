@@ -32,14 +32,13 @@ const (
 	versionFile       = "version.go"
 	profileFolder     = "profiles"
 	messageForProfile = "Update profiles"
-	vendorPath        = "vendor"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "moduler <sdk root path>",
+	Use:   "moduler <searching dir>",
 	Short: "Release a new module by pushing new tags to github",
-	Long: `This tool search the whole SDK folder for tags in version.go files which are produced by the versioner tool, 
-and push the new tags to github.`,
+	Long: `This tool search the whole SDK folder for tags in version.go files 
+which are produced by the versioner tool, and push the new tags to github.`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return theCommand(args)
@@ -130,16 +129,12 @@ func tagExists(tags []string, tag string) bool {
 }
 
 func findAllFiles(root, filename string) ([]string, error) {
-	files := make([]string, 0)
-	absVendor, err := filepath.Abs(filepath.Join(root, vendorPath))
-	if err != nil {
-		return nil, err
+	// check if root exists
+	if _, err := os.Stat(root); os.IsNotExist(err) {
+		return nil, fmt.Errorf("the root path '%s' does not exist", root)
 	}
-	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if strings.HasPrefix(path, absVendor) {
-			// ignore everything in vendor folder
-			return filepath.SkipDir
-		}
+	files := make([]string, 0)
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err == nil && !info.IsDir() && info.Name() == filename {
 			files = append(files, path)
 			return nil

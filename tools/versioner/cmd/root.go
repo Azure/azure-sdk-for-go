@@ -81,10 +81,14 @@ func theCommand(args []string) ([]string, error) {
 	return tags, nil
 }
 
-func findAllSubDirectories(root, stage string) ([]string, error) {
+func findAllSubDirectories(root, target string) ([]string, error) {
+	// check if root exists
+	if _, err := os.Stat(root); os.IsNotExist(err) {
+		return nil, fmt.Errorf("the root path '%s' does not exist", root)
+	}
 	stages := make([]string, 0)
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() && info.Name() == stage {
+		if info.IsDir() && info.Name() == target {
 			stages = append(stages, path)
 			return nil
 		}

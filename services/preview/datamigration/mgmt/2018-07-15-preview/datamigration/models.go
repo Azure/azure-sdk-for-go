@@ -1463,16 +1463,10 @@ type CheckOCIDriverTaskInput struct {
 
 // CheckOCIDriverTaskOutput output for the service task to check for OCI drivers.
 type CheckOCIDriverTaskOutput struct {
-	// InstalledDriver - READ-ONLY; Information about the installed driver if found and valid.
-	InstalledDriver map[string][]OracleOCIDriverInfo `json:"installedDriver"`
+	// InstalledDriver - Information about the installed driver if found and valid.
+	InstalledDriver *OracleOCIDriverInfo `json:"installedDriver,omitempty"`
 	// ValidationErrors - READ-ONLY; Validation errors
 	ValidationErrors *[]ReportableException `json:"validationErrors,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CheckOCIDriverTaskOutput.
-func (codto CheckOCIDriverTaskOutput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
 }
 
 // CheckOCIDriverTaskProperties properties for the task that checks for OCI drivers.

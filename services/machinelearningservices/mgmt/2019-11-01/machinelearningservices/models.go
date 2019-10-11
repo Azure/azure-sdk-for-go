@@ -1110,7 +1110,7 @@ type ComputeInstanceProperties struct {
 	Applications *[]ComputeInstanceApplication `json:"applications,omitempty"`
 	// CreatedBy - READ-ONLY; Describes information on user who created this ComputeInstance.
 	CreatedBy *ComputeInstanceCreatedBy `json:"createdBy,omitempty"`
-	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.
+	// Errors - READ-ONLY; Collection of errors encountered on this ComputeInstance.
 	Errors *[]Error `json:"errors,omitempty"`
 	// State - READ-ONLY; The current state of this ComputeInstance. Possible values include: 'Creating', 'CreateFailed', 'Deleting', 'Ready', 'Restarting', 'RestartFailed', 'Running', 'SettingUp', 'Starting', 'StartFailed', 'StopFailed', 'Stopped', 'Stopping', 'UserSettingUp', 'Unknown', 'Unusable'
 	State ComputeInstanceState `json:"state,omitempty"`

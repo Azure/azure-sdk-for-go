@@ -249,6 +249,23 @@ func PossibleHeaderActionValues() []HeaderAction {
 	return []HeaderAction{Append, Delete, Overwrite}
 }
 
+// MinimumTLSVersion enumerates the values for minimum tls version.
+type MinimumTLSVersion string
+
+const (
+	// None ...
+	None MinimumTLSVersion = "None"
+	// TLS10 ...
+	TLS10 MinimumTLSVersion = "TLS10"
+	// TLS12 ...
+	TLS12 MinimumTLSVersion = "TLS12"
+)
+
+// PossibleMinimumTLSVersionValues returns an array of possible values for the MinimumTLSVersion const type.
+func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
+	return []MinimumTLSVersion{None, TLS10, TLS12}
+}
+
 // Name enumerates the values for name.
 type Name string
 
@@ -902,6 +919,8 @@ type BasicCustomDomainHTTPSParameters interface {
 type CustomDomainHTTPSParameters struct {
 	// ProtocolType - Defines the TLS extension protocol that is used for secure delivery. Possible values include: 'ServerNameIndication', 'IPBased'
 	ProtocolType ProtocolType `json:"protocolType,omitempty"`
+	// MinimumTLSVersion - TLS protocol version that will be used for Https. Possible values include: 'None', 'TLS10', 'TLS12'
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTLSVersion,omitempty"`
 	// CertificateSource - Possible values include: 'CertificateSourceCustomDomainHTTPSParameters', 'CertificateSourceCdn', 'CertificateSourceAzureKeyVault'
 	CertificateSource CertificateSource `json:"certificateSource,omitempty"`
 }
@@ -953,6 +972,9 @@ func (cdhp CustomDomainHTTPSParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cdhp.ProtocolType != "" {
 		objectMap["protocolType"] = cdhp.ProtocolType
+	}
+	if cdhp.MinimumTLSVersion != "" {
+		objectMap["minimumTLSVersion"] = cdhp.MinimumTLSVersion
 	}
 	if cdhp.CertificateSource != "" {
 		objectMap["certificateSource"] = cdhp.CertificateSource
@@ -4310,6 +4332,8 @@ type ManagedHTTPSParameters struct {
 	CertificateSourceParameters *CertificateSourceParameters `json:"certificateSourceParameters,omitempty"`
 	// ProtocolType - Defines the TLS extension protocol that is used for secure delivery. Possible values include: 'ServerNameIndication', 'IPBased'
 	ProtocolType ProtocolType `json:"protocolType,omitempty"`
+	// MinimumTLSVersion - TLS protocol version that will be used for Https. Possible values include: 'None', 'TLS10', 'TLS12'
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTLSVersion,omitempty"`
 	// CertificateSource - Possible values include: 'CertificateSourceCustomDomainHTTPSParameters', 'CertificateSourceCdn', 'CertificateSourceAzureKeyVault'
 	CertificateSource CertificateSource `json:"certificateSource,omitempty"`
 }
@@ -4323,6 +4347,9 @@ func (mhp ManagedHTTPSParameters) MarshalJSON() ([]byte, error) {
 	}
 	if mhp.ProtocolType != "" {
 		objectMap["protocolType"] = mhp.ProtocolType
+	}
+	if mhp.MinimumTLSVersion != "" {
+		objectMap["minimumTLSVersion"] = mhp.MinimumTLSVersion
 	}
 	if mhp.CertificateSource != "" {
 		objectMap["certificateSource"] = mhp.CertificateSource
@@ -5752,6 +5779,8 @@ type UserManagedHTTPSParameters struct {
 	CertificateSourceParameters *KeyVaultCertificateSourceParameters `json:"certificateSourceParameters,omitempty"`
 	// ProtocolType - Defines the TLS extension protocol that is used for secure delivery. Possible values include: 'ServerNameIndication', 'IPBased'
 	ProtocolType ProtocolType `json:"protocolType,omitempty"`
+	// MinimumTLSVersion - TLS protocol version that will be used for Https. Possible values include: 'None', 'TLS10', 'TLS12'
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTLSVersion,omitempty"`
 	// CertificateSource - Possible values include: 'CertificateSourceCustomDomainHTTPSParameters', 'CertificateSourceCdn', 'CertificateSourceAzureKeyVault'
 	CertificateSource CertificateSource `json:"certificateSource,omitempty"`
 }
@@ -5765,6 +5794,9 @@ func (umhp UserManagedHTTPSParameters) MarshalJSON() ([]byte, error) {
 	}
 	if umhp.ProtocolType != "" {
 		objectMap["protocolType"] = umhp.ProtocolType
+	}
+	if umhp.MinimumTLSVersion != "" {
+		objectMap["minimumTLSVersion"] = umhp.MinimumTLSVersion
 	}
 	if umhp.CertificateSource != "" {
 		objectMap["certificateSource"] = umhp.CertificateSource

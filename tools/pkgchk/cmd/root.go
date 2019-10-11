@@ -64,18 +64,13 @@ func theCommand(args []string) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to get absolute path")
 	}
-
 	pkgs, err := getPkgs(rootDir)
 	if err != nil {
 		return errors.Wrap(err, "failed to get packages")
 	}
-
-	var exceptions []string
-	if exceptFileFlag != "" {
-		exceptions, err = loadExceptions(exceptFileFlag)
-		if err != nil {
-			return errors.Wrap(err, "failed to load exceptions")
-		}
+	exceptions, err := loadExceptions(exceptFileFlag)
+	if err != nil {
+		return errors.Wrap(err, "failed to load exceptions")
 	}
 	verifiers := getVerifiers()
 	count := 0
@@ -87,12 +82,10 @@ func theCommand(args []string) error {
 			}
 		}
 	}
-
-	var res error
 	if count > 0 {
-		res = fmt.Errorf("found %d errors", count)
+		return fmt.Errorf("found %d errors", count)
 	}
-	return res
+	return nil
 }
 
 func contains(items []string, item string) bool {
@@ -107,8 +100,11 @@ func contains(items []string, item string) bool {
 	return false
 }
 
-func loadExceptions(excepFile string) ([]string, error) {
-	f, err := os.Open(excepFile)
+func loadExceptions(exceptFile string) ([]string, error) {
+	if exceptFile == "" {
+		return nil, nil
+	}
+	f, err := os.Open(exceptFile)
 	if err != nil {
 		return nil, err
 	}

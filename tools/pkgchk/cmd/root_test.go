@@ -25,14 +25,14 @@ const (
 )
 
 var (
-	expected = map[string]string {
-		"/scenrioa/foo": "foo",
-		"/scenriob/foo": "foo",
-		"/scenriob/foo/v2": "foo",
-		"/scenrioc/mgmt/2019-10-11/foo": "foo",
-		"/scenriod/mgmt/2019-10-11/foo": "foo",
+	expected = map[string]string{
+		"/scenrioa/foo":                    "foo",
+		"/scenriob/foo":                    "foo",
+		"/scenriob/foo/v2":                 "foo",
+		"/scenrioc/mgmt/2019-10-11/foo":    "foo",
+		"/scenriod/mgmt/2019-10-11/foo":    "foo",
 		"/scenriod/mgmt/2019-10-11/foo/v2": "foo",
-		"/scenrioe/mgmt/2019-10-11/foo": "foo",
+		"/scenrioe/mgmt/2019-10-11/foo":    "foo",
 		"/scenrioe/mgmt/2019-10-11/foo/v2": "foo",
 		"/scenrioe/mgmt/2019-10-11/foo/v3": "foo",
 	}

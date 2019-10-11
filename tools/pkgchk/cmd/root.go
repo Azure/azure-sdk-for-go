@@ -221,7 +221,7 @@ func findPackageFolderInPath(path string) string {
 		// folder path ends with version suffix
 		path = path[:strings.LastIndex(path, "/")]
 	}
-	result := path[strings.LastIndex(path, "/") + 1:]
+	result := path[strings.LastIndex(path, "/")+1:]
 	return result
 }
 

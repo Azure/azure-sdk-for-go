@@ -998,6 +998,7 @@ const (
 	WebApplicationFirewallActionAllow WebApplicationFirewallAction = original.WebApplicationFirewallActionAllow
 	WebApplicationFirewallActionBlock WebApplicationFirewallAction = original.WebApplicationFirewallActionBlock
 	WebApplicationFirewallActionLog   WebApplicationFirewallAction = original.WebApplicationFirewallActionLog
+	WebApplicationFirewallActionSkip  WebApplicationFirewallAction = original.WebApplicationFirewallActionSkip
 )
 
 type WebApplicationFirewallEnabledState = original.WebApplicationFirewallEnabledState
@@ -1821,6 +1822,7 @@ type ServiceTagInformation = original.ServiceTagInformation
 type ServiceTagInformationPropertiesFormat = original.ServiceTagInformationPropertiesFormat
 type ServiceTagsClient = original.ServiceTagsClient
 type ServiceTagsListResult = original.ServiceTagsListResult
+type SkipActionRuleSet = original.SkipActionRuleSet
 type String = original.String
 type SubResource = original.SubResource
 type Subnet = original.Subnet

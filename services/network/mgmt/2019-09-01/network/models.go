@@ -2088,11 +2088,13 @@ const (
 	WebApplicationFirewallActionBlock WebApplicationFirewallAction = "Block"
 	// WebApplicationFirewallActionLog ...
 	WebApplicationFirewallActionLog WebApplicationFirewallAction = "Log"
+	// WebApplicationFirewallActionSkip ...
+	WebApplicationFirewallActionSkip WebApplicationFirewallAction = "Skip"
 )
 
 // PossibleWebApplicationFirewallActionValues returns an array of possible values for the WebApplicationFirewallAction const type.
 func PossibleWebApplicationFirewallActionValues() []WebApplicationFirewallAction {
-	return []WebApplicationFirewallAction{WebApplicationFirewallActionAllow, WebApplicationFirewallActionBlock, WebApplicationFirewallActionLog}
+	return []WebApplicationFirewallAction{WebApplicationFirewallActionAllow, WebApplicationFirewallActionBlock, WebApplicationFirewallActionLog, WebApplicationFirewallActionSkip}
 }
 
 // WebApplicationFirewallEnabledState enumerates the values for web application firewall enabled state.
@@ -27890,6 +27892,16 @@ type ServiceTagsListResult struct {
 	Values *[]ServiceTagInformation `json:"values,omitempty"`
 }
 
+// SkipActionRuleSet identifies a Rule Set which should be skipped.
+type SkipActionRuleSet struct {
+	// RuleSetType - Defines the Rule Set type.
+	RuleSetType *string `json:"ruleSetType,omitempty"`
+	// RuleSetVersion - Defines the Rule Set version.
+	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
+	// RuleGroups - List of Rule Groups which should be skipped.
+	RuleGroups *[]ManagedRuleGroupOverride `json:"ruleGroups,omitempty"`
+}
+
 // String ...
 type String struct {
 	autorest.Response `json:"-"`
@@ -34824,8 +34836,10 @@ type WebApplicationFirewallCustomRule struct {
 	RuleType WebApplicationFirewallRuleType `json:"ruleType,omitempty"`
 	// MatchConditions - List of match conditions.
 	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
-	// Action - Type of Actions. Possible values include: 'WebApplicationFirewallActionAllow', 'WebApplicationFirewallActionBlock', 'WebApplicationFirewallActionLog'
+	// Action - Type of Actions. Possible values include: 'WebApplicationFirewallActionAllow', 'WebApplicationFirewallActionBlock', 'WebApplicationFirewallActionLog', 'WebApplicationFirewallActionSkip'
 	Action WebApplicationFirewallAction `json:"action,omitempty"`
+	// SkippedManagedRulesets - List of Managed RuleSets, Managed Rule Groups and Managed Rules to be skipped. (Skip action only)
+	SkippedManagedRulesets *[]SkipActionRuleSet `json:"skippedManagedRulesets,omitempty"`
 }
 
 // WebApplicationFirewallPoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a

@@ -1067,12 +1067,12 @@ func (ci ComputeInstance) AsBasicCompute() (BasicCompute, bool) {
 	return &ci, true
 }
 
-// ComputeInstanceApplicationURI defines an Aml Instance application and its connectivity endpoint URI.
-type ComputeInstanceApplicationURI struct {
-	// ApplicationName - Name of the ComputeInstance application.
-	ApplicationName *string `json:"applicationName,omitempty"`
-	// ApplicationURI - Application' endpoint URI.
-	ApplicationURI *string `json:"applicationUri,omitempty"`
+// ComputeInstanceApplication defines an Aml Instance application and its connectivity endpoint URI.
+type ComputeInstanceApplication struct {
+	// DisplayName - Name of the ComputeInstance application.
+	DisplayName *string `json:"displayName,omitempty"`
+	// EndpointURI - Application' endpoint URI.
+	EndpointURI *string `json:"endpointUri,omitempty"`
 }
 
 // ComputeInstanceConnectivityEndpoints defines all connectivity endpoints and properties for an
@@ -1106,8 +1106,8 @@ type ComputeInstanceProperties struct {
 	SSHSettings *ComputeInstanceSSHSettings `json:"sshSettings,omitempty"`
 	// ConnectivityEndpoints - READ-ONLY; Describes all connectivity endpoints available for this ComputeInstance.
 	ConnectivityEndpoints *ComputeInstanceConnectivityEndpoints `json:"connectivityEndpoints,omitempty"`
-	// ApplicationUris - READ-ONLY; Describes available applications and their endpoints on this ComputeInstance.
-	ApplicationUris *[]ComputeInstanceApplicationURI `json:"applicationUris,omitempty"`
+	// Applications - READ-ONLY; Describes available applications and their endpoints on this ComputeInstance.
+	Applications *[]ComputeInstanceApplication `json:"applications,omitempty"`
 	// CreatedBy - READ-ONLY; Describes information on user who created this ComputeInstance.
 	CreatedBy *ComputeInstanceCreatedBy `json:"createdBy,omitempty"`
 	// Errors - READ-ONLY; Collection of errors encountered by various compute nodes during node setup.

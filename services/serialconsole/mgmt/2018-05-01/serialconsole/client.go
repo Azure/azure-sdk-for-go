@@ -1,6 +1,6 @@
 // Package serialconsole implements the Azure ARM Serialconsole service API version 2018-05-01.
 //
-// The Azure Serial Console allows you to access the serial console of a Virtual Machine or VM scale set
+// The Azure Serial Console allows you to access the serial console of a Virtual Machine or VM scale set instance
 package serialconsole
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -55,7 +55,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 
 // DisableConsole disables the Serial Console service for all VMs and VM scale sets in the provided subscription
-func (client BaseClient) DisableConsole(ctx context.Context) (result SetObject, err error) {
+// Parameters:
+// defaultParameter - default parameter. Leave the value as "default".
+func (client BaseClient) DisableConsole(ctx context.Context, defaultParameter string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.DisableConsole")
 		defer func() {
@@ -66,7 +68,7 @@ func (client BaseClient) DisableConsole(ctx context.Context) (result SetObject, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DisableConsolePreparer(ctx)
+	req, err := client.DisableConsolePreparer(ctx, defaultParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "serialconsole.BaseClient", "DisableConsole", nil, "Failure preparing request")
 		return
@@ -88,8 +90,9 @@ func (client BaseClient) DisableConsole(ctx context.Context) (result SetObject, 
 }
 
 // DisableConsolePreparer prepares the DisableConsole request.
-func (client BaseClient) DisableConsolePreparer(ctx context.Context) (*http.Request, error) {
+func (client BaseClient) DisableConsolePreparer(ctx context.Context, defaultParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"default":        autorest.Encode("path", defaultParameter),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -101,7 +104,7 @@ func (client BaseClient) DisableConsolePreparer(ctx context.Context) (*http.Requ
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/default/disableConsole", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/{default}/disableConsole", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -127,7 +130,9 @@ func (client BaseClient) DisableConsoleResponder(resp *http.Response) (result Se
 }
 
 // EnableConsole enables the Serial Console service for all VMs and VM scale sets in the provided subscription
-func (client BaseClient) EnableConsole(ctx context.Context) (result SetObject, err error) {
+// Parameters:
+// defaultParameter - default parameter. Leave the value as "default".
+func (client BaseClient) EnableConsole(ctx context.Context, defaultParameter string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.EnableConsole")
 		defer func() {
@@ -138,7 +143,7 @@ func (client BaseClient) EnableConsole(ctx context.Context) (result SetObject, e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.EnableConsolePreparer(ctx)
+	req, err := client.EnableConsolePreparer(ctx, defaultParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "serialconsole.BaseClient", "EnableConsole", nil, "Failure preparing request")
 		return
@@ -160,8 +165,9 @@ func (client BaseClient) EnableConsole(ctx context.Context) (result SetObject, e
 }
 
 // EnableConsolePreparer prepares the EnableConsole request.
-func (client BaseClient) EnableConsolePreparer(ctx context.Context) (*http.Request, error) {
+func (client BaseClient) EnableConsolePreparer(ctx context.Context, defaultParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"default":        autorest.Encode("path", defaultParameter),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -173,7 +179,7 @@ func (client BaseClient) EnableConsolePreparer(ctx context.Context) (*http.Reque
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/default/enableConsole", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/{default}/enableConsole", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -199,7 +205,9 @@ func (client BaseClient) EnableConsoleResponder(resp *http.Response) (result Set
 }
 
 // GetConsoleStatus gets whether or not Serial Console is disabled for a given subscription
-func (client BaseClient) GetConsoleStatus(ctx context.Context) (result SetObject, err error) {
+// Parameters:
+// defaultParameter - default parameter. Leave the value as "default".
+func (client BaseClient) GetConsoleStatus(ctx context.Context, defaultParameter string) (result SetObject, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetConsoleStatus")
 		defer func() {
@@ -210,7 +218,7 @@ func (client BaseClient) GetConsoleStatus(ctx context.Context) (result SetObject
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetConsoleStatusPreparer(ctx)
+	req, err := client.GetConsoleStatusPreparer(ctx, defaultParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "serialconsole.BaseClient", "GetConsoleStatus", nil, "Failure preparing request")
 		return
@@ -232,8 +240,9 @@ func (client BaseClient) GetConsoleStatus(ctx context.Context) (result SetObject
 }
 
 // GetConsoleStatusPreparer prepares the GetConsoleStatus request.
-func (client BaseClient) GetConsoleStatusPreparer(ctx context.Context) (*http.Request, error) {
+func (client BaseClient) GetConsoleStatusPreparer(ctx context.Context, defaultParameter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"default":        autorest.Encode("path", defaultParameter),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -245,7 +254,7 @@ func (client BaseClient) GetConsoleStatusPreparer(ctx context.Context) (*http.Re
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.SerialConsole/consoleServices/{default}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

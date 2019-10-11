@@ -24,9 +24,9 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	DisableConsole(ctx context.Context) (result serialconsole.SetObject, err error)
-	EnableConsole(ctx context.Context) (result serialconsole.SetObject, err error)
-	GetConsoleStatus(ctx context.Context) (result serialconsole.SetObject, err error)
+	DisableConsole(ctx context.Context, defaultParameter string) (result serialconsole.SetObject, err error)
+	EnableConsole(ctx context.Context, defaultParameter string) (result serialconsole.SetObject, err error)
+	GetConsoleStatus(ctx context.Context, defaultParameter string) (result serialconsole.SetObject, err error)
 	ListOperations(ctx context.Context) (result serialconsole.Operations, err error)
 }
 

@@ -920,7 +920,7 @@ type CustomDomainHTTPSParameters struct {
 	// ProtocolType - Defines the TLS extension protocol that is used for secure delivery. Possible values include: 'ServerNameIndication', 'IPBased'
 	ProtocolType ProtocolType `json:"protocolType,omitempty"`
 	// MinimumTLSVersion - TLS protocol version that will be used for Https. Possible values include: 'None', 'TLS10', 'TLS12'
-	MinimumTLSVersion MinimumTLSVersion `json:"minimumTLSVersion,omitempty"`
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 	// CertificateSource - Possible values include: 'CertificateSourceCustomDomainHTTPSParameters', 'CertificateSourceCdn', 'CertificateSourceAzureKeyVault'
 	CertificateSource CertificateSource `json:"certificateSource,omitempty"`
 }
@@ -974,7 +974,7 @@ func (cdhp CustomDomainHTTPSParameters) MarshalJSON() ([]byte, error) {
 		objectMap["protocolType"] = cdhp.ProtocolType
 	}
 	if cdhp.MinimumTLSVersion != "" {
-		objectMap["minimumTLSVersion"] = cdhp.MinimumTLSVersion
+		objectMap["minimumTlsVersion"] = cdhp.MinimumTLSVersion
 	}
 	if cdhp.CertificateSource != "" {
 		objectMap["certificateSource"] = cdhp.CertificateSource
@@ -4333,7 +4333,7 @@ type ManagedHTTPSParameters struct {
 	// ProtocolType - Defines the TLS extension protocol that is used for secure delivery. Possible values include: 'ServerNameIndication', 'IPBased'
 	ProtocolType ProtocolType `json:"protocolType,omitempty"`
 	// MinimumTLSVersion - TLS protocol version that will be used for Https. Possible values include: 'None', 'TLS10', 'TLS12'
-	MinimumTLSVersion MinimumTLSVersion `json:"minimumTLSVersion,omitempty"`
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 	// CertificateSource - Possible values include: 'CertificateSourceCustomDomainHTTPSParameters', 'CertificateSourceCdn', 'CertificateSourceAzureKeyVault'
 	CertificateSource CertificateSource `json:"certificateSource,omitempty"`
 }
@@ -4349,7 +4349,7 @@ func (mhp ManagedHTTPSParameters) MarshalJSON() ([]byte, error) {
 		objectMap["protocolType"] = mhp.ProtocolType
 	}
 	if mhp.MinimumTLSVersion != "" {
-		objectMap["minimumTLSVersion"] = mhp.MinimumTLSVersion
+		objectMap["minimumTlsVersion"] = mhp.MinimumTLSVersion
 	}
 	if mhp.CertificateSource != "" {
 		objectMap["certificateSource"] = mhp.CertificateSource
@@ -5780,7 +5780,7 @@ type UserManagedHTTPSParameters struct {
 	// ProtocolType - Defines the TLS extension protocol that is used for secure delivery. Possible values include: 'ServerNameIndication', 'IPBased'
 	ProtocolType ProtocolType `json:"protocolType,omitempty"`
 	// MinimumTLSVersion - TLS protocol version that will be used for Https. Possible values include: 'None', 'TLS10', 'TLS12'
-	MinimumTLSVersion MinimumTLSVersion `json:"minimumTLSVersion,omitempty"`
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 	// CertificateSource - Possible values include: 'CertificateSourceCustomDomainHTTPSParameters', 'CertificateSourceCdn', 'CertificateSourceAzureKeyVault'
 	CertificateSource CertificateSource `json:"certificateSource,omitempty"`
 }
@@ -5796,7 +5796,7 @@ func (umhp UserManagedHTTPSParameters) MarshalJSON() ([]byte, error) {
 		objectMap["protocolType"] = umhp.ProtocolType
 	}
 	if umhp.MinimumTLSVersion != "" {
-		objectMap["minimumTLSVersion"] = umhp.MinimumTLSVersion
+		objectMap["minimumTlsVersion"] = umhp.MinimumTLSVersion
 	}
 	if umhp.CertificateSource != "" {
 		objectMap["certificateSource"] = umhp.CertificateSource

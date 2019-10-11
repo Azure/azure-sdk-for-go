@@ -2166,6 +2166,8 @@ const (
 	WebApplicationFirewallOperatorEndsWith WebApplicationFirewallOperator = "EndsWith"
 	// WebApplicationFirewallOperatorEqual ...
 	WebApplicationFirewallOperatorEqual WebApplicationFirewallOperator = "Equal"
+	// WebApplicationFirewallOperatorGeoMatch ...
+	WebApplicationFirewallOperatorGeoMatch WebApplicationFirewallOperator = "GeoMatch"
 	// WebApplicationFirewallOperatorGreaterThan ...
 	WebApplicationFirewallOperatorGreaterThan WebApplicationFirewallOperator = "GreaterThan"
 	// WebApplicationFirewallOperatorGreaterThanOrEqual ...
@@ -2182,7 +2184,7 @@ const (
 
 // PossibleWebApplicationFirewallOperatorValues returns an array of possible values for the WebApplicationFirewallOperator const type.
 func PossibleWebApplicationFirewallOperatorValues() []WebApplicationFirewallOperator {
-	return []WebApplicationFirewallOperator{WebApplicationFirewallOperatorBeginsWith, WebApplicationFirewallOperatorContains, WebApplicationFirewallOperatorEndsWith, WebApplicationFirewallOperatorEqual, WebApplicationFirewallOperatorGreaterThan, WebApplicationFirewallOperatorGreaterThanOrEqual, WebApplicationFirewallOperatorIPMatch, WebApplicationFirewallOperatorLessThan, WebApplicationFirewallOperatorLessThanOrEqual, WebApplicationFirewallOperatorRegex}
+	return []WebApplicationFirewallOperator{WebApplicationFirewallOperatorBeginsWith, WebApplicationFirewallOperatorContains, WebApplicationFirewallOperatorEndsWith, WebApplicationFirewallOperatorEqual, WebApplicationFirewallOperatorGeoMatch, WebApplicationFirewallOperatorGreaterThan, WebApplicationFirewallOperatorGreaterThanOrEqual, WebApplicationFirewallOperatorIPMatch, WebApplicationFirewallOperatorLessThan, WebApplicationFirewallOperatorLessThanOrEqual, WebApplicationFirewallOperatorRegex}
 }
 
 // WebApplicationFirewallPolicyResourceState enumerates the values for web application firewall policy resource
@@ -20511,7 +20513,7 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 type MatchCondition struct {
 	// MatchVariables - List of match variables.
 	MatchVariables *[]MatchVariable `json:"matchVariables,omitempty"`
-	// Operator - Describes operator to be matched. Possible values include: 'WebApplicationFirewallOperatorIPMatch', 'WebApplicationFirewallOperatorEqual', 'WebApplicationFirewallOperatorContains', 'WebApplicationFirewallOperatorLessThan', 'WebApplicationFirewallOperatorGreaterThan', 'WebApplicationFirewallOperatorLessThanOrEqual', 'WebApplicationFirewallOperatorGreaterThanOrEqual', 'WebApplicationFirewallOperatorBeginsWith', 'WebApplicationFirewallOperatorEndsWith', 'WebApplicationFirewallOperatorRegex'
+	// Operator - Describes operator to be matched. Possible values include: 'WebApplicationFirewallOperatorIPMatch', 'WebApplicationFirewallOperatorEqual', 'WebApplicationFirewallOperatorContains', 'WebApplicationFirewallOperatorLessThan', 'WebApplicationFirewallOperatorGreaterThan', 'WebApplicationFirewallOperatorLessThanOrEqual', 'WebApplicationFirewallOperatorGreaterThanOrEqual', 'WebApplicationFirewallOperatorBeginsWith', 'WebApplicationFirewallOperatorEndsWith', 'WebApplicationFirewallOperatorRegex', 'WebApplicationFirewallOperatorGeoMatch'
 	Operator WebApplicationFirewallOperator `json:"operator,omitempty"`
 	// NegationConditon - Describes if this is negate condition or not.
 	NegationConditon *bool `json:"negationConditon,omitempty"`
@@ -34838,7 +34840,7 @@ type WebApplicationFirewallCustomRule struct {
 	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
 	// Action - Type of Actions. Possible values include: 'WebApplicationFirewallActionAllow', 'WebApplicationFirewallActionBlock', 'WebApplicationFirewallActionLog', 'WebApplicationFirewallActionSkip'
 	Action WebApplicationFirewallAction `json:"action,omitempty"`
-	// SkippedManagedRulesets - List of Managed RuleSets, Managed Rule Groups and Managed Rules to be skipped. (Skip action only)
+	// SkippedManagedRulesets - List of managed ruleSets, managed rule groups and managed rules to be skipped. (Skip action only)
 	SkippedManagedRulesets *[]SkipActionRuleSet `json:"skippedManagedRulesets,omitempty"`
 }
 

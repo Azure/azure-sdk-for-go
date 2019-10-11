@@ -1,6 +1,5 @@
 package foo
 
-
 // GatewaysClient ...
 type GatewaysClient struct {
 	BaseClient

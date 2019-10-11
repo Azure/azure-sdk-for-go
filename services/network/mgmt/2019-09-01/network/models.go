@@ -34840,8 +34840,8 @@ type WebApplicationFirewallCustomRule struct {
 	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
 	// Action - Type of Actions. Possible values include: 'WebApplicationFirewallActionAllow', 'WebApplicationFirewallActionBlock', 'WebApplicationFirewallActionLog', 'WebApplicationFirewallActionSkip'
 	Action WebApplicationFirewallAction `json:"action,omitempty"`
-	// SkippedManagedRulesets - List of managed ruleSets, managed rule groups and managed rules to be skipped. (Skip action only)
-	SkippedManagedRulesets *[]SkipActionRuleSet `json:"skippedManagedRulesets,omitempty"`
+	// SkippedManagedRuleSets - List of managed rule sets, managed rule groups and managed rules to be skipped. (Skip action only)
+	SkippedManagedRuleSets *[]SkipActionRuleSet `json:"skippedManagedRuleSets,omitempty"`
 }
 
 // WebApplicationFirewallPoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a

@@ -31,7 +31,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var excepFileFlag string
+var exceptFileFlag string
 
 var rootCmd = &cobra.Command{
 	Use:   "pkgchk <dir>",
@@ -41,12 +41,7 @@ found under the specified directory.  Failures can be baselined and thus ignored
 copying the failure text verbatim, pasting it into a text file then specifying that
 file via the optional exceptions flag.
 `,
-	Args: func(cmd *cobra.Command, args []string) error {
-		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
-			return err
-		}
-		return nil
-	},
+	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cmd.SilenceUsage = true
 		return theCommand(args)
@@ -54,7 +49,7 @@ file via the optional exceptions flag.
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&excepFileFlag, "exceptions", "e", "", "text file containing the list of exceptions")
+	rootCmd.PersistentFlags().StringVarP(&exceptFileFlag, "exceptions", "e", "", "text file containing the list of exceptions")
 }
 
 // Execute executes the specified command.
@@ -65,13 +60,9 @@ func Execute() {
 }
 
 func theCommand(args []string) error {
-	rootDir := args[0]
-	if !filepath.IsAbs(rootDir) {
-		asAbs, err := filepath.Abs(rootDir)
-		if err != nil {
-			return errors.Wrap(err, "failed to get absolute path")
-		}
-		rootDir = asAbs
+	rootDir, err := filepath.Abs(args[0])
+	if err != nil {
+		return errors.Wrap(err, "failed to get absolute path")
 	}
 
 	pkgs, err := getPkgs(rootDir)
@@ -80,8 +71,8 @@ func theCommand(args []string) error {
 	}
 
 	var exceptions []string
-	if excepFileFlag != "" {
-		exceptions, err = loadExceptions(excepFileFlag)
+	if exceptFileFlag != "" {
+		exceptions, err = loadExceptions(exceptFileFlag)
 		if err != nil {
 			return errors.Wrap(err, "failed to load exceptions")
 		}
@@ -150,7 +141,7 @@ func (p pkg) isARMPkg() bool {
 
 // walks the directory hierarchy from the specified root returning a slice of all the packages found
 func getPkgs(rootDir string) ([]pkg, error) {
-	pkgs := []pkg{}
+	pkgs := make([]pkg, 0)
 	err := filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err

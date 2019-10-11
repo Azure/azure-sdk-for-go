@@ -5,7 +5,6 @@ variables:
   GOROOT: '/usr/local/go1.12'
   GOPATH: '$(system.defaultWorkingDirectory)/work'
   sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
-  IGNORE_BREAKING_CHANGES: true
 
 steps:
 - script: |
@@ -33,9 +32,6 @@ steps:
 - script: go test $(dirname $(find . -path ./vendor -prune -o -name '*_test.go' -print) | sort -u)
   workingDirectory: '$(sdkPath)'
   displayName: 'Run Tests'
-- script: go run ./tools/apidiff/main.go packages ./services FETCH_HEAD~1 FETCH_HEAD --copyrepo --breakingchanges || $IGNORE_BREAKING_CHANGES
-  workingDirectory: '$(sdkPath)'
-  displayName: 'Display Breaking Changes'
 - script: go run ./tools/pkgchk/main.go ./services --exceptions ./tools/pkgchk/exceptions.txt
   workingDirectory: '$(sdkPath)'
   displayName: 'Verify Package Directory'

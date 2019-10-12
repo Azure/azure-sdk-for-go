@@ -7,7 +7,7 @@ variables:
   sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
 
 trigger:
-  batch: true
+  batch: false
   branches:
     include:
       - master

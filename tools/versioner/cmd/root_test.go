@@ -15,12 +15,28 @@
 package cmd
 
 import (
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
 )
 
+func cleanTestData() {
+	cmd := exec.Command("git", "clean", "-xdf", "../../testdata")
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		panic(string(output))
+	}
+	cmd = exec.Command("git", "checkout", "--", "../../testdata")
+	output, err = cmd.CombinedOutput()
+	if err != nil {
+		panic(string(output))
+	}
+}
+
 func Test_findAllSubDirectories(t *testing.T) {
+	cleanTestData()
+	defer cleanTestData()
 	expected := []string{
 		"../../testdata/scenarioa/foo/stage",
 		"../../testdata/scenariob/foo/stage",

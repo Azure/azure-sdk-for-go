@@ -60,6 +60,8 @@ func Version() string {
 // tag: %s
 `
 
+const goVersion = `go 1.12`
+
 func Test_getTags(t *testing.T) {
 	if os.Getenv("TRAVIS") == "true" {
 		// travis does a shallow clone so tag count is not consistent
@@ -268,7 +270,7 @@ func (b byteBufferSeeker) Seek(offset int64, whence int) (int64, error) {
 
 func Test_updateGoModVerA(t *testing.T) {
 	// updates from v1 to v2
-	const before = "module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo\n\ngo 1.12\n"
+	before := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo\n\n%s\n", goVersion)
 	buf := byteBufferSeeker{
 		buf: bytes.NewBuffer([]byte(before)),
 	}
@@ -276,7 +278,7 @@ func Test_updateGoModVerA(t *testing.T) {
 	if err != nil {
 		t.Fatalf("updateGoModVerA failed: %v", err)
 	}
-	const after = "module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2\n\ngo 1.12\n"
+	after := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2\n\n%s\n", goVersion)
 	if !strings.EqualFold(buf.buf.String(), after) {
 		t.Fatalf("bad go.mod update, epected %s got %s", after, buf.buf.String())
 	}
@@ -284,7 +286,7 @@ func Test_updateGoModVerA(t *testing.T) {
 
 func Test_updateGoModVerB(t *testing.T) {
 	// updates from v2 to v3
-	const before = "module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2\n\ngo 1.12\n"
+	before := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v2\n\n%s\n", goVersion)
 	buf := byteBufferSeeker{
 		buf: bytes.NewBuffer([]byte(before)),
 	}
@@ -292,7 +294,7 @@ func Test_updateGoModVerB(t *testing.T) {
 	if err != nil {
 		t.Fatalf("updateGoModVerA failed: %v", err)
 	}
-	const after = "module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v3\n\ngo 1.12\n"
+	after := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/services/foo/mgmt/2019-05-01/foo/v3\n\n%s\n", goVersion)
 	if !strings.EqualFold(buf.buf.String(), after) {
 		t.Fatalf("bad go.mod update, epected %s got %s", after, buf.buf.String())
 	}
@@ -342,6 +344,18 @@ func verifyGoMod(t *testing.T, path, expected string) {
 	}
 }
 
+func verifyChangelog(t *testing.T, path string) {
+	if !fileExists(filepath.Join(path, "CHANGELOG.md")) {
+		t.Fatalf("expected changelog in %s", path)
+	}
+}
+
+func verifyNoChangelog(t *testing.T, path string) {
+	if fileExists(filepath.Join(path, "CHANGELOG.md")) {
+		t.Fatalf("unexpected changelog in %s", path)
+	}
+}
+
 func fileContentEquals(expected, content string) bool {
 	replacedContent := strings.ReplaceAll(content, "\r\n", "\n")
 	return strings.EqualFold(replacedContent, expected)
@@ -373,12 +387,10 @@ func Test_theCommandImplMajor(t *testing.T) {
 	if tag != expectedTag {
 		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
 	}
-	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariob/foo/v2\n\ngo 1.12\n"
+	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariob/foo/v2\n\n%s\n", goVersion)
 	verifyGoMod(t, "../../testdata/scenariob/foo/v2", expectedMod)
 	verifyVersion(t, "../../testdata/scenariob/foo/v2", "2.0.0", tag)
-	if !fileExists(filepath.Join("../../testdata/scenariob/foo/v2", "CHANGELOG.md")) {
-		t.Fatal("expected changelog in scenariob")
-	}
+	verifyChangelog(t, "../../testdata/scenariob/foo/v2")
 }
 
 // scenarioa
@@ -406,12 +418,10 @@ func Test_theCommandImplMinor(t *testing.T) {
 	if tag != expectedTag {
 		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
 	}
-	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioa/foo\n\ngo 1.12\n"
+	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioa/foo\n\n%s\n", goVersion)
 	verifyGoMod(t, "../../testdata/scenarioa/foo", expectedMod)
-	if !fileExists(filepath.Join("../../testdata/scenarioa/foo", "CHANGELOG.md")) {
-		t.Fatal("expected changelog in scenarioa")
-	}
 	verifyVersion(t, "../../testdata/scenarioa/foo", "1.1.0", tag)
+	verifyChangelog(t, "../../testdata/scenarioa/foo")
 }
 
 // scenarioc
@@ -439,12 +449,10 @@ func Test_theCommandImplPatch(t *testing.T) {
 	if tag != expected {
 		t.Fatalf("bad tag, expected '%s' got '%s'", expected, tag)
 	}
-	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioc/foo\n\ngo 1.12\n"
+	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioc/foo\n\n%s\n", goVersion)
 	verifyGoMod(t, "../../testdata/scenarioc/foo", expectedMod)
-	if !fileExists(filepath.Join("../../testdata/scenarioc/foo", "CHANGELOG.md")) {
-		t.Fatal("expected changelog in scenarioc")
-	}
 	verifyVersion(t, "../../testdata/scenarioc/foo", "1.0.1", tag)
+	verifyChangelog(t, "../../testdata/scenarioc/foo")
 }
 
 // scenariod
@@ -477,12 +485,10 @@ func Test_theCommandImplMajorV3(t *testing.T) {
 	if tag != expectedTag {
 		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
 	}
-	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariod/foo/v3\n\ngo 1.12\n"
+	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariod/foo/v3\n\n%s\n", goVersion)
 	verifyGoMod(t, "../../testdata/scenariod/foo/v3", expectedMod)
-	if !fileExists(filepath.Join("../../testdata/scenariod/foo/v3", "CHANGELOG.md")) {
-		t.Fatalf("expected changelog in scenariod")
-	}
 	verifyVersion(t, "../../testdata/scenariod/foo/v3", "3.0.0", tag)
+	verifyChangelog(t, "../../testdata/scenariod/foo/v3")
 }
 
 // scenarioe
@@ -513,12 +519,10 @@ func Test_theCommandImplMajorMinor(t *testing.T) {
 	if tag != expectedTag {
 		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
 	}
-	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioe/foo/v2\n\ngo 1.12\n"
+	 expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioe/foo/v2\n\n%s\n", goVersion)
 	verifyGoMod(t, "../../testdata/scenarioe/foo/v2", expectedMod)
-	if !fileExists(filepath.Join("../../testdata/scenarioe/foo/v2", "CHANGELOG.md")) {
-		t.Fatal("expected changelog in scenarioe")
-	}
 	verifyVersion(t, "../../testdata/scenarioe/foo/v2", "2.2.0", tag)
+	 verifyChangelog(t, "../../testdata/scenarioe/foo/v2")
 }
 
 // scenariof
@@ -544,10 +548,35 @@ func Test_theCommandImplNewMod(t *testing.T) {
 	if tag != expectedTag {
 		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
 	}
-	const expectedMod = "module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariof/foo\n\ngo 1.12\n"
+	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariof/foo\n\n%s\n", goVersion)
 	verifyGoMod(t, "../../testdata/scenariof/foo", expectedMod)
-	if fileExists(filepath.Join("../../testdata/scenariof/foo", "CHANGELOG.md")) {
-		t.Fatal("unexpected changelog in scenariof")
-	}
 	verifyVersion(t, "../../testdata/scenariof/foo", "1.0.0", tag)
+	verifyNoChangelog(t, "../../testdata/scenariof/foo")
+}
+
+// scenariog
+func Test_theCommandNewMgmtMajorV2(t *testing.T) {
+	cleanTestData()
+	defer cleanTestData()
+	getTagsHook = func(root string, prefix string) ([]string, error) {
+		if !strings.HasPrefix(prefix, "/testdata/scenariog/foo") {
+			return nil, fmt.Errorf("bad prefix '%s'", prefix)
+		}
+		return []string{
+			"/testdata/scenariog/foo/mgmt/2019-10-11/foo/v1.0.0",
+		}, nil
+	}
+	stage, err := filepath.Abs("../../testdata/scenariog/foo/mgmt/2019-10-11/foo/stage")
+	if err != nil {
+		t.Fatalf("failed: %v", err)
+	}
+	tag, err := theUnstageCommand([]string{stage})
+	const expectedTag = "tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v2.0.0"
+	if tag != expectedTag {
+		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
+	}
+	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenariog/foo/v2\n\n%s\n", goVersion)
+	verifyGoMod(t, "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2", expectedMod)
+	verifyVersion(t, "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2", "2.0.0", tag)
+	verifyChangelog(t, "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2")
 }

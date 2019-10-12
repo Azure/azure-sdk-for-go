@@ -23,6 +23,7 @@ import (
 	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 	"io"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -118,17 +119,24 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to open for read '%s': %v", goMod, err)
 	}
-	ver := modinfo.FindVersionSuffix(mod.DestDir())
+	dest := mod.DestDir()
+	ver := modinfo.FindVersionSuffix(dest)
 	if err = updateGoModVer(file, ver); err != nil {
 		file.Close()
 		return "", fmt.Errorf("failed to update go.mod file: %v", err)
 	}
 	// must close file before renaming directory
 	file.Close()
+	// calculate tags
 	var tag string
 	if tag, err = calculateModuleTag(nil, mod); err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %v", err)
 	}
+	// update import statement
+	if err := updateImportStatement(stage, dest, ver); err != nil {
+		return "", fmt.Errorf("failed to update import statements: %v", err)
+	}
+	// change version.go file
 	if err := updateVersion(stage, tag); err != nil {
 		return "", fmt.Errorf("failed to update version.go: %v", err)
 	}
@@ -274,7 +282,7 @@ func updateGoModVer(goMod io.ReadWriteSeeker, newVer string) error {
 	}
 	scanner := bufio.NewScanner(goMod)
 	scanner.Split(bufio.ScanLines)
-	lines := []string{}
+	lines := make([]string, 0)
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 	}
@@ -293,6 +301,97 @@ func updateGoModVer(goMod io.ReadWriteSeeker, newVer string) error {
 		fmt.Fprintln(goMod, line)
 	}
 	return nil
+}
+
+// traversal all go source files in the stage folder, and replace the import statement with new ones
+func updateImportStatement(stage, currentPath, ver string) error {
+	index := strings.Index(currentPath, "github.com")
+	if index < 0 {
+		return fmt.Errorf("github.com does not find in path '%s', this should never happen", currentPath)
+	}
+	newImport := strings.ReplaceAll(currentPath[index:], "\\", "/")
+	oldImport := newImport[:strings.LastIndex(newImport, "/"+ver)]
+	printf("Attempting to replace import statement from '%s' to '%s'\n", oldImport, newImport)
+	files, err := findAllFilesContainImportStatement(stage, oldImport)
+	if err != nil {
+		return err
+	}
+	printf("Found %d files with import statement of '%s'\n", len(files), oldImport)
+	vprintf("Files: \n%s", strings.Join(files, "\n"))
+	err = replaceImportStatement(files, oldImport, newImport)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func findAllFilesContainImportStatement(path, importStatement string) ([]string, error) {
+	files := make([]string, 0) // files stores filenames for those content contained the given import statements
+	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && strings.HasSuffix(info.Name(), ".go") {
+			// read every line of this file
+			file, err := os.Open(path)
+			defer file.Close()
+			if err != nil {
+				return fmt.Errorf("failed to open file '%s': %v", path, err)
+			}
+			scanner := bufio.NewScanner(file)
+			scanner.Split(bufio.ScanLines)
+			for scanner.Scan() {
+				line := scanner.Text()
+				if strings.Index(line, importStatement) > -1 {
+					files = append(files, path)
+				}
+			}
+			return nil
+		}
+		return nil
+	})
+	return files, err
+}
+
+func replaceImportStatement(files []string, oldImport, newImport string) error {
+	for _, file := range files {
+		err := replaceImportInFile(file, oldImport, newImport)
+		if err != nil {
+			return fmt.Errorf("failed to preform replace in file '%s'", file)
+		}
+	}
+	return nil
+}
+
+func replaceImportInFile(filepath, oldContent, newContent string) error {
+	bytes, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return fmt.Errorf("failed to open file '%s': %v", filepath, err)
+	}
+	content := string(bytes)
+	importStatements, err := findImportStatements(content)
+	if err != nil {
+		return err
+	}
+	newImportStatements := strings.ReplaceAll(importStatements, oldContent, newContent)
+	newFileContent := strings.ReplaceAll(content, importStatements, newImportStatements)
+	if err := ioutil.WriteFile(filepath, []byte(newFileContent), 0755); err != nil {
+		return err
+	}
+	return nil
+}
+
+func findImportStatements(content string) (string, error) {
+	oneLineImport := regexp.MustCompile(`import ".*"`)
+	if oneLineImport.MatchString(content) {
+		return oneLineImport.FindString(content), nil
+	}
+	multiLineRegex := `(?s)import \(\r?\n(\s*\".*\"\r?\n)+\s*\)`
+	multiLineImport := regexp.MustCompile(multiLineRegex)
+	if multiLineImport.MatchString(content) {
+		return multiLineImport.FindString(content), nil
+	}
+	return "", fmt.Errorf("failed to match import statement")
 }
 
 func writeChangelog(stage string, mod modinfo.Provider) error {

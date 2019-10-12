@@ -21,3 +21,9 @@ type Gateway struct {
 	// ID ...
 	ID *int
 }
+
+// Something ...
+type Something struct {
+	// Name ...
+	Name *string
+}

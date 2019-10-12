@@ -30,5 +30,5 @@ func NewGatewaysClientWithBaseURI(baseURI string, subscriptionID string) Gateway
 }
 
 func (client GatewaysClient) CreateOrUpdate(resGroup string, parameters Gateway) error {
-	return  nil
+	return nil
 }

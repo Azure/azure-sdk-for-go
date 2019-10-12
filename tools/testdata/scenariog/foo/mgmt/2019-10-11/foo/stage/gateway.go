@@ -34,3 +34,7 @@ func NewGatewaysClientWithBaseURI(baseURI string, subscriptionID string) Gateway
 func (client *GatewaysClient) CreateOrUpdate(ctx context.Context, resGroup string, parameters Gateway) error {
 	return nil
 }
+
+func (client *GatewaysClient) DoSomething(ctx context.Context, something Something) error {
+	return nil
+}

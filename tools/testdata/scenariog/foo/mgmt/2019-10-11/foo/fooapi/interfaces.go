@@ -16,6 +16,7 @@ package fooapi
 
 import "github.com/Azure/azure-sdk-for-go/tools/testdata/scenariog/foo/mgmt/2019-10-11/foo"
 
+// GatewaysClientAPI ...
 type GatewaysClientAPI interface {
 	CreateOrUpdate(resGroup string, parameters foo.Gateway) error
 }

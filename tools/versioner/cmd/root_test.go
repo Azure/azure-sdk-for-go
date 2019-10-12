@@ -28,6 +28,7 @@ func Test_findAllSubDirectories(t *testing.T) {
 		"../../testdata/scenariod/foo/stage",
 		"../../testdata/scenarioe/foo/stage",
 		"../../testdata/scenariof/foo/stage",
+		"../../testdata/scenariog/foo/mgmt/2019-10-11/foo/stage",
 	}
 	root, err := filepath.Abs("../../testdata")
 	if err != nil {

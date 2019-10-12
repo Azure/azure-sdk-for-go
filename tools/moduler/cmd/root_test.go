@@ -80,6 +80,10 @@ func Test_findAllVersionFiles(t *testing.T) {
 		"../../testdata/scenarioe/foo/version.go",
 		"../../testdata/scenarioe/foo/v2/version.go",
 		"../../testdata/scenariof/foo/version.go",
+		"../../testdata/scenariog/foo/mgmt/2019-10-11/foo/version.go",
+		"../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2/version.go",
+		"../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/version.go",
+		"../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2/version.go",
 	}
 	root, err := filepath.Abs("../../testdata")
 	if err != nil {
@@ -157,6 +161,8 @@ func Test_readNewTags(t *testing.T) {
 		"tools/testdata/scenariod/foo/v3.0.0",
 		"tools/testdata/scenarioe/foo/v2.2.0",
 		"tools/testdata/scenariof/foo/v1.0.0",
+		"tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v2.0.0",
+		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2.0.0",
 	}
 	root, err := filepath.Abs("../../testdata")
 	if err != nil {

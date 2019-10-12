@@ -24,6 +24,7 @@ import (
 	"github.com/spf13/cobra"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -82,6 +83,10 @@ func theUnstageCommand(args []string) (string, error) {
 			return "", fmt.Errorf("the string '%s' is not a valid module version", args[1])
 		}
 		startingModVer = args[1]
+	}
+	// format stage folder first to avoid unnecessary changes detected by apidiff
+	if err := formatCode(stage); err != nil {
+		return "", fmt.Errorf("failed to format stage folder: %v", err)
 	}
 	lmv, err := findLatestMajorVersion(stage)
 	if err != nil {
@@ -308,6 +313,14 @@ func writeChangelog(stage string, mod modinfo.Provider) error {
 	}
 	_, err = log.WriteString(rpt.ToMarkdown())
 	return err
+}
+
+func formatCode(folder string) error {
+	c := exec.Command("gofmt", "-w", folder)
+	if output, err := c.CombinedOutput(); err != nil {
+		return errors.New(string(output))
+	}
+	return nil
 }
 
 // returns a slice of tags for the specified repo and tag prefix

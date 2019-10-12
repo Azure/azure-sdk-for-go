@@ -386,7 +386,7 @@ func findImportStatements(content string) (string, error) {
 	if oneLineImport.MatchString(content) {
 		return oneLineImport.FindString(content), nil
 	}
-	multiLineRegex := `(?s)import \(\r?\n(\s*\".*\"\r?\n)+\s*\)`
+	multiLineRegex := `import \(\r?\n(\s*\".*\"\r?\n)+\s*\)`
 	multiLineImport := regexp.MustCompile(multiLineRegex)
 	if multiLineImport.MatchString(content) {
 		return multiLineImport.FindString(content), nil

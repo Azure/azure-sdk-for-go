@@ -300,19 +300,6 @@ func Test_updateGoModVerB(t *testing.T) {
 	}
 }
 
-func cleanTestData() {
-	cmd := exec.Command("git", "clean", "-xdf", "../../testdata")
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		panic(string(output))
-	}
-	cmd = exec.Command("git", "checkout", "--", "../../testdata")
-	output, err = cmd.CombinedOutput()
-	if err != nil {
-		panic(string(output))
-	}
-}
-
 func fileExists(path string) bool {
 	_, err := os.Stat(path)
 	if err == nil {
@@ -356,6 +343,34 @@ func verifyNoChangelog(t *testing.T, path string) {
 	}
 }
 
+func verifyGoVet(t *testing.T, root string) {
+	root, err := filepath.Abs(root)
+	if err != nil {
+		t.Fatalf("failed to get absolute path: %v", err)
+	}
+	folders := make([]string, 0)
+	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			pkg := path[strings.Index(path, "github.com"):]
+			folders = append(folders, pkg)
+			return nil
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("failed to list all sub-folders in root '%s': %v", root, err)
+	}
+	for _, folder := range folders {
+		c := exec.Command("go", "vet", folder)
+		if output, err := c.CombinedOutput(); err != nil {
+			t.Fatalf("vet failed: %s", string(output))
+		}
+	}
+}
+
 func fileContentEquals(expected, content string) bool {
 	replacedContent := strings.ReplaceAll(content, "\r\n", "\n")
 	return strings.EqualFold(replacedContent, expected)
@@ -391,6 +406,7 @@ func Test_theCommandImplMajor(t *testing.T) {
 	verifyGoMod(t, "../../testdata/scenariob/foo/v2", expectedMod)
 	verifyVersion(t, "../../testdata/scenariob/foo/v2", "2.0.0", tag)
 	verifyChangelog(t, "../../testdata/scenariob/foo/v2")
+	verifyGoVet(t, "../../testdata/scenariob/foo")
 }
 
 // scenarioa
@@ -422,6 +438,7 @@ func Test_theCommandImplMinor(t *testing.T) {
 	verifyGoMod(t, "../../testdata/scenarioa/foo", expectedMod)
 	verifyVersion(t, "../../testdata/scenarioa/foo", "1.1.0", tag)
 	verifyChangelog(t, "../../testdata/scenarioa/foo")
+	verifyGoVet(t, "../../testdata/scenarioa/foo")
 }
 
 // scenarioc
@@ -453,6 +470,7 @@ func Test_theCommandImplPatch(t *testing.T) {
 	verifyGoMod(t, "../../testdata/scenarioc/foo", expectedMod)
 	verifyVersion(t, "../../testdata/scenarioc/foo", "1.0.1", tag)
 	verifyChangelog(t, "../../testdata/scenarioc/foo")
+	verifyGoVet(t, "../../testdata/scenarioc/foo")
 }
 
 // scenariod
@@ -489,6 +507,7 @@ func Test_theCommandImplMajorV3(t *testing.T) {
 	verifyGoMod(t, "../../testdata/scenariod/foo/v3", expectedMod)
 	verifyVersion(t, "../../testdata/scenariod/foo/v3", "3.0.0", tag)
 	verifyChangelog(t, "../../testdata/scenariod/foo/v3")
+	verifyGoVet(t, "../../testdata/scenariod/foo")
 }
 
 // scenarioe
@@ -523,6 +542,7 @@ func Test_theCommandImplMajorMinor(t *testing.T) {
 	verifyGoMod(t, "../../testdata/scenarioe/foo/v2", expectedMod)
 	verifyVersion(t, "../../testdata/scenarioe/foo/v2", "2.2.0", tag)
 	verifyChangelog(t, "../../testdata/scenarioe/foo/v2")
+	verifyGoVet(t, "../../testdata/scenarioe/foo")
 }
 
 // scenariof
@@ -552,6 +572,7 @@ func Test_theCommandImplNewMod(t *testing.T) {
 	verifyGoMod(t, "../../testdata/scenariof/foo", expectedMod)
 	verifyVersion(t, "../../testdata/scenariof/foo", "1.0.0", tag)
 	verifyNoChangelog(t, "../../testdata/scenariof/foo")
+	verifyGoVet(t, "../../testdata/scenariof/foo")
 }
 
 // scenariog
@@ -571,6 +592,9 @@ func Test_theCommandNewMgmtMajorV2(t *testing.T) {
 		t.Fatalf("failed: %v", err)
 	}
 	tag, err := theUnstageCommand([]string{stage})
+	if err != nil {
+		t.Fatalf("failed: %v", err)
+	}
 	const expectedTag = "tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v2.0.0"
 	if tag != expectedTag {
 		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
@@ -579,4 +603,5 @@ func Test_theCommandNewMgmtMajorV2(t *testing.T) {
 	verifyGoMod(t, "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2", expectedMod)
 	verifyVersion(t, "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2", "2.0.0", tag)
 	verifyChangelog(t, "../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2")
+	verifyGoVet(t, "../../testdata/scenariog/foo/mgmt/2019-10-11/foo")
 }

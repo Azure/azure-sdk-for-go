@@ -519,10 +519,10 @@ func Test_theCommandImplMajorMinor(t *testing.T) {
 	if tag != expectedTag {
 		t.Fatalf("bad tag, expected '%s' got '%s'", expectedTag, tag)
 	}
-	 expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioe/foo/v2\n\n%s\n", goVersion)
+	expectedMod := fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioe/foo/v2\n\n%s\n", goVersion)
 	verifyGoMod(t, "../../testdata/scenarioe/foo/v2", expectedMod)
 	verifyVersion(t, "../../testdata/scenarioe/foo/v2", "2.2.0", tag)
-	 verifyChangelog(t, "../../testdata/scenarioe/foo/v2")
+	verifyChangelog(t, "../../testdata/scenarioe/foo/v2")
 }
 
 // scenariof

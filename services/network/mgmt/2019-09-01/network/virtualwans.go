@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -56,6 +57,12 @@ func (client VirtualWansClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualWansClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualWANName, wANParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWansClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -136,6 +143,12 @@ func (client VirtualWansClient) Delete(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualWansClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualWANName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWansClient", "Delete", nil, "Failure preparing request")
@@ -212,6 +225,12 @@ func (client VirtualWansClient) Get(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualWansClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualWANName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWansClient", "Get", nil, "Failure preparing request")
@@ -286,6 +305,12 @@ func (client VirtualWansClient) List(ctx context.Context) (result ListVirtualWAN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualWansClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
@@ -398,6 +423,12 @@ func (client VirtualWansClient) ListByResourceGroup(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualWansClient", "ListByResourceGroup", err.Error())
+	}
+
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -513,6 +544,12 @@ func (client VirtualWansClient) UpdateTags(ctx context.Context, resourceGroupNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualWansClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, virtualWANName, wANParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWansClient", "UpdateTags", nil, "Failure preparing request")

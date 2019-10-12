@@ -65,7 +65,9 @@ func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdate(ctx context.Conte
 					Chain: []validation.Constraint{{Target: "peeringParameters.ExpressRouteCircuitPeeringPropertiesFormat.PeerASN", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
 						{Target: "peeringParameters.ExpressRouteCircuitPeeringPropertiesFormat.PeerASN", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 					}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.ExpressRouteCircuitPeeringsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -152,6 +154,12 @@ func (client ExpressRouteCircuitPeeringsClient) Delete(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitPeeringsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, circuitName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsClient", "Delete", nil, "Failure preparing request")
@@ -230,6 +238,12 @@ func (client ExpressRouteCircuitPeeringsClient) Get(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitPeeringsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, circuitName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitPeeringsClient", "Get", nil, "Failure preparing request")
@@ -308,6 +322,12 @@ func (client ExpressRouteCircuitPeeringsClient) List(ctx context.Context, resour
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitPeeringsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, circuitName)
 	if err != nil {

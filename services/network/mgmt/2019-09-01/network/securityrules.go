@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -57,6 +58,12 @@ func (client SecurityRulesClient) CreateOrUpdate(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SecurityRulesClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, networkSecurityGroupName, securityRuleName, securityRuleParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityRulesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -138,6 +145,12 @@ func (client SecurityRulesClient) Delete(ctx context.Context, resourceGroupName 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SecurityRulesClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, networkSecurityGroupName, securityRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityRulesClient", "Delete", nil, "Failure preparing request")
@@ -216,6 +229,12 @@ func (client SecurityRulesClient) Get(ctx context.Context, resourceGroupName str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SecurityRulesClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, networkSecurityGroupName, securityRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SecurityRulesClient", "Get", nil, "Failure preparing request")
@@ -294,6 +313,12 @@ func (client SecurityRulesClient) List(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SecurityRulesClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, networkSecurityGroupName)
 	if err != nil {

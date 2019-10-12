@@ -62,7 +62,9 @@ func (client WatchersClient) CheckConnectivity(ctx context.Context, resourceGrou
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Source", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.Source.ResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
-				{Target: "parameters.Destination", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "parameters.Destination", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "CheckConnectivity", err.Error())
 	}
 
@@ -146,6 +148,12 @@ func (client WatchersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WatchersClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, networkWatcherName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -225,6 +233,12 @@ func (client WatchersClient) Delete(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WatchersClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, networkWatcherName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "Delete", nil, "Failure preparing request")
@@ -301,6 +315,12 @@ func (client WatchersClient) Get(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WatchersClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, networkWatcherName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "Get", nil, "Failure preparing request")
@@ -385,7 +405,9 @@ func (client WatchersClient) GetAzureReachabilityReport(ctx context.Context, res
 			Constraints: []validation.Constraint{{Target: "parameters.ProviderLocation", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.ProviderLocation.Country", Name: validation.Null, Rule: true, Chain: nil}}},
 				{Target: "parameters.StartTime", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.EndTime", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "parameters.EndTime", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "GetAzureReachabilityReport", err.Error())
 	}
 
@@ -471,7 +493,9 @@ func (client WatchersClient) GetFlowLogStatus(ctx context.Context, resourceGroup
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "GetFlowLogStatus", err.Error())
 	}
 
@@ -562,7 +586,9 @@ func (client WatchersClient) GetNetworkConfigurationDiagnostic(ctx context.Conte
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.Profiles", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "parameters.Profiles", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "GetNetworkConfigurationDiagnostic", err.Error())
 	}
 
@@ -650,7 +676,9 @@ func (client WatchersClient) GetNextHop(ctx context.Context, resourceGroupName s
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.SourceIPAddress", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.DestinationIPAddress", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "parameters.DestinationIPAddress", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "GetNextHop", err.Error())
 	}
 
@@ -734,6 +762,12 @@ func (client WatchersClient) GetTopology(ctx context.Context, resourceGroupName 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WatchersClient", "GetTopology", err.Error())
+	}
+
 	req, err := client.GetTopologyPreparer(ctx, resourceGroupName, networkWatcherName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetTopology", nil, "Failure preparing request")
@@ -820,7 +854,9 @@ func (client WatchersClient) GetTroubleshooting(ctx context.Context, resourceGro
 				{Target: "parameters.TroubleshootingProperties", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "parameters.TroubleshootingProperties.StorageID", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "parameters.TroubleshootingProperties.StoragePath", Name: validation.Null, Rule: true, Chain: nil},
-					}}}}}); err != nil {
+					}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "GetTroubleshooting", err.Error())
 	}
 
@@ -906,7 +942,9 @@ func (client WatchersClient) GetTroubleshootingResult(ctx context.Context, resou
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "GetTroubleshootingResult", err.Error())
 	}
 
@@ -992,7 +1030,9 @@ func (client WatchersClient) GetVMSecurityRules(ctx context.Context, resourceGro
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "GetVMSecurityRules", err.Error())
 	}
 
@@ -1074,6 +1114,12 @@ func (client WatchersClient) List(ctx context.Context, resourceGroupName string)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WatchersClient", "List", err.Error())
+	}
+
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "List", nil, "Failure preparing request")
@@ -1147,6 +1193,12 @@ func (client WatchersClient) ListAll(ctx context.Context) (result WatcherListRes
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WatchersClient", "ListAll", err.Error())
+	}
+
 	req, err := client.ListAllPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "ListAll", nil, "Failure preparing request")
@@ -1223,6 +1275,12 @@ func (client WatchersClient) ListAvailableProviders(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WatchersClient", "ListAvailableProviders", err.Error())
+	}
+
 	req, err := client.ListAvailableProvidersPreparer(ctx, resourceGroupName, networkWatcherName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "ListAvailableProviders", nil, "Failure preparing request")
@@ -1313,7 +1371,9 @@ func (client WatchersClient) SetFlowLogConfiguration(ctx context.Context, resour
 				{Target: "parameters.FlowAnalyticsConfiguration", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration", Name: validation.Null, Rule: true,
 						Chain: []validation.Constraint{{Target: "parameters.FlowAnalyticsConfiguration.NetworkWatcherFlowAnalyticsConfiguration.Enabled", Name: validation.Null, Rule: true, Chain: nil}}},
-					}}}}}); err != nil {
+					}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "SetFlowLogConfiguration", err.Error())
 	}
 
@@ -1397,6 +1457,12 @@ func (client WatchersClient) UpdateTags(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WatchersClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, networkWatcherName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WatchersClient", "UpdateTags", nil, "Failure preparing request")
@@ -1483,7 +1549,9 @@ func (client WatchersClient) VerifyIPFlow(ctx context.Context, resourceGroupName
 				{Target: "parameters.LocalPort", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.RemotePort", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "parameters.LocalIPAddress", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.RemoteIPAddress", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "parameters.RemoteIPAddress", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WatchersClient", "VerifyIPFlow", err.Error())
 	}
 

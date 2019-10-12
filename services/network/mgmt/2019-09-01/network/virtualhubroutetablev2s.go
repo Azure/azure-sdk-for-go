@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -58,6 +59,12 @@ func (client VirtualHubRouteTableV2sClient) CreateOrUpdate(ctx context.Context, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualHubRouteTableV2sClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -140,6 +147,12 @@ func (client VirtualHubRouteTableV2sClient) Delete(ctx context.Context, resource
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualHubRouteTableV2sClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualHubName, routeTableName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sClient", "Delete", nil, "Failure preparing request")
@@ -218,6 +231,12 @@ func (client VirtualHubRouteTableV2sClient) Get(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualHubRouteTableV2sClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualHubName, routeTableName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sClient", "Get", nil, "Failure preparing request")
@@ -296,6 +315,12 @@ func (client VirtualHubRouteTableV2sClient) List(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualHubRouteTableV2sClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, virtualHubName)
 	if err != nil {

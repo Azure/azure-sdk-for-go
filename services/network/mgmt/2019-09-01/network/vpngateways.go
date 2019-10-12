@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -56,6 +57,12 @@ func (client VpnGatewaysClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VpnGatewaysClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, gatewayName, vpnGatewayParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnGatewaysClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -136,6 +143,12 @@ func (client VpnGatewaysClient) Delete(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VpnGatewaysClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnGatewaysClient", "Delete", nil, "Failure preparing request")
@@ -212,6 +225,12 @@ func (client VpnGatewaysClient) Get(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VpnGatewaysClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnGatewaysClient", "Get", nil, "Failure preparing request")
@@ -286,6 +305,12 @@ func (client VpnGatewaysClient) List(ctx context.Context) (result ListVpnGateway
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VpnGatewaysClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
@@ -398,6 +423,12 @@ func (client VpnGatewaysClient) ListByResourceGroup(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VpnGatewaysClient", "ListByResourceGroup", err.Error())
+	}
+
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -512,6 +543,12 @@ func (client VpnGatewaysClient) Reset(ctx context.Context, resourceGroupName str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VpnGatewaysClient", "Reset", err.Error())
+	}
+
 	req, err := client.ResetPreparer(ctx, resourceGroupName, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnGatewaysClient", "Reset", nil, "Failure preparing request")
@@ -590,6 +627,12 @@ func (client VpnGatewaysClient) UpdateTags(ctx context.Context, resourceGroupNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VpnGatewaysClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, gatewayName, vpnGatewayParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VpnGatewaysClient", "UpdateTags", nil, "Failure preparing request")

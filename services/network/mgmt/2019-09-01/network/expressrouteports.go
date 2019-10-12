@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -56,6 +57,12 @@ func (client ExpressRoutePortsClient) CreateOrUpdate(ctx context.Context, resour
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRoutePortsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, expressRoutePortName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -136,6 +143,12 @@ func (client ExpressRoutePortsClient) Delete(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRoutePortsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, expressRoutePortName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "Delete", nil, "Failure preparing request")
@@ -212,6 +225,12 @@ func (client ExpressRoutePortsClient) Get(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRoutePortsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, expressRoutePortName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "Get", nil, "Failure preparing request")
@@ -286,6 +305,12 @@ func (client ExpressRoutePortsClient) List(ctx context.Context) (result ExpressR
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRoutePortsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
@@ -398,6 +423,12 @@ func (client ExpressRoutePortsClient) ListByResourceGroup(ctx context.Context, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRoutePortsClient", "ListByResourceGroup", err.Error())
+	}
+
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -513,6 +544,12 @@ func (client ExpressRoutePortsClient) UpdateTags(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRoutePortsClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, expressRoutePortName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsClient", "UpdateTags", nil, "Failure preparing request")

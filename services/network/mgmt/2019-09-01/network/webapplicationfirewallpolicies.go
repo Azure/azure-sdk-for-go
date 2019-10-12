@@ -61,6 +61,8 @@ func (client WebApplicationFirewallPoliciesClient) CreateOrUpdate(ctx context.Co
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: policyName,
 			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.WebApplicationFirewallPolicyPropertiesFormat", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.WebApplicationFirewallPolicyPropertiesFormat.PolicySettings", Name: validation.Null, Rule: false,
@@ -158,7 +160,9 @@ func (client WebApplicationFirewallPoliciesClient) Delete(ctx context.Context, r
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: policyName,
-			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WebApplicationFirewallPoliciesClient", "Delete", err.Error())
 	}
 
@@ -240,7 +244,9 @@ func (client WebApplicationFirewallPoliciesClient) Get(ctx context.Context, reso
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: policyName,
-			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "policyName", Name: validation.MaxLength, Rule: 128, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.WebApplicationFirewallPoliciesClient", "Get", err.Error())
 	}
 
@@ -320,6 +326,12 @@ func (client WebApplicationFirewallPoliciesClient) List(ctx context.Context, res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WebApplicationFirewallPoliciesClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -431,6 +443,12 @@ func (client WebApplicationFirewallPoliciesClient) ListAll(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.WebApplicationFirewallPoliciesClient", "ListAll", err.Error())
+	}
+
 	result.fn = client.listAllNextResults
 	req, err := client.ListAllPreparer(ctx)
 	if err != nil {

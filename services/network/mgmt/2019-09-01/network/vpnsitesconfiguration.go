@@ -58,6 +58,8 @@ func (client VpnSitesConfigurationClient) Download(ctx context.Context, resource
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: request,
 			Constraints: []validation.Constraint{{Target: "request.OutputBlobSasURL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.VpnSitesConfigurationClient", "Download", err.Error())

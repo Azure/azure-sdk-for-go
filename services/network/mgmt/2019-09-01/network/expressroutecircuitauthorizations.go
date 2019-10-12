@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -60,6 +61,12 @@ func (client ExpressRouteCircuitAuthorizationsClient) CreateOrUpdate(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitAuthorizationsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, circuitName, authorizationName, authorizationParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -143,6 +150,12 @@ func (client ExpressRouteCircuitAuthorizationsClient) Delete(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitAuthorizationsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, circuitName, authorizationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsClient", "Delete", nil, "Failure preparing request")
@@ -221,6 +234,12 @@ func (client ExpressRouteCircuitAuthorizationsClient) Get(ctx context.Context, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitAuthorizationsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, circuitName, authorizationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitAuthorizationsClient", "Get", nil, "Failure preparing request")
@@ -299,6 +318,12 @@ func (client ExpressRouteCircuitAuthorizationsClient) List(ctx context.Context, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitAuthorizationsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, circuitName)
 	if err != nil {

@@ -57,6 +57,12 @@ func (client VirtualNetworksClient) CheckIPAddressAvailability(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworksClient", "CheckIPAddressAvailability", err.Error())
+	}
+
 	req, err := client.CheckIPAddressAvailabilityPreparer(ctx, resourceGroupName, virtualNetworkName, IPAddress)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "CheckIPAddressAvailability", nil, "Failure preparing request")
@@ -141,7 +147,9 @@ func (client VirtualNetworksClient) CreateOrUpdate(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "parameters.VirtualNetworkPropertiesFormat", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkPropertiesFormat.BgpCommunities", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkPropertiesFormat.BgpCommunities.VirtualNetworkCommunity", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.VirtualNetworksClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -224,6 +232,12 @@ func (client VirtualNetworksClient) Delete(ctx context.Context, resourceGroupNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworksClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualNetworkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "Delete", nil, "Failure preparing request")
@@ -301,6 +315,12 @@ func (client VirtualNetworksClient) Get(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworksClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualNetworkName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "Get", nil, "Failure preparing request")
@@ -380,6 +400,12 @@ func (client VirtualNetworksClient) List(ctx context.Context, resourceGroupName 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworksClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -491,6 +517,12 @@ func (client VirtualNetworksClient) ListAll(ctx context.Context) (result Virtual
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworksClient", "ListAll", err.Error())
+	}
+
 	result.fn = client.listAllNextResults
 	req, err := client.ListAllPreparer(ctx)
 	if err != nil {
@@ -604,6 +636,12 @@ func (client VirtualNetworksClient) ListUsage(ctx context.Context, resourceGroup
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworksClient", "ListUsage", err.Error())
+	}
+
 	result.fn = client.listUsageNextResults
 	req, err := client.ListUsagePreparer(ctx, resourceGroupName, virtualNetworkName)
 	if err != nil {
@@ -720,6 +758,12 @@ func (client VirtualNetworksClient) UpdateTags(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworksClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, virtualNetworkName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworksClient", "UpdateTags", nil, "Failure preparing request")

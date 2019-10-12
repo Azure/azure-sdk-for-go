@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -56,6 +57,12 @@ func (client LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.LoadBalancersClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, loadBalancerName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -135,6 +142,12 @@ func (client LoadBalancersClient) Delete(ctx context.Context, resourceGroupName 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.LoadBalancersClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, loadBalancerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersClient", "Delete", nil, "Failure preparing request")
@@ -212,6 +225,12 @@ func (client LoadBalancersClient) Get(ctx context.Context, resourceGroupName str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.LoadBalancersClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, loadBalancerName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersClient", "Get", nil, "Failure preparing request")
@@ -291,6 +310,12 @@ func (client LoadBalancersClient) List(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.LoadBalancersClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -402,6 +427,12 @@ func (client LoadBalancersClient) ListAll(ctx context.Context) (result LoadBalan
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.LoadBalancersClient", "ListAll", err.Error())
+	}
+
 	result.fn = client.listAllNextResults
 	req, err := client.ListAllPreparer(ctx)
 	if err != nil {
@@ -516,6 +547,12 @@ func (client LoadBalancersClient) UpdateTags(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.LoadBalancersClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, loadBalancerName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersClient", "UpdateTags", nil, "Failure preparing request")

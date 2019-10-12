@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -59,6 +60,12 @@ func (client ServiceEndpointPolicyDefinitionsClient) CreateOrUpdate(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ServiceEndpointPolicyDefinitionsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ServiceEndpointPolicyDefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -140,6 +147,12 @@ func (client ServiceEndpointPolicyDefinitionsClient) Delete(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ServiceEndpointPolicyDefinitionsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ServiceEndpointPolicyDefinitionsClient", "Delete", nil, "Failure preparing request")
@@ -218,6 +231,12 @@ func (client ServiceEndpointPolicyDefinitionsClient) Get(ctx context.Context, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ServiceEndpointPolicyDefinitionsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ServiceEndpointPolicyDefinitionsClient", "Get", nil, "Failure preparing request")
@@ -296,6 +315,12 @@ func (client ServiceEndpointPolicyDefinitionsClient) ListByResourceGroup(ctx con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ServiceEndpointPolicyDefinitionsClient", "ListByResourceGroup", err.Error())
+	}
+
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, serviceEndpointPolicyName)
 	if err != nil {

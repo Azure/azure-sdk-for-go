@@ -64,7 +64,9 @@ func (client VirtualRoutersClient) CreateOrUpdate(ctx context.Context, resourceG
 					Chain: []validation.Constraint{{Target: "parameters.VirtualRouterPropertiesFormat.VirtualRouterAsn", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
 						{Target: "parameters.VirtualRouterPropertiesFormat.VirtualRouterAsn", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 					}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.VirtualRoutersClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -148,6 +150,12 @@ func (client VirtualRoutersClient) Delete(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualRoutersClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualRouterName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualRoutersClient", "Delete", nil, "Failure preparing request")
@@ -225,6 +233,12 @@ func (client VirtualRoutersClient) Get(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualRoutersClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualRouterName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualRoutersClient", "Get", nil, "Failure preparing request")
@@ -302,6 +316,12 @@ func (client VirtualRoutersClient) List(ctx context.Context) (result VirtualRout
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualRoutersClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
@@ -414,6 +434,12 @@ func (client VirtualRoutersClient) ListByResourceGroup(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualRoutersClient", "ListByResourceGroup", err.Error())
+	}
+
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -529,6 +555,12 @@ func (client VirtualRoutersClient) Update(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualRoutersClient", "Update", err.Error())
+	}
+
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, virtualRouterName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualRoutersClient", "Update", nil, "Failure preparing request")

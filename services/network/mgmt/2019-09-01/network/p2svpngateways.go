@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -56,6 +57,12 @@ func (client P2sVpnGatewaysClient) CreateOrUpdate(ctx context.Context, resourceG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.P2sVpnGatewaysClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, gatewayName, p2SVpnGatewayParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -136,6 +143,12 @@ func (client P2sVpnGatewaysClient) Delete(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.P2sVpnGatewaysClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysClient", "Delete", nil, "Failure preparing request")
@@ -213,6 +226,12 @@ func (client P2sVpnGatewaysClient) GenerateVpnProfile(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.P2sVpnGatewaysClient", "GenerateVpnProfile", err.Error())
+	}
+
 	req, err := client.GenerateVpnProfilePreparer(ctx, resourceGroupName, gatewayName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysClient", "GenerateVpnProfile", nil, "Failure preparing request")
@@ -292,6 +311,12 @@ func (client P2sVpnGatewaysClient) Get(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.P2sVpnGatewaysClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysClient", "Get", nil, "Failure preparing request")
@@ -370,6 +395,12 @@ func (client P2sVpnGatewaysClient) GetP2sVpnConnectionHealth(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.P2sVpnGatewaysClient", "GetP2sVpnConnectionHealth", err.Error())
+	}
+
 	req, err := client.GetP2sVpnConnectionHealthPreparer(ctx, resourceGroupName, gatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysClient", "GetP2sVpnConnectionHealth", nil, "Failure preparing request")
@@ -449,6 +480,12 @@ func (client P2sVpnGatewaysClient) GetP2sVpnConnectionHealthDetailed(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.P2sVpnGatewaysClient", "GetP2sVpnConnectionHealthDetailed", err.Error())
+	}
+
 	req, err := client.GetP2sVpnConnectionHealthDetailedPreparer(ctx, resourceGroupName, gatewayName, request)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysClient", "GetP2sVpnConnectionHealthDetailed", nil, "Failure preparing request")
@@ -525,6 +562,12 @@ func (client P2sVpnGatewaysClient) List(ctx context.Context) (result ListP2SVpnG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.P2sVpnGatewaysClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
@@ -637,6 +680,12 @@ func (client P2sVpnGatewaysClient) ListByResourceGroup(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.P2sVpnGatewaysClient", "ListByResourceGroup", err.Error())
+	}
+
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -752,6 +801,12 @@ func (client P2sVpnGatewaysClient) UpdateTags(ctx context.Context, resourceGroup
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.P2sVpnGatewaysClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, gatewayName, p2SVpnGatewayParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysClient", "UpdateTags", nil, "Failure preparing request")

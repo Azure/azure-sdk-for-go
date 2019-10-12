@@ -64,7 +64,9 @@ func (client ConnectionMonitorsClient) CreateOrUpdate(ctx context.Context, resou
 				Chain: []validation.Constraint{{Target: "parameters.ConnectionMonitorParameters.Source", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "parameters.ConnectionMonitorParameters.Source.ResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
 					{Target: "parameters.ConnectionMonitorParameters.Destination", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.ConnectionMonitorsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -149,6 +151,12 @@ func (client ConnectionMonitorsClient) Delete(ctx context.Context, resourceGroup
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ConnectionMonitorsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsClient", "Delete", nil, "Failure preparing request")
@@ -227,6 +235,12 @@ func (client ConnectionMonitorsClient) Get(ctx context.Context, resourceGroupNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ConnectionMonitorsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsClient", "Get", nil, "Failure preparing request")
@@ -305,6 +319,12 @@ func (client ConnectionMonitorsClient) List(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ConnectionMonitorsClient", "List", err.Error())
+	}
+
 	req, err := client.ListPreparer(ctx, resourceGroupName, networkWatcherName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsClient", "List", nil, "Failure preparing request")
@@ -383,6 +403,12 @@ func (client ConnectionMonitorsClient) Query(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ConnectionMonitorsClient", "Query", err.Error())
+	}
+
 	req, err := client.QueryPreparer(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsClient", "Query", nil, "Failure preparing request")
@@ -462,6 +488,12 @@ func (client ConnectionMonitorsClient) Start(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ConnectionMonitorsClient", "Start", err.Error())
+	}
+
 	req, err := client.StartPreparer(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsClient", "Start", nil, "Failure preparing request")
@@ -540,6 +572,12 @@ func (client ConnectionMonitorsClient) Stop(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ConnectionMonitorsClient", "Stop", err.Error())
+	}
+
 	req, err := client.StopPreparer(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsClient", "Stop", nil, "Failure preparing request")
@@ -619,6 +657,12 @@ func (client ConnectionMonitorsClient) UpdateTags(ctx context.Context, resourceG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ConnectionMonitorsClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ConnectionMonitorsClient", "UpdateTags", nil, "Failure preparing request")

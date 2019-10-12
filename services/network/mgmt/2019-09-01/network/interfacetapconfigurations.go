@@ -89,7 +89,9 @@ func (client InterfaceTapConfigurationsClient) CreateOrUpdate(ctx context.Contex
 								}},
 						}},
 					}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.InterfaceTapConfigurationsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -175,6 +177,12 @@ func (client InterfaceTapConfigurationsClient) Delete(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfaceTapConfigurationsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, networkInterfaceName, tapConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsClient", "Delete", nil, "Failure preparing request")
@@ -253,6 +261,12 @@ func (client InterfaceTapConfigurationsClient) Get(ctx context.Context, resource
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfaceTapConfigurationsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, networkInterfaceName, tapConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfaceTapConfigurationsClient", "Get", nil, "Failure preparing request")
@@ -331,6 +345,12 @@ func (client InterfaceTapConfigurationsClient) List(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfaceTapConfigurationsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, networkInterfaceName)
 	if err != nil {

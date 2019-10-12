@@ -67,7 +67,9 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdate(ctx context.
 						Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayConnectionPropertiesFormat.VirtualNetworkGateway2.VirtualNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true, Chain: nil}}},
 					{Target: "parameters.VirtualNetworkGatewayConnectionPropertiesFormat.LocalNetworkGateway2", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayConnectionPropertiesFormat.LocalNetworkGateway2.LocalNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true, Chain: nil}}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -150,6 +152,12 @@ func (client VirtualNetworkGatewayConnectionsClient) Delete(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualNetworkGatewayConnectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "Delete", nil, "Failure preparing request")
@@ -226,6 +234,12 @@ func (client VirtualNetworkGatewayConnectionsClient) Get(ctx context.Context, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualNetworkGatewayConnectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "Get", nil, "Failure preparing request")
@@ -304,6 +318,12 @@ func (client VirtualNetworkGatewayConnectionsClient) GetSharedKey(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "GetSharedKey", err.Error())
+	}
+
 	req, err := client.GetSharedKeyPreparer(ctx, resourceGroupName, virtualNetworkGatewayConnectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "GetSharedKey", nil, "Failure preparing request")
@@ -381,6 +401,12 @@ func (client VirtualNetworkGatewayConnectionsClient) List(ctx context.Context, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -504,7 +530,9 @@ func (client VirtualNetworkGatewayConnectionsClient) ResetSharedKey(ctx context.
 			Constraints: []validation.Constraint{{Target: "parameters.KeyLength", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.KeyLength", Name: validation.InclusiveMaximum, Rule: int64(128), Chain: nil},
 					{Target: "parameters.KeyLength", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "ResetSharedKey", err.Error())
 	}
 
@@ -593,7 +621,9 @@ func (client VirtualNetworkGatewayConnectionsClient) SetSharedKey(ctx context.Co
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.Value", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.Value", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "SetSharedKey", err.Error())
 	}
 
@@ -678,6 +708,12 @@ func (client VirtualNetworkGatewayConnectionsClient) StartPacketCapture(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "StartPacketCapture", err.Error())
+	}
+
 	req, err := client.StartPacketCapturePreparer(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "StartPacketCapture", nil, "Failure preparing request")
@@ -762,6 +798,12 @@ func (client VirtualNetworkGatewayConnectionsClient) StopPacketCapture(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "StopPacketCapture", err.Error())
+	}
+
 	req, err := client.StopPacketCapturePreparer(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "StopPacketCapture", nil, "Failure preparing request")
@@ -842,6 +884,12 @@ func (client VirtualNetworkGatewayConnectionsClient) UpdateTags(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewayConnectionsClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewayConnectionsClient", "UpdateTags", nil, "Failure preparing request")

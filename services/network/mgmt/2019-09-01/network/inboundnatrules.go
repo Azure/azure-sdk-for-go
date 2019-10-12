@@ -73,7 +73,9 @@ func (client InboundNatRulesClient) CreateOrUpdate(ctx context.Context, resource
 							}},
 						}},
 					}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.InboundNatRulesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -159,6 +161,12 @@ func (client InboundNatRulesClient) Delete(ctx context.Context, resourceGroupNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InboundNatRulesClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, loadBalancerName, inboundNatRuleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InboundNatRulesClient", "Delete", nil, "Failure preparing request")
@@ -238,6 +246,12 @@ func (client InboundNatRulesClient) Get(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InboundNatRulesClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, loadBalancerName, inboundNatRuleName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InboundNatRulesClient", "Get", nil, "Failure preparing request")
@@ -319,6 +333,12 @@ func (client InboundNatRulesClient) List(ctx context.Context, resourceGroupName 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InboundNatRulesClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, loadBalancerName)
 	if err != nil {

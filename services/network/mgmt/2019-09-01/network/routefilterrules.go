@@ -63,7 +63,9 @@ func (client RouteFilterRulesClient) CreateOrUpdate(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "routeFilterRuleParameters.RouteFilterRulePropertiesFormat", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "routeFilterRuleParameters.RouteFilterRulePropertiesFormat.RouteFilterRuleType", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "routeFilterRuleParameters.RouteFilterRulePropertiesFormat.Communities", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.RouteFilterRulesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -149,6 +151,12 @@ func (client RouteFilterRulesClient) Delete(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.RouteFilterRulesClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, routeFilterName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteFilterRulesClient", "Delete", nil, "Failure preparing request")
@@ -227,6 +235,12 @@ func (client RouteFilterRulesClient) Get(ctx context.Context, resourceGroupName 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.RouteFilterRulesClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, routeFilterName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteFilterRulesClient", "Get", nil, "Failure preparing request")
@@ -305,6 +319,12 @@ func (client RouteFilterRulesClient) ListByRouteFilter(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.RouteFilterRulesClient", "ListByRouteFilter", err.Error())
+	}
+
 	result.fn = client.listByRouteFilterNextResults
 	req, err := client.ListByRouteFilterPreparer(ctx, resourceGroupName, routeFilterName)
 	if err != nil {
@@ -422,6 +442,12 @@ func (client RouteFilterRulesClient) Update(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.RouteFilterRulesClient", "Update", err.Error())
+	}
+
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.RouteFilterRulesClient", "Update", nil, "Failure preparing request")

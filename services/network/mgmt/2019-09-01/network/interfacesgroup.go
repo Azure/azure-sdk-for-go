@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -56,6 +57,12 @@ func (client InterfacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, networkInterfaceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -135,6 +142,12 @@ func (client InterfacesClient) Delete(ctx context.Context, resourceGroupName str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, networkInterfaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Delete", nil, "Failure preparing request")
@@ -212,6 +225,12 @@ func (client InterfacesClient) Get(ctx context.Context, resourceGroupName string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, networkInterfaceName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "Get", nil, "Failure preparing request")
@@ -292,6 +311,12 @@ func (client InterfacesClient) GetEffectiveRouteTable(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "GetEffectiveRouteTable", err.Error())
+	}
+
 	req, err := client.GetEffectiveRouteTablePreparer(ctx, resourceGroupName, networkInterfaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetEffectiveRouteTable", nil, "Failure preparing request")
@@ -374,6 +399,12 @@ func (client InterfacesClient) GetVirtualMachineScaleSetIPConfiguration(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "GetVirtualMachineScaleSetIPConfiguration", err.Error())
+	}
+
 	req, err := client.GetVirtualMachineScaleSetIPConfigurationPreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, IPConfigurationName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetIPConfiguration", nil, "Failure preparing request")
@@ -460,6 +491,12 @@ func (client InterfacesClient) GetVirtualMachineScaleSetNetworkInterface(ctx con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "GetVirtualMachineScaleSetNetworkInterface", err.Error())
+	}
+
 	req, err := client.GetVirtualMachineScaleSetNetworkInterfacePreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "GetVirtualMachineScaleSetNetworkInterface", nil, "Failure preparing request")
@@ -541,6 +578,12 @@ func (client InterfacesClient) List(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -652,6 +695,12 @@ func (client InterfacesClient) ListAll(ctx context.Context) (result InterfaceLis
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "ListAll", err.Error())
+	}
+
 	result.fn = client.listAllNextResults
 	req, err := client.ListAllPreparer(ctx)
 	if err != nil {
@@ -765,6 +814,12 @@ func (client InterfacesClient) ListEffectiveNetworkSecurityGroups(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "ListEffectiveNetworkSecurityGroups", err.Error())
+	}
+
 	req, err := client.ListEffectiveNetworkSecurityGroupsPreparer(ctx, resourceGroupName, networkInterfaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "ListEffectiveNetworkSecurityGroups", nil, "Failure preparing request")
@@ -846,6 +901,12 @@ func (client InterfacesClient) ListVirtualMachineScaleSetIPConfigurations(ctx co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "ListVirtualMachineScaleSetIPConfigurations", err.Error())
+	}
+
 	result.fn = client.listVirtualMachineScaleSetIPConfigurationsNextResults
 	req, err := client.ListVirtualMachineScaleSetIPConfigurationsPreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, expand)
 	if err != nil {
@@ -966,6 +1027,12 @@ func (client InterfacesClient) ListVirtualMachineScaleSetNetworkInterfaces(ctx c
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "ListVirtualMachineScaleSetNetworkInterfaces", err.Error())
+	}
+
 	result.fn = client.listVirtualMachineScaleSetNetworkInterfacesNextResults
 	req, err := client.ListVirtualMachineScaleSetNetworkInterfacesPreparer(ctx, resourceGroupName, virtualMachineScaleSetName)
 	if err != nil {
@@ -1083,6 +1150,12 @@ func (client InterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfaces(ctx
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "ListVirtualMachineScaleSetVMNetworkInterfaces", err.Error())
+	}
+
 	result.fn = client.listVirtualMachineScaleSetVMNetworkInterfacesNextResults
 	req, err := client.ListVirtualMachineScaleSetVMNetworkInterfacesPreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex)
 	if err != nil {
@@ -1200,6 +1273,12 @@ func (client InterfacesClient) UpdateTags(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.InterfacesClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, networkInterfaceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.InterfacesClient", "UpdateTags", nil, "Failure preparing request")

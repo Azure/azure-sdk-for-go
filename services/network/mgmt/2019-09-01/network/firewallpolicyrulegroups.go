@@ -65,7 +65,9 @@ func (client FirewallPolicyRuleGroupsClient) CreateOrUpdate(ctx context.Context,
 					Chain: []validation.Constraint{{Target: "parameters.FirewallPolicyRuleGroupProperties.Priority", Name: validation.InclusiveMaximum, Rule: int64(65000), Chain: nil},
 						{Target: "parameters.FirewallPolicyRuleGroupProperties.Priority", Name: validation.InclusiveMinimum, Rule: 100, Chain: nil},
 					}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.FirewallPolicyRuleGroupsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -152,6 +154,12 @@ func (client FirewallPolicyRuleGroupsClient) Delete(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.FirewallPolicyRuleGroupsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, firewallPolicyName, ruleGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.FirewallPolicyRuleGroupsClient", "Delete", nil, "Failure preparing request")
@@ -230,6 +238,12 @@ func (client FirewallPolicyRuleGroupsClient) Get(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.FirewallPolicyRuleGroupsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, firewallPolicyName, ruleGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.FirewallPolicyRuleGroupsClient", "Get", nil, "Failure preparing request")
@@ -308,6 +322,12 @@ func (client FirewallPolicyRuleGroupsClient) List(ctx context.Context, resourceG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.FirewallPolicyRuleGroupsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, firewallPolicyName)
 	if err != nil {

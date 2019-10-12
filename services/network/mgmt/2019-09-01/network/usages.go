@@ -57,7 +57,9 @@ func (client UsagesClient) List(ctx context.Context, location string) (result Us
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: location,
-			Constraints: []validation.Constraint{{Target: "location", Name: validation.Pattern, Rule: `^[-\w\._ ]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "location", Name: validation.Pattern, Rule: `^[-\w\._ ]+$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.UsagesClient", "List", err.Error())
 	}
 

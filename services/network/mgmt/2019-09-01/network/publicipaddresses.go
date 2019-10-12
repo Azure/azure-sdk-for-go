@@ -64,7 +64,9 @@ func (client PublicIPAddressesClient) CreateOrUpdate(ctx context.Context, resour
 					Chain: []validation.Constraint{{Target: "parameters.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.PublicIPAddressPropertiesFormat.IPConfiguration.IPConfigurationPropertiesFormat.PublicIPAddress", Name: validation.Null, Rule: false, Chain: nil}}},
 					}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.PublicIPAddressesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -147,6 +149,12 @@ func (client PublicIPAddressesClient) Delete(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PublicIPAddressesClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, publicIPAddressName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "Delete", nil, "Failure preparing request")
@@ -224,6 +232,12 @@ func (client PublicIPAddressesClient) Get(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PublicIPAddressesClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, publicIPAddressName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "Get", nil, "Failure preparing request")
@@ -309,6 +323,12 @@ func (client PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddress(c
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PublicIPAddressesClient", "GetVirtualMachineScaleSetPublicIPAddress", err.Error())
+	}
+
 	req, err := client.GetVirtualMachineScaleSetPublicIPAddressPreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, IPConfigurationName, publicIPAddressName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "GetVirtualMachineScaleSetPublicIPAddress", nil, "Failure preparing request")
@@ -392,6 +412,12 @@ func (client PublicIPAddressesClient) List(ctx context.Context, resourceGroupNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PublicIPAddressesClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -503,6 +529,12 @@ func (client PublicIPAddressesClient) ListAll(ctx context.Context) (result Publi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PublicIPAddressesClient", "ListAll", err.Error())
+	}
+
 	result.fn = client.listAllNextResults
 	req, err := client.ListAllPreparer(ctx)
 	if err != nil {
@@ -617,6 +649,12 @@ func (client PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddresse
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PublicIPAddressesClient", "ListVirtualMachineScaleSetPublicIPAddresses", err.Error())
+	}
+
 	result.fn = client.listVirtualMachineScaleSetPublicIPAddressesNextResults
 	req, err := client.ListVirtualMachineScaleSetPublicIPAddressesPreparer(ctx, resourceGroupName, virtualMachineScaleSetName)
 	if err != nil {
@@ -736,6 +774,12 @@ func (client PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPAddres
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PublicIPAddressesClient", "ListVirtualMachineScaleSetVMPublicIPAddresses", err.Error())
+	}
+
 	result.fn = client.listVirtualMachineScaleSetVMPublicIPAddressesNextResults
 	req, err := client.ListVirtualMachineScaleSetVMPublicIPAddressesPreparer(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, IPConfigurationName)
 	if err != nil {
@@ -855,6 +899,12 @@ func (client PublicIPAddressesClient) UpdateTags(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PublicIPAddressesClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, publicIPAddressName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesClient", "UpdateTags", nil, "Failure preparing request")

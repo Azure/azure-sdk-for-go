@@ -24,6 +24,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -70,6 +71,12 @@ func (client BaseClient) CheckDNSNameAvailability(ctx context.Context, location 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.BaseClient", "CheckDNSNameAvailability", err.Error())
+	}
+
 	req, err := client.CheckDNSNameAvailabilityPreparer(ctx, location, domainNameLabel)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.BaseClient", "CheckDNSNameAvailability", nil, "Failure preparing request")
@@ -149,6 +156,12 @@ func (client BaseClient) Generatevirtualwanvpnserverconfigurationvpnprofile(ctx 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.BaseClient", "Generatevirtualwanvpnserverconfigurationvpnprofile", err.Error())
+	}
+
 	req, err := client.GeneratevirtualwanvpnserverconfigurationvpnprofilePreparer(ctx, resourceGroupName, virtualWANName, vpnClientParams)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.BaseClient", "Generatevirtualwanvpnserverconfigurationvpnprofile", nil, "Failure preparing request")
@@ -228,6 +241,12 @@ func (client BaseClient) SupportedSecurityProviders(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.BaseClient", "SupportedSecurityProviders", err.Error())
+	}
+
 	req, err := client.SupportedSecurityProvidersPreparer(ctx, resourceGroupName, virtualWANName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.BaseClient", "SupportedSecurityProviders", nil, "Failure preparing request")

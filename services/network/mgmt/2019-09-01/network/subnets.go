@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -57,6 +58,12 @@ func (client SubnetsClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SubnetsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualNetworkName, subnetName, subnetParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SubnetsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -138,6 +145,12 @@ func (client SubnetsClient) Delete(ctx context.Context, resourceGroupName string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SubnetsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualNetworkName, subnetName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SubnetsClient", "Delete", nil, "Failure preparing request")
@@ -217,6 +230,12 @@ func (client SubnetsClient) Get(ctx context.Context, resourceGroupName string, v
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SubnetsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualNetworkName, subnetName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SubnetsClient", "Get", nil, "Failure preparing request")
@@ -298,6 +317,12 @@ func (client SubnetsClient) List(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SubnetsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, virtualNetworkName)
 	if err != nil {
@@ -416,6 +441,12 @@ func (client SubnetsClient) PrepareNetworkPolicies(ctx context.Context, resource
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SubnetsClient", "PrepareNetworkPolicies", err.Error())
+	}
+
 	req, err := client.PrepareNetworkPoliciesPreparer(ctx, resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SubnetsClient", "PrepareNetworkPolicies", nil, "Failure preparing request")
@@ -498,6 +529,12 @@ func (client SubnetsClient) UnprepareNetworkPolicies(ctx context.Context, resour
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.SubnetsClient", "UnprepareNetworkPolicies", err.Error())
+	}
+
 	req, err := client.UnprepareNetworkPoliciesPreparer(ctx, resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.SubnetsClient", "UnprepareNetworkPolicies", nil, "Failure preparing request")

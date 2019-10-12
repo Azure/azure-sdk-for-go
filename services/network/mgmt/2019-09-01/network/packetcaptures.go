@@ -63,7 +63,9 @@ func (client PacketCapturesClient) Create(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "parameters.PacketCaptureParameters", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.PacketCaptureParameters.Target", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.PacketCaptureParameters.StorageLocation", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.PacketCapturesClient", "Create", err.Error())
 	}
 
@@ -148,6 +150,12 @@ func (client PacketCapturesClient) Delete(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PacketCapturesClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, networkWatcherName, packetCaptureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PacketCapturesClient", "Delete", nil, "Failure preparing request")
@@ -226,6 +234,12 @@ func (client PacketCapturesClient) Get(ctx context.Context, resourceGroupName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PacketCapturesClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, networkWatcherName, packetCaptureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PacketCapturesClient", "Get", nil, "Failure preparing request")
@@ -305,6 +319,12 @@ func (client PacketCapturesClient) GetStatus(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PacketCapturesClient", "GetStatus", err.Error())
+	}
+
 	req, err := client.GetStatusPreparer(ctx, resourceGroupName, networkWatcherName, packetCaptureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PacketCapturesClient", "GetStatus", nil, "Failure preparing request")
@@ -383,6 +403,12 @@ func (client PacketCapturesClient) List(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PacketCapturesClient", "List", err.Error())
+	}
+
 	req, err := client.ListPreparer(ctx, resourceGroupName, networkWatcherName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PacketCapturesClient", "List", nil, "Failure preparing request")
@@ -461,6 +487,12 @@ func (client PacketCapturesClient) Stop(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PacketCapturesClient", "Stop", err.Error())
+	}
+
 	req, err := client.StopPreparer(ctx, resourceGroupName, networkWatcherName, packetCaptureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PacketCapturesClient", "Stop", nil, "Failure preparing request")

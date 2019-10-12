@@ -60,7 +60,9 @@ func (client ExpressRouteGatewaysClient) CreateOrUpdate(ctx context.Context, res
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: putExpressRouteGatewayParameters,
 			Constraints: []validation.Constraint{{Target: "putExpressRouteGatewayParameters.ExpressRouteGatewayProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "putExpressRouteGatewayParameters.ExpressRouteGatewayProperties.VirtualHub", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "putExpressRouteGatewayParameters.ExpressRouteGatewayProperties.VirtualHub", Name: validation.Null, Rule: true, Chain: nil}}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.ExpressRouteGatewaysClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -145,6 +147,12 @@ func (client ExpressRouteGatewaysClient) Delete(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteGatewaysClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, expressRouteGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteGatewaysClient", "Delete", nil, "Failure preparing request")
@@ -221,6 +229,12 @@ func (client ExpressRouteGatewaysClient) Get(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteGatewaysClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, expressRouteGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteGatewaysClient", "Get", nil, "Failure preparing request")
@@ -297,6 +311,12 @@ func (client ExpressRouteGatewaysClient) ListByResourceGroup(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteGatewaysClient", "ListByResourceGroup", err.Error())
+	}
+
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteGatewaysClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -370,6 +390,12 @@ func (client ExpressRouteGatewaysClient) ListBySubscription(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteGatewaysClient", "ListBySubscription", err.Error())
+	}
+
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteGatewaysClient", "ListBySubscription", nil, "Failure preparing request")

@@ -68,7 +68,9 @@ func (client ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdate(ctx conte
 					Chain: []validation.Constraint{{Target: "peeringParameters.ExpressRouteCrossConnectionPeeringProperties.PeerASN", Name: validation.InclusiveMaximum, Rule: int64(4294967295), Chain: nil},
 						{Target: "peeringParameters.ExpressRouteCrossConnectionPeeringProperties.PeerASN", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 					}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.ExpressRouteCrossConnectionPeeringsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -154,6 +156,12 @@ func (client ExpressRouteCrossConnectionPeeringsClient) Delete(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCrossConnectionPeeringsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, crossConnectionName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionPeeringsClient", "Delete", nil, "Failure preparing request")
@@ -232,6 +240,12 @@ func (client ExpressRouteCrossConnectionPeeringsClient) Get(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCrossConnectionPeeringsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, crossConnectionName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionPeeringsClient", "Get", nil, "Failure preparing request")
@@ -310,6 +324,12 @@ func (client ExpressRouteCrossConnectionPeeringsClient) List(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCrossConnectionPeeringsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, crossConnectionName)
 	if err != nil {

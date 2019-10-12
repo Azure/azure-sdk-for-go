@@ -59,7 +59,9 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdate(ctx context.Context, r
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.VirtualNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -142,6 +144,12 @@ func (client VirtualNetworkGatewaysClient) Delete(ctx context.Context, resourceG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Delete", nil, "Failure preparing request")
@@ -220,6 +228,12 @@ func (client VirtualNetworkGatewaysClient) Generatevpnclientpackage(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "Generatevpnclientpackage", err.Error())
+	}
+
 	req, err := client.GeneratevpnclientpackagePreparer(ctx, resourceGroupName, virtualNetworkGatewayName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Generatevpnclientpackage", nil, "Failure preparing request")
@@ -301,6 +315,12 @@ func (client VirtualNetworkGatewaysClient) GenerateVpnProfile(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "GenerateVpnProfile", err.Error())
+	}
+
 	req, err := client.GenerateVpnProfilePreparer(ctx, resourceGroupName, virtualNetworkGatewayName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GenerateVpnProfile", nil, "Failure preparing request")
@@ -380,6 +400,12 @@ func (client VirtualNetworkGatewaysClient) Get(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Get", nil, "Failure preparing request")
@@ -459,6 +485,12 @@ func (client VirtualNetworkGatewaysClient) GetAdvertisedRoutes(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "GetAdvertisedRoutes", err.Error())
+	}
+
 	req, err := client.GetAdvertisedRoutesPreparer(ctx, resourceGroupName, virtualNetworkGatewayName, peer)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetAdvertisedRoutes", nil, "Failure preparing request")
@@ -538,6 +570,12 @@ func (client VirtualNetworkGatewaysClient) GetBgpPeerStatus(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "GetBgpPeerStatus", err.Error())
+	}
+
 	req, err := client.GetBgpPeerStatusPreparer(ctx, resourceGroupName, virtualNetworkGatewayName, peer)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetBgpPeerStatus", nil, "Failure preparing request")
@@ -619,6 +657,12 @@ func (client VirtualNetworkGatewaysClient) GetLearnedRoutes(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "GetLearnedRoutes", err.Error())
+	}
+
 	req, err := client.GetLearnedRoutesPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetLearnedRoutes", nil, "Failure preparing request")
@@ -697,6 +741,12 @@ func (client VirtualNetworkGatewaysClient) GetVpnclientConnectionHealth(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "GetVpnclientConnectionHealth", err.Error())
+	}
+
 	req, err := client.GetVpnclientConnectionHealthPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetVpnclientConnectionHealth", nil, "Failure preparing request")
@@ -776,6 +826,12 @@ func (client VirtualNetworkGatewaysClient) GetVpnclientIpsecParameters(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "GetVpnclientIpsecParameters", err.Error())
+	}
+
 	req, err := client.GetVpnclientIpsecParametersPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetVpnclientIpsecParameters", nil, "Failure preparing request")
@@ -854,6 +910,12 @@ func (client VirtualNetworkGatewaysClient) GetVpnProfilePackageURL(ctx context.C
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "GetVpnProfilePackageURL", err.Error())
+	}
+
 	req, err := client.GetVpnProfilePackageURLPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetVpnProfilePackageURL", nil, "Failure preparing request")
@@ -930,6 +992,12 @@ func (client VirtualNetworkGatewaysClient) List(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -1044,6 +1112,12 @@ func (client VirtualNetworkGatewaysClient) ListConnections(ctx context.Context, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "ListConnections", err.Error())
+	}
+
 	result.fn = client.listConnectionsNextResults
 	req, err := client.ListConnectionsPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
@@ -1161,6 +1235,12 @@ func (client VirtualNetworkGatewaysClient) Reset(ctx context.Context, resourceGr
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "Reset", err.Error())
+	}
+
 	req, err := client.ResetPreparer(ctx, resourceGroupName, virtualNetworkGatewayName, gatewayVip)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Reset", nil, "Failure preparing request")
@@ -1242,6 +1322,12 @@ func (client VirtualNetworkGatewaysClient) ResetVpnClientSharedKey(ctx context.C
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "ResetVpnClientSharedKey", err.Error())
+	}
+
 	req, err := client.ResetVpnClientSharedKeyPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "ResetVpnClientSharedKey", nil, "Failure preparing request")
@@ -1324,7 +1410,9 @@ func (client VirtualNetworkGatewaysClient) SetVpnclientIpsecParameters(ctx conte
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: vpnclientIpsecParams,
 			Constraints: []validation.Constraint{{Target: "vpnclientIpsecParams.SaLifeTimeSeconds", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "vpnclientIpsecParams.SaDataSizeKilobytes", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+				{Target: "vpnclientIpsecParams.SaDataSizeKilobytes", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "SetVpnclientIpsecParameters", err.Error())
 	}
 
@@ -1408,6 +1496,12 @@ func (client VirtualNetworkGatewaysClient) StartPacketCapture(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "StartPacketCapture", err.Error())
+	}
+
 	req, err := client.StartPacketCapturePreparer(ctx, resourceGroupName, virtualNetworkGatewayName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "StartPacketCapture", nil, "Failure preparing request")
@@ -1491,6 +1585,12 @@ func (client VirtualNetworkGatewaysClient) StopPacketCapture(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "StopPacketCapture", err.Error())
+	}
+
 	req, err := client.StopPacketCapturePreparer(ctx, resourceGroupName, virtualNetworkGatewayName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "StopPacketCapture", nil, "Failure preparing request")
@@ -1570,6 +1670,12 @@ func (client VirtualNetworkGatewaysClient) SupportedVpnDevices(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "SupportedVpnDevices", err.Error())
+	}
+
 	req, err := client.SupportedVpnDevicesPreparer(ctx, resourceGroupName, virtualNetworkGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "SupportedVpnDevices", nil, "Failure preparing request")
@@ -1648,6 +1754,12 @@ func (client VirtualNetworkGatewaysClient) UpdateTags(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, virtualNetworkGatewayName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "UpdateTags", nil, "Failure preparing request")
@@ -1729,6 +1841,12 @@ func (client VirtualNetworkGatewaysClient) VpnDeviceConfigurationScript(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.VirtualNetworkGatewaysClient", "VpnDeviceConfigurationScript", err.Error())
+	}
+
 	req, err := client.VpnDeviceConfigurationScriptPreparer(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "VpnDeviceConfigurationScript", nil, "Failure preparing request")

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -56,6 +57,12 @@ func (client ExpressRouteCircuitsClient) CreateOrUpdate(ctx context.Context, res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, circuitName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -136,6 +143,12 @@ func (client ExpressRouteCircuitsClient) Delete(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, circuitName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "Delete", nil, "Failure preparing request")
@@ -212,6 +225,12 @@ func (client ExpressRouteCircuitsClient) Get(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, circuitName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "Get", nil, "Failure preparing request")
@@ -290,6 +309,12 @@ func (client ExpressRouteCircuitsClient) GetPeeringStats(ctx context.Context, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "GetPeeringStats", err.Error())
+	}
+
 	req, err := client.GetPeeringStatsPreparer(ctx, resourceGroupName, circuitName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "GetPeeringStats", nil, "Failure preparing request")
@@ -368,6 +393,12 @@ func (client ExpressRouteCircuitsClient) GetStats(ctx context.Context, resourceG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "GetStats", err.Error())
+	}
+
 	req, err := client.GetStatsPreparer(ctx, resourceGroupName, circuitName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "GetStats", nil, "Failure preparing request")
@@ -444,6 +475,12 @@ func (client ExpressRouteCircuitsClient) List(ctx context.Context, resourceGroup
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -555,6 +592,12 @@ func (client ExpressRouteCircuitsClient) ListAll(ctx context.Context) (result Ex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "ListAll", err.Error())
+	}
+
 	result.fn = client.listAllNextResults
 	req, err := client.ListAllPreparer(ctx)
 	if err != nil {
@@ -670,6 +713,12 @@ func (client ExpressRouteCircuitsClient) ListArpTable(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "ListArpTable", err.Error())
+	}
+
 	req, err := client.ListArpTablePreparer(ctx, resourceGroupName, circuitName, peeringName, devicePath)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "ListArpTable", nil, "Failure preparing request")
@@ -752,6 +801,12 @@ func (client ExpressRouteCircuitsClient) ListRoutesTable(ctx context.Context, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "ListRoutesTable", err.Error())
+	}
+
 	req, err := client.ListRoutesTablePreparer(ctx, resourceGroupName, circuitName, peeringName, devicePath)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "ListRoutesTable", nil, "Failure preparing request")
@@ -834,6 +889,12 @@ func (client ExpressRouteCircuitsClient) ListRoutesTableSummary(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "ListRoutesTableSummary", err.Error())
+	}
+
 	req, err := client.ListRoutesTableSummaryPreparer(ctx, resourceGroupName, circuitName, peeringName, devicePath)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "ListRoutesTableSummary", nil, "Failure preparing request")
@@ -914,6 +975,12 @@ func (client ExpressRouteCircuitsClient) UpdateTags(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ExpressRouteCircuitsClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, circuitName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "UpdateTags", nil, "Failure preparing request")

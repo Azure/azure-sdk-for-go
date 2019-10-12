@@ -61,7 +61,9 @@ func (client LocalNetworkGatewaysClient) CreateOrUpdate(ctx context.Context, res
 		{TargetValue: localNetworkGatewayName,
 			Constraints: []validation.Constraint{{Target: "localNetworkGatewayName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.LocalNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.LocalNetworkGatewayPropertiesFormat", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.LocalNetworkGatewaysClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -146,7 +148,9 @@ func (client LocalNetworkGatewaysClient) Delete(ctx context.Context, resourceGro
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: localNetworkGatewayName,
-			Constraints: []validation.Constraint{{Target: "localNetworkGatewayName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "localNetworkGatewayName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.LocalNetworkGatewaysClient", "Delete", err.Error())
 	}
 
@@ -228,7 +232,9 @@ func (client LocalNetworkGatewaysClient) Get(ctx context.Context, resourceGroupN
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: localNetworkGatewayName,
-			Constraints: []validation.Constraint{{Target: "localNetworkGatewayName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "localNetworkGatewayName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.LocalNetworkGatewaysClient", "Get", err.Error())
 	}
 
@@ -308,6 +314,12 @@ func (client LocalNetworkGatewaysClient) List(ctx context.Context, resourceGroup
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.LocalNetworkGatewaysClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -425,7 +437,9 @@ func (client LocalNetworkGatewaysClient) UpdateTags(ctx context.Context, resourc
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: localNetworkGatewayName,
-			Constraints: []validation.Constraint{{Target: "localNetworkGatewayName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "localNetworkGatewayName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.LocalNetworkGatewaysClient", "UpdateTags", err.Error())
 	}
 

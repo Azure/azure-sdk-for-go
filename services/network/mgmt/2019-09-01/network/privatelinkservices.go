@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -55,6 +56,12 @@ func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibility(ctx co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibility", err.Error())
+	}
+
 	req, err := client.CheckPrivateLinkServiceVisibilityPreparer(ctx, location, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibility", nil, "Failure preparing request")
@@ -135,6 +142,12 @@ func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityByResou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibilityByResourceGroup", err.Error())
+	}
+
 	req, err := client.CheckPrivateLinkServiceVisibilityByResourceGroupPreparer(ctx, location, resourceGroupName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "CheckPrivateLinkServiceVisibilityByResourceGroup", nil, "Failure preparing request")
@@ -215,6 +228,12 @@ func (client PrivateLinkServicesClient) CreateOrUpdate(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -294,6 +313,12 @@ func (client PrivateLinkServicesClient) Delete(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, serviceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "Delete", nil, "Failure preparing request")
@@ -371,6 +396,12 @@ func (client PrivateLinkServicesClient) DeletePrivateEndpointConnection(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "DeletePrivateEndpointConnection", err.Error())
+	}
+
 	req, err := client.DeletePrivateEndpointConnectionPreparer(ctx, resourceGroupName, serviceName, peConnectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "DeletePrivateEndpointConnection", nil, "Failure preparing request")
@@ -449,6 +480,12 @@ func (client PrivateLinkServicesClient) Get(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, serviceName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "Get", nil, "Failure preparing request")
@@ -528,6 +565,12 @@ func (client PrivateLinkServicesClient) List(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -642,6 +685,12 @@ func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServices(ctx 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServices", err.Error())
+	}
+
 	result.fn = client.listAutoApprovedPrivateLinkServicesNextResults
 	req, err := client.ListAutoApprovedPrivateLinkServicesPreparer(ctx, location)
 	if err != nil {
@@ -757,6 +806,12 @@ func (client PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByRes
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "ListAutoApprovedPrivateLinkServicesByResourceGroup", err.Error())
+	}
+
 	result.fn = client.listAutoApprovedPrivateLinkServicesByResourceGroupNextResults
 	req, err := client.ListAutoApprovedPrivateLinkServicesByResourceGroupPreparer(ctx, location, resourceGroupName)
 	if err != nil {
@@ -869,6 +924,12 @@ func (client PrivateLinkServicesClient) ListBySubscription(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "ListBySubscription", err.Error())
+	}
+
 	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
@@ -985,6 +1046,12 @@ func (client PrivateLinkServicesClient) UpdatePrivateEndpointConnection(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.PrivateLinkServicesClient", "UpdatePrivateEndpointConnection", err.Error())
+	}
+
 	req, err := client.UpdatePrivateEndpointConnectionPreparer(ctx, resourceGroupName, serviceName, peConnectionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "UpdatePrivateEndpointConnection", nil, "Failure preparing request")

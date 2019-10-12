@@ -57,6 +57,12 @@ func (client ApplicationGatewaysClient) BackendHealth(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "BackendHealth", err.Error())
+	}
+
 	req, err := client.BackendHealthPreparer(ctx, resourceGroupName, applicationGatewayName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "BackendHealth", nil, "Failure preparing request")
@@ -140,6 +146,12 @@ func (client ApplicationGatewaysClient) BackendHealthOnDemand(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "BackendHealthOnDemand", err.Error())
+	}
+
 	req, err := client.BackendHealthOnDemandPreparer(ctx, resourceGroupName, applicationGatewayName, probeRequest, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "BackendHealthOnDemand", nil, "Failure preparing request")
@@ -247,7 +259,9 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(ctx context.Context, reso
 							{Target: "parameters.ApplicationGatewayPropertiesFormat.AutoscaleConfiguration.MaxCapacity", Name: validation.Null, Rule: false,
 								Chain: []validation.Constraint{{Target: "parameters.ApplicationGatewayPropertiesFormat.AutoscaleConfiguration.MaxCapacity", Name: validation.InclusiveMinimum, Rule: 2, Chain: nil}}},
 						}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("network.ApplicationGatewaysClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -330,6 +344,12 @@ func (client ApplicationGatewaysClient) Delete(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, applicationGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Delete", nil, "Failure preparing request")
@@ -406,6 +426,12 @@ func (client ApplicationGatewaysClient) Get(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, applicationGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Get", nil, "Failure preparing request")
@@ -482,6 +508,12 @@ func (client ApplicationGatewaysClient) GetSslPredefinedPolicy(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "GetSslPredefinedPolicy", err.Error())
+	}
+
 	req, err := client.GetSslPredefinedPolicyPreparer(ctx, predefinedPolicyName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "GetSslPredefinedPolicy", nil, "Failure preparing request")
@@ -557,6 +589,12 @@ func (client ApplicationGatewaysClient) List(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -668,6 +706,12 @@ func (client ApplicationGatewaysClient) ListAll(ctx context.Context) (result App
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "ListAll", err.Error())
+	}
+
 	result.fn = client.listAllNextResults
 	req, err := client.ListAllPreparer(ctx)
 	if err != nil {
@@ -778,6 +822,12 @@ func (client ApplicationGatewaysClient) ListAvailableRequestHeaders(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "ListAvailableRequestHeaders", err.Error())
+	}
+
 	req, err := client.ListAvailableRequestHeadersPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAvailableRequestHeaders", nil, "Failure preparing request")
@@ -850,6 +900,12 @@ func (client ApplicationGatewaysClient) ListAvailableResponseHeaders(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "ListAvailableResponseHeaders", err.Error())
+	}
+
 	req, err := client.ListAvailableResponseHeadersPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAvailableResponseHeaders", nil, "Failure preparing request")
@@ -922,6 +978,12 @@ func (client ApplicationGatewaysClient) ListAvailableServerVariables(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "ListAvailableServerVariables", err.Error())
+	}
+
 	req, err := client.ListAvailableServerVariablesPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAvailableServerVariables", nil, "Failure preparing request")
@@ -994,6 +1056,12 @@ func (client ApplicationGatewaysClient) ListAvailableSslOptions(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "ListAvailableSslOptions", err.Error())
+	}
+
 	req, err := client.ListAvailableSslOptionsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAvailableSslOptions", nil, "Failure preparing request")
@@ -1066,6 +1134,12 @@ func (client ApplicationGatewaysClient) ListAvailableSslPredefinedPolicies(ctx c
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "ListAvailableSslPredefinedPolicies", err.Error())
+	}
+
 	result.fn = client.listAvailableSslPredefinedPoliciesNextResults
 	req, err := client.ListAvailableSslPredefinedPoliciesPreparer(ctx)
 	if err != nil {
@@ -1176,6 +1250,12 @@ func (client ApplicationGatewaysClient) ListAvailableWafRuleSets(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "ListAvailableWafRuleSets", err.Error())
+	}
+
 	req, err := client.ListAvailableWafRuleSetsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "ListAvailableWafRuleSets", nil, "Failure preparing request")
@@ -1251,6 +1331,12 @@ func (client ApplicationGatewaysClient) Start(ctx context.Context, resourceGroup
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "Start", err.Error())
+	}
+
 	req, err := client.StartPreparer(ctx, resourceGroupName, applicationGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Start", nil, "Failure preparing request")
@@ -1327,6 +1413,12 @@ func (client ApplicationGatewaysClient) Stop(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "Stop", err.Error())
+	}
+
 	req, err := client.StopPreparer(ctx, resourceGroupName, applicationGatewayName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Stop", nil, "Failure preparing request")
@@ -1404,6 +1496,12 @@ func (client ApplicationGatewaysClient) UpdateTags(ctx context.Context, resource
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("network.ApplicationGatewaysClient", "UpdateTags", err.Error())
+	}
+
 	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, applicationGatewayName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "UpdateTags", nil, "Failure preparing request")

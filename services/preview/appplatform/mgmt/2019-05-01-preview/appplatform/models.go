@@ -778,7 +778,7 @@ type ConfigServerGitProperty struct {
 	HostKeyAlgorithm *string `json:"hostKeyAlgorithm,omitempty"`
 	// PrivateKey - Private sshKey algorithm of git repository.
 	PrivateKey *string `json:"privateKey,omitempty"`
-	// StrictHostKeyChecking - Stric host key checking or not.
+	// StrictHostKeyChecking - Strict host key checking or not.
 	StrictHostKeyChecking *bool `json:"strictHostKeyChecking,omitempty"`
 }
 
@@ -1188,7 +1188,7 @@ type GitPatternRepository struct {
 	HostKeyAlgorithm *string `json:"hostKeyAlgorithm,omitempty"`
 	// PrivateKey - Private sshKey algorithm of git repository.
 	PrivateKey *string `json:"privateKey,omitempty"`
-	// StrictHostKeyChecking - Stric host key checking or not.
+	// StrictHostKeyChecking - Strict host key checking or not.
 	StrictHostKeyChecking *bool `json:"strictHostKeyChecking,omitempty"`
 }
 
@@ -1231,7 +1231,7 @@ type MetricSpecification struct {
 	Category *string `json:"category,omitempty"`
 	// AggregationType - Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
 	AggregationType *string `json:"aggregationType,omitempty"`
-	// SupportedAggregationTypes - Supported agregation types
+	// SupportedAggregationTypes - Supported aggregation types
 	SupportedAggregationTypes *[]string `json:"supportedAggregationTypes,omitempty"`
 	// SupportedTimeGrainTypes - Supported time grain types
 	SupportedTimeGrainTypes *[]string `json:"supportedTimeGrainTypes,omitempty"`
@@ -1635,7 +1635,7 @@ type TraceProperties struct {
 	State TraceProxyState `json:"state,omitempty"`
 	// Error - Error when apply trace proxy changes.
 	Error *Error `json:"error,omitempty"`
-	// Enabled - Indicates whether enable the tracing functioanlity
+	// Enabled - Indicates whether enable the tracing functionality
 	Enabled *bool `json:"enabled,omitempty"`
 	// AppInsightInstrumentationKey - Target application insight instrumentation key
 	AppInsightInstrumentationKey *string `json:"appInsightInstrumentationKey,omitempty"`

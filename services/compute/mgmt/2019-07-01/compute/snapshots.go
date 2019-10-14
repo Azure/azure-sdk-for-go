@@ -67,8 +67,6 @@ func (client SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 					}},
 					{Target: "snapshot.SnapshotProperties.EncryptionSettingsCollection", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "snapshot.SnapshotProperties.EncryptionSettingsCollection.Enabled", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "snapshot.SnapshotProperties.Encryption", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "snapshot.SnapshotProperties.Encryption.DiskEncryptionSetID", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("compute.SnapshotsClient", "CreateOrUpdate", err.Error())
 	}

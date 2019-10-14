@@ -68,8 +68,6 @@ func (client DisksClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 					}},
 					{Target: "disk.DiskProperties.EncryptionSettingsCollection", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "disk.DiskProperties.EncryptionSettingsCollection.Enabled", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "disk.DiskProperties.Encryption", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "disk.DiskProperties.Encryption.DiskEncryptionSetID", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("compute.DisksClient", "CreateOrUpdate", err.Error())
 	}

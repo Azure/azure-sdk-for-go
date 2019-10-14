@@ -4033,8 +4033,6 @@ type EncryptionSetProperties struct {
 	PreviousKeys *[]KeyVaultAndKeyReference `json:"previousKeys,omitempty"`
 	// ProvisioningState - READ-ONLY; The disk encryption set provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// UniqueID - READ-ONLY; Unique Guid identifying the resource.
-	UniqueID *string `json:"uniqueId,omitempty"`
 }
 
 // EncryptionSettingsCollection encryption settings for disk or snapshot

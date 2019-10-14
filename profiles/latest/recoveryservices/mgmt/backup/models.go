@@ -400,10 +400,11 @@ const (
 type ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeBasicOperationStatusExtendedInfo
 
 const (
-	ObjectTypeOperationStatusExtendedInfo             ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusExtendedInfo
-	ObjectTypeOperationStatusJobExtendedInfo          ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobExtendedInfo
-	ObjectTypeOperationStatusJobsExtendedInfo         ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
-	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
+	ObjectTypeOperationStatusExtendedInfo              ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusExtendedInfo
+	ObjectTypeOperationStatusJobExtendedInfo           ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobExtendedInfo
+	ObjectTypeOperationStatusJobsExtendedInfo          ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusJobsExtendedInfo
+	ObjectTypeOperationStatusProvisionILRExtendedInfo  ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusProvisionILRExtendedInfo
+	ObjectTypeOperationStatusRecoveryPointExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = original.ObjectTypeOperationStatusRecoveryPointExtendedInfo
 )
 
 type ObjectTypeBasicRecoveryPoint = original.ObjectTypeBasicRecoveryPoint
@@ -824,6 +825,9 @@ const (
 	WorkloadTypeVMwareVM          WorkloadType = original.WorkloadTypeVMwareVM
 )
 
+type AADProperties = original.AADProperties
+type AADPropertiesResource = original.AADPropertiesResource
+type AadPropertiesClient = original.AadPropertiesClient
 type AzureBackupGoalFeatureSupportRequest = original.AzureBackupGoalFeatureSupportRequest
 type AzureBackupServerContainer = original.AzureBackupServerContainer
 type AzureBackupServerEngine = original.AzureBackupServerEngine
@@ -966,6 +970,15 @@ type ClientDiscoveryResponsePage = original.ClientDiscoveryResponsePage
 type ClientDiscoveryValueForSingleAPI = original.ClientDiscoveryValueForSingleAPI
 type ClientScriptForConnect = original.ClientScriptForConnect
 type ContainerIdentityInfo = original.ContainerIdentityInfo
+type CrossRegionRestoreClient = original.CrossRegionRestoreClient
+type CrossRegionRestoreRequest = original.CrossRegionRestoreRequest
+type CrossRegionRestoreRequestResource = original.CrossRegionRestoreRequestResource
+type CrrAccessToken = original.CrrAccessToken
+type CrrAccessTokenResource = original.CrrAccessTokenResource
+type CrrJobDetailsClient = original.CrrJobDetailsClient
+type CrrJobsClient = original.CrrJobsClient
+type CrrOperationResultsClient = original.CrrOperationResultsClient
+type CrrOperationStatusClient = original.CrrOperationStatusClient
 type DPMContainerExtendedInfo = original.DPMContainerExtendedInfo
 type DPMProtectedItem = original.DPMProtectedItem
 type DPMProtectedItemExtendedInfo = original.DPMProtectedItemExtendedInfo
@@ -1055,6 +1068,7 @@ type OperationStatusExtendedInfo = original.OperationStatusExtendedInfo
 type OperationStatusJobExtendedInfo = original.OperationStatusJobExtendedInfo
 type OperationStatusJobsExtendedInfo = original.OperationStatusJobsExtendedInfo
 type OperationStatusProvisionILRExtendedInfo = original.OperationStatusProvisionILRExtendedInfo
+type OperationStatusRecoveryPointExtendedInfo = original.OperationStatusRecoveryPointExtendedInfo
 type OperationStatusesClient = original.OperationStatusesClient
 type OperationWorkerResponse = original.OperationWorkerResponse
 type OperationsClient = original.OperationsClient
@@ -1169,6 +1183,12 @@ type YearlyRetentionSchedule = original.YearlyRetentionSchedule
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewAadPropertiesClient(subscriptionID string) AadPropertiesClient {
+	return original.NewAadPropertiesClient(subscriptionID)
+}
+func NewAadPropertiesClientWithBaseURI(baseURI string, subscriptionID string) AadPropertiesClient {
+	return original.NewAadPropertiesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBackupsClient(subscriptionID string) BackupsClient {
 	return original.NewBackupsClient(subscriptionID)
 }
@@ -1180,6 +1200,36 @@ func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) Client
 }
 func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
 	return original.NewClientDiscoveryResponsePage(getNextPage)
+}
+func NewCrossRegionRestoreClient(subscriptionID string) CrossRegionRestoreClient {
+	return original.NewCrossRegionRestoreClient(subscriptionID)
+}
+func NewCrossRegionRestoreClientWithBaseURI(baseURI string, subscriptionID string) CrossRegionRestoreClient {
+	return original.NewCrossRegionRestoreClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCrrJobDetailsClient(subscriptionID string) CrrJobDetailsClient {
+	return original.NewCrrJobDetailsClient(subscriptionID)
+}
+func NewCrrJobDetailsClientWithBaseURI(baseURI string, subscriptionID string) CrrJobDetailsClient {
+	return original.NewCrrJobDetailsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCrrJobsClient(subscriptionID string) CrrJobsClient {
+	return original.NewCrrJobsClient(subscriptionID)
+}
+func NewCrrJobsClientWithBaseURI(baseURI string, subscriptionID string) CrrJobsClient {
+	return original.NewCrrJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCrrOperationResultsClient(subscriptionID string) CrrOperationResultsClient {
+	return original.NewCrrOperationResultsClient(subscriptionID)
+}
+func NewCrrOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) CrrOperationResultsClient {
+	return original.NewCrrOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCrrOperationStatusClient(subscriptionID string) CrrOperationStatusClient {
+	return original.NewCrrOperationStatusClient(subscriptionID)
+}
+func NewCrrOperationStatusClientWithBaseURI(baseURI string, subscriptionID string) CrrOperationStatusClient {
+	return original.NewCrrOperationStatusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEngineBaseResourceListIterator(page EngineBaseResourceListPage) EngineBaseResourceListIterator {
 	return original.NewEngineBaseResourceListIterator(page)

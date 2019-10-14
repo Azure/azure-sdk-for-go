@@ -50,6 +50,7 @@ var _ ProtectedItemOperationResultsClientAPI = (*backup.ProtectedItemOperationRe
 // RecoveryPointsClientAPI contains the set of methods on the RecoveryPointsClient type.
 type RecoveryPointsClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.RecoveryPointResource, err error)
+	GetAccessToken(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.CrrAccessTokenResource, err error)
 	List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
 }
 
@@ -140,6 +141,48 @@ type OperationClientAPI interface {
 }
 
 var _ OperationClientAPI = (*backup.OperationClient)(nil)
+
+// AadPropertiesClientAPI contains the set of methods on the AadPropertiesClient type.
+type AadPropertiesClientAPI interface {
+	Get(ctx context.Context, azureRegion string) (result backup.AADPropertiesResource, err error)
+}
+
+var _ AadPropertiesClientAPI = (*backup.AadPropertiesClient)(nil)
+
+// CrossRegionRestoreClientAPI contains the set of methods on the CrossRegionRestoreClient type.
+type CrossRegionRestoreClientAPI interface {
+	Trigger(ctx context.Context, azureRegion string, parameters backup.CrossRegionRestoreRequestResource) (result autorest.Response, err error)
+}
+
+var _ CrossRegionRestoreClientAPI = (*backup.CrossRegionRestoreClient)(nil)
+
+// CrrJobDetailsClientAPI contains the set of methods on the CrrJobDetailsClient type.
+type CrrJobDetailsClientAPI interface {
+	Get(ctx context.Context, azureRegion string) (result backup.JobResource, err error)
+}
+
+var _ CrrJobDetailsClientAPI = (*backup.CrrJobDetailsClient)(nil)
+
+// CrrJobsClientAPI contains the set of methods on the CrrJobsClient type.
+type CrrJobsClientAPI interface {
+	List(ctx context.Context, azureRegion string) (result backup.JobResourceListPage, err error)
+}
+
+var _ CrrJobsClientAPI = (*backup.CrrJobsClient)(nil)
+
+// CrrOperationResultsClientAPI contains the set of methods on the CrrOperationResultsClient type.
+type CrrOperationResultsClientAPI interface {
+	Get(ctx context.Context, azureRegion string, operationID string) (result autorest.Response, err error)
+}
+
+var _ CrrOperationResultsClientAPI = (*backup.CrrOperationResultsClient)(nil)
+
+// CrrOperationStatusClientAPI contains the set of methods on the CrrOperationStatusClient type.
+type CrrOperationStatusClientAPI interface {
+	Get(ctx context.Context, azureRegion string, operationID string) (result backup.OperationStatus, err error)
+}
+
+var _ CrrOperationStatusClientAPI = (*backup.CrrOperationStatusClient)(nil)
 
 // ProtectionIntentClientAPI contains the set of methods on the ProtectionIntentClient type.
 type ProtectionIntentClientAPI interface {

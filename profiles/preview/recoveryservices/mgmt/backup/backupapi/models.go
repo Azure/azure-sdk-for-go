@@ -21,7 +21,13 @@ package backupapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2017-07-01/backup/backupapi"
 
+type AadPropertiesClientAPI = original.AadPropertiesClientAPI
 type BackupsClientAPI = original.BackupsClientAPI
+type CrossRegionRestoreClientAPI = original.CrossRegionRestoreClientAPI
+type CrrJobDetailsClientAPI = original.CrrJobDetailsClientAPI
+type CrrJobsClientAPI = original.CrrJobsClientAPI
+type CrrOperationResultsClientAPI = original.CrrOperationResultsClientAPI
+type CrrOperationStatusClientAPI = original.CrrOperationStatusClientAPI
 type EnginesClientAPI = original.EnginesClientAPI
 type ExportJobsOperationResultsClientAPI = original.ExportJobsOperationResultsClientAPI
 type FeatureSupportClientAPI = original.FeatureSupportClientAPI

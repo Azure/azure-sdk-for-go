@@ -6298,6 +6298,8 @@ type OSProfile struct {
 	Secrets *[]VaultSecretGroup `json:"secrets,omitempty"`
 	// AllowExtensionOperations - Specifies whether extension operations should be allowed on the virtual machine. <br><br>This may only be set to False when no extensions are present on the virtual machine.
 	AllowExtensionOperations *bool `json:"allowExtensionOperations,omitempty"`
+	// RequireGuestProvisionSignal - Specifies whether the guest provision signal is required from the virtual machine.
+	RequireGuestProvisionSignal *bool `json:"requireGuestProvisionSignal,omitempty"`
 }
 
 // Plan specifies information about the marketplace image used to create the virtual machine. This element

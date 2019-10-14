@@ -122,6 +122,7 @@ func (client InterfaceTapConfigurationsClient) CreateOrUpdatePreparer(ctx contex
 		"api-version": APIVersion,
 	}
 
+	tapConfigurationParameters.Etag = nil
 	tapConfigurationParameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),

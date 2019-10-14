@@ -86,6 +86,7 @@ func (client SubnetsClient) CreateOrUpdatePreparer(ctx context.Context, resource
 		"api-version": APIVersion,
 	}
 
+	subnetParameters.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

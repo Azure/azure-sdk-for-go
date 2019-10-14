@@ -25,6 +25,7 @@ type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
 type ContainerServicesClientAPI = original.ContainerServicesClientAPI
 type DedicatedHostGroupsClientAPI = original.DedicatedHostGroupsClientAPI
 type DedicatedHostsClientAPI = original.DedicatedHostsClientAPI
+type DiskEncryptionSetsClientAPI = original.DiskEncryptionSetsClientAPI
 type DisksClientAPI = original.DisksClientAPI
 type GalleriesClientAPI = original.GalleriesClientAPI
 type GalleryApplicationVersionsClientAPI = original.GalleryApplicationVersionsClientAPI

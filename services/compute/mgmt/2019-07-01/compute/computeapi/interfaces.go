@@ -246,7 +246,7 @@ var _ VirtualMachineRunCommandsClientAPI = (*compute.VirtualMachineRunCommandsCl
 
 // ResourceSkusClientAPI contains the set of methods on the ResourceSkusClient type.
 type ResourceSkusClientAPI interface {
-	List(ctx context.Context) (result compute.ResourceSkusResultPage, err error)
+	List(ctx context.Context, filter string) (result compute.ResourceSkusResultPage, err error)
 }
 
 var _ ResourceSkusClientAPI = (*compute.ResourceSkusClient)(nil)
@@ -278,6 +278,18 @@ type SnapshotsClientAPI interface {
 }
 
 var _ SnapshotsClientAPI = (*compute.SnapshotsClient)(nil)
+
+// DiskEncryptionSetsClientAPI contains the set of methods on the DiskEncryptionSetsClient type.
+type DiskEncryptionSetsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet compute.DiskEncryptionSet) (result compute.DiskEncryptionSetsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (result compute.DiskEncryptionSetsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (result compute.DiskEncryptionSet, err error)
+	List(ctx context.Context) (result compute.DiskEncryptionSetListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.DiskEncryptionSetListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet compute.DiskEncryptionSetUpdate) (result compute.DiskEncryptionSetsUpdateFuture, err error)
+}
+
+var _ DiskEncryptionSetsClientAPI = (*compute.DiskEncryptionSetsClient)(nil)
 
 // GalleriesClientAPI contains the set of methods on the GalleriesClient type.
 type GalleriesClientAPI interface {

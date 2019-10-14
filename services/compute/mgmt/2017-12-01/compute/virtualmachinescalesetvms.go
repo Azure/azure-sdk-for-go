@@ -645,8 +645,7 @@ func (client VirtualMachineScaleSetVMsClient) PowerOffResponder(resp *http.Respo
 	return
 }
 
-// Redeploy shuts down the virtual machine in the virtual machine scale set, moves it to a new node, and powers it back
-// on.
+// Redeploy redeploys a virtual machine in a VM scale set.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // VMScaleSetName - the name of the VM scale set.

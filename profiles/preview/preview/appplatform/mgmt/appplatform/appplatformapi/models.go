@@ -22,7 +22,6 @@ package appplatformapi
 import original "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2019-05-01-preview/appplatform/appplatformapi"
 
 type AppsClientAPI = original.AppsClientAPI
-type BaseClientAPI = original.BaseClientAPI
 type BindingsClientAPI = original.BindingsClientAPI
 type DeploymentsClientAPI = original.DeploymentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

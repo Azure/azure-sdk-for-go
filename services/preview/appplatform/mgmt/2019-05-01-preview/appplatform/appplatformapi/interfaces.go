@@ -23,15 +23,9 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-// BaseClientAPI contains the set of methods on the BaseClient type.
-type BaseClientAPI interface {
-	CheckNameAvailability(ctx context.Context, location string, availabilityParameters appplatform.NameAvailabilityParameters) (result appplatform.NameAvailability, err error)
-}
-
-var _ BaseClientAPI = (*appplatform.BaseClient)(nil)
-
 // ServicesClientAPI contains the set of methods on the ServicesClient type.
 type ServicesClientAPI interface {
+	CheckNameAvailability(ctx context.Context, location string, availabilityParameters appplatform.NameAvailabilityParameters) (result appplatform.NameAvailability, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource *appplatform.ServiceResource) (result appplatform.ServicesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string) (result appplatform.ServicesDeleteFuture, err error)
 	DisableTestEndpoint(ctx context.Context, resourceGroupName string, serviceName string) (result autorest.Response, err error)

@@ -21,12 +21,7 @@ package appplatform
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"github.com/Azure/go-autorest/tracing"
-	"net/http"
 )
 
 const (
@@ -53,89 +48,4 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
 	}
-}
-
-// CheckNameAvailability checks that the resource name is valid and is not already in use.
-// Parameters:
-// location - the region
-// availabilityParameters - parameters supplied to the operation.
-func (client BaseClient) CheckNameAvailability(ctx context.Context, location string, availabilityParameters NameAvailabilityParameters) (result NameAvailability, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckNameAvailability")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: availabilityParameters,
-			Constraints: []validation.Constraint{{Target: "availabilityParameters.Type", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "availabilityParameters.Name", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("appplatform.BaseClient", "CheckNameAvailability", err.Error())
-	}
-
-	req, err := client.CheckNameAvailabilityPreparer(ctx, location, availabilityParameters)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.BaseClient", "CheckNameAvailability", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CheckNameAvailabilitySender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "appplatform.BaseClient", "CheckNameAvailability", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CheckNameAvailabilityResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.BaseClient", "CheckNameAvailability", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
-func (client BaseClient) CheckNameAvailabilityPreparer(ctx context.Context, location string, availabilityParameters NameAvailabilityParameters) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"location":       autorest.Encode("path", location),
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-05-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/locations/{location}/checkNameAvailability", pathParameters),
-		autorest.WithJSON(availabilityParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
-// http.Response Body if it receives an error.
-func (client BaseClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
-// closes the http.Response Body.
-func (client BaseClient) CheckNameAvailabilityResponder(resp *http.Response) (result NameAvailability, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
 }

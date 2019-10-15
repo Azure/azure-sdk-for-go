@@ -108,7 +108,7 @@ func (client PredictionClient) GetSlotPredictionPreparer(ctx context.Context, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/prediction/v3.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/slots/{slotName}/predict", pathParameters),
 		autorest.WithJSON(predictionRequest),
 		autorest.WithQueryParameters(queryParameters))
@@ -206,7 +206,7 @@ func (client PredictionClient) GetVersionPredictionPreparer(ctx context.Context,
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/prediction/v3.0", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/predict", pathParameters),
 		autorest.WithJSON(predictionRequest),
 		autorest.WithQueryParameters(queryParameters))

@@ -28,10 +28,8 @@ import (
 )
 
 const (
-	tagPrefix         = "// tag: "
-	versionFile       = "version.go"
-	profileFolder     = "profiles"
-	messageForProfile = "Update profiles"
+	tagPrefix   = "// tag: "
+	versionFile = "version.go"
 )
 
 var rootCmd = &cobra.Command{
@@ -49,14 +47,12 @@ var (
 	getTagsHook func(string) ([]string, error)
 	dryRunFlag  bool
 	verboseFlag bool
-	profileFlag bool
 )
 
 func init() {
 	getTagsHook = getTags
 	rootCmd.PersistentFlags().BoolVarP(&dryRunFlag, "dry-run", "d", false, "dry run, only list the detected tags, do not add or push them")
 	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
-	rootCmd.PersistentFlags().BoolVarP(&profileFlag, "profiles", "p", false, "generate profiles")
 }
 
 // Execute the tool
@@ -75,24 +71,12 @@ func theCommand(args []string) error {
 	if err != nil {
 		return err
 	}
-	if dryRunFlag {
-		println("Found new tags:")
-		println(strings.Join(newTags, "\n"))
-	} else {
+	println("Found new tags:")
+	println(strings.Join(newTags, "\n"))
+	if !dryRunFlag {
 		// push new tags
 		if err := pushNewTags(newTags); err != nil {
 			return fmt.Errorf("failed to push tags: %v", err)
-		}
-		if profileFlag {
-			// generate profiles
-			profilePath := filepath.Join(root, profileFolder)
-			if err := generateProfiles(profilePath); err != nil {
-				return fmt.Errorf("failed during generating profiles: %v", err)
-			}
-			// push repo
-			if err := pushRepo(profilePath, messageForProfile); err != nil {
-				return fmt.Errorf("failed during add and commit new files: %v", err)
-			}
 		}
 	}
 	return nil
@@ -208,25 +192,6 @@ func pushNewTags(newTags []string) error {
 		}
 	}
 	return executeCommand("git", "push", "origin", "--tags")
-}
-
-func generateProfiles(profilePath string) error {
-	vprintf("Running `go generate` in %s\n", profilePath)
-	return executeCommand("go", "generate", profilePath)
-}
-
-func pushRepo(profilePath, message string) error {
-	vprintf("Add files in %s\n", profilePath)
-	if err := executeCommand("git", "add", profilePath); err != nil {
-		return err
-	}
-	if err := executeCommand("git", "commit", "-m", message); err != nil {
-		return err
-	}
-	if err := executeCommand("git", "push"); err != nil {
-		return err
-	}
-	return nil
 }
 
 func executeCommand(name string, args ...string) error {

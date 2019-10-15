@@ -16,11 +16,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/versioner/cmd"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/tools/versioner/cmd"
 )
 
 var (

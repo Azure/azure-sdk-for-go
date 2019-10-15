@@ -36,12 +36,6 @@ type EnableSerialConsoleResult struct {
 	Disabled *bool `json:"disabled,omitempty"`
 }
 
-// GetSerialConsoleDisabledResult returns whether or not Serial Console is disabled.
-type GetSerialConsoleDisabledResult struct {
-	// Disabled - Whether or not Serial Console is disabled.
-	Disabled *bool `json:"disabled,omitempty"`
-}
-
 // GetSerialConsoleSubscriptionNotFound error saying that the provided subscription could not be found
 type GetSerialConsoleSubscriptionNotFound struct {
 	// Code - Error code
@@ -76,4 +70,10 @@ type OperationsValueItemDisplay struct {
 type SetObject struct {
 	autorest.Response `json:"-"`
 	Value             interface{} `json:"value,omitempty"`
+}
+
+// Status returns whether or not Serial Console is disabled.
+type Status struct {
+	// Disabled - Whether or not Serial Console is disabled.
+	Disabled *bool `json:"disabled,omitempty"`
 }

@@ -28,12 +28,12 @@ const (
 type BaseClient = original.BaseClient
 type DisableSerialConsoleResult = original.DisableSerialConsoleResult
 type EnableSerialConsoleResult = original.EnableSerialConsoleResult
-type GetSerialConsoleDisabledResult = original.GetSerialConsoleDisabledResult
 type GetSerialConsoleSubscriptionNotFound = original.GetSerialConsoleSubscriptionNotFound
 type Operations = original.Operations
 type OperationsValueItem = original.OperationsValueItem
 type OperationsValueItemDisplay = original.OperationsValueItemDisplay
 type SetObject = original.SetObject
+type Status = original.Status
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

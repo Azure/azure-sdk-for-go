@@ -71,7 +71,7 @@ func (client WebApplicationFirewallPoliciesClient) CreateOrUpdate(ctx context.Co
 						{Target: "parameters.WebApplicationFirewallPolicyPropertiesFormat.PolicySettings.FileUploadLimitInMb", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "parameters.WebApplicationFirewallPolicyPropertiesFormat.PolicySettings.FileUploadLimitInMb", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
 					}},
-					{Target: "parameters.WebApplicationFirewallPolicyPropertiesFormat.ManagedRules", Name: validation.Null, Rule: true,
+					{Target: "parameters.WebApplicationFirewallPolicyPropertiesFormat.ManagedRules", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.WebApplicationFirewallPolicyPropertiesFormat.ManagedRules.ManagedRuleSets", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
 		return result, validation.NewError("network.WebApplicationFirewallPoliciesClient", "CreateOrUpdate", err.Error())

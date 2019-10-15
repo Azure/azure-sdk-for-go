@@ -7,7 +7,7 @@ variables:
   sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
 
 trigger:
-  batch: false
+  batch: true
   branches:
     include:
       - master
@@ -35,19 +35,32 @@ steps:
   - script: |
       # Echo error if github-pat is empty
       [ -z $(github-pat) ] && echo "github-pat is empty!" && exit -1
-      echo
+      echo $(Build.SourceBranchName)
       # Enable bash verbose logging
       set -x
-
+      git checkout $(Build.SourceBranchName)
       git config user.email "azuresdkci@microsoft.com"
       git config user.name "azuresdkci"
       git config credential.helper store
       echo https://$(github-pat):x-oauth-basic@github.com > ~/.git-credentials
     displayName: 'Setup github'
     workingDirectory: '$(sdkPath)'
+  - script: go generate ./profiles
+    workingDirectory: '$(sdkPath)'
+    displayName: 'Generate profiles'
   - script: go vet $(go list ./... | grep -v vendor)
     workingDirectory: '$(sdkPath)'
     displayName: 'Vet'
+  - script: |
+      # test if there are new profiles
+      if [ -z "$(git status --porcelain)" ]; then
+        echo no new profiles generated.
+      else
+        git commit -a -m "regenerated profiles"
+        git push origin $(Build.SourceBranchName)
+      fi
+    workingDirectory: '$(sdkPath)'
+    displayName: 'Push profiles'
   - script: go run ./tools/moduler/main.go ./services -v
     displayName: 'Detecting new tag and push'
     workingDirectory: '$(sdkPath)'

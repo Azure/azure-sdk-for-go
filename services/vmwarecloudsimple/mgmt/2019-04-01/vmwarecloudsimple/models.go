@@ -653,7 +653,7 @@ type CustomizationIPAddress struct {
 	Argument *string `json:"argument,omitempty"`
 	// IPAddress - Defined Ip Address when Fixed ip type is selected
 	IPAddress *string `json:"ipAddress,omitempty"`
-	// Type - Customization Specification ip's type. Possible values include: 'Type1CUSTOM', 'Type1DHCPIP', 'Type1FIXEDIP', 'Type1USERDEFINED'
+	// Type - Customization Specification ip type. Possible values include: 'Type1CUSTOM', 'Type1DHCPIP', 'Type1FIXEDIP', 'Type1USERDEFINED'
 	Type Type1 `json:"type,omitempty"`
 }
 
@@ -931,7 +931,7 @@ type CustomizationSpecification struct {
 	// Identity - Customization Identity. It contains data about user and hostname
 	Identity *CustomizationIdentity `json:"identity,omitempty"`
 	// NicSettings - Network interface settings
-	NicSettings *[]CustomizationNicSetting `json:"nic_settings,omitempty"`
+	NicSettings *[]CustomizationNicSetting `json:"nicSettings,omitempty"`
 }
 
 // DedicatedCloudNode dedicated cloud node model
@@ -1724,7 +1724,7 @@ type GuestOSNICCustomization struct {
 	DNSServers *[]string `json:"dnsServers,omitempty"`
 	// Gateway - Gateway addresses assigned to nic
 	Gateway *[]string `json:"gateway,omitempty"`
-	// IPAddress - Static ip iddress for nic
+	// IPAddress - Static ip address for nic
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// Mask - Network mask for nic
 	Mask *string `json:"mask,omitempty"`
@@ -3644,7 +3644,7 @@ type VirtualNetworkProperties struct {
 
 // VirtualNic virtual NIC model
 type VirtualNic struct {
-	// Customization - guest OS customixation for nic
+	// Customization - guest OS customization for nic
 	Customization *GuestOSNICCustomization `json:"customization,omitempty"`
 	// IPAddresses - NIC ip address
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`

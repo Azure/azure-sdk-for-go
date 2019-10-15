@@ -9141,11 +9141,11 @@ type ContainerNetworkInterfaceIPConfigurationPropertiesFormat struct {
 
 // ContainerNetworkInterfacePropertiesFormat properties of container network interface.
 type ContainerNetworkInterfacePropertiesFormat struct {
-	// ContainerNetworkInterfaceConfiguration - Container network interface configuration from which this container network interface is created.
+	// ContainerNetworkInterfaceConfiguration - READ-ONLY; Container network interface configuration from which this container network interface is created.
 	ContainerNetworkInterfaceConfiguration *ContainerNetworkInterfaceConfiguration `json:"containerNetworkInterfaceConfiguration,omitempty"`
 	// Container - Reference to the container to which this container network interface is attached.
 	Container *Container `json:"container,omitempty"`
-	// IPConfigurations - Reference to the ip configuration on this container nic.
+	// IPConfigurations - READ-ONLY; Reference to the ip configuration on this container nic.
 	IPConfigurations *[]ContainerNetworkInterfaceIPConfiguration `json:"ipConfigurations,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the container network interface resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`

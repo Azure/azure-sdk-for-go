@@ -17,15 +17,13 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"go/ast"
-	"go/parser"
-	"go/token"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"unicode"
+
+	"github.com/Azure/azure-sdk-for-go/tools/internal/pkgs"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -64,7 +62,7 @@ func theCommand(args []string) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to get absolute path")
 	}
-	pkgs, err := getPkgs(rootDir)
+	ps, err := pkgs.GetPkgs(rootDir)
 	if err != nil {
 		return errors.Wrap(err, "failed to get packages")
 	}
@@ -74,7 +72,7 @@ func theCommand(args []string) error {
 	}
 	verifiers := getVerifiers()
 	count := 0
-	for _, pkg := range pkgs {
+	for _, pkg := range ps {
 		for _, v := range verifiers {
 			if err = v(pkg); err != nil && !contains(exceptions, err.Error()) {
 				fmt.Fprintln(os.Stderr, err)
@@ -122,79 +120,7 @@ func loadExceptions(exceptFile string) ([]string, error) {
 	return exceps, nil
 }
 
-type pkg struct {
-	// the directory where the package resides relative to the root dir
-	d string
-
-	// the AST of the package
-	p *ast.Package
-}
-
-// returns true if the package directory corresponds to an ARM package
-func (p pkg) isARMPkg() bool {
-	return strings.Index(p.d, "/mgmt/") > -1
-}
-
-// walks the directory hierarchy from the specified root returning a slice of all the packages found
-func getPkgs(rootDir string) ([]pkg, error) {
-	pkgs := make([]pkg, 0)
-	err := filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			// check if leaf dir
-			fi, err := ioutil.ReadDir(path)
-			if err != nil {
-				return err
-			}
-			hasSubDirs := false
-			interfacesDir := false
-			for _, f := range fi {
-				if f.IsDir() {
-					hasSubDirs = true
-					break
-				}
-				if f.Name() == "interfaces.go" {
-					interfacesDir = true
-				}
-			}
-			if !hasSubDirs {
-				fs := token.NewFileSet()
-				// with interfaces codegen the majority of leaf directories are now the
-				// *api packages. when this is the case parse from the parent directory.
-				if interfacesDir {
-					path = filepath.Dir(path)
-				}
-				packages, err := parser.ParseDir(fs, path, func(fi os.FileInfo) bool {
-					return fi.Name() != "interfaces.go"
-				}, parser.PackageClauseOnly)
-				if err != nil {
-					return err
-				}
-				if len(packages) < 1 {
-					return errors.New("didn't find any packages which is unexpected")
-				}
-				if len(packages) > 1 {
-					return errors.New("found more than one package which is unexpected")
-				}
-				var p *ast.Package
-				for _, pkgs := range packages {
-					p = pkgs
-				}
-				// normalize directory separator to '/' character
-				pkgs = append(pkgs, pkg{
-					d: strings.Replace(path[len(rootDir):], "\\", "/", -1),
-					p: p,
-				})
-			}
-		}
-		return nil
-	})
-	return pkgs, err
-}
-
-type verifier func(p pkg) error
+type verifier func(p pkgs.Pkg) error
 
 // returns a list of verifiers to execute
 func getVerifiers() []verifier {
@@ -207,10 +133,10 @@ func getVerifiers() []verifier {
 
 // ensures that the leaf directory name matches the package name
 // new to modules: if the last leaf is version suffix, find its parent as leaf folder
-func verifyPkgMatchesDir(p pkg) error {
-	leaf := findPackageFolderInPath(p.d)
-	if !strings.EqualFold(leaf, p.p.Name) {
-		return fmt.Errorf("leaf directory of '%s' doesn't match package name '%s'", p.d, p.p.Name)
+func verifyPkgMatchesDir(p pkgs.Pkg) error {
+	leaf := findPackageFolderInPath(p.Dest)
+	if !strings.EqualFold(leaf, p.Package.Name) {
+		return fmt.Errorf("leaf directory of '%s' doesn't match package name '%s'", p.Dest, p.Package.Name)
 	}
 	return nil
 }
@@ -226,28 +152,28 @@ func findPackageFolderInPath(path string) string {
 }
 
 // ensures that there are no upper-case letters in a package's directory
-func verifyLowerCase(p pkg) error {
+func verifyLowerCase(p pkgs.Pkg) error {
 	// walk the package directory looking for upper-case characters
-	for _, r := range p.d {
+	for _, r := range p.Dest {
 		if r == '/' {
 			continue
 		}
 		if unicode.IsUpper(r) {
-			return fmt.Errorf("found upper-case character in directory '%s'", p.d)
+			return fmt.Errorf("found upper-case character in directory '%s'", p.Dest)
 		}
 	}
 	return nil
 }
 
 // ensures that the package's directory hierarchy is properly formed
-func verifyDirectoryStructure(p pkg) error {
+func verifyDirectoryStructure(p pkgs.Pkg) error {
 	// for ARM the package directory structure is highly deterministic:
 	// /redis/mgmt/2015-08-01/redis
 	// /resources/mgmt/2017-06-01-preview/policy
 	// /preview/signalr/mgmt/2018-03-01-preview/signalr
 	// /preview/security/mgmt/v2.0/security (version scheme for composite packages)
 	// /network/mgmt/2019-10-01/network/v2 (new with modules)
-	if !p.isARMPkg() {
+	if !p.IsARMPkg() {
 		return nil
 	}
 	regexStr := strings.Join([]string{
@@ -259,8 +185,8 @@ func verifyDirectoryStructure(p pkg) error {
 	}, "/")
 	regexStr = regexStr + `(/v\d+)?$`
 	regex := regexp.MustCompile(regexStr)
-	if !regex.MatchString(p.d) {
-		return fmt.Errorf("bad directory structure '%s'", p.d)
+	if !regex.MatchString(p.Dest) {
+		return fmt.Errorf("bad directory structure '%s'", p.Dest)
 	}
 	return nil
 }

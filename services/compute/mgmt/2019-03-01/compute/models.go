@@ -6298,6 +6298,8 @@ type OSProfile struct {
 	Secrets *[]VaultSecretGroup `json:"secrets,omitempty"`
 	// AllowExtensionOperations - Specifies whether extension operations should be allowed on the virtual machine. <br><br>This may only be set to False when no extensions are present on the virtual machine.
 	AllowExtensionOperations *bool `json:"allowExtensionOperations,omitempty"`
+	// RequireGuestProvisionSignal - Specifies whether the guest provision signal is required from the virtual machine.
+	RequireGuestProvisionSignal *bool `json:"requireGuestProvisionSignal,omitempty"`
 }
 
 // Plan specifies information about the marketplace image used to create the virtual machine. This element
@@ -11171,6 +11173,8 @@ type VirtualMachineScaleSetUpdateNetworkConfigurationProperties struct {
 
 // VirtualMachineScaleSetUpdateNetworkProfile describes a virtual machine scale set network profile.
 type VirtualMachineScaleSetUpdateNetworkProfile struct {
+	// HealthProbe - A reference to a load balancer probe used to determine the health of an instance in the virtual machine scale set. The reference will be in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
+	HealthProbe *APIEntityReference `json:"healthProbe,omitempty"`
 	// NetworkInterfaceConfigurations - The list of network configurations.
 	NetworkInterfaceConfigurations *[]VirtualMachineScaleSetUpdateNetworkConfiguration `json:"networkInterfaceConfigurations,omitempty"`
 }

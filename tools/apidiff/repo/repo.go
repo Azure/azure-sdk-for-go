@@ -171,7 +171,7 @@ func (wt WorkingTree) CreateTag(name string) error {
 
 // ListTags calls "git tag -l <pattern>" to obtain the list of tags.
 // If there are no tags the returned slice will have zero length.
-// Tags are sorted in lexographic ascending order.
+// Tags are sorted in lexicographic ascending order.
 func (wt WorkingTree) ListTags(pattern string) ([]string, error) {
 	cmd := exec.Command("git", "tag", "-l", pattern)
 	cmd.Dir = wt.dir

@@ -40,7 +40,7 @@ func NewCustomizationPoliciesClientWithBaseURI(baseURI string, subscriptionID st
 	return CustomizationPoliciesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
-// Get returns resource pool templates by its name
+// Get returns customization policy by its name
 // Parameters:
 // regionID - the region Id (westus, eastus)
 // pcName - the private cloud name

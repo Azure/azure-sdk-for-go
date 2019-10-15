@@ -960,6 +960,16 @@ type VpnServerConfigurationsAssociatedWithVirtualWanClientAPI interface {
 
 var _ VpnServerConfigurationsAssociatedWithVirtualWanClientAPI = (*network.VpnServerConfigurationsAssociatedWithVirtualWanClient)(nil)
 
+// VirtualHubRouteTableV2sClientAPI contains the set of methods on the VirtualHubRouteTableV2sClient type.
+type VirtualHubRouteTableV2sClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters network.VirtualHubRouteTableV2) (result network.VirtualHubRouteTableV2sCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (result network.VirtualHubRouteTableV2sDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (result network.VirtualHubRouteTableV2, err error)
+	List(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListHubVirtualNetworkConnectionsResultPage, err error)
+}
+
+var _ VirtualHubRouteTableV2sClientAPI = (*network.VirtualHubRouteTableV2sClient)(nil)
+
 // WebApplicationFirewallPoliciesClientAPI contains the set of methods on the WebApplicationFirewallPoliciesClient type.
 type WebApplicationFirewallPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters network.WebApplicationFirewallPolicy) (result network.WebApplicationFirewallPolicy, err error)

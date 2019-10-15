@@ -25,28 +25,29 @@ import (
 	"net/http"
 )
 
-// UsagesWithinRegionClient is the description of the new service
-type UsagesWithinRegionClient struct {
+// UsagesClient is the description of the new service
+type UsagesClient struct {
 	BaseClient
 }
 
-// NewUsagesWithinRegionClient creates an instance of the UsagesWithinRegionClient client.
-func NewUsagesWithinRegionClient(referer string, regionID string, subscriptionID string) UsagesWithinRegionClient {
-	return NewUsagesWithinRegionClientWithBaseURI(DefaultBaseURI, referer, regionID, subscriptionID)
+// NewUsagesClient creates an instance of the UsagesClient client.
+func NewUsagesClient(subscriptionID string, referer string) UsagesClient {
+	return NewUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewUsagesWithinRegionClientWithBaseURI creates an instance of the UsagesWithinRegionClient client.
-func NewUsagesWithinRegionClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) UsagesWithinRegionClient {
-	return UsagesWithinRegionClient{NewWithBaseURI(baseURI, referer, regionID, subscriptionID)}
+// NewUsagesClientWithBaseURI creates an instance of the UsagesClient client.
+func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string, referer string) UsagesClient {
+	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // List returns list of usage in region
 // Parameters:
+// regionID - the region Id (westus, eastus)
 // filter - the filter to apply on the list operation. only name.value is allowed here as a filter e.g.
 // $filter=name.value eq 'xxxx'
-func (client UsagesWithinRegionClient) List(ctx context.Context, filter string) (result UsageListResponsePage, err error) {
+func (client UsagesClient) List(ctx context.Context, regionID string, filter string) (result UsageListResponsePage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/UsagesWithinRegionClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsagesClient.List")
 		defer func() {
 			sc := -1
 			if result.ulr.Response.Response != nil {
@@ -56,31 +57,31 @@ func (client UsagesWithinRegionClient) List(ctx context.Context, filter string) 
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, filter)
+	req, err := client.ListPreparer(ctx, regionID, filter)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesWithinRegionClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.ulr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesWithinRegionClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.ulr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesWithinRegionClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client UsagesWithinRegionClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
+func (client UsagesClient) ListPreparer(ctx context.Context, regionID string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"regionId":       autorest.Encode("path", client.RegionID),
+		"regionId":       autorest.Encode("path", regionID),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -102,14 +103,14 @@ func (client UsagesWithinRegionClient) ListPreparer(ctx context.Context, filter 
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client UsagesWithinRegionClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client UsagesWithinRegionClient) ListResponder(resp *http.Response) (result UsageListResponse, err error) {
+func (client UsagesClient) ListResponder(resp *http.Response) (result UsageListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -121,10 +122,10 @@ func (client UsagesWithinRegionClient) ListResponder(resp *http.Response) (resul
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client UsagesWithinRegionClient) listNextResults(ctx context.Context, lastResults UsageListResponse) (result UsageListResponse, err error) {
+func (client UsagesClient) listNextResults(ctx context.Context, lastResults UsageListResponse) (result UsageListResponse, err error) {
 	req, err := lastResults.usageListResponsePreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesWithinRegionClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -132,19 +133,19 @@ func (client UsagesWithinRegionClient) listNextResults(ctx context.Context, last
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesWithinRegionClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesWithinRegionClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsagesWithinRegionClient) ListComplete(ctx context.Context, filter string) (result UsageListResponseIterator, err error) {
+func (client UsagesClient) ListComplete(ctx context.Context, regionID string, filter string) (result UsageListResponseIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/UsagesWithinRegionClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/UsagesClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -153,6 +154,6 @@ func (client UsagesWithinRegionClient) ListComplete(ctx context.Context, filter 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, filter)
+	result.page, err = client.List(ctx, regionID, filter)
 	return
 }

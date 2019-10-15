@@ -26,19 +26,19 @@ import (
 	"net/http"
 )
 
-// DedicatedCloudServiceClient is the description of the new service
-type DedicatedCloudServiceClient struct {
+// DedicatedCloudServicesClient is the description of the new service
+type DedicatedCloudServicesClient struct {
 	BaseClient
 }
 
-// NewDedicatedCloudServiceClient creates an instance of the DedicatedCloudServiceClient client.
-func NewDedicatedCloudServiceClient(referer string, regionID string, subscriptionID string) DedicatedCloudServiceClient {
-	return NewDedicatedCloudServiceClientWithBaseURI(DefaultBaseURI, referer, regionID, subscriptionID)
+// NewDedicatedCloudServicesClient creates an instance of the DedicatedCloudServicesClient client.
+func NewDedicatedCloudServicesClient(subscriptionID string, referer string) DedicatedCloudServicesClient {
+	return NewDedicatedCloudServicesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewDedicatedCloudServiceClientWithBaseURI creates an instance of the DedicatedCloudServiceClient client.
-func NewDedicatedCloudServiceClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) DedicatedCloudServiceClient {
-	return DedicatedCloudServiceClient{NewWithBaseURI(baseURI, referer, regionID, subscriptionID)}
+// NewDedicatedCloudServicesClientWithBaseURI creates an instance of the DedicatedCloudServicesClient client.
+func NewDedicatedCloudServicesClientWithBaseURI(baseURI string, subscriptionID string, referer string) DedicatedCloudServicesClient {
+	return DedicatedCloudServicesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // CreateOrUpdate create dedicate cloud service
@@ -46,9 +46,9 @@ func NewDedicatedCloudServiceClientWithBaseURI(baseURI string, referer string, r
 // resourceGroupName - the name of the resource group
 // dedicatedCloudServiceName - dedicated cloud Service name
 // dedicatedCloudServiceRequest - create Dedicated Cloud Service request
-func (client DedicatedCloudServiceClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, dedicatedCloudServiceRequest DedicatedCloudService) (result DedicatedCloudService, err error) {
+func (client DedicatedCloudServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, dedicatedCloudServiceRequest DedicatedCloudService) (result DedicatedCloudService, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServiceClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServicesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -59,39 +59,39 @@ func (client DedicatedCloudServiceClient) CreateOrUpdate(ctx context.Context, re
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: dedicatedCloudServiceName,
-			Constraints: []validation.Constraint{{Target: "dedicatedCloudServiceName", Name: validation.Pattern, Rule: `^[-a-zA-Z0-9]+$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "dedicatedCloudServiceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]([-_.a-zA-Z0-9]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: dedicatedCloudServiceRequest,
 			Constraints: []validation.Constraint{{Target: "dedicatedCloudServiceRequest.Location", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "dedicatedCloudServiceRequest.Name", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "dedicatedCloudServiceRequest.Name", Name: validation.Pattern, Rule: `^[-a-zA-Z0-9]+$`, Chain: nil}}},
+					Chain: []validation.Constraint{{Target: "dedicatedCloudServiceRequest.Name", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]([-_.a-zA-Z0-9]*[a-zA-Z0-9])?$`, Chain: nil}}},
 				{Target: "dedicatedCloudServiceRequest.DedicatedCloudServiceProperties", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "dedicatedCloudServiceRequest.DedicatedCloudServiceProperties.GatewaySubnet", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
-		return result, validation.NewError("vmwarecloudsimple.DedicatedCloudServiceClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("vmwarecloudsimple.DedicatedCloudServicesClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, dedicatedCloudServiceName, dedicatedCloudServiceRequest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "CreateOrUpdate", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "CreateOrUpdate", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "CreateOrUpdate", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DedicatedCloudServiceClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, dedicatedCloudServiceRequest DedicatedCloudService) (*http.Request, error) {
+func (client DedicatedCloudServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, dedicatedCloudServiceRequest DedicatedCloudService) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dedicatedCloudServiceName": autorest.Encode("path", dedicatedCloudServiceName),
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
@@ -118,14 +118,14 @@ func (client DedicatedCloudServiceClient) CreateOrUpdatePreparer(ctx context.Con
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DedicatedCloudServiceClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+func (client DedicatedCloudServicesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DedicatedCloudServiceClient) CreateOrUpdateResponder(resp *http.Response) (result DedicatedCloudService, err error) {
+func (client DedicatedCloudServicesClient) CreateOrUpdateResponder(resp *http.Response) (result DedicatedCloudService, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -140,9 +140,9 @@ func (client DedicatedCloudServiceClient) CreateOrUpdateResponder(resp *http.Res
 // Parameters:
 // resourceGroupName - the name of the resource group
 // dedicatedCloudServiceName - dedicated cloud service name
-func (client DedicatedCloudServiceClient) Delete(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (result DedicatedCloudServiceDeleteFuture, err error) {
+func (client DedicatedCloudServicesClient) Delete(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (result DedicatedCloudServicesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServiceClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServicesClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -153,13 +153,13 @@ func (client DedicatedCloudServiceClient) Delete(ctx context.Context, resourceGr
 	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, dedicatedCloudServiceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -167,7 +167,7 @@ func (client DedicatedCloudServiceClient) Delete(ctx context.Context, resourceGr
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DedicatedCloudServiceClient) DeletePreparer(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (*http.Request, error) {
+func (client DedicatedCloudServicesClient) DeletePreparer(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dedicatedCloudServiceName": autorest.Encode("path", dedicatedCloudServiceName),
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
@@ -189,7 +189,7 @@ func (client DedicatedCloudServiceClient) DeletePreparer(ctx context.Context, re
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client DedicatedCloudServiceClient) DeleteSender(req *http.Request) (future DedicatedCloudServiceDeleteFuture, err error) {
+func (client DedicatedCloudServicesClient) DeleteSender(req *http.Request) (future DedicatedCloudServicesDeleteFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -202,7 +202,7 @@ func (client DedicatedCloudServiceClient) DeleteSender(req *http.Request) (futur
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DedicatedCloudServiceClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DedicatedCloudServicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -216,9 +216,9 @@ func (client DedicatedCloudServiceClient) DeleteResponder(resp *http.Response) (
 // Parameters:
 // resourceGroupName - the name of the resource group
 // dedicatedCloudServiceName - dedicated cloud Service name
-func (client DedicatedCloudServiceClient) Get(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (result DedicatedCloudService, err error) {
+func (client DedicatedCloudServicesClient) Get(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (result DedicatedCloudService, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServiceClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServicesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -229,27 +229,27 @@ func (client DedicatedCloudServiceClient) Get(ctx context.Context, resourceGroup
 	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, dedicatedCloudServiceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client DedicatedCloudServiceClient) GetPreparer(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (*http.Request, error) {
+func (client DedicatedCloudServicesClient) GetPreparer(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dedicatedCloudServiceName": autorest.Encode("path", dedicatedCloudServiceName),
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
@@ -271,14 +271,14 @@ func (client DedicatedCloudServiceClient) GetPreparer(ctx context.Context, resou
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DedicatedCloudServiceClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client DedicatedCloudServicesClient) GetSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DedicatedCloudServiceClient) GetResponder(resp *http.Response) (result DedicatedCloudService, err error) {
+func (client DedicatedCloudServicesClient) GetResponder(resp *http.Response) (result DedicatedCloudService, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -289,15 +289,15 @@ func (client DedicatedCloudServiceClient) GetResponder(resp *http.Response) (res
 	return
 }
 
-// ListByResourceGroup returns list of dedicated cloud service within resource group
+// ListByResourceGroup returns list of dedicated cloud services within a resource group
 // Parameters:
 // resourceGroupName - the name of the resource group
 // filter - the filter to apply on the list operation
 // top - the maximum number of record sets to return
 // skipToken - to be used by nextLink implementation
-func (client DedicatedCloudServiceClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result DedicatedCloudServiceListResponsePage, err error) {
+func (client DedicatedCloudServicesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result DedicatedCloudServiceListResponsePage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServiceClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServicesClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
 			if result.dcslr.Response.Response != nil {
@@ -309,27 +309,27 @@ func (client DedicatedCloudServiceClient) ListByResourceGroup(ctx context.Contex
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, filter, top, skipToken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.dcslr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
 	result.dcslr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client DedicatedCloudServiceClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (*http.Request, error) {
+func (client DedicatedCloudServicesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -359,14 +359,14 @@ func (client DedicatedCloudServiceClient) ListByResourceGroupPreparer(ctx contex
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client DedicatedCloudServiceClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client DedicatedCloudServicesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client DedicatedCloudServiceClient) ListByResourceGroupResponder(resp *http.Response) (result DedicatedCloudServiceListResponse, err error) {
+func (client DedicatedCloudServicesClient) ListByResourceGroupResponder(resp *http.Response) (result DedicatedCloudServiceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -378,10 +378,10 @@ func (client DedicatedCloudServiceClient) ListByResourceGroupResponder(resp *htt
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client DedicatedCloudServiceClient) listByResourceGroupNextResults(ctx context.Context, lastResults DedicatedCloudServiceListResponse) (result DedicatedCloudServiceListResponse, err error) {
+func (client DedicatedCloudServicesClient) listByResourceGroupNextResults(ctx context.Context, lastResults DedicatedCloudServiceListResponse) (result DedicatedCloudServiceListResponse, err error) {
 	req, err := lastResults.dedicatedCloudServiceListResponsePreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -389,19 +389,19 @@ func (client DedicatedCloudServiceClient) listByResourceGroupNextResults(ctx con
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DedicatedCloudServiceClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result DedicatedCloudServiceListResponseIterator, err error) {
+func (client DedicatedCloudServicesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result DedicatedCloudServiceListResponseIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServiceClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServicesClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -419,9 +419,9 @@ func (client DedicatedCloudServiceClient) ListByResourceGroupComplete(ctx contex
 // filter - the filter to apply on the list operation
 // top - the maximum number of record sets to return
 // skipToken - to be used by nextLink implementation
-func (client DedicatedCloudServiceClient) ListBySubscription(ctx context.Context, filter string, top *int32, skipToken string) (result DedicatedCloudServiceListResponsePage, err error) {
+func (client DedicatedCloudServicesClient) ListBySubscription(ctx context.Context, filter string, top *int32, skipToken string) (result DedicatedCloudServiceListResponsePage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServiceClient.ListBySubscription")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServicesClient.ListBySubscription")
 		defer func() {
 			sc := -1
 			if result.dcslr.Response.Response != nil {
@@ -433,27 +433,27 @@ func (client DedicatedCloudServiceClient) ListBySubscription(ctx context.Context
 	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx, filter, top, skipToken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "ListBySubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "ListBySubscription", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.dcslr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "ListBySubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "ListBySubscription", resp, "Failure sending request")
 		return
 	}
 
 	result.dcslr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "ListBySubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "ListBySubscription", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListBySubscriptionPreparer prepares the ListBySubscription request.
-func (client DedicatedCloudServiceClient) ListBySubscriptionPreparer(ctx context.Context, filter string, top *int32, skipToken string) (*http.Request, error) {
+func (client DedicatedCloudServicesClient) ListBySubscriptionPreparer(ctx context.Context, filter string, top *int32, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -482,14 +482,14 @@ func (client DedicatedCloudServiceClient) ListBySubscriptionPreparer(ctx context
 
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
-func (client DedicatedCloudServiceClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
+func (client DedicatedCloudServicesClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
 // closes the http.Response Body.
-func (client DedicatedCloudServiceClient) ListBySubscriptionResponder(resp *http.Response) (result DedicatedCloudServiceListResponse, err error) {
+func (client DedicatedCloudServicesClient) ListBySubscriptionResponder(resp *http.Response) (result DedicatedCloudServiceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -501,10 +501,10 @@ func (client DedicatedCloudServiceClient) ListBySubscriptionResponder(resp *http
 }
 
 // listBySubscriptionNextResults retrieves the next set of results, if any.
-func (client DedicatedCloudServiceClient) listBySubscriptionNextResults(ctx context.Context, lastResults DedicatedCloudServiceListResponse) (result DedicatedCloudServiceListResponse, err error) {
+func (client DedicatedCloudServicesClient) listBySubscriptionNextResults(ctx context.Context, lastResults DedicatedCloudServiceListResponse) (result DedicatedCloudServiceListResponse, err error) {
 	req, err := lastResults.dedicatedCloudServiceListResponsePreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -512,19 +512,19 @@ func (client DedicatedCloudServiceClient) listBySubscriptionNextResults(ctx cont
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DedicatedCloudServiceClient) ListBySubscriptionComplete(ctx context.Context, filter string, top *int32, skipToken string) (result DedicatedCloudServiceListResponseIterator, err error) {
+func (client DedicatedCloudServicesClient) ListBySubscriptionComplete(ctx context.Context, filter string, top *int32, skipToken string) (result DedicatedCloudServiceListResponseIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServiceClient.ListBySubscription")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServicesClient.ListBySubscription")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -542,9 +542,9 @@ func (client DedicatedCloudServiceClient) ListBySubscriptionComplete(ctx context
 // resourceGroupName - the name of the resource group
 // dedicatedCloudServiceName - dedicated cloud service name
 // dedicatedCloudServiceRequest - patch Dedicated Cloud Service request
-func (client DedicatedCloudServiceClient) Update(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, dedicatedCloudServiceRequest PatchPayload) (result DedicatedCloudService, err error) {
+func (client DedicatedCloudServicesClient) Update(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, dedicatedCloudServiceRequest PatchPayload) (result DedicatedCloudService, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServiceClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DedicatedCloudServicesClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -555,27 +555,27 @@ func (client DedicatedCloudServiceClient) Update(ctx context.Context, resourceGr
 	}
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, dedicatedCloudServiceName, dedicatedCloudServiceRequest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Update", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.UpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServiceClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Update", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // UpdatePreparer prepares the Update request.
-func (client DedicatedCloudServiceClient) UpdatePreparer(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, dedicatedCloudServiceRequest PatchPayload) (*http.Request, error) {
+func (client DedicatedCloudServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, dedicatedCloudServiceName string, dedicatedCloudServiceRequest PatchPayload) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dedicatedCloudServiceName": autorest.Encode("path", dedicatedCloudServiceName),
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
@@ -599,14 +599,14 @@ func (client DedicatedCloudServiceClient) UpdatePreparer(ctx context.Context, re
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client DedicatedCloudServiceClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client DedicatedCloudServicesClient) UpdateSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client DedicatedCloudServiceClient) UpdateResponder(resp *http.Response) (result DedicatedCloudService, err error) {
+func (client DedicatedCloudServicesClient) UpdateResponder(resp *http.Response) (result DedicatedCloudService, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

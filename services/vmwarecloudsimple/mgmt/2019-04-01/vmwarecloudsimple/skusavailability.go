@@ -25,28 +25,28 @@ import (
 	"net/http"
 )
 
-// SkusAvailabilityWithinRegionClient is the description of the new service
-type SkusAvailabilityWithinRegionClient struct {
+// SkusAvailabilityClient is the description of the new service
+type SkusAvailabilityClient struct {
 	BaseClient
 }
 
-// NewSkusAvailabilityWithinRegionClient creates an instance of the SkusAvailabilityWithinRegionClient client.
-func NewSkusAvailabilityWithinRegionClient(referer string, regionID string, subscriptionID string) SkusAvailabilityWithinRegionClient {
-	return NewSkusAvailabilityWithinRegionClientWithBaseURI(DefaultBaseURI, referer, regionID, subscriptionID)
+// NewSkusAvailabilityClient creates an instance of the SkusAvailabilityClient client.
+func NewSkusAvailabilityClient(subscriptionID string, referer string) SkusAvailabilityClient {
+	return NewSkusAvailabilityClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewSkusAvailabilityWithinRegionClientWithBaseURI creates an instance of the SkusAvailabilityWithinRegionClient
-// client.
-func NewSkusAvailabilityWithinRegionClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) SkusAvailabilityWithinRegionClient {
-	return SkusAvailabilityWithinRegionClient{NewWithBaseURI(baseURI, referer, regionID, subscriptionID)}
+// NewSkusAvailabilityClientWithBaseURI creates an instance of the SkusAvailabilityClient client.
+func NewSkusAvailabilityClientWithBaseURI(baseURI string, subscriptionID string, referer string) SkusAvailabilityClient {
+	return SkusAvailabilityClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // List returns list of available resources in region
 // Parameters:
+// regionID - the region Id (westus, eastus)
 // skuID - sku id, if no sku is passed availability for all skus will be returned
-func (client SkusAvailabilityWithinRegionClient) List(ctx context.Context, skuID string) (result SkuAvailabilityListResponsePage, err error) {
+func (client SkusAvailabilityClient) List(ctx context.Context, regionID string, skuID string) (result SkuAvailabilityListResponsePage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SkusAvailabilityWithinRegionClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SkusAvailabilityClient.List")
 		defer func() {
 			sc := -1
 			if result.salr.Response.Response != nil {
@@ -56,31 +56,31 @@ func (client SkusAvailabilityWithinRegionClient) List(ctx context.Context, skuID
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, skuID)
+	req, err := client.ListPreparer(ctx, regionID, skuID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityWithinRegionClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.salr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityWithinRegionClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.salr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityWithinRegionClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client SkusAvailabilityWithinRegionClient) ListPreparer(ctx context.Context, skuID string) (*http.Request, error) {
+func (client SkusAvailabilityClient) ListPreparer(ctx context.Context, regionID string, skuID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"regionId":       autorest.Encode("path", client.RegionID),
+		"regionId":       autorest.Encode("path", regionID),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -102,14 +102,14 @@ func (client SkusAvailabilityWithinRegionClient) ListPreparer(ctx context.Contex
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client SkusAvailabilityWithinRegionClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client SkusAvailabilityClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SkusAvailabilityWithinRegionClient) ListResponder(resp *http.Response) (result SkuAvailabilityListResponse, err error) {
+func (client SkusAvailabilityClient) ListResponder(resp *http.Response) (result SkuAvailabilityListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -121,10 +121,10 @@ func (client SkusAvailabilityWithinRegionClient) ListResponder(resp *http.Respon
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client SkusAvailabilityWithinRegionClient) listNextResults(ctx context.Context, lastResults SkuAvailabilityListResponse) (result SkuAvailabilityListResponse, err error) {
+func (client SkusAvailabilityClient) listNextResults(ctx context.Context, lastResults SkuAvailabilityListResponse) (result SkuAvailabilityListResponse, err error) {
 	req, err := lastResults.skuAvailabilityListResponsePreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityWithinRegionClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -132,19 +132,19 @@ func (client SkusAvailabilityWithinRegionClient) listNextResults(ctx context.Con
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityWithinRegionClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityWithinRegionClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SkusAvailabilityWithinRegionClient) ListComplete(ctx context.Context, skuID string) (result SkuAvailabilityListResponseIterator, err error) {
+func (client SkusAvailabilityClient) ListComplete(ctx context.Context, regionID string, skuID string) (result SkuAvailabilityListResponseIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SkusAvailabilityWithinRegionClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SkusAvailabilityClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -153,6 +153,6 @@ func (client SkusAvailabilityWithinRegionClient) ListComplete(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, skuID)
+	result.page, err = client.List(ctx, regionID, skuID)
 	return
 }

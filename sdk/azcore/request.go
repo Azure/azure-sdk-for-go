@@ -153,6 +153,21 @@ func (req *Request) RewindBody() error {
 
 func (req *Request) copy() *Request {
 	clonedURL := *req.URL
+	var clonedHeader http.Header
+	if len(req.Header) > 0 {
+		// taken from http.Header.Clone() in Go 1.13 so we can build on earlier versions
+		nv := 0
+		for _, vv := range req.Header {
+			nv += len(vv)
+		}
+		sv := make([]string, nv) // shared backing array for headers' values
+		clonedHeader = make(http.Header, len(req.Header))
+		for k, vv := range req.Header {
+			n := copy(sv, vv)
+			clonedHeader[k] = sv[:n:n]
+			sv = sv[n:]
+		}
+	}
 	// Copy the values and immutable references
 	return &Request{
 		Request: &http.Request{
@@ -161,7 +176,7 @@ func (req *Request) copy() *Request {
 			Proto:         req.Proto,
 			ProtoMajor:    req.ProtoMajor,
 			ProtoMinor:    req.ProtoMinor,
-			Header:        req.Header.Clone(),
+			Header:        clonedHeader,
 			Host:          req.URL.Host,
 			Body:          req.Body, // shallow copy
 			ContentLength: req.ContentLength,

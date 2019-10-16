@@ -60,8 +60,6 @@ func Version() string {
 // tag: %s
 `
 
-const goVersion = `go 1.12`
-
 func Test_getTags(t *testing.T) {
 	if os.Getenv("TRAVIS") == "true" {
 		// travis does a shallow clone so tag count is not consistent

@@ -16,12 +16,14 @@ package pkgs
 
 import (
 	"errors"
+	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -36,6 +38,23 @@ type Pkg struct {
 // IsARMPkg returns if this package is ARM package (management plane)
 func (p Pkg) IsARMPkg() bool {
 	return strings.Index(p.Dest, "/mgmt/") > -1
+}
+
+// GetApiVersion returns the api version of this package
+func (p Pkg) GetApiVersion() (string, error) {
+	dest := p.Dest
+	if p.IsARMPkg() {
+		regex := regexp.MustCompile(`mgmt/(.+)/`)
+		versionString := regex.FindStringSubmatch(dest)[1]
+		return versionString, nil
+	} else {
+		regex := regexp.MustCompile(`/(\d{4}-\d{2}.*|v?\d+(\.\d+)?)/`)
+		versionString := regex.FindStringSubmatch(dest)[1]
+		if versionString == "" {
+			return "", fmt.Errorf("does not find api version in data plane package %s", dest)
+		}
+		return versionString, nil
+	}
 }
 
 // GetPkgs returns every package under the rootDir. Package for interfaces will be ignored.

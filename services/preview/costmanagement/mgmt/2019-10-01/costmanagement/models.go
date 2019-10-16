@@ -281,15 +281,23 @@ func (d *Dimension) UnmarshalJSON(body []byte) error {
 
 // DimensionProperties ...
 type DimensionProperties struct {
-	Description     *string    `json:"description,omitempty"`
-	FilterEnabled   *bool      `json:"filterEnabled,omitempty"`
-	GroupingEnabled *bool      `json:"groupingEnabled,omitempty"`
-	Data            *[]string  `json:"data,omitempty"`
-	Total           *int32     `json:"total,omitempty"`
-	Category        *string    `json:"category,omitempty"`
-	UsageStart      *date.Time `json:"usageStart,omitempty"`
-	UsageEnd        *date.Time `json:"usageEnd,omitempty"`
-	NextLink        *string    `json:"nextLink,omitempty"`
+	// Description - READ-ONLY; Dimension description.
+	Description *string `json:"description,omitempty"`
+	// FilterEnabled - READ-ONLY; Filter enabled.
+	FilterEnabled *bool `json:"filterEnabled,omitempty"`
+	// GroupingEnabled - READ-ONLY; Grouping enabled.
+	GroupingEnabled *bool     `json:"groupingEnabled,omitempty"`
+	Data            *[]string `json:"data,omitempty"`
+	// Total - READ-ONLY; Total number of data for the dimension.
+	Total *int32 `json:"total,omitempty"`
+	// Category - READ-ONLY; Dimension category.
+	Category *string `json:"category,omitempty"`
+	// UsageStart - READ-ONLY; Usage start.
+	UsageStart *date.Time `json:"usageStart,omitempty"`
+	// UsageEnd - READ-ONLY; Usage end.
+	UsageEnd *date.Time `json:"usageEnd,omitempty"`
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
 }
 
 // DimensionsListResult result of listing dimensions. It contains a list of available dimensions.
@@ -734,7 +742,9 @@ type QueryAggregation struct {
 
 // QueryColumn ...
 type QueryColumn struct {
+	// Name - The name of column.
 	Name *string `json:"name,omitempty"`
+	// Type - The type of column.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -830,10 +840,12 @@ type QueryGrouping struct {
 
 // QueryProperties ...
 type QueryProperties struct {
+	// NextLink - The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Columns - Array of columns
-	Columns *[]QueryColumn   `json:"columns,omitempty"`
-	Rows    *[][]interface{} `json:"rows,omitempty"`
+	Columns *[]QueryColumn `json:"columns,omitempty"`
+	// Rows - Array of rows
+	Rows *[][]interface{} `json:"rows,omitempty"`
 }
 
 // QueryResult result of query. It contains all columns listed under groupings and aggregation.

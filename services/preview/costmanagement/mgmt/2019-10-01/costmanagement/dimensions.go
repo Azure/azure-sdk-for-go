@@ -53,8 +53,8 @@ func NewDimensionsClientWithBaseURI(baseURI string, subscriptionID string) Dimen
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
-// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
 // partners.
 // filter - may be used to filter dimensions by properties/category, properties/usageStart,

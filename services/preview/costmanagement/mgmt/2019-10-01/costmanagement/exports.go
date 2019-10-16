@@ -55,8 +55,8 @@ func NewExportsClientWithBaseURI(baseURI string, subscriptionID string) ExportsC
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
-// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
 // partners.
 // exportName - export Name.
@@ -159,8 +159,8 @@ func (client ExportsClient) CreateOrUpdateResponder(resp *http.Response) (result
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
-// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
 // partners.
 // exportName - export Name.
@@ -248,8 +248,8 @@ func (client ExportsClient) DeleteResponder(resp *http.Response) (result autores
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
-// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
 // partners.
 // exportName - export Name.
@@ -337,8 +337,8 @@ func (client ExportsClient) ExecuteResponder(resp *http.Response) (result autore
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
-// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
 // partners.
 // exportName - export Name.
@@ -427,8 +427,8 @@ func (client ExportsClient) GetResponder(resp *http.Response) (result Export, er
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
-// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
 // partners.
 // exportName - export Name.
@@ -517,8 +517,8 @@ func (client ExportsClient) GetExecutionHistoryResponder(resp *http.Response) (r
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
-// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
-// invoiceSection scope, and
+// 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoiceSections/{invoiceSectionId}'
+// for invoiceSection scope, and
 // 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/customers/{customerId}' specific for
 // partners.
 func (client ExportsClient) List(ctx context.Context, scope string) (result ExportListResult, err error) {

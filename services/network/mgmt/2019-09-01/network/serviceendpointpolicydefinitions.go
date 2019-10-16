@@ -88,6 +88,7 @@ func (client ServiceEndpointPolicyDefinitionsClient) CreateOrUpdatePreparer(ctx 
 		"api-version": APIVersion,
 	}
 
+	serviceEndpointPolicyDefinitions.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

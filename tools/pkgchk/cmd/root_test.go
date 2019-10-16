@@ -15,6 +15,7 @@
 package cmd
 
 import (
+	"github.com/Azure/azure-sdk-for-go/tools/internal/pkgs"
 	"path/filepath"
 	"testing"
 )
@@ -28,11 +29,11 @@ func Test_verifyDirectoryStructure(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get absolute path: %+v", err)
 	}
-	pkgs, err := getPkgs(rootDir)
+	ps, err := pkgs.GetPkgs(rootDir)
 	if err != nil {
 		t.Fatalf("failed to get packages: %+v", err)
 	}
-	for _, pkg := range pkgs {
+	for _, pkg := range ps {
 		if err := verifyDirectoryStructure(pkg); err != nil {
 			t.Fatalf("failed to verify directory structure: %+v", err)
 		}
@@ -44,11 +45,11 @@ func Test_verifyPkgMatchesDir(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to get absolute path: %+v", err)
 	}
-	pkgs, err := getPkgs(rootDir)
+	ps, err := pkgs.GetPkgs(rootDir)
 	if err != nil {
 		t.Fatalf("failed to get packages: %+v", err)
 	}
-	for _, pkg := range pkgs {
+	for _, pkg := range ps {
 		if err := verifyPkgMatchesDir(pkg); err != nil {
 			t.Fatalf("failed to verify package directory name: %+v", err)
 		}

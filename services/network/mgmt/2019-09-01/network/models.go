@@ -10965,11 +10965,11 @@ func (ercp *ExpressRouteCircuitPeering) UnmarshalJSON(body []byte) error {
 
 // ExpressRouteCircuitPeeringConfig specifies the peering configuration.
 type ExpressRouteCircuitPeeringConfig struct {
-	// AdvertisedPublicPrefixes - READ-ONLY; The reference of AdvertisedPublicPrefixes.
+	// AdvertisedPublicPrefixes - The reference of AdvertisedPublicPrefixes.
 	AdvertisedPublicPrefixes *[]string `json:"advertisedPublicPrefixes,omitempty"`
 	// AdvertisedCommunities - The communities of bgp peering. Specified for microsoft peering.
 	AdvertisedCommunities *[]string `json:"advertisedCommunities,omitempty"`
-	// AdvertisedPublicPrefixesState - The advertised public prefix state of the Peering resource. Possible values include: 'NotConfigured', 'Configuring', 'Configured', 'ValidationNeeded'
+	// AdvertisedPublicPrefixesState - READ-ONLY; The advertised public prefix state of the Peering resource. Possible values include: 'NotConfigured', 'Configuring', 'Configured', 'ValidationNeeded'
 	AdvertisedPublicPrefixesState ExpressRouteCircuitPeeringAdvertisedPublicPrefixState `json:"advertisedPublicPrefixesState,omitempty"`
 	// LegacyMode - The legacy mode of the peering.
 	LegacyMode *int32 `json:"legacyMode,omitempty"`

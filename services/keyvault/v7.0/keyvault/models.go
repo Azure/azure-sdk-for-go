@@ -2056,8 +2056,9 @@ type JSONWebKey struct {
 	// Kid - Key identifier.
 	Kid *string `json:"kid,omitempty"`
 	// Kty - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40. Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct'
-	Kty    JSONWebKeyType `json:"kty,omitempty"`
-	KeyOps *[]string      `json:"key_ops,omitempty"`
+	Kty JSONWebKeyType `json:"kty,omitempty"`
+	// KeyOps - Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
+	KeyOps *[]JSONWebKeyOperation `json:"key_ops,omitempty"`
 	// N - RSA modulus. (a URL-encoded base64 string)
 	N *string `json:"n,omitempty"`
 	// E - RSA public exponent. (a URL-encoded base64 string)

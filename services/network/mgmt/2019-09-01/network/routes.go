@@ -86,6 +86,7 @@ func (client RoutesClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		"api-version": APIVersion,
 	}
 
+	routeParameters.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

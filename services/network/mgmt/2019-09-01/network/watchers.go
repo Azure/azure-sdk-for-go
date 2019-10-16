@@ -180,6 +180,7 @@ func (client WatchersClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 		"api-version": APIVersion,
 	}
 
+	parameters.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

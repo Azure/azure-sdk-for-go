@@ -309,8 +309,8 @@ type IPGroupsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.IPGroup) (result network.IPGroupsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, IPGroupsName string) (result network.IPGroupsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, IPGroupsName string, expand string) (result network.IPGroup, err error)
-	List(ctx context.Context) (result network.IPGroupsListResultPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.IPGroupsListResultPage, err error)
+	List(ctx context.Context) (result network.IPGroupListResultPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.IPGroupListResultPage, err error)
 	UpdateGroups(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.TagsObject) (result network.IPGroup, err error)
 }
 

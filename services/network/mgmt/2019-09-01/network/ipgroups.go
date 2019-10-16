@@ -280,7 +280,7 @@ func (client IPGroupsClient) GetResponder(resp *http.Response) (result IPGroup, 
 }
 
 // List gets all IpGroups in a subscription.
-func (client IPGroupsClient) List(ctx context.Context) (result IPGroupsListResultPage, err error) {
+func (client IPGroupsClient) List(ctx context.Context) (result IPGroupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.List")
 		defer func() {
@@ -341,7 +341,7 @@ func (client IPGroupsClient) ListSender(req *http.Request) (*http.Response, erro
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client IPGroupsClient) ListResponder(resp *http.Response) (result IPGroupsListResult, err error) {
+func (client IPGroupsClient) ListResponder(resp *http.Response) (result IPGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -353,8 +353,8 @@ func (client IPGroupsClient) ListResponder(resp *http.Response) (result IPGroups
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client IPGroupsClient) listNextResults(ctx context.Context, lastResults IPGroupsListResult) (result IPGroupsListResult, err error) {
-	req, err := lastResults.iPGroupsListResultPreparer(ctx)
+func (client IPGroupsClient) listNextResults(ctx context.Context, lastResults IPGroupListResult) (result IPGroupListResult, err error) {
+	req, err := lastResults.iPGroupListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network.IPGroupsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -374,7 +374,7 @@ func (client IPGroupsClient) listNextResults(ctx context.Context, lastResults IP
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client IPGroupsClient) ListComplete(ctx context.Context) (result IPGroupsListResultIterator, err error) {
+func (client IPGroupsClient) ListComplete(ctx context.Context) (result IPGroupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.List")
 		defer func() {
@@ -392,7 +392,7 @@ func (client IPGroupsClient) ListComplete(ctx context.Context) (result IPGroupsL
 // ListByResourceGroup gets all IpGroups in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-func (client IPGroupsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result IPGroupsListResultPage, err error) {
+func (client IPGroupsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result IPGroupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.ListByResourceGroup")
 		defer func() {
@@ -454,7 +454,7 @@ func (client IPGroupsClient) ListByResourceGroupSender(req *http.Request) (*http
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client IPGroupsClient) ListByResourceGroupResponder(resp *http.Response) (result IPGroupsListResult, err error) {
+func (client IPGroupsClient) ListByResourceGroupResponder(resp *http.Response) (result IPGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -466,8 +466,8 @@ func (client IPGroupsClient) ListByResourceGroupResponder(resp *http.Response) (
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client IPGroupsClient) listByResourceGroupNextResults(ctx context.Context, lastResults IPGroupsListResult) (result IPGroupsListResult, err error) {
-	req, err := lastResults.iPGroupsListResultPreparer(ctx)
+func (client IPGroupsClient) listByResourceGroupNextResults(ctx context.Context, lastResults IPGroupListResult) (result IPGroupListResult, err error) {
+	req, err := lastResults.iPGroupListResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network.IPGroupsClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
@@ -487,7 +487,7 @@ func (client IPGroupsClient) listByResourceGroupNextResults(ctx context.Context,
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client IPGroupsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result IPGroupsListResultIterator, err error) {
+func (client IPGroupsClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result IPGroupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.ListByResourceGroup")
 		defer func() {

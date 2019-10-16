@@ -1478,13 +1478,13 @@ type IPConfigurationProfile = original.IPConfigurationProfile
 type IPConfigurationProfilePropertiesFormat = original.IPConfigurationProfilePropertiesFormat
 type IPConfigurationPropertiesFormat = original.IPConfigurationPropertiesFormat
 type IPGroup = original.IPGroup
+type IPGroupListResult = original.IPGroupListResult
+type IPGroupListResultIterator = original.IPGroupListResultIterator
+type IPGroupListResultPage = original.IPGroupListResultPage
+type IPGroupPropertiesFormat = original.IPGroupPropertiesFormat
 type IPGroupsClient = original.IPGroupsClient
 type IPGroupsCreateOrUpdateFuture = original.IPGroupsCreateOrUpdateFuture
 type IPGroupsDeleteFuture = original.IPGroupsDeleteFuture
-type IPGroupsListResult = original.IPGroupsListResult
-type IPGroupsListResultIterator = original.IPGroupsListResultIterator
-type IPGroupsListResultPage = original.IPGroupsListResultPage
-type IPGroupsPropertiesFormat = original.IPGroupsPropertiesFormat
 type IPTag = original.IPTag
 type InboundNatPool = original.InboundNatPool
 type InboundNatPoolPropertiesFormat = original.InboundNatPoolPropertiesFormat
@@ -2396,17 +2396,17 @@ func NewHubVirtualNetworkConnectionsClient(subscriptionID string) HubVirtualNetw
 func NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HubVirtualNetworkConnectionsClient {
 	return original.NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewIPGroupListResultIterator(page IPGroupListResultPage) IPGroupListResultIterator {
+	return original.NewIPGroupListResultIterator(page)
+}
+func NewIPGroupListResultPage(getNextPage func(context.Context, IPGroupListResult) (IPGroupListResult, error)) IPGroupListResultPage {
+	return original.NewIPGroupListResultPage(getNextPage)
+}
 func NewIPGroupsClient(subscriptionID string) IPGroupsClient {
 	return original.NewIPGroupsClient(subscriptionID)
 }
 func NewIPGroupsClientWithBaseURI(baseURI string, subscriptionID string) IPGroupsClient {
 	return original.NewIPGroupsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewIPGroupsListResultIterator(page IPGroupsListResultPage) IPGroupsListResultIterator {
-	return original.NewIPGroupsListResultIterator(page)
-}
-func NewIPGroupsListResultPage(getNextPage func(context.Context, IPGroupsListResult) (IPGroupsListResult, error)) IPGroupsListResultPage {
-	return original.NewIPGroupsListResultPage(getNextPage)
 }
 func NewInboundNatRuleListResultIterator(page InboundNatRuleListResultPage) InboundNatRuleListResultIterator {
 	return original.NewInboundNatRuleListResultIterator(page)

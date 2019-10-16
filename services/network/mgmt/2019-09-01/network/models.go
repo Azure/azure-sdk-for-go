@@ -17189,8 +17189,8 @@ type IPConfigurationPropertiesFormat struct {
 // IPGroup the IpGroups resource information.
 type IPGroup struct {
 	autorest.Response `json:"-"`
-	// IPGroupsPropertiesFormat - Properties of the IpGroups.
-	*IPGroupsPropertiesFormat `json:"properties,omitempty"`
+	// IPGroupPropertiesFormat - Properties of the IpGroups.
+	*IPGroupPropertiesFormat `json:"properties,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
@@ -17208,8 +17208,8 @@ type IPGroup struct {
 // MarshalJSON is the custom marshaler for IPGroup.
 func (ig IPGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ig.IPGroupsPropertiesFormat != nil {
-		objectMap["properties"] = ig.IPGroupsPropertiesFormat
+	if ig.IPGroupPropertiesFormat != nil {
+		objectMap["properties"] = ig.IPGroupPropertiesFormat
 	}
 	if ig.ID != nil {
 		objectMap["id"] = ig.ID
@@ -17234,12 +17234,12 @@ func (ig *IPGroup) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var IPGroupsPropertiesFormat IPGroupsPropertiesFormat
-				err = json.Unmarshal(*v, &IPGroupsPropertiesFormat)
+				var IPGroupPropertiesFormat IPGroupPropertiesFormat
+				err = json.Unmarshal(*v, &IPGroupPropertiesFormat)
 				if err != nil {
 					return err
 				}
-				ig.IPGroupsPropertiesFormat = &IPGroupsPropertiesFormat
+				ig.IPGroupPropertiesFormat = &IPGroupPropertiesFormat
 			}
 		case "etag":
 			if v != nil {
@@ -17301,6 +17301,162 @@ func (ig *IPGroup) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// IPGroupListResult response for the ListIpGroups API service call.
+type IPGroupListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of IpGroups information resources.
+	Value *[]IPGroup `json:"value,omitempty"`
+	// NextLink - URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IPGroupListResultIterator provides access to a complete listing of IPGroup values.
+type IPGroupListResultIterator struct {
+	i    int
+	page IPGroupListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IPGroupListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IPGroupListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IPGroupListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IPGroupListResultIterator) Response() IPGroupListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IPGroupListResultIterator) Value() IPGroup {
+	if !iter.page.NotDone() {
+		return IPGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IPGroupListResultIterator type.
+func NewIPGroupListResultIterator(page IPGroupListResultPage) IPGroupListResultIterator {
+	return IPGroupListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (iglr IPGroupListResult) IsEmpty() bool {
+	return iglr.Value == nil || len(*iglr.Value) == 0
+}
+
+// iPGroupListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (iglr IPGroupListResult) iPGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if iglr.NextLink == nil || len(to.String(iglr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(iglr.NextLink)))
+}
+
+// IPGroupListResultPage contains a page of IPGroup values.
+type IPGroupListResultPage struct {
+	fn   func(context.Context, IPGroupListResult) (IPGroupListResult, error)
+	iglr IPGroupListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IPGroupListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iglr)
+	if err != nil {
+		return err
+	}
+	page.iglr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IPGroupListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IPGroupListResultPage) NotDone() bool {
+	return !page.iglr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IPGroupListResultPage) Response() IPGroupListResult {
+	return page.iglr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IPGroupListResultPage) Values() []IPGroup {
+	if page.iglr.IsEmpty() {
+		return nil
+	}
+	return *page.iglr.Value
+}
+
+// Creates a new instance of the IPGroupListResultPage type.
+func NewIPGroupListResultPage(getNextPage func(context.Context, IPGroupListResult) (IPGroupListResult, error)) IPGroupListResultPage {
+	return IPGroupListResultPage{fn: getNextPage}
+}
+
+// IPGroupPropertiesFormat the IpGroups property information.
+type IPGroupPropertiesFormat struct {
+	// ProvisioningState - READ-ONLY; The provisioning state of the IpGroups resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// IPAddresses - IpAddresses/IpAddressPrefixes in the IpGroups resource.
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+	// Firewalls - READ-ONLY; List of references to Azure resources that this IpGroups is associated with
+	Firewalls *[]SubResource `json:"firewalls,omitempty"`
+}
+
 // IPGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type IPGroupsCreateOrUpdateFuture struct {
@@ -17351,162 +17507,6 @@ func (future *IPGroupsDeleteFuture) Result(client IPGroupsClient) (ar autorest.R
 	}
 	ar.Response = future.Response()
 	return
-}
-
-// IPGroupsListResult response for the ListIpGroups API service call.
-type IPGroupsListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of IpGroups information resources.
-	Value *[]IPGroup `json:"value,omitempty"`
-	// NextLink - URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// IPGroupsListResultIterator provides access to a complete listing of IPGroup values.
-type IPGroupsListResultIterator struct {
-	i    int
-	page IPGroupsListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IPGroupsListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *IPGroupsListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IPGroupsListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IPGroupsListResultIterator) Response() IPGroupsListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IPGroupsListResultIterator) Value() IPGroup {
-	if !iter.page.NotDone() {
-		return IPGroup{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the IPGroupsListResultIterator type.
-func NewIPGroupsListResultIterator(page IPGroupsListResultPage) IPGroupsListResultIterator {
-	return IPGroupsListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (iglr IPGroupsListResult) IsEmpty() bool {
-	return iglr.Value == nil || len(*iglr.Value) == 0
-}
-
-// iPGroupsListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (iglr IPGroupsListResult) iPGroupsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iglr.NextLink == nil || len(to.String(iglr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(iglr.NextLink)))
-}
-
-// IPGroupsListResultPage contains a page of IPGroup values.
-type IPGroupsListResultPage struct {
-	fn   func(context.Context, IPGroupsListResult) (IPGroupsListResult, error)
-	iglr IPGroupsListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IPGroupsListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.iglr)
-	if err != nil {
-		return err
-	}
-	page.iglr = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *IPGroupsListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IPGroupsListResultPage) NotDone() bool {
-	return !page.iglr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IPGroupsListResultPage) Response() IPGroupsListResult {
-	return page.iglr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IPGroupsListResultPage) Values() []IPGroup {
-	if page.iglr.IsEmpty() {
-		return nil
-	}
-	return *page.iglr.Value
-}
-
-// Creates a new instance of the IPGroupsListResultPage type.
-func NewIPGroupsListResultPage(getNextPage func(context.Context, IPGroupsListResult) (IPGroupsListResult, error)) IPGroupsListResultPage {
-	return IPGroupsListResultPage{fn: getNextPage}
-}
-
-// IPGroupsPropertiesFormat the IpGroups property information.
-type IPGroupsPropertiesFormat struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the IpGroups resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
-	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// IPAddresses - IpAddresses/IpAddressPrefixes in the IpGroups resource.
-	IPAddresses *[]string `json:"ipAddresses,omitempty"`
-	// Firewalls - READ-ONLY; List of references to Azure resources that this IpGroups is associated with
-	Firewalls *[]SubResource `json:"firewalls,omitempty"`
 }
 
 // IpsecPolicy an IPSec Policy configuration for a virtual network gateway connection.

@@ -25,6 +25,7 @@ import (
 	"strings"
 )
 
+// Pkg provides a package of a service
 type Pkg struct {
 	// the directory where the package relative to the root dir
 	Dest string
@@ -32,10 +33,12 @@ type Pkg struct {
 	Package *ast.Package
 }
 
+// IsARMPkg returns if this package is ARM package (management plane)
 func (p Pkg) IsARMPkg() bool {
 	return strings.Index(p.Dest, "/mgmt/") > -1
 }
 
+// GetPkgs returns every package under the rootDir. Package for interfaces will be ignored.
 func GetPkgs(rootDir string) ([]Pkg, error) {
 	var pkgs []Pkg
 	err := filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {

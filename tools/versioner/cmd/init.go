@@ -139,7 +139,7 @@ func theInitCommand(args []string) error {
 
 func createVersionFile(root string, p pkgs.Pkg, tagPrefix string) error {
 	verFilePath := filepath.Join(root, p.Dest, "version.go")
-	apiVersion, err := p.GetApiVersion()
+	apiVersion, err := p.GetAPIVersion()
 	if err != nil {
 		return fmt.Errorf("failed to get api version of package %s: %+v", p.Dest, err)
 	}

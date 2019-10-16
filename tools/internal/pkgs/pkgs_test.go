@@ -95,7 +95,7 @@ func TestPkg_GetApiVersion(t *testing.T) {
 	}
 	for _, c := range cases {
 		p := Pkg{Dest: c.input}
-		api, err := p.GetApiVersion()
+		api, err := p.GetAPIVersion()
 		if err != nil {
 			t.Fatalf("failed to get api version: %+v", err)
 		}

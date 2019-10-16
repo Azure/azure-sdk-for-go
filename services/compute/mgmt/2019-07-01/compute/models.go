@@ -7154,9 +7154,9 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type ResourceIdentity struct {
 	// Type - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported. Possible values include: 'SystemAssigned'
 	Type DiskEncryptionSetIdentityType `json:"type,omitempty"`
-	// PrincipalID - The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity
+	// PrincipalID - READ-ONLY; The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit) identity
 	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit) identity
+	// TenantID - READ-ONLY; The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity
 	TenantID *string `json:"tenantId,omitempty"`
 }
 

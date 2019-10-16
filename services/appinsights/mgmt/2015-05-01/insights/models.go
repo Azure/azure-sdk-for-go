@@ -875,7 +875,7 @@ type ApplicationInsightsComponentProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SamplingPercentage - Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry.
 	SamplingPercentage *float64 `json:"SamplingPercentage,omitempty"`
-	// RetentionInDays - Retention period by number of days.
+	// RetentionInDays - Retention period in days.
 	RetentionInDays *int32 `json:"RetentionInDays,omitempty"`
 }
 

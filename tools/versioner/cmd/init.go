@@ -17,13 +17,14 @@ package cmd
 import (
 	"bufio"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/pkgs"
-	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/pkgs"
+	"github.com/spf13/cobra"
 )
 
 var initCmd = &cobra.Command{

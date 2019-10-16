@@ -306,12 +306,12 @@ var _ FirewallPolicyRuleGroupsClientAPI = (*network.FirewallPolicyRuleGroupsClie
 
 // IPGroupsClientAPI contains the set of methods on the IPGroupsClient type.
 type IPGroupsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.IPGroups) (result network.IPGroupsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.IPGroup) (result network.IPGroupsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, IPGroupsName string) (result network.IPGroupsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, IPGroupsName string, expand string) (result network.IPGroups, err error)
+	Get(ctx context.Context, resourceGroupName string, IPGroupsName string, expand string) (result network.IPGroup, err error)
 	List(ctx context.Context) (result network.IPGroupsListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.IPGroupsListResultPage, err error)
-	UpdateGroups(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.TagsObject) (result network.IPGroups, err error)
+	UpdateGroups(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.TagsObject) (result network.IPGroup, err error)
 }
 
 var _ IPGroupsClientAPI = (*network.IPGroupsClient)(nil)

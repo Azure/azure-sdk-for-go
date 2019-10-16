@@ -45,7 +45,7 @@ func NewIPGroupsClientWithBaseURI(baseURI string, subscriptionID string) IPGroup
 // resourceGroupName - the name of the resource group.
 // IPGroupsName - the name of the ipGroups.
 // parameters - parameters supplied to the create or update IpGroups operation.
-func (client IPGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters IPGroups) (result IPGroupsCreateOrUpdateFuture, err error) {
+func (client IPGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters IPGroup) (result IPGroupsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.CreateOrUpdate")
 		defer func() {
@@ -72,7 +72,7 @@ func (client IPGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client IPGroupsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters IPGroups) (*http.Request, error) {
+func (client IPGroupsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters IPGroup) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"ipGroupsName":      autorest.Encode("path", IPGroupsName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -110,7 +110,7 @@ func (client IPGroupsClient) CreateOrUpdateSender(req *http.Request) (future IPG
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client IPGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result IPGroups, err error) {
+func (client IPGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result IPGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -203,7 +203,7 @@ func (client IPGroupsClient) DeleteResponder(resp *http.Response) (result autore
 // IPGroupsName - the name of the ipGroups.
 // expand - expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
 // resource.
-func (client IPGroupsClient) Get(ctx context.Context, resourceGroupName string, IPGroupsName string, expand string) (result IPGroups, err error) {
+func (client IPGroupsClient) Get(ctx context.Context, resourceGroupName string, IPGroupsName string, expand string) (result IPGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.Get")
 		defer func() {
@@ -268,7 +268,7 @@ func (client IPGroupsClient) GetSender(req *http.Request) (*http.Response, error
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client IPGroupsClient) GetResponder(resp *http.Response) (result IPGroups, err error) {
+func (client IPGroupsClient) GetResponder(resp *http.Response) (result IPGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -507,7 +507,7 @@ func (client IPGroupsClient) ListByResourceGroupComplete(ctx context.Context, re
 // resourceGroupName - the name of the resource group.
 // IPGroupsName - the name of the ipGroups.
 // parameters - parameters supplied to the update ipGroups operation.
-func (client IPGroupsClient) UpdateGroups(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters TagsObject) (result IPGroups, err error) {
+func (client IPGroupsClient) UpdateGroups(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters TagsObject) (result IPGroup, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupsClient.UpdateGroups")
 		defer func() {
@@ -571,7 +571,7 @@ func (client IPGroupsClient) UpdateGroupsSender(req *http.Request) (*http.Respon
 
 // UpdateGroupsResponder handles the response to the UpdateGroups request. The method always
 // closes the http.Response Body.
-func (client IPGroupsClient) UpdateGroupsResponder(resp *http.Response) (result IPGroups, err error) {
+func (client IPGroupsClient) UpdateGroupsResponder(resp *http.Response) (result IPGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

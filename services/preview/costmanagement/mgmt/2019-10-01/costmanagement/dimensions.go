@@ -41,7 +41,7 @@ func NewDimensionsClientWithBaseURI(baseURI string, subscriptionID string) Dimen
 	return DimensionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// ListBySubscription lists the dimensions by the defined scope.
+// ListByScope lists the dimensions by the defined scope.
 // Parameters:
 // scope - the scope associated with dimension operations. This includes '/subscriptions/{subscriptionId}/' for
 // subscription scope, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup
@@ -65,9 +65,9 @@ func NewDimensionsClientWithBaseURI(baseURI string, subscriptionID string) Dimen
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N dimension data.
-func (client DimensionsClient) ListBySubscription(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (result DimensionsListResult, err error) {
+func (client DimensionsClient) ListByScope(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (result DimensionsListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DimensionsClient.ListBySubscription")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DimensionsClient.ListByScope")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -82,32 +82,32 @@ func (client DimensionsClient) ListBySubscription(ctx context.Context, scope str
 				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
 					{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("costmanagement.DimensionsClient", "ListBySubscription", err.Error())
+		return result, validation.NewError("costmanagement.DimensionsClient", "ListByScope", err.Error())
 	}
 
-	req, err := client.ListBySubscriptionPreparer(ctx, scope, filter, expand, skiptoken, top)
+	req, err := client.ListByScopePreparer(ctx, scope, filter, expand, skiptoken, top)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListBySubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListByScope", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListBySubscriptionSender(req)
+	resp, err := client.ListByScopeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListBySubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListByScope", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListBySubscriptionResponder(resp)
+	result, err = client.ListByScopeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListBySubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "costmanagement.DimensionsClient", "ListByScope", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListBySubscriptionPreparer prepares the ListBySubscription request.
-func (client DimensionsClient) ListBySubscriptionPreparer(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (*http.Request, error) {
+// ListByScopePreparer prepares the ListByScope request.
+func (client DimensionsClient) ListByScopePreparer(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"scope": scope,
 	}
@@ -137,16 +137,16 @@ func (client DimensionsClient) ListBySubscriptionPreparer(ctx context.Context, s
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListBySubscriptionSender sends the ListBySubscription request. The method will close the
+// ListByScopeSender sends the ListByScope request. The method will close the
 // http.Response Body if it receives an error.
-func (client DimensionsClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
+func (client DimensionsClient) ListByScopeSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
+// ListByScopeResponder handles the response to the ListByScope request. The method always
 // closes the http.Response Body.
-func (client DimensionsClient) ListBySubscriptionResponder(resp *http.Response) (result DimensionsListResult, err error) {
+func (client DimensionsClient) ListByScopeResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

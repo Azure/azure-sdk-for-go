@@ -25,7 +25,7 @@ import (
 
 // DimensionsClientAPI contains the set of methods on the DimensionsClient type.
 type DimensionsClientAPI interface {
-	ListBySubscription(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
+	ListByScope(ctx context.Context, scope string, filter string, expand string, skiptoken string, top *int32) (result costmanagement.DimensionsListResult, err error)
 }
 
 var _ DimensionsClientAPI = (*costmanagement.DimensionsClient)(nil)

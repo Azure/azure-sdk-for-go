@@ -50,7 +50,7 @@ func NewQueryClientWithBaseURI(baseURI string, subscriptionID string) QueryClien
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+// for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,

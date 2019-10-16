@@ -51,7 +51,7 @@ func NewExportsClientWithBaseURI(baseURI string, subscriptionID string) ExportsC
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+// for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
@@ -155,7 +155,7 @@ func (client ExportsClient) CreateOrUpdateResponder(resp *http.Response) (result
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+// for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
@@ -244,7 +244,7 @@ func (client ExportsClient) DeleteResponder(resp *http.Response) (result autores
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+// for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
@@ -333,7 +333,7 @@ func (client ExportsClient) ExecuteResponder(resp *http.Response) (result autore
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+// for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
@@ -423,7 +423,7 @@ func (client ExportsClient) GetResponder(resp *http.Response) (result Export, er
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+// for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,
@@ -513,7 +513,7 @@ func (client ExportsClient) GetExecutionHistoryResponder(resp *http.Response) (r
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
 // scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-// for EnrollmentAccount scope and '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
+// for EnrollmentAccount scope, '/providers/Microsoft.Management/managementGroups/{managementGroupId} for
 // Management Group scope,
 // '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
 // billingProfile scope,

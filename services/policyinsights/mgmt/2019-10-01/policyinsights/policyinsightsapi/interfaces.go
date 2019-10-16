@@ -80,7 +80,6 @@ var _ PolicyEventsClientAPI = (*policyinsights.PolicyEventsClient)(nil)
 
 // PolicyStatesClientAPI contains the set of methods on the PolicyStatesClient type.
 type PolicyStatesClientAPI interface {
-	GetMetadata(ctx context.Context, scope string) (result policyinsights.String, err error)
 	ListQueryResultsForManagementGroup(ctx context.Context, policyStatesResource policyinsights.PolicyStatesResource, managementGroupName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyStatesQueryResults, err error)
 	ListQueryResultsForPolicyDefinition(ctx context.Context, policyStatesResource policyinsights.PolicyStatesResource, subscriptionID string, policyDefinitionName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyStatesQueryResults, err error)
 	ListQueryResultsForPolicySetDefinition(ctx context.Context, policyStatesResource policyinsights.PolicyStatesResource, subscriptionID string, policySetDefinitionName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyStatesQueryResults, err error)

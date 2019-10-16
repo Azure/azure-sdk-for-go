@@ -1749,8 +1749,6 @@ type SummaryResults struct {
 	NonCompliantResources *int32 `json:"nonCompliantResources,omitempty"`
 	// NonCompliantPolicies - Number of non-compliant policies.
 	NonCompliantPolicies *int32 `json:"nonCompliantPolicies,omitempty"`
-	// NonCompliantPolicyGroups - Number of non-compliant groups.
-	NonCompliantPolicyGroups *int32 `json:"nonCompliantPolicyGroups,omitempty"`
 	// ResourceDetails - The resources summary at this level.
 	ResourceDetails *[]ComplianceDetail `json:"resourceDetails,omitempty"`
 	// PolicyDetails - The policy artifact summary at this level. For query scope level, it represents policy assignment summary. For policy assignment level, it represents policy definitions summary.

@@ -61,35 +61,35 @@ func TestGetPkgs(t *testing.T) {
 
 func TestPkg_GetApiVersion(t *testing.T) {
 	cases := []struct {
-		input string
+		input    string
 		expected string
-	} {
+	}{
 		{
-			input: "/netapp/mgmt/2019-07-01/netapp",
+			input:    "/netapp/mgmt/2019-07-01/netapp",
 			expected: "2019-07-01",
 		},
 		{
-			input: "/preview/resources/mgmt/2017-08-31-preview/managementgroups",
+			input:    "/preview/resources/mgmt/2017-08-31-preview/managementgroups",
 			expected: "2017-08-31-preview",
 		},
 		{
-			input: "/batch/2018-12-01.8.0/batch",
+			input:    "/batch/2018-12-01.8.0/batch",
 			expected: "2018-12-01.8.0",
 		},
 		{
-			input: "/cognitiveservices/v1.0/imagesearch",
+			input:    "/cognitiveservices/v1.0/imagesearch",
 			expected: "v1.0",
 		},
 		{
-			input: "/servicefabric/6.3/servicefabric",
+			input:    "/servicefabric/6.3/servicefabric",
 			expected: "6.3",
 		},
 		{
-			input: "/keyvault/2015-06-01/keyvault",
+			input:    "/keyvault/2015-06-01/keyvault",
 			expected: "2015-06-01",
 		},
 		{
-			input: "/preview/datalake/analytics/2017-09-01-preview/job",
+			input:    "/preview/datalake/analytics/2017-09-01-preview/job",
 			expected: "2017-09-01-preview",
 		},
 	}

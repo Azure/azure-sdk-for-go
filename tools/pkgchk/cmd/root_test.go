@@ -15,9 +15,10 @@
 package cmd
 
 import (
-	"github.com/Azure/azure-sdk-for-go/tools/internal/pkgs"
 	"path/filepath"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/tools/internal/pkgs"
 )
 
 const (

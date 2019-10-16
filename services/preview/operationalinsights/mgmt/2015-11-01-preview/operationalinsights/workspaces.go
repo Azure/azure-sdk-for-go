@@ -32,21 +32,23 @@ type WorkspacesClient struct {
 }
 
 // NewWorkspacesClient creates an instance of the WorkspacesClient client.
-func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
-	return NewWorkspacesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewWorkspacesClient() WorkspacesClient {
+	return NewWorkspacesClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewWorkspacesClientWithBaseURI creates an instance of the WorkspacesClient client.
-func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
-	return WorkspacesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewWorkspacesClientWithBaseURI(baseURI string) WorkspacesClient {
+	return WorkspacesClient{NewWithBaseURI(baseURI)}
 }
 
 // CreateOrUpdate create or update a workspace.
 // Parameters:
-// resourceGroupName - the resource group name of the workspace.
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
+// resourceGroupName - the name of the resource group to get. The name is case insensitive.
 // workspaceName - the name of the workspace.
 // parameters - the parameters required to create or update a workspace.
-func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace) (result WorkspacesCreateOrUpdateFuture, err error) {
+func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, parameters Workspace) (result WorkspacesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.CreateOrUpdate")
 		defer func() {
@@ -58,6 +60,10 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
@@ -72,7 +78,7 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, subscriptionID, resourceGroupName, workspaceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -88,10 +94,10 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client WorkspacesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace) (*http.Request, error) {
+func (client WorkspacesClient) CreateOrUpdatePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, parameters Workspace) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -138,9 +144,11 @@ func (client WorkspacesClient) CreateOrUpdateResponder(resp *http.Response) (res
 
 // Delete deletes a workspace instance.
 // Parameters:
-// resourceGroupName - the resource group name of the workspace.
-// workspaceName - name of the Log Analytics Workspace.
-func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result autorest.Response, err error) {
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
+// resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// workspaceName - the name of the workspace.
+func (client WorkspacesClient) Delete(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.Delete")
 		defer func() {
@@ -151,7 +159,19 @@ func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.WorkspacesClient", "Delete", err.Error())
+	}
+
+	req, err := client.DeletePreparer(ctx, subscriptionID, resourceGroupName, workspaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -173,10 +193,10 @@ func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName str
 }
 
 // DeletePreparer prepares the Delete request.
-func (client WorkspacesClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client WorkspacesClient) DeletePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -214,10 +234,12 @@ func (client WorkspacesClient) DeleteResponder(resp *http.Response) (result auto
 
 // DisableIntelligencePack disables an intelligence pack for a given workspace.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
-// workspaceName - name of the Log Analytics Workspace.
+// workspaceName - the name of the workspace.
 // intelligencePackName - the name of the intelligence pack to be disabled.
-func (client WorkspacesClient) DisableIntelligencePack(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string) (result autorest.Response, err error) {
+func (client WorkspacesClient) DisableIntelligencePack(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, intelligencePackName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.DisableIntelligencePack")
 		defer func() {
@@ -232,11 +254,15 @@ func (client WorkspacesClient) DisableIntelligencePack(ctx context.Context, reso
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "DisableIntelligencePack", err.Error())
 	}
 
-	req, err := client.DisableIntelligencePackPreparer(ctx, resourceGroupName, workspaceName, intelligencePackName)
+	req, err := client.DisableIntelligencePackPreparer(ctx, subscriptionID, resourceGroupName, workspaceName, intelligencePackName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "DisableIntelligencePack", nil, "Failure preparing request")
 		return
@@ -258,11 +284,11 @@ func (client WorkspacesClient) DisableIntelligencePack(ctx context.Context, reso
 }
 
 // DisableIntelligencePackPreparer prepares the DisableIntelligencePack request.
-func (client WorkspacesClient) DisableIntelligencePackPreparer(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string) (*http.Request, error) {
+func (client WorkspacesClient) DisableIntelligencePackPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, intelligencePackName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"intelligencePackName": autorest.Encode("path", intelligencePackName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":       autorest.Encode("path", subscriptionID),
 		"workspaceName":        autorest.Encode("path", workspaceName),
 	}
 
@@ -300,10 +326,12 @@ func (client WorkspacesClient) DisableIntelligencePackResponder(resp *http.Respo
 
 // EnableIntelligencePack enables an intelligence pack for a given workspace.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
-// workspaceName - name of the Log Analytics Workspace.
+// workspaceName - the name of the workspace.
 // intelligencePackName - the name of the intelligence pack to be enabled.
-func (client WorkspacesClient) EnableIntelligencePack(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string) (result autorest.Response, err error) {
+func (client WorkspacesClient) EnableIntelligencePack(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, intelligencePackName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.EnableIntelligencePack")
 		defer func() {
@@ -318,11 +346,15 @@ func (client WorkspacesClient) EnableIntelligencePack(ctx context.Context, resou
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "EnableIntelligencePack", err.Error())
 	}
 
-	req, err := client.EnableIntelligencePackPreparer(ctx, resourceGroupName, workspaceName, intelligencePackName)
+	req, err := client.EnableIntelligencePackPreparer(ctx, subscriptionID, resourceGroupName, workspaceName, intelligencePackName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "EnableIntelligencePack", nil, "Failure preparing request")
 		return
@@ -344,11 +376,11 @@ func (client WorkspacesClient) EnableIntelligencePack(ctx context.Context, resou
 }
 
 // EnableIntelligencePackPreparer prepares the EnableIntelligencePack request.
-func (client WorkspacesClient) EnableIntelligencePackPreparer(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string) (*http.Request, error) {
+func (client WorkspacesClient) EnableIntelligencePackPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, intelligencePackName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"intelligencePackName": autorest.Encode("path", intelligencePackName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
-		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":       autorest.Encode("path", subscriptionID),
 		"workspaceName":        autorest.Encode("path", workspaceName),
 	}
 
@@ -386,9 +418,11 @@ func (client WorkspacesClient) EnableIntelligencePackResponder(resp *http.Respon
 
 // Get gets a workspace instance.
 // Parameters:
-// resourceGroupName - the resource group name of the workspace.
-// workspaceName - name of the Log Analytics Workspace.
-func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result Workspace, err error) {
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
+// resourceGroupName - the name of the resource group to get. The name is case insensitive.
+// workspaceName - the name of the workspace.
+func (client WorkspacesClient) Get(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (result Workspace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.Get")
 		defer func() {
@@ -399,7 +433,19 @@ func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName)
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("operationalinsights.WorkspacesClient", "Get", err.Error())
+	}
+
+	req, err := client.GetPreparer(ctx, subscriptionID, resourceGroupName, workspaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Get", nil, "Failure preparing request")
 		return
@@ -421,10 +467,10 @@ func (client WorkspacesClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkspacesClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client WorkspacesClient) GetPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -463,9 +509,11 @@ func (client WorkspacesClient) GetResponder(resp *http.Response) (result Workspa
 
 // GetSharedKeys gets the shared keys for a workspace.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
-// workspaceName - name of the Log Analytics Workspace.
-func (client WorkspacesClient) GetSharedKeys(ctx context.Context, resourceGroupName string, workspaceName string) (result SharedKeys, err error) {
+// workspaceName - the name of the workspace.
+func (client WorkspacesClient) GetSharedKeys(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (result SharedKeys, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.GetSharedKeys")
 		defer func() {
@@ -480,11 +528,15 @@ func (client WorkspacesClient) GetSharedKeys(ctx context.Context, resourceGroupN
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "GetSharedKeys", err.Error())
 	}
 
-	req, err := client.GetSharedKeysPreparer(ctx, resourceGroupName, workspaceName)
+	req, err := client.GetSharedKeysPreparer(ctx, subscriptionID, resourceGroupName, workspaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "GetSharedKeys", nil, "Failure preparing request")
 		return
@@ -506,10 +558,10 @@ func (client WorkspacesClient) GetSharedKeys(ctx context.Context, resourceGroupN
 }
 
 // GetSharedKeysPreparer prepares the GetSharedKeys request.
-func (client WorkspacesClient) GetSharedKeysPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client WorkspacesClient) GetSharedKeysPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -547,7 +599,10 @@ func (client WorkspacesClient) GetSharedKeysResponder(resp *http.Response) (resu
 }
 
 // List gets the workspaces in a subscription.
-func (client WorkspacesClient) List(ctx context.Context) (result WorkspaceListResult, err error) {
+// Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
+func (client WorkspacesClient) List(ctx context.Context, subscriptionID string) (result WorkspaceListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.List")
 		defer func() {
@@ -558,7 +613,7 @@ func (client WorkspacesClient) List(ctx context.Context) (result WorkspaceListRe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "List", nil, "Failure preparing request")
 		return
@@ -580,9 +635,9 @@ func (client WorkspacesClient) List(ctx context.Context) (result WorkspaceListRe
 }
 
 // ListPreparer prepares the List request.
-func (client WorkspacesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client WorkspacesClient) ListPreparer(ctx context.Context, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2015-11-01-preview"
@@ -621,7 +676,9 @@ func (client WorkspacesClient) ListResponder(resp *http.Response) (result Worksp
 // ListByResourceGroup gets workspaces in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
-func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result WorkspaceListResult, err error) {
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
+func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, subscriptionID string) (result WorkspaceListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.ListByResourceGroup")
 		defer func() {
@@ -640,7 +697,7 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "ListByResourceGroup", err.Error())
 	}
 
-	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
+	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, subscriptionID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
@@ -662,10 +719,10 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client WorkspacesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string) (*http.Request, error) {
+func (client WorkspacesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, subscriptionID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
 	const APIVersion = "2015-11-01-preview"
@@ -704,9 +761,11 @@ func (client WorkspacesClient) ListByResourceGroupResponder(resp *http.Response)
 // ListIntelligencePacks lists all the intelligence packs possible and whether they are enabled or disabled for a given
 // workspace.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
-// workspaceName - name of the Log Analytics Workspace.
-func (client WorkspacesClient) ListIntelligencePacks(ctx context.Context, resourceGroupName string, workspaceName string) (result ListIntelligencePack, err error) {
+// workspaceName - the name of the workspace.
+func (client WorkspacesClient) ListIntelligencePacks(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (result ListIntelligencePack, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.ListIntelligencePacks")
 		defer func() {
@@ -721,11 +780,15 @@ func (client WorkspacesClient) ListIntelligencePacks(ctx context.Context, resour
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "ListIntelligencePacks", err.Error())
 	}
 
-	req, err := client.ListIntelligencePacksPreparer(ctx, resourceGroupName, workspaceName)
+	req, err := client.ListIntelligencePacksPreparer(ctx, subscriptionID, resourceGroupName, workspaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListIntelligencePacks", nil, "Failure preparing request")
 		return
@@ -747,10 +810,10 @@ func (client WorkspacesClient) ListIntelligencePacks(ctx context.Context, resour
 }
 
 // ListIntelligencePacksPreparer prepares the ListIntelligencePacks request.
-func (client WorkspacesClient) ListIntelligencePacksPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client WorkspacesClient) ListIntelligencePacksPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -789,9 +852,11 @@ func (client WorkspacesClient) ListIntelligencePacksResponder(resp *http.Respons
 
 // ListManagementGroups gets a list of management groups connected to a workspace.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
 // workspaceName - the name of the workspace.
-func (client WorkspacesClient) ListManagementGroups(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspaceListManagementGroupsResult, err error) {
+func (client WorkspacesClient) ListManagementGroups(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (result WorkspaceListManagementGroupsResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.ListManagementGroups")
 		defer func() {
@@ -806,11 +871,15 @@ func (client WorkspacesClient) ListManagementGroups(ctx context.Context, resourc
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "ListManagementGroups", err.Error())
 	}
 
-	req, err := client.ListManagementGroupsPreparer(ctx, resourceGroupName, workspaceName)
+	req, err := client.ListManagementGroupsPreparer(ctx, subscriptionID, resourceGroupName, workspaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListManagementGroups", nil, "Failure preparing request")
 		return
@@ -832,10 +901,10 @@ func (client WorkspacesClient) ListManagementGroups(ctx context.Context, resourc
 }
 
 // ListManagementGroupsPreparer prepares the ListManagementGroups request.
-func (client WorkspacesClient) ListManagementGroupsPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client WorkspacesClient) ListManagementGroupsPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -874,9 +943,11 @@ func (client WorkspacesClient) ListManagementGroupsResponder(resp *http.Response
 
 // ListUsages gets a list of usage metrics for a workspace.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
 // workspaceName - the name of the workspace.
-func (client WorkspacesClient) ListUsages(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspaceListUsagesResult, err error) {
+func (client WorkspacesClient) ListUsages(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (result WorkspaceListUsagesResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.ListUsages")
 		defer func() {
@@ -891,11 +962,15 @@ func (client WorkspacesClient) ListUsages(ctx context.Context, resourceGroupName
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "ListUsages", err.Error())
 	}
 
-	req, err := client.ListUsagesPreparer(ctx, resourceGroupName, workspaceName)
+	req, err := client.ListUsagesPreparer(ctx, subscriptionID, resourceGroupName, workspaceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "ListUsages", nil, "Failure preparing request")
 		return
@@ -917,10 +992,10 @@ func (client WorkspacesClient) ListUsages(ctx context.Context, resourceGroupName
 }
 
 // ListUsagesPreparer prepares the ListUsages request.
-func (client WorkspacesClient) ListUsagesPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client WorkspacesClient) ListUsagesPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -959,10 +1034,12 @@ func (client WorkspacesClient) ListUsagesResponder(resp *http.Response) (result 
 
 // Update updates a workspace.
 // Parameters:
-// resourceGroupName - the resource group name of the workspace.
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
+// resourceGroupName - the name of the resource group to get. The name is case insensitive.
 // workspaceName - the name of the workspace.
 // parameters - the parameters required to patch a workspace.
-func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace) (result Workspace, err error) {
+func (client WorkspacesClient) Update(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, parameters Workspace) (result Workspace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspacesClient.Update")
 		defer func() {
@@ -974,6 +1051,10 @@ func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName str
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
@@ -981,7 +1062,7 @@ func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName str
 		return result, validation.NewError("operationalinsights.WorkspacesClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, workspaceName, parameters)
+	req, err := client.UpdatePreparer(ctx, subscriptionID, resourceGroupName, workspaceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "Update", nil, "Failure preparing request")
 		return
@@ -1003,10 +1084,10 @@ func (client WorkspacesClient) Update(ctx context.Context, resourceGroupName str
 }
 
 // UpdatePreparer prepares the Update request.
-func (client WorkspacesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace) (*http.Request, error) {
+func (client WorkspacesClient) UpdatePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, parameters Workspace) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 

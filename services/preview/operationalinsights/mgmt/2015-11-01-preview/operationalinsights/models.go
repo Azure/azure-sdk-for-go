@@ -413,7 +413,7 @@ type LinkedServiceListResult struct {
 
 // LinkedServiceProperties linked service properties.
 type LinkedServiceProperties struct {
-	// ResourceID - The resource id of the resource that will be linked to the workspace.
+	// ResourceID - The resource ID of the resource that will be linked to the workspace.
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
@@ -677,7 +677,7 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 
 // Resource the resource definition.
 type Resource struct {
-	// ID - READ-ONLY; Resource Id
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
@@ -716,6 +716,81 @@ type Sku struct {
 	Name SkuNameEnum `json:"name,omitempty"`
 }
 
+// Table workspace data table definition.
+type Table struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Table ID
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// TableProperties - Table properties.
+	*TableProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Table.
+func (t Table) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.TableProperties != nil {
+		objectMap["properties"] = t.TableProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Table struct.
+func (t *Table) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				t.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				t.Name = &name
+			}
+		case "properties":
+			if v != nil {
+				var tableProperties TableProperties
+				err = json.Unmarshal(*v, &tableProperties)
+				if err != nil {
+					return err
+				}
+				t.TableProperties = &tableProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// TableProperties table properties.
+type TableProperties struct {
+	// RetentionInDays - The table data retention in days, between 30 and 730. Setting this property to null will default to the workspace retention.
+	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
+}
+
+// TablesListResult the list tables operation response.
+type TablesListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of data tables.
+	Value *[]Table `json:"value,omitempty"`
+}
+
 // UsageMetric a metric describing the usage of a resource.
 type UsageMetric struct {
 	// Name - The name of the metric.
@@ -739,7 +814,7 @@ type Workspace struct {
 	*WorkspaceProperties `json:"properties,omitempty"`
 	// ETag - The ETag of the workspace.
 	ETag *string `json:"eTag,omitempty"`
-	// ID - READ-ONLY; Resource Id
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`

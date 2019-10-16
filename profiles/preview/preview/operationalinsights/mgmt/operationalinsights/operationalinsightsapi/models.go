@@ -21,7 +21,9 @@ package operationalinsightsapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/operationalinsights/operationalinsightsapi"
 
+type BaseClientAPI = original.BaseClientAPI
 type DataSourcesClientAPI = original.DataSourcesClientAPI
 type LinkedServicesClientAPI = original.LinkedServicesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type TablesClientAPI = original.TablesClientAPI
 type WorkspacesClientAPI = original.WorkspacesClientAPI

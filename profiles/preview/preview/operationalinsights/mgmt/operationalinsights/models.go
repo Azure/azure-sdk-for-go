@@ -97,6 +97,10 @@ type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type SharedKeys = original.SharedKeys
 type Sku = original.Sku
+type Table = original.Table
+type TableProperties = original.TableProperties
+type TablesClient = original.TablesClient
+type TablesListResult = original.TablesListResult
 type UsageMetric = original.UsageMetric
 type Workspace = original.Workspace
 type WorkspaceListManagementGroupsResult = original.WorkspaceListManagementGroupsResult
@@ -106,8 +110,8 @@ type WorkspaceProperties = original.WorkspaceProperties
 type WorkspacesClient = original.WorkspacesClient
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New() BaseClient {
+	return original.New()
 }
 func NewDataSourceListResultIterator(page DataSourceListResultPage) DataSourceListResultIterator {
 	return original.NewDataSourceListResultIterator(page)
@@ -115,17 +119,17 @@ func NewDataSourceListResultIterator(page DataSourceListResultPage) DataSourceLi
 func NewDataSourceListResultPage(getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
 	return original.NewDataSourceListResultPage(getNextPage)
 }
-func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
-	return original.NewDataSourcesClient(subscriptionID)
+func NewDataSourcesClient() DataSourcesClient {
+	return original.NewDataSourcesClient()
 }
-func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) DataSourcesClient {
-	return original.NewDataSourcesClientWithBaseURI(baseURI, subscriptionID)
+func NewDataSourcesClientWithBaseURI(baseURI string) DataSourcesClient {
+	return original.NewDataSourcesClientWithBaseURI(baseURI)
 }
-func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClient(subscriptionID)
+func NewLinkedServicesClient() LinkedServicesClient {
+	return original.NewLinkedServicesClient()
 }
-func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
-	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
+func NewLinkedServicesClientWithBaseURI(baseURI string) LinkedServicesClient {
+	return original.NewLinkedServicesClientWithBaseURI(baseURI)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -133,20 +137,26 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient() OperationsClient {
+	return original.NewOperationsClient()
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewTablesClient() TablesClient {
+	return original.NewTablesClient()
 }
-func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
-	return original.NewWorkspacesClient(subscriptionID)
+func NewTablesClientWithBaseURI(baseURI string) TablesClient {
+	return original.NewTablesClientWithBaseURI(baseURI)
 }
-func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) WorkspacesClient {
-	return original.NewWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
+}
+func NewWorkspacesClient() WorkspacesClient {
+	return original.NewWorkspacesClient()
+}
+func NewWorkspacesClientWithBaseURI(baseURI string) WorkspacesClient {
+	return original.NewWorkspacesClientWithBaseURI(baseURI)
 }
 func PossibleDataSourceKindValues() []DataSourceKind {
 	return original.PossibleDataSourceKindValues()

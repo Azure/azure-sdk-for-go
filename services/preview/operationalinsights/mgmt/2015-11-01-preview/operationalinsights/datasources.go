@@ -32,22 +32,24 @@ type DataSourcesClient struct {
 }
 
 // NewDataSourcesClient creates an instance of the DataSourcesClient client.
-func NewDataSourcesClient(subscriptionID string) DataSourcesClient {
-	return NewDataSourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewDataSourcesClient() DataSourcesClient {
+	return NewDataSourcesClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewDataSourcesClientWithBaseURI creates an instance of the DataSourcesClient client.
-func NewDataSourcesClientWithBaseURI(baseURI string, subscriptionID string) DataSourcesClient {
-	return DataSourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewDataSourcesClientWithBaseURI(baseURI string) DataSourcesClient {
+	return DataSourcesClient{NewWithBaseURI(baseURI)}
 }
 
 // CreateOrUpdate create or update a data source.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
-// workspaceName - name of the Log Analytics Workspace that will contain the datasource
+// workspaceName - the name of the workspace.
 // dataSourceName - the name of the datasource resource.
 // parameters - the parameters required to create or update a datasource.
-func (client DataSourcesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, parameters DataSource) (result DataSource, err error) {
+func (client DataSourcesClient) CreateOrUpdate(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, dataSourceName string, parameters DataSource) (result DataSource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.CreateOrUpdate")
 		defer func() {
@@ -63,12 +65,16 @@ func (client DataSourcesClient) CreateOrUpdate(ctx context.Context, resourceGrou
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.DataSourcesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, dataSourceName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, subscriptionID, resourceGroupName, workspaceName, dataSourceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -90,11 +96,11 @@ func (client DataSourcesClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DataSourcesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string, parameters DataSource) (*http.Request, error) {
+func (client DataSourcesClient) CreateOrUpdatePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, dataSourceName string, parameters DataSource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dataSourceName":    autorest.Encode("path", dataSourceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -135,10 +141,12 @@ func (client DataSourcesClient) CreateOrUpdateResponder(resp *http.Response) (re
 
 // Delete deletes a data source instance.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
-// workspaceName - name of the Log Analytics Workspace that contains the datasource.
+// workspaceName - the name of the workspace.
 // dataSourceName - name of the datasource.
-func (client DataSourcesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string) (result autorest.Response, err error) {
+func (client DataSourcesClient) Delete(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, dataSourceName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.Delete")
 		defer func() {
@@ -153,11 +161,15 @@ func (client DataSourcesClient) Delete(ctx context.Context, resourceGroupName st
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.DataSourcesClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, dataSourceName)
+	req, err := client.DeletePreparer(ctx, subscriptionID, resourceGroupName, workspaceName, dataSourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -179,11 +191,11 @@ func (client DataSourcesClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DataSourcesClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string) (*http.Request, error) {
+func (client DataSourcesClient) DeletePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, dataSourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dataSourceName":    autorest.Encode("path", dataSourceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -221,10 +233,12 @@ func (client DataSourcesClient) DeleteResponder(resp *http.Response) (result aut
 
 // Get gets a datasource instance.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
-// workspaceName - name of the Log Analytics Workspace that contains the datasource.
+// workspaceName - the name of the workspace.
 // dataSourceName - name of the datasource
-func (client DataSourcesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string) (result DataSource, err error) {
+func (client DataSourcesClient) Get(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, dataSourceName string) (result DataSource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.Get")
 		defer func() {
@@ -239,11 +253,15 @@ func (client DataSourcesClient) Get(ctx context.Context, resourceGroupName strin
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.DataSourcesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, dataSourceName)
+	req, err := client.GetPreparer(ctx, subscriptionID, resourceGroupName, workspaceName, dataSourceName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "Get", nil, "Failure preparing request")
 		return
@@ -265,11 +283,11 @@ func (client DataSourcesClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetPreparer prepares the Get request.
-func (client DataSourcesClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceName string) (*http.Request, error) {
+func (client DataSourcesClient) GetPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, dataSourceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dataSourceName":    autorest.Encode("path", dataSourceName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -308,11 +326,13 @@ func (client DataSourcesClient) GetResponder(resp *http.Response) (result DataSo
 
 // ListByWorkspace gets the first page of data source instances in a workspace with the link to the next page.
 // Parameters:
+// subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
+// subscription ID forms part of the URI for every service call.
 // resourceGroupName - the name of the resource group to get. The name is case insensitive.
-// workspaceName - the workspace that contains the data sources.
+// workspaceName - the name of the workspace.
 // filter - the filter to apply on the operation.
 // skiptoken - starting point of the collection of data source instances.
-func (client DataSourcesClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, filter string, skiptoken string) (result DataSourceListResultPage, err error) {
+func (client DataSourcesClient) ListByWorkspace(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, filter string, skiptoken string) (result DataSourceListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.ListByWorkspace")
 		defer func() {
@@ -327,12 +347,16 @@ func (client DataSourcesClient) ListByWorkspace(ctx context.Context, resourceGro
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 4, Chain: nil},
+				{Target: "workspaceName", Name: validation.Pattern, Rule: `^[A-Za-z0-9][A-Za-z0-9-]+[A-Za-z0-9]$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.DataSourcesClient", "ListByWorkspace", err.Error())
 	}
 
 	result.fn = client.listByWorkspaceNextResults
-	req, err := client.ListByWorkspacePreparer(ctx, resourceGroupName, workspaceName, filter, skiptoken)
+	req, err := client.ListByWorkspacePreparer(ctx, subscriptionID, resourceGroupName, workspaceName, filter, skiptoken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.DataSourcesClient", "ListByWorkspace", nil, "Failure preparing request")
 		return
@@ -354,10 +378,10 @@ func (client DataSourcesClient) ListByWorkspace(ctx context.Context, resourceGro
 }
 
 // ListByWorkspacePreparer prepares the ListByWorkspace request.
-func (client DataSourcesClient) ListByWorkspacePreparer(ctx context.Context, resourceGroupName string, workspaceName string, filter string, skiptoken string) (*http.Request, error) {
+func (client DataSourcesClient) ListByWorkspacePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, filter string, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"subscriptionId":    autorest.Encode("path", subscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -420,7 +444,7 @@ func (client DataSourcesClient) listByWorkspaceNextResults(ctx context.Context, 
 }
 
 // ListByWorkspaceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DataSourcesClient) ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string, filter string, skiptoken string) (result DataSourceListResultIterator, err error) {
+func (client DataSourcesClient) ListByWorkspaceComplete(ctx context.Context, subscriptionID string, resourceGroupName string, workspaceName string, filter string, skiptoken string) (result DataSourceListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataSourcesClient.ListByWorkspace")
 		defer func() {
@@ -431,6 +455,6 @@ func (client DataSourcesClient) ListByWorkspaceComplete(ctx context.Context, res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByWorkspace(ctx, resourceGroupName, workspaceName, filter, skiptoken)
+	result.page, err = client.ListByWorkspace(ctx, subscriptionID, resourceGroupName, workspaceName, filter, skiptoken)
 	return
 }

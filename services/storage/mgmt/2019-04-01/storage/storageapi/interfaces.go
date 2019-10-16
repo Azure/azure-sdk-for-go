@@ -47,7 +47,7 @@ type AccountsClientAPI interface {
 	List(ctx context.Context) (result storage.AccountListResultPage, err error)
 	ListAccountSAS(ctx context.Context, resourceGroupName string, accountName string, parameters storage.AccountSasParameters) (result storage.ListAccountSasResponse, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result storage.AccountListResult, err error)
-	ListKeys(ctx context.Context, resourceGroupName string, accountName string) (result storage.AccountListKeysResult, err error)
+	ListKeys(ctx context.Context, resourceGroupName string, accountName string, expand storage.ListKeyExpand) (result storage.AccountListKeysResult, err error)
 	ListServiceSAS(ctx context.Context, resourceGroupName string, accountName string, parameters storage.ServiceSasParameters) (result storage.ListServiceSasResponse, err error)
 	RegenerateKey(ctx context.Context, resourceGroupName string, accountName string, regenerateKey storage.AccountRegenerateKeyParameters) (result storage.AccountListKeysResult, err error)
 	RevokeUserDelegationKeys(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)

@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-package azcore implements an HTTP request/response middleware pipeline whose
+Package azcore implements an HTTP request/response middleware pipeline whose
 policy objects mutate an HTTP request's URL, query parameters, and/or headers before
 the request is sent over the wire.
 
@@ -157,5 +157,6 @@ can see the Response but cannot see the additional struct with the deserialized 
 Policy objects have returned, the pipeline.Response interface is returned by Pipeline's Do method.
 The caller of this method can perform a type assertion attempting to get back to the struct type
 really returned by the Policy object. If the type assertion is successful, the caller now has
-access to both the http.Response and the deserialized struct object.*/
+access to both the http.Response and the deserialized struct object.
+*/
 package azcore

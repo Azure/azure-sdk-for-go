@@ -33,7 +33,7 @@ func NewTelemetryPolicy(o TelemetryOptions) Policy {
 	return &telemetryPolicy{telemetryValue: b.String()}
 }
 
-func (p *telemetryPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
+func (p telemetryPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
 	req.Request.Header.Set("User-Agent", p.telemetryValue)
 	return req.Do(ctx)
 }

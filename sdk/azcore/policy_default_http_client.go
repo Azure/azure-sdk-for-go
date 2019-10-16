@@ -9,13 +9,6 @@ import (
 	"net/http"
 )
 
-type httpClientPolicy struct {
-	// Intentionally left empty because all instance share the same defaultHTTPClient object
-}
-
-// DefaultHTTPClientPolicy ...
-func DefaultHTTPClientPolicy() Policy { return &httpClientPolicy{} }
-
 var defaultHTTPClient *http.Client
 
 func init() {
@@ -37,11 +30,13 @@ func init() {
 	}
 }
 
-// Do ...
-func (p httpClientPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
-	response, err := defaultHTTPClient.Do(req.Request.WithContext(ctx))
-	if err != nil {
-		return nil, err
-	}
-	return &Response{Response: response}, nil
+// DefaultHTTPClientPolicy ...
+func DefaultHTTPClientPolicy() Policy {
+	return PolicyFunc(func(ctx context.Context, req *Request) (*Response, error) {
+		response, err := defaultHTTPClient.Do(req.Request.WithContext(ctx))
+		if err != nil {
+			return nil, err
+		}
+		return &Response{Response: response}, nil
+	})
 }

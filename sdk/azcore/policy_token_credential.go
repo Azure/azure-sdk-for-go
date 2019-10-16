@@ -80,7 +80,7 @@ type tokenCredentialWithRefresh struct {
 }
 
 // marker satisfies the Credential interface making Credential policies "special"
-func (p *tokenCredentialWithRefresh) marker() {}
+func (c *tokenCredentialWithRefresh) marker() {}
 
 // Token returns the current token value
 func (c *tokenCredentialWithRefresh) Token() string { return c.token.Token() }

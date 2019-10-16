@@ -115,6 +115,17 @@ func (r *Response) RetryAfter() time.Duration {
 	return 0
 }
 
+// retryAfter returns (non-zero, true) if the response contains a Retry-After header value
+func (r *Response) retryAfter() (time.Duration, bool) {
+	if r == nil {
+		return 0, false
+	}
+	if retryAfter, _ := strconv.Atoi(r.Header.Get("Retry-After")); retryAfter > 0 {
+		return time.Duration(retryAfter) * time.Second, true
+	}
+	return 0, false
+}
+
 // WriteRequestWithResponse appends a formatted HTTP request into a Buffer. If request and/or err are
 // not nil, then these are also written into the Buffer.
 func WriteRequestWithResponse(b *bytes.Buffer, request *Request, response *Response, err error) {

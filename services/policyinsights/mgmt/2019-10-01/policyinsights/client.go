@@ -1,4 +1,4 @@
-// Package policyinsights implements the Azure ARM Policyinsights service API version 2019-10-01.
+// Package policyinsights implements the Azure ARM Policyinsights service API version .
 //
 //
 package policyinsights

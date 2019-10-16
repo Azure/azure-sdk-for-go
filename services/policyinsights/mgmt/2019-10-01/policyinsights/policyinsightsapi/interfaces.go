@@ -23,6 +23,61 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 )
 
+// PolicyTrackedResourcesClientAPI contains the set of methods on the PolicyTrackedResourcesClient type.
+type PolicyTrackedResourcesClientAPI interface {
+	ListQueryResultsForManagementGroup(ctx context.Context, managementGroupName string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsPage, err error)
+	ListQueryResultsForResource(ctx context.Context, resourceID string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsPage, err error)
+	ListQueryResultsForResourceGroup(ctx context.Context, resourceGroupName string, subscriptionID string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsPage, err error)
+	ListQueryResultsForSubscription(ctx context.Context, subscriptionID string, top *int32, filter string) (result policyinsights.PolicyTrackedResourcesQueryResultsPage, err error)
+}
+
+var _ PolicyTrackedResourcesClientAPI = (*policyinsights.PolicyTrackedResourcesClient)(nil)
+
+// RemediationsClientAPI contains the set of methods on the RemediationsClient type.
+type RemediationsClientAPI interface {
+	CancelAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string) (result policyinsights.Remediation, err error)
+	CancelAtResource(ctx context.Context, resourceID string, remediationName string) (result policyinsights.Remediation, err error)
+	CancelAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (result policyinsights.Remediation, err error)
+	CancelAtSubscription(ctx context.Context, subscriptionID string, remediationName string) (result policyinsights.Remediation, err error)
+	CreateOrUpdateAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, parameters policyinsights.Remediation) (result policyinsights.Remediation, err error)
+	CreateOrUpdateAtResource(ctx context.Context, resourceID string, remediationName string, parameters policyinsights.Remediation) (result policyinsights.Remediation, err error)
+	CreateOrUpdateAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string, parameters policyinsights.Remediation) (result policyinsights.Remediation, err error)
+	CreateOrUpdateAtSubscription(ctx context.Context, subscriptionID string, remediationName string, parameters policyinsights.Remediation) (result policyinsights.Remediation, err error)
+	DeleteAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string) (result policyinsights.Remediation, err error)
+	DeleteAtResource(ctx context.Context, resourceID string, remediationName string) (result policyinsights.Remediation, err error)
+	DeleteAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (result policyinsights.Remediation, err error)
+	DeleteAtSubscription(ctx context.Context, subscriptionID string, remediationName string) (result policyinsights.Remediation, err error)
+	GetAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string) (result policyinsights.Remediation, err error)
+	GetAtResource(ctx context.Context, resourceID string, remediationName string) (result policyinsights.Remediation, err error)
+	GetAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string) (result policyinsights.Remediation, err error)
+	GetAtSubscription(ctx context.Context, subscriptionID string, remediationName string) (result policyinsights.Remediation, err error)
+	ListDeploymentsAtManagementGroup(ctx context.Context, managementGroupID string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultPage, err error)
+	ListDeploymentsAtResource(ctx context.Context, resourceID string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultPage, err error)
+	ListDeploymentsAtResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultPage, err error)
+	ListDeploymentsAtSubscription(ctx context.Context, subscriptionID string, remediationName string, top *int32) (result policyinsights.RemediationDeploymentsListResultPage, err error)
+	ListForManagementGroup(ctx context.Context, managementGroupID string, top *int32, filter string) (result policyinsights.RemediationListResultPage, err error)
+	ListForResource(ctx context.Context, resourceID string, top *int32, filter string) (result policyinsights.RemediationListResultPage, err error)
+	ListForResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, top *int32, filter string) (result policyinsights.RemediationListResultPage, err error)
+	ListForSubscription(ctx context.Context, subscriptionID string, top *int32, filter string) (result policyinsights.RemediationListResultPage, err error)
+}
+
+var _ RemediationsClientAPI = (*policyinsights.RemediationsClient)(nil)
+
+// PolicyEventsClientAPI contains the set of methods on the PolicyEventsClient type.
+type PolicyEventsClientAPI interface {
+	GetMetadata(ctx context.Context, scope string) (result policyinsights.String, err error)
+	ListQueryResultsForManagementGroup(ctx context.Context, managementGroupName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyEventsQueryResults, err error)
+	ListQueryResultsForPolicyDefinition(ctx context.Context, subscriptionID string, policyDefinitionName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyEventsQueryResults, err error)
+	ListQueryResultsForPolicySetDefinition(ctx context.Context, subscriptionID string, policySetDefinitionName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyEventsQueryResults, err error)
+	ListQueryResultsForResource(ctx context.Context, resourceID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyEventsQueryResults, err error)
+	ListQueryResultsForResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyEventsQueryResults, err error)
+	ListQueryResultsForResourceGroupLevelPolicyAssignment(ctx context.Context, subscriptionID string, resourceGroupName string, policyAssignmentName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyEventsQueryResults, err error)
+	ListQueryResultsForSubscription(ctx context.Context, subscriptionID string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyEventsQueryResults, err error)
+	ListQueryResultsForSubscriptionLevelPolicyAssignment(ctx context.Context, subscriptionID string, policyAssignmentName string, top *int32, orderBy string, selectParameter string, from *date.Time, toParameter *date.Time, filter string, apply string) (result policyinsights.PolicyEventsQueryResults, err error)
+}
+
+var _ PolicyEventsClientAPI = (*policyinsights.PolicyEventsClient)(nil)
+
 // PolicyStatesClientAPI contains the set of methods on the PolicyStatesClient type.
 type PolicyStatesClientAPI interface {
 	GetMetadata(ctx context.Context, scope string) (result policyinsights.String, err error)

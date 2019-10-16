@@ -45,13 +45,13 @@ const (
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
-func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+func NewSharedKeyCredential(accountName, accountKey string) (SharedKeyCredential, error) {
 	bytes, err := base64.StdEncoding.DecodeString(accountKey)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decode account key: %w", err)
+		return SharedKeyCredential{}, fmt.Errorf("decode account key: %w", err)
 	}
-	c := &SharedKeyCredential{accountName: accountName}
-	c.SetAccountKey(bytes)
+	c := SharedKeyCredential{accountName: accountName}
+	c.accountKey.Store(bytes)
 	return c, nil
 }
 
@@ -64,25 +64,21 @@ type SharedKeyCredential struct {
 }
 
 // marker satisfies the Credential interface making Credential policies "special"
-func (p *SharedKeyCredential) marker() {}
+func (c SharedKeyCredential) marker() {}
 
 // AccountName returns the Storage account's name.
-func (c *SharedKeyCredential) AccountName() string {
+func (c SharedKeyCredential) AccountName() string {
 	return c.accountName
 }
 
-func (c *SharedKeyCredential) SetAccountKey(newAccountKey []byte) {
-	c.accountKey.Store(newAccountKey)
-}
-
 // ComputeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
-func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (base64String string) {
+func (c SharedKeyCredential) ComputeHMACSHA256(message string) (base64String string) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
 	h.Write([]byte(message))
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
-func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
+func (c SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
 	headers := req.Header
 	contentLength := headers.Get(headerContentLength)
@@ -114,7 +110,7 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 	return stringToSign, nil
 }
 
-func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) string {
+func (c SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) string {
 	cm := map[string][]string{}
 	for k, v := range headers {
 		headerName := strings.TrimSpace(strings.ToLower(k))
@@ -143,7 +139,7 @@ func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) stri
 	return string(ch.Bytes())
 }
 
-func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {
+func (c SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
 	cr := bytes.NewBufferString("/")
 	cr.WriteString(c.accountName)
@@ -184,7 +180,7 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 }
 
 // Do implements the credential's policy interface.
-func (c *SharedKeyCredential) Do(ctx context.Context, req *Request) (*Response, error) {
+func (c SharedKeyCredential) Do(ctx context.Context, req *Request) (*Response, error) {
 	// Add a x-ms-date header if it doesn't already exist
 	if d := req.Request.Header.Get(headerXmsDate); d == "" {
 		req.Request.Header[headerXmsDate] = []string{time.Now().UTC().Format(http.TimeFormat)}

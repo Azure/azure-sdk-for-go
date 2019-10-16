@@ -5,13 +5,8 @@ package azcore
 
 import (
 	"context"
-	"io"
-	"io/ioutil"
 	"math/rand"
-	"net"
 	"net/http"
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -55,17 +50,22 @@ type RetryOptions struct {
 	// If you specify 0, then you must also specify 0 for RetryDelay.
 	MaxRetryDelay time.Duration
 
-	// RetryReadsFromSecondaryHost specifies whether the retry policy should retry a read operation against another host.
-	// If RetryReadsFromSecondaryHost is "" (the default) then operations are not retried against another host.
-	// NOTE: Before setting this field, make sure you understand the issues around reading stale & potentially-inconsistent
-	// data at this webpage: https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs
-	RetryReadsFromSecondaryHost string // Comment this our for non-Blob SDKs
+	// StatusCodes specifies the HTTP status codes that indicate the operation should be retried.
+	// If unspecified it will default to the status codes in StatusCodesForRetry.
+	StatusCodes []int
 }
 
-func (o RetryOptions) retryReadsFromSecondaryHost() string {
-	return o.RetryReadsFromSecondaryHost // This is for the Blob SDK only
-	//return "" // This is for non-blob SDKs
-}
+var (
+	// StatusCodesForRetry is the default set of HTTP status code for which the policy will retry.
+	StatusCodesForRetry = [6]int{
+		http.StatusRequestTimeout,      // 408
+		http.StatusTooManyRequests,     // 429
+		http.StatusInternalServerError, // 500
+		http.StatusBadGateway,          // 502
+		http.StatusServiceUnavailable,  // 503
+		http.StatusGatewayTimeout,      // 504
+	}
+)
 
 func (o RetryOptions) defaults() RetryOptions {
 	// We assume the following:
@@ -74,6 +74,10 @@ func (o RetryOptions) defaults() RetryOptions {
 	// 3. o.TryTimeout, o.RetryDelay, and o.MaxRetryDelay >=0
 	// 4. o.RetryDelay <= o.MaxRetryDelay
 	// 5. Both o.RetryDelay and o.MaxRetryDelay must be 0 or neither can be 0
+
+	if len(o.StatusCodes) == 0 {
+		o.StatusCodes = StatusCodesForRetry[:]
+	}
 
 	IfDefault := func(current *time.Duration, desired time.Duration) {
 		if *current == time.Duration(0) {
@@ -86,6 +90,8 @@ func (o RetryOptions) defaults() RetryOptions {
 		o.MaxTries = 4
 	}
 	switch o.Policy {
+	default:
+		fallthrough
 	case RetryPolicyExponential:
 		IfDefault(&o.TryTimeout, 1*time.Minute)
 		IfDefault(&o.RetryDelay, 4*time.Second)
@@ -110,13 +116,13 @@ func (o RetryOptions) calcDelay(try int32) time.Duration { // try is >=1; never 
 
 	delay := time.Duration(0)
 	switch o.Policy {
+	default:
+		fallthrough
 	case RetryPolicyExponential:
-		delay = time.Duration(pow(2, try-1)-1) * o.RetryDelay
+		delay = time.Duration(pow(2, try)-1) * o.RetryDelay
 
 	case RetryPolicyFixed:
-		if try > 1 { // Any try after the 1st uses the fixed delay
-			delay = o.RetryDelay
-		}
+		delay = o.RetryDelay
 	}
 
 	// Introduce some jitter:  [0.0, 1.0) / 2 = [0.0, 0.5) + 0.8 = [0.8, 1.3)
@@ -136,228 +142,52 @@ type retryPolicy struct {
 	options RetryOptions
 }
 
-func (p *retryPolicy) Do(ctx context.Context, req *Request) (response *Response, err error) {
+func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err error) {
 	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
-	// When to retry: connection failure or temporary/timeout. NOTE: StorageError considers HTTP 500/503 as temporary & is therefore retryable
-	// If using a secondary:
-	//    Even tries go against primary; odd tries go against the secondary
-	//    For a primary wait ((2 ^ primaryTries - 1) * delay * random(0.8, 1.2)
-	//    If secondary gets a 404, don't fail, retry but future retries are only against the primary
-	//    When retrying against a secondary, ignore the retry count and wait (.1 second * random(0.8, 1.2))
+	// When to retry: connection failure or temporary/timeout.
 	for try := int32(1); try <= p.options.MaxTries; try++ {
+		resp = nil // reset
 		logf("\n=====> Try=%d\n", try)
-
-		delay := p.options.calcDelay(try)
-		logf("Try=%d, Delay=%v\n", try, delay)
-		time.Sleep(delay) // The 1st try returns 0 delay
-
-		// Clone the original request to ensure that each try starts with the original (unmutated) request.
-		requestCopy := req.copy()
 
 		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
 		// the stream may not be at offset 0 when we first get it and we want the same behavior for the
 		// 1st try as for additional tries.
-		err = requestCopy.RewindBody()
+		err = req.RewindBody()
 		if err != nil {
-			return nil, err
+			return
 		}
-
-		// Set the server-side timeout query parameter "timeout=[seconds]"
-		timeout := int32(p.options.TryTimeout.Seconds()) // Max seconds per try
-		if deadline, ok := ctx.Deadline(); ok {          // If user's ctx has a deadline, make the timeout the smaller of the two
-			t := int32(deadline.Sub(time.Now()).Seconds()) // Duration from now until user's ctx reaches its deadline
-			logf("MaxTryTimeout=%d secs, TimeTilDeadline=%d sec\n", timeout, t)
-			if t < timeout {
-				timeout = t
-			}
-			if timeout < 0 {
-				timeout = 0 // If timeout ever goes negative, set it to zero; this happen while debugging
-			}
-			logf("TryTimeout adjusted to=%d sec\n", timeout)
-		}
-		q := requestCopy.URL.Query()
-		q.Set("timeout", strconv.Itoa(int(timeout+1))) // Add 1 to "round up"
-		requestCopy.URL.RawQuery = q.Encode()
-		logf("Url=%s\n", requestCopy.URL.String())
 
 		// Set the time for this particular retry operation and then Do the operation.
-		tryCtx, tryCancel := context.WithTimeout(ctx, time.Second*time.Duration(timeout))
-		//requestCopy.Body = &deadlineExceededReadCloser{r: requestCopy.Request.Body}
-		response, err = req.Do(tryCtx) // JMR: tryCtx, requestCopy) // Make the request
-		/*err = improveDeadlineExceeded(err)
-		if err == nil {
-			response.Response().Body = &deadlineExceededReadCloser{r: response.Response().Body}
-		}*/
-		logf("Err=%v, response=%v\n", err, response)
-
-		action := "" // This MUST get changed within the switch code below
-		switch {
-		case ctx.Err() != nil:
-			action = "NoRetry: Op timeout"
-		case err != nil:
-			if netErr, ok := err.(net.Error); ok {
-				// Use non-retriable net.Error list, but not retriable list.
-				// As there are errors without Temporary() implementation,
-				// while need be retried, like 'connection reset by peer', 'transport connection broken' and etc.
-				// So the SDK do retry for most of the case, unless the error should not be retried for sure.
-				if !isNotRetriable(netErr) {
-					action = "Retry: net.Error and not in the non-retriable list"
-				} else {
-					action = "NoRetry: net.Error and in the non-retriable list"
-				}
-			} else {
-				action = "NoRetry: unrecognized error"
-			}
-		default:
-			action = "NoRetry: successful HTTP request" // no error
-		}
-
-		logf("Action=%s\n", action)
-		// fmt.Println(action + "\n") // This is where we could log the retry operation; action is why we're retrying
-		if action[0] != 'R' { // Retry only if action starts with 'R'
-			if err != nil {
-				tryCancel() // If we're returning an error, cancel this current/last per-retry timeout context
-			}
-			break // Don't retry
-		}
-		if response != nil && response.Body != nil {
-			// If we're going to retry and we got a previous response, then flush its body to avoid leaking its TCP connection
-			body := response.Body
-			io.Copy(ioutil.Discard, body)
-			body.Close()
-		}
-		// If retrying, cancel the current per-try timeout context
+		tryCtx, tryCancel := context.WithTimeout(ctx, p.options.TryTimeout)
+		resp, err = req.Do(tryCtx) // Make the request
 		tryCancel()
-	}
-	return response, err // Not retryable or too many retries; return the last response/error
-}
+		logf("Err=%v, response=%v\n", err, resp)
 
-// contextCancelReadCloser helps to invoke context's cancelFunc properly when the ReadCloser is closed.
-type contextCancelReadCloser struct {
-	cf   context.CancelFunc
-	body io.ReadCloser
-}
-
-func (rc *contextCancelReadCloser) Read(p []byte) (n int, err error) {
-	return rc.body.Read(p)
-}
-
-func (rc *contextCancelReadCloser) Close() error {
-	err := rc.body.Close()
-	if rc.cf != nil {
-		rc.cf()
-	}
-	return err
-}
-
-// isNotRetriable checks if the provided net.Error isn't retriable.
-func isNotRetriable(errToParse net.Error) bool {
-	// No error, so this is NOT retriable.
-	if errToParse == nil {
-		return true
-	}
-
-	// The error is either temporary or a timeout so it IS retriable (not not retriable).
-	if errToParse.Temporary() || errToParse.Timeout() {
-		return false
-	}
-
-	genericErr := error(errToParse)
-
-	// From here all the error are neither Temporary() nor Timeout().
-	switch err := errToParse.(type) {
-	case *net.OpError:
-		// The net.Error is also a net.OpError but the inner error is nil, so this is not retriable.
-		if err.Err == nil {
-			return true
+		// if there is no error and the response code isn't in the list of retry codes then we're done
+		// TODO: if this is a failure to get an access token don't retry
+		if err == nil && !resp.hasStatusCode(p.options.StatusCodes...) {
+			return
 		}
-		genericErr = err.Err
-	}
 
-	switch genericErr.(type) {
-	case *net.AddrError, net.UnknownNetworkError, *net.DNSError, net.InvalidAddrError, *net.ParseError, *net.DNSConfigError:
-		// If the error is one of the ones listed, then it is NOT retriable.
-		return true
-	}
+		// drain before retrying so nothing is leaked
+		resp.Drain()
 
-	// If it's invalid header field name/value error thrown by http module, then it is NOT retriable.
-	// This could happen when metadata's key or value is invalid. (RoundTrip in transport.go)
-	if strings.Contains(genericErr.Error(), "invalid header field") {
-		return true
-	}
-
-	// Assume the error is retriable.
-	return false
-}
-
-var successStatusCodes = []int{http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent, http.StatusPartialContent}
-
-func isSuccessStatusCode(resp *http.Response) bool {
-	if resp == nil {
-		return false
-	}
-	for _, i := range successStatusCodes {
-		if i == resp.StatusCode {
-			return true
+		// use the delay from retry-after if available
+		delay, ok := resp.retryAfter()
+		if !ok {
+			delay = p.options.calcDelay(try)
+		}
+		logf("Try=%d, Delay=%v\n", try, delay)
+		select {
+		case <-time.After(delay):
+			// no-op
+		case <-ctx.Done():
+			err = ctx.Err()
+			return
 		}
 	}
-	return false
+	return // Not retryable or too many retries; return the last response/error
 }
 
 // According to https://github.com/golang/go/wiki/CompilerOptimizations, the compiler will inline this method and hopefully optimize all calls to it away
 var logf = func(format string, a ...interface{}) {}
-
-// Use this version to see the retry method's code path (import "fmt")
-//var logf = fmt.Printf
-
-/*
-type deadlineExceededReadCloser struct {
-	r io.ReadCloser
-}
-
-func (r *deadlineExceededReadCloser) Read(p []byte) (int, error) {
-	n, err := 0, io.EOF
-	if r.r != nil {
-		n, err = r.r.Read(p)
-	}
-	return n, improveDeadlineExceeded(err)
-}
-func (r *deadlineExceededReadCloser) Seek(offset int64, whence int) (int64, error) {
-	// For an HTTP request, the ReadCloser MUST also implement seek
-	// For an HTTP response, Seek MUST not be called (or this will panic)
-	o, err := r.r.(io.Seeker).Seek(offset, whence)
-	return o, improveDeadlineExceeded(err)
-}
-func (r *deadlineExceededReadCloser) Close() error {
-	if c, ok := r.r.(io.Closer); ok {
-		c.Close()
-	}
-	return nil
-}
-
-// timeoutError is the internal struct that implements our richer timeout error.
-type deadlineExceeded struct {
-	responseError
-}
-
-var _ net.Error = (*deadlineExceeded)(nil) // Ensure deadlineExceeded implements the net.Error interface at compile time
-
-// improveDeadlineExceeded creates a timeoutError object that implements the error interface IF cause is a context.DeadlineExceeded error.
-func improveDeadlineExceeded(cause error) error {
-	// If cause is not DeadlineExceeded, return the same error passed in.
-	if cause != context.DeadlineExceeded {
-		return cause
-	}
-	// Else, convert DeadlineExceeded to our timeoutError which gives a richer string message
-	return &deadlineExceeded{
-		responseError: responseError{
-			ErrorNode: pipeline.ErrorNode{}.Initialize(cause, 3),
-		},
-	}
-}
-
-// Error implements the error interface's Error method to return a string representation of the error.
-func (e *deadlineExceeded) Error() string {
-	return e.ErrorNode.Error("context deadline exceeded; when creating a pipeline, consider increasing RetryOptions' TryTimeout field")
-}
-*/

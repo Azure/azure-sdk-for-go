@@ -20,6 +20,15 @@ type Policy interface {
 	Do(ctx context.Context, req *Request) (*Response, error)
 }
 
+// PolicyFunc is a type that implements the Policy interface.
+// Use this type when implementing a stateless policy as a first-class function.
+type PolicyFunc func(context.Context, *Request) (*Response, error)
+
+// Do implements the Policy interface on PolicyFunc.
+func (pf PolicyFunc) Do(ctx context.Context, req *Request) (*Response, error) {
+	return pf(ctx, req)
+}
+
 // NewPipeline creates a new goroutine-safe Pipeline object from the slice of Factory objects and the specified options.
 func NewPipeline(policies ...Policy) Pipeline {
 	return Pipeline{
@@ -49,11 +58,15 @@ type PipelineOptions struct {
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry TelemetryOptions
 
+	// HTTPClient sets the policy for making HTTP requests.
+	// Leave this as nil to use the default HTTP request policy.
 	HTTPClient Policy
 
+	// LogOptions configures the built-in request logging policy behavior.
 	LogOptions RequestLogOptions
 }
 
+// ReadSeekCloser is the interface that groups the io.ReadCloser and io.Seeker interfaces.
 type ReadSeekCloser interface {
 	io.ReadCloser
 	io.Seeker
@@ -67,6 +80,7 @@ func (n nopCloser) Close() error {
 	return nil
 }
 
+// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
 func NopCloser(rs io.ReadSeeker) ReadSeekCloser {
 	return nopCloser{rs}
 }

@@ -7,10 +7,14 @@ import (
 	"bytes"
 	"encoding/xml"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"reflect"
 	"sort"
+	"strconv"
 	"strings"
+	"time"
 )
 
 // Response represents the response from an HTTP request.
@@ -58,10 +62,29 @@ func (r *Response) UnmarshalAsXML(v interface{}) error {
 	return err
 }
 
+// Drain reads the response body to completion then closes it.  The bytes read are discarded.
+func (r *Response) Drain() {
+	if r != nil && r.Body != nil {
+		io.Copy(ioutil.Discard, r.Body)
+		r.Body.Close()
+	}
+}
+
 // removeBOM removes any byte-order mark prefix from the payload if present.
 func (r *Response) removeBOM() {
 	// UTF8
 	r.Payload = bytes.TrimPrefix(r.Payload, []byte("\xef\xbb\xbf"))
+}
+
+// retryAfter returns (non-zero, true) if the response contains a Retry-After header value
+func (r *Response) retryAfter() (time.Duration, bool) {
+	if r == nil {
+		return 0, false
+	}
+	if retryAfter, _ := strconv.Atoi(r.Header.Get("Retry-After")); retryAfter > 0 {
+		return time.Duration(retryAfter) * time.Second, true
+	}
+	return 0, false
 }
 
 // WriteRequestWithResponse appends a formatted HTTP request into a Buffer. If request and/or err are

@@ -78,7 +78,7 @@ func (req *Request) Do(ctx context.Context) (*Response, error) {
 
 // MarshalAsXML calls xml.Marshal() to get the XML encoding of v then calls SetBody.
 // If xml.Marshal fails a MarshalError is returned.  Any error from SetBody is returned.
-func (req Request) MarshalAsXML(v interface{}) error {
+func (req *Request) MarshalAsXML(v interface{}) error {
 	b, err := xml.Marshal(v)
 	if err != nil {
 		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
@@ -96,20 +96,22 @@ func (req *Request) SetOperationValue(value interface{}) {
 }
 
 // OperationValue looks for a value set by SetOperationValue().
-func (req Request) OperationValue(value interface{}) bool {
+func (req *Request) OperationValue(value interface{}) bool {
 	if req.values == nil {
 		return false
 	}
 	return req.values.get(&value)
 }
 
+// SetQueryParam sets the key to value.
 func (req *Request) SetQueryParam(key, value string) {
 	if req.qp == nil {
 		req.qp = req.Request.URL.Query()
 	}
-	req.qp.Add(key, value)
+	req.qp.Set(key, value)
 }
 
+// SetBody sets the specified ReadSeekCloser as the HTTP request body.
 func (req *Request) SetBody(body ReadSeekCloser) error {
 	// Set the body and content length.
 	size, err := body.Seek(0, io.SeekEnd) // Seek to the end to get the stream's size
@@ -149,7 +151,7 @@ func (req *Request) RewindBody() error {
 	return nil
 }
 
-func (req Request) copy() *Request {
+func (req *Request) copy() *Request {
 	clonedURL := *req.URL
 	// Copy the values and immutable references
 	return &Request{

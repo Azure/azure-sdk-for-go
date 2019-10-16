@@ -14,11 +14,15 @@ type frameInfo struct {
 	line int
 }
 
-func (f *frameInfo) String() string {
-	if f == nil {
+func (f frameInfo) String() string {
+	if f.zero() {
 		return ""
 	}
 	return fmt.Sprintf("file: %s, line: %d", f.file, f.line)
+}
+
+func (f frameInfo) zero() bool {
+	return f.file == "" && f.line == 0
 }
 
 // RequestError is returned when the service returns an unsuccessful resopnse code (4xx, 5xx).

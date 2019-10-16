@@ -38,7 +38,7 @@ func (l *Logger) SetListener(lst Listener) {
 
 // Should returns true if the specified log classification should be written to the log.
 // TODO: explain why you would want to call this
-func (l Logger) Should(cls LogClassification) bool {
+func (l *Logger) Should(cls LogClassification) bool {
 	if l.cls == nil || len(l.cls) == 0 {
 		return true
 	}
@@ -52,7 +52,7 @@ func (l Logger) Should(cls LogClassification) bool {
 
 // Write invokes the underlying Listener with the specified classification and message.
 // If the classification shouldn't be logged or there is no listener then Write does nothing.
-func (l Logger) Write(cls LogClassification, message string) {
+func (l *Logger) Write(cls LogClassification, message string) {
 	if l.lst == nil || !l.Should(cls) {
 		return
 	}

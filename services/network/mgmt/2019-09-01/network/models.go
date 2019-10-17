@@ -2164,6 +2164,8 @@ const (
 	WebApplicationFirewallOperatorEndsWith WebApplicationFirewallOperator = "EndsWith"
 	// WebApplicationFirewallOperatorEqual ...
 	WebApplicationFirewallOperatorEqual WebApplicationFirewallOperator = "Equal"
+	// WebApplicationFirewallOperatorGeoMatch ...
+	WebApplicationFirewallOperatorGeoMatch WebApplicationFirewallOperator = "GeoMatch"
 	// WebApplicationFirewallOperatorGreaterThan ...
 	WebApplicationFirewallOperatorGreaterThan WebApplicationFirewallOperator = "GreaterThan"
 	// WebApplicationFirewallOperatorGreaterThanOrEqual ...
@@ -2180,7 +2182,7 @@ const (
 
 // PossibleWebApplicationFirewallOperatorValues returns an array of possible values for the WebApplicationFirewallOperator const type.
 func PossibleWebApplicationFirewallOperatorValues() []WebApplicationFirewallOperator {
-	return []WebApplicationFirewallOperator{WebApplicationFirewallOperatorBeginsWith, WebApplicationFirewallOperatorContains, WebApplicationFirewallOperatorEndsWith, WebApplicationFirewallOperatorEqual, WebApplicationFirewallOperatorGreaterThan, WebApplicationFirewallOperatorGreaterThanOrEqual, WebApplicationFirewallOperatorIPMatch, WebApplicationFirewallOperatorLessThan, WebApplicationFirewallOperatorLessThanOrEqual, WebApplicationFirewallOperatorRegex}
+	return []WebApplicationFirewallOperator{WebApplicationFirewallOperatorBeginsWith, WebApplicationFirewallOperatorContains, WebApplicationFirewallOperatorEndsWith, WebApplicationFirewallOperatorEqual, WebApplicationFirewallOperatorGeoMatch, WebApplicationFirewallOperatorGreaterThan, WebApplicationFirewallOperatorGreaterThanOrEqual, WebApplicationFirewallOperatorIPMatch, WebApplicationFirewallOperatorLessThan, WebApplicationFirewallOperatorLessThanOrEqual, WebApplicationFirewallOperatorRegex}
 }
 
 // WebApplicationFirewallPolicyResourceState enumerates the values for web application firewall policy resource
@@ -3548,6 +3550,8 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
 	// FirewallPolicy - Reference to the FirewallPolicy resource.
 	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
+	// Hostnames - List of Host names for HTTP Listener that allows special wildcard characters as well.
+	Hostnames *[]string `json:"hostnames,omitempty"`
 }
 
 // ApplicationGatewayIPConfiguration IP configuration of an application gateway. Currently 1 public and 1
@@ -6488,6 +6492,8 @@ type AzureFirewallApplicationRule struct {
 	TargetFqdns *[]string `json:"targetFqdns,omitempty"`
 	// FqdnTags - List of FQDN Tags for this rule.
 	FqdnTags *[]string `json:"fqdnTags,omitempty"`
+	// SourceIPGroups - List of source IpGroups for this rule.
+	SourceIPGroups *[]string `json:"sourceIpGroups,omitempty"`
 }
 
 // AzureFirewallApplicationRuleCollection application rule collection resource.
@@ -7119,6 +7125,8 @@ type AzureFirewallNatRule struct {
 	TranslatedPort *string `json:"translatedPort,omitempty"`
 	// TranslatedFqdn - The translated FQDN for this NAT rule.
 	TranslatedFqdn *string `json:"translatedFqdn,omitempty"`
+	// SourceIPGroups - List of source IpGroups for this rule.
+	SourceIPGroups *[]string `json:"sourceIpGroups,omitempty"`
 }
 
 // AzureFirewallNatRuleCollection NAT rule collection resource.
@@ -7227,6 +7235,10 @@ type AzureFirewallNetworkRule struct {
 	DestinationPorts *[]string `json:"destinationPorts,omitempty"`
 	// DestinationFqdns - List of destination FQDNs.
 	DestinationFqdns *[]string `json:"destinationFqdns,omitempty"`
+	// SourceIPGroups - List of source IpGroups for this rule.
+	SourceIPGroups *[]string `json:"sourceIpGroups,omitempty"`
+	// DestinationIPGroups - List of destination IpGroups for this rule.
+	DestinationIPGroups *[]string `json:"destinationIpGroups,omitempty"`
 }
 
 // AzureFirewallNetworkRuleCollection network rule collection resource.
@@ -8387,7 +8399,7 @@ type ConfigurationDiagnosticProfile struct {
 	Source *string `json:"source,omitempty"`
 	// Destination - Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
 	Destination *string `json:"destination,omitempty"`
-	// DestinationPort - Traffic destination port. Accepted values are '*', port (for example, 3389) and port range (for example, 80-100).
+	// DestinationPort - Traffic destination port. Accepted values are '*' and a single port in the range (0 - 65535).
 	DestinationPort *string `json:"destinationPort,omitempty"`
 }
 
@@ -11000,11 +11012,11 @@ func (ercp *ExpressRouteCircuitPeering) UnmarshalJSON(body []byte) error {
 
 // ExpressRouteCircuitPeeringConfig specifies the peering configuration.
 type ExpressRouteCircuitPeeringConfig struct {
-	// AdvertisedPublicPrefixes - READ-ONLY; The reference of AdvertisedPublicPrefixes.
+	// AdvertisedPublicPrefixes - The reference of AdvertisedPublicPrefixes.
 	AdvertisedPublicPrefixes *[]string `json:"advertisedPublicPrefixes,omitempty"`
 	// AdvertisedCommunities - The communities of bgp peering. Specified for microsoft peering.
 	AdvertisedCommunities *[]string `json:"advertisedCommunities,omitempty"`
-	// AdvertisedPublicPrefixesState - The advertised public prefix state of the Peering resource. Possible values include: 'NotConfigured', 'Configuring', 'Configured', 'ValidationNeeded'
+	// AdvertisedPublicPrefixesState - READ-ONLY; The advertised public prefix state of the Peering resource. Possible values include: 'NotConfigured', 'Configuring', 'Configured', 'ValidationNeeded'
 	AdvertisedPublicPrefixesState ExpressRouteCircuitPeeringAdvertisedPublicPrefixState `json:"advertisedPublicPrefixesState,omitempty"`
 	// LegacyMode - The legacy mode of the peering.
 	LegacyMode *int32 `json:"legacyMode,omitempty"`
@@ -17213,6 +17225,329 @@ type IPConfigurationPropertiesFormat struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// IPGroup the IpGroups resource information.
+type IPGroup struct {
+	autorest.Response `json:"-"`
+	// IPGroupPropertiesFormat - Properties of the IpGroups.
+	*IPGroupPropertiesFormat `json:"properties,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for IPGroup.
+func (ig IPGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ig.IPGroupPropertiesFormat != nil {
+		objectMap["properties"] = ig.IPGroupPropertiesFormat
+	}
+	if ig.ID != nil {
+		objectMap["id"] = ig.ID
+	}
+	if ig.Location != nil {
+		objectMap["location"] = ig.Location
+	}
+	if ig.Tags != nil {
+		objectMap["tags"] = ig.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IPGroup struct.
+func (ig *IPGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var IPGroupPropertiesFormat IPGroupPropertiesFormat
+				err = json.Unmarshal(*v, &IPGroupPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				ig.IPGroupPropertiesFormat = &IPGroupPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ig.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ig.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ig.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ig.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				ig.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				ig.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// IPGroupListResult response for the ListIpGroups API service call.
+type IPGroupListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of IpGroups information resources.
+	Value *[]IPGroup `json:"value,omitempty"`
+	// NextLink - URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// IPGroupListResultIterator provides access to a complete listing of IPGroup values.
+type IPGroupListResultIterator struct {
+	i    int
+	page IPGroupListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IPGroupListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IPGroupListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IPGroupListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IPGroupListResultIterator) Response() IPGroupListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IPGroupListResultIterator) Value() IPGroup {
+	if !iter.page.NotDone() {
+		return IPGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IPGroupListResultIterator type.
+func NewIPGroupListResultIterator(page IPGroupListResultPage) IPGroupListResultIterator {
+	return IPGroupListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (iglr IPGroupListResult) IsEmpty() bool {
+	return iglr.Value == nil || len(*iglr.Value) == 0
+}
+
+// iPGroupListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (iglr IPGroupListResult) iPGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if iglr.NextLink == nil || len(to.String(iglr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(iglr.NextLink)))
+}
+
+// IPGroupListResultPage contains a page of IPGroup values.
+type IPGroupListResultPage struct {
+	fn   func(context.Context, IPGroupListResult) (IPGroupListResult, error)
+	iglr IPGroupListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IPGroupListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPGroupListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.iglr)
+	if err != nil {
+		return err
+	}
+	page.iglr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IPGroupListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IPGroupListResultPage) NotDone() bool {
+	return !page.iglr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IPGroupListResultPage) Response() IPGroupListResult {
+	return page.iglr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IPGroupListResultPage) Values() []IPGroup {
+	if page.iglr.IsEmpty() {
+		return nil
+	}
+	return *page.iglr.Value
+}
+
+// Creates a new instance of the IPGroupListResultPage type.
+func NewIPGroupListResultPage(getNextPage func(context.Context, IPGroupListResult) (IPGroupListResult, error)) IPGroupListResultPage {
+	return IPGroupListResultPage{fn: getNextPage}
+}
+
+// IPGroupPropertiesFormat the IpGroups property information.
+type IPGroupPropertiesFormat struct {
+	// ProvisioningState - READ-ONLY; The provisioning state of the IpGroups resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// IPAddresses - IpAddresses/IpAddressPrefixes in the IpGroups resource.
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+	// Firewalls - READ-ONLY; List of references to Azure resources that this IpGroups is associated with
+	Firewalls *[]SubResource `json:"firewalls,omitempty"`
+}
+
+// IPGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type IPGroupsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *IPGroupsCreateOrUpdateFuture) Result(client IPGroupsClient) (ig IPGroup, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.IPGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.IPGroupsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ig.Response.Response, err = future.GetResult(sender); err == nil && ig.Response.Response.StatusCode != http.StatusNoContent {
+		ig, err = client.CreateOrUpdateResponder(ig.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.IPGroupsCreateOrUpdateFuture", "Result", ig.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// IPGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type IPGroupsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *IPGroupsDeleteFuture) Result(client IPGroupsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.IPGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.IPGroupsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // IpsecPolicy an IPSec Policy configuration for a virtual network gateway connection.
 type IpsecPolicy struct {
 	// SaLifeTimeSeconds - The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site VPN tunnel.
@@ -17554,6 +17889,154 @@ func NewListP2SVpnGatewaysResultPage(getNextPage func(context.Context, ListP2SVp
 type ListString struct {
 	autorest.Response `json:"-"`
 	Value             *[]string `json:"value,omitempty"`
+}
+
+// ListVirtualHubRouteTableV2sResult list of VirtualHubRouteTableV2s and a URL nextLink to get the next set
+// of results.
+type ListVirtualHubRouteTableV2sResult struct {
+	autorest.Response `json:"-"`
+	// Value - List of VirtualHubRouteTableV2s.
+	Value *[]VirtualHubRouteTableV2 `json:"value,omitempty"`
+	// NextLink - URL to get the next set of operation list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ListVirtualHubRouteTableV2sResultIterator provides access to a complete listing of
+// VirtualHubRouteTableV2 values.
+type ListVirtualHubRouteTableV2sResultIterator struct {
+	i    int
+	page ListVirtualHubRouteTableV2sResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ListVirtualHubRouteTableV2sResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListVirtualHubRouteTableV2sResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ListVirtualHubRouteTableV2sResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ListVirtualHubRouteTableV2sResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ListVirtualHubRouteTableV2sResultIterator) Response() ListVirtualHubRouteTableV2sResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ListVirtualHubRouteTableV2sResultIterator) Value() VirtualHubRouteTableV2 {
+	if !iter.page.NotDone() {
+		return VirtualHubRouteTableV2{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ListVirtualHubRouteTableV2sResultIterator type.
+func NewListVirtualHubRouteTableV2sResultIterator(page ListVirtualHubRouteTableV2sResultPage) ListVirtualHubRouteTableV2sResultIterator {
+	return ListVirtualHubRouteTableV2sResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (lvhrtvr ListVirtualHubRouteTableV2sResult) IsEmpty() bool {
+	return lvhrtvr.Value == nil || len(*lvhrtvr.Value) == 0
+}
+
+// listVirtualHubRouteTableV2sResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (lvhrtvr ListVirtualHubRouteTableV2sResult) listVirtualHubRouteTableV2sResultPreparer(ctx context.Context) (*http.Request, error) {
+	if lvhrtvr.NextLink == nil || len(to.String(lvhrtvr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(lvhrtvr.NextLink)))
+}
+
+// ListVirtualHubRouteTableV2sResultPage contains a page of VirtualHubRouteTableV2 values.
+type ListVirtualHubRouteTableV2sResultPage struct {
+	fn      func(context.Context, ListVirtualHubRouteTableV2sResult) (ListVirtualHubRouteTableV2sResult, error)
+	lvhrtvr ListVirtualHubRouteTableV2sResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ListVirtualHubRouteTableV2sResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ListVirtualHubRouteTableV2sResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.lvhrtvr)
+	if err != nil {
+		return err
+	}
+	page.lvhrtvr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ListVirtualHubRouteTableV2sResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ListVirtualHubRouteTableV2sResultPage) NotDone() bool {
+	return !page.lvhrtvr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ListVirtualHubRouteTableV2sResultPage) Response() ListVirtualHubRouteTableV2sResult {
+	return page.lvhrtvr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ListVirtualHubRouteTableV2sResultPage) Values() []VirtualHubRouteTableV2 {
+	if page.lvhrtvr.IsEmpty() {
+		return nil
+	}
+	return *page.lvhrtvr.Value
+}
+
+// Creates a new instance of the ListVirtualHubRouteTableV2sResultPage type.
+func NewListVirtualHubRouteTableV2sResultPage(getNextPage func(context.Context, ListVirtualHubRouteTableV2sResult) (ListVirtualHubRouteTableV2sResult, error)) ListVirtualHubRouteTableV2sResultPage {
+	return ListVirtualHubRouteTableV2sResultPage{fn: getNextPage}
 }
 
 // ListVirtualHubsResult result of the request to list VirtualHubs. It contains a list of VirtualHubs and a
@@ -20406,7 +20889,7 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 type MatchCondition struct {
 	// MatchVariables - List of match variables.
 	MatchVariables *[]MatchVariable `json:"matchVariables,omitempty"`
-	// Operator - Describes operator to be matched. Possible values include: 'WebApplicationFirewallOperatorIPMatch', 'WebApplicationFirewallOperatorEqual', 'WebApplicationFirewallOperatorContains', 'WebApplicationFirewallOperatorLessThan', 'WebApplicationFirewallOperatorGreaterThan', 'WebApplicationFirewallOperatorLessThanOrEqual', 'WebApplicationFirewallOperatorGreaterThanOrEqual', 'WebApplicationFirewallOperatorBeginsWith', 'WebApplicationFirewallOperatorEndsWith', 'WebApplicationFirewallOperatorRegex'
+	// Operator - Describes operator to be matched. Possible values include: 'WebApplicationFirewallOperatorIPMatch', 'WebApplicationFirewallOperatorEqual', 'WebApplicationFirewallOperatorContains', 'WebApplicationFirewallOperatorLessThan', 'WebApplicationFirewallOperatorGreaterThan', 'WebApplicationFirewallOperatorLessThanOrEqual', 'WebApplicationFirewallOperatorGreaterThanOrEqual', 'WebApplicationFirewallOperatorBeginsWith', 'WebApplicationFirewallOperatorEndsWith', 'WebApplicationFirewallOperatorRegex', 'WebApplicationFirewallOperatorGeoMatch'
 	Operator WebApplicationFirewallOperator `json:"operator,omitempty"`
 	// NegationConditon - Describes if this is negate condition or not.
 	NegationConditon *bool `json:"negationConditon,omitempty"`

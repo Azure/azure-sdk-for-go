@@ -304,6 +304,18 @@ type FirewallPolicyRuleGroupsClientAPI interface {
 
 var _ FirewallPolicyRuleGroupsClientAPI = (*network.FirewallPolicyRuleGroupsClient)(nil)
 
+// IPGroupsClientAPI contains the set of methods on the IPGroupsClient type.
+type IPGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.IPGroup) (result network.IPGroupsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, IPGroupsName string) (result network.IPGroupsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, IPGroupsName string, expand string) (result network.IPGroup, err error)
+	List(ctx context.Context) (result network.IPGroupListResultPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.IPGroupListResultPage, err error)
+	UpdateGroups(ctx context.Context, resourceGroupName string, IPGroupsName string, parameters network.TagsObject) (result network.IPGroup, err error)
+}
+
+var _ IPGroupsClientAPI = (*network.IPGroupsClient)(nil)
+
 // LoadBalancersClientAPI contains the set of methods on the LoadBalancersClient type.
 type LoadBalancersClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters network.LoadBalancer) (result network.LoadBalancersCreateOrUpdateFuture, err error)
@@ -953,7 +965,7 @@ type VirtualHubRouteTableV2sClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters network.VirtualHubRouteTableV2) (result network.VirtualHubRouteTableV2sCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (result network.VirtualHubRouteTableV2sDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string) (result network.VirtualHubRouteTableV2, err error)
-	List(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListHubVirtualNetworkConnectionsResultPage, err error)
+	List(ctx context.Context, resourceGroupName string, virtualHubName string) (result network.ListVirtualHubRouteTableV2sResultPage, err error)
 }
 
 var _ VirtualHubRouteTableV2sClientAPI = (*network.VirtualHubRouteTableV2sClient)(nil)

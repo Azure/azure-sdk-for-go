@@ -285,13 +285,13 @@ func (client VirtualHubRouteTableV2sClient) GetResponder(resp *http.Response) (r
 // Parameters:
 // resourceGroupName - the resource group name of the VirtualHub.
 // virtualHubName - the name of the VirtualHub.
-func (client VirtualHubRouteTableV2sClient) List(ctx context.Context, resourceGroupName string, virtualHubName string) (result ListHubVirtualNetworkConnectionsResultPage, err error) {
+func (client VirtualHubRouteTableV2sClient) List(ctx context.Context, resourceGroupName string, virtualHubName string) (result ListVirtualHubRouteTableV2sResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubRouteTableV2sClient.List")
 		defer func() {
 			sc := -1
-			if result.lhvncr.Response.Response != nil {
-				sc = result.lhvncr.Response.Response.StatusCode
+			if result.lvhrtvr.Response.Response != nil {
+				sc = result.lvhrtvr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -305,12 +305,12 @@ func (client VirtualHubRouteTableV2sClient) List(ctx context.Context, resourceGr
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.lhvncr.Response = autorest.Response{Response: resp}
+		result.lvhrtvr.Response = autorest.Response{Response: resp}
 		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.lhvncr, err = client.ListResponder(resp)
+	result.lvhrtvr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sClient", "List", resp, "Failure responding to request")
 	}
@@ -348,7 +348,7 @@ func (client VirtualHubRouteTableV2sClient) ListSender(req *http.Request) (*http
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client VirtualHubRouteTableV2sClient) ListResponder(resp *http.Response) (result ListHubVirtualNetworkConnectionsResult, err error) {
+func (client VirtualHubRouteTableV2sClient) ListResponder(resp *http.Response) (result ListVirtualHubRouteTableV2sResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -360,8 +360,8 @@ func (client VirtualHubRouteTableV2sClient) ListResponder(resp *http.Response) (
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client VirtualHubRouteTableV2sClient) listNextResults(ctx context.Context, lastResults ListHubVirtualNetworkConnectionsResult) (result ListHubVirtualNetworkConnectionsResult, err error) {
-	req, err := lastResults.listHubVirtualNetworkConnectionsResultPreparer(ctx)
+func (client VirtualHubRouteTableV2sClient) listNextResults(ctx context.Context, lastResults ListVirtualHubRouteTableV2sResult) (result ListVirtualHubRouteTableV2sResult, err error) {
+	req, err := lastResults.listVirtualHubRouteTableV2sResultPreparer(ctx)
 	if err != nil {
 		return result, autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sClient", "listNextResults", nil, "Failure preparing next results request")
 	}
@@ -381,7 +381,7 @@ func (client VirtualHubRouteTableV2sClient) listNextResults(ctx context.Context,
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VirtualHubRouteTableV2sClient) ListComplete(ctx context.Context, resourceGroupName string, virtualHubName string) (result ListHubVirtualNetworkConnectionsResultIterator, err error) {
+func (client VirtualHubRouteTableV2sClient) ListComplete(ctx context.Context, resourceGroupName string, virtualHubName string) (result ListVirtualHubRouteTableV2sResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubRouteTableV2sClient.List")
 		defer func() {

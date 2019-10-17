@@ -1034,6 +1034,7 @@ const (
 	WebApplicationFirewallOperatorContains           WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorContains
 	WebApplicationFirewallOperatorEndsWith           WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorEndsWith
 	WebApplicationFirewallOperatorEqual              WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorEqual
+	WebApplicationFirewallOperatorGeoMatch           WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorGeoMatch
 	WebApplicationFirewallOperatorGreaterThan        WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorGreaterThan
 	WebApplicationFirewallOperatorGreaterThanOrEqual WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorGreaterThanOrEqual
 	WebApplicationFirewallOperatorIPMatch            WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorIPMatch
@@ -1477,6 +1478,14 @@ type IPConfiguration = original.IPConfiguration
 type IPConfigurationProfile = original.IPConfigurationProfile
 type IPConfigurationProfilePropertiesFormat = original.IPConfigurationProfilePropertiesFormat
 type IPConfigurationPropertiesFormat = original.IPConfigurationPropertiesFormat
+type IPGroup = original.IPGroup
+type IPGroupListResult = original.IPGroupListResult
+type IPGroupListResultIterator = original.IPGroupListResultIterator
+type IPGroupListResultPage = original.IPGroupListResultPage
+type IPGroupPropertiesFormat = original.IPGroupPropertiesFormat
+type IPGroupsClient = original.IPGroupsClient
+type IPGroupsCreateOrUpdateFuture = original.IPGroupsCreateOrUpdateFuture
+type IPGroupsDeleteFuture = original.IPGroupsDeleteFuture
 type IPTag = original.IPTag
 type InboundNatPool = original.InboundNatPool
 type InboundNatPoolPropertiesFormat = original.InboundNatPoolPropertiesFormat
@@ -1531,6 +1540,9 @@ type ListP2SVpnGatewaysResult = original.ListP2SVpnGatewaysResult
 type ListP2SVpnGatewaysResultIterator = original.ListP2SVpnGatewaysResultIterator
 type ListP2SVpnGatewaysResultPage = original.ListP2SVpnGatewaysResultPage
 type ListString = original.ListString
+type ListVirtualHubRouteTableV2sResult = original.ListVirtualHubRouteTableV2sResult
+type ListVirtualHubRouteTableV2sResultIterator = original.ListVirtualHubRouteTableV2sResultIterator
+type ListVirtualHubRouteTableV2sResultPage = original.ListVirtualHubRouteTableV2sResultPage
 type ListVirtualHubsResult = original.ListVirtualHubsResult
 type ListVirtualHubsResultIterator = original.ListVirtualHubsResultIterator
 type ListVirtualHubsResultPage = original.ListVirtualHubsResultPage
@@ -2388,6 +2400,18 @@ func NewHubVirtualNetworkConnectionsClient(subscriptionID string) HubVirtualNetw
 func NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HubVirtualNetworkConnectionsClient {
 	return original.NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewIPGroupListResultIterator(page IPGroupListResultPage) IPGroupListResultIterator {
+	return original.NewIPGroupListResultIterator(page)
+}
+func NewIPGroupListResultPage(getNextPage func(context.Context, IPGroupListResult) (IPGroupListResult, error)) IPGroupListResultPage {
+	return original.NewIPGroupListResultPage(getNextPage)
+}
+func NewIPGroupsClient(subscriptionID string) IPGroupsClient {
+	return original.NewIPGroupsClient(subscriptionID)
+}
+func NewIPGroupsClientWithBaseURI(baseURI string, subscriptionID string) IPGroupsClient {
+	return original.NewIPGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewInboundNatRuleListResultIterator(page InboundNatRuleListResultPage) InboundNatRuleListResultIterator {
 	return original.NewInboundNatRuleListResultIterator(page)
 }
@@ -2459,6 +2483,12 @@ func NewListP2SVpnGatewaysResultIterator(page ListP2SVpnGatewaysResultPage) List
 }
 func NewListP2SVpnGatewaysResultPage(getNextPage func(context.Context, ListP2SVpnGatewaysResult) (ListP2SVpnGatewaysResult, error)) ListP2SVpnGatewaysResultPage {
 	return original.NewListP2SVpnGatewaysResultPage(getNextPage)
+}
+func NewListVirtualHubRouteTableV2sResultIterator(page ListVirtualHubRouteTableV2sResultPage) ListVirtualHubRouteTableV2sResultIterator {
+	return original.NewListVirtualHubRouteTableV2sResultIterator(page)
+}
+func NewListVirtualHubRouteTableV2sResultPage(getNextPage func(context.Context, ListVirtualHubRouteTableV2sResult) (ListVirtualHubRouteTableV2sResult, error)) ListVirtualHubRouteTableV2sResultPage {
+	return original.NewListVirtualHubRouteTableV2sResultPage(getNextPage)
 }
 func NewListVirtualHubsResultIterator(page ListVirtualHubsResultPage) ListVirtualHubsResultIterator {
 	return original.NewListVirtualHubsResultIterator(page)

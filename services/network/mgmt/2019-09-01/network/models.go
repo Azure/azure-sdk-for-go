@@ -21414,7 +21414,7 @@ type P2SVpnGatewayProperties struct {
 	// VpnGatewayScaleUnit - The scale unit for this p2s vpn gateway.
 	VpnGatewayScaleUnit *int32 `json:"vpnGatewayScaleUnit,omitempty"`
 	// VpnServerConfiguration - The VpnServerConfiguration to which the p2sVpnGateway is attached to.
-	VpnServerConfiguration *VpnServerConfiguration `json:"vpnServerConfiguration,omitempty"`
+	VpnServerConfiguration *SubResource `json:"vpnServerConfiguration,omitempty"`
 	// VpnClientConnectionHealth - READ-ONLY; All P2S VPN clients' connection health status.
 	VpnClientConnectionHealth *VpnClientConnectionHealth `json:"vpnClientConnectionHealth,omitempty"`
 }
@@ -33493,14 +33493,14 @@ type VpnServerConfigurationProperties struct {
 	VpnProtocols *[]VpnGatewayTunnelingProtocol `json:"vpnProtocols,omitempty"`
 	// VpnAuthenticationTypes - VPN authentication types for the VpnServerConfiguration.
 	VpnAuthenticationTypes *[]VpnAuthenticationType `json:"vpnAuthenticationTypes,omitempty"`
-	// VpnServerConfigVpnClientRootCertificates - VPN client root certificate of VpnServerConfiguration.
-	VpnServerConfigVpnClientRootCertificates *[]VpnServerConfigVpnClientRootCertificate `json:"vpnServerConfigVpnClientRootCertificates,omitempty"`
-	// VpnServerConfigVpnClientRevokedCertificates - VPN client revoked certificate of VpnServerConfiguration.
-	VpnServerConfigVpnClientRevokedCertificates *[]VpnServerConfigVpnClientRevokedCertificate `json:"vpnServerConfigVpnClientRevokedCertificates,omitempty"`
-	// VpnServerConfigRadiusServerRootCertificates - Radius Server root certificate of VpnServerConfiguration.
-	VpnServerConfigRadiusServerRootCertificates *[]VpnServerConfigRadiusServerRootCertificate `json:"vpnServerConfigRadiusServerRootCertificates,omitempty"`
-	// VpnServerConfigRadiusClientRootCertificates - Radius client root certificate of VpnServerConfiguration.
-	VpnServerConfigRadiusClientRootCertificates *[]VpnServerConfigRadiusClientRootCertificate `json:"vpnServerConfigRadiusClientRootCertificates,omitempty"`
+	// VpnClientRootCertificates - VPN client root certificate of VpnServerConfiguration.
+	VpnClientRootCertificates *[]VpnServerConfigVpnClientRootCertificate `json:"vpnClientRootCertificates,omitempty"`
+	// VpnClientRevokedCertificates - VPN client revoked certificate of VpnServerConfiguration.
+	VpnClientRevokedCertificates *[]VpnServerConfigVpnClientRevokedCertificate `json:"vpnClientRevokedCertificates,omitempty"`
+	// RadiusServerRootCertificates - Radius Server root certificate of VpnServerConfiguration.
+	RadiusServerRootCertificates *[]VpnServerConfigRadiusServerRootCertificate `json:"radiusServerRootCertificates,omitempty"`
+	// RadiusClientRootCertificates - Radius client root certificate of VpnServerConfiguration.
+	RadiusClientRootCertificates *[]VpnServerConfigRadiusClientRootCertificate `json:"radiusClientRootCertificates,omitempty"`
 	// VpnClientIpsecPolicies - VpnClientIpsecPolicies for VpnServerConfiguration.
 	VpnClientIpsecPolicies *[]IpsecPolicy `json:"vpnClientIpsecPolicies,omitempty"`
 	// RadiusServerAddress - The radius server address property of the VpnServerConfiguration resource for point to site client connection.

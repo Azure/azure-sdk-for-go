@@ -393,6 +393,14 @@ const (
 	OraclePartitionOptionPhysicalPartitionsOfTable OraclePartitionOption = original.OraclePartitionOptionPhysicalPartitionsOfTable
 )
 
+type OrcCompressionCodec = original.OrcCompressionCodec
+
+const (
+	OrcCompressionCodecNone   OrcCompressionCodec = original.OrcCompressionCodecNone
+	OrcCompressionCodecSnappy OrcCompressionCodec = original.OrcCompressionCodecSnappy
+	OrcCompressionCodecZlib   OrcCompressionCodec = original.OrcCompressionCodecZlib
+)
+
 type ParameterType = original.ParameterType
 
 const (
@@ -2309,6 +2317,9 @@ func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
 }
 func PossibleOraclePartitionOptionValues() []OraclePartitionOption {
 	return original.PossibleOraclePartitionOptionValues()
+}
+func PossibleOrcCompressionCodecValues() []OrcCompressionCodec {
+	return original.PossibleOrcCompressionCodecValues()
 }
 func PossibleParameterTypeValues() []ParameterType {
 	return original.PossibleParameterTypeValues()

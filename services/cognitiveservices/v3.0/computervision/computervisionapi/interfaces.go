@@ -42,7 +42,7 @@ type BaseClientAPI interface {
 	GetReadResult(ctx context.Context, operationID uuid.UUID) (result computervision.ReadOperationResult, err error)
 	ListModels(ctx context.Context) (result computervision.ListModelsResult, err error)
 	Read(ctx context.Context, language computervision.OcrDetectionLanguage, imageURL computervision.ImageURL) (result autorest.Response, err error)
-	ReadInStream(ctx context.Context, imageParameter io.ReadCloser) (result autorest.Response, err error)
+	ReadInStream(ctx context.Context, language computervision.OcrDetectionLanguage, imageParameter io.ReadCloser) (result autorest.Response, err error)
 	RecognizePrintedText(ctx context.Context, detectOrientation bool, imageURL computervision.ImageURL, language computervision.OcrLanguages) (result computervision.OcrResult, err error)
 	RecognizePrintedTextInStream(ctx context.Context, detectOrientation bool, imageParameter io.ReadCloser, language computervision.OcrLanguages) (result computervision.OcrResult, err error)
 	TagImage(ctx context.Context, imageURL computervision.ImageURL, language string) (result computervision.TagResult, err error)

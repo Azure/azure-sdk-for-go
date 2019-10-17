@@ -1320,7 +1320,7 @@ func (client BaseClient) ListModelsResponder(resp *http.Response) (result ListMo
 }
 
 // Read use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character
-// Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response
+// Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the response
 // contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
 // your 'GetReadResult' operation to access OCR results.​
 // Parameters:
@@ -1403,13 +1403,14 @@ func (client BaseClient) ReadResponder(resp *http.Response) (result autorest.Res
 	return
 }
 
-// ReadInStream use this interface to get the result of a Read Document operation, employing the state-of-the-art
-// Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document
-// interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the
-// URL that you must use for your 'Get Read Result operation' to access OCR results.​
+// ReadInStream use this interface to get the result of a Read operation, employing the state-of-the-art Optical
+// Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the
+// response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must
+// use for your 'GetReadResult' operation to access OCR results.​
 // Parameters:
+// language - the BCP-47 language code of the text to be detected in the image.
 // imageParameter - an image stream.
-func (client BaseClient) ReadInStream(ctx context.Context, imageParameter io.ReadCloser) (result autorest.Response, err error) {
+func (client BaseClient) ReadInStream(ctx context.Context, language OcrDetectionLanguage, imageParameter io.ReadCloser) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ReadInStream")
 		defer func() {
@@ -1420,7 +1421,7 @@ func (client BaseClient) ReadInStream(ctx context.Context, imageParameter io.Rea
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ReadInStreamPreparer(ctx, imageParameter)
+	req, err := client.ReadInStreamPreparer(ctx, language, imageParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "ReadInStream", nil, "Failure preparing request")
 		return
@@ -1442,9 +1443,13 @@ func (client BaseClient) ReadInStream(ctx context.Context, imageParameter io.Rea
 }
 
 // ReadInStreamPreparer prepares the ReadInStream request.
-func (client BaseClient) ReadInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser) (*http.Request, error) {
+func (client BaseClient) ReadInStreamPreparer(ctx context.Context, language OcrDetectionLanguage, imageParameter io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{
+		"language": autorest.Encode("query", language),
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -1452,7 +1457,8 @@ func (client BaseClient) ReadInStreamPreparer(ctx context.Context, imageParamete
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
 		autorest.WithPath("/read/core/analyze"),
-		autorest.WithFile(imageParameter))
+		autorest.WithFile(imageParameter),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

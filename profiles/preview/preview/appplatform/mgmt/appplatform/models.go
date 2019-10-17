@@ -58,11 +58,14 @@ const (
 type DeploymentResourceStatus = original.DeploymentResourceStatus
 
 const (
+	DeploymentResourceStatusAllocating DeploymentResourceStatus = original.DeploymentResourceStatusAllocating
+	DeploymentResourceStatusCompiling  DeploymentResourceStatus = original.DeploymentResourceStatusCompiling
 	DeploymentResourceStatusFailed     DeploymentResourceStatus = original.DeploymentResourceStatusFailed
 	DeploymentResourceStatusProcessing DeploymentResourceStatus = original.DeploymentResourceStatusProcessing
 	DeploymentResourceStatusRunning    DeploymentResourceStatus = original.DeploymentResourceStatusRunning
 	DeploymentResourceStatusStopped    DeploymentResourceStatus = original.DeploymentResourceStatusStopped
 	DeploymentResourceStatusUnknown    DeploymentResourceStatus = original.DeploymentResourceStatusUnknown
+	DeploymentResourceStatusUpgrading  DeploymentResourceStatus = original.DeploymentResourceStatusUpgrading
 )
 
 type ProvisioningState = original.ProvisioningState

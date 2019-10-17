@@ -501,39 +501,45 @@ func (client RouteFiltersClient) ListByResourceGroupComplete(ctx context.Context
 	return
 }
 
-// Update updates a route filter in a specified resource group.
+// UpdateTags updates tags of a route filter.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // routeFilterName - the name of the route filter.
-// routeFilterParameters - parameters supplied to the update route filter operation.
-func (client RouteFiltersClient) Update(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters PatchRouteFilter) (result RouteFiltersUpdateFuture, err error) {
+// parameters - parameters supplied to update route filter tags.
+func (client RouteFiltersClient) UpdateTags(ctx context.Context, resourceGroupName string, routeFilterName string, parameters TagsObject) (result RouteFilter, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RouteFiltersClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RouteFiltersClient.UpdateTags")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, routeFilterName, routeFilterParameters)
+	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, routeFilterName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RouteFiltersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.RouteFiltersClient", "UpdateTags", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.UpdateSender(req)
+	resp, err := client.UpdateTagsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RouteFiltersClient", "Update", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.RouteFiltersClient", "UpdateTags", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.UpdateTagsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.RouteFiltersClient", "UpdateTags", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdatePreparer prepares the Update request.
-func (client RouteFiltersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters PatchRouteFilter) (*http.Request, error) {
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client RouteFiltersClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, routeFilterName string, parameters TagsObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"routeFilterName":   autorest.Encode("path", routeFilterName),
@@ -545,35 +551,26 @@ func (client RouteFiltersClient) UpdatePreparer(ctx context.Context, resourceGro
 		"api-version": APIVersion,
 	}
 
-	routeFilterParameters.Name = nil
-	routeFilterParameters.Etag = nil
-	routeFilterParameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}", pathParameters),
-		autorest.WithJSON(routeFilterParameters),
+		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateSender sends the Update request. The method will close the
+// UpdateTagsSender sends the UpdateTags request. The method will close the
 // http.Response Body if it receives an error.
-func (client RouteFiltersClient) UpdateSender(req *http.Request) (future RouteFiltersUpdateFuture, err error) {
+func (client RouteFiltersClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+	return autorest.SendWithSender(client, req, sd...)
 }
 
-// UpdateResponder handles the response to the Update request. The method always
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
 // closes the http.Response Body.
-func (client RouteFiltersClient) UpdateResponder(resp *http.Response) (result RouteFilter, err error) {
+func (client RouteFiltersClient) UpdateTagsResponder(resp *http.Response) (result RouteFilter, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

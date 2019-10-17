@@ -513,14 +513,14 @@ func (client VirtualRoutersClient) ListByResourceGroupComplete(ctx context.Conte
 	return
 }
 
-// Update updates a Virtual Router.
+// UpdateTags updates tags of a virtual router.
 // Parameters:
 // resourceGroupName - the resource group name of the Virtual Router.
 // virtualRouterName - the name of the Virtual Router being updated.
 // parameters - parameters supplied to Update Virtual Router Tags.
-func (client VirtualRoutersClient) Update(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters TagsObject) (result VirtualRouter, err error) {
+func (client VirtualRoutersClient) UpdateTags(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters TagsObject) (result VirtualRouter, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualRoutersClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualRoutersClient.UpdateTags")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -529,29 +529,29 @@ func (client VirtualRoutersClient) Update(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, virtualRouterName, parameters)
+	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, virtualRouterName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualRoutersClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.VirtualRoutersClient", "UpdateTags", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.UpdateSender(req)
+	resp, err := client.UpdateTagsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "network.VirtualRoutersClient", "Update", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualRoutersClient", "UpdateTags", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.UpdateResponder(resp)
+	result, err = client.UpdateTagsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualRoutersClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "network.VirtualRoutersClient", "UpdateTags", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdatePreparer prepares the Update request.
-func (client VirtualRoutersClient) UpdatePreparer(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters TagsObject) (*http.Request, error) {
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client VirtualRoutersClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters TagsObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -573,16 +573,16 @@ func (client VirtualRoutersClient) UpdatePreparer(ctx context.Context, resourceG
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateSender sends the Update request. The method will close the
+// UpdateTagsSender sends the UpdateTags request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualRoutersClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client VirtualRoutersClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// UpdateResponder handles the response to the Update request. The method always
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
 // closes the http.Response Body.
-func (client VirtualRoutersClient) UpdateResponder(resp *http.Response) (result VirtualRouter, err error) {
+func (client VirtualRoutersClient) UpdateTagsResponder(resp *http.Response) (result VirtualRouter, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

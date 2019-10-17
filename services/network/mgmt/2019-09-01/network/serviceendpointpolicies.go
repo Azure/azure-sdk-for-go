@@ -501,39 +501,45 @@ func (client ServiceEndpointPoliciesClient) ListByResourceGroupComplete(ctx cont
 	return
 }
 
-// Update updates service Endpoint Policies.
+// UpdateTags updates tags of a service endpoint policy.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // serviceEndpointPolicyName - the name of the service endpoint policy.
 // parameters - parameters supplied to update service endpoint policy tags.
-func (client ServiceEndpointPoliciesClient) Update(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject) (result ServiceEndpointPoliciesUpdateFuture, err error) {
+func (client ServiceEndpointPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject) (result ServiceEndpointPolicy, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceEndpointPoliciesClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceEndpointPoliciesClient.UpdateTags")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceEndpointPolicyName, parameters)
+	req, err := client.UpdateTagsPreparer(ctx, resourceGroupName, serviceEndpointPolicyName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesClient", "UpdateTags", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.UpdateSender(req)
+	resp, err := client.UpdateTagsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesClient", "Update", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesClient", "UpdateTags", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.UpdateTagsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesClient", "UpdateTags", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// UpdatePreparer prepares the Update request.
-func (client ServiceEndpointPoliciesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject) (*http.Request, error) {
+// UpdateTagsPreparer prepares the UpdateTags request.
+func (client ServiceEndpointPoliciesClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
 		"serviceEndpointPolicyName": autorest.Encode("path", serviceEndpointPolicyName),
@@ -555,22 +561,16 @@ func (client ServiceEndpointPoliciesClient) UpdatePreparer(ctx context.Context, 
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateSender sends the Update request. The method will close the
+// UpdateTagsSender sends the UpdateTags request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServiceEndpointPoliciesClient) UpdateSender(req *http.Request) (future ServiceEndpointPoliciesUpdateFuture, err error) {
+func (client ServiceEndpointPoliciesClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+	return autorest.SendWithSender(client, req, sd...)
 }
 
-// UpdateResponder handles the response to the Update request. The method always
+// UpdateTagsResponder handles the response to the UpdateTags request. The method always
 // closes the http.Response Body.
-func (client ServiceEndpointPoliciesClient) UpdateResponder(resp *http.Response) (result ServiceEndpointPolicy, err error) {
+func (client ServiceEndpointPoliciesClient) UpdateTagsResponder(resp *http.Response) (result ServiceEndpointPolicy, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

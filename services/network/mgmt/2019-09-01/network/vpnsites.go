@@ -502,13 +502,13 @@ func (client VpnSitesClient) ListByResourceGroupComplete(ctx context.Context, re
 // resourceGroupName - the resource group name of the VpnSite.
 // vpnSiteName - the name of the VpnSite being updated.
 // vpnSiteParameters - parameters supplied to update VpnSite tags.
-func (client VpnSitesClient) UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject) (result VpnSitesUpdateTagsFuture, err error) {
+func (client VpnSitesClient) UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject) (result VpnSite, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnSitesClient.UpdateTags")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -519,10 +519,16 @@ func (client VpnSitesClient) UpdateTags(ctx context.Context, resourceGroupName s
 		return
 	}
 
-	result, err = client.UpdateTagsSender(req)
+	resp, err := client.UpdateTagsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VpnSitesClient", "UpdateTags", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.VpnSitesClient", "UpdateTags", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.UpdateTagsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VpnSitesClient", "UpdateTags", resp, "Failure responding to request")
 	}
 
 	return
@@ -553,15 +559,9 @@ func (client VpnSitesClient) UpdateTagsPreparer(ctx context.Context, resourceGro
 
 // UpdateTagsSender sends the UpdateTags request. The method will close the
 // http.Response Body if it receives an error.
-func (client VpnSitesClient) UpdateTagsSender(req *http.Request) (future VpnSitesUpdateTagsFuture, err error) {
+func (client VpnSitesClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateTagsResponder handles the response to the UpdateTags request. The method always
@@ -570,7 +570,7 @@ func (client VpnSitesClient) UpdateTagsResponder(resp *http.Response) (result Vp
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

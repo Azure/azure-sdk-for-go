@@ -497,12 +497,12 @@ func (client AzureFirewallsClient) ListAllComplete(ctx context.Context) (result 
 	return
 }
 
-// UpdateTags updates tags for an Azure Firewall resource.
+// UpdateTags updates tags of an Azure Firewall resource.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // azureFirewallName - the name of the Azure Firewall.
-// parameters - parameters supplied to the create or update Azure Firewall operation.
-func (client AzureFirewallsClient) UpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall) (result AzureFirewall, err error) {
+// parameters - parameters supplied to update azure firewall tags.
+func (client AzureFirewallsClient) UpdateTags(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject) (result AzureFirewall, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AzureFirewallsClient.UpdateTags")
 		defer func() {
@@ -535,7 +535,7 @@ func (client AzureFirewallsClient) UpdateTags(ctx context.Context, resourceGroup
 }
 
 // UpdateTagsPreparer prepares the UpdateTags request.
-func (client AzureFirewallsClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters AzureFirewall) (*http.Request, error) {
+func (client AzureFirewallsClient) UpdateTagsPreparer(ctx context.Context, resourceGroupName string, azureFirewallName string, parameters TagsObject) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"azureFirewallName": autorest.Encode("path", azureFirewallName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -547,7 +547,6 @@ func (client AzureFirewallsClient) UpdateTagsPreparer(ctx context.Context, resou
 		"api-version": APIVersion,
 	}
 
-	parameters.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

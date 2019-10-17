@@ -4805,35 +4805,6 @@ func (future *ApplicationGatewaysStopFuture) Result(client ApplicationGatewaysCl
 	return
 }
 
-// ApplicationGatewaysUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ApplicationGatewaysUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationGatewaysUpdateTagsFuture) Result(client ApplicationGatewaysClient) (ag ApplicationGateway, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ag.Response.Response, err = future.GetResult(sender); err == nil && ag.Response.Response.StatusCode != http.StatusNoContent {
-		ag, err = client.UpdateTagsResponder(ag.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysUpdateTagsFuture", "Result", ag.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // ApplicationGatewayTrustedRootCertificate trusted Root certificates of an application gateway.
 type ApplicationGatewayTrustedRootCertificate struct {
 	// ApplicationGatewayTrustedRootCertificatePropertiesFormat - Properties of the application gateway trusted root certificate.
@@ -5455,35 +5426,6 @@ func (future *ApplicationSecurityGroupsDeleteFuture) Result(client ApplicationSe
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// ApplicationSecurityGroupsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ApplicationSecurityGroupsUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ApplicationSecurityGroupsUpdateTagsFuture) Result(client ApplicationSecurityGroupsClient) (asg ApplicationSecurityGroup, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ApplicationSecurityGroupsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.ApplicationSecurityGroupsUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if asg.Response.Response, err = future.GetResult(sender); err == nil && asg.Response.Response.StatusCode != http.StatusNoContent {
-		asg, err = client.UpdateTagsResponder(asg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.ApplicationSecurityGroupsUpdateTagsFuture", "Result", asg.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -9215,35 +9157,6 @@ func (future *DdosCustomPoliciesDeleteFuture) Result(client DdosCustomPoliciesCl
 	return
 }
 
-// DdosCustomPoliciesUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type DdosCustomPoliciesUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DdosCustomPoliciesUpdateTagsFuture) Result(client DdosCustomPoliciesClient) (dcp DdosCustomPolicy, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.DdosCustomPoliciesUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.DdosCustomPoliciesUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dcp.Response.Response, err = future.GetResult(sender); err == nil && dcp.Response.Response.StatusCode != http.StatusNoContent {
-		dcp, err = client.UpdateTagsResponder(dcp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.DdosCustomPoliciesUpdateTagsFuture", "Result", dcp.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // DdosCustomPolicy a DDoS custom policy in a resource group.
 type DdosCustomPolicy struct {
 	autorest.Response `json:"-"`
@@ -9688,35 +9601,6 @@ func (future *DdosProtectionPlansDeleteFuture) Result(client DdosProtectionPlans
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// DdosProtectionPlansUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type DdosProtectionPlansUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DdosProtectionPlansUpdateTagsFuture) Result(client DdosProtectionPlansClient) (dpp DdosProtectionPlan, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.DdosProtectionPlansUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if dpp.Response.Response, err = future.GetResult(sender); err == nil && dpp.Response.Response.StatusCode != http.StatusNoContent {
-		dpp, err = client.UpdateTagsResponder(dpp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.DdosProtectionPlansUpdateTagsFuture", "Result", dpp.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -11510,35 +11394,6 @@ type ExpressRouteCircuitStats struct {
 	SecondarybytesOut *int64 `json:"secondarybytesOut,omitempty"`
 }
 
-// ExpressRouteCircuitsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ExpressRouteCircuitsUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ExpressRouteCircuitsUpdateTagsFuture) Result(client ExpressRouteCircuitsClient) (erc ExpressRouteCircuit, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if erc.Response.Response, err = future.GetResult(sender); err == nil && erc.Response.Response.StatusCode != http.StatusNoContent {
-		erc, err = client.UpdateTagsResponder(erc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsUpdateTagsFuture", "Result", erc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // ExpressRouteConnection expressRouteConnection resource.
 type ExpressRouteConnection struct {
 	autorest.Response `json:"-"`
@@ -12421,35 +12276,6 @@ type ExpressRouteCrossConnectionsRoutesTableSummaryListResult struct {
 	Value *[]ExpressRouteCrossConnectionRoutesTableSummary `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URL to get the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// ExpressRouteCrossConnectionsUpdateTagsFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
-type ExpressRouteCrossConnectionsUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ExpressRouteCrossConnectionsUpdateTagsFuture) Result(client ExpressRouteCrossConnectionsClient) (ercc ExpressRouteCrossConnection, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCrossConnectionsUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ercc.Response.Response, err = future.GetResult(sender); err == nil && ercc.Response.Response.StatusCode != http.StatusNoContent {
-		ercc, err = client.UpdateTagsResponder(ercc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionsUpdateTagsFuture", "Result", ercc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // ExpressRouteGateway expressRoute gateway resource.
@@ -13531,35 +13357,6 @@ type ExpressRoutePortsLocationPropertiesFormat struct {
 	AvailableBandwidths *[]ExpressRoutePortsLocationBandwidths `json:"availableBandwidths,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the express route port location resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-}
-
-// ExpressRoutePortsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ExpressRoutePortsUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ExpressRoutePortsUpdateTagsFuture) Result(client ExpressRoutePortsClient) (erp ExpressRoutePort, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.ExpressRoutePortsUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if erp.Response.Response, err = future.GetResult(sender); err == nil && erp.Response.Response.StatusCode != http.StatusNoContent {
-		erp, err = client.UpdateTagsResponder(erp.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsUpdateTagsFuture", "Result", erp.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // ExpressRouteServiceProvider a ExpressRouteResourceProvider object.
@@ -16661,35 +16458,6 @@ func (future *InterfacesListEffectiveNetworkSecurityGroupsFuture) Result(client 
 		ensglr, err = client.ListEffectiveNetworkSecurityGroupsResponder(ensglr.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "network.InterfacesListEffectiveNetworkSecurityGroupsFuture", "Result", ensglr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// InterfacesUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type InterfacesUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *InterfacesUpdateTagsFuture) Result(client InterfacesClient) (i Interface, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.InterfacesUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.InterfacesUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if i.Response.Response, err = future.GetResult(sender); err == nil && i.Response.Response.StatusCode != http.StatusNoContent {
-		i, err = client.UpdateTagsResponder(i.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.InterfacesUpdateTagsFuture", "Result", i.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -20270,35 +20038,6 @@ type LoadBalancerSku struct {
 	Name LoadBalancerSkuName `json:"name,omitempty"`
 }
 
-// LoadBalancersUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type LoadBalancersUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *LoadBalancersUpdateTagsFuture) Result(client LoadBalancersClient) (lb LoadBalancer, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.LoadBalancersUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.LoadBalancersUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if lb.Response.Response, err = future.GetResult(sender); err == nil && lb.Response.Response.StatusCode != http.StatusNoContent {
-		lb, err = client.UpdateTagsResponder(lb.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.LoadBalancersUpdateTagsFuture", "Result", lb.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // LoadBalancingRule a load balancing rule for a load balancer.
 type LoadBalancingRule struct {
 	autorest.Response `json:"-"`
@@ -20742,35 +20481,6 @@ func (future *LocalNetworkGatewaysDeleteFuture) Result(client LocalNetworkGatewa
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// LocalNetworkGatewaysUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type LocalNetworkGatewaysUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *LocalNetworkGatewaysUpdateTagsFuture) Result(client LocalNetworkGatewaysClient) (lng LocalNetworkGateway, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.LocalNetworkGatewaysUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if lng.Response.Response, err = future.GetResult(sender); err == nil && lng.Response.Response.StatusCode != http.StatusNoContent {
-		lng, err = client.UpdateTagsResponder(lng.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.LocalNetworkGatewaysUpdateTagsFuture", "Result", lng.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -22036,35 +21746,6 @@ func (future *P2sVpnGatewaysGetP2sVpnConnectionHealthFuture) Result(client P2sVp
 		pvg, err = client.GetP2sVpnConnectionHealthResponder(pvg.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysGetP2sVpnConnectionHealthFuture", "Result", pvg.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// P2sVpnGatewaysUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type P2sVpnGatewaysUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *P2sVpnGatewaysUpdateTagsFuture) Result(client P2sVpnGatewaysClient) (pvg P2SVpnGateway, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.P2sVpnGatewaysUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if pvg.Response.Response, err = future.GetResult(sender); err == nil && pvg.Response.Response.StatusCode != http.StatusNoContent {
-		pvg, err = client.UpdateTagsResponder(pvg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.P2sVpnGatewaysUpdateTagsFuture", "Result", pvg.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -24481,35 +24162,6 @@ func (future *PublicIPAddressesDeleteFuture) Result(client PublicIPAddressesClie
 	return
 }
 
-// PublicIPAddressesUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type PublicIPAddressesUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PublicIPAddressesUpdateTagsFuture) Result(client PublicIPAddressesClient) (pia PublicIPAddress, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.PublicIPAddressesUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.PublicIPAddressesUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if pia.Response.Response, err = future.GetResult(sender); err == nil && pia.Response.Response.StatusCode != http.StatusNoContent {
-		pia, err = client.UpdateTagsResponder(pia.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.PublicIPAddressesUpdateTagsFuture", "Result", pia.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // PublicIPAddressListResult response for ListPublicIpAddresses API service call.
 type PublicIPAddressListResult struct {
 	autorest.Response `json:"-"`
@@ -24880,35 +24532,6 @@ func (future *PublicIPPrefixesDeleteFuture) Result(client PublicIPPrefixesClient
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// PublicIPPrefixesUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type PublicIPPrefixesUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *PublicIPPrefixesUpdateTagsFuture) Result(client PublicIPPrefixesClient) (pip PublicIPPrefix, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.PublicIPPrefixesUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.PublicIPPrefixesUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if pip.Response.Response, err = future.GetResult(sender); err == nil && pip.Response.Response.StatusCode != http.StatusNoContent {
-		pip, err = client.UpdateTagsResponder(pip.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.PublicIPPrefixesUpdateTagsFuture", "Result", pip.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -25902,35 +25525,6 @@ func (future *RouteFilterRulesDeleteFuture) Result(client RouteFilterRulesClient
 	return
 }
 
-// RouteFilterRulesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type RouteFilterRulesUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RouteFilterRulesUpdateFuture) Result(client RouteFilterRulesClient) (rfr RouteFilterRule, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RouteFilterRulesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.RouteFilterRulesUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rfr.Response.Response, err = future.GetResult(sender); err == nil && rfr.Response.Response.StatusCode != http.StatusNoContent {
-		rfr, err = client.UpdateResponder(rfr.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.RouteFilterRulesUpdateFuture", "Result", rfr.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // RouteFiltersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type RouteFiltersCreateOrUpdateFuture struct {
@@ -25980,35 +25574,6 @@ func (future *RouteFiltersDeleteFuture) Result(client RouteFiltersClient) (ar au
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// RouteFiltersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type RouteFiltersUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RouteFiltersUpdateFuture) Result(client RouteFiltersClient) (rf RouteFilter, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RouteFiltersUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.RouteFiltersUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rf.Response.Response, err = future.GetResult(sender); err == nil && rf.Response.Response.StatusCode != http.StatusNoContent {
-		rf, err = client.UpdateResponder(rf.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.RouteFiltersUpdateFuture", "Result", rf.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -26546,35 +26111,6 @@ func (future *RouteTablesDeleteFuture) Result(client RouteTablesClient) (ar auto
 	return
 }
 
-// RouteTablesUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type RouteTablesUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *RouteTablesUpdateTagsFuture) Result(client RouteTablesClient) (rt RouteTable, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.RouteTablesUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.RouteTablesUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if rt.Response.Response, err = future.GetResult(sender); err == nil && rt.Response.Response.StatusCode != http.StatusNoContent {
-		rt, err = client.UpdateTagsResponder(rt.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.RouteTablesUpdateTagsFuture", "Result", rt.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // RuleCondition rule condition of type network.
 type RuleCondition struct {
 	// IPProtocols - Array of FirewallPolicyRuleConditionNetworkProtocols.
@@ -26983,35 +26519,6 @@ func (future *SecurityGroupsDeleteFuture) Result(client SecurityGroupsClient) (a
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// SecurityGroupsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type SecurityGroupsUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *SecurityGroupsUpdateTagsFuture) Result(client SecurityGroupsClient) (sg SecurityGroup, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.SecurityGroupsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.SecurityGroupsUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sg.Response.Response, err = future.GetResult(sender); err == nil && sg.Response.Response.StatusCode != http.StatusNoContent {
-		sg, err = client.UpdateTagsResponder(sg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.SecurityGroupsUpdateTagsFuture", "Result", sg.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -27541,35 +27048,6 @@ func (future *ServiceEndpointPoliciesDeleteFuture) Result(client ServiceEndpoint
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// ServiceEndpointPoliciesUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ServiceEndpointPoliciesUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServiceEndpointPoliciesUpdateFuture) Result(client ServiceEndpointPoliciesClient) (sep ServiceEndpointPolicy, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.ServiceEndpointPoliciesUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if sep.Response.Response, err = future.GetResult(sender); err == nil && sep.Response.Response.StatusCode != http.StatusNoContent {
-		sep, err = client.UpdateResponder(sep.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesUpdateFuture", "Result", sep.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -29339,35 +28817,6 @@ func (future *VirtualHubsDeleteFuture) Result(client VirtualHubsClient) (ar auto
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// VirtualHubsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualHubsUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualHubsUpdateTagsFuture) Result(client VirtualHubsClient) (vh VirtualHub, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualHubsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VirtualHubsUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vh.Response.Response, err = future.GetResult(sender); err == nil && vh.Response.Response.StatusCode != http.StatusNoContent {
-		vh, err = client.UpdateTagsResponder(vh.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualHubsUpdateTagsFuture", "Result", vh.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -31829,35 +31278,6 @@ func (future *VirtualNetworksDeleteFuture) Result(client VirtualNetworksClient) 
 	return
 }
 
-// VirtualNetworksUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type VirtualNetworksUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualNetworksUpdateTagsFuture) Result(client VirtualNetworksClient) (vn VirtualNetwork, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworksUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworksUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vn.Response.Response, err = future.GetResult(sender); err == nil && vn.Response.Response.StatusCode != http.StatusNoContent {
-		vn, err = client.UpdateTagsResponder(vn.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualNetworksUpdateTagsFuture", "Result", vn.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // VirtualNetworkTap virtual Network Tap resource.
 type VirtualNetworkTap struct {
 	autorest.Response `json:"-"`
@@ -32184,35 +31604,6 @@ func (future *VirtualNetworkTapsDeleteFuture) Result(client VirtualNetworkTapsCl
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// VirtualNetworkTapsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type VirtualNetworkTapsUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualNetworkTapsUpdateTagsFuture) Result(client VirtualNetworkTapsClient) (vnt VirtualNetworkTap, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkTapsUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vnt.Response.Response, err = future.GetResult(sender); err == nil && vnt.Response.Response.StatusCode != http.StatusNoContent {
-		vnt, err = client.UpdateTagsResponder(vnt.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsUpdateTagsFuture", "Result", vnt.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -33070,35 +32461,6 @@ type VirtualWanSecurityProviders struct {
 	SupportedProviders *[]VirtualWanSecurityProvider `json:"supportedProviders,omitempty"`
 }
 
-// VirtualWansUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualWansUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualWansUpdateTagsFuture) Result(client VirtualWansClient) (vw VirtualWAN, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualWansUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VirtualWansUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vw.Response.Response, err = future.GetResult(sender); err == nil && vw.Response.Response.StatusCode != http.StatusNoContent {
-		vw, err = client.UpdateTagsResponder(vw.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VirtualWansUpdateTagsFuture", "Result", vw.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // VirtualWanVpnProfileParameters virtual Wan Vpn profile parameters Vpn profile generation.
 type VirtualWanVpnProfileParameters struct {
 	// VpnServerConfigurationResourceID - VpnServerConfiguration partial resource uri with which VirtualWan is associated to.
@@ -33771,35 +33133,6 @@ func (future *VpnGatewaysResetFuture) Result(client VpnGatewaysClient) (vg VpnGa
 	return
 }
 
-// VpnGatewaysUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VpnGatewaysUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VpnGatewaysUpdateTagsFuture) Result(client VpnGatewaysClient) (vg VpnGateway, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VpnGatewaysUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VpnGatewaysUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vg.Response.Response, err = future.GetResult(sender); err == nil && vg.Response.Response.StatusCode != http.StatusNoContent {
-		vg, err = client.UpdateTagsResponder(vg.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VpnGatewaysUpdateTagsFuture", "Result", vg.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // VpnLinkBgpSettings BGP settings details for a link.
 type VpnLinkBgpSettings struct {
 	// Asn - The BGP speaker's ASN.
@@ -34086,35 +33419,6 @@ type VpnServerConfigurationsResponse struct {
 	autorest.Response `json:"-"`
 	// VpnServerConfigurationResourceIds - List of VpnServerConfigurations associated with VirtualWan.
 	VpnServerConfigurationResourceIds *[]string `json:"vpnServerConfigurationResourceIds,omitempty"`
-}
-
-// VpnServerConfigurationsUpdateTagsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type VpnServerConfigurationsUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VpnServerConfigurationsUpdateTagsFuture) Result(client VpnServerConfigurationsClient) (vsc VpnServerConfiguration, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VpnServerConfigurationsUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VpnServerConfigurationsUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vsc.Response.Response, err = future.GetResult(sender); err == nil && vsc.Response.Response.StatusCode != http.StatusNoContent {
-		vsc, err = client.UpdateTagsResponder(vsc.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VpnServerConfigurationsUpdateTagsFuture", "Result", vsc.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // VpnServerConfigVpnClientRevokedCertificate properties of the revoked VPN client certificate of
@@ -34574,35 +33878,6 @@ func (future *VpnSitesDeleteFuture) Result(client VpnSitesClient) (ar autorest.R
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// VpnSitesUpdateTagsFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VpnSitesUpdateTagsFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VpnSitesUpdateTagsFuture) Result(client VpnSitesClient) (vs VpnSite, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VpnSitesUpdateTagsFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("network.VpnSitesUpdateTagsFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vs.Response.Response, err = future.GetResult(sender); err == nil && vs.Response.Response.StatusCode != http.StatusNoContent {
-		vs, err = client.UpdateTagsResponder(vs.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "network.VpnSitesUpdateTagsFuture", "Result", vs.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 

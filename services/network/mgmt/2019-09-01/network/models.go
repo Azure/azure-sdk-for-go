@@ -2887,7 +2887,7 @@ func (agbap *ApplicationGatewayBackendAddressPool) UnmarshalJSON(body []byte) er
 // application gateway.
 type ApplicationGatewayBackendAddressPoolPropertiesFormat struct {
 	// BackendIPConfigurations - READ-ONLY; Collection of references to IPs defined in network interfaces.
-	BackendIPConfigurations *[]InterfaceIPConfiguration `json:"backendIPConfigurations,omitempty"`
+	BackendIPConfigurations *[]SubResource `json:"backendIPConfigurations,omitempty"`
 	// BackendAddresses - Backend addresses.
 	BackendAddresses *[]ApplicationGatewayBackendAddress `json:"backendAddresses,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the backend address pool resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
@@ -2904,7 +2904,7 @@ type ApplicationGatewayBackendHealth struct {
 // ApplicationGatewayBackendHealthHTTPSettings application gateway BackendHealthHttp settings.
 type ApplicationGatewayBackendHealthHTTPSettings struct {
 	// BackendHTTPSettings - Reference of an ApplicationGatewayBackendHttpSettings resource.
-	BackendHTTPSettings *ApplicationGatewayBackendHTTPSettings `json:"backendHttpSettings,omitempty"`
+	BackendHTTPSettings *SubResource `json:"backendHttpSettings,omitempty"`
 	// Servers - List of ApplicationGatewayBackendHealthServer resources.
 	Servers *[]ApplicationGatewayBackendHealthServer `json:"servers,omitempty"`
 }
@@ -2913,7 +2913,7 @@ type ApplicationGatewayBackendHealthHTTPSettings struct {
 type ApplicationGatewayBackendHealthOnDemand struct {
 	autorest.Response `json:"-"`
 	// BackendAddressPool - Reference of an ApplicationGatewayBackendAddressPool resource.
-	BackendAddressPool *ApplicationGatewayBackendAddressPool `json:"backendAddressPool,omitempty"`
+	BackendAddressPool *SubResource `json:"backendAddressPool,omitempty"`
 	// BackendHealthHTTPSettings - Application gateway BackendHealthHttp settings.
 	BackendHealthHTTPSettings *ApplicationGatewayBackendHealthHTTPSettings `json:"backendHealthHttpSettings,omitempty"`
 }
@@ -2921,7 +2921,7 @@ type ApplicationGatewayBackendHealthOnDemand struct {
 // ApplicationGatewayBackendHealthPool application gateway BackendHealth pool.
 type ApplicationGatewayBackendHealthPool struct {
 	// BackendAddressPool - Reference of an ApplicationGatewayBackendAddressPool resource.
-	BackendAddressPool *ApplicationGatewayBackendAddressPool `json:"backendAddressPool,omitempty"`
+	BackendAddressPool *SubResource `json:"backendAddressPool,omitempty"`
 	// BackendHTTPSettingsCollection - List of ApplicationGatewayBackendHealthHttpSettings resources.
 	BackendHTTPSettingsCollection *[]ApplicationGatewayBackendHealthHTTPSettings `json:"backendHttpSettingsCollection,omitempty"`
 }
@@ -2931,7 +2931,7 @@ type ApplicationGatewayBackendHealthServer struct {
 	// Address - IP address or FQDN of backend server.
 	Address *string `json:"address,omitempty"`
 	// IPConfiguration - Reference of IP configuration of backend server.
-	IPConfiguration *InterfaceIPConfiguration `json:"ipConfiguration,omitempty"`
+	IPConfiguration *SubResource `json:"ipConfiguration,omitempty"`
 	// Health - Health of backend server. Possible values include: 'Unknown', 'Up', 'Down', 'Partial', 'Draining'
 	Health ApplicationGatewayBackendHealthServerHealth `json:"health,omitempty"`
 	// HealthProbeLog - Health Probe Log.
@@ -7561,7 +7561,7 @@ func (bap *BackendAddressPool) UnmarshalJSON(body []byte) error {
 // BackendAddressPoolPropertiesFormat properties of the backend address pool.
 type BackendAddressPoolPropertiesFormat struct {
 	// BackendIPConfigurations - READ-ONLY; An array of references to IP addresses defined in network interfaces.
-	BackendIPConfigurations *[]InterfaceIPConfiguration `json:"backendIPConfigurations,omitempty"`
+	BackendIPConfigurations *[]SubResource `json:"backendIPConfigurations,omitempty"`
 	// LoadBalancingRules - READ-ONLY; An array of references to load balancing rules that use this backend address pool.
 	LoadBalancingRules *[]SubResource `json:"loadBalancingRules,omitempty"`
 	// OutboundRule - READ-ONLY; A reference to an outbound rule that uses this backend address pool.
@@ -9142,9 +9142,9 @@ type ContainerNetworkInterfaceIPConfigurationPropertiesFormat struct {
 // ContainerNetworkInterfacePropertiesFormat properties of container network interface.
 type ContainerNetworkInterfacePropertiesFormat struct {
 	// ContainerNetworkInterfaceConfiguration - READ-ONLY; Container network interface configuration from which this container network interface is created.
-	ContainerNetworkInterfaceConfiguration *ContainerNetworkInterfaceConfiguration `json:"containerNetworkInterfaceConfiguration,omitempty"`
+	ContainerNetworkInterfaceConfiguration *SubResource `json:"containerNetworkInterfaceConfiguration,omitempty"`
 	// Container - Reference to the container to which this container network interface is attached.
-	Container *Container `json:"container,omitempty"`
+	Container *SubResource `json:"container,omitempty"`
 	// IPConfigurations - READ-ONLY; Reference to the ip configuration on this container nic.
 	IPConfigurations *[]ContainerNetworkInterfaceIPConfiguration `json:"ipConfigurations,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the container network interface resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
@@ -11170,7 +11170,7 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	// Ipv6PeeringConfig - The IPv6 peering configuration.
 	Ipv6PeeringConfig *Ipv6ExpressRouteCircuitPeeringConfig `json:"ipv6PeeringConfig,omitempty"`
 	// ExpressRouteConnection - The ExpressRoute connection.
-	ExpressRouteConnection *ExpressRouteConnectionID `json:"expressRouteConnection,omitempty"`
+	ExpressRouteConnection *SubResource `json:"expressRouteConnection,omitempty"`
 	// Connections - READ-ONLY; The list of circuit connections associated with Azure Private Peering for this circuit.
 	Connections *[]ExpressRouteCircuitConnection `json:"connections,omitempty"`
 	// PeeredConnections - READ-ONLY; The list of peered circuit connections associated with Azure Private Peering for this circuit.
@@ -11613,7 +11613,7 @@ type ExpressRouteConnectionProperties struct {
 	// ProvisioningState - READ-ONLY; The provisioning state of the express route connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ExpressRouteCircuitPeering - The ExpressRoute circuit peering.
-	ExpressRouteCircuitPeering *ExpressRouteCircuitPeeringID `json:"expressRouteCircuitPeering,omitempty"`
+	ExpressRouteCircuitPeering *SubResource `json:"expressRouteCircuitPeering,omitempty"`
 	// AuthorizationKey - Authorization key to establish the connection.
 	AuthorizationKey *string `json:"authorizationKey,omitempty"`
 	// RoutingWeight - The routing weight associated to the connection.
@@ -12262,7 +12262,7 @@ type ExpressRouteCrossConnectionProperties struct {
 	// BandwidthInMbps - The circuit bandwidth In Mbps.
 	BandwidthInMbps *int32 `json:"bandwidthInMbps,omitempty"`
 	// ExpressRouteCircuit - The ExpressRouteCircuit.
-	ExpressRouteCircuit *ExpressRouteCircuitReference `json:"expressRouteCircuit,omitempty"`
+	ExpressRouteCircuit *SubResource `json:"expressRouteCircuit,omitempty"`
 	// ServiceProviderProvisioningState - The provisioning state of the circuit in the connectivity provider system. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'
 	ServiceProviderProvisioningState ServiceProviderProvisioningState `json:"serviceProviderProvisioningState,omitempty"`
 	// ServiceProviderNotes - Additional read only notes set by the connectivity provider.
@@ -12571,7 +12571,7 @@ type ExpressRouteGatewayProperties struct {
 	// ProvisioningState - READ-ONLY; The provisioning state of the express route gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VirtualHub - The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-	VirtualHub *VirtualHubID `json:"virtualHub,omitempty"`
+	VirtualHub *SubResource `json:"virtualHub,omitempty"`
 }
 
 // ExpressRouteGatewayPropertiesAutoScaleConfiguration configuration for auto scaling.
@@ -15170,7 +15170,7 @@ type FrontendIPConfigurationPropertiesFormat struct {
 	// Subnet - The reference of the subnet resource.
 	Subnet *Subnet `json:"subnet,omitempty"`
 	// PublicIPAddress - The reference of the Public IP resource.
-	PublicIPAddress *PublicIPAddress `json:"publicIPAddress,omitempty"`
+	PublicIPAddress *SubResource `json:"publicIPAddress,omitempty"`
 	// PublicIPPrefix - The reference of the Public IP Prefix resource.
 	PublicIPPrefix *SubResource `json:"publicIPPrefix,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the frontend IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
@@ -15710,7 +15710,7 @@ type InboundNatRulePropertiesFormat struct {
 	// FrontendIPConfiguration - A reference to frontend IP addresses.
 	FrontendIPConfiguration *SubResource `json:"frontendIPConfiguration,omitempty"`
 	// BackendIPConfiguration - READ-ONLY; A reference to a private IP address defined on a network interface of a VM. Traffic sent to the frontend port of each of the frontend IP configurations is forwarded to the backend IP.
-	BackendIPConfiguration *InterfaceIPConfiguration `json:"backendIPConfiguration,omitempty"`
+	BackendIPConfiguration *SubResource `json:"backendIPConfiguration,omitempty"`
 	// Protocol - The reference to the transport protocol used by the load balancing rule. Possible values include: 'TransportProtocolUDP', 'TransportProtocolTCP', 'TransportProtocolAll'
 	Protocol TransportProtocol `json:"protocol,omitempty"`
 	// FrontendPort - The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values range from 1 to 65534.
@@ -15815,7 +15815,7 @@ type IntentPolicyConfiguration struct {
 	// NetworkIntentPolicyName - The name of the Network Intent Policy for storing in target subscription.
 	NetworkIntentPolicyName *string `json:"networkIntentPolicyName,omitempty"`
 	// SourceNetworkIntentPolicy - Source network intent policy.
-	SourceNetworkIntentPolicy *IntentPolicy `json:"sourceNetworkIntentPolicy,omitempty"`
+	SourceNetworkIntentPolicy *SubResource `json:"sourceNetworkIntentPolicy,omitempty"`
 }
 
 // Interface a network interface in a resource group.
@@ -16195,13 +16195,13 @@ type InterfaceIPConfigurationPrivateLinkConnectionProperties struct {
 // InterfaceIPConfigurationPropertiesFormat properties of IP configuration.
 type InterfaceIPConfigurationPropertiesFormat struct {
 	// VirtualNetworkTaps - The reference to Virtual Network Taps.
-	VirtualNetworkTaps *[]VirtualNetworkTap `json:"virtualNetworkTaps,omitempty"`
+	VirtualNetworkTaps *[]SubResource `json:"virtualNetworkTaps,omitempty"`
 	// ApplicationGatewayBackendAddressPools - The reference of ApplicationGatewayBackendAddressPool resource.
-	ApplicationGatewayBackendAddressPools *[]ApplicationGatewayBackendAddressPool `json:"applicationGatewayBackendAddressPools,omitempty"`
+	ApplicationGatewayBackendAddressPools *[]SubResource `json:"applicationGatewayBackendAddressPools,omitempty"`
 	// LoadBalancerBackendAddressPools - The reference of LoadBalancerBackendAddressPool resource.
-	LoadBalancerBackendAddressPools *[]BackendAddressPool `json:"loadBalancerBackendAddressPools,omitempty"`
+	LoadBalancerBackendAddressPools *[]SubResource `json:"loadBalancerBackendAddressPools,omitempty"`
 	// LoadBalancerInboundNatRules - A list of references of LoadBalancerInboundNatRules.
-	LoadBalancerInboundNatRules *[]InboundNatRule `json:"loadBalancerInboundNatRules,omitempty"`
+	LoadBalancerInboundNatRules *[]SubResource `json:"loadBalancerInboundNatRules,omitempty"`
 	// PrivateIPAddress - Private IP address of the IP configuration.
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
 	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
@@ -16209,13 +16209,13 @@ type InterfaceIPConfigurationPropertiesFormat struct {
 	// PrivateIPAddressVersion - Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4. Possible values include: 'IPv4', 'IPv6'
 	PrivateIPAddressVersion IPVersion `json:"privateIPAddressVersion,omitempty"`
 	// Subnet - Subnet bound to the IP configuration.
-	Subnet *Subnet `json:"subnet,omitempty"`
+	Subnet *SubResource `json:"subnet,omitempty"`
 	// Primary - Whether this is a primary customer address on the network interface.
 	Primary *bool `json:"primary,omitempty"`
 	// PublicIPAddress - Public IP address bound to the IP configuration.
-	PublicIPAddress *PublicIPAddress `json:"publicIPAddress,omitempty"`
+	PublicIPAddress *SubResource `json:"publicIPAddress,omitempty"`
 	// ApplicationSecurityGroups - Application security groups in which the IP configuration is included.
-	ApplicationSecurityGroups *[]ApplicationSecurityGroup `json:"applicationSecurityGroups,omitempty"`
+	ApplicationSecurityGroups *[]SubResource `json:"applicationSecurityGroups,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the network interface IP configuration. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkConnectionProperties - READ-ONLY; PrivateLinkConnection properties for the network interface.
@@ -16519,9 +16519,9 @@ type InterfacePropertiesFormat struct {
 	// VirtualMachine - READ-ONLY; The reference of a virtual machine.
 	VirtualMachine *SubResource `json:"virtualMachine,omitempty"`
 	// NetworkSecurityGroup - The reference of the NetworkSecurityGroup resource.
-	NetworkSecurityGroup *SecurityGroup `json:"networkSecurityGroup,omitempty"`
+	NetworkSecurityGroup *SubResource `json:"networkSecurityGroup,omitempty"`
 	// PrivateEndpoint - READ-ONLY; A reference to the private endpoint to which the network interface is linked.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *SubResource `json:"privateEndpoint,omitempty"`
 	// IPConfigurations - A list of IPConfigurations of the network interface.
 	IPConfigurations *[]InterfaceIPConfiguration `json:"ipConfigurations,omitempty"`
 	// TapConfigurations - READ-ONLY; A list of TapConfigurations of the network interface.
@@ -16923,7 +16923,7 @@ func NewInterfaceTapConfigurationListResultPage(getNextPage func(context.Context
 // InterfaceTapConfigurationPropertiesFormat properties of Virtual Network Tap configuration.
 type InterfaceTapConfigurationPropertiesFormat struct {
 	// VirtualNetworkTap - The reference of the Virtual Network Tap resource.
-	VirtualNetworkTap *VirtualNetworkTap `json:"virtualNetworkTap,omitempty"`
+	VirtualNetworkTap *SubResource `json:"virtualNetworkTap,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the network interface tap configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
@@ -17159,7 +17159,7 @@ func (icp *IPConfigurationProfile) UnmarshalJSON(body []byte) error {
 // IPConfigurationProfilePropertiesFormat IP configuration profile properties.
 type IPConfigurationProfilePropertiesFormat struct {
 	// Subnet - The reference of the subnet resource to create a container network interface ip configuration.
-	Subnet *Subnet `json:"subnet,omitempty"`
+	Subnet *SubResource `json:"subnet,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the IP configuration profile resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
@@ -17171,9 +17171,9 @@ type IPConfigurationPropertiesFormat struct {
 	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	// Subnet - The reference of the subnet resource.
-	Subnet *Subnet `json:"subnet,omitempty"`
+	Subnet *SubResource `json:"subnet,omitempty"`
 	// PublicIPAddress - The reference of the public IP resource.
-	PublicIPAddress *PublicIPAddress `json:"publicIPAddress,omitempty"`
+	PublicIPAddress *SubResource `json:"publicIPAddress,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
@@ -22556,7 +22556,7 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 // PrivateEndpointConnectionProperties properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// PrivateEndpoint - READ-ONLY; The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *SubResource `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
@@ -22712,9 +22712,9 @@ func NewPrivateEndpointListResultPage(getNextPage func(context.Context, PrivateE
 // PrivateEndpointProperties properties of the private endpoint.
 type PrivateEndpointProperties struct {
 	// Subnet - The ID of the subnet from which the private IP will be allocated.
-	Subnet *Subnet `json:"subnet,omitempty"`
+	Subnet *SubResource `json:"subnet,omitempty"`
 	// NetworkInterfaces - READ-ONLY; An array of references to the network interfaces created for this private endpoint.
-	NetworkInterfaces *[]Interface `json:"networkInterfaces,omitempty"`
+	NetworkInterfaces *[]SubResource `json:"networkInterfaces,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkServiceConnections - A grouping of information about the connection to the remote resource.
@@ -23100,7 +23100,7 @@ type PrivateLinkServiceIPConfigurationProperties struct {
 	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	// Subnet - The reference to the subnet resource.
-	Subnet *Subnet `json:"subnet,omitempty"`
+	Subnet *SubResource `json:"subnet,omitempty"`
 	// Primary - Whether the ip configuration is primary or not.
 	Primary *bool `json:"primary,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the private link service IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
@@ -23258,11 +23258,11 @@ func NewPrivateLinkServiceListResultPage(getNextPage func(context.Context, Priva
 // PrivateLinkServiceProperties properties of the private link service.
 type PrivateLinkServiceProperties struct {
 	// LoadBalancerFrontendIPConfigurations - An array of references to the load balancer IP configurations.
-	LoadBalancerFrontendIPConfigurations *[]FrontendIPConfiguration `json:"loadBalancerFrontendIpConfigurations,omitempty"`
+	LoadBalancerFrontendIPConfigurations *[]SubResource `json:"loadBalancerFrontendIpConfigurations,omitempty"`
 	// IPConfigurations - An array of private link service IP configurations.
 	IPConfigurations *[]PrivateLinkServiceIPConfiguration `json:"ipConfigurations,omitempty"`
 	// NetworkInterfaces - READ-ONLY; An array of references to the network interfaces created for this private link service.
-	NetworkInterfaces *[]Interface `json:"networkInterfaces,omitempty"`
+	NetworkInterfaces *[]SubResource `json:"networkInterfaces,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the private link service resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; An array of list about connections to the private endpoint.
@@ -24180,7 +24180,7 @@ type PublicIPAddressPropertiesFormat struct {
 	// PublicIPAddressVersion - The public IP address version. Possible values include: 'IPv4', 'IPv6'
 	PublicIPAddressVersion IPVersion `json:"publicIPAddressVersion,omitempty"`
 	// IPConfiguration - READ-ONLY; The IP configuration associated with the public IP address.
-	IPConfiguration *IPConfiguration `json:"ipConfiguration,omitempty"`
+	IPConfiguration *SubResource `json:"ipConfiguration,omitempty"`
 	// DNSSettings - The FQDN of the DNS record associated with the public IP address.
 	DNSSettings *PublicIPAddressDNSSettings `json:"dnsSettings,omitempty"`
 	// DdosSettings - The DDoS protection custom policy associated with the public IP address.
@@ -24586,7 +24586,7 @@ type PublicIPPrefixPropertiesFormat struct {
 	// IPPrefix - READ-ONLY; The allocated Prefix.
 	IPPrefix *string `json:"ipPrefix,omitempty"`
 	// PublicIPAddresses - READ-ONLY; The list of all referenced PublicIPAddresses.
-	PublicIPAddresses *[]ReferencedPublicIPAddress `json:"publicIPAddresses,omitempty"`
+	PublicIPAddresses *[]SubResource `json:"publicIPAddresses,omitempty"`
 	// LoadBalancerFrontendIPConfiguration - READ-ONLY; The reference to load balancer frontend IP configuration associated with the public IP prefix.
 	LoadBalancerFrontendIPConfiguration *SubResource `json:"loadBalancerFrontendIpConfiguration,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the public IP prefix resource.
@@ -25109,9 +25109,9 @@ type RouteFilterPropertiesFormat struct {
 	// Rules - Collection of RouteFilterRules contained within a route filter.
 	Rules *[]RouteFilterRule `json:"rules,omitempty"`
 	// Peerings - READ-ONLY; A collection of references to express route circuit peerings.
-	Peerings *[]ExpressRouteCircuitPeering `json:"peerings,omitempty"`
+	Peerings *[]SubResource `json:"peerings,omitempty"`
 	// Ipv6Peerings - READ-ONLY; A collection of references to express route circuit ipv6 peerings.
-	Ipv6Peerings *[]ExpressRouteCircuitPeering `json:"ipv6Peerings,omitempty"`
+	Ipv6Peerings *[]SubResource `json:"ipv6Peerings,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the route filter resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
@@ -26004,7 +26004,7 @@ type RouteTablePropertiesFormat struct {
 	// Routes - Collection of routes contained within a route table.
 	Routes *[]Route `json:"routes,omitempty"`
 	// Subnets - READ-ONLY; A collection of references to subnets.
-	Subnets *[]Subnet `json:"subnets,omitempty"`
+	Subnets *[]SubResource `json:"subnets,omitempty"`
 	// DisableBgpRoutePropagation - Whether to disable the routes learned by BGP on that route table. True means disable.
 	DisableBgpRoutePropagation *bool `json:"disableBgpRoutePropagation,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the route table resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
@@ -26798,13 +26798,13 @@ type SecurityRulePropertiesFormat struct {
 	// SourceAddressPrefixes - The CIDR or source IP ranges.
 	SourceAddressPrefixes *[]string `json:"sourceAddressPrefixes,omitempty"`
 	// SourceApplicationSecurityGroups - The application security group specified as source.
-	SourceApplicationSecurityGroups *[]ApplicationSecurityGroup `json:"sourceApplicationSecurityGroups,omitempty"`
+	SourceApplicationSecurityGroups *[]SubResource `json:"sourceApplicationSecurityGroups,omitempty"`
 	// DestinationAddressPrefix - The destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
 	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
 	// DestinationAddressPrefixes - The destination address prefixes. CIDR or destination IP ranges.
 	DestinationAddressPrefixes *[]string `json:"destinationAddressPrefixes,omitempty"`
 	// DestinationApplicationSecurityGroups - The application security group specified as destination.
-	DestinationApplicationSecurityGroups *[]ApplicationSecurityGroup `json:"destinationApplicationSecurityGroups,omitempty"`
+	DestinationApplicationSecurityGroups *[]SubResource `json:"destinationApplicationSecurityGroups,omitempty"`
 	// SourcePortRanges - The source port ranges.
 	SourcePortRanges *[]string `json:"sourcePortRanges,omitempty"`
 	// DestinationPortRanges - The destination port ranges.
@@ -27648,7 +27648,7 @@ type ServiceEndpointPolicyPropertiesFormat struct {
 	// ServiceEndpointPolicyDefinitions - A collection of service endpoint policy definitions of the service endpoint policy.
 	ServiceEndpointPolicyDefinitions *[]ServiceEndpointPolicyDefinition `json:"serviceEndpointPolicyDefinitions,omitempty"`
 	// Subnets - READ-ONLY; A collection of references to subnets.
-	Subnets *[]Subnet `json:"subnets,omitempty"`
+	Subnets *[]SubResource `json:"subnets,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the service endpoint policy resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the service endpoint policy resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
@@ -27951,21 +27951,21 @@ type SubnetPropertiesFormat struct {
 	// AddressPrefixes - List of address prefixes for the subnet.
 	AddressPrefixes *[]string `json:"addressPrefixes,omitempty"`
 	// NetworkSecurityGroup - The reference of the NetworkSecurityGroup resource.
-	NetworkSecurityGroup *SecurityGroup `json:"networkSecurityGroup,omitempty"`
+	NetworkSecurityGroup *SubResource `json:"networkSecurityGroup,omitempty"`
 	// RouteTable - The reference of the RouteTable resource.
-	RouteTable *RouteTable `json:"routeTable,omitempty"`
+	RouteTable *SubResource `json:"routeTable,omitempty"`
 	// NatGateway - Nat gateway associated with this subnet.
 	NatGateway *SubResource `json:"natGateway,omitempty"`
 	// ServiceEndpoints - An array of service endpoints.
 	ServiceEndpoints *[]ServiceEndpointPropertiesFormat `json:"serviceEndpoints,omitempty"`
 	// ServiceEndpointPolicies - An array of service endpoint policies.
-	ServiceEndpointPolicies *[]ServiceEndpointPolicy `json:"serviceEndpointPolicies,omitempty"`
+	ServiceEndpointPolicies *[]SubResource `json:"serviceEndpointPolicies,omitempty"`
 	// PrivateEndpoints - READ-ONLY; An array of references to private endpoints.
-	PrivateEndpoints *[]PrivateEndpoint `json:"privateEndpoints,omitempty"`
+	PrivateEndpoints *[]SubResource `json:"privateEndpoints,omitempty"`
 	// IPConfigurations - READ-ONLY; An array of references to the network interface IP configurations using subnet.
-	IPConfigurations *[]IPConfiguration `json:"ipConfigurations,omitempty"`
+	IPConfigurations *[]SubResource `json:"ipConfigurations,omitempty"`
 	// IPConfigurationProfiles - READ-ONLY; Array of IP configuration profiles which reference this subnet.
-	IPConfigurationProfiles *[]IPConfigurationProfile `json:"ipConfigurationProfiles,omitempty"`
+	IPConfigurationProfiles *[]SubResource `json:"ipConfigurationProfiles,omitempty"`
 	// ResourceNavigationLinks - READ-ONLY; An array of references to the external resources using subnet.
 	ResourceNavigationLinks *[]ResourceNavigationLink `json:"resourceNavigationLinks,omitempty"`
 	// ServiceAssociationLinks - READ-ONLY; An array of references to services injecting into this subnet.
@@ -29368,11 +29368,11 @@ type VirtualNetworkGatewayConnectionListEntityPropertiesFormat struct {
 	// AuthorizationKey - The authorizationKey.
 	AuthorizationKey *string `json:"authorizationKey,omitempty"`
 	// VirtualNetworkGateway1 - The reference to virtual network gateway resource.
-	VirtualNetworkGateway1 *VirtualNetworkConnectionGatewayReference `json:"virtualNetworkGateway1,omitempty"`
+	VirtualNetworkGateway1 *SubResource `json:"virtualNetworkGateway1,omitempty"`
 	// VirtualNetworkGateway2 - The reference to virtual network gateway resource.
-	VirtualNetworkGateway2 *VirtualNetworkConnectionGatewayReference `json:"virtualNetworkGateway2,omitempty"`
+	VirtualNetworkGateway2 *SubResource `json:"virtualNetworkGateway2,omitempty"`
 	// LocalNetworkGateway2 - The reference to local network gateway resource.
-	LocalNetworkGateway2 *VirtualNetworkConnectionGatewayReference `json:"localNetworkGateway2,omitempty"`
+	LocalNetworkGateway2 *SubResource `json:"localNetworkGateway2,omitempty"`
 	// ConnectionType - Gateway connection type. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
 	ConnectionType VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
 	// ConnectionProtocol - Connection protocol used for this connection. Possible values include: 'IKEv2', 'IKEv1'
@@ -29560,11 +29560,11 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	// AuthorizationKey - The authorizationKey.
 	AuthorizationKey *string `json:"authorizationKey,omitempty"`
 	// VirtualNetworkGateway1 - The reference to virtual network gateway resource.
-	VirtualNetworkGateway1 *VirtualNetworkGateway `json:"virtualNetworkGateway1,omitempty"`
+	VirtualNetworkGateway1 *SubResource `json:"virtualNetworkGateway1,omitempty"`
 	// VirtualNetworkGateway2 - The reference to virtual network gateway resource.
-	VirtualNetworkGateway2 *VirtualNetworkGateway `json:"virtualNetworkGateway2,omitempty"`
+	VirtualNetworkGateway2 *SubResource `json:"virtualNetworkGateway2,omitempty"`
 	// LocalNetworkGateway2 - The reference to local network gateway resource.
-	LocalNetworkGateway2 *LocalNetworkGateway `json:"localNetworkGateway2,omitempty"`
+	LocalNetworkGateway2 *SubResource `json:"localNetworkGateway2,omitempty"`
 	// ConnectionType - Gateway connection type. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
 	ConnectionType VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
 	// ConnectionProtocol - Connection protocol used for this connection. Possible values include: 'IKEv2', 'IKEv1'
@@ -31639,15 +31639,15 @@ func NewVirtualNetworkTapListResultPage(getNextPage func(context.Context, Virtua
 // VirtualNetworkTapPropertiesFormat virtual Network Tap properties.
 type VirtualNetworkTapPropertiesFormat struct {
 	// NetworkInterfaceTapConfigurations - READ-ONLY; Specifies the list of resource IDs for the network interface IP configuration that needs to be tapped.
-	NetworkInterfaceTapConfigurations *[]InterfaceTapConfiguration `json:"networkInterfaceTapConfigurations,omitempty"`
+	NetworkInterfaceTapConfigurations *[]SubResource `json:"networkInterfaceTapConfigurations,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the virtual network tap resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network tap resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// DestinationNetworkInterfaceIPConfiguration - The reference to the private IP Address of the collector nic that will receive the tap.
-	DestinationNetworkInterfaceIPConfiguration *InterfaceIPConfiguration `json:"destinationNetworkInterfaceIPConfiguration,omitempty"`
+	DestinationNetworkInterfaceIPConfiguration *SubResource `json:"destinationNetworkInterfaceIPConfiguration,omitempty"`
 	// DestinationLoadBalancerFrontEndIPConfiguration - The reference to the private IP address on the internal Load Balancer that will receive the tap.
-	DestinationLoadBalancerFrontEndIPConfiguration *FrontendIPConfiguration `json:"destinationLoadBalancerFrontEndIPConfiguration,omitempty"`
+	DestinationLoadBalancerFrontEndIPConfiguration *SubResource `json:"destinationLoadBalancerFrontEndIPConfiguration,omitempty"`
 	// DestinationPort - The VXLAN destination port that will receive the tapped traffic.
 	DestinationPort *int32 `json:"destinationPort,omitempty"`
 }
@@ -34902,7 +34902,7 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 	// CustomRules - Describes custom rules inside the policy.
 	CustomRules *[]WebApplicationFirewallCustomRule `json:"customRules,omitempty"`
 	// ApplicationGateways - READ-ONLY; A collection of references to application gateways.
-	ApplicationGateways *[]ApplicationGateway `json:"applicationGateways,omitempty"`
+	ApplicationGateways *[]SubResource `json:"applicationGateways,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the web application firewall policy resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ResourceState - READ-ONLY; Resource status of the policy. Possible values include: 'WebApplicationFirewallPolicyResourceStateCreating', 'WebApplicationFirewallPolicyResourceStateEnabling', 'WebApplicationFirewallPolicyResourceStateEnabled', 'WebApplicationFirewallPolicyResourceStateDisabling', 'WebApplicationFirewallPolicyResourceStateDisabled', 'WebApplicationFirewallPolicyResourceStateDeleting'

@@ -155,8 +155,9 @@ const (
 type DynamicsAuthenticationType = original.DynamicsAuthenticationType
 
 const (
-	Ifd       DynamicsAuthenticationType = original.Ifd
-	Office365 DynamicsAuthenticationType = original.Office365
+	AADServicePrincipal DynamicsAuthenticationType = original.AADServicePrincipal
+	Ifd                 DynamicsAuthenticationType = original.Ifd
+	Office365           DynamicsAuthenticationType = original.Office365
 )
 
 type DynamicsDeploymentType = original.DynamicsDeploymentType

@@ -621,7 +621,6 @@ type RouteFilterRulesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (result network.RouteFilterRulesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (result network.RouteFilterRule, err error)
 	ListByRouteFilter(ctx context.Context, resourceGroupName string, routeFilterName string) (result network.RouteFilterRuleListResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, parameters network.TagsObject) (result network.RouteFilterRule, err error)
 }
 
 var _ RouteFilterRulesClientAPI = (*network.RouteFilterRulesClient)(nil)
@@ -814,7 +813,6 @@ type VirtualRoutersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, virtualRouterName string, expand string) (result network.VirtualRouter, err error)
 	List(ctx context.Context) (result network.VirtualRouterListResultPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result network.VirtualRouterListResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters network.TagsObject) (result network.VirtualRouter, err error)
 }
 
 var _ VirtualRoutersClientAPI = (*network.VirtualRoutersClient)(nil)
@@ -825,7 +823,6 @@ type VirtualRouterPeeringsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string) (result network.VirtualRouterPeeringsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string) (result network.VirtualRouterPeering, err error)
 	List(ctx context.Context, resourceGroupName string, virtualRouterName string) (result network.VirtualRouterPeeringListResultPage, err error)
-	Update(ctx context.Context, resourceGroupName string, virtualRouterName string, peeringName string, parameters network.VirtualRouterPeering) (result network.VirtualRouterPeering, err error)
 }
 
 var _ VirtualRouterPeeringsClientAPI = (*network.VirtualRouterPeeringsClient)(nil)

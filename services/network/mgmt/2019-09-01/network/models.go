@@ -7341,6 +7341,41 @@ type AzureFirewallPropertiesFormat struct {
 	HubIPAddresses *HubIPAddresses `json:"hubIpAddresses,omitempty"`
 	// Sku - The Azure Firewall Resource SKU.
 	Sku *AzureFirewallSku `json:"sku,omitempty"`
+	// AdditionalProperties - The additional properties used to further config this azure firewall
+	AdditionalProperties map[string]*string `json:"additionalProperties"`
+}
+
+// MarshalJSON is the custom marshaler for AzureFirewallPropertiesFormat.
+func (afpf AzureFirewallPropertiesFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if afpf.ApplicationRuleCollections != nil {
+		objectMap["applicationRuleCollections"] = afpf.ApplicationRuleCollections
+	}
+	if afpf.NatRuleCollections != nil {
+		objectMap["natRuleCollections"] = afpf.NatRuleCollections
+	}
+	if afpf.NetworkRuleCollections != nil {
+		objectMap["networkRuleCollections"] = afpf.NetworkRuleCollections
+	}
+	if afpf.IPConfigurations != nil {
+		objectMap["ipConfigurations"] = afpf.IPConfigurations
+	}
+	if afpf.ThreatIntelMode != "" {
+		objectMap["threatIntelMode"] = afpf.ThreatIntelMode
+	}
+	if afpf.VirtualHub != nil {
+		objectMap["virtualHub"] = afpf.VirtualHub
+	}
+	if afpf.FirewallPolicy != nil {
+		objectMap["firewallPolicy"] = afpf.FirewallPolicy
+	}
+	if afpf.Sku != nil {
+		objectMap["sku"] = afpf.Sku
+	}
+	if afpf.AdditionalProperties != nil {
+		objectMap["additionalProperties"] = afpf.AdditionalProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // AzureFirewallPublicIPAddress public IP Address associated with azure firewall.

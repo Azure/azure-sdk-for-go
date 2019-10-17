@@ -2,7 +2,7 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  GOROOT: '/usr/local/go1.12'
+  GOROOT: '/usr/local/go1.13'
   GOPATH: '$(system.defaultWorkingDirectory)/work'
   sdkPath: '$(GOPATH)/src/github.com/Azure/azure-sdk-for-go'
 
@@ -17,7 +17,8 @@ steps:
     echo '##vso[task.prependpath]$(GOPATH)/bin'
   displayName: 'Create Go Workspace'
 - script: |
-    set -e
+    set -x
+    go version
     curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
     dep ensure -v
     go get -u golang.org/x/lint/golint

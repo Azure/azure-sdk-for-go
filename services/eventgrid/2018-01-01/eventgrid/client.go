@@ -1,4 +1,4 @@
-// Package eventgrid implements the Azure ARM Eventgrid service API version .
+// Package eventgrid implements the Azure ARM Eventgrid service API version 2018-01-01.
 //
 // EventGrid Client
 package eventgrid

@@ -2,7 +2,7 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 variables:
-  GOROOT: '/usr/local/go1.13'
+  GOROOT: '/usr/local/go1.12'
   GOPATH: '$(system.defaultWorkingDirectory)/work'
   sdkPath: '$(GOPATH)/src/github.com/Azure/azure-sdk-for-go'
 

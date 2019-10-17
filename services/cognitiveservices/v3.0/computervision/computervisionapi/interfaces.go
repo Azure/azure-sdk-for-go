@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.0/computervision"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/satori/go.uuid"
 	"io"
 )
 
@@ -38,7 +39,7 @@ type BaseClientAPI interface {
 	GenerateThumbnailInStream(ctx context.Context, width int32, height int32, imageParameter io.ReadCloser, smartCropping *bool) (result computervision.ReadCloser, err error)
 	GetAreaOfInterest(ctx context.Context, imageURL computervision.ImageURL) (result computervision.AreaOfInterestResult, err error)
 	GetAreaOfInterestInStream(ctx context.Context, imageParameter io.ReadCloser) (result computervision.AreaOfInterestResult, err error)
-	GetReadResult(ctx context.Context, operationID string) (result computervision.ReadOperationResult, err error)
+	GetReadResult(ctx context.Context, operationID uuid.UUID) (result computervision.ReadOperationResult, err error)
 	ListModels(ctx context.Context) (result computervision.ListModelsResult, err error)
 	Read(ctx context.Context, language computervision.OcrDetectionLanguage, imageURL computervision.ImageURL) (result autorest.Response, err error)
 	ReadInStream(ctx context.Context, imageParameter io.ReadCloser) (result autorest.Response, err error)

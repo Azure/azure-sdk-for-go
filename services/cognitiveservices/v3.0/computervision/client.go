@@ -1,4 +1,4 @@
-// Package computervision implements the Azure ARM Computervision service API version 3.0.
+// Package computervision implements the Azure ARM Computervision service API version .
 //
 // The Computer Vision API provides state-of-the-art algorithms to process images and return information. For example,
 // it can be used to determine if an image contains mature content, or it can be used to find all the faces in an
@@ -30,6 +30,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/satori/go.uuid"
 	"io"
 	"net/http"
 )
@@ -1177,10 +1178,10 @@ func (client BaseClient) GetAreaOfInterestInStreamResponder(resp *http.Response)
 }
 
 // GetReadResult this interface is used for getting OCR results of Read operation. The URL to this interface should be
-// retrieved from 'location' field returned from Read interface.
+// retrieved from 'Operation-Location' field returned from Read interface.
 // Parameters:
 // operationID - id of read operation returned in the response of the 'Read' interface.
-func (client BaseClient) GetReadResult(ctx context.Context, operationID string) (result ReadOperationResult, err error) {
+func (client BaseClient) GetReadResult(ctx context.Context, operationID uuid.UUID) (result ReadOperationResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.GetReadResult")
 		defer func() {
@@ -1213,7 +1214,7 @@ func (client BaseClient) GetReadResult(ctx context.Context, operationID string) 
 }
 
 // GetReadResultPreparer prepares the GetReadResult request.
-func (client BaseClient) GetReadResultPreparer(ctx context.Context, operationID string) (*http.Request, error) {
+func (client BaseClient) GetReadResultPreparer(ctx context.Context, operationID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
@@ -1320,8 +1321,8 @@ func (client BaseClient) ListModelsResponder(resp *http.Response) (result ListMo
 
 // Read use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character
 // Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response
-// contains a field called 'location'. The 'location' field contains the URL that you must use for your 'GetReadResult'
-// operation to access OCR results.​
+// contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
+// your 'GetReadResult' operation to access OCR results.​
 // Parameters:
 // language - the BCP-47 language code of the text to be detected in the image.
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
@@ -1404,8 +1405,8 @@ func (client BaseClient) ReadResponder(resp *http.Response) (result autorest.Res
 
 // ReadInStream use this interface to get the result of a Read Document operation, employing the state-of-the-art
 // Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read Document
-// interface, the response contains a field called 'location'. The 'location' field contains the URL that you must use
-// for your 'Get Read Result operation' to access OCR results.​
+// interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the
+// URL that you must use for your 'Get Read Result operation' to access OCR results.​
 // Parameters:
 // imageParameter - an image stream.
 func (client BaseClient) ReadInStream(ctx context.Context, imageParameter io.ReadCloser) (result autorest.Response, err error) {

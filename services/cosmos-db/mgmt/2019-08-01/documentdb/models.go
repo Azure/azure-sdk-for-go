@@ -1059,7 +1059,7 @@ type DatabaseAccountConnectionString struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// DatabaseAccountCreateUpdateParameters parameters to create or update Cosmos DB database accounts.
+// DatabaseAccountCreateUpdateParameters parameters to create and update Cosmos DB database accounts.
 type DatabaseAccountCreateUpdateParameters struct {
 	// Kind - Indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'
 	Kind                                   DatabaseAccountKind `json:"kind,omitempty"`
@@ -1171,7 +1171,7 @@ func (dacup *DatabaseAccountCreateUpdateParameters) UnmarshalJSON(body []byte) e
 	return nil
 }
 
-// DatabaseAccountCreateUpdateProperties properties to create Azure Cosmos DB database accounts.
+// DatabaseAccountCreateUpdateProperties properties to create and update Azure Cosmos DB database accounts.
 type DatabaseAccountCreateUpdateProperties struct {
 	// ConsistencyPolicy - The consistency policy for the Cosmos DB account.
 	ConsistencyPolicy *ConsistencyPolicy `json:"consistencyPolicy,omitempty"`

@@ -289,7 +289,6 @@ type FirewallPoliciesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, expand string) (result network.FirewallPolicy, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.FirewallPolicyListResultPage, err error)
 	ListAll(ctx context.Context) (result network.FirewallPolicyListResultPage, err error)
-	UpdateTags(ctx context.Context, resourceGroupName string, firewallPolicyName string, firewallPolicyParameters network.TagsObject) (result network.FirewallPolicy, err error)
 }
 
 var _ FirewallPoliciesClientAPI = (*network.FirewallPoliciesClient)(nil)

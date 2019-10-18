@@ -128,8 +128,8 @@ func (client DatabaseAccountsClient) CheckNameExistsResponder(resp *http.Respons
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
-// createParameters - the parameters to provide for the current database account.
-func (client DatabaseAccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createParameters DatabaseAccountCreateParameters) (result DatabaseAccountsCreateOrUpdateFuture, err error) {
+// createUpdateParameters - the parameters to provide for the current database account.
+func (client DatabaseAccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters) (result DatabaseAccountsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateOrUpdate")
 		defer func() {
@@ -149,25 +149,25 @@ func (client DatabaseAccountsClient) CreateOrUpdate(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}},
-		{TargetValue: createParameters,
-			Constraints: []validation.Constraint{{Target: "createParameters.DatabaseAccountCreateProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "createParameters.DatabaseAccountCreateProperties.ConsistencyPolicy", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "createParameters.DatabaseAccountCreateProperties.ConsistencyPolicy.MaxStalenessPrefix", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "createParameters.DatabaseAccountCreateProperties.ConsistencyPolicy.MaxStalenessPrefix", Name: validation.InclusiveMaximum, Rule: int64(2147483647), Chain: nil},
-							{Target: "createParameters.DatabaseAccountCreateProperties.ConsistencyPolicy.MaxStalenessPrefix", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+		{TargetValue: createUpdateParameters,
+			Constraints: []validation.Constraint{{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties.ConsistencyPolicy", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties.ConsistencyPolicy.MaxStalenessPrefix", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties.ConsistencyPolicy.MaxStalenessPrefix", Name: validation.InclusiveMaximum, Rule: int64(2147483647), Chain: nil},
+							{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties.ConsistencyPolicy.MaxStalenessPrefix", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 						}},
-						{Target: "createParameters.DatabaseAccountCreateProperties.ConsistencyPolicy.MaxIntervalInSeconds", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "createParameters.DatabaseAccountCreateProperties.ConsistencyPolicy.MaxIntervalInSeconds", Name: validation.InclusiveMaximum, Rule: int64(86400), Chain: nil},
-								{Target: "createParameters.DatabaseAccountCreateProperties.ConsistencyPolicy.MaxIntervalInSeconds", Name: validation.InclusiveMinimum, Rule: 5, Chain: nil},
+						{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties.ConsistencyPolicy.MaxIntervalInSeconds", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties.ConsistencyPolicy.MaxIntervalInSeconds", Name: validation.InclusiveMaximum, Rule: int64(86400), Chain: nil},
+								{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties.ConsistencyPolicy.MaxIntervalInSeconds", Name: validation.InclusiveMinimum, Rule: 5, Chain: nil},
 							}},
 					}},
-					{Target: "createParameters.DatabaseAccountCreateProperties.Locations", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "createParameters.DatabaseAccountCreateProperties.DatabaseAccountOfferType", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties.Locations", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "createUpdateParameters.DatabaseAccountCreateUpdateProperties.DatabaseAccountOfferType", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, accountName, createParameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, accountName, createUpdateParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -183,7 +183,7 @@ func (client DatabaseAccountsClient) CreateOrUpdate(ctx context.Context, resourc
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DatabaseAccountsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, createParameters DatabaseAccountCreateParameters) (*http.Request, error) {
+func (client DatabaseAccountsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -200,7 +200,7 @@ func (client DatabaseAccountsClient) CreateOrUpdatePreparer(ctx context.Context,
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}", pathParameters),
-		autorest.WithJSON(createParameters),
+		autorest.WithJSON(createUpdateParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

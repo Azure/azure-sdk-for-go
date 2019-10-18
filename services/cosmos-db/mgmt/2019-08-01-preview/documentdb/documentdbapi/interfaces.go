@@ -26,7 +26,7 @@ import (
 // DatabaseAccountsClientAPI contains the set of methods on the DatabaseAccountsClient type.
 type DatabaseAccountsClientAPI interface {
 	CheckNameExists(ctx context.Context, accountName string) (result autorest.Response, err error)
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createParameters documentdb.DatabaseAccountCreateParameters) (result documentdb.DatabaseAccountsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters documentdb.DatabaseAccountCreateUpdateParameters) (result documentdb.DatabaseAccountsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.DatabaseAccountsDeleteFuture, err error)
 	FailoverPriorityChange(ctx context.Context, resourceGroupName string, accountName string, failoverParameters documentdb.FailoverPolicies) (result documentdb.DatabaseAccountsFailoverPriorityChangeFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.DatabaseAccountGetResults, err error)

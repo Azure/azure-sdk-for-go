@@ -1059,11 +1059,11 @@ type DatabaseAccountConnectionString struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// DatabaseAccountCreateParameters parameters to create Cosmos DB database accounts.
-type DatabaseAccountCreateParameters struct {
+// DatabaseAccountCreateUpdateParameters parameters to create or update Cosmos DB database accounts.
+type DatabaseAccountCreateUpdateParameters struct {
 	// Kind - Indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'
-	Kind                             DatabaseAccountKind `json:"kind,omitempty"`
-	*DatabaseAccountCreateProperties `json:"properties,omitempty"`
+	Kind                                   DatabaseAccountKind `json:"kind,omitempty"`
+	*DatabaseAccountCreateUpdateProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The unique resource identifier of the ARM resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the ARM resource.
@@ -1075,26 +1075,26 @@ type DatabaseAccountCreateParameters struct {
 	Tags     map[string]*string `json:"tags"`
 }
 
-// MarshalJSON is the custom marshaler for DatabaseAccountCreateParameters.
-func (dacp DatabaseAccountCreateParameters) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for DatabaseAccountCreateUpdateParameters.
+func (dacup DatabaseAccountCreateUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if dacp.Kind != "" {
-		objectMap["kind"] = dacp.Kind
+	if dacup.Kind != "" {
+		objectMap["kind"] = dacup.Kind
 	}
-	if dacp.DatabaseAccountCreateProperties != nil {
-		objectMap["properties"] = dacp.DatabaseAccountCreateProperties
+	if dacup.DatabaseAccountCreateUpdateProperties != nil {
+		objectMap["properties"] = dacup.DatabaseAccountCreateUpdateProperties
 	}
-	if dacp.Location != nil {
-		objectMap["location"] = dacp.Location
+	if dacup.Location != nil {
+		objectMap["location"] = dacup.Location
 	}
-	if dacp.Tags != nil {
-		objectMap["tags"] = dacp.Tags
+	if dacup.Tags != nil {
+		objectMap["tags"] = dacup.Tags
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for DatabaseAccountCreateParameters struct.
-func (dacp *DatabaseAccountCreateParameters) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for DatabaseAccountCreateUpdateParameters struct.
+func (dacup *DatabaseAccountCreateUpdateParameters) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1109,16 +1109,16 @@ func (dacp *DatabaseAccountCreateParameters) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				dacp.Kind = kind
+				dacup.Kind = kind
 			}
 		case "properties":
 			if v != nil {
-				var databaseAccountCreateProperties DatabaseAccountCreateProperties
-				err = json.Unmarshal(*v, &databaseAccountCreateProperties)
+				var databaseAccountCreateUpdateProperties DatabaseAccountCreateUpdateProperties
+				err = json.Unmarshal(*v, &databaseAccountCreateUpdateProperties)
 				if err != nil {
 					return err
 				}
-				dacp.DatabaseAccountCreateProperties = &databaseAccountCreateProperties
+				dacup.DatabaseAccountCreateUpdateProperties = &databaseAccountCreateUpdateProperties
 			}
 		case "id":
 			if v != nil {
@@ -1127,7 +1127,7 @@ func (dacp *DatabaseAccountCreateParameters) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				dacp.ID = &ID
+				dacup.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -1136,7 +1136,7 @@ func (dacp *DatabaseAccountCreateParameters) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				dacp.Name = &name
+				dacup.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -1145,7 +1145,7 @@ func (dacp *DatabaseAccountCreateParameters) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				dacp.Type = &typeVar
+				dacup.Type = &typeVar
 			}
 		case "location":
 			if v != nil {
@@ -1154,7 +1154,7 @@ func (dacp *DatabaseAccountCreateParameters) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				dacp.Location = &location
+				dacup.Location = &location
 			}
 		case "tags":
 			if v != nil {
@@ -1163,7 +1163,7 @@ func (dacp *DatabaseAccountCreateParameters) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				dacp.Tags = tags
+				dacup.Tags = tags
 			}
 		}
 	}
@@ -1171,8 +1171,8 @@ func (dacp *DatabaseAccountCreateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DatabaseAccountCreateProperties properties to create Azure Cosmos DB database accounts.
-type DatabaseAccountCreateProperties struct {
+// DatabaseAccountCreateUpdateProperties properties to create Azure Cosmos DB database accounts.
+type DatabaseAccountCreateUpdateProperties struct {
 	// ConsistencyPolicy - The consistency policy for the Cosmos DB account.
 	ConsistencyPolicy *ConsistencyPolicy `json:"consistencyPolicy,omitempty"`
 	// Locations - An array that contains the georeplication locations enabled for the Cosmos DB account.

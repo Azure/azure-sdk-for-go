@@ -123,8 +123,9 @@ func (client CustomizationPoliciesClient) GetResponder(resp *http.Response) (res
 // Parameters:
 // regionID - the region Id (westus, eastus)
 // pcName - the private cloud name
-// guestOSType - if specified response will be filtered by guest os type
-func (client CustomizationPoliciesClient) List(ctx context.Context, regionID string, pcName string, guestOSType string) (result CustomizationPoliciesListResponsePage, err error) {
+// filter - the filter to apply on the list operation. only type is allowed here as a filter e.g. $filter=type
+// eq 'xxxx'
+func (client CustomizationPoliciesClient) List(ctx context.Context, regionID string, pcName string, filter string) (result CustomizationPoliciesListResponsePage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CustomizationPoliciesClient.List")
 		defer func() {
@@ -136,7 +137,7 @@ func (client CustomizationPoliciesClient) List(ctx context.Context, regionID str
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, regionID, pcName, guestOSType)
+	req, err := client.ListPreparer(ctx, regionID, pcName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.CustomizationPoliciesClient", "List", nil, "Failure preparing request")
 		return
@@ -158,7 +159,7 @@ func (client CustomizationPoliciesClient) List(ctx context.Context, regionID str
 }
 
 // ListPreparer prepares the List request.
-func (client CustomizationPoliciesClient) ListPreparer(ctx context.Context, regionID string, pcName string, guestOSType string) (*http.Request, error) {
+func (client CustomizationPoliciesClient) ListPreparer(ctx context.Context, regionID string, pcName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"pcName":         autorest.Encode("path", pcName),
 		"regionId":       autorest.Encode("path", regionID),
@@ -169,8 +170,8 @@ func (client CustomizationPoliciesClient) ListPreparer(ctx context.Context, regi
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(string(guestOSType)) > 0 {
-		queryParameters["guestOSType"] = autorest.Encode("query", guestOSType)
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -223,7 +224,7 @@ func (client CustomizationPoliciesClient) listNextResults(ctx context.Context, l
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client CustomizationPoliciesClient) ListComplete(ctx context.Context, regionID string, pcName string, guestOSType string) (result CustomizationPoliciesListResponseIterator, err error) {
+func (client CustomizationPoliciesClient) ListComplete(ctx context.Context, regionID string, pcName string, filter string) (result CustomizationPoliciesListResponseIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CustomizationPoliciesClient.List")
 		defer func() {
@@ -234,6 +235,6 @@ func (client CustomizationPoliciesClient) ListComplete(ctx context.Context, regi
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, regionID, pcName, guestOSType)
+	result.page, err = client.List(ctx, regionID, pcName, filter)
 	return
 }

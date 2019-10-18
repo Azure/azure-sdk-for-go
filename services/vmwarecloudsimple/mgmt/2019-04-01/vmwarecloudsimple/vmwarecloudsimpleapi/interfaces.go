@@ -73,7 +73,7 @@ var _ PrivateCloudsClientAPI = (*vmwarecloudsimple.PrivateCloudsClient)(nil)
 // CustomizationPoliciesClientAPI contains the set of methods on the CustomizationPoliciesClient type.
 type CustomizationPoliciesClientAPI interface {
 	Get(ctx context.Context, regionID string, pcName string, customizationPolicyName string) (result vmwarecloudsimple.CustomizationPolicy, err error)
-	List(ctx context.Context, regionID string, pcName string, guestOSType string) (result vmwarecloudsimple.CustomizationPoliciesListResponsePage, err error)
+	List(ctx context.Context, regionID string, pcName string, filter string) (result vmwarecloudsimple.CustomizationPoliciesListResponsePage, err error)
 }
 
 var _ CustomizationPoliciesClientAPI = (*vmwarecloudsimple.CustomizationPoliciesClient)(nil)

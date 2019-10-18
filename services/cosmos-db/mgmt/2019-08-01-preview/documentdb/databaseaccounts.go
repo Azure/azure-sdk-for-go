@@ -123,14 +123,15 @@ func (client DatabaseAccountsClient) CheckNameExistsResponder(resp *http.Respons
 	return
 }
 
-// Create creates or updates an Azure Cosmos DB database account.
+// CreateOrUpdate creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when
+// performing updates on an account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // createParameters - the parameters to provide for the current database account.
-func (client DatabaseAccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, createParameters DatabaseAccountCreateParameters) (result DatabaseAccountsCreateFuture, err error) {
+func (client DatabaseAccountsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, createParameters DatabaseAccountCreateParameters) (result DatabaseAccountsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -163,26 +164,26 @@ func (client DatabaseAccountsClient) Create(ctx context.Context, resourceGroupNa
 					{Target: "createParameters.DatabaseAccountCreateProperties.Locations", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "createParameters.DatabaseAccountCreateProperties.DatabaseAccountOfferType", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("documentdb.DatabaseAccountsClient", "Create", err.Error())
+		return result, validation.NewError("documentdb.DatabaseAccountsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, accountName, createParameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, accountName, createParameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client DatabaseAccountsClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, createParameters DatabaseAccountCreateParameters) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client DatabaseAccountsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, createParameters DatabaseAccountCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -204,9 +205,9 @@ func (client DatabaseAccountsClient) CreatePreparer(ctx context.Context, resourc
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client DatabaseAccountsClient) CreateSender(req *http.Request) (future DatabaseAccountsCreateFuture, err error) {
+func (client DatabaseAccountsClient) CreateOrUpdateSender(req *http.Request) (future DatabaseAccountsCreateOrUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -217,9 +218,9 @@ func (client DatabaseAccountsClient) CreateSender(req *http.Request) (future Dat
 	return
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client DatabaseAccountsClient) CreateResponder(resp *http.Response) (result DatabaseAccountGetResults, err error) {
+func (client DatabaseAccountsClient) CreateOrUpdateResponder(resp *http.Response) (result DatabaseAccountGetResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

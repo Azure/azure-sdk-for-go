@@ -1384,30 +1384,30 @@ type DatabaseAccountRegenerateKeyParameters struct {
 	KeyKind KeyKind `json:"keyKind,omitempty"`
 }
 
-// DatabaseAccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type DatabaseAccountsCreateFuture struct {
+// DatabaseAccountsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DatabaseAccountsCreateOrUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *DatabaseAccountsCreateFuture) Result(client DatabaseAccountsClient) (dagr DatabaseAccountGetResults, err error) {
+func (future *DatabaseAccountsCreateOrUpdateFuture) Result(client DatabaseAccountsClient) (dagr DatabaseAccountGetResults, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateOrUpdateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if dagr.Response.Response, err = future.GetResult(sender); err == nil && dagr.Response.Response.StatusCode != http.StatusNoContent {
-		dagr, err = client.CreateResponder(dagr.Response.Response)
+		dagr, err = client.CreateOrUpdateResponder(dagr.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateFuture", "Result", dagr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", dagr.Response.Response, "Failure responding to request")
 		}
 	}
 	return

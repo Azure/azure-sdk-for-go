@@ -1,4 +1,4 @@
-// Package computervision implements the Azure ARM Computervision service API version .
+// Package computervision implements the Azure ARM Computervision service API version 3.0-preview.
 //
 // The Computer Vision API provides state-of-the-art algorithms to process images and return information. For example,
 // it can be used to determine if an image contains mature content, or it can be used to find all the faces in an
@@ -143,7 +143,7 @@ func (client BaseClient) AnalyzeImagePreparer(ctx context.Context, imageURL Imag
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/analyze"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -240,7 +240,7 @@ func (client BaseClient) AnalyzeImageByDomainPreparer(ctx context.Context, model
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/models/{model}/analyze", pathParameters),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -331,7 +331,7 @@ func (client BaseClient) AnalyzeImageByDomainInStreamPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/models/{model}/analyze", pathParameters),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -441,7 +441,7 @@ func (client BaseClient) AnalyzeImageInStreamPreparer(ctx context.Context, image
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/analyze"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -544,7 +544,7 @@ func (client BaseClient) DescribeImagePreparer(ctx context.Context, imageURL Ima
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/describe"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -641,7 +641,7 @@ func (client BaseClient) DescribeImageInStreamPreparer(ctx context.Context, imag
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/describe"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -721,7 +721,7 @@ func (client BaseClient) DetectObjectsPreparer(ctx context.Context, imageURL Ima
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/detect"),
 		autorest.WithJSON(imageURL))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -794,7 +794,7 @@ func (client BaseClient) DetectObjectsInStreamPreparer(ctx context.Context, imag
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/detect"),
 		autorest.WithFile(imageParameter))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -896,7 +896,7 @@ func (client BaseClient) GenerateThumbnailPreparer(ctx context.Context, width in
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/generateThumbnail"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -997,7 +997,7 @@ func (client BaseClient) GenerateThumbnailInStreamPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/generateThumbnail"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -1077,7 +1077,7 @@ func (client BaseClient) GetAreaOfInterestPreparer(ctx context.Context, imageURL
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/areaOfInterest"),
 		autorest.WithJSON(imageURL))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1151,7 +1151,7 @@ func (client BaseClient) GetAreaOfInterestInStreamPreparer(ctx context.Context, 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/areaOfInterest"),
 		autorest.WithFile(imageParameter))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1225,8 +1225,8 @@ func (client BaseClient) GetReadResultPreparer(ctx context.Context, operationID 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
-		autorest.WithPathParameters("/read/core/{operationId}", pathParameters))
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/read/analyzeResults/{operationId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -1294,7 +1294,7 @@ func (client BaseClient) ListModelsPreparer(ctx context.Context) (*http.Request,
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/models"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1324,9 +1324,13 @@ func (client BaseClient) ListModelsResponder(resp *http.Response) (result ListMo
 // contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
 // your 'GetReadResult' operation to access OCR results.​
 // Parameters:
-// language - the BCP-47 language code of the text to be detected in the image.
 // imageURL - a JSON document with a URL pointing to the image that is to be analyzed.
-func (client BaseClient) Read(ctx context.Context, language OcrDetectionLanguage, imageURL ImageURL) (result autorest.Response, err error) {
+// language - the BCP-47 language code of the text to be detected in the image. In future versions, when
+// language parameter is not passed, language detection will be used to determine the language. However, in the
+// current version, missing language parameter will cause English to be used. To ensure that your document is
+// always parsed in English without the use of language detection in the future, pass “en” in the language
+// parameter
+func (client BaseClient) Read(ctx context.Context, imageURL ImageURL, language OcrDetectionLanguage) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.Read")
 		defer func() {
@@ -1343,7 +1347,7 @@ func (client BaseClient) Read(ctx context.Context, language OcrDetectionLanguage
 		return result, validation.NewError("computervision.BaseClient", "Read", err.Error())
 	}
 
-	req, err := client.ReadPreparer(ctx, language, imageURL)
+	req, err := client.ReadPreparer(ctx, imageURL, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "Read", nil, "Failure preparing request")
 		return
@@ -1365,20 +1369,23 @@ func (client BaseClient) Read(ctx context.Context, language OcrDetectionLanguage
 }
 
 // ReadPreparer prepares the Read request.
-func (client BaseClient) ReadPreparer(ctx context.Context, language OcrDetectionLanguage, imageURL ImageURL) (*http.Request, error) {
+func (client BaseClient) ReadPreparer(ctx context.Context, imageURL ImageURL, language OcrDetectionLanguage) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
 
-	queryParameters := map[string]interface{}{
-		"language": autorest.Encode("query", language),
+	queryParameters := map[string]interface{}{}
+	if len(string(language)) > 0 {
+		queryParameters["language"] = autorest.Encode("query", language)
+	} else {
+		queryParameters["language"] = autorest.Encode("query", "en")
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
-		autorest.WithPath("/read/core/analyze"),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
+		autorest.WithPath("/read/analyze"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1408,9 +1415,13 @@ func (client BaseClient) ReadResponder(resp *http.Response) (result autorest.Res
 // response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must
 // use for your 'GetReadResult' operation to access OCR results.​
 // Parameters:
-// language - the BCP-47 language code of the text to be detected in the image.
 // imageParameter - an image stream.
-func (client BaseClient) ReadInStream(ctx context.Context, language OcrDetectionLanguage, imageParameter io.ReadCloser) (result autorest.Response, err error) {
+// language - the BCP-47 language code of the text to be detected in the image. In future versions, when
+// language parameter is not passed, language detection will be used to determine the language. However, in the
+// current version, missing language parameter will cause English to be used. To ensure that your document is
+// always parsed in English without the use of language detection in the future, pass “en” in the language
+// parameter
+func (client BaseClient) ReadInStream(ctx context.Context, imageParameter io.ReadCloser, language OcrDetectionLanguage) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ReadInStream")
 		defer func() {
@@ -1421,7 +1432,7 @@ func (client BaseClient) ReadInStream(ctx context.Context, language OcrDetection
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ReadInStreamPreparer(ctx, language, imageParameter)
+	req, err := client.ReadInStreamPreparer(ctx, imageParameter, language)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "computervision.BaseClient", "ReadInStream", nil, "Failure preparing request")
 		return
@@ -1443,20 +1454,23 @@ func (client BaseClient) ReadInStream(ctx context.Context, language OcrDetection
 }
 
 // ReadInStreamPreparer prepares the ReadInStream request.
-func (client BaseClient) ReadInStreamPreparer(ctx context.Context, language OcrDetectionLanguage, imageParameter io.ReadCloser) (*http.Request, error) {
+func (client BaseClient) ReadInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, language OcrDetectionLanguage) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"Endpoint": client.Endpoint,
 	}
 
-	queryParameters := map[string]interface{}{
-		"language": autorest.Encode("query", language),
+	queryParameters := map[string]interface{}{}
+	if len(string(language)) > 0 {
+		queryParameters["language"] = autorest.Encode("query", language)
+	} else {
+		queryParameters["language"] = autorest.Encode("query", "en")
 	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
-		autorest.WithPath("/read/core/analyze"),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
+		autorest.WithPath("/read/analyze"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1549,7 +1563,7 @@ func (client BaseClient) RecognizePrintedTextPreparer(ctx context.Context, detec
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/ocr"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -1638,7 +1652,7 @@ func (client BaseClient) RecognizePrintedTextInStreamPreparer(ctx context.Contex
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/ocr"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))
@@ -1732,7 +1746,7 @@ func (client BaseClient) TagImagePreparer(ctx context.Context, imageURL ImageURL
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/tag"),
 		autorest.WithJSON(imageURL),
 		autorest.WithQueryParameters(queryParameters))
@@ -1820,7 +1834,7 @@ func (client BaseClient) TagImageInStreamPreparer(ctx context.Context, imagePara
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/octet-stream"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/vision/v3.0-preview", urlParameters),
 		autorest.WithPath("/tag"),
 		autorest.WithFile(imageParameter),
 		autorest.WithQueryParameters(queryParameters))

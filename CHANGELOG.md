@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v34.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appplatform | 2019-05-01-preview |
+| web | 2019-08-01 |
+
 ## `v34.1.0`
 
 ### New Packages

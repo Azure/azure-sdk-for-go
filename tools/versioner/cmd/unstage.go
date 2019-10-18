@@ -58,6 +58,8 @@ var (
 	getTagsHook TagsHookFunc
 )
 
+const changeLogName = "CHANGELOG.md"
+
 // TagsHookFunc is a func used for get tags from remote
 type TagsHookFunc func(string, string) ([]string, error)
 
@@ -400,7 +402,6 @@ func writeChangelog(stage string, mod modinfo.Provider) error {
 	if mod.NewModule() {
 		return nil
 	}
-	const changeLogName = "CHANGELOG.md"
 	rpt := mod.GenerateReport()
 	log, err := os.Create(filepath.Join(stage, changeLogName))
 	if err != nil {

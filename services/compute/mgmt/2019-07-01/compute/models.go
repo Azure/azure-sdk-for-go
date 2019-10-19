@@ -1812,7 +1812,7 @@ type BootDiagnosticsInstanceView struct {
 	Status *InstanceViewStatus `json:"status,omitempty"`
 }
 
-// CloudError an error response from the Gallery service.
+// CloudError an error response from the Compute service.
 type CloudError struct {
 	Error *APIError `json:"error,omitempty"`
 }

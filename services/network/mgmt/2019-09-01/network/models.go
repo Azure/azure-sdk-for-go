@@ -7353,6 +7353,41 @@ type AzureFirewallPropertiesFormat struct {
 	HubIPAddresses *HubIPAddresses `json:"hubIpAddresses,omitempty"`
 	// Sku - The Azure Firewall Resource SKU.
 	Sku *AzureFirewallSku `json:"sku,omitempty"`
+	// AdditionalProperties - The additional properties used to further config this azure firewall
+	AdditionalProperties map[string]*string `json:"additionalProperties"`
+}
+
+// MarshalJSON is the custom marshaler for AzureFirewallPropertiesFormat.
+func (afpf AzureFirewallPropertiesFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if afpf.ApplicationRuleCollections != nil {
+		objectMap["applicationRuleCollections"] = afpf.ApplicationRuleCollections
+	}
+	if afpf.NatRuleCollections != nil {
+		objectMap["natRuleCollections"] = afpf.NatRuleCollections
+	}
+	if afpf.NetworkRuleCollections != nil {
+		objectMap["networkRuleCollections"] = afpf.NetworkRuleCollections
+	}
+	if afpf.IPConfigurations != nil {
+		objectMap["ipConfigurations"] = afpf.IPConfigurations
+	}
+	if afpf.ThreatIntelMode != "" {
+		objectMap["threatIntelMode"] = afpf.ThreatIntelMode
+	}
+	if afpf.VirtualHub != nil {
+		objectMap["virtualHub"] = afpf.VirtualHub
+	}
+	if afpf.FirewallPolicy != nil {
+		objectMap["firewallPolicy"] = afpf.FirewallPolicy
+	}
+	if afpf.Sku != nil {
+		objectMap["sku"] = afpf.Sku
+	}
+	if afpf.AdditionalProperties != nil {
+		objectMap["additionalProperties"] = afpf.AdditionalProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // AzureFirewallPublicIPAddress public IP Address associated with azure firewall.
@@ -21890,14 +21925,14 @@ func (pvg *P2SVpnGateway) UnmarshalJSON(body []byte) error {
 type P2SVpnGatewayProperties struct {
 	// VirtualHub - The VirtualHub to which the gateway belongs.
 	VirtualHub *SubResource `json:"virtualHub,omitempty"`
-	// P2sConnectionConfigurations - List of all p2s connection configurations of the gateway.
-	P2sConnectionConfigurations *[]P2SConnectionConfiguration `json:"p2sConnectionConfigurations,omitempty"`
+	// P2SConnectionConfigurations - List of all p2s connection configurations of the gateway.
+	P2SConnectionConfigurations *[]P2SConnectionConfiguration `json:"p2SConnectionConfigurations,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the P2S VPN gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VpnGatewayScaleUnit - The scale unit for this p2s vpn gateway.
 	VpnGatewayScaleUnit *int32 `json:"vpnGatewayScaleUnit,omitempty"`
 	// VpnServerConfiguration - The VpnServerConfiguration to which the p2sVpnGateway is attached to.
-	VpnServerConfiguration *VpnServerConfiguration `json:"vpnServerConfiguration,omitempty"`
+	VpnServerConfiguration *SubResource `json:"vpnServerConfiguration,omitempty"`
 	// VpnClientConnectionHealth - READ-ONLY; All P2S VPN clients' connection health status.
 	VpnClientConnectionHealth *VpnClientConnectionHealth `json:"vpnClientConnectionHealth,omitempty"`
 }
@@ -33976,14 +34011,14 @@ type VpnServerConfigurationProperties struct {
 	VpnProtocols *[]VpnGatewayTunnelingProtocol `json:"vpnProtocols,omitempty"`
 	// VpnAuthenticationTypes - VPN authentication types for the VpnServerConfiguration.
 	VpnAuthenticationTypes *[]VpnAuthenticationType `json:"vpnAuthenticationTypes,omitempty"`
-	// VpnServerConfigVpnClientRootCertificates - VPN client root certificate of VpnServerConfiguration.
-	VpnServerConfigVpnClientRootCertificates *[]VpnServerConfigVpnClientRootCertificate `json:"vpnServerConfigVpnClientRootCertificates,omitempty"`
-	// VpnServerConfigVpnClientRevokedCertificates - VPN client revoked certificate of VpnServerConfiguration.
-	VpnServerConfigVpnClientRevokedCertificates *[]VpnServerConfigVpnClientRevokedCertificate `json:"vpnServerConfigVpnClientRevokedCertificates,omitempty"`
-	// VpnServerConfigRadiusServerRootCertificates - Radius Server root certificate of VpnServerConfiguration.
-	VpnServerConfigRadiusServerRootCertificates *[]VpnServerConfigRadiusServerRootCertificate `json:"vpnServerConfigRadiusServerRootCertificates,omitempty"`
-	// VpnServerConfigRadiusClientRootCertificates - Radius client root certificate of VpnServerConfiguration.
-	VpnServerConfigRadiusClientRootCertificates *[]VpnServerConfigRadiusClientRootCertificate `json:"vpnServerConfigRadiusClientRootCertificates,omitempty"`
+	// VpnClientRootCertificates - VPN client root certificate of VpnServerConfiguration.
+	VpnClientRootCertificates *[]VpnServerConfigVpnClientRootCertificate `json:"vpnClientRootCertificates,omitempty"`
+	// VpnClientRevokedCertificates - VPN client revoked certificate of VpnServerConfiguration.
+	VpnClientRevokedCertificates *[]VpnServerConfigVpnClientRevokedCertificate `json:"vpnClientRevokedCertificates,omitempty"`
+	// RadiusServerRootCertificates - Radius Server root certificate of VpnServerConfiguration.
+	RadiusServerRootCertificates *[]VpnServerConfigRadiusServerRootCertificate `json:"radiusServerRootCertificates,omitempty"`
+	// RadiusClientRootCertificates - Radius client root certificate of VpnServerConfiguration.
+	RadiusClientRootCertificates *[]VpnServerConfigRadiusClientRootCertificate `json:"radiusClientRootCertificates,omitempty"`
 	// VpnClientIpsecPolicies - VpnClientIpsecPolicies for VpnServerConfiguration.
 	VpnClientIpsecPolicies *[]IpsecPolicy `json:"vpnClientIpsecPolicies,omitempty"`
 	// RadiusServerAddress - The radius server address property of the VpnServerConfiguration resource for point to site client connection.

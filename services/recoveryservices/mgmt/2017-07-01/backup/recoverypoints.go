@@ -40,131 +40,6 @@ func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) R
 	return RecoveryPointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Crr lists the backup copies for the backed up item.
-// Parameters:
-// vaultName - the name of the recovery services vault.
-// resourceGroupName - the name of the resource group where the recovery services vault is present.
-// fabricName - fabric name associated with the backed up item.
-// containerName - container name associated with the backed up item.
-// protectedItemName - backed up item whose backup copies are to be fetched.
-// filter - oData filter options.
-func (client RecoveryPointsClient) Crr(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result RecoveryPointResourceListPage, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RecoveryPointsClient.Crr")
-		defer func() {
-			sc := -1
-			if result.rprl.Response.Response != nil {
-				sc = result.rprl.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.fn = client.crrNextResults
-	req, err := client.CrrPreparer(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.RecoveryPointsClient", "Crr", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CrrSender(req)
-	if err != nil {
-		result.rprl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "backup.RecoveryPointsClient", "Crr", resp, "Failure sending request")
-		return
-	}
-
-	result.rprl, err = client.CrrResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.RecoveryPointsClient", "Crr", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CrrPreparer prepares the Crr request.
-func (client RecoveryPointsClient) CrrPreparer(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"containerName":     autorest.Encode("path", containerName),
-		"fabricName":        autorest.Encode("path", fabricName),
-		"protectedItemName": autorest.Encode("path", protectedItemName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"vaultName":         autorest.Encode("path", vaultName),
-	}
-
-	const APIVersion = "2018-12-20"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CrrSender sends the Crr request. The method will close the
-// http.Response Body if it receives an error.
-func (client RecoveryPointsClient) CrrSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// CrrResponder handles the response to the Crr request. The method always
-// closes the http.Response Body.
-func (client RecoveryPointsClient) CrrResponder(resp *http.Response) (result RecoveryPointResourceList, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// crrNextResults retrieves the next set of results, if any.
-func (client RecoveryPointsClient) crrNextResults(ctx context.Context, lastResults RecoveryPointResourceList) (result RecoveryPointResourceList, err error) {
-	req, err := lastResults.recoveryPointResourceListPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "backup.RecoveryPointsClient", "crrNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.CrrSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "backup.RecoveryPointsClient", "crrNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.CrrResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.RecoveryPointsClient", "crrNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// CrrComplete enumerates all values, automatically crossing page boundaries as required.
-func (client RecoveryPointsClient) CrrComplete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result RecoveryPointResourceListIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/RecoveryPointsClient.Crr")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.Crr(ctx, vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
-	return
-}
-
 // Get provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous
 // operation.
 // To know the status of the operation, call the GetProtectedItemOperationResult API.
@@ -259,7 +134,7 @@ func (client RecoveryPointsClient) GetResponder(resp *http.Response) (result Rec
 // fabricName - fabric name associated with the container.
 // containerName - name of the container.
 // protectedItemName - name of the Protected Item.
-// recoveryPointID - recoveryPointId
+// recoveryPointID - recovery Point Id
 func (client RecoveryPointsClient) GetAccessToken(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result CrrAccessTokenResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RecoveryPointsClient.GetAccessToken")

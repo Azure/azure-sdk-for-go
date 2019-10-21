@@ -49,7 +49,6 @@ var _ ProtectedItemOperationResultsClientAPI = (*backup.ProtectedItemOperationRe
 
 // RecoveryPointsClientAPI contains the set of methods on the RecoveryPointsClient type.
 type RecoveryPointsClientAPI interface {
-	Crr(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
 	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.RecoveryPointResource, err error)
 	GetAccessToken(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.CrrAccessTokenResource, err error)
 	List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
@@ -131,7 +130,6 @@ var _ JobsGroupClientAPI = (*backup.JobsGroupClient)(nil)
 
 // ProtectedItemsGroupClientAPI contains the set of methods on the ProtectedItemsGroupClient type.
 type ProtectedItemsGroupClientAPI interface {
-	Crr(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListPage, err error)
 	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListPage, err error)
 }
 
@@ -185,6 +183,20 @@ type CrrOperationStatusClientAPI interface {
 }
 
 var _ CrrOperationStatusClientAPI = (*backup.CrrOperationStatusClient)(nil)
+
+// RecoveryPointsCrrClientAPI contains the set of methods on the RecoveryPointsCrrClient type.
+type RecoveryPointsCrrClientAPI interface {
+	List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
+}
+
+var _ RecoveryPointsCrrClientAPI = (*backup.RecoveryPointsCrrClient)(nil)
+
+// ProtectedItemsCrrClientAPI contains the set of methods on the ProtectedItemsCrrClient type.
+type ProtectedItemsCrrClientAPI interface {
+	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListPage, err error)
+}
+
+var _ ProtectedItemsCrrClientAPI = (*backup.ProtectedItemsCrrClient)(nil)
 
 // ProtectionIntentClientAPI contains the set of methods on the ProtectionIntentClient type.
 type ProtectionIntentClientAPI interface {

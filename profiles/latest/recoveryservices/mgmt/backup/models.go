@@ -1095,6 +1095,7 @@ type ProtectedItemResourceList = original.ProtectedItemResourceList
 type ProtectedItemResourceListIterator = original.ProtectedItemResourceListIterator
 type ProtectedItemResourceListPage = original.ProtectedItemResourceListPage
 type ProtectedItemsClient = original.ProtectedItemsClient
+type ProtectedItemsCrrClient = original.ProtectedItemsCrrClient
 type ProtectedItemsGroupClient = original.ProtectedItemsGroupClient
 type ProtectionContainer = original.ProtectionContainer
 type ProtectionContainerOperationResultsClient = original.ProtectionContainerOperationResultsClient
@@ -1130,6 +1131,7 @@ type RecoveryPointResourceListIterator = original.RecoveryPointResourceListItera
 type RecoveryPointResourceListPage = original.RecoveryPointResourceListPage
 type RecoveryPointTierInformation = original.RecoveryPointTierInformation
 type RecoveryPointsClient = original.RecoveryPointsClient
+type RecoveryPointsCrrClient = original.RecoveryPointsCrrClient
 type Request = original.Request
 type RequestResource = original.RequestResource
 type Resource = original.Resource
@@ -1371,6 +1373,12 @@ func NewProtectedItemsClient(subscriptionID string) ProtectedItemsClient {
 func NewProtectedItemsClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemsClient {
 	return original.NewProtectedItemsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewProtectedItemsCrrClient(subscriptionID string) ProtectedItemsCrrClient {
+	return original.NewProtectedItemsCrrClient(subscriptionID)
+}
+func NewProtectedItemsCrrClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemsCrrClient {
+	return original.NewProtectedItemsCrrClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewProtectedItemsGroupClient(subscriptionID string) ProtectedItemsGroupClient {
 	return original.NewProtectedItemsGroupClient(subscriptionID)
 }
@@ -1460,6 +1468,12 @@ func NewRecoveryPointsClient(subscriptionID string) RecoveryPointsClient {
 }
 func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) RecoveryPointsClient {
 	return original.NewRecoveryPointsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRecoveryPointsCrrClient(subscriptionID string) RecoveryPointsCrrClient {
+	return original.NewRecoveryPointsCrrClient(subscriptionID)
+}
+func NewRecoveryPointsCrrClientWithBaseURI(baseURI string, subscriptionID string) RecoveryPointsCrrClient {
+	return original.NewRecoveryPointsCrrClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceStorageConfigsClient(subscriptionID string) ResourceStorageConfigsClient {
 	return original.NewResourceStorageConfigsClient(subscriptionID)

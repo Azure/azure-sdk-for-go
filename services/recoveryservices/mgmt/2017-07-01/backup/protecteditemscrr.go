@@ -25,19 +25,19 @@ import (
 	"net/http"
 )
 
-// ProtectedItemsGroupClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
-type ProtectedItemsGroupClient struct {
+// ProtectedItemsCrrClient is the open API 2.0 Specs for Azure RecoveryServices Backup service
+type ProtectedItemsCrrClient struct {
 	BaseClient
 }
 
-// NewProtectedItemsGroupClient creates an instance of the ProtectedItemsGroupClient client.
-func NewProtectedItemsGroupClient(subscriptionID string) ProtectedItemsGroupClient {
-	return NewProtectedItemsGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewProtectedItemsCrrClient creates an instance of the ProtectedItemsCrrClient client.
+func NewProtectedItemsCrrClient(subscriptionID string) ProtectedItemsCrrClient {
+	return NewProtectedItemsCrrClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProtectedItemsGroupClientWithBaseURI creates an instance of the ProtectedItemsGroupClient client.
-func NewProtectedItemsGroupClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemsGroupClient {
-	return ProtectedItemsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewProtectedItemsCrrClientWithBaseURI creates an instance of the ProtectedItemsCrrClient client.
+func NewProtectedItemsCrrClientWithBaseURI(baseURI string, subscriptionID string) ProtectedItemsCrrClient {
+	return ProtectedItemsCrrClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List provides a pageable list of all items that are backed up within a vault.
@@ -46,9 +46,9 @@ func NewProtectedItemsGroupClientWithBaseURI(baseURI string, subscriptionID stri
 // resourceGroupName - the name of the resource group where the recovery services vault is present.
 // filter - oData filter options.
 // skipToken - skipToken Filter.
-func (client ProtectedItemsGroupClient) List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result ProtectedItemResourceListPage, err error) {
+func (client ProtectedItemsCrrClient) List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result ProtectedItemResourceListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectedItemsGroupClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectedItemsCrrClient.List")
 		defer func() {
 			sc := -1
 			if result.pirl.Response.Response != nil {
@@ -60,34 +60,34 @@ func (client ProtectedItemsGroupClient) List(ctx context.Context, vaultName stri
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, vaultName, resourceGroupName, filter, skipToken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsCrrClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.pirl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsCrrClient", "List", resp, "Failure sending request")
 		return
 	}
 
 	result.pirl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsCrrClient", "List", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListPreparer prepares the List request.
-func (client ProtectedItemsGroupClient) ListPreparer(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (*http.Request, error) {
+func (client ProtectedItemsCrrClient) ListPreparer(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2019-05-13"
+	const APIVersion = "2018-12-20"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -101,21 +101,21 @@ func (client ProtectedItemsGroupClient) ListPreparer(ctx context.Context, vaultN
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupProtectedItems", pathParameters),
+		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupProtectedItems/", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProtectedItemsGroupClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client ProtectedItemsCrrClient) ListSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client ProtectedItemsGroupClient) ListResponder(resp *http.Response) (result ProtectedItemResourceList, err error) {
+func (client ProtectedItemsCrrClient) ListResponder(resp *http.Response) (result ProtectedItemResourceList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -127,10 +127,10 @@ func (client ProtectedItemsGroupClient) ListResponder(resp *http.Response) (resu
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client ProtectedItemsGroupClient) listNextResults(ctx context.Context, lastResults ProtectedItemResourceList) (result ProtectedItemResourceList, err error) {
+func (client ProtectedItemsCrrClient) listNextResults(ctx context.Context, lastResults ProtectedItemResourceList) (result ProtectedItemResourceList, err error) {
 	req, err := lastResults.protectedItemResourceListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "backup.ProtectedItemsCrrClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -138,19 +138,19 @@ func (client ProtectedItemsGroupClient) listNextResults(ctx context.Context, las
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "backup.ProtectedItemsCrrClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsCrrClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ProtectedItemsGroupClient) ListComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result ProtectedItemResourceListIterator, err error) {
+func (client ProtectedItemsCrrClient) ListComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result ProtectedItemResourceListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectedItemsGroupClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectedItemsCrrClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

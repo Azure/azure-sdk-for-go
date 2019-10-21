@@ -37,6 +37,164 @@ func NewFeaturesClient(endpoint string) FeaturesClient {
 	return FeaturesClient{New(endpoint)}
 }
 
+// AddEntityFeature adds a new feature relation to be used by the entity in a version of the application.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+// entityID - the entity extractor ID.
+// featureRelationCreateObject - a Feature relation information object.
+func (client FeaturesClient) AddEntityFeature(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, featureRelationCreateObject ModelFeatureInformation) (result OperationStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.AddEntityFeature")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.AddEntityFeaturePreparer(ctx, appID, versionID, entityID, featureRelationCreateObject)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "AddEntityFeature", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AddEntityFeatureSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "AddEntityFeature", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AddEntityFeatureResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "AddEntityFeature", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AddEntityFeaturePreparer prepares the AddEntityFeature request.
+func (client FeaturesClient) AddEntityFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, featureRelationCreateObject ModelFeatureInformation) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"entityId":  autorest.Encode("path", entityID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/features", pathParameters),
+		autorest.WithJSON(featureRelationCreateObject))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AddEntityFeatureSender sends the AddEntityFeature request. The method will close the
+// http.Response Body if it receives an error.
+func (client FeaturesClient) AddEntityFeatureSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// AddEntityFeatureResponder handles the response to the AddEntityFeature request. The method always
+// closes the http.Response Body.
+func (client FeaturesClient) AddEntityFeatureResponder(resp *http.Response) (result OperationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// AddIntentFeature adds a new feature relation to be used by the intent in a version of the application.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+// intentID - the intent classifier ID.
+// featureRelationCreateObject - a Feature relation information object.
+func (client FeaturesClient) AddIntentFeature(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, featureRelationCreateObject ModelFeatureInformation) (result OperationStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.AddIntentFeature")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.AddIntentFeaturePreparer(ctx, appID, versionID, intentID, featureRelationCreateObject)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "AddIntentFeature", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AddIntentFeatureSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "AddIntentFeature", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AddIntentFeatureResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "AddIntentFeature", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AddIntentFeaturePreparer prepares the AddIntentFeature request.
+func (client FeaturesClient) AddIntentFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, featureRelationCreateObject ModelFeatureInformation) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"intentId":  autorest.Encode("path", intentID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/features", pathParameters),
+		autorest.WithJSON(featureRelationCreateObject))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AddIntentFeatureSender sends the AddIntentFeature request. The method will close the
+// http.Response Body if it receives an error.
+func (client FeaturesClient) AddIntentFeatureSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// AddIntentFeatureResponder handles the response to the AddIntentFeature request. The method always
+// closes the http.Response Body.
+func (client FeaturesClient) AddIntentFeatureResponder(resp *http.Response) (result OperationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // AddPhraseList creates a new phraselist feature in a version of the application.
 // Parameters:
 // appID - the application ID.
@@ -115,161 +273,6 @@ func (client FeaturesClient) AddPhraseListResponder(resp *http.Response) (result
 	return
 }
 
-// CreatePatternFeature [DEPRECATED NOTICE: This operation will soon be removed] Creates a new pattern feature in a
-// version of the application.
-// Parameters:
-// appID - the application ID.
-// versionID - the version ID.
-// patternCreateObject - the Name and Pattern of the feature.
-func (client FeaturesClient) CreatePatternFeature(ctx context.Context, appID uuid.UUID, versionID string, patternCreateObject PatternCreateObject) (result Int32, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.CreatePatternFeature")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.CreatePatternFeaturePreparer(ctx, appID, versionID, patternCreateObject)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "CreatePatternFeature", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.CreatePatternFeatureSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "CreatePatternFeature", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CreatePatternFeatureResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "CreatePatternFeature", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// CreatePatternFeaturePreparer prepares the CreatePatternFeature request.
-func (client FeaturesClient) CreatePatternFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, patternCreateObject PatternCreateObject) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	pathParameters := map[string]interface{}{
-		"appId":     autorest.Encode("path", appID),
-		"versionId": autorest.Encode("path", versionID),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patterns", pathParameters),
-		autorest.WithJSON(patternCreateObject))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// CreatePatternFeatureSender sends the CreatePatternFeature request. The method will close the
-// http.Response Body if it receives an error.
-func (client FeaturesClient) CreatePatternFeatureSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// CreatePatternFeatureResponder handles the response to the CreatePatternFeature request. The method always
-// closes the http.Response Body.
-func (client FeaturesClient) CreatePatternFeatureResponder(resp *http.Response) (result Int32, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// DeletePatternFeature [DEPRECATED NOTICE: This operation will soon be removed] Deletes a pattern feature in a version
-// of the application.
-// Parameters:
-// appID - the application ID.
-// versionID - the version ID.
-// patternID - the pattern feature ID.
-func (client FeaturesClient) DeletePatternFeature(ctx context.Context, appID uuid.UUID, versionID string, patternID int32) (result OperationStatus, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.DeletePatternFeature")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.DeletePatternFeaturePreparer(ctx, appID, versionID, patternID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "DeletePatternFeature", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.DeletePatternFeatureSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "DeletePatternFeature", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeletePatternFeatureResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "DeletePatternFeature", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeletePatternFeaturePreparer prepares the DeletePatternFeature request.
-func (client FeaturesClient) DeletePatternFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, patternID int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	pathParameters := map[string]interface{}{
-		"appId":     autorest.Encode("path", appID),
-		"patternId": autorest.Encode("path", patternID),
-		"versionId": autorest.Encode("path", versionID),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patterns/{patternId}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeletePatternFeatureSender sends the DeletePatternFeature request. The method will close the
-// http.Response Body if it receives an error.
-func (client FeaturesClient) DeletePatternFeatureSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// DeletePatternFeatureResponder handles the response to the DeletePatternFeature request. The method always
-// closes the http.Response Body.
-func (client FeaturesClient) DeletePatternFeatureResponder(resp *http.Response) (result OperationStatus, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // DeletePhraseList deletes a phraselist feature from a version of the application.
 // Parameters:
 // appID - the application ID.
@@ -336,83 +339,6 @@ func (client FeaturesClient) DeletePhraseListSender(req *http.Request) (*http.Re
 // DeletePhraseListResponder handles the response to the DeletePhraseList request. The method always
 // closes the http.Response Body.
 func (client FeaturesClient) DeletePhraseListResponder(resp *http.Response) (result OperationStatus, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetPatternFeatureInfo [DEPRECATED NOTICE: This operation will soon be removed] Gets the specified pattern feature's
-// info in a version of the application.
-// Parameters:
-// appID - the application ID.
-// versionID - the version ID.
-// patternID - the pattern feature ID.
-func (client FeaturesClient) GetPatternFeatureInfo(ctx context.Context, appID uuid.UUID, versionID string, patternID int32) (result PatternFeatureInfo, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.GetPatternFeatureInfo")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.GetPatternFeatureInfoPreparer(ctx, appID, versionID, patternID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "GetPatternFeatureInfo", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetPatternFeatureInfoSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "GetPatternFeatureInfo", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetPatternFeatureInfoResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "GetPatternFeatureInfo", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetPatternFeatureInfoPreparer prepares the GetPatternFeatureInfo request.
-func (client FeaturesClient) GetPatternFeatureInfoPreparer(ctx context.Context, appID uuid.UUID, versionID string, patternID int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	pathParameters := map[string]interface{}{
-		"appId":     autorest.Encode("path", appID),
-		"patternId": autorest.Encode("path", patternID),
-		"versionId": autorest.Encode("path", versionID),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patterns/{patternId}", pathParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetPatternFeatureInfoSender sends the GetPatternFeatureInfo request. The method will close the
-// http.Response Body if it receives an error.
-func (client FeaturesClient) GetPatternFeatureInfoSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetPatternFeatureInfoResponder handles the response to the GetPatternFeatureInfo request. The method always
-// closes the http.Response Body.
-func (client FeaturesClient) GetPatternFeatureInfoResponder(resp *http.Response) (result PatternFeatureInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -600,108 +526,6 @@ func (client FeaturesClient) ListResponder(resp *http.Response) (result Features
 	return
 }
 
-// ListApplicationVersionPatternFeatures [DEPRECATED NOTICE: This operation will soon be removed] Gets all the pattern
-// features.
-// Parameters:
-// appID - the application ID.
-// versionID - the version ID.
-// skip - the number of entries to skip. Default value is 0.
-// take - the number of entries to return. Maximum page size is 500. Default is 100.
-func (client FeaturesClient) ListApplicationVersionPatternFeatures(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result ListPatternFeatureInfo, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.ListApplicationVersionPatternFeatures")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: skip,
-			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
-		{TargetValue: take,
-			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(500), Chain: nil},
-					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
-				}}}}}); err != nil {
-		return result, validation.NewError("authoring.FeaturesClient", "ListApplicationVersionPatternFeatures", err.Error())
-	}
-
-	req, err := client.ListApplicationVersionPatternFeaturesPreparer(ctx, appID, versionID, skip, take)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "ListApplicationVersionPatternFeatures", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListApplicationVersionPatternFeaturesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "ListApplicationVersionPatternFeatures", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListApplicationVersionPatternFeaturesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "ListApplicationVersionPatternFeatures", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListApplicationVersionPatternFeaturesPreparer prepares the ListApplicationVersionPatternFeatures request.
-func (client FeaturesClient) ListApplicationVersionPatternFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	pathParameters := map[string]interface{}{
-		"appId":     autorest.Encode("path", appID),
-		"versionId": autorest.Encode("path", versionID),
-	}
-
-	queryParameters := map[string]interface{}{}
-	if skip != nil {
-		queryParameters["skip"] = autorest.Encode("query", *skip)
-	} else {
-		queryParameters["skip"] = autorest.Encode("query", 0)
-	}
-	if take != nil {
-		queryParameters["take"] = autorest.Encode("query", *take)
-	} else {
-		queryParameters["take"] = autorest.Encode("query", 100)
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patterns", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListApplicationVersionPatternFeaturesSender sends the ListApplicationVersionPatternFeatures request. The method will close the
-// http.Response Body if it receives an error.
-func (client FeaturesClient) ListApplicationVersionPatternFeaturesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListApplicationVersionPatternFeaturesResponder handles the response to the ListApplicationVersionPatternFeatures request. The method always
-// closes the http.Response Body.
-func (client FeaturesClient) ListApplicationVersionPatternFeaturesResponder(resp *http.Response) (result ListPatternFeatureInfo, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // ListPhraseLists gets all the phraselist features in a version of the application.
 // Parameters:
 // appID - the application ID.
@@ -798,87 +622,6 @@ func (client FeaturesClient) ListPhraseListsResponder(resp *http.Response) (resu
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// UpdatePatternFeature [DEPRECATED NOTICE: This operation will soon be removed] Updates the pattern, the name and the
-// state of the pattern feature in a version of the application.
-// Parameters:
-// appID - the application ID.
-// versionID - the version ID.
-// patternID - the pattern feature ID.
-// patternUpdateObject - the new values for: - Just a boolean called IsActive, in which case the status of the
-// feature will be changed. - Name, Pattern and a boolean called IsActive to update the feature.
-func (client FeaturesClient) UpdatePatternFeature(ctx context.Context, appID uuid.UUID, versionID string, patternID int32, patternUpdateObject PatternUpdateObject) (result OperationStatus, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/FeaturesClient.UpdatePatternFeature")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.UpdatePatternFeaturePreparer(ctx, appID, versionID, patternID, patternUpdateObject)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "UpdatePatternFeature", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.UpdatePatternFeatureSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "UpdatePatternFeature", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdatePatternFeatureResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "authoring.FeaturesClient", "UpdatePatternFeature", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// UpdatePatternFeaturePreparer prepares the UpdatePatternFeature request.
-func (client FeaturesClient) UpdatePatternFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, patternID int32, patternUpdateObject PatternUpdateObject) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	pathParameters := map[string]interface{}{
-		"appId":     autorest.Encode("path", appID),
-		"patternId": autorest.Encode("path", patternID),
-		"versionId": autorest.Encode("path", versionID),
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
-		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/patterns/{patternId}", pathParameters),
-		autorest.WithJSON(patternUpdateObject))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// UpdatePatternFeatureSender sends the UpdatePatternFeature request. The method will close the
-// http.Response Body if it receives an error.
-func (client FeaturesClient) UpdatePatternFeatureSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// UpdatePatternFeatureResponder handles the response to the UpdatePatternFeature request. The method always
-// closes the http.Response Body.
-func (client FeaturesClient) UpdatePatternFeatureResponder(resp *http.Response) (result OperationStatus, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

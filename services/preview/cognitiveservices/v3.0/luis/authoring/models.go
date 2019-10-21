@@ -982,6 +982,8 @@ type FeatureInfoObject struct {
 	Name *string `json:"name,omitempty"`
 	// IsActive - Indicates if the feature is enabled.
 	IsActive *bool `json:"isActive,omitempty"`
+	// EnabledForAllModels - Indicates if the feature is enabled for all models in the application.
+	EnabledForAllModels *bool `json:"enabledForAllModels,omitempty"`
 }
 
 // FeaturesResponseObject model Features, including Patterns and Phraselists.
@@ -1273,6 +1275,12 @@ type ListLabelTextObject struct {
 	Value             *[]LabelTextObject `json:"value,omitempty"`
 }
 
+// ListModelFeatureInformation ...
+type ListModelFeatureInformation struct {
+	autorest.Response `json:"-"`
+	Value             *[]ModelFeatureInformation `json:"value,omitempty"`
+}
+
 // ListModelInfoResponse ...
 type ListModelInfoResponse struct {
 	autorest.Response `json:"-"`
@@ -1295,12 +1303,6 @@ type ListNDepthEntityExtractor struct {
 type ListPatternAnyEntityExtractor struct {
 	autorest.Response `json:"-"`
 	Value             *[]PatternAnyEntityExtractor `json:"value,omitempty"`
-}
-
-// ListPatternFeatureInfo ...
-type ListPatternFeatureInfo struct {
-	autorest.Response `json:"-"`
-	Value             *[]PatternFeatureInfo `json:"value,omitempty"`
 }
 
 // ListPatternRuleInfo ...
@@ -1610,6 +1612,15 @@ type ModelCreateObject struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// ModelFeatureInformation an object containing the model feature information either the model name or
+// feature name.
+type ModelFeatureInformation struct {
+	// ModelName - The name of the model used.
+	ModelName *string `json:"modelName,omitempty"`
+	// FeatureName - The name of the feature used.
+	FeatureName *string `json:"featureName,omitempty"`
+}
+
 // ModelInfo base type used in entity types.
 type ModelInfo struct {
 	// ID - The ID of the Entity Model.
@@ -1745,17 +1756,8 @@ type PatternAnyModelUpdateObject struct {
 	ExplicitList *[]string `json:"explicitList,omitempty"`
 }
 
-// PatternCreateObject object model for creating a Pattern feature.
-type PatternCreateObject struct {
-	// Pattern - The Regular Expression to match.
-	Pattern *string `json:"pattern,omitempty"`
-	// Name - Name of the feature.
-	Name *string `json:"name,omitempty"`
-}
-
 // PatternFeatureInfo pattern feature.
 type PatternFeatureInfo struct {
-	autorest.Response `json:"-"`
 	// Pattern - The Regular Expression to match.
 	Pattern *string `json:"pattern,omitempty"`
 	// ID - A six-digit ID used for Features.
@@ -1764,6 +1766,8 @@ type PatternFeatureInfo struct {
 	Name *string `json:"name,omitempty"`
 	// IsActive - Indicates if the feature is enabled.
 	IsActive *bool `json:"isActive,omitempty"`
+	// EnabledForAllModels - Indicates if the feature is enabled for all models in the application.
+	EnabledForAllModels *bool `json:"enabledForAllModels,omitempty"`
 }
 
 // PatternRule pattern
@@ -1801,16 +1805,6 @@ type PatternRuleUpdateObject struct {
 	Pattern *string `json:"pattern,omitempty"`
 	// Intent - The intent's name which the pattern belongs to.
 	Intent *string `json:"intent,omitempty"`
-}
-
-// PatternUpdateObject object model for updating an existing Pattern feature.
-type PatternUpdateObject struct {
-	// Pattern - The Regular Expression to match.
-	Pattern *string `json:"pattern,omitempty"`
-	// Name - Name of the feature.
-	Name *string `json:"name,omitempty"`
-	// IsActive - Indicates if the Pattern feature is enabled.
-	IsActive *bool `json:"isActive,omitempty"`
 }
 
 // PersonalAssistantsResponse response containing user's endpoint keys and the endpoint URLs of the
@@ -1856,6 +1850,8 @@ type PhraseListFeatureInfo struct {
 	Name *string `json:"name,omitempty"`
 	// IsActive - Indicates if the feature is enabled.
 	IsActive *bool `json:"isActive,omitempty"`
+	// EnabledForAllModels - Indicates if the feature is enabled for all models in the application.
+	EnabledForAllModels *bool `json:"enabledForAllModels,omitempty"`
 }
 
 // PhraselistUpdateObject object model for updating a Phraselist.
@@ -1868,6 +1864,8 @@ type PhraselistUpdateObject struct {
 	IsActive *bool `json:"isActive,omitempty"`
 	// IsExchangeable - An exchangeable phrase list feature are serves as single feature to the LUIS underlying training algorithm. It is used as a lexicon lookup feature where its value is 1 if the lexicon contains a given word or 0 if it doesn’t. Think of an exchangeable as a synonyms list. A non-exchangeable phrase list feature has all the phrases in the list serve as separate features to the underlying training algorithm. So, if you your phrase list feature contains 5 phrases, they will be mapped to 5 separate features. You can think of the non-exchangeable phrase list feature as an additional bag of words that you are willing to add to LUIS existing vocabulary features. Think of a non-exchangeable as set of different words. Default value is true.
 	IsExchangeable *bool `json:"isExchangeable,omitempty"`
+	// EnabledForAllModels - Indicates if the Phraselist is enabled for all models in the application.
+	EnabledForAllModels *bool `json:"enabledForAllModels,omitempty"`
 }
 
 // PrebuiltDomain prebuilt Domain.

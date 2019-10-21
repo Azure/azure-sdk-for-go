@@ -8303,13 +8303,13 @@ type CheckPrivateLinkServiceVisibilityRequest struct {
 	PrivateLinkServiceAlias *string `json:"privateLinkServiceAlias,omitempty"`
 }
 
-// CloudError an error response from the Batch service.
+// CloudError an error response from the service.
 type CloudError struct {
 	// Error - Cloud error body.
 	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
-// CloudErrorBody an error response from the Batch service.
+// CloudErrorBody an error response from the service.
 type CloudErrorBody struct {
 	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`

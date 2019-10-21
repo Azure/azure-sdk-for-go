@@ -515,6 +515,90 @@ func (client PrivateLinkServicesClient) GetResponder(resp *http.Response) (resul
 	return
 }
 
+// GetPrivateEndpointConnection get the specific private end point connection by specific private link service in the
+// resource group.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the private link service.
+// peConnectionName - the name of the private end point connection.
+// expand - expands referenced resources.
+func (client PrivateLinkServicesClient) GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, expand string) (result PrivateEndpointConnection, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.GetPrivateEndpointConnection")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetPrivateEndpointConnectionPreparer(ctx, resourceGroupName, serviceName, peConnectionName, expand)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "GetPrivateEndpointConnection", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetPrivateEndpointConnectionSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "GetPrivateEndpointConnection", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetPrivateEndpointConnectionResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "GetPrivateEndpointConnection", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetPrivateEndpointConnectionPreparer prepares the GetPrivateEndpointConnection request.
+func (client PrivateLinkServicesClient) GetPrivateEndpointConnectionPreparer(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, expand string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"peConnectionName":  autorest.Encode("path", peConnectionName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(expand) > 0 {
+		queryParameters["$expand"] = autorest.Encode("query", expand)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateLinkServices/{serviceName}/privateEndpointConnections/{peConnectionName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetPrivateEndpointConnectionSender sends the GetPrivateEndpointConnection request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateLinkServicesClient) GetPrivateEndpointConnectionSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetPrivateEndpointConnectionResponder handles the response to the GetPrivateEndpointConnection request. The method always
+// closes the http.Response Body.
+func (client PrivateLinkServicesClient) GetPrivateEndpointConnectionResponder(resp *http.Response) (result PrivateEndpointConnection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List gets all private link services in a resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
@@ -965,6 +1049,121 @@ func (client PrivateLinkServicesClient) ListBySubscriptionComplete(ctx context.C
 		}()
 	}
 	result.page, err = client.ListBySubscription(ctx)
+	return
+}
+
+// ListPrivateEndpointConnections gets all private end point connections for a specific private link service.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// serviceName - the name of the private link service.
+func (client PrivateLinkServicesClient) ListPrivateEndpointConnections(ctx context.Context, resourceGroupName string, serviceName string) (result PrivateEndpointConnectionListResultPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.ListPrivateEndpointConnections")
+		defer func() {
+			sc := -1
+			if result.peclr.Response.Response != nil {
+				sc = result.peclr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listPrivateEndpointConnectionsNextResults
+	req, err := client.ListPrivateEndpointConnectionsPreparer(ctx, resourceGroupName, serviceName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListPrivateEndpointConnections", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListPrivateEndpointConnectionsSender(req)
+	if err != nil {
+		result.peclr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListPrivateEndpointConnections", resp, "Failure sending request")
+		return
+	}
+
+	result.peclr, err = client.ListPrivateEndpointConnectionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "ListPrivateEndpointConnections", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListPrivateEndpointConnectionsPreparer prepares the ListPrivateEndpointConnections request.
+func (client PrivateLinkServicesClient) ListPrivateEndpointConnectionsPreparer(ctx context.Context, resourceGroupName string, serviceName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serviceName":       autorest.Encode("path", serviceName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateLinkServices/{serviceName}/privateEndpointConnections", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListPrivateEndpointConnectionsSender sends the ListPrivateEndpointConnections request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateLinkServicesClient) ListPrivateEndpointConnectionsSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListPrivateEndpointConnectionsResponder handles the response to the ListPrivateEndpointConnections request. The method always
+// closes the http.Response Body.
+func (client PrivateLinkServicesClient) ListPrivateEndpointConnectionsResponder(resp *http.Response) (result PrivateEndpointConnectionListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listPrivateEndpointConnectionsNextResults retrieves the next set of results, if any.
+func (client PrivateLinkServicesClient) listPrivateEndpointConnectionsNextResults(ctx context.Context, lastResults PrivateEndpointConnectionListResult) (result PrivateEndpointConnectionListResult, err error) {
+	req, err := lastResults.privateEndpointConnectionListResultPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "listPrivateEndpointConnectionsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListPrivateEndpointConnectionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "listPrivateEndpointConnectionsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListPrivateEndpointConnectionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesClient", "listPrivateEndpointConnectionsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListPrivateEndpointConnectionsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client PrivateLinkServicesClient) ListPrivateEndpointConnectionsComplete(ctx context.Context, resourceGroupName string, serviceName string) (result PrivateEndpointConnectionListResultIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.ListPrivateEndpointConnections")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListPrivateEndpointConnections(ctx, resourceGroupName, serviceName)
 	return
 }
 

@@ -40,6 +40,129 @@ func NewProtectedItemsGroupClientWithBaseURI(baseURI string, subscriptionID stri
 	return ProtectedItemsGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// Crr provides a pageable list of all items that are backed up within a vault.
+// Parameters:
+// vaultName - the name of the recovery services vault.
+// resourceGroupName - the name of the resource group where the recovery services vault is present.
+// filter - oData filter options.
+// skipToken - skipToken Filter.
+func (client ProtectedItemsGroupClient) Crr(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result ProtectedItemResourceListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectedItemsGroupClient.Crr")
+		defer func() {
+			sc := -1
+			if result.pirl.Response.Response != nil {
+				sc = result.pirl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.crrNextResults
+	req, err := client.CrrPreparer(ctx, vaultName, resourceGroupName, filter, skipToken)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "Crr", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CrrSender(req)
+	if err != nil {
+		result.pirl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "Crr", resp, "Failure sending request")
+		return
+	}
+
+	result.pirl, err = client.CrrResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "Crr", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CrrPreparer prepares the Crr request.
+func (client ProtectedItemsGroupClient) CrrPreparer(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"vaultName":         autorest.Encode("path", vaultName),
+	}
+
+	const APIVersion = "2018-12-20"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+	if len(filter) > 0 {
+		queryParameters["$filter"] = autorest.Encode("query", filter)
+	}
+	if len(skipToken) > 0 {
+		queryParameters["$skipToken"] = autorest.Encode("query", skipToken)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupProtectedItems/", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CrrSender sends the Crr request. The method will close the
+// http.Response Body if it receives an error.
+func (client ProtectedItemsGroupClient) CrrSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// CrrResponder handles the response to the Crr request. The method always
+// closes the http.Response Body.
+func (client ProtectedItemsGroupClient) CrrResponder(resp *http.Response) (result ProtectedItemResourceList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// crrNextResults retrieves the next set of results, if any.
+func (client ProtectedItemsGroupClient) crrNextResults(ctx context.Context, lastResults ProtectedItemResourceList) (result ProtectedItemResourceList, err error) {
+	req, err := lastResults.protectedItemResourceListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "crrNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.CrrSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "crrNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.CrrResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.ProtectedItemsGroupClient", "crrNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// CrrComplete enumerates all values, automatically crossing page boundaries as required.
+func (client ProtectedItemsGroupClient) CrrComplete(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result ProtectedItemResourceListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ProtectedItemsGroupClient.Crr")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.Crr(ctx, vaultName, resourceGroupName, filter, skipToken)
+	return
+}
+
 // List provides a pageable list of all items that are backed up within a vault.
 // Parameters:
 // vaultName - the name of the recovery services vault.

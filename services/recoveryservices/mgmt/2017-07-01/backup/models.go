@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -11368,6 +11369,29 @@ func (crrrr CrossRegionRestoreRequestResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// CrossRegionRestoreTriggerFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CrossRegionRestoreTriggerFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *CrossRegionRestoreTriggerFuture) Result(client CrossRegionRestoreClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.CrossRegionRestoreTriggerFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("backup.CrossRegionRestoreTriggerFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // CrrAccessToken container level access token for CRR
 type CrrAccessToken struct {
 	// AccessTokenString - Access token used for authentication
@@ -11445,6 +11469,29 @@ func (catr CrrAccessTokenResource) MarshalJSON() ([]byte, error) {
 		objectMap["eTag"] = catr.ETag
 	}
 	return json.Marshal(objectMap)
+}
+
+// CrrOperationResultsGetFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type CrrOperationResultsGetFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *CrrOperationResultsGetFuture) Result(client CrrOperationResultsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.CrrOperationResultsGetFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("backup.CrrOperationResultsGetFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // DailyRetentionFormat daily retention format.
@@ -20070,6 +20117,26 @@ type TargetRestoreInfo struct {
 	ContainerID *string `json:"containerId,omitempty"`
 	// DatabaseName - Database name InstanceName/DataBaseName for SQL or System/DbName for SAP Hana
 	DatabaseName *string `json:"databaseName,omitempty"`
+	// TargetDirectoryMapping - This will contain the target folder mapping for the Full/Diff/Log/Incremental pits.
+	TargetDirectoryMapping map[string]*string `json:"targetDirectoryMapping"`
+}
+
+// MarshalJSON is the custom marshaler for TargetRestoreInfo.
+func (tri TargetRestoreInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tri.OverwriteOption != "" {
+		objectMap["overwriteOption"] = tri.OverwriteOption
+	}
+	if tri.ContainerID != nil {
+		objectMap["containerId"] = tri.ContainerID
+	}
+	if tri.DatabaseName != nil {
+		objectMap["databaseName"] = tri.DatabaseName
+	}
+	if tri.TargetDirectoryMapping != nil {
+		objectMap["targetDirectoryMapping"] = tri.TargetDirectoryMapping
+	}
+	return json.Marshal(objectMap)
 }
 
 // TokenInformation the token information details.

@@ -49,6 +49,7 @@ var _ ProtectedItemOperationResultsClientAPI = (*backup.ProtectedItemOperationRe
 
 // RecoveryPointsClientAPI contains the set of methods on the RecoveryPointsClient type.
 type RecoveryPointsClientAPI interface {
+	Crr(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
 	Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.RecoveryPointResource, err error)
 	GetAccessToken(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string) (result backup.CrrAccessTokenResource, err error)
 	List(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, filter string) (result backup.RecoveryPointResourceListPage, err error)
@@ -130,6 +131,7 @@ var _ JobsGroupClientAPI = (*backup.JobsGroupClient)(nil)
 
 // ProtectedItemsGroupClientAPI contains the set of methods on the ProtectedItemsGroupClient type.
 type ProtectedItemsGroupClientAPI interface {
+	Crr(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListPage, err error)
 	List(ctx context.Context, vaultName string, resourceGroupName string, filter string, skipToken string) (result backup.ProtectedItemResourceListPage, err error)
 }
 
@@ -151,7 +153,7 @@ var _ AadPropertiesClientAPI = (*backup.AadPropertiesClient)(nil)
 
 // CrossRegionRestoreClientAPI contains the set of methods on the CrossRegionRestoreClient type.
 type CrossRegionRestoreClientAPI interface {
-	Trigger(ctx context.Context, azureRegion string, parameters backup.CrossRegionRestoreRequestResource) (result autorest.Response, err error)
+	Trigger(ctx context.Context, azureRegion string, parameters backup.CrossRegionRestoreRequestResource) (result backup.CrossRegionRestoreTriggerFuture, err error)
 }
 
 var _ CrossRegionRestoreClientAPI = (*backup.CrossRegionRestoreClient)(nil)
@@ -172,7 +174,7 @@ var _ CrrJobsClientAPI = (*backup.CrrJobsClient)(nil)
 
 // CrrOperationResultsClientAPI contains the set of methods on the CrrOperationResultsClient type.
 type CrrOperationResultsClientAPI interface {
-	Get(ctx context.Context, azureRegion string, operationID string) (result autorest.Response, err error)
+	Get(ctx context.Context, azureRegion string, operationID string) (result backup.CrrOperationResultsGetFuture, err error)
 }
 
 var _ CrrOperationResultsClientAPI = (*backup.CrrOperationResultsClient)(nil)

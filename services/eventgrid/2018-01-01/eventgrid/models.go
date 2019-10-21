@@ -2285,7 +2285,7 @@ type StorageDirectoryDeletedEventData struct {
 	// URL - The path to the deleted directory.
 	URL *string `json:"url,omitempty"`
 	// Recursive - Is this event for a recursive delete operation.
-	Recursive *string `json:"recursive,omitempty"`
+	Recursive *bool `json:"recursive,omitempty"`
 	// Sequencer - An opaque string value representing the logical sequence of events for any particular directory name. Users can use standard string comparison to understand the relative sequence of two events on the same directory name.
 	Sequencer *string `json:"sequencer,omitempty"`
 	// Identity - The identity of the requester that triggered this event.

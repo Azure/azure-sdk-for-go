@@ -1,0 +1,3 @@
+module github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs
+
+go 1.12

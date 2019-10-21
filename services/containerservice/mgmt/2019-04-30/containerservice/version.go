@@ -1,7 +1,5 @@
 package containerservice
 
-import "github.com/Azure/azure-sdk-for-go/version"
-
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,10 +19,12 @@ import "github.com/Azure/azure-sdk-for-go/version"
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/" + version.Number + " containerservice/2019-04-30"
+	return "Azure-SDK-For-Go/1.0.0 containerservice/2019-04-30"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.
 func Version() string {
-	return version.Number
+	return "1.0.0"
 }
+
+// tag: services/containerservice/mgmt/2019-04-30/containerservice/v1.0.0

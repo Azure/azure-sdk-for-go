@@ -11369,29 +11369,6 @@ func (crrrr CrossRegionRestoreRequestResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CrossRegionRestoreTriggerFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type CrossRegionRestoreTriggerFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *CrossRegionRestoreTriggerFuture) Result(client CrossRegionRestoreClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.CrossRegionRestoreTriggerFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("backup.CrossRegionRestoreTriggerFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // CrrAccessToken container level access token for CRR
 type CrrAccessToken struct {
 	// AccessTokenString - Access token used for authentication

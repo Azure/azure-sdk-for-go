@@ -44,13 +44,13 @@ func NewCrossRegionRestoreClientWithBaseURI(baseURI string, subscriptionID strin
 // Parameters:
 // azureRegion - azure region to hit Api
 // parameters - resource cross region restore request
-func (client CrossRegionRestoreClient) Trigger(ctx context.Context, azureRegion string, parameters CrossRegionRestoreRequestResource) (result CrossRegionRestoreTriggerFuture, err error) {
+func (client CrossRegionRestoreClient) Trigger(ctx context.Context, azureRegion string, parameters CrossRegionRestoreRequestResource) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CrossRegionRestoreClient.Trigger")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -61,10 +61,16 @@ func (client CrossRegionRestoreClient) Trigger(ctx context.Context, azureRegion 
 		return
 	}
 
-	result, err = client.TriggerSender(req)
+	resp, err := client.TriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.CrossRegionRestoreClient", "Trigger", result.Response(), "Failure sending request")
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "backup.CrossRegionRestoreClient", "Trigger", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.TriggerResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.CrossRegionRestoreClient", "Trigger", resp, "Failure responding to request")
 	}
 
 	return
@@ -94,15 +100,9 @@ func (client CrossRegionRestoreClient) TriggerPreparer(ctx context.Context, azur
 
 // TriggerSender sends the Trigger request. The method will close the
 // http.Response Body if it receives an error.
-func (client CrossRegionRestoreClient) TriggerSender(req *http.Request) (future CrossRegionRestoreTriggerFuture, err error) {
+func (client CrossRegionRestoreClient) TriggerSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // TriggerResponder handles the response to the Trigger request. The method always

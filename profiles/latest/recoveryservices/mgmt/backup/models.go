@@ -973,7 +973,6 @@ type ContainerIdentityInfo = original.ContainerIdentityInfo
 type CrossRegionRestoreClient = original.CrossRegionRestoreClient
 type CrossRegionRestoreRequest = original.CrossRegionRestoreRequest
 type CrossRegionRestoreRequestResource = original.CrossRegionRestoreRequestResource
-type CrossRegionRestoreTriggerFuture = original.CrossRegionRestoreTriggerFuture
 type CrrAccessToken = original.CrrAccessToken
 type CrrAccessTokenResource = original.CrrAccessTokenResource
 type CrrJobDetailsClient = original.CrrJobDetailsClient

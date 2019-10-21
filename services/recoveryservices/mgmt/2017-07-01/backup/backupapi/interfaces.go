@@ -151,7 +151,7 @@ var _ AadPropertiesClientAPI = (*backup.AadPropertiesClient)(nil)
 
 // CrossRegionRestoreClientAPI contains the set of methods on the CrossRegionRestoreClient type.
 type CrossRegionRestoreClientAPI interface {
-	Trigger(ctx context.Context, azureRegion string, parameters backup.CrossRegionRestoreRequestResource) (result backup.CrossRegionRestoreTriggerFuture, err error)
+	Trigger(ctx context.Context, azureRegion string, parameters backup.CrossRegionRestoreRequestResource) (result autorest.Response, err error)
 }
 
 var _ CrossRegionRestoreClientAPI = (*backup.CrossRegionRestoreClient)(nil)

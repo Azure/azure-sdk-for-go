@@ -274,7 +274,7 @@ type CreateProperties struct {
 	ShardCount *int32 `json:"shardCount,omitempty"`
 	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
-	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Deprecated. May optionally be used to request a specific IP address, only when deploying a Redis cache inside an Azure virtual network. We recommend you do not set this parameter, and connect using the hostname instead.
 	StaticIP *string `json:"staticIP,omitempty"`
 }
 
@@ -1033,7 +1033,7 @@ type Properties struct {
 	ShardCount *int32 `json:"shardCount,omitempty"`
 	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
-	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Deprecated. May optionally be used to request a specific IP address, only when deploying a Redis cache inside an Azure virtual network. We recommend you do not set this parameter, and connect using the hostname instead.
 	StaticIP *string `json:"staticIP,omitempty"`
 }
 
@@ -1127,7 +1127,7 @@ type ResourceProperties struct {
 	ShardCount *int32 `json:"shardCount,omitempty"`
 	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
-	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Deprecated. May optionally be used to request a specific IP address, only when deploying a Redis cache inside an Azure virtual network. We recommend you do not set this parameter, and connect using the hostname instead.
 	StaticIP *string `json:"staticIP,omitempty"`
 }
 
@@ -1352,7 +1352,7 @@ type UpdateProperties struct {
 	ShardCount *int32 `json:"shardCount,omitempty"`
 	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
-	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Deprecated. May optionally be used to request a specific IP address, only when deploying a Redis cache inside an Azure virtual network. We recommend you do not set this parameter, and connect using the hostname instead.
 	StaticIP *string `json:"staticIP,omitempty"`
 }
 

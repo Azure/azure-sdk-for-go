@@ -374,7 +374,7 @@ type Properties struct {
 	VirtualNetwork *string `json:"virtualNetwork,omitempty"`
 	// Subnet - Required when deploying a Redis cache inside an existing Azure Virtual Network.
 	Subnet *string `json:"subnet,omitempty"`
-	// StaticIP - Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Deprecated. May optionally be used to request a specific IP address, only when deploying a Redis cache inside an Azure virtual network. We recommend you do not set this parameter, and connect using the hostname instead.
 	StaticIP *string `json:"staticIP,omitempty"`
 }
 
@@ -437,7 +437,7 @@ type ReadableProperties struct {
 	VirtualNetwork *string `json:"virtualNetwork,omitempty"`
 	// Subnet - Required when deploying a Redis cache inside an existing Azure Virtual Network.
 	Subnet *string `json:"subnet,omitempty"`
-	// StaticIP - Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Deprecated. May optionally be used to request a specific IP address, only when deploying a Redis cache inside an Azure virtual network. We recommend you do not set this parameter, and connect using the hostname instead.
 	StaticIP *string `json:"staticIP,omitempty"`
 }
 
@@ -514,7 +514,7 @@ type ReadablePropertiesWithAccessKey struct {
 	VirtualNetwork *string `json:"virtualNetwork,omitempty"`
 	// Subnet - Required when deploying a Redis cache inside an existing Azure Virtual Network.
 	Subnet *string `json:"subnet,omitempty"`
-	// StaticIP - Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Deprecated. May optionally be used to request a specific IP address, only when deploying a Redis cache inside an Azure virtual network. We recommend you do not set this parameter, and connect using the hostname instead.
 	StaticIP *string `json:"staticIP,omitempty"`
 }
 

@@ -301,7 +301,7 @@ type CreateProperties struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
-	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Deprecated. May optionally be used to request a specific IP address, only when deploying a Redis cache inside an Azure virtual network. We recommend you do not set this parameter, and connect using the hostname instead.
 	StaticIP *string `json:"staticIP,omitempty"`
 	// RedisConfiguration - All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
 	RedisConfiguration map[string]*string `json:"redisConfiguration"`
@@ -1575,7 +1575,7 @@ type Properties struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// SubnetID - The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
 	SubnetID *string `json:"subnetId,omitempty"`
-	// StaticIP - Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
+	// StaticIP - Deprecated. May optionally be used to request a specific IP address, only when deploying a Redis cache inside an Azure virtual network. We recommend you do not set this parameter, and connect using the hostname instead.
 	StaticIP *string `json:"staticIP,omitempty"`
 	// RedisConfiguration - All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
 	RedisConfiguration map[string]*string `json:"redisConfiguration"`

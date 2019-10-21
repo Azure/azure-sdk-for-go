@@ -147,8 +147,6 @@ func (client Client) Create(ctx context.Context, resourceGroupName string, name 
 					Chain: []validation.Constraint{{Target: "parameters.CreateProperties.Sku.Capacity", Name: validation.Null, Rule: true, Chain: nil}}},
 					{Target: "parameters.CreateProperties.SubnetID", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.CreateProperties.SubnetID", Name: validation.Pattern, Rule: `^/subscriptions/[^/]*/resourceGroups/[^/]*/providers/Microsoft.(ClassicNetwork|Network)/virtualNetworks/[^/]*/subnets/[^/]*$`, Chain: nil}}},
-					{Target: "parameters.CreateProperties.StaticIP", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "parameters.CreateProperties.StaticIP", Name: validation.Pattern, Rule: `^\d+\.\d+\.\d+\.\d+$`, Chain: nil}}},
 				}},
 				{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("redis.Client", "Create", err.Error())

@@ -99,6 +99,7 @@ func (client VirtualNetworkGatewayConnectionsClient) CreateOrUpdatePreparer(ctx 
 		"api-version": APIVersion,
 	}
 
+	parameters.Etag = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

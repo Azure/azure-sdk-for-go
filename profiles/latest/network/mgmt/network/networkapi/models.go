@@ -52,6 +52,7 @@ type ExpressRouteServiceProvidersClientAPI = original.ExpressRouteServiceProvide
 type FirewallPoliciesClientAPI = original.FirewallPoliciesClientAPI
 type FirewallPolicyRuleGroupsClientAPI = original.FirewallPolicyRuleGroupsClientAPI
 type HubVirtualNetworkConnectionsClientAPI = original.HubVirtualNetworkConnectionsClientAPI
+type IPGroupsClientAPI = original.IPGroupsClientAPI
 type InboundNatRulesClientAPI = original.InboundNatRulesClientAPI
 type InterfaceIPConfigurationsClientAPI = original.InterfaceIPConfigurationsClientAPI
 type InterfaceLoadBalancersClientAPI = original.InterfaceLoadBalancersClientAPI

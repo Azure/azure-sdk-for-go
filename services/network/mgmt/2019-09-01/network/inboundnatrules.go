@@ -106,6 +106,7 @@ func (client InboundNatRulesClient) CreateOrUpdatePreparer(ctx context.Context, 
 		"api-version": APIVersion,
 	}
 
+	inboundNatRuleParameters.Etag = nil
 	inboundNatRuleParameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),

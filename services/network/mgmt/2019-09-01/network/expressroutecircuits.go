@@ -903,13 +903,13 @@ func (client ExpressRouteCircuitsClient) ListRoutesTableSummaryResponder(resp *h
 // resourceGroupName - the name of the resource group.
 // circuitName - the name of the circuit.
 // parameters - parameters supplied to update express route circuit tags.
-func (client ExpressRouteCircuitsClient) UpdateTags(ctx context.Context, resourceGroupName string, circuitName string, parameters TagsObject) (result ExpressRouteCircuitsUpdateTagsFuture, err error) {
+func (client ExpressRouteCircuitsClient) UpdateTags(ctx context.Context, resourceGroupName string, circuitName string, parameters TagsObject) (result ExpressRouteCircuit, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExpressRouteCircuitsClient.UpdateTags")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -920,10 +920,16 @@ func (client ExpressRouteCircuitsClient) UpdateTags(ctx context.Context, resourc
 		return
 	}
 
-	result, err = client.UpdateTagsSender(req)
+	resp, err := client.UpdateTagsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "UpdateTags", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "UpdateTags", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.UpdateTagsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "UpdateTags", resp, "Failure responding to request")
 	}
 
 	return
@@ -954,15 +960,9 @@ func (client ExpressRouteCircuitsClient) UpdateTagsPreparer(ctx context.Context,
 
 // UpdateTagsSender sends the UpdateTags request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExpressRouteCircuitsClient) UpdateTagsSender(req *http.Request) (future ExpressRouteCircuitsUpdateTagsFuture, err error) {
+func (client ExpressRouteCircuitsClient) UpdateTagsSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // UpdateTagsResponder handles the response to the UpdateTags request. The method always

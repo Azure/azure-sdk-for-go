@@ -2306,6 +2306,86 @@ func (client ModelClient) DeleteEntityResponder(resp *http.Response) (result Ope
 	return
 }
 
+// DeleteEntityFeature deletes a relation from the feature relations used by the entity in a version of the
+// application.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+// entityID - the entity extractor ID.
+// featureRelationDeleteObject - a feature information object containing the feature relation to delete.
+func (client ModelClient) DeleteEntityFeature(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, featureRelationDeleteObject ModelFeatureInformation) (result OperationStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteEntityFeature")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeleteEntityFeaturePreparer(ctx, appID, versionID, entityID, featureRelationDeleteObject)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteEntityFeature", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteEntityFeatureSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteEntityFeature", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteEntityFeatureResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteEntityFeature", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteEntityFeaturePreparer prepares the DeleteEntityFeature request.
+func (client ModelClient) DeleteEntityFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, featureRelationDeleteObject ModelFeatureInformation) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"entityId":  autorest.Encode("path", entityID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/features", pathParameters),
+		autorest.WithJSON(featureRelationDeleteObject))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteEntityFeatureSender sends the DeleteEntityFeature request. The method will close the
+// http.Response Body if it receives an error.
+func (client ModelClient) DeleteEntityFeatureSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteEntityFeatureResponder handles the response to the DeleteEntityFeature request. The method always
+// closes the http.Response Body.
+func (client ModelClient) DeleteEntityFeatureResponder(resp *http.Response) (result OperationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // DeleteEntityRole sends the delete entity role request.
 // Parameters:
 // appID - the application ID.
@@ -2770,6 +2850,86 @@ func (client ModelClient) DeleteIntentSender(req *http.Request) (*http.Response,
 // DeleteIntentResponder handles the response to the DeleteIntent request. The method always
 // closes the http.Response Body.
 func (client ModelClient) DeleteIntentResponder(resp *http.Response) (result OperationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// DeleteIntentFeature deletes a relation from the feature relations used by the intent in a version of the
+// application.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+// intentID - the intent classifier ID.
+// featureRelationDeleteObject - a feature information object containing the feature relation to delete.
+func (client ModelClient) DeleteIntentFeature(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, featureRelationDeleteObject ModelFeatureInformation) (result OperationStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.DeleteIntentFeature")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeleteIntentFeaturePreparer(ctx, appID, versionID, intentID, featureRelationDeleteObject)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteIntentFeature", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteIntentFeatureSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteIntentFeature", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteIntentFeatureResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "DeleteIntentFeature", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeleteIntentFeaturePreparer prepares the DeleteIntentFeature request.
+func (client ModelClient) DeleteIntentFeaturePreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, featureRelationDeleteObject ModelFeatureInformation) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"intentId":  autorest.Encode("path", intentID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/features", pathParameters),
+		autorest.WithJSON(featureRelationDeleteObject))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteIntentFeatureSender sends the DeleteIntentFeature request. The method will close the
+// http.Response Body if it receives an error.
+func (client ModelClient) DeleteIntentFeatureSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteIntentFeatureResponder handles the response to the DeleteIntentFeature request. The method always
+// closes the http.Response Body.
+func (client ModelClient) DeleteIntentFeatureResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -3885,6 +4045,82 @@ func (client ModelClient) GetEntityResponder(resp *http.Response) (result NDepth
 	return
 }
 
+// GetEntityFeatures gets the information of the features used by the entity in a version of the application.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+// entityID - the entity extractor ID.
+func (client ModelClient) GetEntityFeatures(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result ListModelFeatureInformation, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetEntityFeatures")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetEntityFeaturesPreparer(ctx, appID, versionID, entityID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetEntityFeatures", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetEntityFeaturesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetEntityFeatures", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetEntityFeaturesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetEntityFeatures", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetEntityFeaturesPreparer prepares the GetEntityFeatures request.
+func (client ModelClient) GetEntityFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"entityId":  autorest.Encode("path", entityID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/features", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetEntityFeaturesSender sends the GetEntityFeatures request. The method will close the
+// http.Response Body if it receives an error.
+func (client ModelClient) GetEntityFeaturesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetEntityFeaturesResponder handles the response to the GetEntityFeatures request. The method always
+// closes the http.Response Body.
+func (client ModelClient) GetEntityFeaturesResponder(resp *http.Response) (result ListModelFeatureInformation, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // GetEntityRole sends the get entity role request.
 // Parameters:
 // appID - the application ID.
@@ -4421,6 +4657,82 @@ func (client ModelClient) GetIntentResponder(resp *http.Response) (result Intent
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetIntentFeatures gets the information of the features used by the intent in a version of the application.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+// intentID - the intent classifier ID.
+func (client ModelClient) GetIntentFeatures(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID) (result ListModelFeatureInformation, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.GetIntentFeatures")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetIntentFeaturesPreparer(ctx, appID, versionID, intentID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetIntentFeatures", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetIntentFeaturesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetIntentFeatures", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetIntentFeaturesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "GetIntentFeatures", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetIntentFeaturesPreparer prepares the GetIntentFeatures request.
+func (client ModelClient) GetIntentFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"intentId":  autorest.Encode("path", intentID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/features", pathParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetIntentFeaturesSender sends the GetIntentFeatures request. The method will close the
+// http.Response Body if it receives an error.
+func (client ModelClient) GetIntentFeaturesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetIntentFeaturesResponder handles the response to the GetIntentFeatures request. The method always
+// closes the http.Response Body.
+func (client ModelClient) GetIntentFeaturesResponder(resp *http.Response) (result ListModelFeatureInformation, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -6962,6 +7274,176 @@ func (client ModelClient) PatchClosedListSender(req *http.Request) (*http.Respon
 // PatchClosedListResponder handles the response to the PatchClosedList request. The method always
 // closes the http.Response Body.
 func (client ModelClient) PatchClosedListResponder(resp *http.Response) (result OperationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ReplaceEntityFeatures updates the information of the features used by the entity in a version of the application.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+// entityID - the entity extractor ID.
+// featureRelationsUpdateObject - a list of feature information objects containing the new feature relations.
+func (client ModelClient) ReplaceEntityFeatures(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, featureRelationsUpdateObject []ModelFeatureInformation) (result OperationStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ReplaceEntityFeatures")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: featureRelationsUpdateObject,
+			Constraints: []validation.Constraint{{Target: "featureRelationsUpdateObject", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("authoring.ModelClient", "ReplaceEntityFeatures", err.Error())
+	}
+
+	req, err := client.ReplaceEntityFeaturesPreparer(ctx, appID, versionID, entityID, featureRelationsUpdateObject)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ReplaceEntityFeatures", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ReplaceEntityFeaturesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ReplaceEntityFeatures", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ReplaceEntityFeaturesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ReplaceEntityFeatures", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ReplaceEntityFeaturesPreparer prepares the ReplaceEntityFeatures request.
+func (client ModelClient) ReplaceEntityFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, featureRelationsUpdateObject []ModelFeatureInformation) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"entityId":  autorest.Encode("path", entityID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/features", pathParameters),
+		autorest.WithJSON(featureRelationsUpdateObject))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ReplaceEntityFeaturesSender sends the ReplaceEntityFeatures request. The method will close the
+// http.Response Body if it receives an error.
+func (client ModelClient) ReplaceEntityFeaturesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ReplaceEntityFeaturesResponder handles the response to the ReplaceEntityFeatures request. The method always
+// closes the http.Response Body.
+func (client ModelClient) ReplaceEntityFeaturesResponder(resp *http.Response) (result OperationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ReplaceIntentFeatures updates the information of the features used by the intent in a version of the application.
+// Parameters:
+// appID - the application ID.
+// versionID - the version ID.
+// intentID - the intent classifier ID.
+// featureRelationsUpdateObject - a list of feature information objects containing the new feature relations.
+func (client ModelClient) ReplaceIntentFeatures(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, featureRelationsUpdateObject []ModelFeatureInformation) (result OperationStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ModelClient.ReplaceIntentFeatures")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: featureRelationsUpdateObject,
+			Constraints: []validation.Constraint{{Target: "featureRelationsUpdateObject", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("authoring.ModelClient", "ReplaceIntentFeatures", err.Error())
+	}
+
+	req, err := client.ReplaceIntentFeaturesPreparer(ctx, appID, versionID, intentID, featureRelationsUpdateObject)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ReplaceIntentFeatures", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ReplaceIntentFeaturesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ReplaceIntentFeatures", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ReplaceIntentFeaturesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.ModelClient", "ReplaceIntentFeatures", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ReplaceIntentFeaturesPreparer prepares the ReplaceIntentFeatures request.
+func (client ModelClient) ReplaceIntentFeaturesPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, featureRelationsUpdateObject []ModelFeatureInformation) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"appId":     autorest.Encode("path", appID),
+		"intentId":  autorest.Encode("path", intentID),
+		"versionId": autorest.Encode("path", versionID),
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/features", pathParameters),
+		autorest.WithJSON(featureRelationsUpdateObject))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ReplaceIntentFeaturesSender sends the ReplaceIntentFeatures request. The method will close the
+// http.Response Body if it receives an error.
+func (client ModelClient) ReplaceIntentFeaturesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ReplaceIntentFeaturesResponder handles the response to the ReplaceIntentFeatures request. The method always
+// closes the http.Response Body.
+func (client ModelClient) ReplaceIntentFeaturesResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

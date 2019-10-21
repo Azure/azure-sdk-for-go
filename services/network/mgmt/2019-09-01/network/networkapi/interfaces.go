@@ -566,10 +566,12 @@ type PrivateLinkServicesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string) (result network.PrivateLinkServicesDeleteFuture, err error)
 	DeletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string) (result network.PrivateLinkServicesDeletePrivateEndpointConnectionFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, expand string) (result network.PrivateLinkService, err error)
+	GetPrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, expand string) (result network.PrivateEndpointConnection, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.PrivateLinkServiceListResultPage, err error)
 	ListAutoApprovedPrivateLinkServices(ctx context.Context, location string) (result network.AutoApprovedPrivateLinkServicesResultPage, err error)
 	ListAutoApprovedPrivateLinkServicesByResourceGroup(ctx context.Context, location string, resourceGroupName string) (result network.AutoApprovedPrivateLinkServicesResultPage, err error)
 	ListBySubscription(ctx context.Context) (result network.PrivateLinkServiceListResultPage, err error)
+	ListPrivateEndpointConnections(ctx context.Context, resourceGroupName string, serviceName string) (result network.PrivateEndpointConnectionListResultPage, err error)
 	UpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, serviceName string, peConnectionName string, parameters network.PrivateEndpointConnection) (result network.PrivateEndpointConnection, err error)
 }
 

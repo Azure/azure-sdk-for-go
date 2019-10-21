@@ -7295,6 +7295,41 @@ type AzureFirewallPropertiesFormat struct {
 	HubIPAddresses *HubIPAddresses `json:"hubIpAddresses,omitempty"`
 	// Sku - The Azure Firewall Resource SKU.
 	Sku *AzureFirewallSku `json:"sku,omitempty"`
+	// AdditionalProperties - The additional properties used to further config this azure firewall
+	AdditionalProperties map[string]*string `json:"additionalProperties"`
+}
+
+// MarshalJSON is the custom marshaler for AzureFirewallPropertiesFormat.
+func (afpf AzureFirewallPropertiesFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if afpf.ApplicationRuleCollections != nil {
+		objectMap["applicationRuleCollections"] = afpf.ApplicationRuleCollections
+	}
+	if afpf.NatRuleCollections != nil {
+		objectMap["natRuleCollections"] = afpf.NatRuleCollections
+	}
+	if afpf.NetworkRuleCollections != nil {
+		objectMap["networkRuleCollections"] = afpf.NetworkRuleCollections
+	}
+	if afpf.IPConfigurations != nil {
+		objectMap["ipConfigurations"] = afpf.IPConfigurations
+	}
+	if afpf.ThreatIntelMode != "" {
+		objectMap["threatIntelMode"] = afpf.ThreatIntelMode
+	}
+	if afpf.VirtualHub != nil {
+		objectMap["virtualHub"] = afpf.VirtualHub
+	}
+	if afpf.FirewallPolicy != nil {
+		objectMap["firewallPolicy"] = afpf.FirewallPolicy
+	}
+	if afpf.Sku != nil {
+		objectMap["sku"] = afpf.Sku
+	}
+	if afpf.AdditionalProperties != nil {
+		objectMap["additionalProperties"] = afpf.AdditionalProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // AzureFirewallPublicIPAddress public IP Address associated with azure firewall.
@@ -21600,14 +21635,14 @@ func (pvg *P2SVpnGateway) UnmarshalJSON(body []byte) error {
 type P2SVpnGatewayProperties struct {
 	// VirtualHub - The VirtualHub to which the gateway belongs.
 	VirtualHub *SubResource `json:"virtualHub,omitempty"`
-	// P2sConnectionConfigurations - List of all p2s connection configurations of the gateway.
-	P2sConnectionConfigurations *[]P2SConnectionConfiguration `json:"p2sConnectionConfigurations,omitempty"`
+	// P2SConnectionConfigurations - List of all p2s connection configurations of the gateway.
+	P2SConnectionConfigurations *[]P2SConnectionConfiguration `json:"p2SConnectionConfigurations,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the P2S VPN gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VpnGatewayScaleUnit - The scale unit for this p2s vpn gateway.
 	VpnGatewayScaleUnit *int32 `json:"vpnGatewayScaleUnit,omitempty"`
 	// VpnServerConfiguration - The VpnServerConfiguration to which the p2sVpnGateway is attached to.
-	VpnServerConfiguration *VpnServerConfiguration `json:"vpnServerConfiguration,omitempty"`
+	VpnServerConfiguration *SubResource `json:"vpnServerConfiguration,omitempty"`
 	// VpnClientConnectionHealth - READ-ONLY; All P2S VPN clients' connection health status.
 	VpnClientConnectionHealth *VpnClientConnectionHealth `json:"vpnClientConnectionHealth,omitempty"`
 }
@@ -22717,6 +22752,153 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// PrivateEndpointConnectionListResult response for the ListPrivateEndpointConnection API service call.
+type PrivateEndpointConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of PrivateEndpointConnection resources for a specific private link service.
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PrivateEndpointConnectionListResultIterator provides access to a complete listing of
+// PrivateEndpointConnection values.
+type PrivateEndpointConnectionListResultIterator struct {
+	i    int
+	page PrivateEndpointConnectionListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PrivateEndpointConnectionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PrivateEndpointConnectionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PrivateEndpointConnectionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PrivateEndpointConnectionListResultIterator) Response() PrivateEndpointConnectionListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PrivateEndpointConnectionListResultIterator) Value() PrivateEndpointConnection {
+	if !iter.page.NotDone() {
+		return PrivateEndpointConnection{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListResultIterator type.
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return PrivateEndpointConnectionListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (peclr PrivateEndpointConnectionListResult) IsEmpty() bool {
+	return peclr.Value == nil || len(*peclr.Value) == 0
+}
+
+// privateEndpointConnectionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (peclr PrivateEndpointConnectionListResult) privateEndpointConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if peclr.NextLink == nil || len(to.String(peclr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(peclr.NextLink)))
+}
+
+// PrivateEndpointConnectionListResultPage contains a page of PrivateEndpointConnection values.
+type PrivateEndpointConnectionListResultPage struct {
+	fn    func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)
+	peclr PrivateEndpointConnectionListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PrivateEndpointConnectionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.peclr)
+	if err != nil {
+		return err
+	}
+	page.peclr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PrivateEndpointConnectionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PrivateEndpointConnectionListResultPage) NotDone() bool {
+	return !page.peclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PrivateEndpointConnectionListResultPage) Response() PrivateEndpointConnectionListResult {
+	return page.peclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointConnection {
+	if page.peclr.IsEmpty() {
+		return nil
+	}
+	return *page.peclr.Value
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListResultPage type.
+func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
+}
+
 // PrivateEndpointConnectionProperties properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// PrivateEndpoint - READ-ONLY; The resource of private end point.
@@ -22725,6 +22907,8 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// LinkIdentifier - READ-ONLY; The consumer link id.
+	LinkIdentifier *string `json:"linkIdentifier,omitempty"`
 }
 
 // PrivateEndpointListResult response for the ListPrivateEndpoints API service call.
@@ -23439,6 +23623,8 @@ type PrivateLinkServiceProperties struct {
 	Fqdns *[]string `json:"fqdns,omitempty"`
 	// Alias - READ-ONLY; The alias of the private link service.
 	Alias *string `json:"alias,omitempty"`
+	// EnableProxyProtocol - Whether the private link service is enabled for proxy protocol or not.
+	EnableProxyProtocol *bool `json:"enableProxyProtocol,omitempty"`
 }
 
 // PrivateLinkServicePropertiesAutoApproval the auto-approval list of the private link service.
@@ -33309,14 +33495,14 @@ type VpnServerConfigurationProperties struct {
 	VpnProtocols *[]VpnGatewayTunnelingProtocol `json:"vpnProtocols,omitempty"`
 	// VpnAuthenticationTypes - VPN authentication types for the VpnServerConfiguration.
 	VpnAuthenticationTypes *[]VpnAuthenticationType `json:"vpnAuthenticationTypes,omitempty"`
-	// VpnServerConfigVpnClientRootCertificates - VPN client root certificate of VpnServerConfiguration.
-	VpnServerConfigVpnClientRootCertificates *[]VpnServerConfigVpnClientRootCertificate `json:"vpnServerConfigVpnClientRootCertificates,omitempty"`
-	// VpnServerConfigVpnClientRevokedCertificates - VPN client revoked certificate of VpnServerConfiguration.
-	VpnServerConfigVpnClientRevokedCertificates *[]VpnServerConfigVpnClientRevokedCertificate `json:"vpnServerConfigVpnClientRevokedCertificates,omitempty"`
-	// VpnServerConfigRadiusServerRootCertificates - Radius Server root certificate of VpnServerConfiguration.
-	VpnServerConfigRadiusServerRootCertificates *[]VpnServerConfigRadiusServerRootCertificate `json:"vpnServerConfigRadiusServerRootCertificates,omitempty"`
-	// VpnServerConfigRadiusClientRootCertificates - Radius client root certificate of VpnServerConfiguration.
-	VpnServerConfigRadiusClientRootCertificates *[]VpnServerConfigRadiusClientRootCertificate `json:"vpnServerConfigRadiusClientRootCertificates,omitempty"`
+	// VpnClientRootCertificates - VPN client root certificate of VpnServerConfiguration.
+	VpnClientRootCertificates *[]VpnServerConfigVpnClientRootCertificate `json:"vpnClientRootCertificates,omitempty"`
+	// VpnClientRevokedCertificates - VPN client revoked certificate of VpnServerConfiguration.
+	VpnClientRevokedCertificates *[]VpnServerConfigVpnClientRevokedCertificate `json:"vpnClientRevokedCertificates,omitempty"`
+	// RadiusServerRootCertificates - Radius Server root certificate of VpnServerConfiguration.
+	RadiusServerRootCertificates *[]VpnServerConfigRadiusServerRootCertificate `json:"radiusServerRootCertificates,omitempty"`
+	// RadiusClientRootCertificates - Radius client root certificate of VpnServerConfiguration.
+	RadiusClientRootCertificates *[]VpnServerConfigRadiusClientRootCertificate `json:"radiusClientRootCertificates,omitempty"`
 	// VpnClientIpsecPolicies - VpnClientIpsecPolicies for VpnServerConfiguration.
 	VpnClientIpsecPolicies *[]IpsecPolicy `json:"vpnClientIpsecPolicies,omitempty"`
 	// RadiusServerAddress - The radius server address property of the VpnServerConfiguration resource for point to site client connection.

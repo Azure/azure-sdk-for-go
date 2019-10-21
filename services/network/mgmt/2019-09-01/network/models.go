@@ -8361,13 +8361,13 @@ type CheckPrivateLinkServiceVisibilityRequest struct {
 	PrivateLinkServiceAlias *string `json:"privateLinkServiceAlias,omitempty"`
 }
 
-// CloudError an error response from the Batch service.
+// CloudError an error response from the service.
 type CloudError struct {
 	// Error - Cloud error body.
 	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
-// CloudErrorBody an error response from the Batch service.
+// CloudErrorBody an error response from the service.
 type CloudErrorBody struct {
 	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`
@@ -23071,6 +23071,153 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// PrivateEndpointConnectionListResult response for the ListPrivateEndpointConnection API service call.
+type PrivateEndpointConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A list of PrivateEndpointConnection resources for a specific private link service.
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PrivateEndpointConnectionListResultIterator provides access to a complete listing of
+// PrivateEndpointConnection values.
+type PrivateEndpointConnectionListResultIterator struct {
+	i    int
+	page PrivateEndpointConnectionListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PrivateEndpointConnectionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PrivateEndpointConnectionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PrivateEndpointConnectionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PrivateEndpointConnectionListResultIterator) Response() PrivateEndpointConnectionListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PrivateEndpointConnectionListResultIterator) Value() PrivateEndpointConnection {
+	if !iter.page.NotDone() {
+		return PrivateEndpointConnection{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListResultIterator type.
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return PrivateEndpointConnectionListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (peclr PrivateEndpointConnectionListResult) IsEmpty() bool {
+	return peclr.Value == nil || len(*peclr.Value) == 0
+}
+
+// privateEndpointConnectionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (peclr PrivateEndpointConnectionListResult) privateEndpointConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if peclr.NextLink == nil || len(to.String(peclr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(peclr.NextLink)))
+}
+
+// PrivateEndpointConnectionListResultPage contains a page of PrivateEndpointConnection values.
+type PrivateEndpointConnectionListResultPage struct {
+	fn    func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)
+	peclr PrivateEndpointConnectionListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PrivateEndpointConnectionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.peclr)
+	if err != nil {
+		return err
+	}
+	page.peclr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PrivateEndpointConnectionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PrivateEndpointConnectionListResultPage) NotDone() bool {
+	return !page.peclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PrivateEndpointConnectionListResultPage) Response() PrivateEndpointConnectionListResult {
+	return page.peclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointConnection {
+	if page.peclr.IsEmpty() {
+		return nil
+	}
+	return *page.peclr.Value
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListResultPage type.
+func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
+}
+
 // PrivateEndpointConnectionProperties properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// PrivateEndpoint - READ-ONLY; The resource of private end point.
@@ -23079,6 +23226,8 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// LinkIdentifier - READ-ONLY; The consumer link id.
+	LinkIdentifier *string `json:"linkIdentifier,omitempty"`
 }
 
 // PrivateEndpointListResult response for the ListPrivateEndpoints API service call.
@@ -23793,6 +23942,8 @@ type PrivateLinkServiceProperties struct {
 	Fqdns *[]string `json:"fqdns,omitempty"`
 	// Alias - READ-ONLY; The alias of the private link service.
 	Alias *string `json:"alias,omitempty"`
+	// EnableProxyProtocol - Whether the private link service is enabled for proxy protocol or not.
+	EnableProxyProtocol *bool `json:"enableProxyProtocol,omitempty"`
 }
 
 // PrivateLinkServicePropertiesAutoApproval the auto-approval list of the private link service.

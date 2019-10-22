@@ -45,6 +45,15 @@ const (
 	Remove      Action = original.Remove
 )
 
+type ActionType = original.ActionType
+
+const (
+	ActionTypeAutomationAction ActionType = original.ActionTypeAutomationAction
+	ActionTypeEventHub         ActionType = original.ActionTypeEventHub
+	ActionTypeLogicApp         ActionType = original.ActionTypeLogicApp
+	ActionTypeSecurityEmail    ActionType = original.ActionTypeSecurityEmail
+)
+
 type AlertNotifications = original.AlertNotifications
 
 const (
@@ -212,11 +221,36 @@ const (
 	MsiNone    Msi = original.MsiNone
 )
 
+type Operator = original.Operator
+
+const (
+	Contains             Operator = original.Contains
+	EndsWith             Operator = original.EndsWith
+	Equals               Operator = original.Equals
+	EqualsIgnoreCase     Operator = original.EqualsIgnoreCase
+	GreaterThan          Operator = original.GreaterThan
+	GreaterThanOrEqualTo Operator = original.GreaterThanOrEqualTo
+	LesserThan           Operator = original.LesserThan
+	LesserThanOrEqualTo  Operator = original.LesserThanOrEqualTo
+	NotEquals            Operator = original.NotEquals
+	NotEqualsIgnoreCase  Operator = original.NotEqualsIgnoreCase
+	StartsWith           Operator = original.StartsWith
+)
+
 type PricingTier = original.PricingTier
 
 const (
 	Free     PricingTier = original.Free
 	Standard PricingTier = original.Standard
+)
+
+type PropertyType = original.PropertyType
+
+const (
+	Boolean PropertyType = original.Boolean
+	Integer PropertyType = original.Integer
+	Number  PropertyType = original.Number
+	String  PropertyType = original.String
 )
 
 type Protocol = original.Protocol
@@ -402,8 +436,8 @@ const (
 type ValueType = original.ValueType
 
 const (
-	IPCidr ValueType = original.IPCidr
-	String ValueType = original.String
+	ValueTypeIPCidr ValueType = original.ValueTypeIPCidr
+	ValueTypeString ValueType = original.ValueTypeString
 )
 
 type AadConnectivityState1 = original.AadConnectivityState1
@@ -446,10 +480,27 @@ type AutoProvisioningSettingListIterator = original.AutoProvisioningSettingListI
 type AutoProvisioningSettingListPage = original.AutoProvisioningSettingListPage
 type AutoProvisioningSettingProperties = original.AutoProvisioningSettingProperties
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
+type Automation = original.Automation
+type AutomationAction = original.AutomationAction
+type AutomationActionEventHub = original.AutomationActionEventHub
+type AutomationActionLogicApp = original.AutomationActionLogicApp
+type AutomationActionSecurityEmail = original.AutomationActionSecurityEmail
+type AutomationList = original.AutomationList
+type AutomationListIterator = original.AutomationListIterator
+type AutomationListPage = original.AutomationListPage
+type AutomationMetadata = original.AutomationMetadata
+type AutomationProperties = original.AutomationProperties
+type AutomationRuleSet = original.AutomationRuleSet
+type AutomationScope = original.AutomationScope
+type AutomationSource = original.AutomationSource
+type AutomationTriggeringRule = original.AutomationTriggeringRule
+type AutomationValidationStatus = original.AutomationValidationStatus
+type AutomationsClient = original.AutomationsClient
 type AwsResourceDetails = original.AwsResourceDetails
 type AzureResourceDetails = original.AzureResourceDetails
 type BaseClient = original.BaseClient
 type BasicAdditionalData = original.BasicAdditionalData
+type BasicAutomationAction = original.BasicAutomationAction
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
 type BasicResourceDetails = original.BasicResourceDetails
 type CVE = original.CVE
@@ -704,6 +755,18 @@ func NewAutoProvisioningSettingsClient(subscriptionID string, ascLocation string
 }
 func NewAutoProvisioningSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
 	return original.NewAutoProvisioningSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAutomationListIterator(page AutomationListPage) AutomationListIterator {
+	return original.NewAutomationListIterator(page)
+}
+func NewAutomationListPage(getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
+	return original.NewAutomationListPage(getNextPage)
+}
+func NewAutomationsClient(subscriptionID string, ascLocation string) AutomationsClient {
+	return original.NewAutomationsClient(subscriptionID, ascLocation)
+}
+func NewAutomationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutomationsClient {
+	return original.NewAutomationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewComplianceListIterator(page ComplianceListPage) ComplianceListIterator {
 	return original.NewComplianceListIterator(page)
@@ -975,6 +1038,9 @@ func NewWorkspaceSettingsClientWithBaseURI(baseURI string, subscriptionID string
 func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return original.PossibleAadConnectivityStateValues()
 }
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
@@ -1038,8 +1104,14 @@ func PossibleKindEnumValues() []KindEnum {
 func PossibleMsiValues() []Msi {
 	return original.PossibleMsiValues()
 }
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
+}
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()
+}
+func PossiblePropertyTypeValues() []PropertyType {
+	return original.PossiblePropertyTypeValues()
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()

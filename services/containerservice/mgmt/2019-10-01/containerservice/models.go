@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-08-01/containerservice"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-10-01/containerservice"
 
 // AgentPoolType enumerates the values for agent pool type.
 type AgentPoolType string
@@ -2050,6 +2050,8 @@ type ManagedClusterProperties struct {
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
 	// Fqdn - READ-ONLY; FQDN for the master pool.
 	Fqdn *string `json:"fqdn,omitempty"`
+	// PrivateFQDN - READ-ONLY; FQDN of private cluster.
+	PrivateFQDN *string `json:"privateFQDN,omitempty"`
 	// AgentPoolProfiles - Properties of the agent pool.
 	AgentPoolProfiles *[]ManagedClusterAgentPoolProfile `json:"agentPoolProfiles,omitempty"`
 	// LinuxProfile - Profile for Linux VMs in the container service cluster.
@@ -2220,29 +2222,6 @@ func (future *ManagedClustersResetServicePrincipalProfileFuture) Result(client M
 	}
 	if !done {
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetServicePrincipalProfileFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// ManagedClustersRotateClusterCertificatesFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type ManagedClustersRotateClusterCertificatesFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedClustersRotateClusterCertificatesFuture) Result(client ManagedClustersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersRotateClusterCertificatesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersRotateClusterCertificatesFuture")
 		return
 	}
 	ar.Response = future.Response()

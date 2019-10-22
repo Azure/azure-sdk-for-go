@@ -19,7 +19,7 @@ package containerserviceapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-09-30-preview/containerservice"
+	"github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-10-01/containerservice"
 )
 
 // OpenShiftManagedClustersClientAPI contains the set of methods on the OpenShiftManagedClustersClient type.
@@ -66,7 +66,6 @@ type ManagedClustersClientAPI interface {
 	ListClusterUserCredentials(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.CredentialResults, err error)
 	ResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters containerservice.ManagedClusterAADProfile) (result containerservice.ManagedClustersResetAADProfileFuture, err error)
 	ResetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters containerservice.ManagedClusterServicePrincipalProfile) (result containerservice.ManagedClustersResetServicePrincipalProfileFuture, err error)
-	RotateClusterCertificates(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.ManagedClustersRotateClusterCertificatesFuture, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters containerservice.TagsObject) (result containerservice.ManagedClustersUpdateTagsFuture, err error)
 }
 

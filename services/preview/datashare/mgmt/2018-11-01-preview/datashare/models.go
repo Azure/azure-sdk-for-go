@@ -699,9 +699,9 @@ func (aup AccountUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ADLSGen1FileDataSet an ADLS Gen 1 file dataset.
+// ADLSGen1FileDataSet an ADLS Gen 1 file data set.
 type ADLSGen1FileDataSet struct {
-	// ADLSGen1FileProperties - ADLS Gen 1 file dataset properties.
+	// ADLSGen1FileProperties - ADLS Gen 1 file data set properties.
 	*ADLSGen1FileProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The resource id of the azure resource
 	ID *string `json:"id,omitempty"`
@@ -862,9 +862,9 @@ type ADLSGen1FileProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// ADLSGen1FolderDataSet an ADLS Gen 1 folder dataset.
+// ADLSGen1FolderDataSet an ADLS Gen 1 folder data set.
 type ADLSGen1FolderDataSet struct {
-	// ADLSGen1FolderProperties - ADLS Gen 1 folder  dataset properties.
+	// ADLSGen1FolderProperties - ADLS Gen 1 folder data set properties.
 	*ADLSGen1FolderProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataSet', 'KindBlob', 'KindBlobFolder', 'KindContainer', 'KindAdlsGen2File', 'KindAdlsGen2Folder', 'KindAdlsGen2FileSystem', 'KindAdlsGen1Folder', 'KindAdlsGen1File', 'KindSQLDWTable', 'KindSQLDBTable'
 	Kind Kind `json:"kind,omitempty"`
@@ -1023,9 +1023,9 @@ type ADLSGen1FolderProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// ADLSGen2FileDataSet an ADLS Gen 2 file dataset.
+// ADLSGen2FileDataSet an ADLS Gen 2 file data set.
 type ADLSGen2FileDataSet struct {
-	// ADLSGen2FileProperties - ADLS Gen 2 file dataset properties.
+	// ADLSGen2FileProperties - ADLS Gen 2 file data set properties.
 	*ADLSGen2FileProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataSet', 'KindBlob', 'KindBlobFolder', 'KindContainer', 'KindAdlsGen2File', 'KindAdlsGen2Folder', 'KindAdlsGen2FileSystem', 'KindAdlsGen1Folder', 'KindAdlsGen1File', 'KindSQLDWTable', 'KindSQLDBTable'
 	Kind Kind `json:"kind,omitempty"`
@@ -1170,9 +1170,9 @@ func (ag2fds *ADLSGen2FileDataSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ADLSGen2FileDataSetMapping an ADLS Gen2 file dataset mapping.
+// ADLSGen2FileDataSetMapping an ADLS Gen2 file data set mapping.
 type ADLSGen2FileDataSetMapping struct {
-	// ADLSGen2FileDataSetMappingProperties - ADLS Gen2 file dataset mapping properties.
+	// ADLSGen2FileDataSetMappingProperties - ADLS Gen2 file data set mapping properties.
 	*ADLSGen2FileDataSetMappingProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The resource id of the azure resource
 	ID *string `json:"id,omitempty"`
@@ -1307,11 +1307,11 @@ func (ag2fdsm *ADLSGen2FileDataSetMapping) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ADLSGen2FileDataSetMappingProperties ADLS Gen 2 file dataset mapping property bag.
+// ADLSGen2FileDataSetMappingProperties ADLS Gen 2 file data set mapping property bag.
 type ADLSGen2FileDataSetMappingProperties struct {
-	// DataSetID - Gets the id of source dataset.
+	// DataSetID - The id of the source data set.
 	DataSetID *string `json:"dataSetId,omitempty"`
-	// DataSetMappingStatus - Gets the status of the dataset mapping. Possible values include: 'Ok', 'Broken'
+	// DataSetMappingStatus - Gets the status of the data set mapping. Possible values include: 'Ok', 'Broken'
 	DataSetMappingStatus DataSetMappingStatus `json:"dataSetMappingStatus,omitempty"`
 	// FilePath - File path within the file system.
 	FilePath *string `json:"filePath,omitempty"`
@@ -1343,9 +1343,9 @@ type ADLSGen2FileProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// ADLSGen2FileSystemDataSet an ADLS Gen 2 file system dataset.
+// ADLSGen2FileSystemDataSet an ADLS Gen 2 file system data set.
 type ADLSGen2FileSystemDataSet struct {
-	// ADLSGen2FileSystemProperties - ADLS Gen 2 file system dataset properties.
+	// ADLSGen2FileSystemProperties - ADLS Gen 2 file system data set properties.
 	*ADLSGen2FileSystemProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataSet', 'KindBlob', 'KindBlobFolder', 'KindContainer', 'KindAdlsGen2File', 'KindAdlsGen2Folder', 'KindAdlsGen2FileSystem', 'KindAdlsGen1Folder', 'KindAdlsGen1File', 'KindSQLDWTable', 'KindSQLDBTable'
 	Kind Kind `json:"kind,omitempty"`
@@ -1490,9 +1490,9 @@ func (ag2fsds *ADLSGen2FileSystemDataSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ADLSGen2FileSystemDataSetMapping an ADLS Gen2 file system dataset mapping.
+// ADLSGen2FileSystemDataSetMapping an ADLS Gen2 file system data set mapping.
 type ADLSGen2FileSystemDataSetMapping struct {
-	// ADLSGen2FileSystemDataSetMappingProperties - ADLS Gen2 file system dataset mapping properties.
+	// ADLSGen2FileSystemDataSetMappingProperties - ADLS Gen2 file system data set mapping properties.
 	*ADLSGen2FileSystemDataSetMappingProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindBasicDataSetMappingKindDataSetMapping', 'KindBasicDataSetMappingKindBlob', 'KindBasicDataSetMappingKindBlobFolder', 'KindBasicDataSetMappingKindContainer', 'KindBasicDataSetMappingKindAdlsGen2File', 'KindBasicDataSetMappingKindAdlsGen2Folder', 'KindBasicDataSetMappingKindAdlsGen2FileSystem', 'KindBasicDataSetMappingKindSQLDWTable', 'KindBasicDataSetMappingKindSQLDBTable'
 	Kind KindBasicDataSetMapping `json:"kind,omitempty"`
@@ -1627,11 +1627,11 @@ func (ag2fsdsm *ADLSGen2FileSystemDataSetMapping) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// ADLSGen2FileSystemDataSetMappingProperties ADLS Gen 2 file system dataset mapping property bag.
+// ADLSGen2FileSystemDataSetMappingProperties ADLS Gen 2 file system data set mapping property bag.
 type ADLSGen2FileSystemDataSetMappingProperties struct {
-	// DataSetID - Gets the id of source dataset.
+	// DataSetID - The id of the source data set.
 	DataSetID *string `json:"dataSetId,omitempty"`
-	// DataSetMappingStatus - Gets the status of the dataset mapping. Possible values include: 'Ok', 'Broken'
+	// DataSetMappingStatus - Gets the status of the data set mapping. Possible values include: 'Ok', 'Broken'
 	DataSetMappingStatus DataSetMappingStatus `json:"dataSetMappingStatus,omitempty"`
 	// FileSystem - The file system name.
 	FileSystem *string `json:"fileSystem,omitempty"`
@@ -1657,9 +1657,9 @@ type ADLSGen2FileSystemProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// ADLSGen2FolderDataSet an ADLS Gen 2 folder dataset.
+// ADLSGen2FolderDataSet an ADLS Gen 2 folder data set.
 type ADLSGen2FolderDataSet struct {
-	// ADLSGen2FolderProperties - ADLS Gen 2 folder dataset properties.
+	// ADLSGen2FolderProperties - ADLS Gen 2 folder data set properties.
 	*ADLSGen2FolderProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataSet', 'KindBlob', 'KindBlobFolder', 'KindContainer', 'KindAdlsGen2File', 'KindAdlsGen2Folder', 'KindAdlsGen2FileSystem', 'KindAdlsGen1Folder', 'KindAdlsGen1File', 'KindSQLDWTable', 'KindSQLDBTable'
 	Kind Kind `json:"kind,omitempty"`
@@ -1804,9 +1804,9 @@ func (ag2fds *ADLSGen2FolderDataSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ADLSGen2FolderDataSetMapping an ADLS Gen2 folder dataset mapping.
+// ADLSGen2FolderDataSetMapping an ADLS Gen2 folder data set mapping.
 type ADLSGen2FolderDataSetMapping struct {
-	// ADLSGen2FolderDataSetMappingProperties - ADLS Gen2 folder dataset mapping properties.
+	// ADLSGen2FolderDataSetMappingProperties - ADLS Gen2 folder data set mapping properties.
 	*ADLSGen2FolderDataSetMappingProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindBasicDataSetMappingKindDataSetMapping', 'KindBasicDataSetMappingKindBlob', 'KindBasicDataSetMappingKindBlobFolder', 'KindBasicDataSetMappingKindContainer', 'KindBasicDataSetMappingKindAdlsGen2File', 'KindBasicDataSetMappingKindAdlsGen2Folder', 'KindBasicDataSetMappingKindAdlsGen2FileSystem', 'KindBasicDataSetMappingKindSQLDWTable', 'KindBasicDataSetMappingKindSQLDBTable'
 	Kind KindBasicDataSetMapping `json:"kind,omitempty"`
@@ -1941,11 +1941,11 @@ func (ag2fdsm *ADLSGen2FolderDataSetMapping) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ADLSGen2FolderDataSetMappingProperties ADLS Gen 2 folder dataset mapping property bag.
+// ADLSGen2FolderDataSetMappingProperties ADLS Gen 2 folder data set mapping property bag.
 type ADLSGen2FolderDataSetMappingProperties struct {
-	// DataSetID - Gets the id of source dataset.
+	// DataSetID - The id of the source data set.
 	DataSetID *string `json:"dataSetId,omitempty"`
-	// DataSetMappingStatus - Gets the status of the dataset mapping. Possible values include: 'Ok', 'Broken'
+	// DataSetMappingStatus - Gets the status of the data set mapping. Possible values include: 'Ok', 'Broken'
 	DataSetMappingStatus DataSetMappingStatus `json:"dataSetMappingStatus,omitempty"`
 	// FileSystem - File system to which the folder belongs.
 	FileSystem *string `json:"fileSystem,omitempty"`
@@ -1975,9 +1975,9 @@ type ADLSGen2FolderProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// BlobContainerDataSet an Azure storage blob container dataset.
+// BlobContainerDataSet an Azure storage blob container data set.
 type BlobContainerDataSet struct {
-	// BlobContainerProperties - Blob container dataset properties.
+	// BlobContainerProperties - Blob container data set properties.
 	*BlobContainerProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataSet', 'KindBlob', 'KindBlobFolder', 'KindContainer', 'KindAdlsGen2File', 'KindAdlsGen2Folder', 'KindAdlsGen2FileSystem', 'KindAdlsGen1Folder', 'KindAdlsGen1File', 'KindSQLDWTable', 'KindSQLDBTable'
 	Kind Kind `json:"kind,omitempty"`
@@ -2122,9 +2122,9 @@ func (bcds *BlobContainerDataSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobContainerDataSetMapping a Blob container dataset mapping.
+// BlobContainerDataSetMapping a Blob container data set mapping.
 type BlobContainerDataSetMapping struct {
-	// BlobContainerMappingProperties - Blob container dataset mapping properties.
+	// BlobContainerMappingProperties - Blob container data set mapping properties.
 	*BlobContainerMappingProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindBasicDataSetMappingKindDataSetMapping', 'KindBasicDataSetMappingKindBlob', 'KindBasicDataSetMappingKindBlobFolder', 'KindBasicDataSetMappingKindContainer', 'KindBasicDataSetMappingKindAdlsGen2File', 'KindBasicDataSetMappingKindAdlsGen2Folder', 'KindBasicDataSetMappingKindAdlsGen2FileSystem', 'KindBasicDataSetMappingKindSQLDWTable', 'KindBasicDataSetMappingKindSQLDBTable'
 	Kind KindBasicDataSetMapping `json:"kind,omitempty"`
@@ -2259,13 +2259,13 @@ func (bcdsm *BlobContainerDataSetMapping) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobContainerMappingProperties azure storage Blob container dataset mapping property bag.
+// BlobContainerMappingProperties azure storage Blob container data set mapping property bag.
 type BlobContainerMappingProperties struct {
 	// ContainerName - BLOB Container name.
 	ContainerName *string `json:"containerName,omitempty"`
-	// DataSetID - Gets the id of source dataset.
+	// DataSetID - The id of the source data set.
 	DataSetID *string `json:"dataSetId,omitempty"`
-	// DataSetMappingStatus - Gets the status of the dataset mapping. Possible values include: 'Ok', 'Broken'
+	// DataSetMappingStatus - Gets the status of the data set mapping. Possible values include: 'Ok', 'Broken'
 	DataSetMappingStatus DataSetMappingStatus `json:"dataSetMappingStatus,omitempty"`
 	// ResourceGroup - Resource group of storage account.
 	ResourceGroup *string `json:"resourceGroup,omitempty"`
@@ -2289,9 +2289,9 @@ type BlobContainerProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// BlobDataSet an Azure storage blob dataset.
+// BlobDataSet an Azure storage blob data set.
 type BlobDataSet struct {
-	// BlobProperties - Blob dataset properties.
+	// BlobProperties - Blob data set properties.
 	*BlobProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataSet', 'KindBlob', 'KindBlobFolder', 'KindContainer', 'KindAdlsGen2File', 'KindAdlsGen2Folder', 'KindAdlsGen2FileSystem', 'KindAdlsGen1Folder', 'KindAdlsGen1File', 'KindSQLDWTable', 'KindSQLDBTable'
 	Kind Kind `json:"kind,omitempty"`
@@ -2436,9 +2436,9 @@ func (bds *BlobDataSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobDataSetMapping a Blob dataset mapping.
+// BlobDataSetMapping a Blob data set mapping.
 type BlobDataSetMapping struct {
-	// BlobMappingProperties - Blob dataset mapping properties.
+	// BlobMappingProperties - Blob data set mapping properties.
 	*BlobMappingProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindBasicDataSetMappingKindDataSetMapping', 'KindBasicDataSetMappingKindBlob', 'KindBasicDataSetMappingKindBlobFolder', 'KindBasicDataSetMappingKindContainer', 'KindBasicDataSetMappingKindAdlsGen2File', 'KindBasicDataSetMappingKindAdlsGen2Folder', 'KindBasicDataSetMappingKindAdlsGen2FileSystem', 'KindBasicDataSetMappingKindSQLDWTable', 'KindBasicDataSetMappingKindSQLDBTable'
 	Kind KindBasicDataSetMapping `json:"kind,omitempty"`
@@ -2573,9 +2573,9 @@ func (bdsm *BlobDataSetMapping) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobFolderDataSet an Azure storage blob folder dataset.
+// BlobFolderDataSet an Azure storage blob folder data set.
 type BlobFolderDataSet struct {
-	// BlobFolderProperties - Blob folder dataset properties.
+	// BlobFolderProperties - Blob folder data set properties.
 	*BlobFolderProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataSet', 'KindBlob', 'KindBlobFolder', 'KindContainer', 'KindAdlsGen2File', 'KindAdlsGen2Folder', 'KindAdlsGen2FileSystem', 'KindAdlsGen1Folder', 'KindAdlsGen1File', 'KindSQLDWTable', 'KindSQLDBTable'
 	Kind Kind `json:"kind,omitempty"`
@@ -2720,9 +2720,9 @@ func (bfds *BlobFolderDataSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobFolderDataSetMapping a Blob folder dataset mapping.
+// BlobFolderDataSetMapping a Blob folder data set mapping.
 type BlobFolderDataSetMapping struct {
-	// BlobFolderMappingProperties - Blob folder dataset mapping properties.
+	// BlobFolderMappingProperties - Blob folder data set mapping properties.
 	*BlobFolderMappingProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindBasicDataSetMappingKindDataSetMapping', 'KindBasicDataSetMappingKindBlob', 'KindBasicDataSetMappingKindBlobFolder', 'KindBasicDataSetMappingKindContainer', 'KindBasicDataSetMappingKindAdlsGen2File', 'KindBasicDataSetMappingKindAdlsGen2Folder', 'KindBasicDataSetMappingKindAdlsGen2FileSystem', 'KindBasicDataSetMappingKindSQLDWTable', 'KindBasicDataSetMappingKindSQLDBTable'
 	Kind KindBasicDataSetMapping `json:"kind,omitempty"`
@@ -2857,13 +2857,13 @@ func (bfdsm *BlobFolderDataSetMapping) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// BlobFolderMappingProperties azure storage Blob folder dataset mapping property bag.
+// BlobFolderMappingProperties azure storage Blob folder data set mapping property bag.
 type BlobFolderMappingProperties struct {
 	// ContainerName - Container that has the file path.
 	ContainerName *string `json:"containerName,omitempty"`
-	// DataSetID - Gets the id of source dataset.
+	// DataSetID - The id of the source data set.
 	DataSetID *string `json:"dataSetId,omitempty"`
-	// DataSetMappingStatus - Gets the status of the dataset mapping. Possible values include: 'Ok', 'Broken'
+	// DataSetMappingStatus - Gets the status of the data set mapping. Possible values include: 'Ok', 'Broken'
 	DataSetMappingStatus DataSetMappingStatus `json:"dataSetMappingStatus,omitempty"`
 	// Prefix - Prefix for blob folder
 	Prefix *string `json:"prefix,omitempty"`
@@ -2891,13 +2891,13 @@ type BlobFolderProperties struct {
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
 }
 
-// BlobMappingProperties azure storage Blob dataset mapping property bag.
+// BlobMappingProperties azure storage Blob data set mapping property bag.
 type BlobMappingProperties struct {
 	// ContainerName - Container that has the file path.
 	ContainerName *string `json:"containerName,omitempty"`
-	// DataSetID - Gets the id of source dataset.
+	// DataSetID - The id of the source data set.
 	DataSetID *string `json:"dataSetId,omitempty"`
-	// DataSetMappingStatus - Gets the status of the dataset mapping. Possible values include: 'Ok', 'Broken'
+	// DataSetMappingStatus - Gets the status of the data set mapping. Possible values include: 'Ok', 'Broken'
 	DataSetMappingStatus DataSetMappingStatus `json:"dataSetMappingStatus,omitempty"`
 	// FilePath - File path within the source data set
 	FilePath *string `json:"filePath,omitempty"`
@@ -3749,7 +3749,7 @@ func NewDataSetListPage(getNextPage func(context.Context, DataSetList) (DataSetL
 	return DataSetListPage{fn: getNextPage}
 }
 
-// BasicDataSetMapping a dataset mapping data transfer object.
+// BasicDataSetMapping a data set mapping data transfer object.
 type BasicDataSetMapping interface {
 	AsBlobDataSetMapping() (*BlobDataSetMapping, bool)
 	AsBlobFolderDataSetMapping() (*BlobFolderDataSetMapping, bool)
@@ -3762,7 +3762,7 @@ type BasicDataSetMapping interface {
 	AsDataSetMapping() (*DataSetMapping, bool)
 }
 
-// DataSetMapping a dataset mapping data transfer object.
+// DataSetMapping a data set mapping data transfer object.
 type DataSetMapping struct {
 	autorest.Response `json:"-"`
 	// Kind - Possible values include: 'KindBasicDataSetMappingKindDataSetMapping', 'KindBasicDataSetMappingKindBlob', 'KindBasicDataSetMappingKindBlobFolder', 'KindBasicDataSetMappingKindContainer', 'KindBasicDataSetMappingKindAdlsGen2File', 'KindBasicDataSetMappingKindAdlsGen2Folder', 'KindBasicDataSetMappingKindAdlsGen2FileSystem', 'KindBasicDataSetMappingKindSQLDWTable', 'KindBasicDataSetMappingKindSQLDBTable'
@@ -6487,9 +6487,9 @@ func NewSourceShareSynchronizationSettingListPage(getNextPage func(context.Conte
 	return SourceShareSynchronizationSettingListPage{fn: getNextPage}
 }
 
-// SQLDBTableDataSet a SQL DB table dataset.
+// SQLDBTableDataSet a SQL DB table data set.
 type SQLDBTableDataSet struct {
-	// SQLDBTableProperties - SQL DB table dataset properties.
+	// SQLDBTableProperties - SQL DB table data set properties.
 	*SQLDBTableProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataSet', 'KindBlob', 'KindBlobFolder', 'KindContainer', 'KindAdlsGen2File', 'KindAdlsGen2Folder', 'KindAdlsGen2FileSystem', 'KindAdlsGen1Folder', 'KindAdlsGen1File', 'KindSQLDWTable', 'KindSQLDBTable'
 	Kind Kind `json:"kind,omitempty"`
@@ -6634,9 +6634,9 @@ func (sdtds *SQLDBTableDataSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SQLDBTableDataSetMapping a SQL DB Table dataset mapping.
+// SQLDBTableDataSetMapping a SQL DB Table data set mapping.
 type SQLDBTableDataSetMapping struct {
-	// SQLDBTableDataSetMappingProperties - Sql DB dataset mapping properties.
+	// SQLDBTableDataSetMappingProperties - Sql DB data set mapping properties.
 	*SQLDBTableDataSetMappingProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindBasicDataSetMappingKindDataSetMapping', 'KindBasicDataSetMappingKindBlob', 'KindBasicDataSetMappingKindBlobFolder', 'KindBasicDataSetMappingKindContainer', 'KindBasicDataSetMappingKindAdlsGen2File', 'KindBasicDataSetMappingKindAdlsGen2Folder', 'KindBasicDataSetMappingKindAdlsGen2FileSystem', 'KindBasicDataSetMappingKindSQLDWTable', 'KindBasicDataSetMappingKindSQLDBTable'
 	Kind KindBasicDataSetMapping `json:"kind,omitempty"`
@@ -6775,9 +6775,9 @@ func (sdtdsm *SQLDBTableDataSetMapping) UnmarshalJSON(body []byte) error {
 type SQLDBTableDataSetMappingProperties struct {
 	// DatabaseName - DatabaseName name of the sink data set
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// DataSetID - Gets the id of source dataset.
+	// DataSetID - The id of the source data set.
 	DataSetID *string `json:"dataSetId,omitempty"`
-	// DataSetMappingStatus - Gets the status of the dataset mapping. Possible values include: 'Ok', 'Broken'
+	// DataSetMappingStatus - Gets the status of the data set mapping. Possible values include: 'Ok', 'Broken'
 	DataSetMappingStatus DataSetMappingStatus `json:"dataSetMappingStatus,omitempty"`
 	// SQLServerResourceID - Resource id of SQL server
 	SQLServerResourceID *string `json:"sqlServerResourceId,omitempty"`
@@ -6797,9 +6797,9 @@ type SQLDBTableProperties struct {
 	TableName *string `json:"tableName,omitempty"`
 }
 
-// SQLDWTableDataSet a SQL DW table dataset.
+// SQLDWTableDataSet a SQL DW table data set.
 type SQLDWTableDataSet struct {
-	// SQLDWTableProperties - SQL DW table dataset properties.
+	// SQLDWTableProperties - SQL DW table data set properties.
 	*SQLDWTableProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataSet', 'KindBlob', 'KindBlobFolder', 'KindContainer', 'KindAdlsGen2File', 'KindAdlsGen2Folder', 'KindAdlsGen2FileSystem', 'KindAdlsGen1Folder', 'KindAdlsGen1File', 'KindSQLDWTable', 'KindSQLDBTable'
 	Kind Kind `json:"kind,omitempty"`
@@ -6944,9 +6944,9 @@ func (sdtds *SQLDWTableDataSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SQLDWTableDataSetMapping a SQL DW Table dataset mapping.
+// SQLDWTableDataSetMapping a SQL DW Table data set mapping.
 type SQLDWTableDataSetMapping struct {
-	// SQLDWTableDataSetMappingProperties - Sql DW dataset mapping properties.
+	// SQLDWTableDataSetMappingProperties - Sql DW data set mapping properties.
 	*SQLDWTableDataSetMappingProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindBasicDataSetMappingKindDataSetMapping', 'KindBasicDataSetMappingKindBlob', 'KindBasicDataSetMappingKindBlobFolder', 'KindBasicDataSetMappingKindContainer', 'KindBasicDataSetMappingKindAdlsGen2File', 'KindBasicDataSetMappingKindAdlsGen2Folder', 'KindBasicDataSetMappingKindAdlsGen2FileSystem', 'KindBasicDataSetMappingKindSQLDWTable', 'KindBasicDataSetMappingKindSQLDBTable'
 	Kind KindBasicDataSetMapping `json:"kind,omitempty"`
@@ -7083,9 +7083,9 @@ func (sdtdsm *SQLDWTableDataSetMapping) UnmarshalJSON(body []byte) error {
 
 // SQLDWTableDataSetMappingProperties properties of the SQL DW table data set mapping.
 type SQLDWTableDataSetMappingProperties struct {
-	// DataSetID - Gets the id of source dataset.
+	// DataSetID - The id of the source data set.
 	DataSetID *string `json:"dataSetId,omitempty"`
-	// DataSetMappingStatus - Gets the status of the dataset mapping. Possible values include: 'Ok', 'Broken'
+	// DataSetMappingStatus - Gets the status of the data set mapping. Possible values include: 'Ok', 'Broken'
 	DataSetMappingStatus DataSetMappingStatus `json:"dataSetMappingStatus,omitempty"`
 	// DataWarehouseName - DataWarehouse name of the source data set
 	DataWarehouseName *string `json:"dataWarehouseName,omitempty"`
@@ -7107,37 +7107,37 @@ type SQLDWTableProperties struct {
 	TableName *string `json:"tableName,omitempty"`
 }
 
-// SynchronizationDetails synchronization details at dataset level
+// SynchronizationDetails synchronization details at data set level
 type SynchronizationDetails struct {
 	// DataSetID - READ-ONLY; id of dataSet
 	DataSetID *string `json:"dataSetId,omitempty"`
 	// DataSetType - READ-ONLY; type of DataSet. Possible values include: 'Blob', 'Container', 'BlobFolder', 'AdlsGen2FileSystem', 'AdlsGen2Folder', 'AdlsGen2File', 'AdlsGen1Folder', 'AdlsGen1File', 'SQLDBTable', 'SQLDWTable'
 	DataSetType DataSetType `json:"dataSetType,omitempty"`
-	// DurationMs - READ-ONLY; duration of dataset level copy
+	// DurationMs - READ-ONLY; duration of data set level copy
 	DurationMs *int32 `json:"durationMs,omitempty"`
-	// EndTime - READ-ONLY; End time of dataset level copy
+	// EndTime - READ-ONLY; End time of data set level copy
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// FilesRead - READ-ONLY; The number of files read from the source dataset.
+	// FilesRead - READ-ONLY; The number of files read from the source data set.
 	FilesRead *int64 `json:"filesRead,omitempty"`
-	// FilesWritten - READ-ONLY; The number of files written into the sink dataset.
+	// FilesWritten - READ-ONLY; The number of files written into the sink data set.
 	FilesWritten *int64 `json:"filesWritten,omitempty"`
 	// Message - READ-ONLY; Error Message if any
 	Message *string `json:"message,omitempty"`
 	// Name - READ-ONLY; name of dataSet
 	Name *string `json:"name,omitempty"`
-	// RowsCopied - READ-ONLY; The number of files copied into the sink dataset.
+	// RowsCopied - READ-ONLY; The number of files copied into the sink data set.
 	RowsCopied *int64 `json:"rowsCopied,omitempty"`
-	// RowsRead - READ-ONLY; The number of rows read from the source dataset.
+	// RowsRead - READ-ONLY; The number of rows read from the source data set.
 	RowsRead *int64 `json:"rowsRead,omitempty"`
-	// SizeRead - READ-ONLY; The size of the data read from the source dataset in bytes.
+	// SizeRead - READ-ONLY; The size of the data read from the source data set in bytes.
 	SizeRead *int64 `json:"sizeRead,omitempty"`
-	// SizeWritten - READ-ONLY; The size of the data written into the sink dataset in bytes.
+	// SizeWritten - READ-ONLY; The size of the data written into the sink data set in bytes.
 	SizeWritten *int64 `json:"sizeWritten,omitempty"`
-	// StartTime - READ-ONLY; start time of dataset level copy
+	// StartTime - READ-ONLY; start time of data set level copy
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// Status - READ-ONLY; Raw Status
 	Status *string `json:"status,omitempty"`
-	// VCore - READ-ONLY; The vCore units consumed for the dataset synchronization.
+	// VCore - READ-ONLY; The vCore units consumed for the data set synchronization.
 	VCore *int64 `json:"vCore,omitempty"`
 }
 

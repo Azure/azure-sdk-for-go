@@ -1,0 +1,71 @@
+jobs:
+  - job:
+    pool:
+      vmImage: 'Ubuntu 16.04'
+
+    variables:
+      GOROOT: '/usr/local/go1.12'
+      GOPATH: '$(system.defaultWorkingDirectory)/work'
+      sdkPath: '$(GOPATH)/src/github.com/Azure/azure-sdk-for-go'
+
+    steps:
+      - script: |
+          # Enable bash verbose logging
+          set -x
+          mkdir -p '$(GOPATH)/bin'
+          mkdir -p '$(sdkPath)'
+          shopt -s dotglob extglob
+          mv !(work) '$(sdkPath)'
+          echo '##vso[task.prependpath]$(GOROOT)/bin'
+          echo '##vso[task.prependpath]$(GOPATH)/bin'
+        displayName: 'Create Go Workspace'
+      - script: |
+          set -x
+          go version
+          curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+          dep ensure -v
+          go get -u golang.org/x/lint/golint
+        workingDirectory: '$(sdkPath)'
+        displayName: 'Install Dependencies'
+      - script: |
+          # Echo error if github-pat is empty
+          [ -z $(github-pat) ] && echo "github-pat is empty!" && exit -1
+          echo $(Build.SourceBranchName)
+          # Enable bash verbose logging
+          set -x
+          git checkout $(Build.SourceBranchName)
+          git config user.email "azuresdkci@microsoft.com"
+          git config user.name "azuresdkci"
+          git config credential.helper store
+          echo https://$(github-pat):x-oauth-basic@github.com > ~/.git-credentials
+        displayName: 'Setup github'
+        workingDirectory: '$(sdkPath)'
+      - script: |
+          go generate ./profiles
+          gofmt -s -w ./profiles
+        workingDirectory: '$(sdkPath)'
+        displayName: 'Generate profiles'
+      - script: go vet $(go list ./profiles/... | grep -v vendor)
+        workingDirectory: '$(sdkPath)'
+        displayName: 'Vet in profiles'
+      - script: go build -v $(go list ./profiles/... | grep -v vendor)
+        workingDirectory: '$(sdkPath)'
+        displayName: 'Build'
+      - script: gofmt -s -l -w $(find ./profiles -path ./vendor -prune -o -name '*.go' -print) >&2
+        workingDirectory: '$(sdkPath)'
+        displayName: 'Format Check'
+        failOnStderr: true
+        condition: succeededOrFailed()
+      - script: |
+          # test if there are new profiles
+          if [ -z "$(git status --porcelain)" ]; then
+            echo no new profiles generated.
+          else
+            git commit -a -m "regenerated profiles"
+            git push origin $(Build.SourceBranchName)
+          fi
+        workingDirectory: '$(sdkPath)'
+        displayName: 'Push profiles'
+      - script: go run ./tools/moduler/main.go ./services -v
+        displayName: 'Detecting new tag and push'
+        workingDirectory: '$(sdkPath)'

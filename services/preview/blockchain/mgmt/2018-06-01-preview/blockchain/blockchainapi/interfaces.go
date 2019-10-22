@@ -31,7 +31,7 @@ type MembersClientAPI interface {
 	ListAll(ctx context.Context) (result blockchain.MemberCollectionPage, err error)
 	ListAPIKeys(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.APIKeyCollection, err error)
 	ListConsortiumMembers(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.ConsortiumMemberCollectionPage, err error)
-	ListRegenerateAPIKeys(ctx context.Context, blockchainMemberName string, resourceGroupName string, APIKey *blockchain.APIKey) (result blockchain.APIKeyCollection, err error)
+	RegenerateAPIKeys(ctx context.Context, blockchainMemberName string, resourceGroupName string, APIKey *blockchain.APIKey) (result blockchain.APIKeyCollection, err error)
 	Update(ctx context.Context, blockchainMemberName string, resourceGroupName string, blockchainMember *blockchain.MemberUpdate) (result blockchain.Member, err error)
 }
 
@@ -73,7 +73,7 @@ type TransactionNodesClientAPI interface {
 	Get(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string) (result blockchain.TransactionNode, err error)
 	List(ctx context.Context, blockchainMemberName string, resourceGroupName string) (result blockchain.TransactionNodeCollectionPage, err error)
 	ListAPIKeys(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string) (result blockchain.APIKeyCollection, err error)
-	ListRegenerateAPIKeys(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, APIKey *blockchain.APIKey) (result blockchain.APIKeyCollection, err error)
+	RegenerateAPIKeys(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, APIKey *blockchain.APIKey) (result blockchain.APIKeyCollection, err error)
 	Update(ctx context.Context, blockchainMemberName string, transactionNodeName string, resourceGroupName string, transactionNode *blockchain.TransactionNodeUpdate) (result blockchain.TransactionNode, err error)
 }
 

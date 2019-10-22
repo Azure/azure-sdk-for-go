@@ -697,15 +697,15 @@ func (client MembersClient) ListConsortiumMembersComplete(ctx context.Context, b
 	return
 }
 
-// ListRegenerateAPIKeys regenerate the API keys for a blockchain member.
+// RegenerateAPIKeys regenerate the API keys for a blockchain member.
 // Parameters:
 // blockchainMemberName - blockchain member name.
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // APIKey - api key to be regenerate
-func (client MembersClient) ListRegenerateAPIKeys(ctx context.Context, blockchainMemberName string, resourceGroupName string, APIKey *APIKey) (result APIKeyCollection, err error) {
+func (client MembersClient) RegenerateAPIKeys(ctx context.Context, blockchainMemberName string, resourceGroupName string, APIKey *APIKey) (result APIKeyCollection, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MembersClient.ListRegenerateAPIKeys")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MembersClient.RegenerateAPIKeys")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -714,29 +714,29 @@ func (client MembersClient) ListRegenerateAPIKeys(ctx context.Context, blockchai
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.ListRegenerateAPIKeysPreparer(ctx, blockchainMemberName, resourceGroupName, APIKey)
+	req, err := client.RegenerateAPIKeysPreparer(ctx, blockchainMemberName, resourceGroupName, APIKey)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "ListRegenerateAPIKeys", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "RegenerateAPIKeys", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListRegenerateAPIKeysSender(req)
+	resp, err := client.RegenerateAPIKeysSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "ListRegenerateAPIKeys", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "RegenerateAPIKeys", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListRegenerateAPIKeysResponder(resp)
+	result, err = client.RegenerateAPIKeysResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "ListRegenerateAPIKeys", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "RegenerateAPIKeys", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListRegenerateAPIKeysPreparer prepares the ListRegenerateAPIKeys request.
-func (client MembersClient) ListRegenerateAPIKeysPreparer(ctx context.Context, blockchainMemberName string, resourceGroupName string, APIKey *APIKey) (*http.Request, error) {
+// RegenerateAPIKeysPreparer prepares the RegenerateAPIKeys request.
+func (client MembersClient) RegenerateAPIKeysPreparer(ctx context.Context, blockchainMemberName string, resourceGroupName string, APIKey *APIKey) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"blockchainMemberName": autorest.Encode("path", blockchainMemberName),
 		"resourceGroupName":    autorest.Encode("path", resourceGroupName),
@@ -761,16 +761,16 @@ func (client MembersClient) ListRegenerateAPIKeysPreparer(ctx context.Context, b
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListRegenerateAPIKeysSender sends the ListRegenerateAPIKeys request. The method will close the
+// RegenerateAPIKeysSender sends the RegenerateAPIKeys request. The method will close the
 // http.Response Body if it receives an error.
-func (client MembersClient) ListRegenerateAPIKeysSender(req *http.Request) (*http.Response, error) {
+func (client MembersClient) RegenerateAPIKeysSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// ListRegenerateAPIKeysResponder handles the response to the ListRegenerateAPIKeys request. The method always
+// RegenerateAPIKeysResponder handles the response to the RegenerateAPIKeys request. The method always
 // closes the http.Response Body.
-func (client MembersClient) ListRegenerateAPIKeysResponder(resp *http.Response) (result APIKeyCollection, err error) {
+func (client MembersClient) RegenerateAPIKeysResponder(resp *http.Response) (result APIKeyCollection, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -22,6 +22,8 @@ jobs:
     steps:
     - script: |
         set -e
+        echo '$(system.defaultWorkingDirectory)'
+        echo '$(GOPATH)'
         mkdir -p '$(GOPATH)/bin'
         mkdir -p '$(sdkPath)'
         shopt -s dotglob extglob

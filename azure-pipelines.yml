@@ -22,8 +22,8 @@ jobs:
     steps:
     - script: |
         set -e
-        echo '$(system.defaultWorkingDirectory)'
-        echo '$(GOPATH)'
+        echo '$(System.DefaultWorkingDirectory)'
+        echo '$(Pipeline.Workspace)'
         mkdir -p '$(GOPATH)/bin'
         mkdir -p '$(sdkPath)'
         shopt -s dotglob extglob

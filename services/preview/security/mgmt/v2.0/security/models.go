@@ -78,11 +78,13 @@ const (
 	ActionTypeLogicApp ActionType = "LogicApp"
 	// ActionTypeSecurityEmail ...
 	ActionTypeSecurityEmail ActionType = "SecurityEmail"
+	// ActionTypeWorkspace ...
+	ActionTypeWorkspace ActionType = "Workspace"
 )
 
 // PossibleActionTypeValues returns an array of possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{ActionTypeAutomationAction, ActionTypeEventHub, ActionTypeLogicApp, ActionTypeSecurityEmail}
+	return []ActionType{ActionTypeAutomationAction, ActionTypeEventHub, ActionTypeLogicApp, ActionTypeSecurityEmail, ActionTypeWorkspace}
 }
 
 // AlertNotifications enumerates the values for alert notifications.
@@ -2583,12 +2585,13 @@ type BasicAutomationAction interface {
 	AsAutomationActionLogicApp() (*AutomationActionLogicApp, bool)
 	AsAutomationActionEventHub() (*AutomationActionEventHub, bool)
 	AsAutomationActionSecurityEmail() (*AutomationActionSecurityEmail, bool)
+	AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool)
 	AsAutomationAction() (*AutomationAction, bool)
 }
 
 // AutomationAction the action that should be triggered.
 type AutomationAction struct {
-	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail'
+	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
 }
 
@@ -2612,6 +2615,10 @@ func unmarshalBasicAutomationAction(body []byte) (BasicAutomationAction, error) 
 		var aase AutomationActionSecurityEmail
 		err := json.Unmarshal(body, &aase)
 		return aase, err
+	case string(ActionTypeWorkspace):
+		var aaw AutomationActionWorkspace
+		err := json.Unmarshal(body, &aaw)
+		return aaw, err
 	default:
 		var aa AutomationAction
 		err := json.Unmarshal(body, &aa)
@@ -2662,6 +2669,11 @@ func (aa AutomationAction) AsAutomationActionSecurityEmail() (*AutomationActionS
 	return nil, false
 }
 
+// AsAutomationActionWorkspace is the BasicAutomationAction implementation for AutomationAction.
+func (aa AutomationAction) AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool) {
+	return nil, false
+}
+
 // AsAutomationAction is the BasicAutomationAction implementation for AutomationAction.
 func (aa AutomationAction) AsAutomationAction() (*AutomationAction, bool) {
 	return &aa, true
@@ -2678,7 +2690,7 @@ type AutomationActionEventHub struct {
 	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
 	// ConnectionString - The event hub connection string(the primary or secondary key).
 	ConnectionString *string `json:"connectionString,omitempty"`
-	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail'
+	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
 }
 
@@ -2713,6 +2725,11 @@ func (aaeh AutomationActionEventHub) AsAutomationActionSecurityEmail() (*Automat
 	return nil, false
 }
 
+// AsAutomationActionWorkspace is the BasicAutomationAction implementation for AutomationActionEventHub.
+func (aaeh AutomationActionEventHub) AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool) {
+	return nil, false
+}
+
 // AsAutomationAction is the BasicAutomationAction implementation for AutomationActionEventHub.
 func (aaeh AutomationActionEventHub) AsAutomationAction() (*AutomationAction, bool) {
 	return nil, false
@@ -2729,7 +2746,7 @@ type AutomationActionLogicApp struct {
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
 	// URI - The uri that should be triggered by an Http GET request.
 	URI *string `json:"uri,omitempty"`
-	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail'
+	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
 }
 
@@ -2764,6 +2781,11 @@ func (aala AutomationActionLogicApp) AsAutomationActionSecurityEmail() (*Automat
 	return nil, false
 }
 
+// AsAutomationActionWorkspace is the BasicAutomationAction implementation for AutomationActionLogicApp.
+func (aala AutomationActionLogicApp) AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool) {
+	return nil, false
+}
+
 // AsAutomationAction is the BasicAutomationAction implementation for AutomationActionLogicApp.
 func (aala AutomationActionLogicApp) AsAutomationAction() (*AutomationAction, bool) {
 	return nil, false
@@ -2776,11 +2798,11 @@ func (aala AutomationActionLogicApp) AsBasicAutomationAction() (BasicAutomationA
 
 // AutomationActionSecurityEmail the Security Email action that should be triggered.
 type AutomationActionSecurityEmail struct {
-	// SubscriptionRbacRoles - A list of RBAC roles of the subscription for the email to be sent to.
+	// SubscriptionRbacRoles - A list of allowed RBAC roles of the subscription for the email to be sent to.
 	SubscriptionRbacRoles *[]SubscriptionRbacRoles `json:"subscriptionRbacRoles,omitempty"`
-	// EmailAddresses - A list of email addresses for the email to be sent to.
+	// EmailAddresses - A list of email addresses that should receive the event data.
 	EmailAddresses *[]string `json:"emailAddresses,omitempty"`
-	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail'
+	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
 }
 
@@ -2815,6 +2837,11 @@ func (aase AutomationActionSecurityEmail) AsAutomationActionSecurityEmail() (*Au
 	return &aase, true
 }
 
+// AsAutomationActionWorkspace is the BasicAutomationAction implementation for AutomationActionSecurityEmail.
+func (aase AutomationActionSecurityEmail) AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool) {
+	return nil, false
+}
+
 // AsAutomationAction is the BasicAutomationAction implementation for AutomationActionSecurityEmail.
 func (aase AutomationActionSecurityEmail) AsAutomationAction() (*AutomationAction, bool) {
 	return nil, false
@@ -2823,6 +2850,62 @@ func (aase AutomationActionSecurityEmail) AsAutomationAction() (*AutomationActio
 // AsBasicAutomationAction is the BasicAutomationAction implementation for AutomationActionSecurityEmail.
 func (aase AutomationActionSecurityEmail) AsBasicAutomationAction() (BasicAutomationAction, bool) {
 	return &aase, true
+}
+
+// AutomationActionWorkspace the log analytics workspace action that should be triggered.
+type AutomationActionWorkspace struct {
+	// WorkspaceResourceID - The log analytics workspace resource id.
+	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
+	// WorkspaceID - The log analytics id in a GUID format.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
+	ActionType ActionType `json:"actionType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) MarshalJSON() ([]byte, error) {
+	aaw.ActionType = ActionTypeWorkspace
+	objectMap := make(map[string]interface{})
+	if aaw.WorkspaceResourceID != nil {
+		objectMap["workspaceResourceId"] = aaw.WorkspaceResourceID
+	}
+	if aaw.WorkspaceID != nil {
+		objectMap["workspaceId"] = aaw.WorkspaceID
+	}
+	if aaw.ActionType != "" {
+		objectMap["actionType"] = aaw.ActionType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAutomationActionLogicApp is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsAutomationActionLogicApp() (*AutomationActionLogicApp, bool) {
+	return nil, false
+}
+
+// AsAutomationActionEventHub is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsAutomationActionEventHub() (*AutomationActionEventHub, bool) {
+	return nil, false
+}
+
+// AsAutomationActionSecurityEmail is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsAutomationActionSecurityEmail() (*AutomationActionSecurityEmail, bool) {
+	return nil, false
+}
+
+// AsAutomationActionWorkspace is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsAutomationActionWorkspace() (*AutomationActionWorkspace, bool) {
+	return &aaw, true
+}
+
+// AsAutomationAction is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsAutomationAction() (*AutomationAction, bool) {
+	return nil, false
+}
+
+// AsBasicAutomationAction is the BasicAutomationAction implementation for AutomationActionWorkspace.
+func (aaw AutomationActionWorkspace) AsBasicAutomationAction() (BasicAutomationAction, bool) {
+	return &aaw, true
 }
 
 // AutomationList list of security automations response.

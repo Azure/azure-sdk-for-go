@@ -52,6 +52,7 @@ const (
 	ActionTypeEventHub         ActionType = original.ActionTypeEventHub
 	ActionTypeLogicApp         ActionType = original.ActionTypeLogicApp
 	ActionTypeSecurityEmail    ActionType = original.ActionTypeSecurityEmail
+	ActionTypeWorkspace        ActionType = original.ActionTypeWorkspace
 )
 
 type AlertNotifications = original.AlertNotifications
@@ -494,6 +495,7 @@ type AutomationAction = original.AutomationAction
 type AutomationActionEventHub = original.AutomationActionEventHub
 type AutomationActionLogicApp = original.AutomationActionLogicApp
 type AutomationActionSecurityEmail = original.AutomationActionSecurityEmail
+type AutomationActionWorkspace = original.AutomationActionWorkspace
 type AutomationList = original.AutomationList
 type AutomationListIterator = original.AutomationListIterator
 type AutomationListPage = original.AutomationListPage

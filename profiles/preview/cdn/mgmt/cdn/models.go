@@ -133,6 +133,14 @@ const (
 	Overwrite HeaderAction = original.Overwrite
 )
 
+type MinimumTLSVersion = original.MinimumTLSVersion
+
+const (
+	None  MinimumTLSVersion = original.None
+	TLS10 MinimumTLSVersion = original.TLS10
+	TLS12 MinimumTLSVersion = original.TLS12
+)
+
 type Name = original.Name
 
 const (
@@ -628,6 +636,9 @@ func PossibleGeoFilterActionsValues() []GeoFilterActions {
 }
 func PossibleHeaderActionValues() []HeaderAction {
 	return original.PossibleHeaderActionValues()
+}
+func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
+	return original.PossibleMinimumTLSVersionValues()
 }
 func PossibleNameBasicDeliveryRuleActionValues() []NameBasicDeliveryRuleAction {
 	return original.PossibleNameBasicDeliveryRuleActionValues()

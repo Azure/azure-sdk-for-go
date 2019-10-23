@@ -249,6 +249,23 @@ func PossibleHeaderActionValues() []HeaderAction {
 	return []HeaderAction{Append, Delete, Overwrite}
 }
 
+// MinimumTLSVersion enumerates the values for minimum tls version.
+type MinimumTLSVersion string
+
+const (
+	// None ...
+	None MinimumTLSVersion = "None"
+	// TLS10 ...
+	TLS10 MinimumTLSVersion = "TLS10"
+	// TLS12 ...
+	TLS12 MinimumTLSVersion = "TLS12"
+)
+
+// PossibleMinimumTLSVersionValues returns an array of possible values for the MinimumTLSVersion const type.
+func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
+	return []MinimumTLSVersion{None, TLS10, TLS12}
+}
+
 // Name enumerates the values for name.
 type Name string
 
@@ -902,6 +919,8 @@ type BasicCustomDomainHTTPSParameters interface {
 type CustomDomainHTTPSParameters struct {
 	// ProtocolType - Defines the TLS extension protocol that is used for secure delivery. Possible values include: 'ServerNameIndication', 'IPBased'
 	ProtocolType ProtocolType `json:"protocolType,omitempty"`
+	// MinimumTLSVersion - TLS protocol version that will be used for Https. Possible values include: 'None', 'TLS10', 'TLS12'
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 	// CertificateSource - Possible values include: 'CertificateSourceCustomDomainHTTPSParameters', 'CertificateSourceCdn', 'CertificateSourceAzureKeyVault'
 	CertificateSource CertificateSource `json:"certificateSource,omitempty"`
 }
@@ -953,6 +972,9 @@ func (cdhp CustomDomainHTTPSParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cdhp.ProtocolType != "" {
 		objectMap["protocolType"] = cdhp.ProtocolType
+	}
+	if cdhp.MinimumTLSVersion != "" {
+		objectMap["minimumTlsVersion"] = cdhp.MinimumTLSVersion
 	}
 	if cdhp.CertificateSource != "" {
 		objectMap["certificateSource"] = cdhp.CertificateSource
@@ -1175,10 +1197,89 @@ type CustomDomainProperties struct {
 	CustomHTTPSProvisioningState CustomHTTPSProvisioningState `json:"customHttpsProvisioningState,omitempty"`
 	// CustomHTTPSProvisioningSubstate - READ-ONLY; Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. Possible values include: 'SubmittingDomainControlValidationRequest', 'PendingDomainControlValidationREquestApproval', 'DomainControlValidationRequestApproved', 'DomainControlValidationRequestRejected', 'DomainControlValidationRequestTimedOut', 'IssuingCertificate', 'DeployingCertificate', 'CertificateDeployed', 'DeletingCertificate', 'CertificateDeleted'
 	CustomHTTPSProvisioningSubstate CustomHTTPSProvisioningSubstate `json:"customHttpsProvisioningSubstate,omitempty"`
+	// CustomHTTPSParameters - Certificate parameters for securing custom HTTPS
+	CustomHTTPSParameters BasicCustomDomainHTTPSParameters `json:"customHttpsParameters,omitempty"`
 	// ValidationData - Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP license number of a custom domain is required to deliver content in China.
 	ValidationData *string `json:"validationData,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning status of the custom domain.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for CustomDomainProperties struct.
+func (cdp *CustomDomainProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "hostName":
+			if v != nil {
+				var hostName string
+				err = json.Unmarshal(*v, &hostName)
+				if err != nil {
+					return err
+				}
+				cdp.HostName = &hostName
+			}
+		case "resourceState":
+			if v != nil {
+				var resourceState CustomDomainResourceState
+				err = json.Unmarshal(*v, &resourceState)
+				if err != nil {
+					return err
+				}
+				cdp.ResourceState = resourceState
+			}
+		case "customHttpsProvisioningState":
+			if v != nil {
+				var customHTTPSProvisioningState CustomHTTPSProvisioningState
+				err = json.Unmarshal(*v, &customHTTPSProvisioningState)
+				if err != nil {
+					return err
+				}
+				cdp.CustomHTTPSProvisioningState = customHTTPSProvisioningState
+			}
+		case "customHttpsProvisioningSubstate":
+			if v != nil {
+				var customHTTPSProvisioningSubstate CustomHTTPSProvisioningSubstate
+				err = json.Unmarshal(*v, &customHTTPSProvisioningSubstate)
+				if err != nil {
+					return err
+				}
+				cdp.CustomHTTPSProvisioningSubstate = customHTTPSProvisioningSubstate
+			}
+		case "customHttpsParameters":
+			if v != nil {
+				customHTTPSParameters, err := unmarshalBasicCustomDomainHTTPSParameters(*v)
+				if err != nil {
+					return err
+				}
+				cdp.CustomHTTPSParameters = customHTTPSParameters
+			}
+		case "validationData":
+			if v != nil {
+				var validationData string
+				err = json.Unmarshal(*v, &validationData)
+				if err != nil {
+					return err
+				}
+				cdp.ValidationData = &validationData
+			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState string
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				cdp.ProvisioningState = &provisioningState
+			}
+		}
+	}
+
+	return nil
 }
 
 // CustomDomainPropertiesParameters the JSON object that contains the properties of the custom domain to
@@ -4231,6 +4332,8 @@ type ManagedHTTPSParameters struct {
 	CertificateSourceParameters *CertificateSourceParameters `json:"certificateSourceParameters,omitempty"`
 	// ProtocolType - Defines the TLS extension protocol that is used for secure delivery. Possible values include: 'ServerNameIndication', 'IPBased'
 	ProtocolType ProtocolType `json:"protocolType,omitempty"`
+	// MinimumTLSVersion - TLS protocol version that will be used for Https. Possible values include: 'None', 'TLS10', 'TLS12'
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 	// CertificateSource - Possible values include: 'CertificateSourceCustomDomainHTTPSParameters', 'CertificateSourceCdn', 'CertificateSourceAzureKeyVault'
 	CertificateSource CertificateSource `json:"certificateSource,omitempty"`
 }
@@ -4244,6 +4347,9 @@ func (mhp ManagedHTTPSParameters) MarshalJSON() ([]byte, error) {
 	}
 	if mhp.ProtocolType != "" {
 		objectMap["protocolType"] = mhp.ProtocolType
+	}
+	if mhp.MinimumTLSVersion != "" {
+		objectMap["minimumTlsVersion"] = mhp.MinimumTLSVersion
 	}
 	if mhp.CertificateSource != "" {
 		objectMap["certificateSource"] = mhp.CertificateSource
@@ -5673,6 +5779,8 @@ type UserManagedHTTPSParameters struct {
 	CertificateSourceParameters *KeyVaultCertificateSourceParameters `json:"certificateSourceParameters,omitempty"`
 	// ProtocolType - Defines the TLS extension protocol that is used for secure delivery. Possible values include: 'ServerNameIndication', 'IPBased'
 	ProtocolType ProtocolType `json:"protocolType,omitempty"`
+	// MinimumTLSVersion - TLS protocol version that will be used for Https. Possible values include: 'None', 'TLS10', 'TLS12'
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 	// CertificateSource - Possible values include: 'CertificateSourceCustomDomainHTTPSParameters', 'CertificateSourceCdn', 'CertificateSourceAzureKeyVault'
 	CertificateSource CertificateSource `json:"certificateSource,omitempty"`
 }
@@ -5686,6 +5794,9 @@ func (umhp UserManagedHTTPSParameters) MarshalJSON() ([]byte, error) {
 	}
 	if umhp.ProtocolType != "" {
 		objectMap["protocolType"] = umhp.ProtocolType
+	}
+	if umhp.MinimumTLSVersion != "" {
+		objectMap["minimumTlsVersion"] = umhp.MinimumTLSVersion
 	}
 	if umhp.CertificateSource != "" {
 		objectMap["certificateSource"] = umhp.CertificateSource

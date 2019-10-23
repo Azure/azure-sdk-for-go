@@ -42,12 +42,12 @@ var _ ServicesClientAPI = (*appplatform.ServicesClient)(nil)
 
 // AppsClientAPI contains the set of methods on the AppsClient type.
 type AppsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource *appplatform.AppResource) (result appplatform.AppResource, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource *appplatform.AppResource) (result appplatform.AppsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, appName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, syncStatus string) (result appplatform.AppResource, err error)
 	GetResourceUploadURL(ctx context.Context, resourceGroupName string, serviceName string, appName string) (result appplatform.ResourceUploadDefinition, err error)
 	List(ctx context.Context, resourceGroupName string, serviceName string) (result appplatform.AppResourceCollectionPage, err error)
-	Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource *appplatform.AppResource) (result appplatform.AppResource, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource *appplatform.AppResource) (result appplatform.AppsUpdateFuture, err error)
 }
 
 var _ AppsClientAPI = (*appplatform.AppsClient)(nil)

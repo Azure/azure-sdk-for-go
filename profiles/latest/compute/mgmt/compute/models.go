@@ -730,6 +730,7 @@ type DiskEncryptionSet = original.DiskEncryptionSet
 type DiskEncryptionSetList = original.DiskEncryptionSetList
 type DiskEncryptionSetListIterator = original.DiskEncryptionSetListIterator
 type DiskEncryptionSetListPage = original.DiskEncryptionSetListPage
+type DiskEncryptionSetParameters = original.DiskEncryptionSetParameters
 type DiskEncryptionSetUpdate = original.DiskEncryptionSetUpdate
 type DiskEncryptionSetUpdateProperties = original.DiskEncryptionSetUpdateProperties
 type DiskEncryptionSetsClient = original.DiskEncryptionSetsClient
@@ -810,6 +811,7 @@ type GrantAccessData = original.GrantAccessData
 type HardwareProfile = original.HardwareProfile
 type Image = original.Image
 type ImageDataDisk = original.ImageDataDisk
+type ImageDisk = original.ImageDisk
 type ImageDiskReference = original.ImageDiskReference
 type ImageListResult = original.ImageListResult
 type ImageListResultIterator = original.ImageListResultIterator
@@ -1033,7 +1035,11 @@ type VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties = origin
 type VirtualMachineScaleSetUpdateStorageProfile = original.VirtualMachineScaleSetUpdateStorageProfile
 type VirtualMachineScaleSetUpdateVMProfile = original.VirtualMachineScaleSetUpdateVMProfile
 type VirtualMachineScaleSetVM = original.VirtualMachineScaleSetVM
+type VirtualMachineScaleSetVMExtensionsClient = original.VirtualMachineScaleSetVMExtensionsClient
+type VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture = original.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture
+type VirtualMachineScaleSetVMExtensionsDeleteFuture = original.VirtualMachineScaleSetVMExtensionsDeleteFuture
 type VirtualMachineScaleSetVMExtensionsSummary = original.VirtualMachineScaleSetVMExtensionsSummary
+type VirtualMachineScaleSetVMExtensionsUpdateFuture = original.VirtualMachineScaleSetVMExtensionsUpdateFuture
 type VirtualMachineScaleSetVMInstanceIDs = original.VirtualMachineScaleSetVMInstanceIDs
 type VirtualMachineScaleSetVMInstanceRequiredIDs = original.VirtualMachineScaleSetVMInstanceRequiredIDs
 type VirtualMachineScaleSetVMInstanceView = original.VirtualMachineScaleSetVMInstanceView
@@ -1084,6 +1090,7 @@ type VirtualMachinesDeallocateFuture = original.VirtualMachinesDeallocateFuture
 type VirtualMachinesDeleteFuture = original.VirtualMachinesDeleteFuture
 type VirtualMachinesPerformMaintenanceFuture = original.VirtualMachinesPerformMaintenanceFuture
 type VirtualMachinesPowerOffFuture = original.VirtualMachinesPowerOffFuture
+type VirtualMachinesReapplyFuture = original.VirtualMachinesReapplyFuture
 type VirtualMachinesRedeployFuture = original.VirtualMachinesRedeployFuture
 type VirtualMachinesReimageFuture = original.VirtualMachinesReimageFuture
 type VirtualMachinesRestartFuture = original.VirtualMachinesRestartFuture
@@ -1378,6 +1385,12 @@ func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string) Virtu
 }
 func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
 	return original.NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualMachineScaleSetVMExtensionsClient(subscriptionID string) VirtualMachineScaleSetVMExtensionsClient {
+	return original.NewVirtualMachineScaleSetVMExtensionsClient(subscriptionID)
+}
+func NewVirtualMachineScaleSetVMExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMExtensionsClient {
+	return original.NewVirtualMachineScaleSetVMExtensionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVMListResultPage) VirtualMachineScaleSetVMListResultIterator {
 	return original.NewVirtualMachineScaleSetVMListResultIterator(page)

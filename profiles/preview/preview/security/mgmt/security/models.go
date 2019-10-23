@@ -422,6 +422,15 @@ const (
 	SubAssessmentStatusCodeUnhealthy     SubAssessmentStatusCode = original.SubAssessmentStatusCodeUnhealthy
 )
 
+type SubscriptionRbacRoles = original.SubscriptionRbacRoles
+
+const (
+	AccountAdmin SubscriptionRbacRoles = original.AccountAdmin
+	Contributor  SubscriptionRbacRoles = original.Contributor
+	Owner        SubscriptionRbacRoles = original.Owner
+	ServiceAdmin SubscriptionRbacRoles = original.ServiceAdmin
+)
+
 type Type = original.Type
 
 const (
@@ -1169,6 +1178,9 @@ func PossibleStatusValues() []Status {
 }
 func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	return original.PossibleSubAssessmentStatusCodeValues()
+}
+func PossibleSubscriptionRbacRolesValues() []SubscriptionRbacRoles {
+	return original.PossibleSubscriptionRbacRolesValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

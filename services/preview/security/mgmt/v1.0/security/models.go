@@ -740,6 +740,25 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	return []SubAssessmentStatusCode{Healthy, NotApplicable, Unhealthy}
 }
 
+// SubscriptionRbacRoles enumerates the values for subscription rbac roles.
+type SubscriptionRbacRoles string
+
+const (
+	// AccountAdmin ...
+	AccountAdmin SubscriptionRbacRoles = "AccountAdmin"
+	// Contributor ...
+	Contributor SubscriptionRbacRoles = "Contributor"
+	// Owner ...
+	Owner SubscriptionRbacRoles = "Owner"
+	// ServiceAdmin ...
+	ServiceAdmin SubscriptionRbacRoles = "ServiceAdmin"
+)
+
+// PossibleSubscriptionRbacRolesValues returns an array of possible values for the SubscriptionRbacRoles const type.
+func PossibleSubscriptionRbacRolesValues() []SubscriptionRbacRoles {
+	return []SubscriptionRbacRoles{AccountAdmin, Contributor, Owner, ServiceAdmin}
+}
+
 // TransportProtocol enumerates the values for transport protocol.
 type TransportProtocol string
 
@@ -2647,7 +2666,7 @@ func (aala AutomationActionLogicApp) AsBasicAutomationAction() (BasicAutomationA
 // AutomationActionSecurityEmail the Security Email action that should be triggered.
 type AutomationActionSecurityEmail struct {
 	// SubscriptionRbacRoles - A list of RBAC roles of the subscription for the email to be sent to.
-	SubscriptionRbacRoles *[]string `json:"subscriptionRbacRoles,omitempty"`
+	SubscriptionRbacRoles *[]SubscriptionRbacRoles `json:"subscriptionRbacRoles,omitempty"`
 	// EmailAddresses - A list of email addresses for the email to be sent to.
 	EmailAddresses *[]string `json:"emailAddresses,omitempty"`
 	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail'
@@ -2861,7 +2880,7 @@ type AutomationProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// Metadata - The metadata of the security automation resource.
 	Metadata *AutomationMetadata `json:"metadata,omitempty"`
-	// Scopes - A collection of the subscription's resources  scopes on which the security automations logic is applied.
+	// Scopes - A collection of the subscription's resources scopes on which the security automations logic is applied.
 	Scopes *[]AutomationScope `json:"scopes,omitempty"`
 	// Sources - A collection of the source event types which evaluate the security automation set of rules.
 	Sources *[]AutomationSource `json:"sources,omitempty"`

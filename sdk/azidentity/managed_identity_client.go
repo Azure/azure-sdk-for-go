@@ -44,20 +44,21 @@ type ManagedIdentityClient struct {
 }
 
 // NewManagedIdentityClient ...
-func NewManagedIdentityClient(options *IdentityClientOptions) (*ManagedIdentityClient, error) {
+func NewManagedIdentityClient(options *IdentityClientOptions) ManagedIdentityClient {
 	if options == nil {
 		options, _ = newIdentityClientOptions()
 	}
 
 	sIMDSEndpoint, err := url.Parse("http://169.254.169.254/metadata/identity/oauth2/token")
 	if err != nil {
-		return nil, fmt.Errorf("NewManagedIdentityClient: %w", err)
+		// return nil, fmt.Errorf("NewManagedIdentityClient: %w", err)
+		return ManagedIdentityClient{}
 	}
 	imdsAPIVersion := "2018-02-01"
 	imdsAvailableTimeoutMs := 500
 	sMSIType := unknown
 	client := ManagedIdentityClient{options: *options, pipeline: NewDefaultPipeline(options.pipelineOptions), sIMDSEndpoint: *sIMDSEndpoint, imdsAPIVersion: imdsAPIVersion, imdsAvailableTimeoutMS: imdsAvailableTimeoutMs, sMSIType: sMSIType}
-	return &client, nil
+	return client
 }
 
 // Authenticate ...

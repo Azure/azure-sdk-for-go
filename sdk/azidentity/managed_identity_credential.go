@@ -22,12 +22,12 @@ func NewManagedIdentityCredential(clientID string, options *IdentityClientOption
 	if options == nil {
 		options, _ = newIdentityClientOptions()
 	}
-	client, err := NewManagedIdentityClient(options)
-	if err != nil {
-		return ManagedIdentityCredential{}, err
-	}
+	client := NewManagedIdentityClient(options)
+	// if err != nil {
+	// 	return ManagedIdentityCredential{}, err
+	// }
 
-	return ManagedIdentityCredential{clientID: clientID, client: *client}, nil
+	return ManagedIdentityCredential{clientID: clientID, client: client}, nil
 }
 
 // GetToken obtains an AccessToken from the Managed Identity service if available.

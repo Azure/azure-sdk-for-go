@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## `v34.3.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| network | 2019-09-01 |
+| runtime | luis |
+| storage | 2019-06-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| datamigration | 2018-07-15-preview |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| runtime | luis |
+
 ## `v34.2.0`
 
 ### New Packages

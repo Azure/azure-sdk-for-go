@@ -291,6 +291,21 @@ func PossibleEnforcementMode1Values() []EnforcementMode1 {
 	return []EnforcementMode1{EnforcementMode1Audit, EnforcementMode1Enforce, EnforcementMode1None}
 }
 
+// EventSource enumerates the values for event source.
+type EventSource string
+
+const (
+	// Alerts ...
+	Alerts EventSource = "Alerts"
+	// Assessments ...
+	Assessments EventSource = "Assessments"
+)
+
+// PossibleEventSourceValues returns an array of possible values for the EventSource const type.
+func PossibleEventSourceValues() []EventSource {
+	return []EventSource{Alerts, Assessments}
+}
+
 // Exe enumerates the values for exe.
 type Exe string
 
@@ -509,13 +524,13 @@ type PropertyType string
 
 const (
 	// Boolean ...
-	Boolean PropertyType = "boolean"
+	Boolean PropertyType = "Boolean"
 	// Integer ...
-	Integer PropertyType = "integer"
+	Integer PropertyType = "Integer"
 	// Number ...
-	Number PropertyType = "number"
+	Number PropertyType = "Number"
 	// String ...
-	String PropertyType = "string"
+	String PropertyType = "String"
 )
 
 // PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
@@ -2798,7 +2813,7 @@ func (aala AutomationActionLogicApp) AsBasicAutomationAction() (BasicAutomationA
 
 // AutomationActionSecurityEmail the Security Email action that should be triggered.
 type AutomationActionSecurityEmail struct {
-	// SubscriptionRbacRoles - A list of allowed RBAC roles of the subscription for the email to be sent to.
+	// SubscriptionRbacRoles - A list of RBAC roles which indicate the relevant users that will receive the event data via email.
 	SubscriptionRbacRoles *[]SubscriptionRbacRoles `json:"subscriptionRbacRoles,omitempty"`
 	// EmailAddresses - A list of email addresses that should receive the event data.
 	EmailAddresses *[]string `json:"emailAddresses,omitempty"`
@@ -3078,7 +3093,7 @@ type AutomationProperties struct {
 	Scopes *[]AutomationScope `json:"scopes,omitempty"`
 	// Sources - A collection of the source event types which evaluate the security automation set of rules.
 	Sources *[]AutomationSource `json:"sources,omitempty"`
-	// Actions - A collection of the actions which are triggered if all the configured rule set evaluation is true.
+	// Actions - A collection of the actions which are triggered if all the configured rules evaluations, within a ruleset, are true.
 	Actions *[]BasicAutomationAction `json:"actions,omitempty"`
 }
 
@@ -3166,8 +3181,8 @@ type AutomationScope struct {
 // AutomationSource the source event types which evaluate the security automation set of rules. For example
 // - security alerts and security assessments.
 type AutomationSource struct {
-	// EventSource - A valid event source type.
-	EventSource *string `json:"eventSource,omitempty"`
+	// EventSource - A valid event source type. Possible values include: 'Assessments', 'Alerts'
+	EventSource EventSource `json:"eventSource,omitempty"`
 	// RuleSets - A set of rules which evaluate upon event interception.
 	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
 }

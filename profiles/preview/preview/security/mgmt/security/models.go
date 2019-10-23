@@ -144,6 +144,13 @@ const (
 	EnforcementMode1None    EnforcementMode1 = original.EnforcementMode1None
 )
 
+type EventSource = original.EventSource
+
+const (
+	Alerts      EventSource = original.Alerts
+	Assessments EventSource = original.Assessments
+)
+
 type Exe = original.Exe
 
 const (
@@ -1087,6 +1094,9 @@ func PossibleEnforcementMode1Values() []EnforcementMode1 {
 }
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()
+}
+func PossibleEventSourceValues() []EventSource {
+	return original.PossibleEventSourceValues()
 }
 func PossibleExeValues() []Exe {
 	return original.PossibleExeValues()

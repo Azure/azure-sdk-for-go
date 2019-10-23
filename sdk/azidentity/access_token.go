@@ -4,14 +4,15 @@
 package azidentity
 
 import (
+	"encoding/json"
 	"hash/fnv"
 	"time"
 )
 
 // AccessToken is used to set and maintain tokens for authentication
 type AccessToken struct {
-	Token     string `json:"access_token"`
-	ExpiresIn int    `json:"expires_in"`
+	Token     string      `json:"access_token"`
+	ExpiresIn json.Number `json:"expires_in"`
 	ExpiresOn time.Time
 }
 
@@ -31,7 +32,11 @@ func (c *AccessToken) GetToken() string {
 // The int should be the time in seconds that the token expires in
 // CP: check this implementation for type
 func (c *AccessToken) SetExpiresOn() {
-	c.ExpiresOn = time.Now().Add(time.Second * time.Duration(c.ExpiresIn)).UTC()
+	t, err := c.ExpiresIn.Int64()
+	if err != nil {
+		return
+	}
+	c.ExpiresOn = time.Now().Add(time.Second * time.Duration(t)).UTC()
 
 }
 
@@ -50,7 +55,7 @@ func (c *AccessToken) Equals(accessToken AccessToken) bool {
 }
 
 // NewAccessToken constructs the AccessToken type
-func NewAccessToken(accessToken string, expiresOn int) *AccessToken {
+func NewAccessToken(accessToken string, expiresOn json.Number) *AccessToken {
 	c := &AccessToken{Token: accessToken, ExpiresIn: expiresOn}
 	return c
 }

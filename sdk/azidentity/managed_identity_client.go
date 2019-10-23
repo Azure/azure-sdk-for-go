@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -44,7 +43,7 @@ type ManagedIdentityClient struct {
 }
 
 // NewManagedIdentityClient ...
-func NewManagedIdentityClient(options *IdentityClientOptions) ManagedIdentityClient {
+func NewManagedIdentityClient(options *IdentityClientOptions) *ManagedIdentityClient {
 	if options == nil {
 		options, _ = newIdentityClientOptions()
 	}
@@ -52,35 +51,37 @@ func NewManagedIdentityClient(options *IdentityClientOptions) ManagedIdentityCli
 	sIMDSEndpoint, err := url.Parse("http://169.254.169.254/metadata/identity/oauth2/token")
 	if err != nil {
 		// return nil, fmt.Errorf("NewManagedIdentityClient: %w", err)
-		return ManagedIdentityClient{}
+		return &ManagedIdentityClient{}
 	}
 	imdsAPIVersion := "2018-02-01"
 	imdsAvailableTimeoutMs := 500
 	sMSIType := unknown
 	client := ManagedIdentityClient{options: *options, pipeline: NewDefaultPipeline(options.pipelineOptions), sIMDSEndpoint: *sIMDSEndpoint, imdsAPIVersion: imdsAPIVersion, imdsAvailableTimeoutMS: imdsAvailableTimeoutMs, sMSIType: sMSIType}
-	return client
+	return &client
 }
 
 // Authenticate ...
-func (c ManagedIdentityClient) Authenticate(ctx context.Context, clientID string, scopes []string) (*AccessToken, error) {
-	msiType, err := c.getMSIType(ctx)
+func (c *ManagedIdentityClient) Authenticate(ctx context.Context, clientID string, scopes []string) (*AccessToken, error) {
+	// TODO: fix variable name
+	sType, err := c.getMSIType(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("Authenticate: %w", err)
 	}
 	// if msi is unavailable or we were unable to determine the type return a default access token
-	if msiType == int(unavailable) || msiType == int(unknown) {
+	if sType == int(unavailable) || sType == int(unknown) {
 		// CP: TO DO this needs to return a default accessToken
 		return nil, nil
 	}
 
-	AT, err := c.sendAuthRequest(ctx, c.sMSIType, clientID, scopes)
+	AT, err := c.sendAuthRequest(ctx, sType, clientID, scopes)
 	if err != nil {
-		return nil, errors.New(authenticationRequestFailedError)
+		// return nil, errors.New(authenticationRequestFailedError)
+		return nil, fmt.Errorf("Failed to authenticate: %w", err)
 	}
 	return AT, nil
 }
 
-func (c ManagedIdentityClient) sendAuthRequest(ctx context.Context, msiType msiType, clientID string, scopes []string) (*AccessToken, error) {
+func (c *ManagedIdentityClient) sendAuthRequest(ctx context.Context, msiType int, clientID string, scopes []string) (*AccessToken, error) {
 	msg, err := c.createAuthRequest(msiType, clientID, scopes)
 	if err != nil {
 		return nil, fmt.Errorf("SendAuthRequest: %w", err)
@@ -99,7 +100,7 @@ func (c ManagedIdentityClient) sendAuthRequest(ctx context.Context, msiType msiT
 	return nil, err
 }
 
-func (c ManagedIdentityClient) createAccessToken(res *azcore.Response) (*AccessToken, error) {
+func (c *ManagedIdentityClient) createAccessToken(res *azcore.Response) (*AccessToken, error) {
 	// CP: what is the best method to initialize this?
 	value := &AccessToken{}
 	// value := NewAccessToken("", 0)
@@ -114,15 +115,16 @@ func (c ManagedIdentityClient) createAccessToken(res *azcore.Response) (*AccessT
 	return value, nil
 }
 
-func (c ManagedIdentityClient) createAuthRequest(msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
+func (c *ManagedIdentityClient) createAuthRequest(msiType int, clientID string, scopes []string) (*azcore.Request, error) {
 	var req *azcore.Request
 	var err error
+	// CP: TODO check this switch
 	switch msiType {
-	case imds:
+	case int(imds):
 		req, err = c.createImdsAuthRequest(clientID, scopes)
-	case appService:
+	case int(appService):
 		req, err = c.createAppServiceAuthRequest(clientID, scopes)
-	case cloudShell:
+	case int(cloudShell):
 		req, err = c.createCloudShellAuthRequest(clientID, scopes)
 	default:
 		// TODO: missing this
@@ -131,28 +133,32 @@ func (c ManagedIdentityClient) createAuthRequest(msiType msiType, clientID strin
 	return req, err
 }
 
-func (c ManagedIdentityClient) createImdsAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
+func (c *ManagedIdentityClient) createImdsAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
 	// TODO: check other sdk's handling of resources, it's in ScopeUtilities
 	// // covert the scopes to a resource string
 	// resource = ScopeUtilities.ScopesToResource(scopes);
 
 	request := c.pipeline.NewRequest(http.MethodGet, c.sEndpoint)
 	request.Header = http.Header{"Metadata": []string{"true"}}
-
-	data := url.Values{}
-	data.Set("api-version", c.imdsAPIVersion)
-	data.Set("resource", strings.Join(scopes, " "))
-	if clientID != "" {
-		data.Set("client_id", clientID)
-	}
-	dataEncoded := data.Encode()
-	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	request.SetBody(body)
+	q := request.URL.Query()
+	q.Add("api-version", c.imdsAPIVersion)
+	q.Add("resource", strings.Join(scopes, " "))
+	request.URL.RawQuery = q.Encode()
+	// data := url.Values{}
+	// data.Set("api-version", c.imdsAPIVersion)
+	// data.Set("resource", strings.Join(scopes, " "))
+	// if clientID != "" {
+	// 	data.Set("client_id", clientID)
+	// }
+	// dataEncoded := data.Encode()
+	// body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	// request.SetBody(body)
 
 	return request, nil
 }
 
-func (c ManagedIdentityClient) createAppServiceAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
+// CP: TODO need to fix and test this to add query params to the raw query
+func (c *ManagedIdentityClient) createAppServiceAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
 	// TODO: check other sdk's handling of resources, it's in ScopeUtilities
 	// // covert the scopes to a resource string
 	// resource = ScopeUtilities.ScopesToResource(scopes);
@@ -173,7 +179,8 @@ func (c ManagedIdentityClient) createAppServiceAuthRequest(clientID string, scop
 	return request, nil
 }
 
-func (c ManagedIdentityClient) createCloudShellAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
+// CP: TODO need to fix and test this to add query params to the raw query
+func (c *ManagedIdentityClient) createCloudShellAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
 	// TODO: check other sdk's handling of resources, it's in ScopeUtilities
 	// // covert the scopes to a resource string
 	// resource = ScopeUtilities.ScopesToResource(scopes);
@@ -193,7 +200,7 @@ func (c ManagedIdentityClient) createCloudShellAuthRequest(clientID string, scop
 	return request, nil
 }
 
-func (c ManagedIdentityClient) getMSIType(ctx context.Context) (int, error) {
+func (c *ManagedIdentityClient) getMSIType(ctx context.Context) (int, error) {
 	if c.sMSIType == unknown { // if we haven't already determined the msi type
 		endpointEnvVar := os.Getenv(msiEndpointEnvironemntVariable)
 		secretEnvVar := os.Getenv(msiSecretEnvironemntVariable)
@@ -220,7 +227,7 @@ func (c ManagedIdentityClient) getMSIType(ctx context.Context) (int, error) {
 	return int(c.sMSIType), nil
 }
 
-func (c ManagedIdentityClient) imdsAvailable(ctx context.Context) bool {
+func (c *ManagedIdentityClient) imdsAvailable(ctx context.Context) bool {
 	req := c.pipeline.NewRequest(http.MethodGet, c.sIMDSEndpoint)
 	data := url.Values{}
 	data.Set("api-version", c.imdsAPIVersion)

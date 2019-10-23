@@ -11,14 +11,14 @@ import "context"
 type ManagedIdentityCredential struct {
 	TokenCredential
 	clientID string
-	client   ManagedIdentityClient
+	client   *ManagedIdentityClient
 }
 
 // NewManagedIdentityCredential creates an instance of the ManagedIdentityCredential capable of authenticating a resource with a managed identity.
 // The client id to authenticate for a user assigned managed identity.  More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
 // Options that allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewManagedIdentityCredential(clientID string, options *IdentityClientOptions) (ManagedIdentityCredential, error) {
+func NewManagedIdentityCredential(clientID string, options *IdentityClientOptions) (*ManagedIdentityCredential, error) {
 	if options == nil {
 		options, _ = newIdentityClientOptions()
 	}
@@ -27,7 +27,7 @@ func NewManagedIdentityCredential(clientID string, options *IdentityClientOption
 	// 	return ManagedIdentityCredential{}, err
 	// }
 
-	return ManagedIdentityCredential{clientID: clientID, client: client}, nil
+	return &ManagedIdentityCredential{clientID: clientID, client: client}, nil
 }
 
 // GetToken obtains an AccessToken from the Managed Identity service if available.

@@ -45,9 +45,9 @@ func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) Service
 // subscription and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// myPeeringService - the name of the peering service.
+// peeringName - the name of the peering service.
 // peeringService - the properties needed to create or update a peering service.
-func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, myPeeringService string, peeringService Service) (result Service, err error) {
+func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peeringService Service) (result Service, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.CreateOrUpdate")
 		defer func() {
@@ -64,7 +64,7 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 		return result, validation.NewError("peering.ServicesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, myPeeringService, peeringService)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, peeringName, peeringService)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -86,9 +86,9 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, myPeeringService string, peeringService Service) (*http.Request, error) {
+func (client ServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, peeringName string, peeringService Service) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeeringService":  autorest.Encode("path", myPeeringService),
+		"peeringName":       autorest.Encode("path", peeringName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -131,8 +131,8 @@ func (client ServicesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // Delete deletes an existing peering service with the specified name under the given subscription and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// myPeeringService - the name of the peering service.
-func (client ServicesClient) Delete(ctx context.Context, resourceGroupName string, myPeeringService string) (result autorest.Response, err error) {
+// peeringName - the name of the peering service.
+func (client ServicesClient) Delete(ctx context.Context, resourceGroupName string, peeringName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Delete")
 		defer func() {
@@ -143,7 +143,7 @@ func (client ServicesClient) Delete(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, myPeeringService)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServicesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -165,9 +165,9 @@ func (client ServicesClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ServicesClient) DeletePreparer(ctx context.Context, resourceGroupName string, myPeeringService string) (*http.Request, error) {
+func (client ServicesClient) DeletePreparer(ctx context.Context, resourceGroupName string, peeringName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeeringService":  autorest.Encode("path", myPeeringService),
+		"peeringName":       autorest.Encode("path", peeringName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -207,8 +207,8 @@ func (client ServicesClient) DeleteResponder(resp *http.Response) (result autore
 // Get gets an existing peering service with the specified name under the given subscription and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// myPeeringService - the name of the peering.
-func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, myPeeringService string) (result Service, err error) {
+// peeringName - the name of the peering.
+func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, peeringName string) (result Service, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Get")
 		defer func() {
@@ -219,7 +219,7 @@ func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, myPeeringService)
+	req, err := client.GetPreparer(ctx, resourceGroupName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServicesClient", "Get", nil, "Failure preparing request")
 		return
@@ -241,9 +241,9 @@ func (client ServicesClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client ServicesClient) GetPreparer(ctx context.Context, resourceGroupName string, myPeeringService string) (*http.Request, error) {
+func (client ServicesClient) GetPreparer(ctx context.Context, resourceGroupName string, peeringName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeeringService":  autorest.Encode("path", myPeeringService),
+		"peeringName":       autorest.Encode("path", peeringName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -507,9 +507,9 @@ func (client ServicesClient) ListBySubscriptionComplete(ctx context.Context) (re
 // Update updates tags for a peering service with the specified name under the given subscription and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// myPeeringService - the name of the peering service.
+// peeringName - the name of the peering service.
 // tags - the resource tags.
-func (client ServicesClient) Update(ctx context.Context, resourceGroupName string, myPeeringService string, tags ResourceTags) (result Service, err error) {
+func (client ServicesClient) Update(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags) (result Service, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Update")
 		defer func() {
@@ -520,7 +520,7 @@ func (client ServicesClient) Update(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, myPeeringService, tags)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, peeringName, tags)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServicesClient", "Update", nil, "Failure preparing request")
 		return
@@ -542,9 +542,9 @@ func (client ServicesClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, myPeeringService string, tags ResourceTags) (*http.Request, error) {
+func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeeringService":  autorest.Encode("path", myPeeringService),
+		"peeringName":       autorest.Encode("path", peeringName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}

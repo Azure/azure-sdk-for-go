@@ -45,9 +45,9 @@ func NewPeeringsClientWithBaseURI(baseURI string, subscriptionID string) Peering
 // subscription and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// myPeering - the name of the peering.
+// peeringName - the name of the peering.
 // peering - the properties needed to create or update a peering.
-func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, myPeering string, peering Model) (result Model, err error) {
+func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peering Model) (result Model, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.CreateOrUpdate")
 		defer func() {
@@ -65,7 +65,7 @@ func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 		return result, validation.NewError("peering.PeeringsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, myPeering, peering)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, peeringName, peering)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -87,9 +87,9 @@ func (client PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PeeringsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, myPeering string, peering Model) (*http.Request, error) {
+func (client PeeringsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, peeringName string, peering Model) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeering":         autorest.Encode("path", myPeering),
+		"peeringName":       autorest.Encode("path", peeringName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -132,8 +132,8 @@ func (client PeeringsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // Delete deletes an existing peering with the specified name under the given subscription and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// myPeering - the name of the peering.
-func (client PeeringsClient) Delete(ctx context.Context, resourceGroupName string, myPeering string) (result autorest.Response, err error) {
+// peeringName - the name of the peering.
+func (client PeeringsClient) Delete(ctx context.Context, resourceGroupName string, peeringName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.Delete")
 		defer func() {
@@ -144,7 +144,7 @@ func (client PeeringsClient) Delete(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, myPeering)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -166,9 +166,9 @@ func (client PeeringsClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PeeringsClient) DeletePreparer(ctx context.Context, resourceGroupName string, myPeering string) (*http.Request, error) {
+func (client PeeringsClient) DeletePreparer(ctx context.Context, resourceGroupName string, peeringName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeering":         autorest.Encode("path", myPeering),
+		"peeringName":       autorest.Encode("path", peeringName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -208,8 +208,8 @@ func (client PeeringsClient) DeleteResponder(resp *http.Response) (result autore
 // Get gets an existing peering with the specified name under the given subscription and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// myPeering - the name of the peering.
-func (client PeeringsClient) Get(ctx context.Context, resourceGroupName string, myPeering string) (result Model, err error) {
+// peeringName - the name of the peering.
+func (client PeeringsClient) Get(ctx context.Context, resourceGroupName string, peeringName string) (result Model, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.Get")
 		defer func() {
@@ -220,7 +220,7 @@ func (client PeeringsClient) Get(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, myPeering)
+	req, err := client.GetPreparer(ctx, resourceGroupName, peeringName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "Get", nil, "Failure preparing request")
 		return
@@ -242,9 +242,9 @@ func (client PeeringsClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client PeeringsClient) GetPreparer(ctx context.Context, resourceGroupName string, myPeering string) (*http.Request, error) {
+func (client PeeringsClient) GetPreparer(ctx context.Context, resourceGroupName string, peeringName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeering":         autorest.Encode("path", myPeering),
+		"peeringName":       autorest.Encode("path", peeringName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -508,9 +508,9 @@ func (client PeeringsClient) ListBySubscriptionComplete(ctx context.Context) (re
 // Update updates tags for a peering with the specified name under the given subscription and resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// myPeering - the name of the peering.
+// peeringName - the name of the peering.
 // tags - the resource tags.
-func (client PeeringsClient) Update(ctx context.Context, resourceGroupName string, myPeering string, tags ResourceTags) (result Model, err error) {
+func (client PeeringsClient) Update(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags) (result Model, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeeringsClient.Update")
 		defer func() {
@@ -521,7 +521,7 @@ func (client PeeringsClient) Update(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, myPeering, tags)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, peeringName, tags)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeeringsClient", "Update", nil, "Failure preparing request")
 		return
@@ -543,9 +543,9 @@ func (client PeeringsClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client PeeringsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, myPeering string, tags ResourceTags) (*http.Request, error) {
+func (client PeeringsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, peeringName string, tags ResourceTags) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeering":         autorest.Encode("path", myPeering),
+		"peeringName":       autorest.Encode("path", peeringName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}

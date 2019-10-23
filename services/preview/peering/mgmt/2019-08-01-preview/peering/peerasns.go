@@ -43,9 +43,9 @@ func NewPeerAsnsClientWithBaseURI(baseURI string, subscriptionID string) PeerAsn
 // CreateOrUpdate creates a new peer ASN or updates an existing peer ASN with the specified name under the given
 // subscription.
 // Parameters:
-// myPeerAsn - the peer ASN name.
+// peerAsnName - the peer ASN name.
 // peerAsn - the peer ASN.
-func (client PeerAsnsClient) CreateOrUpdate(ctx context.Context, myPeerAsn string, peerAsn PeerAsn) (result PeerAsn, err error) {
+func (client PeerAsnsClient) CreateOrUpdate(ctx context.Context, peerAsnName string, peerAsn PeerAsn) (result PeerAsn, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeerAsnsClient.CreateOrUpdate")
 		defer func() {
@@ -56,7 +56,7 @@ func (client PeerAsnsClient) CreateOrUpdate(ctx context.Context, myPeerAsn strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, myPeerAsn, peerAsn)
+	req, err := client.CreateOrUpdatePreparer(ctx, peerAsnName, peerAsn)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeerAsnsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -78,9 +78,9 @@ func (client PeerAsnsClient) CreateOrUpdate(ctx context.Context, myPeerAsn strin
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PeerAsnsClient) CreateOrUpdatePreparer(ctx context.Context, myPeerAsn string, peerAsn PeerAsn) (*http.Request, error) {
+func (client PeerAsnsClient) CreateOrUpdatePreparer(ctx context.Context, peerAsnName string, peerAsn PeerAsn) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeerAsn":      autorest.Encode("path", myPeerAsn),
+		"peerAsnName":    autorest.Encode("path", peerAsnName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -93,7 +93,7 @@ func (client PeerAsnsClient) CreateOrUpdatePreparer(ctx context.Context, myPeerA
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{MyPeerAsn}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}", pathParameters),
 		autorest.WithJSON(peerAsn),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -121,8 +121,8 @@ func (client PeerAsnsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 
 // Delete deletes an existing peer ASN with the specified name under the given subscription.
 // Parameters:
-// myPeerAsn - the peer ASN name.
-func (client PeerAsnsClient) Delete(ctx context.Context, myPeerAsn string) (result autorest.Response, err error) {
+// peerAsnName - the peer ASN name.
+func (client PeerAsnsClient) Delete(ctx context.Context, peerAsnName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeerAsnsClient.Delete")
 		defer func() {
@@ -133,7 +133,7 @@ func (client PeerAsnsClient) Delete(ctx context.Context, myPeerAsn string) (resu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, myPeerAsn)
+	req, err := client.DeletePreparer(ctx, peerAsnName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeerAsnsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -155,9 +155,9 @@ func (client PeerAsnsClient) Delete(ctx context.Context, myPeerAsn string) (resu
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PeerAsnsClient) DeletePreparer(ctx context.Context, myPeerAsn string) (*http.Request, error) {
+func (client PeerAsnsClient) DeletePreparer(ctx context.Context, peerAsnName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeerAsn":      autorest.Encode("path", myPeerAsn),
+		"peerAsnName":    autorest.Encode("path", peerAsnName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -169,7 +169,7 @@ func (client PeerAsnsClient) DeletePreparer(ctx context.Context, myPeerAsn strin
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{MyPeerAsn}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -195,8 +195,8 @@ func (client PeerAsnsClient) DeleteResponder(resp *http.Response) (result autore
 
 // Get gets the peer ASN with the specified name under the given subscription.
 // Parameters:
-// myPeerAsn - the peer ASN name.
-func (client PeerAsnsClient) Get(ctx context.Context, myPeerAsn string) (result PeerAsn, err error) {
+// peerAsnName - the peer ASN name.
+func (client PeerAsnsClient) Get(ctx context.Context, peerAsnName string) (result PeerAsn, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PeerAsnsClient.Get")
 		defer func() {
@@ -207,7 +207,7 @@ func (client PeerAsnsClient) Get(ctx context.Context, myPeerAsn string) (result 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, myPeerAsn)
+	req, err := client.GetPreparer(ctx, peerAsnName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeerAsnsClient", "Get", nil, "Failure preparing request")
 		return
@@ -229,9 +229,9 @@ func (client PeerAsnsClient) Get(ctx context.Context, myPeerAsn string) (result 
 }
 
 // GetPreparer prepares the Get request.
-func (client PeerAsnsClient) GetPreparer(ctx context.Context, myPeerAsn string) (*http.Request, error) {
+func (client PeerAsnsClient) GetPreparer(ctx context.Context, peerAsnName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"MyPeerAsn":      autorest.Encode("path", myPeerAsn),
+		"peerAsnName":    autorest.Encode("path", peerAsnName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
@@ -243,7 +243,7 @@ func (client PeerAsnsClient) GetPreparer(ctx context.Context, myPeerAsn string) 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{MyPeerAsn}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

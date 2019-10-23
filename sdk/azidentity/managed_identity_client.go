@@ -117,7 +117,7 @@ func (c ManagedIdentityClient) createAccessToken(res *azcore.Response) (*AccessT
 func (c ManagedIdentityClient) createAuthRequest(msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
 	var req *azcore.Request
 	var err error
-	switch c.sMSIType {
+	switch msiType {
 	case imds:
 		req, err = c.createImdsAuthRequest(clientID, scopes)
 	case appService:

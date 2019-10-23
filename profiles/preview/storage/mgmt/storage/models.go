@@ -22,7 +22,7 @@ package storage
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-04-01/storage"
+	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-06-01/storage"
 )
 
 const (
@@ -193,12 +193,29 @@ const (
 	W Permissions = original.W
 )
 
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	Creating  PrivateEndpointConnectionProvisioningState = original.Creating
+	Deleting  PrivateEndpointConnectionProvisioningState = original.Deleting
+	Failed    PrivateEndpointConnectionProvisioningState = original.Failed
+	Succeeded PrivateEndpointConnectionProvisioningState = original.Succeeded
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	Approved PrivateEndpointServiceConnectionStatus = original.Approved
+	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Creating     ProvisioningState = original.Creating
-	ResolvingDNS ProvisioningState = original.ResolvingDNS
-	Succeeded    ProvisioningState = original.Succeeded
+	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateResolvingDNS ProvisioningState = original.ProvisioningStateResolvingDNS
+	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type PublicAccess = original.PublicAccess
@@ -333,6 +350,7 @@ type Encryption = original.Encryption
 type EncryptionService = original.EncryptionService
 type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
+type ErrorResponse = original.ErrorResponse
 type FileServiceItems = original.FileServiceItems
 type FileServiceProperties = original.FileServiceProperties
 type FileServicePropertiesProperties = original.FileServicePropertiesProperties
@@ -378,6 +396,15 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type Restriction = original.Restriction
@@ -459,6 +486,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSkusClient(subscriptionID string) SkusClient {
 	return original.NewSkusClient(subscriptionID)
 }
@@ -536,6 +575,12 @@ func PossibleListKeyExpandValues() []ListKeyExpand {
 }
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
+}
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

@@ -46,9 +46,9 @@ var _ OperationsClientAPI = (*peering.OperationsClient)(nil)
 
 // PeerAsnsClientAPI contains the set of methods on the PeerAsnsClient type.
 type PeerAsnsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, peerAsnName string, peerAsn peering.PeerAsn) (result peering.PeerAsn, err error)
-	Delete(ctx context.Context, peerAsnName string) (result autorest.Response, err error)
-	Get(ctx context.Context, peerAsnName string) (result peering.PeerAsn, err error)
+	CreateOrUpdate(ctx context.Context, myPeerAsn string, peerAsn peering.PeerAsn) (result peering.PeerAsn, err error)
+	Delete(ctx context.Context, myPeerAsn string) (result autorest.Response, err error)
+	Get(ctx context.Context, myPeerAsn string) (result peering.PeerAsn, err error)
 	ListBySubscription(ctx context.Context) (result peering.PeerAsnListResultPage, err error)
 }
 
@@ -63,12 +63,12 @@ var _ LocationsClientAPI = (*peering.LocationsClient)(nil)
 
 // PeeringsClientAPI contains the set of methods on the PeeringsClient type.
 type PeeringsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringName string, peering peering.Model) (result peering.Model, err error)
-	Delete(ctx context.Context, resourceGroupName string, peeringName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, peeringName string) (result peering.Model, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, myPeering string, peering peering.Model) (result peering.Model, err error)
+	Delete(ctx context.Context, resourceGroupName string, myPeering string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, myPeering string) (result peering.Model, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result peering.ListResultPage, err error)
 	ListBySubscription(ctx context.Context) (result peering.ListResultPage, err error)
-	Update(ctx context.Context, resourceGroupName string, peeringName string, tags peering.ResourceTags) (result peering.Model, err error)
+	Update(ctx context.Context, resourceGroupName string, myPeering string, tags peering.ResourceTags) (result peering.Model, err error)
 }
 
 var _ PeeringsClientAPI = (*peering.PeeringsClient)(nil)
@@ -82,10 +82,10 @@ var _ ServiceLocationsClientAPI = (*peering.ServiceLocationsClient)(nil)
 
 // PrefixesClientAPI contains the set of methods on the PrefixesClient type.
 type PrefixesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix peering.ServicePrefix) (result peering.ServicePrefix, err error)
-	Delete(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, expand string) (result peering.ServicePrefix, err error)
-	ListByPeeringService(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (result peering.ServicePrefixListResultPage, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, myPeeringService string, prefixName string, peeringServicePrefix peering.ServicePrefix) (result peering.ServicePrefix, err error)
+	Delete(ctx context.Context, resourceGroupName string, myPeeringService string, prefixName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, myPeeringService string, prefixName string, expand string) (result peering.ServicePrefix, err error)
+	ListByPeeringService(ctx context.Context, resourceGroupName string, myPeeringService string, expand string) (result peering.ServicePrefixListResultPage, err error)
 }
 
 var _ PrefixesClientAPI = (*peering.PrefixesClient)(nil)
@@ -99,12 +99,12 @@ var _ ServiceProvidersClientAPI = (*peering.ServiceProvidersClient)(nil)
 
 // ServicesClientAPI contains the set of methods on the ServicesClient type.
 type ServicesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringServiceName string, peeringService peering.Service) (result peering.Service, err error)
-	Delete(ctx context.Context, resourceGroupName string, peeringServiceName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, peeringServiceName string) (result peering.Service, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, myPeeringService string, peeringService peering.Service) (result peering.Service, err error)
+	Delete(ctx context.Context, resourceGroupName string, myPeeringService string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, myPeeringService string) (result peering.Service, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result peering.ServiceListResultPage, err error)
 	ListBySubscription(ctx context.Context) (result peering.ServiceListResultPage, err error)
-	Update(ctx context.Context, resourceGroupName string, peeringServiceName string, tags peering.ResourceTags) (result peering.Service, err error)
+	Update(ctx context.Context, resourceGroupName string, myPeeringService string, tags peering.ResourceTags) (result peering.Service, err error)
 }
 
 var _ ServicesClientAPI = (*peering.ServicesClient)(nil)

@@ -44,10 +44,10 @@ func NewPrefixesClientWithBaseURI(baseURI string, subscriptionID string) Prefixe
 // service.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// peeringServiceName - the name of the peering service.
+// myPeeringService - the name of the peering service.
 // prefixName - the name of the prefix.
 // peeringServicePrefix - the properties needed to create a prefix.
-func (client PrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix ServicePrefix) (result ServicePrefix, err error) {
+func (client PrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, myPeeringService string, prefixName string, peeringServicePrefix ServicePrefix) (result ServicePrefix, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.CreateOrUpdate")
 		defer func() {
@@ -58,7 +58,7 @@ func (client PrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, peeringServiceName, prefixName, peeringServicePrefix)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, myPeeringService, prefixName, peeringServicePrefix)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -80,12 +80,12 @@ func (client PrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client PrefixesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, peeringServicePrefix ServicePrefix) (*http.Request, error) {
+func (client PrefixesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, myPeeringService string, prefixName string, peeringServicePrefix ServicePrefix) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"peeringServiceName": autorest.Encode("path", peeringServiceName),
-		"prefixName":         autorest.Encode("path", prefixName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"MyPeeringService":  autorest.Encode("path", myPeeringService),
+		"prefixName":        autorest.Encode("path", prefixName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-09-01-preview"
@@ -97,7 +97,7 @@ func (client PrefixesClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{MyPeeringService}/prefixes/{prefixName}", pathParameters),
 		autorest.WithJSON(peeringServicePrefix),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -127,9 +127,9 @@ func (client PrefixesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // service.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// peeringServiceName - the name of the peering service.
+// myPeeringService - the name of the peering service.
 // prefixName - the name of the prefix.
-func (client PrefixesClient) Delete(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string) (result autorest.Response, err error) {
+func (client PrefixesClient) Delete(ctx context.Context, resourceGroupName string, myPeeringService string, prefixName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.Delete")
 		defer func() {
@@ -140,7 +140,7 @@ func (client PrefixesClient) Delete(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, peeringServiceName, prefixName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, myPeeringService, prefixName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -162,12 +162,12 @@ func (client PrefixesClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PrefixesClient) DeletePreparer(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string) (*http.Request, error) {
+func (client PrefixesClient) DeletePreparer(ctx context.Context, resourceGroupName string, myPeeringService string, prefixName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"peeringServiceName": autorest.Encode("path", peeringServiceName),
-		"prefixName":         autorest.Encode("path", prefixName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"MyPeeringService":  autorest.Encode("path", myPeeringService),
+		"prefixName":        autorest.Encode("path", prefixName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-09-01-preview"
@@ -178,7 +178,7 @@ func (client PrefixesClient) DeletePreparer(ctx context.Context, resourceGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{MyPeeringService}/prefixes/{prefixName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -206,10 +206,10 @@ func (client PrefixesClient) DeleteResponder(resp *http.Response) (result autore
 // service.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// peeringServiceName - the name of the peering service.
+// myPeeringService - the name of the peering service.
 // prefixName - the name of the prefix.
 // expand - the properties to be expanded.
-func (client PrefixesClient) Get(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, expand string) (result ServicePrefix, err error) {
+func (client PrefixesClient) Get(ctx context.Context, resourceGroupName string, myPeeringService string, prefixName string, expand string) (result ServicePrefix, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.Get")
 		defer func() {
@@ -220,7 +220,7 @@ func (client PrefixesClient) Get(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, peeringServiceName, prefixName, expand)
+	req, err := client.GetPreparer(ctx, resourceGroupName, myPeeringService, prefixName, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "Get", nil, "Failure preparing request")
 		return
@@ -242,12 +242,12 @@ func (client PrefixesClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client PrefixesClient) GetPreparer(ctx context.Context, resourceGroupName string, peeringServiceName string, prefixName string, expand string) (*http.Request, error) {
+func (client PrefixesClient) GetPreparer(ctx context.Context, resourceGroupName string, myPeeringService string, prefixName string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"peeringServiceName": autorest.Encode("path", peeringServiceName),
-		"prefixName":         autorest.Encode("path", prefixName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"MyPeeringService":  autorest.Encode("path", myPeeringService),
+		"prefixName":        autorest.Encode("path", prefixName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-09-01-preview"
@@ -261,7 +261,7 @@ func (client PrefixesClient) GetPreparer(ctx context.Context, resourceGroupName 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes/{prefixName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{MyPeeringService}/prefixes/{prefixName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -289,9 +289,9 @@ func (client PrefixesClient) GetResponder(resp *http.Response) (result ServicePr
 // ListByPeeringService lists all prefixes under the given subscription, resource group and peering service.
 // Parameters:
 // resourceGroupName - the name of the resource group.
-// peeringServiceName - the name of the peering service.
+// myPeeringService - the name of the peering service.
 // expand - the properties to be expanded.
-func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (result ServicePrefixListResultPage, err error) {
+func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceGroupName string, myPeeringService string, expand string) (result ServicePrefixListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.ListByPeeringService")
 		defer func() {
@@ -303,7 +303,7 @@ func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceG
 		}()
 	}
 	result.fn = client.listByPeeringServiceNextResults
-	req, err := client.ListByPeeringServicePreparer(ctx, resourceGroupName, peeringServiceName, expand)
+	req, err := client.ListByPeeringServicePreparer(ctx, resourceGroupName, myPeeringService, expand)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "ListByPeeringService", nil, "Failure preparing request")
 		return
@@ -325,11 +325,11 @@ func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceG
 }
 
 // ListByPeeringServicePreparer prepares the ListByPeeringService request.
-func (client PrefixesClient) ListByPeeringServicePreparer(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (*http.Request, error) {
+func (client PrefixesClient) ListByPeeringServicePreparer(ctx context.Context, resourceGroupName string, myPeeringService string, expand string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"peeringServiceName": autorest.Encode("path", peeringServiceName),
-		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
-		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
+		"MyPeeringService":  autorest.Encode("path", myPeeringService),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-09-01-preview"
@@ -343,7 +343,7 @@ func (client PrefixesClient) ListByPeeringServicePreparer(ctx context.Context, r
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/prefixes", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{MyPeeringService}/prefixes", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -390,7 +390,7 @@ func (client PrefixesClient) listByPeeringServiceNextResults(ctx context.Context
 }
 
 // ListByPeeringServiceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PrefixesClient) ListByPeeringServiceComplete(ctx context.Context, resourceGroupName string, peeringServiceName string, expand string) (result ServicePrefixListResultIterator, err error) {
+func (client PrefixesClient) ListByPeeringServiceComplete(ctx context.Context, resourceGroupName string, myPeeringService string, expand string) (result ServicePrefixListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrefixesClient.ListByPeeringService")
 		defer func() {
@@ -401,6 +401,6 @@ func (client PrefixesClient) ListByPeeringServiceComplete(ctx context.Context, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListByPeeringService(ctx, resourceGroupName, peeringServiceName, expand)
+	result.page, err = client.ListByPeeringService(ctx, resourceGroupName, myPeeringService, expand)
 	return
 }

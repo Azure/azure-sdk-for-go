@@ -127,11 +127,12 @@ type VirtualMachinesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, VMName string, expand compute.InstanceViewTypes) (result compute.VirtualMachine, err error)
 	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)
 	List(ctx context.Context, resourceGroupName string) (result compute.VirtualMachineListResultPage, err error)
-	ListAll(ctx context.Context) (result compute.VirtualMachineListResultPage, err error)
+	ListAll(ctx context.Context, statusOnly string) (result compute.VirtualMachineListResultPage, err error)
 	ListAvailableSizes(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineSizeListResult, err error)
 	ListByLocation(ctx context.Context, location string) (result compute.VirtualMachineListResultPage, err error)
 	PerformMaintenance(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesPerformMaintenanceFuture, err error)
 	PowerOff(ctx context.Context, resourceGroupName string, VMName string, skipShutdown *bool) (result compute.VirtualMachinesPowerOffFuture, err error)
+	Reapply(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesReapplyFuture, err error)
 	Redeploy(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesRedeployFuture, err error)
 	Reimage(ctx context.Context, resourceGroupName string, VMName string, parameters *compute.VirtualMachineReimageParameters) (result compute.VirtualMachinesReimageFuture, err error)
 	Restart(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesRestartFuture, err error)
@@ -207,6 +208,17 @@ type VirtualMachineScaleSetRollingUpgradesClientAPI interface {
 }
 
 var _ VirtualMachineScaleSetRollingUpgradesClientAPI = (*compute.VirtualMachineScaleSetRollingUpgradesClient)(nil)
+
+// VirtualMachineScaleSetVMExtensionsClientAPI contains the set of methods on the VirtualMachineScaleSetVMExtensionsClient type.
+type VirtualMachineScaleSetVMExtensionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, extensionParameters compute.VirtualMachineExtension) (result compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string) (result compute.VirtualMachineScaleSetVMExtensionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, expand string) (result compute.VirtualMachineExtension, err error)
+	List(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, expand string) (result compute.VirtualMachineExtensionsListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, extensionParameters compute.VirtualMachineExtensionUpdate) (result compute.VirtualMachineScaleSetVMExtensionsUpdateFuture, err error)
+}
+
+var _ VirtualMachineScaleSetVMExtensionsClientAPI = (*compute.VirtualMachineScaleSetVMExtensionsClient)(nil)
 
 // VirtualMachineScaleSetVMsClientAPI contains the set of methods on the VirtualMachineScaleSetVMsClient type.
 type VirtualMachineScaleSetVMsClientAPI interface {

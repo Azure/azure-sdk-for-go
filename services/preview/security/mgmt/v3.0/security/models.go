@@ -2231,8 +2231,8 @@ type AssessmentMetadataProperties struct {
 	RemediationDescription *string `json:"remediationDescription,omitempty"`
 	// Category - READ-ONLY
 	Category *[]Category `json:"category,omitempty"`
-	// Severity - READ-ONLY
-	Severity *[]Severity `json:"severity,omitempty"`
+	// Severity - READ-ONLY; The severity level of the assessment. Possible values include: 'SeverityLow', 'SeverityMedium', 'SeverityHigh'
+	Severity Severity `json:"severity,omitempty"`
 	// Preview - READ-ONLY; True if this assessment is in preview release status
 	Preview *bool `json:"preview,omitempty"`
 	// AssessmentType - READ-ONLY; BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'CustomPolicy', 'CustomerManaged'

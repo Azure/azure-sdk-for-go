@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-08-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-09-01/network"
 )
 
 const (
@@ -1034,6 +1034,7 @@ const (
 	WebApplicationFirewallOperatorContains           WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorContains
 	WebApplicationFirewallOperatorEndsWith           WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorEndsWith
 	WebApplicationFirewallOperatorEqual              WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorEqual
+	WebApplicationFirewallOperatorGeoMatch           WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorGeoMatch
 	WebApplicationFirewallOperatorGreaterThan        WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorGreaterThan
 	WebApplicationFirewallOperatorGreaterThanOrEqual WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorGreaterThanOrEqual
 	WebApplicationFirewallOperatorIPMatch            WebApplicationFirewallOperator = original.WebApplicationFirewallOperatorIPMatch
@@ -1147,7 +1148,6 @@ type ApplicationGatewaysCreateOrUpdateFuture = original.ApplicationGatewaysCreat
 type ApplicationGatewaysDeleteFuture = original.ApplicationGatewaysDeleteFuture
 type ApplicationGatewaysStartFuture = original.ApplicationGatewaysStartFuture
 type ApplicationGatewaysStopFuture = original.ApplicationGatewaysStopFuture
-type ApplicationGatewaysUpdateTagsFuture = original.ApplicationGatewaysUpdateTagsFuture
 type ApplicationRuleCondition = original.ApplicationRuleCondition
 type ApplicationSecurityGroup = original.ApplicationSecurityGroup
 type ApplicationSecurityGroupListResult = original.ApplicationSecurityGroupListResult
@@ -1157,7 +1157,6 @@ type ApplicationSecurityGroupPropertiesFormat = original.ApplicationSecurityGrou
 type ApplicationSecurityGroupsClient = original.ApplicationSecurityGroupsClient
 type ApplicationSecurityGroupsCreateOrUpdateFuture = original.ApplicationSecurityGroupsCreateOrUpdateFuture
 type ApplicationSecurityGroupsDeleteFuture = original.ApplicationSecurityGroupsDeleteFuture
-type ApplicationSecurityGroupsUpdateTagsFuture = original.ApplicationSecurityGroupsUpdateTagsFuture
 type AuthorizationListResult = original.AuthorizationListResult
 type AuthorizationListResultIterator = original.AuthorizationListResultIterator
 type AuthorizationListResultPage = original.AuthorizationListResultPage
@@ -1291,7 +1290,6 @@ type DNSNameAvailabilityResult = original.DNSNameAvailabilityResult
 type DdosCustomPoliciesClient = original.DdosCustomPoliciesClient
 type DdosCustomPoliciesCreateOrUpdateFuture = original.DdosCustomPoliciesCreateOrUpdateFuture
 type DdosCustomPoliciesDeleteFuture = original.DdosCustomPoliciesDeleteFuture
-type DdosCustomPoliciesUpdateTagsFuture = original.DdosCustomPoliciesUpdateTagsFuture
 type DdosCustomPolicy = original.DdosCustomPolicy
 type DdosCustomPolicyPropertiesFormat = original.DdosCustomPolicyPropertiesFormat
 type DdosProtectionPlan = original.DdosProtectionPlan
@@ -1302,7 +1300,6 @@ type DdosProtectionPlanPropertiesFormat = original.DdosProtectionPlanPropertiesF
 type DdosProtectionPlansClient = original.DdosProtectionPlansClient
 type DdosProtectionPlansCreateOrUpdateFuture = original.DdosProtectionPlansCreateOrUpdateFuture
 type DdosProtectionPlansDeleteFuture = original.DdosProtectionPlansDeleteFuture
-type DdosProtectionPlansUpdateTagsFuture = original.DdosProtectionPlansUpdateTagsFuture
 type DdosSettings = original.DdosSettings
 type DefaultSecurityRulesClient = original.DefaultSecurityRulesClient
 type Delegation = original.Delegation
@@ -1366,7 +1363,6 @@ type ExpressRouteCircuitsListRoutesTableFuture = original.ExpressRouteCircuitsLi
 type ExpressRouteCircuitsListRoutesTableSummaryFuture = original.ExpressRouteCircuitsListRoutesTableSummaryFuture
 type ExpressRouteCircuitsRoutesTableListResult = original.ExpressRouteCircuitsRoutesTableListResult
 type ExpressRouteCircuitsRoutesTableSummaryListResult = original.ExpressRouteCircuitsRoutesTableSummaryListResult
-type ExpressRouteCircuitsUpdateTagsFuture = original.ExpressRouteCircuitsUpdateTagsFuture
 type ExpressRouteConnection = original.ExpressRouteConnection
 type ExpressRouteConnectionID = original.ExpressRouteConnectionID
 type ExpressRouteConnectionList = original.ExpressRouteConnectionList
@@ -1394,7 +1390,6 @@ type ExpressRouteCrossConnectionsListArpTableFuture = original.ExpressRouteCross
 type ExpressRouteCrossConnectionsListRoutesTableFuture = original.ExpressRouteCrossConnectionsListRoutesTableFuture
 type ExpressRouteCrossConnectionsListRoutesTableSummaryFuture = original.ExpressRouteCrossConnectionsListRoutesTableSummaryFuture
 type ExpressRouteCrossConnectionsRoutesTableSummaryListResult = original.ExpressRouteCrossConnectionsRoutesTableSummaryListResult
-type ExpressRouteCrossConnectionsUpdateTagsFuture = original.ExpressRouteCrossConnectionsUpdateTagsFuture
 type ExpressRouteGateway = original.ExpressRouteGateway
 type ExpressRouteGatewayList = original.ExpressRouteGatewayList
 type ExpressRouteGatewayProperties = original.ExpressRouteGatewayProperties
@@ -1425,7 +1420,6 @@ type ExpressRoutePortsLocationListResultIterator = original.ExpressRoutePortsLoc
 type ExpressRoutePortsLocationListResultPage = original.ExpressRoutePortsLocationListResultPage
 type ExpressRoutePortsLocationPropertiesFormat = original.ExpressRoutePortsLocationPropertiesFormat
 type ExpressRoutePortsLocationsClient = original.ExpressRoutePortsLocationsClient
-type ExpressRoutePortsUpdateTagsFuture = original.ExpressRoutePortsUpdateTagsFuture
 type ExpressRouteServiceProvider = original.ExpressRouteServiceProvider
 type ExpressRouteServiceProviderBandwidthsOffered = original.ExpressRouteServiceProviderBandwidthsOffered
 type ExpressRouteServiceProviderListResult = original.ExpressRouteServiceProviderListResult
@@ -1477,6 +1471,14 @@ type IPConfiguration = original.IPConfiguration
 type IPConfigurationProfile = original.IPConfigurationProfile
 type IPConfigurationProfilePropertiesFormat = original.IPConfigurationProfilePropertiesFormat
 type IPConfigurationPropertiesFormat = original.IPConfigurationPropertiesFormat
+type IPGroup = original.IPGroup
+type IPGroupListResult = original.IPGroupListResult
+type IPGroupListResultIterator = original.IPGroupListResultIterator
+type IPGroupListResultPage = original.IPGroupListResultPage
+type IPGroupPropertiesFormat = original.IPGroupPropertiesFormat
+type IPGroupsClient = original.IPGroupsClient
+type IPGroupsCreateOrUpdateFuture = original.IPGroupsCreateOrUpdateFuture
+type IPGroupsDeleteFuture = original.IPGroupsDeleteFuture
 type IPTag = original.IPTag
 type InboundNatPool = original.InboundNatPool
 type InboundNatPoolPropertiesFormat = original.InboundNatPoolPropertiesFormat
@@ -1521,7 +1523,6 @@ type InterfacesCreateOrUpdateFuture = original.InterfacesCreateOrUpdateFuture
 type InterfacesDeleteFuture = original.InterfacesDeleteFuture
 type InterfacesGetEffectiveRouteTableFuture = original.InterfacesGetEffectiveRouteTableFuture
 type InterfacesListEffectiveNetworkSecurityGroupsFuture = original.InterfacesListEffectiveNetworkSecurityGroupsFuture
-type InterfacesUpdateTagsFuture = original.InterfacesUpdateTagsFuture
 type IpsecPolicy = original.IpsecPolicy
 type Ipv6ExpressRouteCircuitPeeringConfig = original.Ipv6ExpressRouteCircuitPeeringConfig
 type ListHubVirtualNetworkConnectionsResult = original.ListHubVirtualNetworkConnectionsResult
@@ -1531,6 +1532,9 @@ type ListP2SVpnGatewaysResult = original.ListP2SVpnGatewaysResult
 type ListP2SVpnGatewaysResultIterator = original.ListP2SVpnGatewaysResultIterator
 type ListP2SVpnGatewaysResultPage = original.ListP2SVpnGatewaysResultPage
 type ListString = original.ListString
+type ListVirtualHubRouteTableV2sResult = original.ListVirtualHubRouteTableV2sResult
+type ListVirtualHubRouteTableV2sResultIterator = original.ListVirtualHubRouteTableV2sResultIterator
+type ListVirtualHubRouteTableV2sResultPage = original.ListVirtualHubRouteTableV2sResultPage
 type ListVirtualHubsResult = original.ListVirtualHubsResult
 type ListVirtualHubsResultIterator = original.ListVirtualHubsResultIterator
 type ListVirtualHubsResultPage = original.ListVirtualHubsResultPage
@@ -1585,7 +1589,6 @@ type LoadBalancerSku = original.LoadBalancerSku
 type LoadBalancersClient = original.LoadBalancersClient
 type LoadBalancersCreateOrUpdateFuture = original.LoadBalancersCreateOrUpdateFuture
 type LoadBalancersDeleteFuture = original.LoadBalancersDeleteFuture
-type LoadBalancersUpdateTagsFuture = original.LoadBalancersUpdateTagsFuture
 type LoadBalancingRule = original.LoadBalancingRule
 type LoadBalancingRulePropertiesFormat = original.LoadBalancingRulePropertiesFormat
 type LocalNetworkGateway = original.LocalNetworkGateway
@@ -1596,7 +1599,6 @@ type LocalNetworkGatewayPropertiesFormat = original.LocalNetworkGatewayPropertie
 type LocalNetworkGatewaysClient = original.LocalNetworkGatewaysClient
 type LocalNetworkGatewaysCreateOrUpdateFuture = original.LocalNetworkGatewaysCreateOrUpdateFuture
 type LocalNetworkGatewaysDeleteFuture = original.LocalNetworkGatewaysDeleteFuture
-type LocalNetworkGatewaysUpdateTagsFuture = original.LocalNetworkGatewaysUpdateTagsFuture
 type LogSpecification = original.LogSpecification
 type ManagedRuleGroupOverride = original.ManagedRuleGroupOverride
 type ManagedRuleOverride = original.ManagedRuleOverride
@@ -1634,16 +1636,17 @@ type P2SConnectionConfiguration = original.P2SConnectionConfiguration
 type P2SConnectionConfigurationProperties = original.P2SConnectionConfigurationProperties
 type P2SVpnConnectionHealth = original.P2SVpnConnectionHealth
 type P2SVpnConnectionHealthRequest = original.P2SVpnConnectionHealthRequest
+type P2SVpnConnectionRequest = original.P2SVpnConnectionRequest
 type P2SVpnGateway = original.P2SVpnGateway
 type P2SVpnGatewayProperties = original.P2SVpnGatewayProperties
 type P2SVpnProfileParameters = original.P2SVpnProfileParameters
 type P2sVpnGatewaysClient = original.P2sVpnGatewaysClient
 type P2sVpnGatewaysCreateOrUpdateFuture = original.P2sVpnGatewaysCreateOrUpdateFuture
 type P2sVpnGatewaysDeleteFuture = original.P2sVpnGatewaysDeleteFuture
+type P2sVpnGatewaysDisconnectP2sVpnConnectionsFuture = original.P2sVpnGatewaysDisconnectP2sVpnConnectionsFuture
 type P2sVpnGatewaysGenerateVpnProfileFuture = original.P2sVpnGatewaysGenerateVpnProfileFuture
 type P2sVpnGatewaysGetP2sVpnConnectionHealthDetailedFuture = original.P2sVpnGatewaysGetP2sVpnConnectionHealthDetailedFuture
 type P2sVpnGatewaysGetP2sVpnConnectionHealthFuture = original.P2sVpnGatewaysGetP2sVpnConnectionHealthFuture
-type P2sVpnGatewaysUpdateTagsFuture = original.P2sVpnGatewaysUpdateTagsFuture
 type PacketCapture = original.PacketCapture
 type PacketCaptureFilter = original.PacketCaptureFilter
 type PacketCaptureListResult = original.PacketCaptureListResult
@@ -1669,6 +1672,9 @@ type PolicySettings = original.PolicySettings
 type PrepareNetworkPoliciesRequest = original.PrepareNetworkPoliciesRequest
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
 type PrivateEndpointListResult = original.PrivateEndpointListResult
 type PrivateEndpointListResultIterator = original.PrivateEndpointListResultIterator
@@ -1715,7 +1721,6 @@ type PublicIPAddressSku = original.PublicIPAddressSku
 type PublicIPAddressesClient = original.PublicIPAddressesClient
 type PublicIPAddressesCreateOrUpdateFuture = original.PublicIPAddressesCreateOrUpdateFuture
 type PublicIPAddressesDeleteFuture = original.PublicIPAddressesDeleteFuture
-type PublicIPAddressesUpdateTagsFuture = original.PublicIPAddressesUpdateTagsFuture
 type PublicIPPrefix = original.PublicIPPrefix
 type PublicIPPrefixListResult = original.PublicIPPrefixListResult
 type PublicIPPrefixListResultIterator = original.PublicIPPrefixListResultIterator
@@ -1725,7 +1730,6 @@ type PublicIPPrefixSku = original.PublicIPPrefixSku
 type PublicIPPrefixesClient = original.PublicIPPrefixesClient
 type PublicIPPrefixesCreateOrUpdateFuture = original.PublicIPPrefixesCreateOrUpdateFuture
 type PublicIPPrefixesDeleteFuture = original.PublicIPPrefixesDeleteFuture
-type PublicIPPrefixesUpdateTagsFuture = original.PublicIPPrefixesUpdateTagsFuture
 type QueryTroubleshootingParameters = original.QueryTroubleshootingParameters
 type ReferencedPublicIPAddress = original.ReferencedPublicIPAddress
 type Resource = original.Resource
@@ -1749,11 +1753,9 @@ type RouteFilterRulePropertiesFormat = original.RouteFilterRulePropertiesFormat
 type RouteFilterRulesClient = original.RouteFilterRulesClient
 type RouteFilterRulesCreateOrUpdateFuture = original.RouteFilterRulesCreateOrUpdateFuture
 type RouteFilterRulesDeleteFuture = original.RouteFilterRulesDeleteFuture
-type RouteFilterRulesUpdateFuture = original.RouteFilterRulesUpdateFuture
 type RouteFiltersClient = original.RouteFiltersClient
 type RouteFiltersCreateOrUpdateFuture = original.RouteFiltersCreateOrUpdateFuture
 type RouteFiltersDeleteFuture = original.RouteFiltersDeleteFuture
-type RouteFiltersUpdateFuture = original.RouteFiltersUpdateFuture
 type RouteListResult = original.RouteListResult
 type RouteListResultIterator = original.RouteListResultIterator
 type RouteListResultPage = original.RouteListResultPage
@@ -1766,7 +1768,6 @@ type RouteTablePropertiesFormat = original.RouteTablePropertiesFormat
 type RouteTablesClient = original.RouteTablesClient
 type RouteTablesCreateOrUpdateFuture = original.RouteTablesCreateOrUpdateFuture
 type RouteTablesDeleteFuture = original.RouteTablesDeleteFuture
-type RouteTablesUpdateTagsFuture = original.RouteTablesUpdateTagsFuture
 type RoutesClient = original.RoutesClient
 type RoutesCreateOrUpdateFuture = original.RoutesCreateOrUpdateFuture
 type RoutesDeleteFuture = original.RoutesDeleteFuture
@@ -1783,7 +1784,6 @@ type SecurityGroupViewResult = original.SecurityGroupViewResult
 type SecurityGroupsClient = original.SecurityGroupsClient
 type SecurityGroupsCreateOrUpdateFuture = original.SecurityGroupsCreateOrUpdateFuture
 type SecurityGroupsDeleteFuture = original.SecurityGroupsDeleteFuture
-type SecurityGroupsUpdateTagsFuture = original.SecurityGroupsUpdateTagsFuture
 type SecurityRule = original.SecurityRule
 type SecurityRuleAssociations = original.SecurityRuleAssociations
 type SecurityRuleListResult = original.SecurityRuleListResult
@@ -1802,7 +1802,6 @@ type ServiceDelegationPropertiesFormat = original.ServiceDelegationPropertiesFor
 type ServiceEndpointPoliciesClient = original.ServiceEndpointPoliciesClient
 type ServiceEndpointPoliciesCreateOrUpdateFuture = original.ServiceEndpointPoliciesCreateOrUpdateFuture
 type ServiceEndpointPoliciesDeleteFuture = original.ServiceEndpointPoliciesDeleteFuture
-type ServiceEndpointPoliciesUpdateFuture = original.ServiceEndpointPoliciesUpdateFuture
 type ServiceEndpointPolicy = original.ServiceEndpointPolicy
 type ServiceEndpointPolicyDefinition = original.ServiceEndpointPolicyDefinition
 type ServiceEndpointPolicyDefinitionListResult = original.ServiceEndpointPolicyDefinitionListResult
@@ -1862,10 +1861,15 @@ type VirtualHubID = original.VirtualHubID
 type VirtualHubProperties = original.VirtualHubProperties
 type VirtualHubRoute = original.VirtualHubRoute
 type VirtualHubRouteTable = original.VirtualHubRouteTable
+type VirtualHubRouteTableV2 = original.VirtualHubRouteTableV2
+type VirtualHubRouteTableV2Properties = original.VirtualHubRouteTableV2Properties
+type VirtualHubRouteTableV2sClient = original.VirtualHubRouteTableV2sClient
+type VirtualHubRouteTableV2sCreateOrUpdateFuture = original.VirtualHubRouteTableV2sCreateOrUpdateFuture
+type VirtualHubRouteTableV2sDeleteFuture = original.VirtualHubRouteTableV2sDeleteFuture
+type VirtualHubRouteV2 = original.VirtualHubRouteV2
 type VirtualHubsClient = original.VirtualHubsClient
 type VirtualHubsCreateOrUpdateFuture = original.VirtualHubsCreateOrUpdateFuture
 type VirtualHubsDeleteFuture = original.VirtualHubsDeleteFuture
-type VirtualHubsUpdateTagsFuture = original.VirtualHubsUpdateTagsFuture
 type VirtualNetwork = original.VirtualNetwork
 type VirtualNetworkBgpCommunities = original.VirtualNetworkBgpCommunities
 type VirtualNetworkConnectionGatewayReference = original.VirtualNetworkConnectionGatewayReference
@@ -1898,6 +1902,7 @@ type VirtualNetworkGatewaySku = original.VirtualNetworkGatewaySku
 type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
 type VirtualNetworkGatewaysCreateOrUpdateFuture = original.VirtualNetworkGatewaysCreateOrUpdateFuture
 type VirtualNetworkGatewaysDeleteFuture = original.VirtualNetworkGatewaysDeleteFuture
+type VirtualNetworkGatewaysDisconnectvirtualnetworkgatewayvpnconnectionsFuture = original.VirtualNetworkGatewaysDisconnectvirtualnetworkgatewayvpnconnectionsFuture
 type VirtualNetworkGatewaysGenerateVpnProfileFuture = original.VirtualNetworkGatewaysGenerateVpnProfileFuture
 type VirtualNetworkGatewaysGeneratevpnclientpackageFuture = original.VirtualNetworkGatewaysGeneratevpnclientpackageFuture
 type VirtualNetworkGatewaysGetAdvertisedRoutesFuture = original.VirtualNetworkGatewaysGetAdvertisedRoutesFuture
@@ -1935,13 +1940,11 @@ type VirtualNetworkTapPropertiesFormat = original.VirtualNetworkTapPropertiesFor
 type VirtualNetworkTapsClient = original.VirtualNetworkTapsClient
 type VirtualNetworkTapsCreateOrUpdateFuture = original.VirtualNetworkTapsCreateOrUpdateFuture
 type VirtualNetworkTapsDeleteFuture = original.VirtualNetworkTapsDeleteFuture
-type VirtualNetworkTapsUpdateTagsFuture = original.VirtualNetworkTapsUpdateTagsFuture
 type VirtualNetworkUsage = original.VirtualNetworkUsage
 type VirtualNetworkUsageName = original.VirtualNetworkUsageName
 type VirtualNetworksClient = original.VirtualNetworksClient
 type VirtualNetworksCreateOrUpdateFuture = original.VirtualNetworksCreateOrUpdateFuture
 type VirtualNetworksDeleteFuture = original.VirtualNetworksDeleteFuture
-type VirtualNetworksUpdateTagsFuture = original.VirtualNetworksUpdateTagsFuture
 type VirtualRouter = original.VirtualRouter
 type VirtualRouterListResult = original.VirtualRouterListResult
 type VirtualRouterListResultIterator = original.VirtualRouterListResultIterator
@@ -1966,7 +1969,6 @@ type VirtualWanVpnProfileParameters = original.VirtualWanVpnProfileParameters
 type VirtualWansClient = original.VirtualWansClient
 type VirtualWansCreateOrUpdateFuture = original.VirtualWansCreateOrUpdateFuture
 type VirtualWansDeleteFuture = original.VirtualWansDeleteFuture
-type VirtualWansUpdateTagsFuture = original.VirtualWansUpdateTagsFuture
 type VpnClientConfiguration = original.VpnClientConfiguration
 type VpnClientConnectionHealth = original.VpnClientConnectionHealth
 type VpnClientConnectionHealthDetail = original.VpnClientConnectionHealthDetail
@@ -1989,7 +1991,6 @@ type VpnGatewaysClient = original.VpnGatewaysClient
 type VpnGatewaysCreateOrUpdateFuture = original.VpnGatewaysCreateOrUpdateFuture
 type VpnGatewaysDeleteFuture = original.VpnGatewaysDeleteFuture
 type VpnGatewaysResetFuture = original.VpnGatewaysResetFuture
-type VpnGatewaysUpdateTagsFuture = original.VpnGatewaysUpdateTagsFuture
 type VpnLinkBgpSettings = original.VpnLinkBgpSettings
 type VpnLinkConnectionsClient = original.VpnLinkConnectionsClient
 type VpnLinkProviderProperties = original.VpnLinkProviderProperties
@@ -2008,7 +2009,6 @@ type VpnServerConfigurationsClient = original.VpnServerConfigurationsClient
 type VpnServerConfigurationsCreateOrUpdateFuture = original.VpnServerConfigurationsCreateOrUpdateFuture
 type VpnServerConfigurationsDeleteFuture = original.VpnServerConfigurationsDeleteFuture
 type VpnServerConfigurationsResponse = original.VpnServerConfigurationsResponse
-type VpnServerConfigurationsUpdateTagsFuture = original.VpnServerConfigurationsUpdateTagsFuture
 type VpnSite = original.VpnSite
 type VpnSiteID = original.VpnSiteID
 type VpnSiteLink = original.VpnSiteLink
@@ -2023,7 +2023,6 @@ type VpnSitesConfigurationClient = original.VpnSitesConfigurationClient
 type VpnSitesConfigurationDownloadFuture = original.VpnSitesConfigurationDownloadFuture
 type VpnSitesCreateOrUpdateFuture = original.VpnSitesCreateOrUpdateFuture
 type VpnSitesDeleteFuture = original.VpnSitesDeleteFuture
-type VpnSitesUpdateTagsFuture = original.VpnSitesUpdateTagsFuture
 type Watcher = original.Watcher
 type WatcherListResult = original.WatcherListResult
 type WatcherPropertiesFormat = original.WatcherPropertiesFormat
@@ -2382,6 +2381,18 @@ func NewHubVirtualNetworkConnectionsClient(subscriptionID string) HubVirtualNetw
 func NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI string, subscriptionID string) HubVirtualNetworkConnectionsClient {
 	return original.NewHubVirtualNetworkConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewIPGroupListResultIterator(page IPGroupListResultPage) IPGroupListResultIterator {
+	return original.NewIPGroupListResultIterator(page)
+}
+func NewIPGroupListResultPage(getNextPage func(context.Context, IPGroupListResult) (IPGroupListResult, error)) IPGroupListResultPage {
+	return original.NewIPGroupListResultPage(getNextPage)
+}
+func NewIPGroupsClient(subscriptionID string) IPGroupsClient {
+	return original.NewIPGroupsClient(subscriptionID)
+}
+func NewIPGroupsClientWithBaseURI(baseURI string, subscriptionID string) IPGroupsClient {
+	return original.NewIPGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewInboundNatRuleListResultIterator(page InboundNatRuleListResultPage) InboundNatRuleListResultIterator {
 	return original.NewInboundNatRuleListResultIterator(page)
 }
@@ -2453,6 +2464,12 @@ func NewListP2SVpnGatewaysResultIterator(page ListP2SVpnGatewaysResultPage) List
 }
 func NewListP2SVpnGatewaysResultPage(getNextPage func(context.Context, ListP2SVpnGatewaysResult) (ListP2SVpnGatewaysResult, error)) ListP2SVpnGatewaysResultPage {
 	return original.NewListP2SVpnGatewaysResultPage(getNextPage)
+}
+func NewListVirtualHubRouteTableV2sResultIterator(page ListVirtualHubRouteTableV2sResultPage) ListVirtualHubRouteTableV2sResultIterator {
+	return original.NewListVirtualHubRouteTableV2sResultIterator(page)
+}
+func NewListVirtualHubRouteTableV2sResultPage(getNextPage func(context.Context, ListVirtualHubRouteTableV2sResult) (ListVirtualHubRouteTableV2sResult, error)) ListVirtualHubRouteTableV2sResultPage {
+	return original.NewListVirtualHubRouteTableV2sResultPage(getNextPage)
 }
 func NewListVirtualHubsResultIterator(page ListVirtualHubsResultPage) ListVirtualHubsResultIterator {
 	return original.NewListVirtualHubsResultIterator(page)
@@ -2639,6 +2656,12 @@ func NewPeerExpressRouteCircuitConnectionsClient(subscriptionID string) PeerExpr
 }
 func NewPeerExpressRouteCircuitConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PeerExpressRouteCircuitConnectionsClient {
 	return original.NewPeerExpressRouteCircuitConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
 }
 func NewPrivateEndpointListResultIterator(page PrivateEndpointListResultPage) PrivateEndpointListResultIterator {
 	return original.NewPrivateEndpointListResultIterator(page)
@@ -2837,6 +2860,12 @@ func NewUsagesListResultIterator(page UsagesListResultPage) UsagesListResultIter
 }
 func NewUsagesListResultPage(getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
 	return original.NewUsagesListResultPage(getNextPage)
+}
+func NewVirtualHubRouteTableV2sClient(subscriptionID string) VirtualHubRouteTableV2sClient {
+	return original.NewVirtualHubRouteTableV2sClient(subscriptionID)
+}
+func NewVirtualHubRouteTableV2sClientWithBaseURI(baseURI string, subscriptionID string) VirtualHubRouteTableV2sClient {
+	return original.NewVirtualHubRouteTableV2sClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualHubsClient(subscriptionID string) VirtualHubsClient {
 	return original.NewVirtualHubsClient(subscriptionID)

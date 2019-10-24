@@ -68,11 +68,29 @@ const (
 	AssessedResourceTypeSQLServerVulnerability         AssessedResourceType = original.AssessedResourceTypeSQLServerVulnerability
 )
 
+type AssessmentType = original.AssessmentType
+
+const (
+	BuiltIn         AssessmentType = original.BuiltIn
+	CustomerManaged AssessmentType = original.CustomerManaged
+	CustomPolicy    AssessmentType = original.CustomPolicy
+)
+
 type AutoProvision = original.AutoProvision
 
 const (
 	AutoProvisionOff AutoProvision = original.AutoProvisionOff
 	AutoProvisionOn  AutoProvision = original.AutoProvisionOn
+)
+
+type Category = original.Category
+
+const (
+	Compute           Category = original.Compute
+	Data              Category = original.Data
+	IdentityAndAccess Category = original.IdentityAndAccess
+	IoT               Category = original.IoT
+	Networking        Category = original.Networking
 )
 
 type ConfigurationStatus = original.ConfigurationStatus
@@ -438,6 +456,13 @@ type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
 type AscLocationListPage = original.AscLocationListPage
+type AssessmentMetadata = original.AssessmentMetadata
+type AssessmentMetadataList = original.AssessmentMetadataList
+type AssessmentMetadataListIterator = original.AssessmentMetadataListIterator
+type AssessmentMetadataListPage = original.AssessmentMetadataListPage
+type AssessmentMetadataProperties = original.AssessmentMetadataProperties
+type AssessmentsMetadataClient = original.AssessmentsMetadataClient
+type AssessmentsMetadataSubscriptionClient = original.AssessmentsMetadataSubscriptionClient
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
 type AtaSolutionProperties = original.AtaSolutionProperties
 type AutoProvisioningSetting = original.AutoProvisioningSetting
@@ -689,6 +714,24 @@ func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterato
 }
 func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
 	return original.NewAscLocationListPage(getNextPage)
+}
+func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
+	return original.NewAssessmentMetadataListIterator(page)
+}
+func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
+	return original.NewAssessmentMetadataListPage(getNextPage)
+}
+func NewAssessmentsMetadataClient(subscriptionID string, ascLocation string) AssessmentsMetadataClient {
+	return original.NewAssessmentsMetadataClient(subscriptionID, ascLocation)
+}
+func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataClient {
+	return original.NewAssessmentsMetadataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAssessmentsMetadataSubscriptionClient(subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
+	return original.NewAssessmentsMetadataSubscriptionClient(subscriptionID, ascLocation)
+}
+func NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AssessmentsMetadataSubscriptionClient {
+	return original.NewAssessmentsMetadataSubscriptionClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)
@@ -984,8 +1027,14 @@ func PossibleAlertsToAdminsValues() []AlertsToAdmins {
 func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 	return original.PossibleAssessedResourceTypeValues()
 }
+func PossibleAssessmentTypeValues() []AssessmentType {
+	return original.PossibleAssessmentTypeValues()
+}
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
+}
+func PossibleCategoryValues() []Category {
+	return original.PossibleCategoryValues()
 }
 func PossibleConfigurationStatus1Values() []ConfigurationStatus1 {
 	return original.PossibleConfigurationStatus1Values()

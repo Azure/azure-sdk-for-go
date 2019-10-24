@@ -16,6 +16,7 @@ package modinfo
 
 import (
 	"fmt"
+	"io/ioutil"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -31,6 +32,10 @@ import (
 
 var (
 	verSuffixRegex = regexp.MustCompile(`v\d+$`)
+)
+
+const (
+	versionFile = "version.go"
 )
 
 // HasVersionSuffix returns true if the specified path has a version suffix in the form vN.
@@ -111,12 +116,13 @@ type Provider interface {
 	VersionSuffix() bool
 	NewModule() bool
 	GenerateReport() report.Package
+	HasChanges() (bool, error)
 }
 
 type module struct {
-	lhs  exports.Content
-	rhs  exports.Content
-	dest string
+	lhs        exports.Content
+	rhs        exports.Content
+	dest       string
 }
 
 // GetModuleInfo collects information about a module staged for release.
@@ -136,9 +142,9 @@ func GetModuleInfo(baseline, staged string) (Provider, error) {
 		return nil, fmt.Errorf("failed to get exports for package '%s': %s", staged, err)
 	}
 	mod := module{
-		lhs:  lhs,
-		rhs:  rhs,
-		dest: baseline,
+		lhs:        lhs,
+		rhs:        rhs,
+		dest:       baseline,
 	}
 	// calculate the destination directory
 	// if there are breaking changes calculate the new directory
@@ -207,8 +213,63 @@ func (m module) GenerateReport() report.Package {
 	return report.Generate(m.lhs, m.rhs, false, false)
 }
 
+func (m module) HasChanges() (bool, error) {
+	if m.NewExports() || m.BreakingChanges() {
+		return true, nil
+	}
+	return hasChange(m.lhs, m.rhs)
+}
+
 // IsValidModuleVersion returns true if the provided string is a valid module version (e.g. v1.2.3).
 func IsValidModuleVersion(v string) bool {
 	r := regexp.MustCompile(`^v\d+\.\d+\.\d+$`)
 	return r.MatchString(v)
+}
+
+func hasChange(lhs, rhs exports.Content) (bool, error) {
+	// test file count
+	if len(lhs.FileNames) != len(rhs.FileNames) {
+		return true, nil
+	}
+	// test every file
+	for i, lPath := range lhs.FileNames {
+		rPath := rhs.FileNames[i]
+		lName := filepath.Base(lPath)
+		rName := filepath.Base(rPath)
+		// filename differs
+		if !strings.EqualFold(lName, rName) {
+			return true, nil
+		}
+		// ignore version.go files
+		if lName == versionFile {
+			continue
+		}
+		// same filename, check content
+		if same, err := checkFileContent(lPath, rPath); err != nil {
+			return true, err
+		} else if !same { // not same means has change
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+func checkFileContent(filepath1, filepath2 string) (bool, error) {
+	content1, err := readFileContent(filepath1)
+	if err != nil {
+		return false, err
+	}
+	content2, err := readFileContent(filepath2)
+	if err != nil {
+		return false, err
+	}
+	return strings.EqualFold(content1, content2), nil
+}
+
+func readFileContent(path string) (string, error) {
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return "", fmt.Errorf("failed to read file '%s': %v", path, err)
+	}
+	return strings.ReplaceAll(string(b), "\r\n", "\n"), nil
 }

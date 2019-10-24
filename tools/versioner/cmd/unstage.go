@@ -101,9 +101,6 @@ func theUnstageCommand(args []string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("failed to create module info: %v", err)
 	}
-	if err := writeChangelog(stage, mod); err != nil {
-		return "", fmt.Errorf("failed to write changelog: %v", err)
-	}
 	var tag string
 	if mod.BreakingChanges() {
 		tag, err = forSideBySideRelease(stage, mod)
@@ -143,6 +140,10 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 	if err := updateVersion(stage, tag); err != nil {
 		return "", fmt.Errorf("failed to update version.go: %v", err)
 	}
+	// write change log
+	if err := writeChangelog(stage, mod); err != nil {
+		return "", fmt.Errorf("failed to write changelog: %v", err)
+	}
 	// move staging to new LMV directory
 	if err = os.Rename(stage, mod.DestDir()); err != nil {
 		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, mod.DestDir(), err)
@@ -179,6 +180,14 @@ func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 	}
 	if err := updateVersion(stage, tag); err != nil {
 		return "", fmt.Errorf("failed to update version.go: %v", err)
+	}
+	// write changelog
+	if hasChange, err := mod.HasChanges(); err != nil {
+		return "", fmt.Errorf("failed to check changes: %v", err)
+	} else if hasChange {
+		if err := writeChangelog(stage, mod); err != nil {
+			return "", fmt.Errorf("failed to write changelog: %v", err)
+		}
 	}
 	// move staging directory over the LMV by first deleting LMV then renaming stage
 	if modinfo.HasVersionSuffix(lmv) {
@@ -485,78 +494,13 @@ func calculateModuleTag(tags []string, mod modinfo.Provider) (string, error) {
 		n := sv.IncMinor()
 		sv = &n
 	} else {
-		// no new exports, this is a patch update
-		n := sv.IncPatch()
-		sv = &n
+		// no new exports and has changes, this is a patch update
+		if hasChange, err := mod.HasChanges(); err != nil {
+			return "", err
+		} else if hasChange {
+			n := sv.IncPatch()
+			sv = &n
+		}
 	}
 	return strings.Replace(tag, v, "v"+sv.String(), 1), nil
-}
-
-func checkIdentical(dest string) (bool, error) {
-	stage := filepath.Join(dest, stageName)
-	// change this to list all *.go files in this dir and all sub-dir
-	destFiles, err := listGoFile(dest, stageName)
-	if err != nil {
-		return false, fmt.Errorf("failed to list directory '%s': %v", dest, err)
-	}
-	stageFiles, err := listGoFile(stage, "")
-	if err != nil {
-		return false, fmt.Errorf("failed to list directory '%s': %v", stage, err)
-	}
-	if len(destFiles) != len(stageFiles) {
-		return false, nil
-	}
-	for dName, dPath := range destFiles {
-		sName := dName
-		sPath := stageFiles[sName]
-		// test if files share same name
-		if !strings.EqualFold(dName, sName) {
-			return false, nil
-		}
-		// if files share same name, test if they have same content
-		if same, err := checkFileContent(dPath, sPath); err != nil {
-			return false, err
-		} else if !same {
-			return false, nil
-		}
-	}
-	return true, nil
-}
-
-func checkFileContent(filepath1, filepath2 string) (bool, error) {
-	content1, err := readFileContent(filepath1)
-	if err != nil {
-		return false, err
-	}
-	content2, err := readFileContent(filepath2)
-	if err != nil {
-		return false, err
-	}
-	return strings.EqualFold(content1, content2), nil
-}
-
-func readFileContent(path string) (string, error) {
-	b, err := ioutil.ReadFile(path)
-	if err != nil {
-		return "", fmt.Errorf("failed to read file '%s': %v", path, err)
-	}
-	return strings.ReplaceAll(string(b), "\r\n", "\n"), nil
-}
-
-func listGoFile(root, ignore string) (map[string]string, error) {
-	files := make(map[string]string)
-	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() && info.Name() == ignore {
-			return filepath.SkipDir
-		}
-		if !info.IsDir() && strings.HasSuffix(info.Name(), ".go") {
-			files[info.Name()] = path
-			return nil
-		}
-		return nil
-	})
-	return files, err
 }

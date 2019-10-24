@@ -109,12 +109,23 @@ func (pkg Package) GetExports() (c Content) {
 		}
 		return true
 	})
+	c.FileNames = pkg.FileNames()
 	return
 }
 
 // Name returns the package name.
 func (pkg Package) Name() string {
 	return pkg.p.Name
+}
+
+// FileNames returns the file names in this package
+func (pkg Package) FileNames() []string {
+	var filenames []string
+	pkg.f.Iterate(func(file *token.File) bool {
+		filenames = append(filenames, file.Name())
+		return true
+	})
+	return filenames
 }
 
 // Get loads the package in the specified directory and returns the exported

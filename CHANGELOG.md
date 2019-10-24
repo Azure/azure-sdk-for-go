@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v34.4.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventgrid | 2020-01-01-preview |
+| sql | 2018-06-15-preview |
+
 ## `v34.3.0`
 
 ### New Packages

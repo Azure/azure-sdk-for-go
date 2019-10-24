@@ -204,8 +204,8 @@ func (client VirtualNetworkGatewaysClient) DeleteResponder(resp *http.Response) 
 	return
 }
 
-// Disconnectvirtualnetworkgatewayvpnconnections disconnect vpn connections of the virtual wan VirtualNetworkGateways
-// in the specified resource group.
+// Disconnectvirtualnetworkgatewayvpnconnections disconnect vpn connections of virtual network gateway in the specified
+// resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // gatewayName - the name of the P2SVpnGateway.

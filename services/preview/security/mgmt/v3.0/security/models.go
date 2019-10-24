@@ -120,7 +120,7 @@ type AssessmentType string
 const (
 	// BuiltIn Azure Security Center managed assessments
 	BuiltIn AssessmentType = "BuiltIn"
-	// CustomerManaged User asssesments pushed directly by the user or other third party to Azure Security
+	// CustomerManaged User assessments pushed directly by the user or other third party to Azure Security
 	// Center
 	CustomerManaged AssessmentType = "CustomerManaged"
 	// CustomPolicy User defined custom assessments ingested automatically by Azure Security Center

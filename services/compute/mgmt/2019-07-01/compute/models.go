@@ -2264,10 +2264,6 @@ type DataDisk struct {
 	ManagedDisk *ManagedDiskParameters `json:"managedDisk,omitempty"`
 	// ToBeDetached - Specifies whether the data disk is in process of detachment from the VirtualMachine/VirtualMachineScaleset
 	ToBeDetached *bool `json:"toBeDetached,omitempty"`
-	// DiskIOPSReadWrite - READ-ONLY; Specifies the Read-Write IOPS for the managed disk when StorageAccountType is UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the VirtualMachine Scale Set.
-	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
-	// DiskMBpsReadWrite - READ-ONLY; Specifies the bandwidth in MB per second for the managed disk when StorageAccountType is UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the VirtualMachine Scale Set.
-	DiskMBpsReadWrite *int64 `json:"diskMBpsReadWrite,omitempty"`
 }
 
 // DataDiskImage contains the data disk images information.
@@ -3213,7 +3209,7 @@ func (d *Disk) UnmarshalJSON(body []byte) error {
 // DiskEncryptionSet disk encryption set resource.
 type DiskEncryptionSet struct {
 	autorest.Response        `json:"-"`
-	Identity                 *ResourceIdentity `json:"identity,omitempty"`
+	Identity                 *EncryptionSetIdentity `json:"identity,omitempty"`
 	*EncryptionSetProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -3256,7 +3252,7 @@ func (desVar *DiskEncryptionSet) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "identity":
 			if v != nil {
-				var identity ResourceIdentity
+				var identity EncryptionSetIdentity
 				err = json.Unmarshal(*v, &identity)
 				if err != nil {
 					return err
@@ -3467,14 +3463,6 @@ func (page DiskEncryptionSetListPage) Values() []DiskEncryptionSet {
 // Creates a new instance of the DiskEncryptionSetListPage type.
 func NewDiskEncryptionSetListPage(getNextPage func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error)) DiskEncryptionSetListPage {
 	return DiskEncryptionSetListPage{fn: getNextPage}
-}
-
-// DiskEncryptionSetParameters describes the parameter of customer managed disk encryption set resource id
-// that can be specified for disk. <br><br> NOTE: The disk encryption set resource id can only be specified
-// for managed disk. Please refer https://aka.ms/mdssewithcmkoverview for more details.
-type DiskEncryptionSetParameters struct {
-	// ID - Resource Id
-	ID *string `json:"id,omitempty"`
 }
 
 // DiskEncryptionSetsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -4035,6 +4023,17 @@ type Encryption struct {
 	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
 	// Type - The type of key used to encrypt the data of the disk. Possible values include: 'EncryptionAtRestWithPlatformKey', 'EncryptionAtRestWithCustomerKey'
 	Type EncryptionType `json:"type,omitempty"`
+}
+
+// EncryptionSetIdentity the managed identity for the disk encryption set. It should be given permission on
+// the key vault before it can be used to encrypt disks.
+type EncryptionSetIdentity struct {
+	// Type - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported. Possible values include: 'SystemAssigned'
+	Type DiskEncryptionSetIdentityType `json:"type,omitempty"`
+	// PrincipalID - READ-ONLY; The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit) identity
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // EncryptionSetProperties ...
@@ -5878,26 +5877,6 @@ type ImageDataDisk struct {
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
-	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed image disk.
-	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
-}
-
-// ImageDisk describes a image disk.
-type ImageDisk struct {
-	// Snapshot - The snapshot.
-	Snapshot *SubResource `json:"snapshot,omitempty"`
-	// ManagedDisk - The managedDisk.
-	ManagedDisk *SubResource `json:"managedDisk,omitempty"`
-	// BlobURI - The Virtual Hard Disk.
-	BlobURI *string `json:"blobUri,omitempty"`
-	// Caching - Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
-	Caching CachingTypes `json:"caching,omitempty"`
-	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
-	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
-	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
-	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed image disk.
-	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
 }
 
 // ImageDiskReference the source image used for creating the disk.
@@ -6070,10 +6049,8 @@ type ImageOSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. UltraSSD_LRS cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
-	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed image disk.
-	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
 }
 
 // ImageProperties describes the properties of an Image.
@@ -6599,8 +6576,6 @@ type ManagedArtifact struct {
 type ManagedDiskParameters struct {
 	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
-	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed disk.
-	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
 }
@@ -7183,17 +7158,6 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
-}
-
-// ResourceIdentity the managed identity for the disk encryption set. It should be given permission on the
-// key vault before it can be used to encrypt disks.
-type ResourceIdentity struct {
-	// Type - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported. Possible values include: 'SystemAssigned'
-	Type DiskEncryptionSetIdentityType `json:"type,omitempty"`
-	// PrincipalID - READ-ONLY; The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit) identity
-	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - READ-ONLY; The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity
-	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // ResourceRange describes the resource range.
@@ -9721,10 +9685,6 @@ type VirtualMachineScaleSetDataDisk struct {
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// ManagedDisk - The managed disk parameters.
 	ManagedDisk *VirtualMachineScaleSetManagedDiskParameters `json:"managedDisk,omitempty"`
-	// DiskIOPSReadWrite - Specifies the Read-Write IOPS for the managed disk. Should be used only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on diskSizeGB.
-	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
-	// DiskMBpsReadWrite - Specifies the bandwidth in MB per second for the managed disk. Should be used only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on diskSizeGB.
-	DiskMBpsReadWrite *int64 `json:"diskMBpsReadWrite,omitempty"`
 }
 
 // VirtualMachineScaleSetExtension describes a Virtual Machine Scale Set Extension.
@@ -10759,8 +10719,6 @@ func NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage func(context.Co
 type VirtualMachineScaleSetManagedDiskParameters struct {
 	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
-	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed disk.
-	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
 }
 
 // VirtualMachineScaleSetNetworkConfiguration describes a virtual machine scale set network profile's
@@ -11005,8 +10963,6 @@ type VirtualMachineScaleSetPublicIPAddressConfigurationProperties struct {
 	IPTags *[]VirtualMachineScaleSetIPTag `json:"ipTags,omitempty"`
 	// PublicIPPrefix - The PublicIPPrefix from which to allocate publicIP addresses.
 	PublicIPPrefix *SubResource `json:"publicIPPrefix,omitempty"`
-	// PublicIPAddressVersion - Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'. Possible values include: 'IPv4', 'IPv6'
-	PublicIPAddressVersion IPVersion `json:"publicIPAddressVersion,omitempty"`
 }
 
 // VirtualMachineScaleSetReimageParameters describes a Virtual Machine Scale Set VM Reimage Parameters.
@@ -12003,58 +11959,6 @@ func (vmssv *VirtualMachineScaleSetVM) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
-type VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vme VirtualMachineExtension, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vme.Response.Response, err = future.GetResult(sender); err == nil && vme.Response.Response.StatusCode != http.StatusNoContent {
-		vme, err = client.CreateOrUpdateResponder(vme.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture", "Result", vme.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// VirtualMachineScaleSetVMExtensionsDeleteFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type VirtualMachineScaleSetVMExtensionsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMExtensionsDeleteFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMExtensionsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // VirtualMachineScaleSetVMExtensionsSummary extensions summary for virtual machines of a virtual machine
 // scale set.
 type VirtualMachineScaleSetVMExtensionsSummary struct {
@@ -12062,35 +11966,6 @@ type VirtualMachineScaleSetVMExtensionsSummary struct {
 	Name *string `json:"name,omitempty"`
 	// StatusesSummary - READ-ONLY; The extensions information.
 	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
-}
-
-// VirtualMachineScaleSetVMExtensionsUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type VirtualMachineScaleSetVMExtensionsUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMExtensionsUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vme VirtualMachineExtension, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMExtensionsUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vme.Response.Response, err = future.GetResult(sender); err == nil && vme.Response.Response.StatusCode != http.StatusNoContent {
-		vme, err = client.UpdateResponder(vme.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsUpdateFuture", "Result", vme.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // VirtualMachineScaleSetVMInstanceIDs specifies a list of virtual machine instance IDs from the VM scale
@@ -12816,29 +12691,6 @@ func (future *VirtualMachinesPowerOffFuture) Result(client VirtualMachinesClient
 	}
 	if !done {
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesPowerOffFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// VirtualMachinesReapplyFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type VirtualMachinesReapplyFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *VirtualMachinesReapplyFuture) Result(client VirtualMachinesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.VirtualMachinesReapplyFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesReapplyFuture")
 		return
 	}
 	ar.Response = future.Response()

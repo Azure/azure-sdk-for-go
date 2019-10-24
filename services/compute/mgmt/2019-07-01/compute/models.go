@@ -3213,7 +3213,7 @@ func (d *Disk) UnmarshalJSON(body []byte) error {
 // DiskEncryptionSet disk encryption set resource.
 type DiskEncryptionSet struct {
 	autorest.Response        `json:"-"`
-	Identity                 *ResourceIdentity `json:"identity,omitempty"`
+	Identity                 *EncryptionSetIdentity `json:"identity,omitempty"`
 	*EncryptionSetProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -3256,7 +3256,7 @@ func (desVar *DiskEncryptionSet) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "identity":
 			if v != nil {
-				var identity ResourceIdentity
+				var identity EncryptionSetIdentity
 				err = json.Unmarshal(*v, &identity)
 				if err != nil {
 					return err
@@ -4035,6 +4035,17 @@ type Encryption struct {
 	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
 	// Type - The type of key used to encrypt the data of the disk. Possible values include: 'EncryptionAtRestWithPlatformKey', 'EncryptionAtRestWithCustomerKey'
 	Type EncryptionType `json:"type,omitempty"`
+}
+
+// EncryptionSetIdentity the managed identity for the disk encryption set. It should be given permission on
+// the key vault before it can be used to encrypt disks.
+type EncryptionSetIdentity struct {
+	// Type - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported. Possible values include: 'SystemAssigned'
+	Type DiskEncryptionSetIdentityType `json:"type,omitempty"`
+	// PrincipalID - READ-ONLY; The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit) identity
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // EncryptionSetProperties ...
@@ -7183,17 +7194,6 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = r.Tags
 	}
 	return json.Marshal(objectMap)
-}
-
-// ResourceIdentity the managed identity for the disk encryption set. It should be given permission on the
-// key vault before it can be used to encrypt disks.
-type ResourceIdentity struct {
-	// Type - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported. Possible values include: 'SystemAssigned'
-	Type DiskEncryptionSetIdentityType `json:"type,omitempty"`
-	// PrincipalID - READ-ONLY; The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit) identity
-	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - READ-ONLY; The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity
-	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // ResourceRange describes the resource range.

@@ -166,11 +166,11 @@ type DomainService struct {
 	autorest.Response `json:"-"`
 	// DomainServiceProperties - Domain service properties
 	*DomainServiceProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
+	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
+	// Name - Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
+	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -185,6 +185,15 @@ func (ds DomainService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ds.DomainServiceProperties != nil {
 		objectMap["properties"] = ds.DomainServiceProperties
+	}
+	if ds.ID != nil {
+		objectMap["id"] = ds.ID
+	}
+	if ds.Name != nil {
+		objectMap["name"] = ds.Name
+	}
+	if ds.Type != nil {
+		objectMap["type"] = ds.Type
 	}
 	if ds.Location != nil {
 		objectMap["location"] = ds.Location
@@ -491,7 +500,7 @@ type DomainServicesDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *DomainServicesDeleteFuture) Result(client DomainServicesClient) (ds DomainService, err error) {
+func (future *DomainServicesDeleteFuture) Result(client DomainServicesClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -502,13 +511,7 @@ func (future *DomainServicesDeleteFuture) Result(client DomainServicesClient) (d
 		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
-		ds, err = client.DeleteResponder(ds.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "aad.DomainServicesDeleteFuture", "Result", ds.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -769,11 +772,11 @@ func NewOperationEntityListResultPage(getNextPage func(context.Context, Operatio
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - READ-ONLY; Resource Id
+	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
+	// Name - Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
+	// Type - Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -786,6 +789,15 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if r.ID != nil {
+		objectMap["id"] = r.ID
+	}
+	if r.Name != nil {
+		objectMap["name"] = r.Name
+	}
+	if r.Type != nil {
+		objectMap["type"] = r.Type
+	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

@@ -678,7 +678,8 @@ func Test_theCommandNoAnyChange(t *testing.T) {
 }
 
 // scenarioj
-func Test_theCommandNoAnyChangeV2(t *testing.T) {cleanTestData()
+func Test_theCommandNoAnyChangeV2(t *testing.T) {
+	cleanTestData()
 	defer cleanTestData()
 	getTagsHook = func(root string, prefix string) ([]string, error) {
 		if !strings.HasSuffix(prefix, "testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2") {

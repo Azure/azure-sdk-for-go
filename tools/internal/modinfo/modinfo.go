@@ -120,9 +120,9 @@ type Provider interface {
 }
 
 type module struct {
-	lhs        exports.Content
-	rhs        exports.Content
-	dest       string
+	lhs  exports.Content
+	rhs  exports.Content
+	dest string
 }
 
 // GetModuleInfo collects information about a module staged for release.
@@ -142,9 +142,9 @@ func GetModuleInfo(baseline, staged string) (Provider, error) {
 		return nil, fmt.Errorf("failed to get exports for package '%s': %s", staged, err)
 	}
 	mod := module{
-		lhs:        lhs,
-		rhs:        rhs,
-		dest:       baseline,
+		lhs:  lhs,
+		rhs:  rhs,
+		dest: baseline,
 	}
 	// calculate the destination directory
 	// if there are breaking changes calculate the new directory

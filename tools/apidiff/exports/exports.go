@@ -81,7 +81,7 @@ func NewContent() Content {
 		Funcs:      make(map[string]Func),
 		Interfaces: make(map[string]Interface),
 		Structs:    make(map[string]Struct),
-		FileNames:	make([]string, 0),
+		FileNames:  make([]string, 0),
 	}
 }
 

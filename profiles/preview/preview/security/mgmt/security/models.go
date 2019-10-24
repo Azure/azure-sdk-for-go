@@ -235,13 +235,11 @@ const (
 	Contains             Operator = original.Contains
 	EndsWith             Operator = original.EndsWith
 	Equals               Operator = original.Equals
-	EqualsIgnoreCase     Operator = original.EqualsIgnoreCase
 	GreaterThan          Operator = original.GreaterThan
 	GreaterThanOrEqualTo Operator = original.GreaterThanOrEqualTo
 	LesserThan           Operator = original.LesserThan
 	LesserThanOrEqualTo  Operator = original.LesserThanOrEqualTo
 	NotEquals            Operator = original.NotEquals
-	NotEqualsIgnoreCase  Operator = original.NotEqualsIgnoreCase
 	StartsWith           Operator = original.StartsWith
 )
 

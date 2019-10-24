@@ -481,8 +481,6 @@ const (
 	EndsWith Operator = "EndsWith"
 	// Equals ...
 	Equals Operator = "Equals"
-	// EqualsIgnoreCase ...
-	EqualsIgnoreCase Operator = "EqualsIgnoreCase"
 	// GreaterThan ...
 	GreaterThan Operator = "GreaterThan"
 	// GreaterThanOrEqualTo ...
@@ -493,15 +491,13 @@ const (
 	LesserThanOrEqualTo Operator = "LesserThanOrEqualTo"
 	// NotEquals ...
 	NotEquals Operator = "NotEquals"
-	// NotEqualsIgnoreCase ...
-	NotEqualsIgnoreCase Operator = "NotEqualsIgnoreCase"
 	// StartsWith ...
 	StartsWith Operator = "StartsWith"
 )
 
 // PossibleOperatorValues returns an array of possible values for the Operator const type.
 func PossibleOperatorValues() []Operator {
-	return []Operator{Contains, EndsWith, Equals, EqualsIgnoreCase, GreaterThan, GreaterThanOrEqualTo, LesserThan, LesserThanOrEqualTo, NotEquals, NotEqualsIgnoreCase, StartsWith}
+	return []Operator{Contains, EndsWith, Equals, GreaterThan, GreaterThanOrEqualTo, LesserThan, LesserThanOrEqualTo, NotEquals, StartsWith}
 }
 
 // PricingTier enumerates the values for pricing tier.
@@ -2699,11 +2695,11 @@ func (aa AutomationAction) AsBasicAutomationAction() (BasicAutomationAction, boo
 	return &aa, true
 }
 
-// AutomationActionEventHub the event hub action that should be triggered.
+// AutomationActionEventHub the target Event Hub to which event data will be exported.
 type AutomationActionEventHub struct {
-	// EventHubResourceID - The event hub resource id.
+	// EventHubResourceID - The Event Hub Azure Resource ID.
 	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
-	// ConnectionString - The event hub connection string(the primary or secondary key).
+	// ConnectionString - The Event Hub connection string.
 	ConnectionString *string `json:"connectionString,omitempty"`
 	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
@@ -2757,9 +2753,9 @@ func (aaeh AutomationActionEventHub) AsBasicAutomationAction() (BasicAutomationA
 
 // AutomationActionLogicApp the logic app action that should be triggered.
 type AutomationActionLogicApp struct {
-	// LogicAppResourceID - The triggered resource id.
+	// LogicAppResourceID - The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
-	// URI - The uri that should be triggered by an Http GET request.
+	// URI - The Logic App trigger URI endpoint.
 	URI *string `json:"uri,omitempty"`
 	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
@@ -2811,9 +2807,11 @@ func (aala AutomationActionLogicApp) AsBasicAutomationAction() (BasicAutomationA
 	return &aala, true
 }
 
-// AutomationActionSecurityEmail the Security Email action that should be triggered.
+// AutomationActionSecurityEmail an action that triggers sending of Security emails. Emails can be sent to
+// users with specific roles on the subscription (for example, subscription owners) or to user-provided
+// emails.
 type AutomationActionSecurityEmail struct {
-	// SubscriptionRbacRoles - A list of RBAC roles which indicate the relevant users that will receive the event data via email.
+	// SubscriptionRbacRoles - A list of user roles which indicate the relevant users that will receive the event data via email.
 	SubscriptionRbacRoles *[]SubscriptionRbacRoles `json:"subscriptionRbacRoles,omitempty"`
 	// EmailAddresses - A list of email addresses that should receive the event data.
 	EmailAddresses *[]string `json:"emailAddresses,omitempty"`
@@ -2867,11 +2865,15 @@ func (aase AutomationActionSecurityEmail) AsBasicAutomationAction() (BasicAutoma
 	return &aase, true
 }
 
-// AutomationActionWorkspace the log analytics workspace action that should be triggered.
+// AutomationActionWorkspace the Log Analytics Workspace to which event data will be exported. Security
+// alerts data will reside in the 'SecurityAlert' table and the assessments data will reside in the
+// 'SecurityRecommendation' table (under the 'Security'/'SecurityCenterFree' solutions). Note that in order
+// to view the data in the workspace, the Security Center Log Analytics free/standard solution needs to be
+// enabled on that workspace.
 type AutomationActionWorkspace struct {
-	// WorkspaceResourceID - The log analytics workspace resource id.
+	// WorkspaceResourceID - The fully qualified Log Analytics Workspace Azure Resource ID.
 	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
-	// WorkspaceID - The log analytics id in a GUID format.
+	// WorkspaceID - The Log Analytics Workspace ID in a GUID format.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
@@ -3081,7 +3083,9 @@ type AutomationMetadata struct {
 	LastUpdatedBy *string `json:"lastUpdatedBy,omitempty"`
 }
 
-// AutomationProperties the security automation data.
+// AutomationProperties a set of properties that defines the behavior of the automation configuration. To
+// learn more about the supported security events data models schemas � please visit
+// https://aka.ms/ASCAutomationSchemas.
 type AutomationProperties struct {
 	// Description - The security automation description.
 	Description *string `json:"description,omitempty"`
@@ -3089,11 +3093,11 @@ type AutomationProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// Metadata - The metadata of the security automation resource.
 	Metadata *AutomationMetadata `json:"metadata,omitempty"`
-	// Scopes - A collection of the subscription's resources scopes on which the security automations logic is applied.
+	// Scopes - A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription itself or a resource group under that subscription. The automation will only apply on defined scopes.
 	Scopes *[]AutomationScope `json:"scopes,omitempty"`
 	// Sources - A collection of the source event types which evaluate the security automation set of rules.
 	Sources *[]AutomationSource `json:"sources,omitempty"`
-	// Actions - A collection of the actions which are triggered if all the configured rules evaluations, within a ruleset, are true.
+	// Actions - A collection of the actions which are triggered if all the configured rules evaluations, within at least one ruleset, are true.
 	Actions *[]BasicAutomationAction `json:"actions,omitempty"`
 }
 
@@ -3165,39 +3169,41 @@ func (ap *AutomationProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AutomationRuleSet a rule set which evaluates all its rules upon an event interception.
+// AutomationRuleSet a rule set which evaluates all its rules upon an event interception. Only when all the
+// included rules in the rule set will be evaluated as 'true', will the event trigger the defined actions.
 type AutomationRuleSet struct {
 	Rules *[]AutomationTriggeringRule `json:"rules,omitempty"`
 }
 
-// AutomationScope the subscription's resources scope
+// AutomationScope a single automation scope.
 type AutomationScope struct {
 	// Description - The resources scope description.
 	Description *string `json:"description,omitempty"`
-	// ScopePath - The resources scope path.
+	// ScopePath - The resources scope path. Can be the subscription on which the automation is defined on or a resource group under that subscription (fully qualified Azure resource IDs).
 	ScopePath *string `json:"scopePath,omitempty"`
 }
 
 // AutomationSource the source event types which evaluate the security automation set of rules. For example
-// - security alerts and security assessments.
+// - security alerts and security assessments. To learn more about the supported security events data
+// models schemas � please visit https://aka.ms/ASCAutomationSchemas.
 type AutomationSource struct {
 	// EventSource - A valid event source type. Possible values include: 'Assessments', 'Alerts'
 	EventSource EventSource `json:"eventSource,omitempty"`
-	// RuleSets - A set of rules which evaluate upon event interception.
+	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical �or�).
 	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
 }
 
-// AutomationTriggeringRule a logic rule which evaluates upon event interception. The rule is configured by
-// comparing the specified expected value, in an expected property within the event model, by the specified
-// operator.
+// AutomationTriggeringRule a rule which is evaluated upon event interception. The rule is configured by
+// comparing a specific value from the event model to an expected value. This comparison is done by using
+// one of the supported operators set.
 type AutomationTriggeringRule struct {
 	// PropertyJPath - The JPath of the entity model property that should be checked.
 	PropertyJPath *string `json:"propertyJPath,omitempty"`
-	// PropertyType - The data type of the compared operands. Possible values include: 'String', 'Integer', 'Number', 'Boolean'
+	// PropertyType - The data type of the compared operands (string, integer, floating point number or a boolean [true/false]]. Possible values include: 'String', 'Integer', 'Number', 'Boolean'
 	PropertyType PropertyType `json:"propertyType,omitempty"`
 	// ExpectedValue - The expected value.
 	ExpectedValue *string `json:"expectedValue,omitempty"`
-	// Operator - A valid comparer operator to use. Possible values include: 'Equals', 'EqualsIgnoreCase', 'GreaterThan', 'GreaterThanOrEqualTo', 'LesserThan', 'LesserThanOrEqualTo', 'NotEquals', 'NotEqualsIgnoreCase', 'Contains', 'StartsWith', 'EndsWith'
+	// Operator - A valid comparer operator to use. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqualTo', 'LesserThan', 'LesserThanOrEqualTo', 'NotEquals', 'Contains', 'StartsWith', 'EndsWith'
 	Operator Operator `json:"operator,omitempty"`
 }
 

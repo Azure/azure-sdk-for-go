@@ -486,12 +486,6 @@ func calculateModuleTag(tags []string, mod modinfo.Provider) (string, error) {
 		sv = &n
 	} else {
 		// no new exports, this is a patch update
-		// test if files are the same
-		if ok, err := checkIdentical(mod.DestDir()); err != nil {
-			return "", fmt.Errorf("failed to check identical: %v", err)
-		} else if ok {
-			return tag, nil
-		}
 		n := sv.IncPatch()
 		sv = &n
 	}

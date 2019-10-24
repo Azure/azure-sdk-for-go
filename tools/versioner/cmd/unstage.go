@@ -486,8 +486,83 @@ func calculateModuleTag(tags []string, mod modinfo.Provider) (string, error) {
 		sv = &n
 	} else {
 		// no new exports, this is a patch update
+		// test if files are the same
+		if ok, err := checkIdentical(mod.DestDir()); err != nil {
+			return "", fmt.Errorf("failed to check identical: %v", err)
+		} else if ok {
+			return tag, nil
+		}
 		n := sv.IncPatch()
 		sv = &n
 	}
 	return strings.Replace(tag, v, "v"+sv.String(), 1), nil
+}
+
+func checkIdentical(dest string) (bool, error) {
+	stage := filepath.Join(dest, stageName)
+	// change this to list all *.go files in this dir and all sub-dir
+	destFiles, err := listGoFile(dest, stageName)
+	if err != nil {
+		return false, fmt.Errorf("failed to list directory '%s': %v", dest, err)
+	}
+	stageFiles, err := listGoFile(stage, "")
+	if err != nil {
+		return false, fmt.Errorf("failed to list directory '%s': %v", stage, err)
+	}
+	if len(destFiles) != len(stageFiles) {
+		return false, nil
+	}
+	for dName, dPath := range destFiles {
+		sName := dName
+		sPath := stageFiles[sName]
+		// test if files share same name
+		if !strings.EqualFold(dName, sName) {
+			return false, nil
+		}
+		// if files share same name, test if they have same content
+		if same, err := checkFileContent(dPath, sPath); err != nil {
+			return false, err
+		} else if !same {
+			return false, nil
+		}
+	}
+	return true, nil
+}
+
+func checkFileContent(filepath1, filepath2 string) (bool, error) {
+	content1, err := readFileContent(filepath1)
+	if err != nil {
+		return false, err
+	}
+	content2, err := readFileContent(filepath2)
+	if err != nil {
+		return false, err
+	}
+	return strings.EqualFold(content1, content2), nil
+}
+
+func readFileContent(path string) (string, error) {
+	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return "", fmt.Errorf("failed to read file '%s': %v", path, err)
+	}
+	return strings.ReplaceAll(string(b), "\r\n", "\n"), nil
+}
+
+func listGoFile(root, ignore string) (map[string]string, error) {
+	files := make(map[string]string)
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() && info.Name() == ignore {
+			return filepath.SkipDir
+		}
+		if !info.IsDir() && strings.HasSuffix(info.Name(), ".go") {
+			files[info.Name()] = path
+			return nil
+		}
+		return nil
+	})
+	return files, err
 }

@@ -27,4 +27,4 @@ func Version() string {
 	return "2.0.0"
 }
 
-// tag: tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v2.0.0
+// tag: tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0

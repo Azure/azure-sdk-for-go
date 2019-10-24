@@ -41,6 +41,21 @@ var (
 		"tools/testdata/scenarioe/foo/v1.1.0",
 		"tools/testdata/scenarioe/foo/v2.0.0",
 		"tools/testdata/scenarioe/foo/v2.1.0",
+		"tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v1.0.0",
+		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v1.0.0",
+		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v1.1.0",
+		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v1.2.0",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.0.0",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.0.1",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.0",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.1",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.2",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.0.0",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.0.1",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.0",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.1",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.2",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
 	}
 )
 
@@ -85,6 +100,9 @@ func Test_findAllVersionFiles(t *testing.T) {
 		"../../testdata/scenariog/foo/mgmt/2019-10-11/foo/v2/version.go",
 		"../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/version.go",
 		"../../testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2/version.go",
+		"../../testdata/scenarioi/foo/mgmt/2019-10-23/foo/version.go",
+		"../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/version.go",
+		"../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2/version.go",
 	}
 	root, err := filepath.Abs("../../testdata")
 	if err != nil {
@@ -164,6 +182,9 @@ func Test_readNewTags(t *testing.T) {
 		"tools/testdata/scenariof/foo/v1.0.0",
 		"tools/testdata/scenariog/foo/mgmt/2019-10-11/foo/v2.0.0",
 		"tools/testdata/scenarioh/foo/mgmt/2019-10-11/foo/v2.0.0",
+		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.2",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.2",
+		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
 	}
 	root, err := filepath.Abs("../../testdata")
 	if err != nil {

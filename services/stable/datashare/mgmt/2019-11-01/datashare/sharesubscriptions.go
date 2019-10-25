@@ -88,7 +88,7 @@ func (client ShareSubscriptionsClient) CancelSynchronizationPreparer(ctx context
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -155,7 +155,9 @@ func (client ShareSubscriptionsClient) Create(ctx context.Context, resourceGroup
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: shareSubscription,
 			Constraints: []validation.Constraint{{Target: "shareSubscription.ShareSubscriptionProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "shareSubscription.ShareSubscriptionProperties.InvitationID", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "shareSubscription.ShareSubscriptionProperties.InvitationID", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "shareSubscription.ShareSubscriptionProperties.SourceShareLocation", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("datashare.ShareSubscriptionsClient", "Create", err.Error())
 	}
 
@@ -189,7 +191,7 @@ func (client ShareSubscriptionsClient) CreatePreparer(ctx context.Context, resou
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -264,7 +266,7 @@ func (client ShareSubscriptionsClient) DeletePreparer(ctx context.Context, resou
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -349,7 +351,7 @@ func (client ShareSubscriptionsClient) GetPreparer(ctx context.Context, resource
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -428,7 +430,7 @@ func (client ShareSubscriptionsClient) ListByAccountPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -549,7 +551,7 @@ func (client ShareSubscriptionsClient) ListSourceShareSynchronizationSettingsPre
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -677,7 +679,7 @@ func (client ShareSubscriptionsClient) ListSynchronizationDetailsPreparer(ctx co
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -806,7 +808,7 @@ func (client ShareSubscriptionsClient) ListSynchronizationsPreparer(ctx context.
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -920,7 +922,7 @@ func (client ShareSubscriptionsClient) SynchronizeMethodPreparer(ctx context.Con
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

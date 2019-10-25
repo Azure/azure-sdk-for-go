@@ -25,31 +25,31 @@ import (
 	"net/http"
 )
 
-// DataSetsClient is the creates a Microsoft.DataShare management client.
-type DataSetsClient struct {
+// InvitationsClient is the creates a Microsoft.DataShare management client.
+type InvitationsClient struct {
 	BaseClient
 }
 
-// NewDataSetsClient creates an instance of the DataSetsClient client.
-func NewDataSetsClient(subscriptionID string) DataSetsClient {
-	return NewDataSetsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewInvitationsClient creates an instance of the InvitationsClient client.
+func NewInvitationsClient(subscriptionID string) InvitationsClient {
+	return NewInvitationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewDataSetsClientWithBaseURI creates an instance of the DataSetsClient client.
-func NewDataSetsClientWithBaseURI(baseURI string, subscriptionID string) DataSetsClient {
-	return DataSetsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewInvitationsClientWithBaseURI creates an instance of the InvitationsClient client.
+func NewInvitationsClientWithBaseURI(baseURI string, subscriptionID string) InvitationsClient {
+	return InvitationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create create a DataSet
+// Create create an invitation
 // Parameters:
 // resourceGroupName - the resource group name.
 // accountName - the name of the share account.
-// shareName - the name of the share to add the data set to.
-// dataSetName - the name of the dataSet.
-// dataSet - the new data set information.
-func (client DataSetsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, dataSet BasicDataSet) (result DataSetModel, err error) {
+// shareName - the name of the share to send the invitation for.
+// invitationName - the name of the invitation.
+// invitation - invitation details.
+func (client InvitationsClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, invitation Invitation) (result Invitation, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataSetsClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvitationsClient.Create")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -58,38 +58,38 @@ func (client DataSetsClient) Create(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, resourceGroupName, accountName, shareName, dataSetName, dataSet)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, accountName, shareName, invitationName, invitation)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "Create", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // CreatePreparer prepares the Create request.
-func (client DataSetsClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, dataSet BasicDataSet) (*http.Request, error) {
+func (client InvitationsClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, invitation Invitation) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
-		"dataSetName":       autorest.Encode("path", dataSetName),
+		"invitationName":    autorest.Encode("path", invitationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"shareName":         autorest.Encode("path", shareName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -98,22 +98,22 @@ func (client DataSetsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/dataSets/{dataSetName}", pathParameters),
-		autorest.WithJSON(dataSet),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/invitations/{invitationName}", pathParameters),
+		autorest.WithJSON(invitation),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataSetsClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client InvitationsClient) CreateSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client DataSetsClient) CreateResponder(resp *http.Response) (result DataSetModel, err error) {
+func (client InvitationsClient) CreateResponder(resp *http.Response) (result Invitation, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -124,49 +124,55 @@ func (client DataSetsClient) CreateResponder(resp *http.Response) (result DataSe
 	return
 }
 
-// Delete delete a DataSet in a share
+// Delete delete an invitation in a share
 // Parameters:
 // resourceGroupName - the resource group name.
 // accountName - the name of the share account.
 // shareName - the name of the share.
-// dataSetName - the name of the dataSet.
-func (client DataSetsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string) (result DataSetsDeleteFuture, err error) {
+// invitationName - the name of the invitation.
+func (client InvitationsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataSetsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvitationsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, shareName, dataSetName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, shareName, invitationName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.DeleteSender(req)
+	resp, err := client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "Delete", result.Response(), "Failure sending request")
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "Delete", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DataSetsClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string) (*http.Request, error) {
+func (client InvitationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
-		"dataSetName":       autorest.Encode("path", dataSetName),
+		"invitationName":    autorest.Encode("path", invitationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"shareName":         autorest.Encode("path", shareName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -174,45 +180,39 @@ func (client DataSetsClient) DeletePreparer(ctx context.Context, resourceGroupNa
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/dataSets/{dataSetName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/invitations/{invitationName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataSetsClient) DeleteSender(req *http.Request) (future DataSetsDeleteFuture, err error) {
+func (client InvitationsClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	var resp *http.Response
-	resp, err = autorest.SendWithSender(client, req, sd...)
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+	return autorest.SendWithSender(client, req, sd...)
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client DataSetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client InvitationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
 }
 
-// Get get a DataSet in a share
+// Get get an invitation in a share
 // Parameters:
 // resourceGroupName - the resource group name.
 // accountName - the name of the share account.
 // shareName - the name of the share.
-// dataSetName - the name of the dataSet.
-func (client DataSetsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string) (result DataSetModel, err error) {
+// invitationName - the name of the invitation.
+func (client InvitationsClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string) (result Invitation, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataSetsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvitationsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -221,38 +221,38 @@ func (client DataSetsClient) Get(ctx context.Context, resourceGroupName string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, shareName, dataSetName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, shareName, invitationName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client DataSetsClient) GetPreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string) (*http.Request, error) {
+func (client InvitationsClient) GetPreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
-		"dataSetName":       autorest.Encode("path", dataSetName),
+		"invitationName":    autorest.Encode("path", invitationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"shareName":         autorest.Encode("path", shareName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -260,21 +260,21 @@ func (client DataSetsClient) GetPreparer(ctx context.Context, resourceGroupName 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/dataSets/{dataSetName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/invitations/{invitationName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataSetsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client InvitationsClient) GetSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client DataSetsClient) GetResponder(resp *http.Response) (result DataSetModel, err error) {
+func (client InvitationsClient) GetResponder(resp *http.Response) (result Invitation, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -285,19 +285,19 @@ func (client DataSetsClient) GetResponder(resp *http.Response) (result DataSetMo
 	return
 }
 
-// ListByShare list DataSets in a share
+// ListByShare list invitations in a share
 // Parameters:
 // resourceGroupName - the resource group name.
 // accountName - the name of the share account.
 // shareName - the name of the share.
-// skipToken - continuation token
-func (client DataSetsClient) ListByShare(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result DataSetListPage, err error) {
+// skipToken - the continuation token
+func (client InvitationsClient) ListByShare(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result InvitationListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataSetsClient.ListByShare")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvitationsClient.ListByShare")
 		defer func() {
 			sc := -1
-			if result.dsl.Response.Response != nil {
-				sc = result.dsl.Response.Response.StatusCode
+			if result.il.Response.Response != nil {
+				sc = result.il.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -305,27 +305,27 @@ func (client DataSetsClient) ListByShare(ctx context.Context, resourceGroupName 
 	result.fn = client.listByShareNextResults
 	req, err := client.ListBySharePreparer(ctx, resourceGroupName, accountName, shareName, skipToken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "ListByShare", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "ListByShare", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByShareSender(req)
 	if err != nil {
-		result.dsl.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "ListByShare", resp, "Failure sending request")
+		result.il.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "ListByShare", resp, "Failure sending request")
 		return
 	}
 
-	result.dsl, err = client.ListByShareResponder(resp)
+	result.il, err = client.ListByShareResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "ListByShare", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "ListByShare", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListBySharePreparer prepares the ListByShare request.
-func (client DataSetsClient) ListBySharePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (*http.Request, error) {
+func (client InvitationsClient) ListBySharePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -333,7 +333,7 @@ func (client DataSetsClient) ListBySharePreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-11-01-preview"
+	const APIVersion = "2019-11-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -344,21 +344,21 @@ func (client DataSetsClient) ListBySharePreparer(ctx context.Context, resourceGr
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/dataSets", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataShare/accounts/{accountName}/shares/{shareName}/invitations", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListByShareSender sends the ListByShare request. The method will close the
 // http.Response Body if it receives an error.
-func (client DataSetsClient) ListByShareSender(req *http.Request) (*http.Response, error) {
+func (client InvitationsClient) ListByShareSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByShareResponder handles the response to the ListByShare request. The method always
 // closes the http.Response Body.
-func (client DataSetsClient) ListByShareResponder(resp *http.Response) (result DataSetList, err error) {
+func (client InvitationsClient) ListByShareResponder(resp *http.Response) (result InvitationList, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -370,10 +370,10 @@ func (client DataSetsClient) ListByShareResponder(resp *http.Response) (result D
 }
 
 // listByShareNextResults retrieves the next set of results, if any.
-func (client DataSetsClient) listByShareNextResults(ctx context.Context, lastResults DataSetList) (result DataSetList, err error) {
-	req, err := lastResults.dataSetListPreparer(ctx)
+func (client InvitationsClient) listByShareNextResults(ctx context.Context, lastResults InvitationList) (result InvitationList, err error) {
+	req, err := lastResults.invitationListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "datashare.DataSetsClient", "listByShareNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "datashare.InvitationsClient", "listByShareNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -381,19 +381,19 @@ func (client DataSetsClient) listByShareNextResults(ctx context.Context, lastRes
 	resp, err := client.ListByShareSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "datashare.DataSetsClient", "listByShareNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "datashare.InvitationsClient", "listByShareNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByShareResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datashare.DataSetsClient", "listByShareNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "datashare.InvitationsClient", "listByShareNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByShareComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DataSetsClient) ListByShareComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result DataSetListIterator, err error) {
+func (client InvitationsClient) ListByShareComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result InvitationListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/DataSetsClient.ListByShare")
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvitationsClient.ListByShare")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

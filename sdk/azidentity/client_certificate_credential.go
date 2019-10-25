@@ -15,7 +15,7 @@ import (
 type ClientCertificateCredential struct {
 	TokenCredential
 
-	client aadIdentityClient
+	client *aadIdentityClient
 
 	// The Azure Active Directory tenant (directory) Id of the service principal
 	tenantID string
@@ -33,22 +33,22 @@ type ClientCertificateCredential struct {
 // clientID: The client (application) ID of the service principal.
 // clientCertificate: The path to the client certificate that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *IdentityClientOptions) (ClientCertificateCredential, error) {
+func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *IdentityClientOptions) (*ClientCertificateCredential, error) {
 	// CP: Do this or pass *os.File or io.Reader? Could also make a struct to pass io.Reader + file size for fingerprint and private key funcs
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
-		return ClientCertificateCredential{}, fmt.Errorf("Certificate file not found in path: %s", clientCertificate)
+		return &ClientCertificateCredential{}, fmt.Errorf("Certificate file not found in path: %s", clientCertificate)
 	}
 
 	if options == nil {
 		options, err = newIdentityClientOptions()
 		if err != nil {
-			return ClientCertificateCredential{}, fmt.Errorf("newIdentityClientOptions: %w", err)
+			return &ClientCertificateCredential{}, fmt.Errorf("newIdentityClientOptions: %w", err)
 		}
 	}
-	var client aadIdentityClient = newAADIdentityClient(options)
+	var client *aadIdentityClient = newAADIdentityClient(options)
 
-	return ClientCertificateCredential{tenantID: tenantID, clientID: clientID, clientCertificate: clientCertificate, client: client}, nil
+	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, clientCertificate: clientCertificate, client: client}, nil
 }
 
 // GetToken obtains a token from the Azure Active Directory service, using the certificate in the file path to authenticate.

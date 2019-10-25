@@ -24,26 +24,26 @@ type EnvironmentCredential struct {
 // NewEnvironmentCredential creates an instance of the EnvironmentCredential type and reads client secret details from environment variables.
 // If the expected environment variables are not found at this time, the GetToken method will return the default AccessToken when invoked.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewEnvironmentCredential(options *IdentityClientOptions) (EnvironmentCredential, error) {
-	var credential ClientSecretCredential
+func NewEnvironmentCredential(options *IdentityClientOptions) (*EnvironmentCredential, error) {
+	var credential *ClientSecretCredential
 	var tenantID string = os.Getenv("AZURE_TENANT_ID")
 	var clientID string = os.Getenv("AZURE_CLIENT_ID")
 	var clientSecret string = os.Getenv("AZURE_CLIENT_SECRET")
 
 	if tenantID == "" {
-		return EnvironmentCredential{}, fmt.Errorf("Missing environment variable: AZURE_TENANT_ID")
+		return &EnvironmentCredential{}, fmt.Errorf("Missing environment variable: AZURE_TENANT_ID")
 	}
 
 	if clientID == "" {
-		return EnvironmentCredential{}, fmt.Errorf("Missing environment variable: AZURE_CLIENT_ID")
+		return &EnvironmentCredential{}, fmt.Errorf("Missing environment variable: AZURE_CLIENT_ID")
 	}
 
 	if clientSecret == "" {
-		return EnvironmentCredential{}, fmt.Errorf("Missing environment variable: AZURE_CLIENT_SECRET")
+		return &EnvironmentCredential{}, fmt.Errorf("Missing environment variable: AZURE_CLIENT_SECRET")
 	}
 
 	credential = NewClientSecretCredential(tenantID, clientID, clientSecret, options)
-	return EnvironmentCredential{credential: credential}, nil
+	return &EnvironmentCredential{credential: credential}, nil
 }
 
 // GetToken obtains a token from the Azure Active Directory service, using the specified client details specified in the environment variables

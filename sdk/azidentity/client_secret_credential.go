@@ -13,7 +13,7 @@ import (
 type ClientSecretCredential struct {
 	TokenCredential
 
-	client aadIdentityClient
+	client *aadIdentityClient
 	// Gets the Azure Active Directory tenant (directory) Id of the service principal
 	TenantID string
 
@@ -29,13 +29,17 @@ type ClientSecretCredential struct {
 // clientID: The client (application) ID of the service principal.
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions) ClientSecretCredential {
+func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions) *ClientSecretCredential {
+	var err error
 	if options == nil {
-		options, _ = newIdentityClientOptions()
+		options, err = newIdentityClientOptions()
+		if err != nil {
+			// return err
+		}
 	}
-	var client aadIdentityClient = newAADIdentityClient(options)
+	var client *aadIdentityClient = newAADIdentityClient(options)
 
-	return ClientSecretCredential{TenantID: tenantID, ClientID: clientID, ClientSecret: clientSecret, client: client}
+	return &ClientSecretCredential{TenantID: tenantID, ClientID: clientID, ClientSecret: clientSecret, client: client}
 }
 
 // GetToken obtains a token from the Azure Active Directory service, using the specified client secret to authenticate.

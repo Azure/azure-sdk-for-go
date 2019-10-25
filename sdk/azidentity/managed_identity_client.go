@@ -121,7 +121,7 @@ func (c *ManagedIdentityClient) createAuthRequest(msiType int, clientID string, 
 	// CP: TODO check this switch
 	switch msiType {
 	case int(imds):
-		req, err = c.createImdsAuthRequest(clientID, scopes)
+		req, err = c.createIMDSAuthRequest(clientID, scopes)
 	case int(appService):
 		req, err = c.createAppServiceAuthRequest(clientID, scopes)
 	case int(cloudShell):
@@ -133,7 +133,7 @@ func (c *ManagedIdentityClient) createAuthRequest(msiType int, clientID string, 
 	return req, err
 }
 
-func (c *ManagedIdentityClient) createImdsAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
+func (c *ManagedIdentityClient) createIMDSAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
 	// TODO: check other sdk's handling of resources, it's in ScopeUtilities
 	// // covert the scopes to a resource string
 	// resource = ScopeUtilities.ScopesToResource(scopes);
@@ -144,15 +144,6 @@ func (c *ManagedIdentityClient) createImdsAuthRequest(clientID string, scopes []
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	request.URL.RawQuery = q.Encode()
-	// data := url.Values{}
-	// data.Set("api-version", c.imdsAPIVersion)
-	// data.Set("resource", strings.Join(scopes, " "))
-	// if clientID != "" {
-	// 	data.Set("client_id", clientID)
-	// }
-	// dataEncoded := data.Encode()
-	// body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	// request.SetBody(body)
 
 	return request, nil
 }
@@ -244,7 +235,7 @@ func (c *ManagedIdentityClient) imdsAvailable(ctx context.Context) bool {
 	return true
 }
 
-// MISSING THIS
+// MISSING: ADD CONSIDERATIONS THAT THIS FUNC INCLUDES IN THE DESERIALIZATION OF THE ACCESSTOKEN
 // private static AccessToken Deserialize(JsonElement json)
 //         {
 //             if (!json.TryGetProperty("access_token", out JsonElement accessTokenProp))

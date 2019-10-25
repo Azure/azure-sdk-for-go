@@ -17,18 +17,18 @@ type ChainedTokenCredential struct {
 }
 
 // NewChainedTokenCredential creates an instance with the specified TokenCredential sources.
-func NewChainedTokenCredential(sources ...TokenCredential) (ChainedTokenCredential, error) {
+func NewChainedTokenCredential(sources ...TokenCredential) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
-		return ChainedTokenCredential{sources: nil}, errors.New("NewChainedTokenCredential: length of sources cannot be 0")
+		return &ChainedTokenCredential{sources: nil}, errors.New("NewChainedTokenCredential: length of sources cannot be 0")
 	}
 
 	for _, source := range sources {
 		if source == nil {
-			return ChainedTokenCredential{sources: nil}, errors.New("NewChainedTokenCredential: sources cannot contain a nil TokenCredential")
+			return &ChainedTokenCredential{sources: nil}, errors.New("NewChainedTokenCredential: sources cannot contain a nil TokenCredential")
 		}
 	}
 
-	return ChainedTokenCredential{sources: sources}, nil
+	return &ChainedTokenCredential{sources: sources}, nil
 }
 
 // GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the first non default AccessToken.
@@ -50,18 +50,18 @@ func (c ChainedTokenCredential) GetToken(ctx context.Context, scopes []string) (
 // - EnvironmentCredential
 // - ManagedIdentityCredential
 // Consult the documentation of these credential types for more information on how they attempt authentication.
-func NewDefaultTokenCredential(o *IdentityClientOptions) (ChainedTokenCredential, error) {
+func NewDefaultTokenCredential(o *IdentityClientOptions) (*ChainedTokenCredential, error) {
 	// CP: This is fine because we are not calling GetToken we are simple creating the new EnvironmentClient
 	envClient, err := NewEnvironmentCredential(o)
 	if err != nil {
-		return ChainedTokenCredential{sources: nil}, fmt.Errorf("NewDefaultTokenCredential: %w", err)
+		return &ChainedTokenCredential{sources: nil}, fmt.Errorf("NewDefaultTokenCredential: %w", err)
 	}
 	// TODO: check this implementation:
 	// 1. params for constructor should be nilable
 	// 2. Should this func ask for a client id? or get it from somewhere else?
 	msiClient, err := NewManagedIdentityCredential("", o)
 	if err != nil {
-		return ChainedTokenCredential{sources: nil}, fmt.Errorf("NewDefaultTokenCredential: %w", err)
+		return &ChainedTokenCredential{sources: nil}, fmt.Errorf("NewDefaultTokenCredential: %w", err)
 	}
 
 	return NewChainedTokenCredential(

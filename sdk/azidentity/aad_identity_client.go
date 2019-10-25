@@ -35,16 +35,16 @@ type aadIdentityClient struct {
 // newAADIdentityClient creates a new instance of the aadIdentityClient with the IdentityClientOptions that are passed into it
 // along with a default pipeline
 // CP: consider scenario where we want to pass a custom pipeline to aadIdentityClient, what would that func look like? func (c *AADIdentityClient) NewAADIdentityClientCustomPipeline() bool. If this func is public then aadIdentityClient should also be exported
-func newAADIdentityClient(options *IdentityClientOptions) aadIdentityClient {
+func newAADIdentityClient(options *IdentityClientOptions) *aadIdentityClient {
 	if options == nil {
 		options, _ = newIdentityClientOptions()
 	}
 	client := aadIdentityClient{options: *options, pipeline: NewDefaultPipeline(options.pipelineOptions)}
-	return client
+	return &client
 }
 
 // Authenticate creates a client secret authentication request and returns the resulting Access Token or an error in case of authentication failure.
-func (c aadIdentityClient) Authenticate(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*AccessToken, error) {
+func (c *aadIdentityClient) Authenticate(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*AccessToken, error) {
 	// CP: Need to activate pipeline diagnostics before beginning the auth process...
 	msg, err := c.createClientSecretAuthRequest(tenantID, clientID, clientSecret, scopes)
 	if err != nil {
@@ -65,7 +65,7 @@ func (c aadIdentityClient) Authenticate(ctx context.Context, tenantID string, cl
 }
 
 // AuthenticateCertificate creates a client certificate authentication request and returns an Access Token or an error in case of authentication failure.
-func (c aadIdentityClient) AuthenticateCertificate(ctx context.Context, tenantID string, clientID string, clientCertificatePath string, scopes []string) (*AccessToken, error) {
+func (c *aadIdentityClient) AuthenticateCertificate(ctx context.Context, tenantID string, clientID string, clientCertificatePath string, scopes []string) (*AccessToken, error) {
 	// CP: Need to activate pipeline diagnostics before beginning the auth process... azcore distributed tracing policy?
 	msg, err := c.createClientCertificateAuthRequest(tenantID, clientID, clientCertificatePath, scopes)
 	if err != nil {
@@ -85,7 +85,7 @@ func (c aadIdentityClient) AuthenticateCertificate(ctx context.Context, tenantID
 	return nil, fmt.Errorf("%s", authenticationRequestFailedError)
 }
 
-func (c aadIdentityClient) createAccessToken(res *azcore.Response) (*AccessToken, error) {
+func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*AccessToken, error) {
 	// CP: what is the best method to initialize this?
 	value := &AccessToken{}
 	// value := NewAccessToken("", 0)
@@ -100,7 +100,7 @@ func (c aadIdentityClient) createAccessToken(res *azcore.Response) (*AccessToken
 	return value, nil
 }
 
-func (c aadIdentityClient) createClientSecretAuthRequest(tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
+func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
 	urlStr := c.options.AuthorityHost.String() + tenantID + "/oauth2/v2.0/token/"
 	urlFormat, err := url.Parse(urlStr)
 	// CP: FIX THIS
@@ -123,7 +123,7 @@ func (c aadIdentityClient) createClientSecretAuthRequest(tenantID string, client
 	return msg, nil
 }
 
-func (c aadIdentityClient) createClientCertificateAuthRequest(tenantID string, clientID string, clientCertificate string, scopes []string) (*azcore.Request, error) {
+func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, clientID string, clientCertificate string, scopes []string) (*azcore.Request, error) {
 	urlStr := c.options.AuthorityHost.String() + tenantID + "/oauth2/v2.0/token/"
 	urlFormat, err := url.Parse(urlStr)
 	// CP: FIX THIS

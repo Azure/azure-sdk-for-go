@@ -19,6 +19,8 @@ package personalizer
 
 import (
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/date"
+	"io"
 )
 
 // The package's fully qualified name.
@@ -28,17 +30,51 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/personalizer/v1
 type ErrorCode string
 
 const (
-	// BadRequest Request could not be understood by the server.
+	// BadRequest BadRequest - Request could not be understood by the server.
 	BadRequest ErrorCode = "BadRequest"
-	// InternalServerError A generic error has occurred on the server.
+	// InternalServerError InternalServerError - A generic error has occurred on the server.
 	InternalServerError ErrorCode = "InternalServerError"
-	// ResourceNotFound Requested resource does not exist on the server.
+	// ResourceNotFound ResourceNotFound - Requested resource does not exist on the server.
 	ResourceNotFound ErrorCode = "ResourceNotFound"
 )
 
 // PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
 func PossibleErrorCodeValues() []ErrorCode {
 	return []ErrorCode{BadRequest, InternalServerError, ResourceNotFound}
+}
+
+// EvaluationJobStatus enumerates the values for evaluation job status.
+type EvaluationJobStatus string
+
+const (
+	// Completed ...
+	Completed EvaluationJobStatus = "completed"
+	// Failed ...
+	Failed EvaluationJobStatus = "failed"
+	// NotSubmitted ...
+	NotSubmitted EvaluationJobStatus = "notSubmitted"
+	// Pending ...
+	Pending EvaluationJobStatus = "pending"
+)
+
+// PossibleEvaluationJobStatusValues returns an array of possible values for the EvaluationJobStatus const type.
+func PossibleEvaluationJobStatusValues() []EvaluationJobStatus {
+	return []EvaluationJobStatus{Completed, Failed, NotSubmitted, Pending}
+}
+
+// ContainerStatus ...
+type ContainerStatus struct {
+	Service          *string `json:"service,omitempty"`
+	APIStatus        *string `json:"apiStatus,omitempty"`
+	APIStatusMessage *string `json:"apiStatusMessage,omitempty"`
+}
+
+// DateRange ...
+type DateRange struct {
+	// From - READ-ONLY
+	From *date.Time `json:"from,omitempty"`
+	// To - READ-ONLY
+	To *date.Time `json:"to,omitempty"`
 }
 
 // Error the error object.
@@ -61,12 +97,134 @@ type ErrorResponse struct {
 	Error *Error `json:"error,omitempty"`
 }
 
+// Evaluation ...
+type Evaluation struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY
+	Name *string `json:"name,omitempty"`
+	// StartTime - READ-ONLY
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - READ-ONLY
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// JobID - READ-ONLY
+	JobID *string `json:"jobId,omitempty"`
+	// Status - READ-ONLY; Possible values include: 'Completed', 'Pending', 'Failed', 'NotSubmitted'
+	Status            EvaluationJobStatus `json:"status,omitempty"`
+	PolicyResults     *[]PolicyResult     `json:"policyResults,omitempty"`
+	FeatureImportance *[][]string         `json:"featureImportance,omitempty"`
+}
+
+// EvaluationContract a counterfactual evaluation.
+type EvaluationContract struct {
+	// EnableOfflineExperimentation - True if the evaluation should explore for a more optimal policy.
+	EnableOfflineExperimentation *bool `json:"enableOfflineExperimentation,omitempty"`
+	// Name - The name of the evaluation.
+	Name *string `json:"name,omitempty"`
+	// StartTime - The start time of the evaluation.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - The end time of the evaluation.
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// Policies - Additional policies to evaluate.
+	Policies *[]PolicyContract `json:"policies,omitempty"`
+}
+
 // InternalError an object containing more specific information than the parent object about the error.
 type InternalError struct {
 	// Code - Detailed error code.
 	Code *string `json:"code,omitempty"`
 	// Innererror - The error object.
 	Innererror *InternalError `json:"innererror,omitempty"`
+}
+
+// ListEvaluation ...
+type ListEvaluation struct {
+	autorest.Response `json:"-"`
+	Value             *[]Evaluation `json:"value,omitempty"`
+}
+
+// LogsProperties ...
+type LogsProperties struct {
+	autorest.Response `json:"-"`
+	// DateRange - READ-ONLY
+	DateRange *LogsPropertiesDateRange `json:"dateRange,omitempty"`
+}
+
+// LogsPropertiesDateRange ...
+type LogsPropertiesDateRange struct {
+	// From - READ-ONLY
+	From *date.Time `json:"from,omitempty"`
+	// To - READ-ONLY
+	To *date.Time `json:"to,omitempty"`
+}
+
+// ModelProperties ...
+type ModelProperties struct {
+	autorest.Response `json:"-"`
+	// CreationTime - READ-ONLY
+	CreationTime *date.Time `json:"creationTime,omitempty"`
+	// LastModifiedTime - READ-ONLY
+	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+}
+
+// PolicyContract policy specifying how to train the model.
+type PolicyContract struct {
+	autorest.Response `json:"-"`
+	// Name - Name of the Policy.
+	Name *string `json:"name,omitempty"`
+	// Arguments - Arguments of the Policy.
+	Arguments *string `json:"arguments,omitempty"`
+}
+
+// PolicyResult ...
+type PolicyResult struct {
+	// Name - READ-ONLY
+	Name *string `json:"name,omitempty"`
+	// Arguments - READ-ONLY
+	Arguments *string `json:"arguments,omitempty"`
+	// Summary - READ-ONLY
+	Summary *[]PolicyResultSummary `json:"summary,omitempty"`
+	// TotalSummary - READ-ONLY
+	TotalSummary *PolicyResultTotalSummary `json:"totalSummary,omitempty"`
+}
+
+// PolicyResultSummary ...
+type PolicyResultSummary struct {
+	// TimeStamp - READ-ONLY
+	TimeStamp *date.Time `json:"timeStamp,omitempty"`
+	// IpsEstimatorNumerator - READ-ONLY
+	IpsEstimatorNumerator *float64 `json:"ipsEstimatorNumerator,omitempty"`
+	// IpsEstimatorDenominator - READ-ONLY
+	IpsEstimatorDenominator *float64 `json:"ipsEstimatorDenominator,omitempty"`
+	// SnipsEstimatorDenominator - READ-ONLY
+	SnipsEstimatorDenominator *float64 `json:"snipsEstimatorDenominator,omitempty"`
+	// AggregateTimeWindow - READ-ONLY
+	AggregateTimeWindow *string  `json:"aggregateTimeWindow,omitempty"`
+	NonZeroProbability  *float64 `json:"nonZeroProbability,omitempty"`
+	// ConfidenceInterval - READ-ONLY
+	ConfidenceInterval *float64 `json:"confidenceInterval,omitempty"`
+	// SumOfSquares - READ-ONLY
+	SumOfSquares *float64 `json:"sumOfSquares,omitempty"`
+}
+
+// PolicyResultTotalSummary ...
+type PolicyResultTotalSummary struct {
+	// TimeStamp - READ-ONLY
+	TimeStamp *date.Time `json:"timeStamp,omitempty"`
+	// IpsEstimatorNumerator - READ-ONLY
+	IpsEstimatorNumerator *float64 `json:"ipsEstimatorNumerator,omitempty"`
+	// IpsEstimatorDenominator - READ-ONLY
+	IpsEstimatorDenominator *float64 `json:"ipsEstimatorDenominator,omitempty"`
+	// SnipsEstimatorDenominator - READ-ONLY
+	SnipsEstimatorDenominator *float64 `json:"snipsEstimatorDenominator,omitempty"`
+	// AggregateTimeWindow - READ-ONLY
+	AggregateTimeWindow *string  `json:"aggregateTimeWindow,omitempty"`
+	NonZeroProbability  *float64 `json:"nonZeroProbability,omitempty"`
+	// ConfidenceInterval - READ-ONLY
+	ConfidenceInterval *float64 `json:"confidenceInterval,omitempty"`
+	// SumOfSquares - READ-ONLY
+	SumOfSquares *float64 `json:"sumOfSquares,omitempty"`
 }
 
 // RankableAction an action with it's associated features used for ranking.
@@ -124,8 +282,35 @@ type RankResponse struct {
 	RewardActionID *string `json:"rewardActionId,omitempty"`
 }
 
+// ReadCloser ...
+type ReadCloser struct {
+	autorest.Response `json:"-"`
+	Value             *io.ReadCloser `json:"value,omitempty"`
+}
+
 // RewardRequest reward given to a rank response.
 type RewardRequest struct {
 	// Value - Reward to be assigned to an action. Value should be between -1 and 1 inclusive.
 	Value *float64 `json:"value,omitempty"`
+}
+
+// ServiceConfiguration the configuration of the service.
+type ServiceConfiguration struct {
+	autorest.Response `json:"-"`
+	// RewardWaitTime - The time span waited until a request is marked with the default reward.
+	RewardWaitTime *string `json:"rewardWaitTime,omitempty"`
+	// DefaultReward - The reward given if a reward is not received within the specified wait time.
+	DefaultReward *float64 `json:"defaultReward,omitempty"`
+	// RewardAggregation - The function used to process rewards.
+	RewardAggregation *string `json:"rewardAggregation,omitempty"`
+	// ExplorationPercentage - The percentage of rank responses that will use exploration.
+	ExplorationPercentage *float64 `json:"explorationPercentage,omitempty"`
+	// ModelExportFrequency - The time delay between exporting trained models.
+	ModelExportFrequency *string `json:"modelExportFrequency,omitempty"`
+	// LogMirrorEnabled - Flag indicates whether log mirroring is enabled.
+	LogMirrorEnabled *bool `json:"logMirrorEnabled,omitempty"`
+	// LogMirrorSasURI - Azure storage account container SAS URI for log mirroring.
+	LogMirrorSasURI *string `json:"logMirrorSasUri,omitempty"`
+	// LogRetentionDays - Number of days historical logs are to be maintained.
+	LogRetentionDays *int32 `json:"logRetentionDays,omitempty"`
 }

@@ -51,7 +51,7 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 	}
 }
 
-// Rank sends the rank request.
+// Rank submit a Personalizer rank request.
 // Parameters:
 // rankRequest - a Personalizer request.
 func (client BaseClient) Rank(ctx context.Context, rankRequest RankRequest) (result RankResponse, err error) {

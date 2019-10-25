@@ -29,28 +29,74 @@ const (
 	ResourceNotFound    ErrorCode = original.ResourceNotFound
 )
 
+type EvaluationJobStatus = original.EvaluationJobStatus
+
+const (
+	Completed    EvaluationJobStatus = original.Completed
+	Failed       EvaluationJobStatus = original.Failed
+	NotSubmitted EvaluationJobStatus = original.NotSubmitted
+	Pending      EvaluationJobStatus = original.Pending
+)
+
 type BaseClient = original.BaseClient
+type ContainerStatus = original.ContainerStatus
+type DateRange = original.DateRange
 type Error = original.Error
 type ErrorResponse = original.ErrorResponse
+type Evaluation = original.Evaluation
+type EvaluationContract = original.EvaluationContract
+type EvaluationsClient = original.EvaluationsClient
 type EventsClient = original.EventsClient
 type InternalError = original.InternalError
+type ListEvaluation = original.ListEvaluation
+type LogClient = original.LogClient
+type LogsProperties = original.LogsProperties
+type LogsPropertiesDateRange = original.LogsPropertiesDateRange
+type ModelClient = original.ModelClient
+type ModelProperties = original.ModelProperties
+type PolicyClient = original.PolicyClient
+type PolicyContract = original.PolicyContract
+type PolicyResult = original.PolicyResult
+type PolicyResultSummary = original.PolicyResultSummary
+type PolicyResultTotalSummary = original.PolicyResultTotalSummary
 type RankRequest = original.RankRequest
 type RankResponse = original.RankResponse
 type RankableAction = original.RankableAction
 type RankedAction = original.RankedAction
+type ReadCloser = original.ReadCloser
 type RewardRequest = original.RewardRequest
+type ServiceConfiguration = original.ServiceConfiguration
+type ServiceConfigurationClient = original.ServiceConfigurationClient
 
 func New(endpoint string) BaseClient {
 	return original.New(endpoint)
 }
+func NewEvaluationsClient(endpoint string) EvaluationsClient {
+	return original.NewEvaluationsClient(endpoint)
+}
 func NewEventsClient(endpoint string) EventsClient {
 	return original.NewEventsClient(endpoint)
+}
+func NewLogClient(endpoint string) LogClient {
+	return original.NewLogClient(endpoint)
+}
+func NewModelClient(endpoint string) ModelClient {
+	return original.NewModelClient(endpoint)
+}
+func NewPolicyClient(endpoint string) PolicyClient {
+	return original.NewPolicyClient(endpoint)
+}
+func NewServiceConfigurationClient(endpoint string) ServiceConfigurationClient {
+	return original.NewServiceConfigurationClient(endpoint)
 }
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)
 }
 func PossibleErrorCodeValues() []ErrorCode {
 	return original.PossibleErrorCodeValues()
+}
+func PossibleEvaluationJobStatusValues() []EvaluationJobStatus {
+	return original.PossibleEvaluationJobStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -39,7 +39,7 @@ func NewEventsClient(endpoint string) EventsClient {
 	return EventsClient{New(endpoint)}
 }
 
-// Activate sends the activate request.
+// Activate report that the specified event was actually displayed to the user and a reward should be expected for it
 // Parameters:
 // eventID - the event ID this activation applies to.
 func (client EventsClient) Activate(ctx context.Context, eventID string) (result autorest.Response, err error) {
@@ -116,7 +116,7 @@ func (client EventsClient) ActivateResponder(resp *http.Response) (result autore
 	return
 }
 
-// Reward sends the reward request.
+// Reward report reward to allocate to the top ranked action for the specified event.
 // Parameters:
 // eventID - the event id this reward applies to.
 // reward - the reward should be a floating point number.

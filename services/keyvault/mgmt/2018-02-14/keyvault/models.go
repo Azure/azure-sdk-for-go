@@ -1533,8 +1533,10 @@ type VaultProperties struct {
 	CreateMode CreateMode `json:"createMode,omitempty"`
 	// EnablePurgeProtection - Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for this vault and its content - only the Key Vault service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible - that is, the property does not accept false as its value.
 	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
-	// NetworkAcls - A collection of rules governing the accessibility of the vault from specific network locations.
+	// NetworkAcls - Rules governing the accessibility of the key vault from specific network locations.
 	NetworkAcls *NetworkRuleSet `json:"networkAcls,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections associated with the key vault.
+	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 }
 
 // VaultsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

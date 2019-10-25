@@ -214,8 +214,8 @@ type VaultsCreateOrUpdateFuture = original.VaultsCreateOrUpdateFuture
 type VaultsPurgeDeletedFuture = original.VaultsPurgeDeletedFuture
 type VirtualNetworkRule = original.VirtualNetworkRule
 
-func New(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) BaseClient {
-	return original.New(subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
 func NewDeletedVaultListResultIterator(page DeletedVaultListResultPage) DeletedVaultListResultIterator {
 	return original.NewDeletedVaultListResultIterator(page)
@@ -229,23 +229,23 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsClient(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPrivateEndpointConnectionsClient(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) PrivateEndpointConnectionsClient {
-	return original.NewPrivateEndpointConnectionsClient(subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
 }
-func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) PrivateEndpointConnectionsClient {
-	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPrivateLinkResourcesClient(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) PrivateLinkResourcesClient {
-	return original.NewPrivateLinkResourcesClient(subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
 }
-func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) PrivateLinkResourcesClient {
-	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceListResultIterator(page ResourceListResultPage) ResourceListResultIterator {
 	return original.NewResourceListResultIterator(page)
@@ -259,14 +259,14 @@ func NewVaultListResultIterator(page VaultListResultPage) VaultListResultIterato
 func NewVaultListResultPage(getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
 	return original.NewVaultListResultPage(getNextPage)
 }
-func NewVaultsClient(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) VaultsClient {
-	return original.NewVaultsClient(subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewVaultsClient(subscriptionID string) VaultsClient {
+	return original.NewVaultsClient(subscriptionID)
 }
-func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) VaultsClient {
-	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
+	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 	return original.PossibleAccessPolicyUpdateKindValues()

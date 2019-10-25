@@ -33,13 +33,13 @@ type VaultsClient struct {
 }
 
 // NewVaultsClient creates an instance of the VaultsClient client.
-func NewVaultsClient(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) VaultsClient {
-	return NewVaultsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewVaultsClient(subscriptionID string) VaultsClient {
+	return NewVaultsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewVaultsClientWithBaseURI creates an instance of the VaultsClient client.
-func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) VaultsClient {
-	return VaultsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)}
+func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
+	return VaultsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CheckNameAvailability checks that the vault name is valid and is not already in use.

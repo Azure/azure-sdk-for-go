@@ -43,16 +43,16 @@ var _ VaultsClientAPI = (*keyvault.VaultsClient)(nil)
 
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {
-	Delete(ctx context.Context) (result autorest.Response, err error)
-	Get(ctx context.Context) (result keyvault.PrivateEndpointConnection, err error)
-	Put(ctx context.Context, properties keyvault.PrivateEndpointConnection) (result keyvault.PrivateEndpointConnection, err error)
+	Delete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (result keyvault.PrivateEndpointConnection, err error)
+	Put(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, properties keyvault.PrivateEndpointConnection) (result keyvault.PrivateEndpointConnection, err error)
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*keyvault.PrivateEndpointConnectionsClient)(nil)
 
 // PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
 type PrivateLinkResourcesClientAPI interface {
-	ListByVault(ctx context.Context) (result keyvault.PrivateLinkResourceListResult, err error)
+	ListByVault(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.PrivateLinkResourceListResult, err error)
 }
 
 var _ PrivateLinkResourcesClientAPI = (*keyvault.PrivateLinkResourcesClient)(nil)

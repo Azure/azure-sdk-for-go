@@ -33,17 +33,20 @@ type PrivateLinkResourcesClient struct {
 }
 
 // NewPrivateLinkResourcesClient creates an instance of the PrivateLinkResourcesClient client.
-func NewPrivateLinkResourcesClient(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) PrivateLinkResourcesClient {
-	return NewPrivateLinkResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return NewPrivateLinkResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPrivateLinkResourcesClientWithBaseURI creates an instance of the PrivateLinkResourcesClient client.
-func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) PrivateLinkResourcesClient {
-	return PrivateLinkResourcesClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return PrivateLinkResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByVault gets the private link resources supported for the key vault.
-func (client PrivateLinkResourcesClient) ListByVault(ctx context.Context) (result PrivateLinkResourceListResult, err error) {
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the key vault.
+// vaultName - the name of the key vault.
+func (client PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string) (result PrivateLinkResourceListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkResourcesClient.ListByVault")
 		defer func() {
@@ -55,12 +58,12 @@ func (client PrivateLinkResourcesClient) ListByVault(ctx context.Context) (resul
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.VaultName,
-			Constraints: []validation.Constraint{{Target: "client.VaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}}}); err != nil {
+		{TargetValue: vaultName,
+			Constraints: []validation.Constraint{{Target: "vaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("keyvault.PrivateLinkResourcesClient", "ListByVault", err.Error())
 	}
 
-	req, err := client.ListByVaultPreparer(ctx)
+	req, err := client.ListByVaultPreparer(ctx, resourceGroupName, vaultName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.PrivateLinkResourcesClient", "ListByVault", nil, "Failure preparing request")
 		return
@@ -82,11 +85,11 @@ func (client PrivateLinkResourcesClient) ListByVault(ctx context.Context) (resul
 }
 
 // ListByVaultPreparer prepares the ListByVault request.
-func (client PrivateLinkResourcesClient) ListByVaultPreparer(ctx context.Context) (*http.Request, error) {
+func (client PrivateLinkResourcesClient) ListByVaultPreparer(ctx context.Context, resourceGroupName string, vaultName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", client.ResourceGroupName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"vaultName":         autorest.Encode("path", client.VaultName),
+		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
 	const APIVersion = "2018-02-14"

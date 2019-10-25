@@ -33,17 +33,21 @@ type PrivateEndpointConnectionsClient struct {
 }
 
 // NewPrivateEndpointConnectionsClient creates an instance of the PrivateEndpointConnectionsClient client.
-func NewPrivateEndpointConnectionsClient(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) PrivateEndpointConnectionsClient {
-	return NewPrivateEndpointConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return NewPrivateEndpointConnectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPrivateEndpointConnectionsClientWithBaseURI creates an instance of the PrivateEndpointConnectionsClient client.
-func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) PrivateEndpointConnectionsClient {
-	return PrivateEndpointConnectionsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return PrivateEndpointConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Delete deletes the specified private endpoint connection associated with the key vault.
-func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context) (result autorest.Response, err error) {
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the key vault.
+// vaultName - the name of the key vault.
+// privateEndpointConnectionName - the name of the private endpoint connection associated with the key vault.
+func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Delete")
 		defer func() {
@@ -55,12 +59,12 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context) (resu
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.VaultName,
-			Constraints: []validation.Constraint{{Target: "client.VaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}}}); err != nil {
+		{TargetValue: vaultName,
+			Constraints: []validation.Constraint{{Target: "vaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("keyvault.PrivateEndpointConnectionsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, vaultName, privateEndpointConnectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -82,12 +86,12 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context) (resu
 }
 
 // DeletePreparer prepares the Delete request.
-func (client PrivateEndpointConnectionsClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
+func (client PrivateEndpointConnectionsClient) DeletePreparer(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"privateEndpointConnectionName": autorest.Encode("path", client.PrivateEndpointConnectionName),
-		"resourceGroupName":             autorest.Encode("path", client.ResourceGroupName),
+		"privateEndpointConnectionName": autorest.Encode("path", privateEndpointConnectionName),
+		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
-		"vaultName":                     autorest.Encode("path", client.VaultName),
+		"vaultName":                     autorest.Encode("path", vaultName),
 	}
 
 	const APIVersion = "2018-02-14"
@@ -123,7 +127,11 @@ func (client PrivateEndpointConnectionsClient) DeleteResponder(resp *http.Respon
 }
 
 // Get gets the specified private endpoint connection associated with the key vault.
-func (client PrivateEndpointConnectionsClient) Get(ctx context.Context) (result PrivateEndpointConnection, err error) {
+// Parameters:
+// resourceGroupName - the name of the resource group that contains the key vault.
+// vaultName - the name of the key vault.
+// privateEndpointConnectionName - the name of the private endpoint connection associated with the key vault.
+func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (result PrivateEndpointConnection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Get")
 		defer func() {
@@ -135,12 +143,12 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context) (result 
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.VaultName,
-			Constraints: []validation.Constraint{{Target: "client.VaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}}}); err != nil {
+		{TargetValue: vaultName,
+			Constraints: []validation.Constraint{{Target: "vaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("keyvault.PrivateEndpointConnectionsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx)
+	req, err := client.GetPreparer(ctx, resourceGroupName, vaultName, privateEndpointConnectionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -162,12 +170,12 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context) (result 
 }
 
 // GetPreparer prepares the Get request.
-func (client PrivateEndpointConnectionsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
+func (client PrivateEndpointConnectionsClient) GetPreparer(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"privateEndpointConnectionName": autorest.Encode("path", client.PrivateEndpointConnectionName),
-		"resourceGroupName":             autorest.Encode("path", client.ResourceGroupName),
+		"privateEndpointConnectionName": autorest.Encode("path", privateEndpointConnectionName),
+		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
-		"vaultName":                     autorest.Encode("path", client.VaultName),
+		"vaultName":                     autorest.Encode("path", vaultName),
 	}
 
 	const APIVersion = "2018-02-14"
@@ -205,8 +213,11 @@ func (client PrivateEndpointConnectionsClient) GetResponder(resp *http.Response)
 
 // Put updates the specified private endpoint connection associated with the key vault.
 // Parameters:
+// resourceGroupName - the name of the resource group that contains the key vault.
+// vaultName - the name of the key vault.
+// privateEndpointConnectionName - the name of the private endpoint connection associated with the key vault.
 // properties - the intended state of private endpoint connection.
-func (client PrivateEndpointConnectionsClient) Put(ctx context.Context, properties PrivateEndpointConnection) (result PrivateEndpointConnection, err error) {
+func (client PrivateEndpointConnectionsClient) Put(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, properties PrivateEndpointConnection) (result PrivateEndpointConnection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Put")
 		defer func() {
@@ -218,15 +229,15 @@ func (client PrivateEndpointConnectionsClient) Put(ctx context.Context, properti
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.VaultName,
-			Constraints: []validation.Constraint{{Target: "client.VaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}},
+		{TargetValue: vaultName,
+			Constraints: []validation.Constraint{{Target: "vaultName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]{3,24}$`, Chain: nil}}},
 		{TargetValue: properties,
 			Constraints: []validation.Constraint{{Target: "properties.PrivateEndpointConnectionProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "properties.PrivateEndpointConnectionProperties.PrivateLinkServiceConnectionState", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("keyvault.PrivateEndpointConnectionsClient", "Put", err.Error())
 	}
 
-	req, err := client.PutPreparer(ctx, properties)
+	req, err := client.PutPreparer(ctx, resourceGroupName, vaultName, privateEndpointConnectionName, properties)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.PrivateEndpointConnectionsClient", "Put", nil, "Failure preparing request")
 		return
@@ -248,12 +259,12 @@ func (client PrivateEndpointConnectionsClient) Put(ctx context.Context, properti
 }
 
 // PutPreparer prepares the Put request.
-func (client PrivateEndpointConnectionsClient) PutPreparer(ctx context.Context, properties PrivateEndpointConnection) (*http.Request, error) {
+func (client PrivateEndpointConnectionsClient) PutPreparer(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, properties PrivateEndpointConnection) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"privateEndpointConnectionName": autorest.Encode("path", client.PrivateEndpointConnectionName),
-		"resourceGroupName":             autorest.Encode("path", client.ResourceGroupName),
+		"privateEndpointConnectionName": autorest.Encode("path", privateEndpointConnectionName),
+		"resourceGroupName":             autorest.Encode("path", resourceGroupName),
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
-		"vaultName":                     autorest.Encode("path", client.VaultName),
+		"vaultName":                     autorest.Encode("path", vaultName),
 	}
 
 	const APIVersion = "2018-02-14"

@@ -98,7 +98,6 @@ type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type ExtendedProduct = original.ExtendedProduct
 type ExtendedProductProperties = original.ExtendedProductProperties
-type GetProductsClient = original.GetProductsClient
 type IconUris = original.IconUris
 type MarketplaceProductLogUpdate = original.MarketplaceProductLogUpdate
 type Operation = original.Operation
@@ -144,12 +143,6 @@ func NewCustomerSubscriptionsClient(subscriptionID string) CustomerSubscriptions
 }
 func NewCustomerSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) CustomerSubscriptionsClient {
 	return original.NewCustomerSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewGetProductsClient(subscriptionID string) GetProductsClient {
-	return original.NewGetProductsClient(subscriptionID)
-}
-func NewGetProductsClientWithBaseURI(baseURI string, subscriptionID string) GetProductsClient {
-	return original.NewGetProductsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)

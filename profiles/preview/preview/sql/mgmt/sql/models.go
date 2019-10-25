@@ -1404,6 +1404,22 @@ type VulnerabilityAssessmentScanRecordListResult = original.VulnerabilityAssessm
 type VulnerabilityAssessmentScanRecordListResultIterator = original.VulnerabilityAssessmentScanRecordListResultIterator
 type VulnerabilityAssessmentScanRecordListResultPage = original.VulnerabilityAssessmentScanRecordListResultPage
 type VulnerabilityAssessmentScanRecordProperties = original.VulnerabilityAssessmentScanRecordProperties
+type WorkloadClassifier = original.WorkloadClassifier
+type WorkloadClassifierListResult = original.WorkloadClassifierListResult
+type WorkloadClassifierListResultIterator = original.WorkloadClassifierListResultIterator
+type WorkloadClassifierListResultPage = original.WorkloadClassifierListResultPage
+type WorkloadClassifierProperties = original.WorkloadClassifierProperties
+type WorkloadClassifiersClient = original.WorkloadClassifiersClient
+type WorkloadClassifiersCreateOrUpdateFuture = original.WorkloadClassifiersCreateOrUpdateFuture
+type WorkloadClassifiersDeleteFuture = original.WorkloadClassifiersDeleteFuture
+type WorkloadGroup = original.WorkloadGroup
+type WorkloadGroupListResult = original.WorkloadGroupListResult
+type WorkloadGroupListResultIterator = original.WorkloadGroupListResultIterator
+type WorkloadGroupListResultPage = original.WorkloadGroupListResultPage
+type WorkloadGroupProperties = original.WorkloadGroupProperties
+type WorkloadGroupsClient = original.WorkloadGroupsClient
+type WorkloadGroupsCreateOrUpdateFuture = original.WorkloadGroupsCreateOrUpdateFuture
+type WorkloadGroupsDeleteFuture = original.WorkloadGroupsDeleteFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -2238,6 +2254,30 @@ func NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage func(context
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkloadClassifierListResultIterator(page WorkloadClassifierListResultPage) WorkloadClassifierListResultIterator {
+	return original.NewWorkloadClassifierListResultIterator(page)
+}
+func NewWorkloadClassifierListResultPage(getNextPage func(context.Context, WorkloadClassifierListResult) (WorkloadClassifierListResult, error)) WorkloadClassifierListResultPage {
+	return original.NewWorkloadClassifierListResultPage(getNextPage)
+}
+func NewWorkloadClassifiersClient(subscriptionID string) WorkloadClassifiersClient {
+	return original.NewWorkloadClassifiersClient(subscriptionID)
+}
+func NewWorkloadClassifiersClientWithBaseURI(baseURI string, subscriptionID string) WorkloadClassifiersClient {
+	return original.NewWorkloadClassifiersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewWorkloadGroupListResultIterator(page WorkloadGroupListResultPage) WorkloadGroupListResultIterator {
+	return original.NewWorkloadGroupListResultIterator(page)
+}
+func NewWorkloadGroupListResultPage(getNextPage func(context.Context, WorkloadGroupListResult) (WorkloadGroupListResult, error)) WorkloadGroupListResultPage {
+	return original.NewWorkloadGroupListResultPage(getNextPage)
+}
+func NewWorkloadGroupsClient(subscriptionID string) WorkloadGroupsClient {
+	return original.NewWorkloadGroupsClient(subscriptionID)
+}
+func NewWorkloadGroupsClientWithBaseURI(baseURI string, subscriptionID string) WorkloadGroupsClient {
+	return original.NewWorkloadGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()

@@ -107,3 +107,5 @@ type TransparentDataEncryptionsClientAPI = original.TransparentDataEncryptionsCl
 type UsagesClientAPI = original.UsagesClientAPI
 type VirtualClustersClientAPI = original.VirtualClustersClientAPI
 type VirtualNetworkRulesClientAPI = original.VirtualNetworkRulesClientAPI
+type WorkloadClassifiersClientAPI = original.WorkloadClassifiersClientAPI
+type WorkloadGroupsClientAPI = original.WorkloadGroupsClientAPI

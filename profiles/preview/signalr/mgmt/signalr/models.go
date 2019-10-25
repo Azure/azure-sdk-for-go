@@ -29,6 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type FeatureFlags = original.FeatureFlags
+
+const (
+	EnableConnectivityLogs FeatureFlags = original.EnableConnectivityLogs
+	ServiceMode            FeatureFlags = original.ServiceMode
+)
+
 type KeyType = original.KeyType
 
 const (
@@ -67,8 +74,11 @@ type CreateOrUpdateProperties = original.CreateOrUpdateProperties
 type CreateParameters = original.CreateParameters
 type DeleteFuture = original.DeleteFuture
 type Dimension = original.Dimension
+type ErrorResponse = original.ErrorResponse
+type ErrorResponseBody = original.ErrorResponseBody
 type Feature = original.Feature
 type Keys = original.Keys
+type LogSpecification = original.LogSpecification
 type MetricSpecification = original.MetricSpecification
 type NameAvailability = original.NameAvailability
 type NameAvailabilityParameters = original.NameAvailabilityParameters
@@ -141,6 +151,9 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleFeatureFlagsValues() []FeatureFlags {
+	return original.PossibleFeatureFlagsValues()
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()

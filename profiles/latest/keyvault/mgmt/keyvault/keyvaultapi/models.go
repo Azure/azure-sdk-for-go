@@ -22,4 +22,6 @@ package keyvaultapi
 import original "github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2018-02-14/keyvault/keyvaultapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type VaultsClientAPI = original.VaultsClientAPI

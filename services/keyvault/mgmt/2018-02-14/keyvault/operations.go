@@ -32,13 +32,13 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewOperationsClient(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client.
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)}
 }
 
 // List lists all of the available Key Vault Rest API operations.

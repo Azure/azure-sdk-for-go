@@ -32,20 +32,26 @@ const (
 // BaseClient is the base client for Keyvault.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+	BaseURI                       string
+	SubscriptionID                string
+	ResourceGroupName             string
+	VaultName                     string
+	PrivateEndpointConnectionName string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New(subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID, resourceGroupName, vaultName, privateEndpointConnectionName)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string, resourceGroupName string, vaultName string, privateEndpointConnectionName string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+		Client:                        autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:                       baseURI,
+		SubscriptionID:                subscriptionID,
+		ResourceGroupName:             resourceGroupName,
+		VaultName:                     vaultName,
+		PrivateEndpointConnectionName: privateEndpointConnectionName,
 	}
 }

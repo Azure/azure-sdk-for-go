@@ -156,16 +156,13 @@ func (c *ManagedIdentityClient) createAppServiceAuthRequest(clientID string, sco
 
 	request := c.pipeline.NewRequest(http.MethodGet, c.sEndpoint)
 	request.Header = http.Header{"secret": []string{os.Getenv(msiSecretEnvironemntVariable)}}
-
-	data := url.Values{}
-	data.Set("api-version", appServiceMsiAPIVersion)
-	data.Set("resource", strings.Join(scopes, " "))
+	q := request.URL.Query()
+	q.Add("api-version", appServiceMsiAPIVersion)
+	q.Add("resource", strings.Join(scopes, " "))
 	if clientID != "" {
-		data.Set("client_id", clientID)
+		q.Add("client_id", clientID)
 	}
-	dataEncoded := data.Encode()
-	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	request.SetBody(body)
+	request.URL.RawQuery = q.Encode()
 
 	return request, nil
 }

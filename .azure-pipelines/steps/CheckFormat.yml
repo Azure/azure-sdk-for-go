@@ -1,0 +1,9 @@
+parameters:
+  folder: '.'
+
+steps:
+- script: gofmt -s -l -w $(find ${{ parameters.folder }} -path ./vendor -prune -o -name '*.go' -print) >&2
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Format Check'
+  failOnStderr: true
+  condition: succeededOrFailed()

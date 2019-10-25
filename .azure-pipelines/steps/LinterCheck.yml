@@ -1,0 +1,8 @@
+steps:
+- script: |
+    golint ./storage/... >&2
+    golint ./tools/... >&2
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Linter Check'
+  failOnStderr: true
+  condition: succeededOrFailed()

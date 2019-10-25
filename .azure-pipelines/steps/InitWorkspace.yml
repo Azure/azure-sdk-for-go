@@ -1,0 +1,18 @@
+steps:
+- script: |
+    set -x
+    mkdir -p '$(GOPATH)/bin'
+    mkdir -p '$(sdkPath)'
+    shopt -s dotglob extglob
+    mv !(work) '$(sdkPath)'
+    echo '##vso[task.prependpath]$(GOROOT)/bin'
+    echo '##vso[task.prependpath]$(GOPATH)/bin'
+  displayName: 'Create Go Workspace'
+- script: |
+    set -x
+    go version
+    curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+    dep ensure -v
+    go get -u golang.org/x/lint/golint
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Install Dependencies'

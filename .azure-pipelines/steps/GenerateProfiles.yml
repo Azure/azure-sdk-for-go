@@ -1,0 +1,6 @@
+steps:
+- script: |
+    go generate ./profiles
+    gofmt -s -w ./profiles
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Generate Profiles'

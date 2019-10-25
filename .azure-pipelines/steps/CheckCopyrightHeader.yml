@@ -1,0 +1,9 @@
+parameters:
+  folder: '.'
+
+steps:
+- script: grep -L -r --include *.go --exclude-dir vendor -P "Copyright (\d{4}|\(c\)) Microsoft" ${{ parameters.folder }} | tee >&2
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Copyright Header Check'
+  failOnStderr: true
+  condition: succeededOrFailed()

@@ -1,0 +1,14 @@
+steps:
+- script: |
+    # Echo error if github-pat is empty
+    [ -z $(github-pat) ] && echo "github-pat is empty!" && exit -1
+    echo $(Build.SourceBranchName)
+    # Enable bash verbose logging
+    set -x
+    git checkout $(Build.SourceBranchName)
+    git config user.email "azuresdkci@microsoft.com"
+    git config user.name "azuresdkci"
+    git config credential.helper store
+    echo https://$(github-pat):x-oauth-basic@github.com > ~/.git-credentials
+  displayName: 'Setup github'
+  workingDirectory: '$(sdkPath)'

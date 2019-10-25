@@ -1,0 +1,7 @@
+parameters:
+  folder: '.'
+
+steps:
+- script: go build -v $(go list ${{ parameters.folder }}/... | grep -v vendor)
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Build'

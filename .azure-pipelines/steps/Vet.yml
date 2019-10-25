@@ -1,0 +1,7 @@
+parameters:
+  folder: '.'
+
+steps:
+- script: go vet $(go list ${{ parameters.folder }}/... | grep -v vendor)
+  workingDirectory: '$(sdkPath)'
+  displayName: 'Vet'

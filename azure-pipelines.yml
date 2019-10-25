@@ -3,6 +3,10 @@ trigger:
     include:
       - master
 
+variables:
+  GOPATH: '$(System.DefaultWorkingDirectory)/work'
+  sdkPath: '$(GOPATH)/src/github.com/Azure/azure-sdk-for-go'
+
 stages:
   - stage: Build_Test
     jobs:

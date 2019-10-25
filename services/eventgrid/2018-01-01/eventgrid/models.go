@@ -721,6 +721,72 @@ type KeyVaultSecretNewVersionCreatedEventData struct {
 	Exp *float64 `json:"exp,omitempty"`
 }
 
+// MachineLearningServicesDatasetDriftDetectedEventData schema of the Data property of an EventGridEvent
+// for an Microsoft.MachineLearningServices.DatasetDriftDetected event.
+type MachineLearningServicesDatasetDriftDetectedEventData struct {
+	// DataDriftID - The ID of the data drift monitor that triggered the event.
+	DataDriftID *string `json:"dataDriftId,omitempty"`
+	// DataDriftName - The name of the data drift monitor that triggered the event.
+	DataDriftName *string `json:"dataDriftName,omitempty"`
+	// RunID - The ID of the Run that detected data drift.
+	RunID *string `json:"runId,omitempty"`
+	// BaseDatasetID - The ID of the base Dataset used to detect drift.
+	BaseDatasetID *string `json:"baseDatasetId,omitempty"`
+	// TargetDatasetID - The ID of the target Dataset used to detect drift.
+	TargetDatasetID *string `json:"targetDatasetId,omitempty"`
+	// DriftCoefficient - The coefficient result that triggered the event.
+	DriftCoefficient *float64 `json:"driftCoefficient,omitempty"`
+	// StartTime - The start time of the target dataset time series that resulted in drift detection.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - The end time of the target dataset time series that resulted in drift detection.
+	EndTime *date.Time `json:"endTime,omitempty"`
+}
+
+// MachineLearningServicesModelDeployedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.MachineLearningServices.ModelDeployed event.
+type MachineLearningServicesModelDeployedEventData struct {
+	// ServiceName - The name of the deployed service.
+	ServiceName *string `json:"serviceName,omitempty"`
+	// ServiceComputeType - The compute type (e.g. ACI, AKS) of the deployed service.
+	ServiceComputeType *string `json:"serviceComputeType,omitempty"`
+	// ModelIds - A common separated list of model IDs. The IDs of the models deployed in the service.
+	ModelIds *string `json:"modelIds,omitempty"`
+	// ServiceTags - The tags of the deployed service.
+	ServiceTags interface{} `json:"serviceTags,omitempty"`
+	// ServiceProperties - The properties of the deployed service.
+	ServiceProperties interface{} `json:"serviceProperties,omitempty"`
+}
+
+// MachineLearningServicesModelRegisteredEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.MachineLearningServices.ModelRegistered event.
+type MachineLearningServicesModelRegisteredEventData struct {
+	// ModelName - The name of the model that was registered.
+	ModelName *string `json:"modelName,omitempty"`
+	// ModelVersion - The version of the model that was registered.
+	ModelVersion *int32 `json:"modelVersion,omitempty"`
+	// ModelTags - The tags of the model that was registered.
+	ModelTags interface{} `json:"modelTags,omitempty"`
+	// ModelProperties - The properties of the model that was registered.
+	ModelProperties interface{} `json:"modelProperties,omitempty"`
+}
+
+// MachineLearningServicesRunCompletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.MachineLearningServices.RunCompleted event.
+type MachineLearningServicesRunCompletedEventData struct {
+	// ExperimentID - The ID of the experiment that the run belongs to.
+	ExperimentID *string `json:"experimentId,omitempty"`
+	// ExperimentName - The name of the experiment that the run belongs to.
+	ExperimentName *string `json:"experimentName,omitempty"`
+	// RunID - The ID of the Run that was completed.
+	RunID *string `json:"runId,omitempty"`
+	// RunType - The Run Type of the completed Run.
+	RunType *string `json:"runType,omitempty"`
+	// RunTags - The tags of the completed Run.
+	RunTags interface{} `json:"runTags,omitempty"`
+	// RunProperties - The properties of the completed Run.
+	RunProperties interface{} `json:"runProperties,omitempty"`
+}
+
 // MapsGeofenceEnteredEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.Maps.GeofenceEntered event.
 type MapsGeofenceEnteredEventData struct {

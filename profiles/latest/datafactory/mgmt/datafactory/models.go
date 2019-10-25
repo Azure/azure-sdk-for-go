@@ -969,6 +969,23 @@ const (
 	TypeZipDeflate         TypeBasicDatasetCompression = original.TypeZipDeflate
 )
 
+type TypeBasicDatasetLocation = original.TypeBasicDatasetLocation
+
+const (
+	TypeAmazonS3Location           TypeBasicDatasetLocation = original.TypeAmazonS3Location
+	TypeAzureBlobFSLocation        TypeBasicDatasetLocation = original.TypeAzureBlobFSLocation
+	TypeAzureBlobStorageLocation   TypeBasicDatasetLocation = original.TypeAzureBlobStorageLocation
+	TypeAzureDataLakeStoreLocation TypeBasicDatasetLocation = original.TypeAzureDataLakeStoreLocation
+	TypeAzureFileStorageLocation   TypeBasicDatasetLocation = original.TypeAzureFileStorageLocation
+	TypeDatasetLocation            TypeBasicDatasetLocation = original.TypeDatasetLocation
+	TypeFileServerLocation         TypeBasicDatasetLocation = original.TypeFileServerLocation
+	TypeFtpServerLocation          TypeBasicDatasetLocation = original.TypeFtpServerLocation
+	TypeGoogleCloudStorageLocation TypeBasicDatasetLocation = original.TypeGoogleCloudStorageLocation
+	TypeHdfsLocation               TypeBasicDatasetLocation = original.TypeHdfsLocation
+	TypeHTTPServerLocation         TypeBasicDatasetLocation = original.TypeHTTPServerLocation
+	TypeSftpLocation               TypeBasicDatasetLocation = original.TypeSftpLocation
+)
+
 type TypeBasicDatasetStorageFormat = original.TypeBasicDatasetStorageFormat
 
 const (
@@ -995,6 +1012,22 @@ const (
 	TypeFactoryGitHubConfiguration TypeBasicFactoryRepoConfiguration = original.TypeFactoryGitHubConfiguration
 	TypeFactoryRepoConfiguration   TypeBasicFactoryRepoConfiguration = original.TypeFactoryRepoConfiguration
 	TypeFactoryVSTSConfiguration   TypeBasicFactoryRepoConfiguration = original.TypeFactoryVSTSConfiguration
+)
+
+type TypeBasicFormatReadSettings = original.TypeBasicFormatReadSettings
+
+const (
+	TypeDelimitedTextReadSettings TypeBasicFormatReadSettings = original.TypeDelimitedTextReadSettings
+	TypeFormatReadSettings        TypeBasicFormatReadSettings = original.TypeFormatReadSettings
+)
+
+type TypeBasicFormatWriteSettings = original.TypeBasicFormatWriteSettings
+
+const (
+	TypeAvroWriteSettings          TypeBasicFormatWriteSettings = original.TypeAvroWriteSettings
+	TypeDelimitedTextWriteSettings TypeBasicFormatWriteSettings = original.TypeDelimitedTextWriteSettings
+	TypeFormatWriteSettings        TypeBasicFormatWriteSettings = original.TypeFormatWriteSettings
+	TypeJSONWriteSettings          TypeBasicFormatWriteSettings = original.TypeJSONWriteSettings
 )
 
 type TypeBasicIntegrationRuntime = original.TypeBasicIntegrationRuntime
@@ -1121,6 +1154,23 @@ const (
 	TypePackage            TypeBasicSsisObjectMetadata = original.TypePackage
 	TypeProject            TypeBasicSsisObjectMetadata = original.TypeProject
 	TypeSsisObjectMetadata TypeBasicSsisObjectMetadata = original.TypeSsisObjectMetadata
+)
+
+type TypeBasicStoreReadSettings = original.TypeBasicStoreReadSettings
+
+const (
+	TypeAmazonS3ReadSettings           TypeBasicStoreReadSettings = original.TypeAmazonS3ReadSettings
+	TypeAzureBlobFSReadSettings        TypeBasicStoreReadSettings = original.TypeAzureBlobFSReadSettings
+	TypeAzureBlobStorageReadSettings   TypeBasicStoreReadSettings = original.TypeAzureBlobStorageReadSettings
+	TypeAzureDataLakeStoreReadSettings TypeBasicStoreReadSettings = original.TypeAzureDataLakeStoreReadSettings
+	TypeAzureFileStorageReadSettings   TypeBasicStoreReadSettings = original.TypeAzureFileStorageReadSettings
+	TypeFileServerReadSettings         TypeBasicStoreReadSettings = original.TypeFileServerReadSettings
+	TypeFtpReadSettings                TypeBasicStoreReadSettings = original.TypeFtpReadSettings
+	TypeGoogleCloudStorageReadSettings TypeBasicStoreReadSettings = original.TypeGoogleCloudStorageReadSettings
+	TypeHdfsReadSettings               TypeBasicStoreReadSettings = original.TypeHdfsReadSettings
+	TypeHTTPReadSettings               TypeBasicStoreReadSettings = original.TypeHTTPReadSettings
+	TypeSftpReadSettings               TypeBasicStoreReadSettings = original.TypeSftpReadSettings
+	TypeStoreReadSettings              TypeBasicStoreReadSettings = original.TypeStoreReadSettings
 )
 
 type TypeBasicStoreWriteSettings = original.TypeBasicStoreWriteSettings
@@ -1313,10 +1363,13 @@ type BasicCustomSetupBase = original.BasicCustomSetupBase
 type BasicDataFlow = original.BasicDataFlow
 type BasicDataset = original.BasicDataset
 type BasicDatasetCompression = original.BasicDatasetCompression
+type BasicDatasetLocation = original.BasicDatasetLocation
 type BasicDatasetStorageFormat = original.BasicDatasetStorageFormat
 type BasicDependencyReference = original.BasicDependencyReference
 type BasicExecutionActivity = original.BasicExecutionActivity
 type BasicFactoryRepoConfiguration = original.BasicFactoryRepoConfiguration
+type BasicFormatReadSettings = original.BasicFormatReadSettings
+type BasicFormatWriteSettings = original.BasicFormatWriteSettings
 type BasicIntegrationRuntime = original.BasicIntegrationRuntime
 type BasicIntegrationRuntimeStatus = original.BasicIntegrationRuntimeStatus
 type BasicLinkedIntegrationRuntimeType = original.BasicLinkedIntegrationRuntimeType
@@ -1324,6 +1377,7 @@ type BasicLinkedService = original.BasicLinkedService
 type BasicMultiplePipelineTrigger = original.BasicMultiplePipelineTrigger
 type BasicSecretBase = original.BasicSecretBase
 type BasicSsisObjectMetadata = original.BasicSsisObjectMetadata
+type BasicStoreReadSettings = original.BasicStoreReadSettings
 type BasicStoreWriteSettings = original.BasicStoreWriteSettings
 type BasicTabularSource = original.BasicTabularSource
 type BasicTrigger = original.BasicTrigger
@@ -2430,6 +2484,9 @@ func PossibleTypeBasicDataFlowValues() []TypeBasicDataFlow {
 func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
 	return original.PossibleTypeBasicDatasetCompressionValues()
 }
+func PossibleTypeBasicDatasetLocationValues() []TypeBasicDatasetLocation {
+	return original.PossibleTypeBasicDatasetLocationValues()
+}
 func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat {
 	return original.PossibleTypeBasicDatasetStorageFormatValues()
 }
@@ -2442,6 +2499,12 @@ func PossibleTypeBasicDependencyReferenceValues() []TypeBasicDependencyReference
 func PossibleTypeBasicFactoryRepoConfigurationValues() []TypeBasicFactoryRepoConfiguration {
 	return original.PossibleTypeBasicFactoryRepoConfigurationValues()
 }
+func PossibleTypeBasicFormatReadSettingsValues() []TypeBasicFormatReadSettings {
+	return original.PossibleTypeBasicFormatReadSettingsValues()
+}
+func PossibleTypeBasicFormatWriteSettingsValues() []TypeBasicFormatWriteSettings {
+	return original.PossibleTypeBasicFormatWriteSettingsValues()
+}
 func PossibleTypeBasicIntegrationRuntimeStatusValues() []TypeBasicIntegrationRuntimeStatus {
 	return original.PossibleTypeBasicIntegrationRuntimeStatusValues()
 }
@@ -2453,6 +2516,9 @@ func PossibleTypeBasicLinkedServiceValues() []TypeBasicLinkedService {
 }
 func PossibleTypeBasicSsisObjectMetadataValues() []TypeBasicSsisObjectMetadata {
 	return original.PossibleTypeBasicSsisObjectMetadataValues()
+}
+func PossibleTypeBasicStoreReadSettingsValues() []TypeBasicStoreReadSettings {
+	return original.PossibleTypeBasicStoreReadSettingsValues()
 }
 func PossibleTypeBasicStoreWriteSettingsValues() []TypeBasicStoreWriteSettings {
 	return original.PossibleTypeBasicStoreWriteSettingsValues()

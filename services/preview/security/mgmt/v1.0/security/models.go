@@ -2588,7 +2588,7 @@ func (aa AutomationAction) AsBasicAutomationAction() (BasicAutomationAction, boo
 type AutomationActionEventHub struct {
 	// EventHubResourceID - The Event Hub Azure Resource ID.
 	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
-	// ConnectionString - The Event Hub connection string.
+	// ConnectionString - The Event Hub connection string (it will not be returned in GET).
 	ConnectionString *string `json:"connectionString,omitempty"`
 	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
@@ -2644,7 +2644,7 @@ func (aaeh AutomationActionEventHub) AsBasicAutomationAction() (BasicAutomationA
 type AutomationActionLogicApp struct {
 	// LogicAppResourceID - The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
-	// URI - The Logic App trigger URI endpoint.
+	// URI - The Logic App trigger URI endpoint (it will not be returned in GET).
 	URI *string `json:"uri,omitempty"`
 	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeEventHub', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
@@ -2973,7 +2973,7 @@ type AutomationMetadata struct {
 }
 
 // AutomationProperties a set of properties that defines the behavior of the automation configuration. To
-// learn more about the supported security events data models schemas � please visit
+// learn more about the supported security events data models schemas - please visit
 // https://aka.ms/ASCAutomationSchemas.
 type AutomationProperties struct {
 	// Description - The security automation description.
@@ -3074,11 +3074,11 @@ type AutomationScope struct {
 
 // AutomationSource the source event types which evaluate the security automation set of rules. For example
 // - security alerts and security assessments. To learn more about the supported security events data
-// models schemas � please visit https://aka.ms/ASCAutomationSchemas.
+// models schemas - please visit https://aka.ms/ASCAutomationSchemas.
 type AutomationSource struct {
 	// EventSource - A valid event source type. Possible values include: 'Assessments', 'Alerts'
 	EventSource EventSource `json:"eventSource,omitempty"`
-	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical �or�).
+	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
 	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
 }
 

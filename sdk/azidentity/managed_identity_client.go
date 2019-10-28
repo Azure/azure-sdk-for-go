@@ -174,8 +174,7 @@ func (c *ManagedIdentityClient) createCloudShellAuthRequest(clientID string, sco
 	// resource = ScopeUtilities.ScopesToResource(scopes);
 
 	request := c.pipeline.NewRequest(http.MethodPost, c.sEndpoint)
-	request.Header = http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}}
-	request.Header = http.Header{"Metadata": []string{"true"}}
+	request.Header = http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}, "Metadata": []string{"true"}}
 	data := url.Values{}
 	data.Set("resource", strings.Join(scopes, " "))
 	if clientID != "" {

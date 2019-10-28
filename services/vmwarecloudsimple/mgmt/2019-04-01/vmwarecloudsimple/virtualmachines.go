@@ -26,19 +26,19 @@ import (
 	"net/http"
 )
 
-// VirtualMachineClient is the description of the new service
-type VirtualMachineClient struct {
+// VirtualMachinesClient is the description of the new service
+type VirtualMachinesClient struct {
 	BaseClient
 }
 
-// NewVirtualMachineClient creates an instance of the VirtualMachineClient client.
-func NewVirtualMachineClient(referer string, regionID string, subscriptionID string) VirtualMachineClient {
-	return NewVirtualMachineClientWithBaseURI(DefaultBaseURI, referer, regionID, subscriptionID)
+// NewVirtualMachinesClient creates an instance of the VirtualMachinesClient client.
+func NewVirtualMachinesClient(subscriptionID string, referer string) VirtualMachinesClient {
+	return NewVirtualMachinesClientWithBaseURI(DefaultBaseURI, subscriptionID, referer)
 }
 
-// NewVirtualMachineClientWithBaseURI creates an instance of the VirtualMachineClient client.
-func NewVirtualMachineClientWithBaseURI(baseURI string, referer string, regionID string, subscriptionID string) VirtualMachineClient {
-	return VirtualMachineClient{NewWithBaseURI(baseURI, referer, regionID, subscriptionID)}
+// NewVirtualMachinesClientWithBaseURI creates an instance of the VirtualMachinesClient client.
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string, referer string) VirtualMachinesClient {
+	return VirtualMachinesClient{NewWithBaseURI(baseURI, subscriptionID, referer)}
 }
 
 // CreateOrUpdate create Or Update Virtual Machine
@@ -46,9 +46,9 @@ func NewVirtualMachineClientWithBaseURI(baseURI string, referer string, regionID
 // resourceGroupName - the name of the resource group
 // virtualMachineName - virtual machine name
 // virtualMachineRequest - create or Update Virtual Machine request
-func (client VirtualMachineClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest VirtualMachine) (result VirtualMachineCreateOrUpdateFuture, err error) {
+func (client VirtualMachinesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest VirtualMachine) (result VirtualMachinesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -59,31 +59,30 @@ func (client VirtualMachineClient) CreateOrUpdate(ctx context.Context, resourceG
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: virtualMachineName,
-			Constraints: []validation.Constraint{{Target: "virtualMachineName", Name: validation.Pattern, Rule: `^[-a-zA-Z0-9]+$`, Chain: nil}}},
+			Constraints: []validation.Constraint{{Target: "virtualMachineName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]([-_.a-zA-Z0-9]*[a-zA-Z0-9])?$`, Chain: nil}}},
 		{TargetValue: virtualMachineRequest,
 			Constraints: []validation.Constraint{{Target: "virtualMachineRequest.Location", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "virtualMachineRequest.Name", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "virtualMachineRequest.Name", Name: validation.Pattern, Rule: `^[-a-zA-Z0-9]+$`, Chain: nil}}},
+					Chain: []validation.Constraint{{Target: "virtualMachineRequest.Name", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]([-_.a-zA-Z0-9]*[a-zA-Z0-9])?$`, Chain: nil}}},
 				{Target: "virtualMachineRequest.VirtualMachineProperties", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "virtualMachineRequest.VirtualMachineProperties.AmountOfRAM", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "virtualMachineRequest.VirtualMachineProperties.GuestOS", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "virtualMachineRequest.VirtualMachineProperties.NumberOfCores", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "virtualMachineRequest.VirtualMachineProperties.PrivateCloudID", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "virtualMachineRequest.VirtualMachineProperties.ResourcePool", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "virtualMachineRequest.VirtualMachineProperties.ResourcePool.ID", Name: validation.Null, Rule: true, Chain: nil}}},
 					}}}}}); err != nil {
-		return result, validation.NewError("vmwarecloudsimple.VirtualMachineClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("vmwarecloudsimple.VirtualMachinesClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, virtualMachineName, virtualMachineRequest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -91,7 +90,7 @@ func (client VirtualMachineClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client VirtualMachineClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest VirtualMachine) (*http.Request, error) {
+func (client VirtualMachinesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest VirtualMachine) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
@@ -119,7 +118,7 @@ func (client VirtualMachineClient) CreateOrUpdatePreparer(ctx context.Context, r
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineClient) CreateOrUpdateSender(req *http.Request) (future VirtualMachineCreateOrUpdateFuture, err error) {
+func (client VirtualMachinesClient) CreateOrUpdateSender(req *http.Request) (future VirtualMachinesCreateOrUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -132,7 +131,7 @@ func (client VirtualMachineClient) CreateOrUpdateSender(req *http.Request) (futu
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualMachine, err error) {
+func (client VirtualMachinesClient) CreateOrUpdateResponder(resp *http.Response) (result VirtualMachine, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -147,9 +146,9 @@ func (client VirtualMachineClient) CreateOrUpdateResponder(resp *http.Response) 
 // Parameters:
 // resourceGroupName - the name of the resource group
 // virtualMachineName - virtual machine name
-func (client VirtualMachineClient) Delete(ctx context.Context, resourceGroupName string, virtualMachineName string) (result VirtualMachineDeleteFuture, err error) {
+func (client VirtualMachinesClient) Delete(ctx context.Context, resourceGroupName string, virtualMachineName string) (result VirtualMachinesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -160,13 +159,13 @@ func (client VirtualMachineClient) Delete(ctx context.Context, resourceGroupName
 	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, virtualMachineName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -174,7 +173,7 @@ func (client VirtualMachineClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client VirtualMachineClient) DeletePreparer(ctx context.Context, resourceGroupName string, virtualMachineName string) (*http.Request, error) {
+func (client VirtualMachinesClient) DeletePreparer(ctx context.Context, resourceGroupName string, virtualMachineName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
@@ -197,7 +196,7 @@ func (client VirtualMachineClient) DeletePreparer(ctx context.Context, resourceG
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineClient) DeleteSender(req *http.Request) (future VirtualMachineDeleteFuture, err error) {
+func (client VirtualMachinesClient) DeleteSender(req *http.Request) (future VirtualMachinesDeleteFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -210,7 +209,7 @@ func (client VirtualMachineClient) DeleteSender(req *http.Request) (future Virtu
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachinesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -224,9 +223,9 @@ func (client VirtualMachineClient) DeleteResponder(resp *http.Response) (result 
 // Parameters:
 // resourceGroupName - the name of the resource group
 // virtualMachineName - virtual machine name
-func (client VirtualMachineClient) Get(ctx context.Context, resourceGroupName string, virtualMachineName string) (result VirtualMachine, err error) {
+func (client VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, virtualMachineName string) (result VirtualMachine, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -237,27 +236,27 @@ func (client VirtualMachineClient) Get(ctx context.Context, resourceGroupName st
 	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, virtualMachineName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client VirtualMachineClient) GetPreparer(ctx context.Context, resourceGroupName string, virtualMachineName string) (*http.Request, error) {
+func (client VirtualMachinesClient) GetPreparer(ctx context.Context, resourceGroupName string, virtualMachineName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
@@ -279,14 +278,14 @@ func (client VirtualMachineClient) GetPreparer(ctx context.Context, resourceGrou
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesClient) GetSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineClient) GetResponder(resp *http.Response) (result VirtualMachine, err error) {
+func (client VirtualMachinesClient) GetResponder(resp *http.Response) (result VirtualMachine, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -303,9 +302,9 @@ func (client VirtualMachineClient) GetResponder(resp *http.Response) (result Vir
 // filter - the filter to apply on the list operation
 // top - the maximum number of record sets to return
 // skipToken - to be used by nextLink implementation
-func (client VirtualMachineClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result VirtualMachineListResponsePage, err error) {
+func (client VirtualMachinesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result VirtualMachineListResponsePage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
 			if result.vmlr.Response.Response != nil {
@@ -317,27 +316,27 @@ func (client VirtualMachineClient) ListByResourceGroup(ctx context.Context, reso
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, filter, top, skipToken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "ListByResourceGroup", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "ListByResourceGroup", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.vmlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "ListByResourceGroup", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "ListByResourceGroup", resp, "Failure sending request")
 		return
 	}
 
 	result.vmlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "ListByResourceGroup", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByResourceGroupPreparer prepares the ListByResourceGroup request.
-func (client VirtualMachineClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (*http.Request, error) {
+func (client VirtualMachinesClient) ListByResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -367,14 +366,14 @@ func (client VirtualMachineClient) ListByResourceGroupPreparer(ctx context.Conte
 
 // ListByResourceGroupSender sends the ListByResourceGroup request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesClient) ListByResourceGroupSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByResourceGroupResponder handles the response to the ListByResourceGroup request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineClient) ListByResourceGroupResponder(resp *http.Response) (result VirtualMachineListResponse, err error) {
+func (client VirtualMachinesClient) ListByResourceGroupResponder(resp *http.Response) (result VirtualMachineListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -386,10 +385,10 @@ func (client VirtualMachineClient) ListByResourceGroupResponder(resp *http.Respo
 }
 
 // listByResourceGroupNextResults retrieves the next set of results, if any.
-func (client VirtualMachineClient) listByResourceGroupNextResults(ctx context.Context, lastResults VirtualMachineListResponse) (result VirtualMachineListResponse, err error) {
+func (client VirtualMachinesClient) listByResourceGroupNextResults(ctx context.Context, lastResults VirtualMachineListResponse) (result VirtualMachineListResponse, err error) {
 	req, err := lastResults.virtualMachineListResponsePreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listByResourceGroupNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -397,19 +396,19 @@ func (client VirtualMachineClient) listByResourceGroupNextResults(ctx context.Co
 	resp, err := client.ListByResourceGroupSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listByResourceGroupNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listByResourceGroupNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VirtualMachineClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result VirtualMachineListResponseIterator, err error) {
+func (client VirtualMachinesClient) ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, top *int32, skipToken string) (result VirtualMachineListResponseIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.ListByResourceGroup")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ListByResourceGroup")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -427,9 +426,9 @@ func (client VirtualMachineClient) ListByResourceGroupComplete(ctx context.Conte
 // filter - the filter to apply on the list operation
 // top - the maximum number of record sets to return
 // skipToken - to be used by nextLink implementation
-func (client VirtualMachineClient) ListBySubscription(ctx context.Context, filter string, top *int32, skipToken string) (result VirtualMachineListResponsePage, err error) {
+func (client VirtualMachinesClient) ListBySubscription(ctx context.Context, filter string, top *int32, skipToken string) (result VirtualMachineListResponsePage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.ListBySubscription")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ListBySubscription")
 		defer func() {
 			sc := -1
 			if result.vmlr.Response.Response != nil {
@@ -441,27 +440,27 @@ func (client VirtualMachineClient) ListBySubscription(ctx context.Context, filte
 	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx, filter, top, skipToken)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "ListBySubscription", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "ListBySubscription", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.vmlr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "ListBySubscription", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "ListBySubscription", resp, "Failure sending request")
 		return
 	}
 
 	result.vmlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "ListBySubscription", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "ListBySubscription", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListBySubscriptionPreparer prepares the ListBySubscription request.
-func (client VirtualMachineClient) ListBySubscriptionPreparer(ctx context.Context, filter string, top *int32, skipToken string) (*http.Request, error) {
+func (client VirtualMachinesClient) ListBySubscriptionPreparer(ctx context.Context, filter string, top *int32, skipToken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
@@ -490,14 +489,14 @@ func (client VirtualMachineClient) ListBySubscriptionPreparer(ctx context.Contex
 
 // ListBySubscriptionSender sends the ListBySubscription request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
+func (client VirtualMachinesClient) ListBySubscriptionSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListBySubscriptionResponder handles the response to the ListBySubscription request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineClient) ListBySubscriptionResponder(resp *http.Response) (result VirtualMachineListResponse, err error) {
+func (client VirtualMachinesClient) ListBySubscriptionResponder(resp *http.Response) (result VirtualMachineListResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -509,10 +508,10 @@ func (client VirtualMachineClient) ListBySubscriptionResponder(resp *http.Respon
 }
 
 // listBySubscriptionNextResults retrieves the next set of results, if any.
-func (client VirtualMachineClient) listBySubscriptionNextResults(ctx context.Context, lastResults VirtualMachineListResponse) (result VirtualMachineListResponse, err error) {
+func (client VirtualMachinesClient) listBySubscriptionNextResults(ctx context.Context, lastResults VirtualMachineListResponse) (result VirtualMachineListResponse, err error) {
 	req, err := lastResults.virtualMachineListResponsePreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listBySubscriptionNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -520,19 +519,19 @@ func (client VirtualMachineClient) listBySubscriptionNextResults(ctx context.Con
 	resp, err := client.ListBySubscriptionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listBySubscriptionNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "listBySubscriptionNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListBySubscriptionComplete enumerates all values, automatically crossing page boundaries as required.
-func (client VirtualMachineClient) ListBySubscriptionComplete(ctx context.Context, filter string, top *int32, skipToken string) (result VirtualMachineListResponseIterator, err error) {
+func (client VirtualMachinesClient) ListBySubscriptionComplete(ctx context.Context, filter string, top *int32, skipToken string) (result VirtualMachineListResponseIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.ListBySubscription")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.ListBySubscription")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -549,9 +548,9 @@ func (client VirtualMachineClient) ListBySubscriptionComplete(ctx context.Contex
 // Parameters:
 // resourceGroupName - the name of the resource group
 // virtualMachineName - virtual machine name
-func (client VirtualMachineClient) Start(ctx context.Context, resourceGroupName string, virtualMachineName string) (result VirtualMachineStartFuture, err error) {
+func (client VirtualMachinesClient) Start(ctx context.Context, resourceGroupName string, virtualMachineName string) (result VirtualMachinesStartFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.Start")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Start")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -562,13 +561,13 @@ func (client VirtualMachineClient) Start(ctx context.Context, resourceGroupName 
 	}
 	req, err := client.StartPreparer(ctx, resourceGroupName, virtualMachineName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Start", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Start", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Start", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -576,7 +575,7 @@ func (client VirtualMachineClient) Start(ctx context.Context, resourceGroupName 
 }
 
 // StartPreparer prepares the Start request.
-func (client VirtualMachineClient) StartPreparer(ctx context.Context, resourceGroupName string, virtualMachineName string) (*http.Request, error) {
+func (client VirtualMachinesClient) StartPreparer(ctx context.Context, resourceGroupName string, virtualMachineName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
@@ -599,7 +598,7 @@ func (client VirtualMachineClient) StartPreparer(ctx context.Context, resourceGr
 
 // StartSender sends the Start request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineClient) StartSender(req *http.Request) (future VirtualMachineStartFuture, err error) {
+func (client VirtualMachinesClient) StartSender(req *http.Request) (future VirtualMachinesStartFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -612,7 +611,7 @@ func (client VirtualMachineClient) StartSender(req *http.Request) (future Virtua
 
 // StartResponder handles the response to the Start request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachinesClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -628,9 +627,9 @@ func (client VirtualMachineClient) StartResponder(resp *http.Response) (result a
 // virtualMachineName - virtual machine name
 // mParameter - body stop mode parameter (reboot, shutdown, etc...)
 // mode - query stop mode parameter (reboot, shutdown, etc...)
-func (client VirtualMachineClient) Stop(ctx context.Context, resourceGroupName string, virtualMachineName string, mParameter *VirtualMachineStopMode, mode StopMode) (result VirtualMachineStopFuture, err error) {
+func (client VirtualMachinesClient) Stop(ctx context.Context, resourceGroupName string, virtualMachineName string, mParameter *VirtualMachineStopMode, mode StopMode) (result VirtualMachinesStopFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.Stop")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Stop")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -641,13 +640,13 @@ func (client VirtualMachineClient) Stop(ctx context.Context, resourceGroupName s
 	}
 	req, err := client.StopPreparer(ctx, resourceGroupName, virtualMachineName, mParameter, mode)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Stop", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Stop", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Stop", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Stop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -655,7 +654,7 @@ func (client VirtualMachineClient) Stop(ctx context.Context, resourceGroupName s
 }
 
 // StopPreparer prepares the Stop request.
-func (client VirtualMachineClient) StopPreparer(ctx context.Context, resourceGroupName string, virtualMachineName string, mParameter *VirtualMachineStopMode, mode StopMode) (*http.Request, error) {
+func (client VirtualMachinesClient) StopPreparer(ctx context.Context, resourceGroupName string, virtualMachineName string, mParameter *VirtualMachineStopMode, mode StopMode) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
@@ -686,7 +685,7 @@ func (client VirtualMachineClient) StopPreparer(ctx context.Context, resourceGro
 
 // StopSender sends the Stop request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineClient) StopSender(req *http.Request) (future VirtualMachineStopFuture, err error) {
+func (client VirtualMachinesClient) StopSender(req *http.Request) (future VirtualMachinesStopFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -699,7 +698,7 @@ func (client VirtualMachineClient) StopSender(req *http.Request) (future Virtual
 
 // StopResponder handles the response to the Stop request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client VirtualMachinesClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -714,9 +713,9 @@ func (client VirtualMachineClient) StopResponder(resp *http.Response) (result au
 // resourceGroupName - the name of the resource group
 // virtualMachineName - virtual machine name
 // virtualMachineRequest - patch virtual machine request
-func (client VirtualMachineClient) Update(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest PatchPayload) (result VirtualMachineUpdateFuture, err error) {
+func (client VirtualMachinesClient) Update(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest PatchPayload) (result VirtualMachinesUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.Update")
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Update")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -727,13 +726,13 @@ func (client VirtualMachineClient) Update(ctx context.Context, resourceGroupName
 	}
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, virtualMachineName, virtualMachineRequest)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Update", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Update", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineClient", "Update", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachinesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -741,7 +740,7 @@ func (client VirtualMachineClient) Update(ctx context.Context, resourceGroupName
 }
 
 // UpdatePreparer prepares the Update request.
-func (client VirtualMachineClient) UpdatePreparer(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest PatchPayload) (*http.Request, error) {
+func (client VirtualMachinesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, virtualMachineName string, virtualMachineRequest PatchPayload) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
@@ -765,7 +764,7 @@ func (client VirtualMachineClient) UpdatePreparer(ctx context.Context, resourceG
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client VirtualMachineClient) UpdateSender(req *http.Request) (future VirtualMachineUpdateFuture, err error) {
+func (client VirtualMachinesClient) UpdateSender(req *http.Request) (future VirtualMachinesUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -778,7 +777,7 @@ func (client VirtualMachineClient) UpdateSender(req *http.Request) (future Virtu
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client VirtualMachineClient) UpdateResponder(resp *http.Response) (result VirtualMachine, err error) {
+func (client VirtualMachinesClient) UpdateResponder(resp *http.Response) (result VirtualMachine, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

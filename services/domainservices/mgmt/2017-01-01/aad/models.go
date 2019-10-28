@@ -166,11 +166,11 @@ type DomainService struct {
 	autorest.Response `json:"-"`
 	// DomainServiceProperties - Domain service properties
 	*DomainServiceProperties `json:"properties,omitempty"`
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -185,15 +185,6 @@ func (ds DomainService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ds.DomainServiceProperties != nil {
 		objectMap["properties"] = ds.DomainServiceProperties
-	}
-	if ds.ID != nil {
-		objectMap["id"] = ds.ID
-	}
-	if ds.Name != nil {
-		objectMap["name"] = ds.Name
-	}
-	if ds.Type != nil {
-		objectMap["type"] = ds.Type
 	}
 	if ds.Location != nil {
 		objectMap["location"] = ds.Location
@@ -772,11 +763,11 @@ func NewOperationEntityListResultPage(getNextPage func(context.Context, Operatio
 
 // Resource the Resource model definition.
 type Resource struct {
-	// ID - Resource Id
+	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
-	// Name - Resource name
+	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
-	// Type - Resource type
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -789,15 +780,6 @@ type Resource struct {
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}

@@ -57,8 +57,8 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 // CheckServiceProviderAvailability checks if the peering service provider is present within 1000 miles of customer's
 // location
 // Parameters:
-// checkServiceProviderAvailabilityInput - the CheckServiceProviderAvailabilityInput indicating customer
-// location and service provider.
+// checkServiceProviderAvailabilityInput - the CheckServiceProviderAvailabilityInput
+// indicating customer location and service provider.
 func (client BaseClient) CheckServiceProviderAvailability(ctx context.Context, checkServiceProviderAvailabilityInput CheckServiceProviderAvailabilityInput) (result String, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CheckServiceProviderAvailability")

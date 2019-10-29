@@ -22,7 +22,7 @@ package peering
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-08-01-preview/peering"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-09-01-preview/peering"
 )
 
 const (
@@ -68,9 +68,9 @@ const (
 type LearnedType = original.LearnedType
 
 const (
-	LearnedTypeNone       LearnedType = original.LearnedTypeNone
-	LearnedTypeViaPartner LearnedType = original.LearnedTypeViaPartner
-	LearnedTypeViaSession LearnedType = original.LearnedTypeViaSession
+	LearnedTypeNone               LearnedType = original.LearnedTypeNone
+	LearnedTypeViaServiceProvider LearnedType = original.LearnedTypeViaServiceProvider
+	LearnedTypeViaSession         LearnedType = original.LearnedTypeViaSession
 )
 
 type Name = original.Name
@@ -93,6 +93,7 @@ const (
 	PrefixValidationStatePending  PrefixValidationState = original.PrefixValidationStatePending
 	PrefixValidationStateUnknown  PrefixValidationState = original.PrefixValidationStateUnknown
 	PrefixValidationStateVerified PrefixValidationState = original.PrefixValidationStateVerified
+	PrefixValidationStateWarning  PrefixValidationState = original.PrefixValidationStateWarning
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -220,11 +221,11 @@ type ServiceLocationListResultPage = original.ServiceLocationListResultPage
 type ServiceLocationProperties = original.ServiceLocationProperties
 type ServiceLocationsClient = original.ServiceLocationsClient
 type ServicePrefix = original.ServicePrefix
+type ServicePrefixEvent = original.ServicePrefixEvent
 type ServicePrefixListResult = original.ServicePrefixListResult
 type ServicePrefixListResultIterator = original.ServicePrefixListResultIterator
 type ServicePrefixListResultPage = original.ServicePrefixListResultPage
 type ServicePrefixProperties = original.ServicePrefixProperties
-type ServicePrefixesClient = original.ServicePrefixesClient
 type ServiceProperties = original.ServiceProperties
 type ServiceProvider = original.ServiceProvider
 type ServiceProviderListResult = original.ServiceProviderListResult
@@ -323,12 +324,6 @@ func NewServicePrefixListResultIterator(page ServicePrefixListResultPage) Servic
 }
 func NewServicePrefixListResultPage(getNextPage func(context.Context, ServicePrefixListResult) (ServicePrefixListResult, error)) ServicePrefixListResultPage {
 	return original.NewServicePrefixListResultPage(getNextPage)
-}
-func NewServicePrefixesClient(subscriptionID string) ServicePrefixesClient {
-	return original.NewServicePrefixesClient(subscriptionID)
-}
-func NewServicePrefixesClientWithBaseURI(baseURI string, subscriptionID string) ServicePrefixesClient {
-	return original.NewServicePrefixesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServiceProviderListResultIterator(page ServiceProviderListResultPage) ServiceProviderListResultIterator {
 	return original.NewServiceProviderListResultIterator(page)

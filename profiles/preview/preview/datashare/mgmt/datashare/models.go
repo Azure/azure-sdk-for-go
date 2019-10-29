@@ -47,6 +47,8 @@ const (
 	Blob               DataSetType = original.Blob
 	BlobFolder         DataSetType = original.BlobFolder
 	Container          DataSetType = original.Container
+	KustoCluster       DataSetType = original.KustoCluster
+	KustoDatabase      DataSetType = original.KustoDatabase
 	SQLDBTable         DataSetType = original.SQLDBTable
 	SQLDWTable         DataSetType = original.SQLDWTable
 )
@@ -72,6 +74,8 @@ const (
 	KindBlobFolder         Kind = original.KindBlobFolder
 	KindContainer          Kind = original.KindContainer
 	KindDataSet            Kind = original.KindDataSet
+	KindKustoCluster       Kind = original.KindKustoCluster
+	KindKustoDatabase      Kind = original.KindKustoDatabase
 	KindSQLDBTable         Kind = original.KindSQLDBTable
 	KindSQLDWTable         Kind = original.KindSQLDWTable
 )
@@ -86,6 +90,8 @@ const (
 	KindBasicDataSetMappingKindBlobFolder         KindBasicDataSetMapping = original.KindBasicDataSetMappingKindBlobFolder
 	KindBasicDataSetMappingKindContainer          KindBasicDataSetMapping = original.KindBasicDataSetMappingKindContainer
 	KindBasicDataSetMappingKindDataSetMapping     KindBasicDataSetMapping = original.KindBasicDataSetMappingKindDataSetMapping
+	KindBasicDataSetMappingKindKustoCluster       KindBasicDataSetMapping = original.KindBasicDataSetMappingKindKustoCluster
+	KindBasicDataSetMappingKindKustoDatabase      KindBasicDataSetMapping = original.KindBasicDataSetMappingKindKustoDatabase
 	KindBasicDataSetMappingKindSQLDBTable         KindBasicDataSetMapping = original.KindBasicDataSetMappingKindSQLDBTable
 	KindBasicDataSetMappingKindSQLDWTable         KindBasicDataSetMapping = original.KindBasicDataSetMappingKindSQLDWTable
 )
@@ -139,6 +145,7 @@ type ShareKind = original.ShareKind
 
 const (
 	CopyBased ShareKind = original.CopyBased
+	InPlace   ShareKind = original.InPlace
 )
 
 type ShareSubscriptionStatus = original.ShareSubscriptionStatus
@@ -249,6 +256,7 @@ type DataSetMappingModel = original.DataSetMappingModel
 type DataSetMappingsClient = original.DataSetMappingsClient
 type DataSetModel = original.DataSetModel
 type DataSetsClient = original.DataSetsClient
+type DataSetsDeleteFuture = original.DataSetsDeleteFuture
 type DefaultDto = original.DefaultDto
 type DimensionProperties = original.DimensionProperties
 type Error = original.Error
@@ -260,6 +268,14 @@ type InvitationListIterator = original.InvitationListIterator
 type InvitationListPage = original.InvitationListPage
 type InvitationProperties = original.InvitationProperties
 type InvitationsClient = original.InvitationsClient
+type KustoClusterDataSet = original.KustoClusterDataSet
+type KustoClusterDataSetMapping = original.KustoClusterDataSetMapping
+type KustoClusterDataSetMappingProperties = original.KustoClusterDataSetMappingProperties
+type KustoClusterDataSetProperties = original.KustoClusterDataSetProperties
+type KustoDatabaseDataSet = original.KustoDatabaseDataSet
+type KustoDatabaseDataSetMapping = original.KustoDatabaseDataSetMapping
+type KustoDatabaseDataSetMappingProperties = original.KustoDatabaseDataSetMappingProperties
+type KustoDatabaseDataSetProperties = original.KustoDatabaseDataSetProperties
 type OperationList = original.OperationList
 type OperationListIterator = original.OperationListIterator
 type OperationListPage = original.OperationListPage

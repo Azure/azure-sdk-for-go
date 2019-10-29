@@ -415,7 +415,7 @@ type Catalog struct {
 	// Name - READ-ONLY; The name of SKU
 	Name *string `json:"name,omitempty"`
 	// BillingPlans - The billing plan options available for this SKU.
-	BillingPlans *[]CatalogBillingPlansItem `json:"billingPlans,omitempty"`
+	BillingPlans map[string][]ReservationBillingPlan `json:"billingPlans"`
 	// Terms - READ-ONLY; Available reservation terms for this resource
 	Terms *[]ReservationTerm `json:"terms,omitempty"`
 	// Locations - READ-ONLY
@@ -426,60 +426,13 @@ type Catalog struct {
 	Restrictions *[]SkuRestriction `json:"restrictions,omitempty"`
 }
 
-// CatalogBillingPlansItem ...
-type CatalogBillingPlansItem struct {
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string][]ReservationBillingPlan `json:""`
-	// Name - The term for the billing SKU is available for. Possible values include: 'P1Y', 'P3Y'
-	Name ReservationTerm `json:"name,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for CatalogBillingPlansItem.
-func (cPi CatalogBillingPlansItem) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for Catalog.
+func (c Catalog) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cPi.Name != "" {
-		objectMap["name"] = cPi.Name
-	}
-	for k, v := range cPi.AdditionalProperties {
-		objectMap[k] = v
+	if c.BillingPlans != nil {
+		objectMap["billingPlans"] = c.BillingPlans
 	}
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for CatalogBillingPlansItem struct.
-func (cPi *CatalogBillingPlansItem) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		default:
-			if v != nil {
-				var additionalProperties []ReservationBillingPlan
-				err = json.Unmarshal(*v, &additionalProperties)
-				if err != nil {
-					return err
-				}
-				if cPi.AdditionalProperties == nil {
-					cPi.AdditionalProperties = make(map[string][]ReservationBillingPlan)
-				}
-				cPi.AdditionalProperties[k] = additionalProperties
-			}
-		case "name":
-			if v != nil {
-				var name ReservationTerm
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				cPi.Name = name
-			}
-		}
-	}
-
-	return nil
 }
 
 // Error ...

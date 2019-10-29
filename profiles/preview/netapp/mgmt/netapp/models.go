@@ -19,7 +19,7 @@
 
 package netapp
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-07-01/netapp"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-08-01/netapp"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -78,6 +78,8 @@ type PoolProperties = original.PoolProperties
 type PoolsClient = original.PoolsClient
 type PoolsCreateOrUpdateFuture = original.PoolsCreateOrUpdateFuture
 type PoolsDeleteFuture = original.PoolsDeleteFuture
+type ReplicationObject = original.ReplicationObject
+type ResourceClient = original.ResourceClient
 type ResourceNameAvailability = original.ResourceNameAvailability
 type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
 type ServiceSpecification = original.ServiceSpecification
@@ -94,6 +96,7 @@ type VolumePatch = original.VolumePatch
 type VolumePatchProperties = original.VolumePatchProperties
 type VolumePatchPropertiesExportPolicy = original.VolumePatchPropertiesExportPolicy
 type VolumeProperties = original.VolumeProperties
+type VolumePropertiesDataProtection = original.VolumePropertiesDataProtection
 type VolumePropertiesExportPolicy = original.VolumePropertiesExportPolicy
 type VolumesClient = original.VolumesClient
 type VolumesCreateOrUpdateFuture = original.VolumesCreateOrUpdateFuture
@@ -125,6 +128,12 @@ func NewPoolsClient(subscriptionID string) PoolsClient {
 }
 func NewPoolsClientWithBaseURI(baseURI string, subscriptionID string) PoolsClient {
 	return original.NewPoolsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceClient(subscriptionID string) ResourceClient {
+	return original.NewResourceClient(subscriptionID)
+}
+func NewResourceClientWithBaseURI(baseURI string, subscriptionID string) ResourceClient {
+	return original.NewResourceClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
 	return original.NewSnapshotsClient(subscriptionID)

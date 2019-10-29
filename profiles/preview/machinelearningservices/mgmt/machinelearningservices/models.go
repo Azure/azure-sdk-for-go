@@ -22,7 +22,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-06-01/machinelearningservices"
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-11-01/machinelearningservices"
 )
 
 const (
@@ -36,11 +36,40 @@ const (
 	Steady   AllocationState = original.Steady
 )
 
+type ApplicationSharingPolicy = original.ApplicationSharingPolicy
+
+const (
+	Personal ApplicationSharingPolicy = original.Personal
+	Shared   ApplicationSharingPolicy = original.Shared
+)
+
+type ComputeInstanceState = original.ComputeInstanceState
+
+const (
+	CreateFailed  ComputeInstanceState = original.CreateFailed
+	Creating      ComputeInstanceState = original.Creating
+	Deleting      ComputeInstanceState = original.Deleting
+	JobRunning    ComputeInstanceState = original.JobRunning
+	RestartFailed ComputeInstanceState = original.RestartFailed
+	Restarting    ComputeInstanceState = original.Restarting
+	Running       ComputeInstanceState = original.Running
+	SettingUp     ComputeInstanceState = original.SettingUp
+	StartFailed   ComputeInstanceState = original.StartFailed
+	Starting      ComputeInstanceState = original.Starting
+	StopFailed    ComputeInstanceState = original.StopFailed
+	Stopped       ComputeInstanceState = original.Stopped
+	Stopping      ComputeInstanceState = original.Stopping
+	Unknown       ComputeInstanceState = original.Unknown
+	Unusable      ComputeInstanceState = original.Unusable
+	UserSettingUp ComputeInstanceState = original.UserSettingUp
+)
+
 type ComputeType = original.ComputeType
 
 const (
 	ComputeTypeAKS               ComputeType = original.ComputeTypeAKS
 	ComputeTypeAmlCompute        ComputeType = original.ComputeTypeAmlCompute
+	ComputeTypeComputeInstance   ComputeType = original.ComputeTypeComputeInstance
 	ComputeTypeDatabricks        ComputeType = original.ComputeTypeDatabricks
 	ComputeTypeDataFactory       ComputeType = original.ComputeTypeDataFactory
 	ComputeTypeDataLakeAnalytics ComputeType = original.ComputeTypeDataLakeAnalytics
@@ -54,6 +83,7 @@ const (
 	ComputeTypeAKS1               ComputeTypeBasicCompute = original.ComputeTypeAKS1
 	ComputeTypeAmlCompute1        ComputeTypeBasicCompute = original.ComputeTypeAmlCompute1
 	ComputeTypeCompute            ComputeTypeBasicCompute = original.ComputeTypeCompute
+	ComputeTypeComputeInstance1   ComputeTypeBasicCompute = original.ComputeTypeComputeInstance1
 	ComputeTypeDatabricks1        ComputeTypeBasicCompute = original.ComputeTypeDatabricks1
 	ComputeTypeDataFactory1       ComputeTypeBasicCompute = original.ComputeTypeDataFactory1
 	ComputeTypeDataLakeAnalytics1 ComputeTypeBasicCompute = original.ComputeTypeDataLakeAnalytics1
@@ -80,24 +110,31 @@ const (
 type NodeState = original.NodeState
 
 const (
-	Idle      NodeState = original.Idle
-	Leaving   NodeState = original.Leaving
-	Preempted NodeState = original.Preempted
-	Preparing NodeState = original.Preparing
-	Running   NodeState = original.Running
-	Unusable  NodeState = original.Unusable
+	NodeStateIdle      NodeState = original.NodeStateIdle
+	NodeStateLeaving   NodeState = original.NodeStateLeaving
+	NodeStatePreempted NodeState = original.NodeStatePreempted
+	NodeStatePreparing NodeState = original.NodeStatePreparing
+	NodeStateRunning   NodeState = original.NodeStateRunning
+	NodeStateUnusable  NodeState = original.NodeStateUnusable
+)
+
+type OsType = original.OsType
+
+const (
+	Linux   OsType = original.Linux
+	Windows OsType = original.Windows
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Creating  ProvisioningState = original.Creating
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
-	Unknown   ProvisioningState = original.Unknown
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUnknown   ProvisioningState = original.ProvisioningStateUnknown
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type QuotaUnit = original.QuotaUnit
@@ -118,6 +155,13 @@ type ResourceIdentityType = original.ResourceIdentityType
 
 const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
+)
+
+type SSHPublicAccess = original.SSHPublicAccess
+
+const (
+	SSHPublicAccessDisabled SSHPublicAccess = original.SSHPublicAccessDisabled
+	SSHPublicAccessEnabled  SSHPublicAccess = original.SSHPublicAccessEnabled
 )
 
 type Status = original.Status
@@ -173,6 +217,12 @@ type BasicComputeSecrets = original.BasicComputeSecrets
 type ClusterUpdateParameters = original.ClusterUpdateParameters
 type ClusterUpdateProperties = original.ClusterUpdateProperties
 type Compute = original.Compute
+type ComputeInstance = original.ComputeInstance
+type ComputeInstanceApplication = original.ComputeInstanceApplication
+type ComputeInstanceConnectivityEndpoints = original.ComputeInstanceConnectivityEndpoints
+type ComputeInstanceCreatedBy = original.ComputeInstanceCreatedBy
+type ComputeInstanceProperties = original.ComputeInstanceProperties
+type ComputeInstanceSSHSettings = original.ComputeInstanceSSHSettings
 type ComputeNodesInformation = original.ComputeNodesInformation
 type ComputeResource = original.ComputeResource
 type ComputeSecrets = original.ComputeSecrets
@@ -312,6 +362,12 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
 }
+func PossibleApplicationSharingPolicyValues() []ApplicationSharingPolicy {
+	return original.PossibleApplicationSharingPolicyValues()
+}
+func PossibleComputeInstanceStateValues() []ComputeInstanceState {
+	return original.PossibleComputeInstanceStateValues()
+}
 func PossibleComputeTypeBasicComputeNodesInformationValues() []ComputeTypeBasicComputeNodesInformation {
 	return original.PossibleComputeTypeBasicComputeNodesInformationValues()
 }
@@ -327,6 +383,9 @@ func PossibleComputeTypeValues() []ComputeType {
 func PossibleNodeStateValues() []NodeState {
 	return original.PossibleNodeStateValues()
 }
+func PossibleOsTypeValues() []OsType {
+	return original.PossibleOsTypeValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
@@ -338,6 +397,9 @@ func PossibleRemoteLoginPortPublicAccessValues() []RemoteLoginPortPublicAccess {
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleSSHPublicAccessValues() []SSHPublicAccess {
+	return original.PossibleSSHPublicAccessValues()
 }
 func PossibleStatus1Values() []Status1 {
 	return original.PossibleStatus1Values()

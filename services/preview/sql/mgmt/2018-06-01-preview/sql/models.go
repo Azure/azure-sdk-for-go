@@ -166,6 +166,21 @@ func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
 	return []ManagedServerCreateMode{ManagedServerCreateModeDefault, ManagedServerCreateModePointInTimeRestore}
 }
 
+// ReplicaType enumerates the values for replica type.
+type ReplicaType string
+
+const (
+	// Primary ...
+	Primary ReplicaType = "Primary"
+	// ReadableSecondary ...
+	ReadableSecondary ReplicaType = "ReadableSecondary"
+)
+
+// PossibleReplicaTypeValues returns an array of possible values for the ReplicaType const type.
+func PossibleReplicaTypeValues() []ReplicaType {
+	return []ReplicaType{Primary, ReadableSecondary}
+}
+
 // SecurityAlertPolicyState enumerates the values for security alert policy state.
 type SecurityAlertPolicyState string
 

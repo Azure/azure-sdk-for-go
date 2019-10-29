@@ -118,7 +118,7 @@ var _ ManagedDatabasesClientAPI = (*sql.ManagedDatabasesClient)(nil)
 
 // DatabasesClientAPI contains the set of methods on the DatabasesClient type.
 type DatabasesClientAPI interface {
-	Failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.DatabasesFailoverFuture, err error)
+	Failover(ctx context.Context, resourceGroupName string, serverName string, databaseName string, replicaType sql.ReplicaType) (result sql.DatabasesFailoverFuture, err error)
 }
 
 var _ DatabasesClientAPI = (*sql.DatabasesClient)(nil)

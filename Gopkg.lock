@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:78df7dcd6d2a3e38b9fc52a47129135bdfaf1f89e8dd07001968455459666b11"
+  digest = "1:f6be05c789de8d4fe490d1a7dab6fce033d51924873493be58091119d206170d"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -15,8 +15,8 @@
     "tracing",
   ]
   pruneopts = "UT"
-  revision = "69b4126ece6b5257e2f9b0017007d2334153655f"
-  version = "v13.0.1"
+  revision = "3492b2aff5036c67228ab3c7dba3577c871db200"
+  version = "v13.3.0"
 
 [[projects]]
   digest = "1:d37f34e1e231ee4b8657d1b6153e2696b1d7341850f648f5d78151d3bc1f677b"
@@ -36,14 +36,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:052aa482c25b2d76f432c16c4b404a6a3cb9cc205a95818c7680fcec501a43b7"
+  digest = "1:463a37f152816d49cd4302edaf1f72944c3edade65ffd8b2ea25883755afa156"
   name = "github.com/dnaeon/go-vcr"
   packages = [
     "cassette",
     "recorder",
   ]
   pruneopts = "UT"
-  revision = "ac8906116758e03208f043a52754f16f2982f26d"
+  revision = "9384691f0462689770c3e930cd8aff05c7075a5b"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -111,7 +111,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:18c7b936326b4919be6de0a20be857fdd3112036cdb3febfa9a5b332a4f54e27"
+  digest = "1:634f91b94015dfcb7fe2ab475ee7d6d05bffb0a8ada81839e07a3a3b43067802"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -126,9 +126,10 @@
     "internal/imports",
     "internal/module",
     "internal/semver",
+    "internal/span",
   ]
   pruneopts = "UT"
-  revision = "e461004dd03ddc1b89596568ce4119c0e8152ce6"
+  revision = "80f3f9ca0853fa9dbf1ffdc81029677e3c23108b"
 
 [[projects]]
   branch = "v1"
@@ -139,12 +140,12 @@
   revision = "41f04d3bba152ddec2103e299fed053415705330"
 
 [[projects]]
-  digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
+  digest = "1:59f10c1537d2199d9115d946927fe31165959a95190849c82ff11e05803528b0"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = "UT"
-  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
-  version = "v2.2.2"
+  revision = "f221b8435cfb71e54062f6c6e99e9ade30b124d5"
+  version = "v2.2.4"
 
 [solve-meta]
   analyzer-name = "dep"

@@ -28,9 +28,9 @@ import (
 
 // ServiceConfigurationClient is the personalizer Service is an Azure Cognitive Service that makes it easy to target
 // content and experiences without complex pre-analysis or cleanup of past data. Given a context and featurized
-// content, the Personalizer Service returns your content in a ranked list. As rewards are sent in response to the
-// ranked list, the reinforcement learning algorithm will improve the model and improve performance of future rank
-// calls.
+// content, the Personalizer Service returns which content item to show to users in rewardActionId. As rewards are sent
+// in response to the use of rewardActionId, the reinforcement learning algorithm will improve the model and improve
+// performance of future rank calls.
 type ServiceConfigurationClient struct {
 	BaseClient
 }

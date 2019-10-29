@@ -28,8 +28,9 @@ import (
 
 // PolicyClient is the personalizer Service is an Azure Cognitive Service that makes it easy to target content and
 // experiences without complex pre-analysis or cleanup of past data. Given a context and featurized content, the
-// Personalizer Service returns your content in a ranked list. As rewards are sent in response to the ranked list, the
-// reinforcement learning algorithm will improve the model and improve performance of future rank calls.
+// Personalizer Service returns which content item to show to users in rewardActionId. As rewards are sent in response
+// to the use of rewardActionId, the reinforcement learning algorithm will improve the model and improve performance of
+// future rank calls.
 type PolicyClient struct {
 	BaseClient
 }
@@ -39,7 +40,7 @@ func NewPolicyClient(endpoint string) PolicyClient {
 	return PolicyClient{New(endpoint)}
 }
 
-// Delete resets the current policy configuration of the Personalizer service to default.
+// Delete resets the Learning settings of the Personalizer service to default.
 func (client PolicyClient) Delete(ctx context.Context) (result PolicyContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.Delete")
@@ -105,7 +106,7 @@ func (client PolicyClient) DeleteResponder(resp *http.Response) (result PolicyCo
 	return
 }
 
-// Get get the current policy configuration of the Personalizer service.
+// Get get the Learning settings currently used by the Personalizer service.
 func (client PolicyClient) Get(ctx context.Context) (result PolicyContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.Get")
@@ -171,9 +172,9 @@ func (client PolicyClient) GetResponder(resp *http.Response) (result PolicyContr
 	return
 }
 
-// Update update the current policy configuration of the Personalizer service.
+// Update update the Learning settings that the Personalizer service will use to train models.
 // Parameters:
-// policy - the policy configuration.
+// policy - the Learning settings.
 func (client PolicyClient) Update(ctx context.Context, policy PolicyContract) (result PolicyContract, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.Update")

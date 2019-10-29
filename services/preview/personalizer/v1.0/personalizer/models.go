@@ -277,7 +277,7 @@ type RankResponse struct {
 	Ranking *[]RankedAction `json:"ranking,omitempty"`
 	// EventID - READ-ONLY; The eventId for the round trip from request to response.
 	EventID *string `json:"eventId,omitempty"`
-	// RewardActionID - READ-ONLY; The action chosen by the Personalizer service. This is the action for which to report the reward. This might not be the
+	// RewardActionID - READ-ONLY; The action chosen by the Personalizer service. This is the action your application should display, and for which to report the reward. This might not be the
 	// first found in 'ranking' if an action in the request in first position was part of the excluded ids.
 	RewardActionID *string `json:"rewardActionId,omitempty"`
 }

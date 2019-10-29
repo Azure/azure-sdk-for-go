@@ -26,35 +26,17 @@ const (
 )
 
 type BaseClient = original.BaseClient
-type ConsoleClient = original.ConsoleClient
-type DeploymentValidateResult = original.DeploymentValidateResult
-type GetDisabledResult = original.GetDisabledResult
-type GetResult = original.GetResult
-type ListClient = original.ListClient
-type ListConsoleClient = original.ListConsoleClient
+type DisableSerialConsoleResult = original.DisableSerialConsoleResult
+type EnableSerialConsoleResult = original.EnableSerialConsoleResult
+type GetSerialConsoleSubscriptionNotFound = original.GetSerialConsoleSubscriptionNotFound
 type Operations = original.Operations
-type SetDisabledResult = original.SetDisabledResult
+type OperationsValueItem = original.OperationsValueItem
+type OperationsValueItemDisplay = original.OperationsValueItemDisplay
+type SetObject = original.SetObject
+type Status = original.Status
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewConsoleClient(subscriptionID string) ConsoleClient {
-	return original.NewConsoleClient(subscriptionID)
-}
-func NewConsoleClientWithBaseURI(baseURI string, subscriptionID string) ConsoleClient {
-	return original.NewConsoleClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewListClient(subscriptionID string) ListClient {
-	return original.NewListClient(subscriptionID)
-}
-func NewListClientWithBaseURI(baseURI string, subscriptionID string) ListClient {
-	return original.NewListClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewListConsoleClient(subscriptionID string) ListConsoleClient {
-	return original.NewListConsoleClient(subscriptionID)
-}
-func NewListConsoleClientWithBaseURI(baseURI string, subscriptionID string) ListConsoleClient {
-	return original.NewListConsoleClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -21,6 +21,4 @@ package serialconsoleapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/serialconsole/mgmt/2018-05-01/serialconsole/serialconsoleapi"
 
-type ConsoleClientAPI = original.ConsoleClientAPI
-type ListClientAPI = original.ListClientAPI
-type ListConsoleClientAPI = original.ListConsoleClientAPI
+type BaseClientAPI = original.BaseClientAPI

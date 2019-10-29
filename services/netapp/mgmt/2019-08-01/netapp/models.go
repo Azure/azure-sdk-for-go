@@ -941,7 +941,7 @@ type ReplicationObject struct {
 	EndpointType *string `json:"endpointType,omitempty"`
 	// ReplicationSchedule - Schedule
 	ReplicationSchedule *string `json:"replicationSchedule,omitempty"`
-	// RemoteVolumeResourceID - The resouce ID of the remote volume.
+	// RemoteVolumeResourceID - The resource ID of the remote volume.
 	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
 }
 

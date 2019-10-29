@@ -88,7 +88,7 @@ func (client VersionsClient) ClonePreparer(ctx context.Context, appID uuid.UUID,
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/clone", pathParameters),
 		autorest.WithJSON(versionCloneObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -163,7 +163,7 @@ func (client VersionsClient) DeletePreparer(ctx context.Context, appID uuid.UUID
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -239,7 +239,7 @@ func (client VersionsClient) DeleteUnlabelledUtterancePreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/suggest", pathParameters),
 		autorest.WithJSON(utterance))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -314,7 +314,7 @@ func (client VersionsClient) ExportPreparer(ctx context.Context, appID uuid.UUID
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/export", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -389,7 +389,7 @@ func (client VersionsClient) GetPreparer(ctx context.Context, appID uuid.UUID, v
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -470,7 +470,7 @@ func (client VersionsClient) ImportPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/import", pathParameters),
 		autorest.WithJSON(luisApp),
 		autorest.WithQueryParameters(queryParameters))
@@ -570,7 +570,7 @@ func (client VersionsClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -647,7 +647,7 @@ func (client VersionsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/", pathParameters),
 		autorest.WithJSON(versionUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

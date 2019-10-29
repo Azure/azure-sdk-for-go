@@ -988,7 +988,6 @@ type FeatureInfoObject struct {
 
 // FeaturesResponseObject model Features, including Patterns and Phraselists.
 type FeaturesResponseObject struct {
-	autorest.Response  `json:"-"`
 	PhraselistFeatures *[]PhraseListFeatureInfo `json:"phraselistFeatures,omitempty"`
 	PatternFeatures    *[]PatternFeatureInfo    `json:"patternFeatures,omitempty"`
 }

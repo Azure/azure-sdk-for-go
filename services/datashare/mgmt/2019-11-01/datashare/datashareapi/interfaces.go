@@ -19,7 +19,7 @@ package datashareapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/datashare/mgmt/2018-11-01-preview/datashare"
+	"github.com/Azure/azure-sdk-for-go/services/datashare/mgmt/2019-11-01/datashare"
 	"github.com/Azure/go-autorest/autorest"
 )
 

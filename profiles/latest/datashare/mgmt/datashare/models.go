@@ -22,7 +22,7 @@ package datashare
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/datashare/mgmt/2018-11-01-preview/datashare"
+	original "github.com/Azure/azure-sdk-for-go/services/datashare/mgmt/2019-11-01/datashare"
 )
 
 const (
@@ -584,7 +584,7 @@ func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
 func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()

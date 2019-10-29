@@ -30,6 +30,7 @@ type FeaturesClientAPI interface {
 	AddPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistCreateObject authoring.PhraselistCreateObject) (result authoring.Int32, err error)
 	DeletePhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (result authoring.OperationStatus, err error)
 	GetPhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32) (result authoring.PhraseListFeatureInfo, err error)
+	List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.FeaturesResponseObject, err error)
 	ListPhraseLists(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListPhraseListFeatureInfo, err error)
 	UpdatePhraseList(ctx context.Context, appID uuid.UUID, versionID string, phraselistID int32, phraselistUpdateObject *authoring.PhraselistUpdateObject) (result authoring.OperationStatus, err error)
 }

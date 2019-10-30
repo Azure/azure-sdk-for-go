@@ -86,7 +86,7 @@ func (client PermissionsClient) AddPreparer(ctx context.Context, appID uuid.UUID
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
 		autorest.WithJSON(userToAdd))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -162,7 +162,7 @@ func (client PermissionsClient) DeletePreparer(ctx context.Context, appID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
 		autorest.WithJSON(userToDelete))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -235,7 +235,7 @@ func (client PermissionsClient) ListPreparer(ctx context.Context, appID uuid.UUI
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -310,7 +310,7 @@ func (client PermissionsClient) UpdatePreparer(ctx context.Context, appID uuid.U
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/permissions", pathParameters),
 		autorest.WithJSON(collaborators))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

@@ -88,7 +88,7 @@ func (client ExamplesClient) AddPreparer(ctx context.Context, appID uuid.UUID, v
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/example", pathParameters),
 		autorest.WithJSON(exampleLabelObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -171,7 +171,7 @@ func (client ExamplesClient) BatchPreparer(ctx context.Context, appID uuid.UUID,
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples", pathParameters),
 		autorest.WithJSON(exampleLabelObjectArray))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -248,7 +248,7 @@ func (client ExamplesClient) DeletePreparer(ctx context.Context, appID uuid.UUID
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples/{exampleId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -348,7 +348,7 @@ func (client ExamplesClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/examples", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

@@ -96,7 +96,7 @@ func (client AzureAccountsClient) AssignToAppPreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/azureaccounts", pathParameters))
 	if azureAccountInfoObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,
@@ -172,7 +172,7 @@ func (client AzureAccountsClient) GetAssignedPreparer(ctx context.Context, appID
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/azureaccounts", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -238,7 +238,7 @@ func (client AzureAccountsClient) ListUserLUISAccountsPreparer(ctx context.Conte
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/azureaccounts"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -322,7 +322,7 @@ func (client AzureAccountsClient) RemoveFromAppPreparer(ctx context.Context, app
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/azureaccounts", pathParameters))
 	if azureAccountInfoObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,

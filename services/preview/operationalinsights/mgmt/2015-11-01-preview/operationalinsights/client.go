@@ -53,7 +53,7 @@ func NewWithBaseURI(baseURI string) BaseClient {
 	}
 }
 
-// ListTables gets all the tables for the specificied Log Analytics workspace.
+// ListTables gets all the tables for the specified Log Analytics workspace.
 // Parameters:
 // subscriptionID - gets subscription credentials which uniquely identify Microsoft Azure subscription. The
 // subscription ID forms part of the URI for every service call.

@@ -353,6 +353,23 @@ func PossibleListKeyExpandValues() []ListKeyExpand {
 	return []ListKeyExpand{Kerb}
 }
 
+// MinimumTLSVersion enumerates the values for minimum tls version.
+type MinimumTLSVersion string
+
+const (
+	// TLS10 ...
+	TLS10 MinimumTLSVersion = "TLS1_0"
+	// TLS11 ...
+	TLS11 MinimumTLSVersion = "TLS1_1"
+	// TLS12 ...
+	TLS12 MinimumTLSVersion = "TLS1_2"
+)
+
+// PossibleMinimumTLSVersionValues returns an array of possible values for the MinimumTLSVersion const type.
+func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
+	return []MinimumTLSVersion{TLS10, TLS11, TLS12}
+}
+
 // Permissions enumerates the values for permissions.
 type Permissions string
 
@@ -1082,6 +1099,8 @@ type AccountProperties struct {
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connection associated with the specified storage account
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	// MinimumTLSVersion - Specifies the minimum TLS version required to accept the request. TLS 1.2 will be default value for new created storage account in the next release version. Possible values include: 'TLS10', 'TLS11', 'TLS12'
+	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 }
 
 // AccountPropertiesCreateParameters the parameters used to create the storage account.

@@ -180,6 +180,14 @@ const (
 	Kerb ListKeyExpand = original.Kerb
 )
 
+type MinimumTLSVersion = original.MinimumTLSVersion
+
+const (
+	TLS10 MinimumTLSVersion = original.TLS10
+	TLS11 MinimumTLSVersion = original.TLS11
+	TLS12 MinimumTLSVersion = original.TLS12
+)
+
 type Permissions = original.Permissions
 
 const (
@@ -572,6 +580,9 @@ func PossibleLeaseStatusValues() []LeaseStatus {
 }
 func PossibleListKeyExpandValues() []ListKeyExpand {
 	return original.PossibleListKeyExpandValues()
+}
+func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
+	return original.PossibleMinimumTLSVersionValues()
 }
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()

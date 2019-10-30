@@ -306,6 +306,7 @@ type Int64 = original.Int64
 type IntentClassifier = original.IntentClassifier
 type IntentPrediction = original.IntentPrediction
 type IntentsSuggestionExample = original.IntentsSuggestionExample
+type JSONChild = original.JSONChild
 type JSONEntity = original.JSONEntity
 type JSONModelFeature = original.JSONModelFeature
 type JSONRegexFeature = original.JSONRegexFeature

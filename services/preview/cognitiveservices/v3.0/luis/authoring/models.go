@@ -1033,10 +1033,9 @@ type HierarchicalEntityExtractor struct {
 
 // HierarchicalModel ...
 type HierarchicalModel struct {
-	Name     *string               `json:"name,omitempty"`
-	Children *[]string             `json:"children,omitempty"`
-	Inherits *PrebuiltDomainObject `json:"inherits,omitempty"`
-	Roles    *[]string             `json:"roles,omitempty"`
+	Name     *string                    `json:"name,omitempty"`
+	Children *[]JSONChild               `json:"Children,omitempty"`
+	Features *[]ModelFeatureInformation `json:"features,omitempty"`
 }
 
 // Int32 ...
@@ -1088,6 +1087,14 @@ type IntentsSuggestionExample struct {
 	EntityPredictions *[]EntityPrediction `json:"entityPredictions,omitempty"`
 }
 
+// JSONChild ...
+type JSONChild struct {
+	Name       *string                    `json:"name,omitempty"`
+	InstanceOf *string                    `json:"instanceOf,omitempty"`
+	Children   *[]JSONChild               `json:"Children,omitempty"`
+	Features   *[]ModelFeatureInformation `json:"features,omitempty"`
+}
+
 // JSONEntity exported Model - Extracted Entity from utterance.
 type JSONEntity struct {
 	// StartPos - The index within the utterance where the extracted entity starts.
@@ -1110,6 +1117,8 @@ type JSONModelFeature struct {
 	Words *string `json:"words,omitempty"`
 	// Mode - An interchangeable phrase list feature serves as a list of synonyms for training. A non-exchangeable phrase list serves as separate features for training. So, if your non-interchangeable phrase list contains 5 phrases, they will be mapped to 5 separate features. You can think of the non-interchangeable phrase list as an additional bag of words to add to LUIS existing vocabulary features. It is used as a lexicon lookup feature where its value is 1 if the lexicon contains a given word or 0 if it doesn’t.  Default value is true.
 	Mode *bool `json:"mode,omitempty"`
+	// EnabledForAllModels - Indicates if the Phraselist is enabled for all models in the application.
+	EnabledForAllModels *bool `json:"enabledForAllModels,omitempty"`
 }
 
 // JSONRegexFeature exported Model - A Pattern feature.
@@ -1374,6 +1383,8 @@ type LuisApp struct {
 	ClosedLists *[]ClosedList `json:"closedLists,omitempty"`
 	// Composites - List of composite entities.
 	Composites *[]HierarchicalModel `json:"composites,omitempty"`
+	// Hierarchicals - List of composite entities.
+	Hierarchicals *[]HierarchicalModel `json:"hierarchicals,omitempty"`
 	// PatternAnyEntities - List of Pattern.Any entities.
 	PatternAnyEntities *[]PatternAny `json:"patternAnyEntities,omitempty"`
 	// RegexEntities - List of regular expression entities.
@@ -1382,8 +1393,8 @@ type LuisApp struct {
 	PrebuiltEntities *[]PrebuiltEntity `json:"prebuiltEntities,omitempty"`
 	// RegexFeatures - List of pattern features.
 	RegexFeatures *[]JSONRegexFeature `json:"regex_features,omitempty"`
-	// ModelFeatures - List of model features.
-	ModelFeatures *[]JSONModelFeature `json:"model_features,omitempty"`
+	// Phraselists - List of model features.
+	Phraselists *[]JSONModelFeature `json:"phraselists,omitempty"`
 	// Patterns - List of patterns.
 	Patterns *[]PatternRule `json:"patterns,omitempty"`
 	// Utterances - List of example utterances.
@@ -1417,6 +1428,9 @@ func (la LuisApp) MarshalJSON() ([]byte, error) {
 	if la.Composites != nil {
 		objectMap["composites"] = la.Composites
 	}
+	if la.Hierarchicals != nil {
+		objectMap["hierarchicals"] = la.Hierarchicals
+	}
 	if la.PatternAnyEntities != nil {
 		objectMap["patternAnyEntities"] = la.PatternAnyEntities
 	}
@@ -1429,8 +1443,8 @@ func (la LuisApp) MarshalJSON() ([]byte, error) {
 	if la.RegexFeatures != nil {
 		objectMap["regex_features"] = la.RegexFeatures
 	}
-	if la.ModelFeatures != nil {
-		objectMap["model_features"] = la.ModelFeatures
+	if la.Phraselists != nil {
+		objectMap["phraselists"] = la.Phraselists
 	}
 	if la.Patterns != nil {
 		objectMap["patterns"] = la.Patterns
@@ -1537,6 +1551,15 @@ func (la *LuisApp) UnmarshalJSON(body []byte) error {
 				}
 				la.Composites = &composites
 			}
+		case "hierarchicals":
+			if v != nil {
+				var hierarchicals []HierarchicalModel
+				err = json.Unmarshal(*v, &hierarchicals)
+				if err != nil {
+					return err
+				}
+				la.Hierarchicals = &hierarchicals
+			}
 		case "patternAnyEntities":
 			if v != nil {
 				var patternAnyEntities []PatternAny
@@ -1573,14 +1596,14 @@ func (la *LuisApp) UnmarshalJSON(body []byte) error {
 				}
 				la.RegexFeatures = &regexFeatures
 			}
-		case "model_features":
+		case "phraselists":
 			if v != nil {
-				var modelFeatures []JSONModelFeature
-				err = json.Unmarshal(*v, &modelFeatures)
+				var phraselists []JSONModelFeature
+				err = json.Unmarshal(*v, &phraselists)
 				if err != nil {
 					return err
 				}
-				la.ModelFeatures = &modelFeatures
+				la.Phraselists = &phraselists
 			}
 		case "patterns":
 			if v != nil {

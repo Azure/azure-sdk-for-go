@@ -391,6 +391,12 @@ type ManagementPolicySchema = original.ManagementPolicySchema
 type ManagementPolicySnapShot = original.ManagementPolicySnapShot
 type MetricSpecification = original.MetricSpecification
 type NetworkRuleSet = original.NetworkRuleSet
+type ObjectReplicationPolicies = original.ObjectReplicationPolicies
+type ObjectReplicationPoliciesClient = original.ObjectReplicationPoliciesClient
+type ObjectReplicationPolicy = original.ObjectReplicationPolicy
+type ObjectReplicationPolicyFilter = original.ObjectReplicationPolicyFilter
+type ObjectReplicationPolicyProperties = original.ObjectReplicationPolicyProperties
+type ObjectReplicationPolicyRule = original.ObjectReplicationPolicyRule
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -479,6 +485,12 @@ func NewManagementPoliciesClient(subscriptionID string) ManagementPoliciesClient
 }
 func NewManagementPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ManagementPoliciesClient {
 	return original.NewManagementPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewObjectReplicationPoliciesClient(subscriptionID string) ObjectReplicationPoliciesClient {
+	return original.NewObjectReplicationPoliciesClient(subscriptionID)
+}
+func NewObjectReplicationPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ObjectReplicationPoliciesClient {
+	return original.NewObjectReplicationPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

@@ -27,6 +27,7 @@ type BlobServicesClientAPI = original.BlobServicesClientAPI
 type FileServicesClientAPI = original.FileServicesClientAPI
 type FileSharesClientAPI = original.FileSharesClientAPI
 type ManagementPoliciesClientAPI = original.ManagementPoliciesClientAPI
+type ObjectReplicationPoliciesClientAPI = original.ObjectReplicationPoliciesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI

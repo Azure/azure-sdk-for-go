@@ -2766,6 +2766,121 @@ type NetworkRuleSet struct {
 	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
 }
 
+// ObjectReplicationPolicies list storage account object replication policies.
+type ObjectReplicationPolicies struct {
+	autorest.Response `json:"-"`
+	// Value - The replication policy between two storage accounts.
+	Value *[]ObjectReplicationPolicy `json:"value,omitempty"`
+}
+
+// ObjectReplicationPolicy the replication policy between two storage accounts. Multiple rules can be
+// defined in one policy.
+type ObjectReplicationPolicy struct {
+	autorest.Response `json:"-"`
+	// ObjectReplicationPolicyProperties - Returns the Storage Account Object Replication Policy.
+	*ObjectReplicationPolicyProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ObjectReplicationPolicy.
+func (orp ObjectReplicationPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if orp.ObjectReplicationPolicyProperties != nil {
+		objectMap["properties"] = orp.ObjectReplicationPolicyProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ObjectReplicationPolicy struct.
+func (orp *ObjectReplicationPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var objectReplicationPolicyProperties ObjectReplicationPolicyProperties
+				err = json.Unmarshal(*v, &objectReplicationPolicyProperties)
+				if err != nil {
+					return err
+				}
+				orp.ObjectReplicationPolicyProperties = &objectReplicationPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				orp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				orp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				orp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ObjectReplicationPolicyFilter filters limit replication to a subset of blobs within the storage account.
+// A logical OR is performed on values in the filter. If multiple filters are defined, a logical AND is
+// performed on all filters.
+type ObjectReplicationPolicyFilter struct {
+	// PrefixMatch - Optional. Filters the results to replicate only blobs whose names begin with the specified prefix.
+	PrefixMatch *[]string `json:"prefixMatch,omitempty"`
+	// Tag - Optional. Filters the results to replicate blobs with the tag.
+	Tag *[]string `json:"tag,omitempty"`
+}
+
+// ObjectReplicationPolicyProperties the Storage Account ObjectReplicationPolicy properties.
+type ObjectReplicationPolicyProperties struct {
+	// PolicyID - READ-ONLY; A unique id for object replication policy.
+	PolicyID *string `json:"policyId,omitempty"`
+	// EnabledTime - READ-ONLY; Indicates when the policy is enabled on the source account.
+	EnabledTime *date.Time `json:"enabledTime,omitempty"`
+	// SourceAccount - Required. Source account name.
+	SourceAccount *string `json:"sourceAccount,omitempty"`
+	// DestinationAccount - Required. Destination account name.
+	DestinationAccount *string `json:"destinationAccount,omitempty"`
+	// Rules - The storage account object replication rules.
+	Rules *[]ObjectReplicationPolicyRule `json:"rules,omitempty"`
+}
+
+// ObjectReplicationPolicyRule the replication policy rule between two containers.
+type ObjectReplicationPolicyRule struct {
+	// SourceContainer - Required. Source container name.
+	SourceContainer *string `json:"sourceContainer,omitempty"`
+	// DestinationContainer - Required. Destination container name.
+	DestinationContainer *string `json:"destinationContainer,omitempty"`
+	// Filter - Optional. An object that defines the filter set.
+	Filter *ObjectReplicationPolicyFilter `json:"filter,omitempty"`
+}
+
 // Operation storage REST API operation definition.
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}

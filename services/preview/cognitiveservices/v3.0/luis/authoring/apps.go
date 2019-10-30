@@ -90,7 +90,7 @@ func (client AppsClient) AddPreparer(ctx context.Context, applicationCreateObjec
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/apps/"),
 		autorest.WithJSON(applicationCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -160,7 +160,7 @@ func (client AppsClient) AddCustomPrebuiltDomainPreparer(ctx context.Context, pr
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/apps/customprebuiltdomains"),
 		autorest.WithJSON(prebuiltDomainCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -241,7 +241,7 @@ func (client AppsClient) DeletePreparer(ctx context.Context, appID uuid.UUID, fo
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -314,7 +314,7 @@ func (client AppsClient) DownloadQueryLogsPreparer(ctx context.Context, appID uu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/querylogs", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -385,7 +385,7 @@ func (client AppsClient) GetPreparer(ctx context.Context, appID uuid.UUID) (*htt
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -457,7 +457,7 @@ func (client AppsClient) GetPublishSettingsPreparer(ctx context.Context, appID u
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -529,7 +529,7 @@ func (client AppsClient) GetSettingsPreparer(ctx context.Context, appID uuid.UUI
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -605,7 +605,7 @@ func (client AppsClient) ImportPreparer(ctx context.Context, luisApp LuisApp, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/apps/import"),
 		autorest.WithJSON(luisApp),
 		autorest.WithQueryParameters(queryParameters))
@@ -700,7 +700,7 @@ func (client AppsClient) ListPreparer(ctx context.Context, skip *int32, take *in
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/apps/"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -767,7 +767,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsPreparer(ctx context.
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/apps/customprebuiltdomains"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -839,7 +839,7 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCulturePreparer(ct
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/customprebuiltdomains/{culture}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -905,7 +905,7 @@ func (client AppsClient) ListCortanaEndpointsPreparer(ctx context.Context) (*htt
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/apps/assistants"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -971,7 +971,7 @@ func (client AppsClient) ListDomainsPreparer(ctx context.Context) (*http.Request
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/apps/domains"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1043,7 +1043,7 @@ func (client AppsClient) ListEndpointsPreparer(ctx context.Context, appID uuid.U
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/endpoints", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1110,7 +1110,7 @@ func (client AppsClient) ListSupportedCulturesPreparer(ctx context.Context) (*ht
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/apps/cultures"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1176,7 +1176,7 @@ func (client AppsClient) ListUsageScenariosPreparer(ctx context.Context) (*http.
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPath("/apps/usagescenarios"))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1251,7 +1251,7 @@ func (client AppsClient) PackagePublishedApplicationAsGzipPreparer(ctx context.C
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/package/{appId}/slot/{slotName}/gzip", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1324,7 +1324,7 @@ func (client AppsClient) PackageTrainedApplicationAsGzipPreparer(ctx context.Con
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/package/{appId}/versions/{versionId}/gzip", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -1398,7 +1398,7 @@ func (client AppsClient) PublishPreparer(ctx context.Context, appID uuid.UUID, a
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publish", pathParameters),
 		autorest.WithJSON(applicationPublishObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1473,7 +1473,7 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, ap
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}", pathParameters),
 		autorest.WithJSON(applicationUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1548,7 +1548,7 @@ func (client AppsClient) UpdatePublishSettingsPreparer(ctx context.Context, appI
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/publishsettings", pathParameters),
 		autorest.WithJSON(publishSettingUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -1623,7 +1623,7 @@ func (client AppsClient) UpdateSettingsPreparer(ctx context.Context, appID uuid.
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/settings", pathParameters),
 		autorest.WithJSON(applicationSettingUpdateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

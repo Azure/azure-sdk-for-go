@@ -502,7 +502,7 @@ func (client IPGroupsClient) ListByResourceGroupComplete(ctx context.Context, re
 	return
 }
 
-// UpdateGroups updates an IpGroups
+// UpdateGroups updates tags of an IpGroups resource.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // IPGroupsName - the name of the ipGroups.

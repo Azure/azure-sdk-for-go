@@ -162,6 +162,12 @@ const (
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = original.DiskCreateOptionTypesFromImage
 )
 
+type DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityType
+
+const (
+	SystemAssigned DiskEncryptionSetIdentityType = original.SystemAssigned
+)
+
 type DiskState = original.DiskState
 
 const (
@@ -180,6 +186,13 @@ const (
 	StandardLRS    DiskStorageAccountTypes = original.StandardLRS
 	StandardSSDLRS DiskStorageAccountTypes = original.StandardSSDLRS
 	UltraSSDLRS    DiskStorageAccountTypes = original.UltraSSDLRS
+)
+
+type EncryptionType = original.EncryptionType
+
+const (
+	EncryptionAtRestWithCustomerKey EncryptionType = original.EncryptionAtRestWithCustomerKey
+	EncryptionAtRestWithPlatformKey EncryptionType = original.EncryptionAtRestWithPlatformKey
 )
 
 type HostCaching = original.HostCaching
@@ -654,6 +667,7 @@ type AdditionalCapabilities = original.AdditionalCapabilities
 type AdditionalUnattendContent = original.AdditionalUnattendContent
 type AutomaticOSUpgradePolicy = original.AutomaticOSUpgradePolicy
 type AutomaticOSUpgradeProperties = original.AutomaticOSUpgradeProperties
+type AutomaticRepairsPolicy = original.AutomaticRepairsPolicy
 type AvailabilitySet = original.AvailabilitySet
 type AvailabilitySetListResult = original.AvailabilitySetListResult
 type AvailabilitySetListResultIterator = original.AvailabilitySetListResultIterator
@@ -712,6 +726,17 @@ type DiagnosticsProfile = original.DiagnosticsProfile
 type DiffDiskSettings = original.DiffDiskSettings
 type Disallowed = original.Disallowed
 type Disk = original.Disk
+type DiskEncryptionSet = original.DiskEncryptionSet
+type DiskEncryptionSetList = original.DiskEncryptionSetList
+type DiskEncryptionSetListIterator = original.DiskEncryptionSetListIterator
+type DiskEncryptionSetListPage = original.DiskEncryptionSetListPage
+type DiskEncryptionSetParameters = original.DiskEncryptionSetParameters
+type DiskEncryptionSetUpdate = original.DiskEncryptionSetUpdate
+type DiskEncryptionSetUpdateProperties = original.DiskEncryptionSetUpdateProperties
+type DiskEncryptionSetsClient = original.DiskEncryptionSetsClient
+type DiskEncryptionSetsCreateOrUpdateFuture = original.DiskEncryptionSetsCreateOrUpdateFuture
+type DiskEncryptionSetsDeleteFuture = original.DiskEncryptionSetsDeleteFuture
+type DiskEncryptionSetsUpdateFuture = original.DiskEncryptionSetsUpdateFuture
 type DiskEncryptionSettings = original.DiskEncryptionSettings
 type DiskInstanceView = original.DiskInstanceView
 type DiskList = original.DiskList
@@ -727,6 +752,9 @@ type DisksDeleteFuture = original.DisksDeleteFuture
 type DisksGrantAccessFuture = original.DisksGrantAccessFuture
 type DisksRevokeAccessFuture = original.DisksRevokeAccessFuture
 type DisksUpdateFuture = original.DisksUpdateFuture
+type Encryption = original.Encryption
+type EncryptionSetIdentity = original.EncryptionSetIdentity
+type EncryptionSetProperties = original.EncryptionSetProperties
 type EncryptionSettingsCollection = original.EncryptionSettingsCollection
 type EncryptionSettingsElement = original.EncryptionSettingsElement
 type GalleriesClient = original.GalleriesClient
@@ -784,6 +812,7 @@ type GrantAccessData = original.GrantAccessData
 type HardwareProfile = original.HardwareProfile
 type Image = original.Image
 type ImageDataDisk = original.ImageDataDisk
+type ImageDisk = original.ImageDisk
 type ImageDiskReference = original.ImageDiskReference
 type ImageListResult = original.ImageListResult
 type ImageListResultIterator = original.ImageListResultIterator
@@ -1006,7 +1035,11 @@ type VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties = origin
 type VirtualMachineScaleSetUpdateStorageProfile = original.VirtualMachineScaleSetUpdateStorageProfile
 type VirtualMachineScaleSetUpdateVMProfile = original.VirtualMachineScaleSetUpdateVMProfile
 type VirtualMachineScaleSetVM = original.VirtualMachineScaleSetVM
+type VirtualMachineScaleSetVMExtensionsClient = original.VirtualMachineScaleSetVMExtensionsClient
+type VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture = original.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture
+type VirtualMachineScaleSetVMExtensionsDeleteFuture = original.VirtualMachineScaleSetVMExtensionsDeleteFuture
 type VirtualMachineScaleSetVMExtensionsSummary = original.VirtualMachineScaleSetVMExtensionsSummary
+type VirtualMachineScaleSetVMExtensionsUpdateFuture = original.VirtualMachineScaleSetVMExtensionsUpdateFuture
 type VirtualMachineScaleSetVMInstanceIDs = original.VirtualMachineScaleSetVMInstanceIDs
 type VirtualMachineScaleSetVMInstanceRequiredIDs = original.VirtualMachineScaleSetVMInstanceRequiredIDs
 type VirtualMachineScaleSetVMInstanceView = original.VirtualMachineScaleSetVMInstanceView
@@ -1057,6 +1090,7 @@ type VirtualMachinesDeallocateFuture = original.VirtualMachinesDeallocateFuture
 type VirtualMachinesDeleteFuture = original.VirtualMachinesDeleteFuture
 type VirtualMachinesPerformMaintenanceFuture = original.VirtualMachinesPerformMaintenanceFuture
 type VirtualMachinesPowerOffFuture = original.VirtualMachinesPowerOffFuture
+type VirtualMachinesReapplyFuture = original.VirtualMachinesReapplyFuture
 type VirtualMachinesRedeployFuture = original.VirtualMachinesRedeployFuture
 type VirtualMachinesReimageFuture = original.VirtualMachinesReimageFuture
 type VirtualMachinesRestartFuture = original.VirtualMachinesRestartFuture
@@ -1117,6 +1151,18 @@ func NewDedicatedHostsClient(subscriptionID string) DedicatedHostsClient {
 }
 func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostsClient {
 	return original.NewDedicatedHostsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDiskEncryptionSetListIterator(page DiskEncryptionSetListPage) DiskEncryptionSetListIterator {
+	return original.NewDiskEncryptionSetListIterator(page)
+}
+func NewDiskEncryptionSetListPage(getNextPage func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error)) DiskEncryptionSetListPage {
+	return original.NewDiskEncryptionSetListPage(getNextPage)
+}
+func NewDiskEncryptionSetsClient(subscriptionID string) DiskEncryptionSetsClient {
+	return original.NewDiskEncryptionSetsClient(subscriptionID)
+}
+func NewDiskEncryptionSetsClientWithBaseURI(baseURI string, subscriptionID string) DiskEncryptionSetsClient {
+	return original.NewDiskEncryptionSetsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiskListIterator(page DiskListPage) DiskListIterator {
 	return original.NewDiskListIterator(page)
@@ -1340,6 +1386,12 @@ func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string) Virtu
 func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
 	return original.NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVirtualMachineScaleSetVMExtensionsClient(subscriptionID string) VirtualMachineScaleSetVMExtensionsClient {
+	return original.NewVirtualMachineScaleSetVMExtensionsClient(subscriptionID)
+}
+func NewVirtualMachineScaleSetVMExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMExtensionsClient {
+	return original.NewVirtualMachineScaleSetVMExtensionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVMListResultPage) VirtualMachineScaleSetVMListResultIterator {
 	return original.NewVirtualMachineScaleSetVMListResultIterator(page)
 }
@@ -1406,11 +1458,17 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return original.PossibleDiskCreateOptionValues()
 }
+func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityType {
+	return original.PossibleDiskEncryptionSetIdentityTypeValues()
+}
 func PossibleDiskStateValues() []DiskState {
 	return original.PossibleDiskStateValues()
 }
 func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 	return original.PossibleDiskStorageAccountTypesValues()
+}
+func PossibleEncryptionTypeValues() []EncryptionType {
+	return original.PossibleEncryptionTypeValues()
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()

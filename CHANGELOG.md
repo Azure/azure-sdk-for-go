@@ -1,5 +1,69 @@
 # CHANGELOG
 
+## `v35.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appconfiguration | 2019-10-01 |
+| authoring | luis |
+| containerservice | 2019-09-30-preview<br/>2019-10-01 |
+| costmanagement | 2019-10-01<br/>2019-10-01 |
+| datashare | 2019-11-01 |
+| hybridcompute | 2019-03-18-preview |
+| peering | 2019-09-01-preview |
+| policyinsights | 2019-10-01 |
+| storagecache | 2019-11-01 |
+| training | customvision |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| advisor | 2017-03-31<br/>2017-04-19 |
+| apimanagement | 2019-01-01 |
+| compute | 2018-10-01 |
+| containerservice | 2019-08-01 |
+| datafactory | 2017-09-01-preview |
+| eventgrid | 2018-01-01 |
+| eventhub | 2018-01-01-preview |
+| maps | 2017-01-01-preview |
+| mysql | 2017-12-01-preview |
+| postgresql | 2017-12-01-preview |
+| qnamakerruntime | v4.0 |
+| sqlvirtualmachine | 2017-03-01-preview |
+| web | 2018-02-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| aad | 2017-01-01<br/>2017-06-01 |
+| appplatform | 2019-05-01-preview |
+| backup | 2016-12-01<br/>2017-07-01 |
+| cdn | 2019-04-15 |
+| cognitiveservices | 2017-04-18 |
+| compute | 2019-03-01<br/>2019-07-01 |
+| containerregistry | 2017-10-01<br/>2018-02-01<br/>2018-09-01 |
+| datafactory | 2018-06-01 |
+| datashare | 2018-11-01-preview |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview |
+| operationalinsights | 2015-03-20 |
+| reservations | 2019-04-01 |
+| security | v3.0 |
+| servicebus | 2017-04-01 |
+| sql | 2014-04-01 |
+| storage | 2019-04-01 |
+| vmwarecloudsimple | 2019-04-01 |
+| web | 2019-08-01 |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| sql | 2018-06-15-preview |
+
 ## `v34.4.0`
 
 ### New Packages

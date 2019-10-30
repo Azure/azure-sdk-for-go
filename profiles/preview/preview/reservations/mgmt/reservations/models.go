@@ -162,7 +162,6 @@ type CalculatePriceResponseProperties = original.CalculatePriceResponsePropertie
 type CalculatePriceResponsePropertiesBillingCurrencyTotal = original.CalculatePriceResponsePropertiesBillingCurrencyTotal
 type CalculatePriceResponsePropertiesPricingCurrencyTotal = original.CalculatePriceResponsePropertiesPricingCurrencyTotal
 type Catalog = original.Catalog
-type CatalogBillingPlansItem = original.CatalogBillingPlansItem
 type Client = original.Client
 type Error = original.Error
 type ExtendedErrorInfo = original.ExtendedErrorInfo

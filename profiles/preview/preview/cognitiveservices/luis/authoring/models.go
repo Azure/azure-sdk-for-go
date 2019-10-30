@@ -309,6 +309,7 @@ type IntentsSuggestionExample = original.IntentsSuggestionExample
 type JSONChild = original.JSONChild
 type JSONEntity = original.JSONEntity
 type JSONModelFeature = original.JSONModelFeature
+type JSONModelFeatureInformation = original.JSONModelFeatureInformation
 type JSONRegexFeature = original.JSONRegexFeature
 type JSONUtterance = original.JSONUtterance
 type LabelExampleResponse = original.LabelExampleResponse

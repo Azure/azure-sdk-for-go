@@ -1033,9 +1033,11 @@ type HierarchicalEntityExtractor struct {
 
 // HierarchicalModel ...
 type HierarchicalModel struct {
-	Name     *string                    `json:"name,omitempty"`
-	Children *[]JSONChild               `json:"Children,omitempty"`
-	Features *[]ModelFeatureInformation `json:"features,omitempty"`
+	Name     *string                        `json:"name,omitempty"`
+	Children *[]JSONChild                   `json:"children,omitempty"`
+	Features *[]JSONModelFeatureInformation `json:"features,omitempty"`
+	Roles    *[]string                      `json:"roles,omitempty"`
+	Inherits *PrebuiltDomainObject          `json:"inherits,omitempty"`
 }
 
 // Int32 ...
@@ -1089,10 +1091,10 @@ type IntentsSuggestionExample struct {
 
 // JSONChild ...
 type JSONChild struct {
-	Name       *string                    `json:"name,omitempty"`
-	InstanceOf *string                    `json:"instanceOf,omitempty"`
-	Children   *[]JSONChild               `json:"Children,omitempty"`
-	Features   *[]ModelFeatureInformation `json:"features,omitempty"`
+	Name       *string                        `json:"name,omitempty"`
+	InstanceOf *string                        `json:"instanceOf,omitempty"`
+	Children   *[]JSONChild                   `json:"children,omitempty"`
+	Features   *[]JSONModelFeatureInformation `json:"features,omitempty"`
 }
 
 // JSONEntity exported Model - Extracted Entity from utterance.
@@ -1119,6 +1121,15 @@ type JSONModelFeature struct {
 	Mode *bool `json:"mode,omitempty"`
 	// EnabledForAllModels - Indicates if the Phraselist is enabled for all models in the application.
 	EnabledForAllModels *bool `json:"enabledForAllModels,omitempty"`
+}
+
+// JSONModelFeatureInformation an object containing the model feature information either the model name or
+// feature name.
+type JSONModelFeatureInformation struct {
+	// ModelName - The name of the model used.
+	ModelName *string `json:"modelName,omitempty"`
+	// FeatureName - The name of the feature used.
+	FeatureName *string `json:"featureName,omitempty"`
 }
 
 // JSONRegexFeature exported Model - A Pattern feature.
@@ -1383,7 +1394,7 @@ type LuisApp struct {
 	ClosedLists *[]ClosedList `json:"closedLists,omitempty"`
 	// Composites - List of composite entities.
 	Composites *[]HierarchicalModel `json:"composites,omitempty"`
-	// Hierarchicals - List of composite entities.
+	// Hierarchicals - List of hierarchical entities.
 	Hierarchicals *[]HierarchicalModel `json:"hierarchicals,omitempty"`
 	// PatternAnyEntities - List of Pattern.Any entities.
 	PatternAnyEntities *[]PatternAny `json:"patternAnyEntities,omitempty"`

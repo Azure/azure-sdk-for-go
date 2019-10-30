@@ -719,10 +719,12 @@ type Sku struct {
 // Table workspace data table definition.
 type Table struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; Table ID
+	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 	// TableProperties - Table properties.
 	*TableProperties `json:"properties,omitempty"`
 }
@@ -763,6 +765,15 @@ func (t *Table) UnmarshalJSON(body []byte) error {
 				}
 				t.Name = &name
 			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				t.Type = &typeVar
+			}
 		case "properties":
 			if v != nil {
 				var tableProperties TableProperties
@@ -780,7 +791,7 @@ func (t *Table) UnmarshalJSON(body []byte) error {
 
 // TableProperties table properties.
 type TableProperties struct {
-	// RetentionInDays - The table data retention in days, between 30 and 730. Setting this property to null will default to the workspace retention.
+	// RetentionInDays - The data table data retention in days, between 30 and 730. Setting this property to null will default to the workspace retention.
 	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
 }
 

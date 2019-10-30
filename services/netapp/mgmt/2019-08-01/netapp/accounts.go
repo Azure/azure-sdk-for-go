@@ -303,7 +303,7 @@ func (client AccountsClient) GetResponder(resp *http.Response) (result Account, 
 	return
 }
 
-// List list and describe all NetApp accounts in the resource group
+// List list and describe all NetApp accounts in the resource group.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client AccountsClient) List(ctx context.Context, resourceGroupName string) (result AccountList, err error) {

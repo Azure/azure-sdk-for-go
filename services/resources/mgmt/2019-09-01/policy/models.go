@@ -44,6 +44,31 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 	return []EnforcementMode{Default, DoNotEnforce}
 }
 
+// ParameterType enumerates the values for parameter type.
+type ParameterType string
+
+const (
+	// Array ...
+	Array ParameterType = "Array"
+	// Boolean ...
+	Boolean ParameterType = "Boolean"
+	// DateTime ...
+	DateTime ParameterType = "DateTime"
+	// Float ...
+	Float ParameterType = "Float"
+	// Integer ...
+	Integer ParameterType = "Integer"
+	// Object ...
+	Object ParameterType = "Object"
+	// String ...
+	String ParameterType = "String"
+)
+
+// PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
+func PossibleParameterTypeValues() []ParameterType {
+	return []ParameterType{Array, Boolean, DateTime, Float, Integer, Object, String}
+}
+
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
@@ -349,14 +374,44 @@ type AssignmentProperties struct {
 	Scope *string `json:"scope,omitempty"`
 	// NotScopes - The policy's excluded scopes.
 	NotScopes *[]string `json:"notScopes,omitempty"`
-	// Parameters - Required if a parameter is used in policy rule.
-	Parameters interface{} `json:"parameters,omitempty"`
+	// Parameters - The parameter values for the assigned policy rule. The keys are the parameter names.
+	Parameters map[string]*ParameterValuesValue `json:"parameters"`
 	// Description - This message will be part of response in case of policy violation.
 	Description *string `json:"description,omitempty"`
-	// Metadata - The policy assignment metadata.
+	// Metadata - The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
 	Metadata interface{} `json:"metadata,omitempty"`
 	// EnforcementMode - The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. Possible values include: 'Default', 'DoNotEnforce'
 	EnforcementMode EnforcementMode `json:"enforcementMode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssignmentProperties.
+func (ap AssignmentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.DisplayName != nil {
+		objectMap["displayName"] = ap.DisplayName
+	}
+	if ap.PolicyDefinitionID != nil {
+		objectMap["policyDefinitionId"] = ap.PolicyDefinitionID
+	}
+	if ap.Scope != nil {
+		objectMap["scope"] = ap.Scope
+	}
+	if ap.NotScopes != nil {
+		objectMap["notScopes"] = ap.NotScopes
+	}
+	if ap.Parameters != nil {
+		objectMap["parameters"] = ap.Parameters
+	}
+	if ap.Description != nil {
+		objectMap["description"] = ap.Description
+	}
+	if ap.Metadata != nil {
+		objectMap["metadata"] = ap.Metadata
+	}
+	if ap.EnforcementMode != "" {
+		objectMap["enforcementMode"] = ap.EnforcementMode
+	}
+	return json.Marshal(objectMap)
 }
 
 // CloudError an error response from a policy operation.
@@ -609,22 +664,67 @@ type DefinitionProperties struct {
 	Description *string `json:"description,omitempty"`
 	// PolicyRule - The policy rule.
 	PolicyRule interface{} `json:"policyRule,omitempty"`
-	// Metadata - The policy definition metadata.
+	// Metadata - The policy definition metadata.  Metadata is an open ended object and is typically a collection of key value pairs.
 	Metadata interface{} `json:"metadata,omitempty"`
-	// Parameters - Required if a parameter is used in policy rule.
-	Parameters interface{} `json:"parameters,omitempty"`
+	// Parameters - The parameter definitions for parameters used in the policy rule. The keys are the parameter names.
+	Parameters map[string]*ParameterDefinitionsValue `json:"parameters"`
+}
+
+// MarshalJSON is the custom marshaler for DefinitionProperties.
+func (dp DefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.PolicyType != "" {
+		objectMap["policyType"] = dp.PolicyType
+	}
+	if dp.Mode != nil {
+		objectMap["mode"] = dp.Mode
+	}
+	if dp.DisplayName != nil {
+		objectMap["displayName"] = dp.DisplayName
+	}
+	if dp.Description != nil {
+		objectMap["description"] = dp.Description
+	}
+	if dp.PolicyRule != nil {
+		objectMap["policyRule"] = dp.PolicyRule
+	}
+	if dp.Metadata != nil {
+		objectMap["metadata"] = dp.Metadata
+	}
+	if dp.Parameters != nil {
+		objectMap["parameters"] = dp.Parameters
+	}
+	return json.Marshal(objectMap)
 }
 
 // DefinitionReference the policy definition reference.
 type DefinitionReference struct {
 	// PolicyDefinitionID - The ID of the policy definition or policy set definition.
 	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
-	// Parameters - Required if a parameter is used in policy rule.
-	Parameters interface{} `json:"parameters,omitempty"`
+	// Parameters - The parameter values for the referenced policy rule. The keys are the parameter names.
+	Parameters map[string]*ParameterValuesValue `json:"parameters"`
 	// PolicyDefinitionReferenceID - A unique id (within the policy set definition) for this policy definition reference.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
 	// GroupNames - The name of the groups that this policy definition reference belongs to.
 	GroupNames *[]string `json:"groupNames,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefinitionReference.
+func (dr DefinitionReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dr.PolicyDefinitionID != nil {
+		objectMap["policyDefinitionId"] = dr.PolicyDefinitionID
+	}
+	if dr.Parameters != nil {
+		objectMap["parameters"] = dr.Parameters
+	}
+	if dr.PolicyDefinitionReferenceID != nil {
+		objectMap["policyDefinitionReferenceId"] = dr.PolicyDefinitionReferenceID
+	}
+	if dr.GroupNames != nil {
+		objectMap["groupNames"] = dr.GroupNames
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorAdditionalInfo the resource management error additional info.
@@ -657,6 +757,94 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned', 'None'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// ParameterDefinitionsValue ...
+type ParameterDefinitionsValue struct {
+	// Type - The data type of the parameter. Possible values include: 'String', 'Array', 'Object', 'Boolean', 'Integer', 'Float', 'DateTime'
+	Type ParameterType `json:"type,omitempty"`
+	// AllowedValues - The allowed values for the parameter.
+	AllowedValues *[]interface{} `json:"allowedValues,omitempty"`
+	// DefaultValue - The default value for the parameter if no value is provided.
+	DefaultValue interface{} `json:"defaultValue,omitempty"`
+	// Metadata - General metadata for the parameter.
+	Metadata *ParameterDefinitionsValueMetadata `json:"metadata,omitempty"`
+}
+
+// ParameterDefinitionsValueMetadata general metadata for the parameter.
+type ParameterDefinitionsValueMetadata struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// DisplayName - The display name for the parameter.
+	DisplayName *string `json:"displayName,omitempty"`
+	// Description - The description of the parameter.
+	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ParameterDefinitionsValueMetadata.
+func (pdv ParameterDefinitionsValueMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pdv.DisplayName != nil {
+		objectMap["displayName"] = pdv.DisplayName
+	}
+	if pdv.Description != nil {
+		objectMap["description"] = pdv.Description
+	}
+	for k, v := range pdv.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ParameterDefinitionsValueMetadata struct.
+func (pdv *ParameterDefinitionsValueMetadata) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if pdv.AdditionalProperties == nil {
+					pdv.AdditionalProperties = make(map[string]interface{})
+				}
+				pdv.AdditionalProperties[k] = additionalProperties
+			}
+		case "displayName":
+			if v != nil {
+				var displayName string
+				err = json.Unmarshal(*v, &displayName)
+				if err != nil {
+					return err
+				}
+				pdv.DisplayName = &displayName
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				pdv.Description = &description
+			}
+		}
+	}
+
+	return nil
+}
+
+// ParameterValuesValue ...
+type ParameterValuesValue struct {
+	// Value - The value of the parameter.
+	Value interface{} `json:"value,omitempty"`
 }
 
 // SetDefinition the policy set definition.
@@ -886,14 +1074,41 @@ type SetDefinitionProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Description - The policy set definition description.
 	Description *string `json:"description,omitempty"`
-	// Metadata - The policy set definition metadata.
+	// Metadata - The policy set definition metadata.  Metadata is an open ended object and is typically a collection of key value pairs.
 	Metadata interface{} `json:"metadata,omitempty"`
 	// Parameters - The policy set definition parameters that can be used in policy definition references.
-	Parameters interface{} `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterDefinitionsValue `json:"parameters"`
 	// PolicyDefinitions - An array of policy definition references.
 	PolicyDefinitions *[]DefinitionReference `json:"policyDefinitions,omitempty"`
 	// PolicyDefinitionGroups - The metadata describing groups of policy definition references within the policy set definition.
 	PolicyDefinitionGroups *[]DefinitionGroup `json:"policyDefinitionGroups,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SetDefinitionProperties.
+func (sdp SetDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sdp.PolicyType != "" {
+		objectMap["policyType"] = sdp.PolicyType
+	}
+	if sdp.DisplayName != nil {
+		objectMap["displayName"] = sdp.DisplayName
+	}
+	if sdp.Description != nil {
+		objectMap["description"] = sdp.Description
+	}
+	if sdp.Metadata != nil {
+		objectMap["metadata"] = sdp.Metadata
+	}
+	if sdp.Parameters != nil {
+		objectMap["parameters"] = sdp.Parameters
+	}
+	if sdp.PolicyDefinitions != nil {
+		objectMap["policyDefinitions"] = sdp.PolicyDefinitions
+	}
+	if sdp.PolicyDefinitionGroups != nil {
+		objectMap["policyDefinitionGroups"] = sdp.PolicyDefinitionGroups
+	}
+	return json.Marshal(objectMap)
 }
 
 // Sku the policy sku. This property is optional, obsolete, and will be ignored.

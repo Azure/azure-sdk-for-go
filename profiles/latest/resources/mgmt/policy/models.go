@@ -36,6 +36,18 @@ const (
 	DoNotEnforce EnforcementMode = original.DoNotEnforce
 )
 
+type ParameterType = original.ParameterType
+
+const (
+	Array    ParameterType = original.Array
+	Boolean  ParameterType = original.Boolean
+	DateTime ParameterType = original.DateTime
+	Float    ParameterType = original.Float
+	Integer  ParameterType = original.Integer
+	Object   ParameterType = original.Object
+	String   ParameterType = original.String
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
@@ -71,6 +83,9 @@ type DefinitionsClient = original.DefinitionsClient
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
 type Identity = original.Identity
+type ParameterDefinitionsValue = original.ParameterDefinitionsValue
+type ParameterDefinitionsValueMetadata = original.ParameterDefinitionsValueMetadata
+type ParameterValuesValue = original.ParameterValuesValue
 type SetDefinition = original.SetDefinition
 type SetDefinitionListResult = original.SetDefinitionListResult
 type SetDefinitionListResultIterator = original.SetDefinitionListResultIterator
@@ -123,6 +138,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()
+}
+func PossibleParameterTypeValues() []ParameterType {
+	return original.PossibleParameterTypeValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

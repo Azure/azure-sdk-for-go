@@ -80,7 +80,7 @@ type JitRequestsClientAPI interface {
 	GetByName(ctx context.Context, resourceGroupName string, jitRequestName string) (result managedapplications.JitRequestDefinition, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result managedapplications.JitRequestDefinitionListResult, err error)
 	ListBySubscription(ctx context.Context) (result managedapplications.JitRequestDefinitionListResult, err error)
-	Patch(ctx context.Context, resourceGroupName string, jitRequestName string, parameters managedapplications.JitRequestDefinition) (result managedapplications.JitRequestsPatchFuture, err error)
+	Patch(ctx context.Context, resourceGroupName string, jitRequestName string, parameters managedapplications.JitRequestPatchable) (result managedapplications.JitRequestDefinition, err error)
 }
 
 var _ JitRequestsClientAPI = (*managedapplications.JitRequestsClient)(nil)

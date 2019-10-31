@@ -1449,6 +1449,21 @@ type JitRequestMetadata struct {
 	SubjectDisplayName *string `json:"SubjectDisplayName,omitempty"`
 }
 
+// JitRequestPatchable information about JIT request.
+type JitRequestPatchable struct {
+	// Tags - Jit request tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for JitRequestPatchable.
+func (jrp JitRequestPatchable) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jrp.Tags != nil {
+		objectMap["tags"] = jrp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // JitRequestProperties information about JIT request properties
 type JitRequestProperties struct {
 	// ApplicationResourceID - The parent application id.
@@ -1493,35 +1508,6 @@ func (future *JitRequestsCreateOrUpdateFuture) Result(client JitRequestsClient) 
 		jrd, err = client.CreateOrUpdateResponder(jrd.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsCreateOrUpdateFuture", "Result", jrd.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// JitRequestsPatchFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type JitRequestsPatchFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *JitRequestsPatchFuture) Result(client JitRequestsClient) (jrd JitRequestDefinition, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsPatchFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("managedapplications.JitRequestsPatchFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if jrd.Response.Response, err = future.GetResult(sender); err == nil && jrd.Response.Response.StatusCode != http.StatusNoContent {
-		jrd, err = client.PatchResponder(jrd.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsPatchFuture", "Result", jrd.Response.Response, "Failure responding to request")
 		}
 	}
 	return

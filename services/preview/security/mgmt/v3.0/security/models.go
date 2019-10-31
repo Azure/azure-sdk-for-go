@@ -123,7 +123,8 @@ const (
 	// CustomerManaged User assessments pushed directly by the user or other third party to Azure Security
 	// Center
 	CustomerManaged AssessmentType = "CustomerManaged"
-	// CustomPolicy User defined custom assessments ingested automatically by Azure Security Center
+	// CustomPolicy User defined policies that are automatically ingested from Azure Policy to Azure Security
+	// Center
 	CustomPolicy AssessmentType = "CustomPolicy"
 )
 

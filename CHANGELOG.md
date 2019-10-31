@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v35.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| documentdb | 2019-08-01<br/>2019-08-01-preview |
+
 ## `v35.0.0`
 
 ### New Packages

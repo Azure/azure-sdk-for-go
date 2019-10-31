@@ -19,7 +19,7 @@
 
 package managementgroupsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-03-01-preview/managementgroups/managementgroupsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2019-11-01/managementgroups/managementgroupsapi"
 
 type BaseClientAPI = original.BaseClientAPI
 type ClientAPI = original.ClientAPI

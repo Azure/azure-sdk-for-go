@@ -182,12 +182,8 @@ func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 		return "", fmt.Errorf("failed to update version.go: %v", err)
 	}
 	// write changelog
-	if hasChange, err := mod.HasChanges(); err != nil {
-		return "", fmt.Errorf("failed to check changes: %v", err)
-	} else if hasChange {
-		if err := writeChangelog(stage, mod); err != nil {
-			return "", fmt.Errorf("failed to write changelog: %v", err)
-		}
+	if err := writeChangelog(stage, mod); err != nil {
+		return "", fmt.Errorf("failed to write changelog: %v", err)
 	}
 	// move staging directory over the LMV by first deleting LMV then renaming stage
 	if modinfo.HasVersionSuffix(lmv) {
@@ -495,12 +491,8 @@ func calculateModuleTag(tags []string, mod modinfo.Provider) (string, error) {
 		sv = &n
 	} else {
 		// no new exports and has changes, this is a patch update
-		if hasChange, err := mod.HasChanges(); err != nil {
-			return "", err
-		} else if hasChange {
-			n := sv.IncPatch()
-			sv = &n
-		}
+		n := sv.IncPatch()
+		sv = &n
 	}
 	return strings.Replace(tag, v, "v"+sv.String(), 1), nil
 }

@@ -37,9 +37,6 @@ type Content struct {
 	// the list of exported struct types.
 	// key is the exported name, value contains field information.
 	Structs map[string]Struct `json:"structs,omitempty"`
-
-	// the array of file names in this package
-	FileNames []string `json:"file_names,omitempty"`
 }
 
 // Const is a const definition.
@@ -81,7 +78,6 @@ func NewContent() Content {
 		Funcs:      make(map[string]Func),
 		Interfaces: make(map[string]Interface),
 		Structs:    make(map[string]Struct),
-		FileNames:  make([]string, 0),
 	}
 }
 

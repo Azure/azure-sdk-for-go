@@ -295,3 +295,12 @@ type SubAssessmentsClientAPI interface {
 }
 
 var _ SubAssessmentsClientAPI = (*security.SubAssessmentsClient)(nil)
+
+// AssessmentsClientAPI contains the set of methods on the AssessmentsClient type.
+type AssessmentsClientAPI interface {
+	Create(ctx context.Context, resourceID string, assessmentName string, body security.Assessment) (result security.Assessment, err error)
+	Get(ctx context.Context, resourceID string, assessmentName string, expand security.ExpandEnum) (result security.Assessment, err error)
+	List(ctx context.Context, scope string) (result security.AssessmentListPage, err error)
+}
+
+var _ AssessmentsClientAPI = (*security.AssessmentsClient)(nil)

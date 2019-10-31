@@ -25,6 +25,7 @@ type AdaptiveApplicationControlsClientAPI = original.AdaptiveApplicationControls
 type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClientAPI
 type AlertsClientAPI = original.AlertsClientAPI
 type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
+type AssessmentsClientAPI = original.AssessmentsClientAPI
 type AutoProvisioningSettingsClientAPI = original.AutoProvisioningSettingsClientAPI
 type ComplianceResultsClientAPI = original.ComplianceResultsClientAPI
 type CompliancesClientAPI = original.CompliancesClientAPI

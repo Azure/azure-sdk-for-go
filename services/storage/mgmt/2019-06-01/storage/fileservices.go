@@ -256,7 +256,16 @@ func (client FileServicesClient) SetServiceProperties(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.FileServicePropertiesProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.FileServicePropertiesProperties.ShareDeleteRetentionPolicy", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.FileServicePropertiesProperties.ShareDeleteRetentionPolicy.Days", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.FileServicePropertiesProperties.ShareDeleteRetentionPolicy.Days", Name: validation.InclusiveMaximum, Rule: int64(365), Chain: nil},
+							{Target: "parameters.FileServicePropertiesProperties.ShareDeleteRetentionPolicy.Days", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+						}},
+					}},
+				}}}}}); err != nil {
 		return result, validation.NewError("storage.FileServicesClient", "SetServiceProperties", err.Error())
 	}
 

@@ -4863,6 +4863,8 @@ type WebHookEventSubscriptionDestinationProperties struct {
 	MaxEventsPerBatch *int32 `json:"maxEventsPerBatch,omitempty"`
 	// PreferredBatchSizeInKilobytes - Preferred batch size in Kilobytes.
 	PreferredBatchSizeInKilobytes *int32 `json:"preferredBatchSizeInKilobytes,omitempty"`
-	// AzureActiveDirectoryApplicationIDOrURI - The AAD application ID or URI to get the access token that will be included as the bearer token in delivery requests.
+	// AzureActiveDirectoryTenantID - The Azure Active Diretory Tenant ID to get the access token that will be included as the bearer token in delivery requests.
+	AzureActiveDirectoryTenantID *string `json:"azureActiveDirectoryTenantId,omitempty"`
+	// AzureActiveDirectoryApplicationIDOrURI - The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery requests.
 	AzureActiveDirectoryApplicationIDOrURI *string `json:"azureActiveDirectoryApplicationIdOrUri,omitempty"`
 }

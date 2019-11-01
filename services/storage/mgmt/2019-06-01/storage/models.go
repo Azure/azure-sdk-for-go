@@ -893,7 +893,7 @@ func (acp *AccountCreateParameters) UnmarshalJSON(body []byte) error {
 }
 
 // AccountInternetEndpoints the URIs that are used to perform a retrieval of a public blob, file, web or
-// dfs object via a internetrouting endpoint.
+// dfs object via a internet routing endpoint.
 type AccountInternetEndpoints struct {
 	// Blob - READ-ONLY; Gets the blob endpoint.
 	Blob *string `json:"blob,omitempty"`
@@ -1069,7 +1069,7 @@ func NewAccountListResultPage(getNextPage func(context.Context, AccountListResul
 }
 
 // AccountMicrosoftEndpoints the URIs that are used to perform a retrieval of a public blob, queue, table,
-// web or dfs object via a microsoftrouting endpoint.
+// web or dfs object via a microsoft routing endpoint.
 type AccountMicrosoftEndpoints struct {
 	// Blob - READ-ONLY; Gets the blob endpoint.
 	Blob *string `json:"blob,omitempty"`
@@ -1734,9 +1734,9 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty"`
 	// Dfs - READ-ONLY; Gets the dfs endpoint.
 	Dfs *string `json:"dfs,omitempty"`
-	// AccountMicrosoftEndpoints - Gets the microsoftrouting storage endpoints.
+	// AccountMicrosoftEndpoints - Gets the microsoft routing storage endpoints.
 	*AccountMicrosoftEndpoints `json:"microsoftEndpoints,omitempty"`
-	// AccountInternetEndpoints - Gets the internetrouting storage endpoints
+	// AccountInternetEndpoints - Gets the internet routing storage endpoints
 	*AccountInternetEndpoints `json:"internetEndpoints,omitempty"`
 }
 

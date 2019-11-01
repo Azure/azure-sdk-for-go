@@ -19,7 +19,7 @@
 
 package workspacesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-04-01/workspaces/workspacesapi"
+import original "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2019-10-01/workspaces/workspacesapi"
 
 type ClientAPI = original.ClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

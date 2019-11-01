@@ -230,6 +230,8 @@ type SkuName string
 const (
 	// L1 ...
 	L1 SkuName = "L1"
+	// P1 ...
+	P1 SkuName = "P1"
 	// S1 ...
 	S1 SkuName = "S1"
 	// S2 ...
@@ -238,7 +240,7 @@ const (
 
 // PossibleSkuNameValues returns an array of possible values for the SkuName const type.
 func PossibleSkuNameValues() []SkuName {
-	return []SkuName{L1, S1, S2}
+	return []SkuName{L1, P1, S1, S2}
 }
 
 // StorageLimitExceededBehavior enumerates the values for storage limit exceeded behavior.
@@ -254,6 +256,23 @@ const (
 // PossibleStorageLimitExceededBehaviorValues returns an array of possible values for the StorageLimitExceededBehavior const type.
 func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
 	return []StorageLimitExceededBehavior{PauseIngress, PurgeOldData}
+}
+
+// WarmStoragePropertiesState enumerates the values for warm storage properties state.
+type WarmStoragePropertiesState string
+
+const (
+	// WarmStoragePropertiesStateError ...
+	WarmStoragePropertiesStateError WarmStoragePropertiesState = "Error"
+	// WarmStoragePropertiesStateOk ...
+	WarmStoragePropertiesStateOk WarmStoragePropertiesState = "Ok"
+	// WarmStoragePropertiesStateUnknown ...
+	WarmStoragePropertiesStateUnknown WarmStoragePropertiesState = "Unknown"
+)
+
+// PossibleWarmStoragePropertiesStateValues returns an array of possible values for the WarmStoragePropertiesState const type.
+func PossibleWarmStoragePropertiesStateValues() []WarmStoragePropertiesState {
+	return []WarmStoragePropertiesState{WarmStoragePropertiesStateError, WarmStoragePropertiesStateOk, WarmStoragePropertiesStateUnknown}
 }
 
 // AccessPolicyCreateOrUpdateParameters ...
@@ -794,6 +813,8 @@ type EnvironmentStateDetails struct {
 type EnvironmentStatus struct {
 	// Ingress - An object that represents the status of ingress on an environment.
 	Ingress *IngressEnvironmentStatus `json:"ingress,omitempty"`
+	// WarmStorage - An object that represents the status of warm storage on an environment.
+	WarmStorage *WarmStorageEnvironmentStatus `json:"warmStorage,omitempty"`
 }
 
 // EnvironmentsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1990,6 +2011,65 @@ type LongTermEnvironmentCreationProperties struct {
 	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
 	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
 	StorageConfiguration *LongTermStorageConfigurationInput `json:"storageConfiguration,omitempty"`
+	// WarmStoreConfigurationProperties - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	*WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LongTermEnvironmentCreationProperties.
+func (ltecp LongTermEnvironmentCreationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ltecp.TimeSeriesIDProperties != nil {
+		objectMap["timeSeriesIdProperties"] = ltecp.TimeSeriesIDProperties
+	}
+	if ltecp.StorageConfiguration != nil {
+		objectMap["storageConfiguration"] = ltecp.StorageConfiguration
+	}
+	if ltecp.WarmStoreConfigurationProperties != nil {
+		objectMap["warmStoreConfiguration"] = ltecp.WarmStoreConfigurationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LongTermEnvironmentCreationProperties struct.
+func (ltecp *LongTermEnvironmentCreationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "timeSeriesIdProperties":
+			if v != nil {
+				var timeSeriesIDProperties []TimeSeriesIDProperty
+				err = json.Unmarshal(*v, &timeSeriesIDProperties)
+				if err != nil {
+					return err
+				}
+				ltecp.TimeSeriesIDProperties = &timeSeriesIDProperties
+			}
+		case "storageConfiguration":
+			if v != nil {
+				var storageConfiguration LongTermStorageConfigurationInput
+				err = json.Unmarshal(*v, &storageConfiguration)
+				if err != nil {
+					return err
+				}
+				ltecp.StorageConfiguration = &storageConfiguration
+			}
+		case "warmStoreConfiguration":
+			if v != nil {
+				var warmStoreConfigurationProperties WarmStoreConfigurationProperties
+				err = json.Unmarshal(*v, &warmStoreConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				ltecp.WarmStoreConfigurationProperties = &warmStoreConfigurationProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // LongTermEnvironmentMutableProperties an object that represents a set of mutable long-term environment
@@ -1997,8 +2077,53 @@ type LongTermEnvironmentCreationProperties struct {
 type LongTermEnvironmentMutableProperties struct {
 	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
 	StorageConfiguration *LongTermStorageConfigurationMutableProperties `json:"storageConfiguration,omitempty"`
-	// TimeSeriesIDProperties - The list of event properties which will be used to partition data in the environment.
-	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
+	// WarmStoreConfigurationProperties - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	*WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LongTermEnvironmentMutableProperties.
+func (ltemp LongTermEnvironmentMutableProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ltemp.StorageConfiguration != nil {
+		objectMap["storageConfiguration"] = ltemp.StorageConfiguration
+	}
+	if ltemp.WarmStoreConfigurationProperties != nil {
+		objectMap["warmStoreConfiguration"] = ltemp.WarmStoreConfigurationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LongTermEnvironmentMutableProperties struct.
+func (ltemp *LongTermEnvironmentMutableProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "storageConfiguration":
+			if v != nil {
+				var storageConfiguration LongTermStorageConfigurationMutableProperties
+				err = json.Unmarshal(*v, &storageConfiguration)
+				if err != nil {
+					return err
+				}
+				ltemp.StorageConfiguration = &storageConfiguration
+			}
+		case "warmStoreConfiguration":
+			if v != nil {
+				var warmStoreConfigurationProperties WarmStoreConfigurationProperties
+				err = json.Unmarshal(*v, &warmStoreConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				ltemp.WarmStoreConfigurationProperties = &warmStoreConfigurationProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // LongTermEnvironmentResource an environment is a set of time-series data available for query, and is the
@@ -2167,6 +2292,116 @@ type LongTermEnvironmentResourceProperties struct {
 	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
 	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
 	StorageConfiguration *LongTermStorageConfigurationOutput `json:"storageConfiguration,omitempty"`
+	// WarmStoreConfigurationProperties - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	*WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LongTermEnvironmentResourceProperties.
+func (lterp LongTermEnvironmentResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lterp.Status != nil {
+		objectMap["status"] = lterp.Status
+	}
+	if lterp.ProvisioningState != "" {
+		objectMap["provisioningState"] = lterp.ProvisioningState
+	}
+	if lterp.TimeSeriesIDProperties != nil {
+		objectMap["timeSeriesIdProperties"] = lterp.TimeSeriesIDProperties
+	}
+	if lterp.StorageConfiguration != nil {
+		objectMap["storageConfiguration"] = lterp.StorageConfiguration
+	}
+	if lterp.WarmStoreConfigurationProperties != nil {
+		objectMap["warmStoreConfiguration"] = lterp.WarmStoreConfigurationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LongTermEnvironmentResourceProperties struct.
+func (lterp *LongTermEnvironmentResourceProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "dataAccessId":
+			if v != nil {
+				var dataAccessID uuid.UUID
+				err = json.Unmarshal(*v, &dataAccessID)
+				if err != nil {
+					return err
+				}
+				lterp.DataAccessID = &dataAccessID
+			}
+		case "dataAccessFqdn":
+			if v != nil {
+				var dataAccessFqdn string
+				err = json.Unmarshal(*v, &dataAccessFqdn)
+				if err != nil {
+					return err
+				}
+				lterp.DataAccessFqdn = &dataAccessFqdn
+			}
+		case "status":
+			if v != nil {
+				var status EnvironmentStatus
+				err = json.Unmarshal(*v, &status)
+				if err != nil {
+					return err
+				}
+				lterp.Status = &status
+			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState ProvisioningState
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				lterp.ProvisioningState = provisioningState
+			}
+		case "creationTime":
+			if v != nil {
+				var creationTime date.Time
+				err = json.Unmarshal(*v, &creationTime)
+				if err != nil {
+					return err
+				}
+				lterp.CreationTime = &creationTime
+			}
+		case "timeSeriesIdProperties":
+			if v != nil {
+				var timeSeriesIDProperties []TimeSeriesIDProperty
+				err = json.Unmarshal(*v, &timeSeriesIDProperties)
+				if err != nil {
+					return err
+				}
+				lterp.TimeSeriesIDProperties = &timeSeriesIDProperties
+			}
+		case "storageConfiguration":
+			if v != nil {
+				var storageConfiguration LongTermStorageConfigurationOutput
+				err = json.Unmarshal(*v, &storageConfiguration)
+				if err != nil {
+					return err
+				}
+				lterp.StorageConfiguration = &storageConfiguration
+			}
+		case "warmStoreConfiguration":
+			if v != nil {
+				var warmStoreConfigurationProperties WarmStoreConfigurationProperties
+				err = json.Unmarshal(*v, &warmStoreConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				lterp.WarmStoreConfigurationProperties = &warmStoreConfigurationProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // LongTermEnvironmentUpdateParameters parameters supplied to the Update Environment operation to update a
@@ -2657,7 +2892,7 @@ type ResourceProperties struct {
 // standard environments the sku determines the capacity of the environment, the ingress rate, and the
 // billing rate.
 type Sku struct {
-	// Name - The name of this SKU. Possible values include: 'S1', 'S2', 'L1'
+	// Name - The name of this SKU. Possible values include: 'S1', 'S2', 'P1', 'L1'
 	Name SkuName `json:"name,omitempty"`
 	// Capacity - The capacity of the sku. For standard environments, this value can be changed to support scale out of environments after they have been created.
 	Capacity *int32 `json:"capacity,omitempty"`
@@ -3070,4 +3305,112 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = tr.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// WarmStorageEnvironmentStatus an object that represents the status of warm storage on an environment.
+type WarmStorageEnvironmentStatus struct {
+	// WarmStoragePropertiesUsage - An object that contains the status of warm storage properties usage.
+	*WarmStoragePropertiesUsage `json:"propertiesUsage,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WarmStorageEnvironmentStatus.
+func (wses WarmStorageEnvironmentStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wses.WarmStoragePropertiesUsage != nil {
+		objectMap["propertiesUsage"] = wses.WarmStoragePropertiesUsage
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WarmStorageEnvironmentStatus struct.
+func (wses *WarmStorageEnvironmentStatus) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "propertiesUsage":
+			if v != nil {
+				var warmStoragePropertiesUsage WarmStoragePropertiesUsage
+				err = json.Unmarshal(*v, &warmStoragePropertiesUsage)
+				if err != nil {
+					return err
+				}
+				wses.WarmStoragePropertiesUsage = &warmStoragePropertiesUsage
+			}
+		}
+	}
+
+	return nil
+}
+
+// WarmStoragePropertiesUsage an object that contains the status of warm storage properties usage.
+type WarmStoragePropertiesUsage struct {
+	// State - This string represents the state of warm storage properties usage. It can be "Ok", "Error", "Unknown". Possible values include: 'WarmStoragePropertiesStateOk', 'WarmStoragePropertiesStateError', 'WarmStoragePropertiesStateUnknown'
+	State WarmStoragePropertiesState `json:"state,omitempty"`
+	// WarmStoragePropertiesUsageStateDetails - An object that contains the details about warm storage properties usage state.
+	*WarmStoragePropertiesUsageStateDetails `json:"stateDetails,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WarmStoragePropertiesUsage.
+func (wspu WarmStoragePropertiesUsage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wspu.State != "" {
+		objectMap["state"] = wspu.State
+	}
+	if wspu.WarmStoragePropertiesUsageStateDetails != nil {
+		objectMap["stateDetails"] = wspu.WarmStoragePropertiesUsageStateDetails
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WarmStoragePropertiesUsage struct.
+func (wspu *WarmStoragePropertiesUsage) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "state":
+			if v != nil {
+				var state WarmStoragePropertiesState
+				err = json.Unmarshal(*v, &state)
+				if err != nil {
+					return err
+				}
+				wspu.State = state
+			}
+		case "stateDetails":
+			if v != nil {
+				var warmStoragePropertiesUsageStateDetails WarmStoragePropertiesUsageStateDetails
+				err = json.Unmarshal(*v, &warmStoragePropertiesUsageStateDetails)
+				if err != nil {
+					return err
+				}
+				wspu.WarmStoragePropertiesUsageStateDetails = &warmStoragePropertiesUsageStateDetails
+			}
+		}
+	}
+
+	return nil
+}
+
+// WarmStoragePropertiesUsageStateDetails an object that contains the details about warm storage properties
+// usage state.
+type WarmStoragePropertiesUsageStateDetails struct {
+	// CurrentCount - A value that represents the number of properties used by the environment for S1/S2 SKU and number of properties used by Warm Store for PAYG SKU
+	CurrentCount *int32 `json:"currentCount,omitempty"`
+	// MaxCount - A value that represents the maximum number of properties used allowed by the environment for S1/S2 SKU and maximum number of properties allowed by Warm Store for PAYG SKU.
+	MaxCount *int32 `json:"maxCount,omitempty"`
+}
+
+// WarmStoreConfigurationProperties the warm store configuration provides the details to create a warm
+// store cache that will retain a copy of the environment's data available for faster query.
+type WarmStoreConfigurationProperties struct {
+	// DataRetention - ISO8601 timespan specifying the number of days the environment's events will be available for query from the warm store.
+	DataRetention *string `json:"dataRetention,omitempty"`
 }

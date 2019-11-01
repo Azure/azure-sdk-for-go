@@ -140,7 +140,7 @@ func forSideBySideRelease(stage string, mod modinfo.Provider) (string, error) {
 	if err := updateVersion(stage, tag); err != nil {
 		return "", fmt.Errorf("failed to update version.go: %v", err)
 	}
-	// write change log
+	// write changelog
 	if err := writeChangelog(stage, mod); err != nil {
 		return "", fmt.Errorf("failed to write changelog: %v", err)
 	}
@@ -178,37 +178,60 @@ func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 	if tag, err = calculateModuleTag(tags, mod); err != nil {
 		return "", fmt.Errorf("failed to calculate module tag: %v", err)
 	}
-	if err := updateVersion(stage, tag); err != nil {
-		return "", fmt.Errorf("failed to update version.go: %v", err)
-	}
-	// write changelog
-	if err := writeChangelog(stage, mod); err != nil {
-		return "", fmt.Errorf("failed to write changelog: %v", err)
-	}
 	// move staging directory over the LMV by first deleting LMV then renaming stage
-	if modinfo.HasVersionSuffix(lmv) {
-		if err := os.RemoveAll(lmv); err != nil {
-			return "", fmt.Errorf("failed to delete '%s': %v", lmv, err)
-		}
-		if err := os.Rename(stage, mod.DestDir()); err != nil {
-			return "", fmt.Errorf("failed to rename '%s' toi '%s': %v", stage, lmv, err)
+	if err := moveStageFolderOverLmvFolder(lmv, stage, mod); err != nil {
+		return "", err
+	}
+	// check if identical
+	if same, err := checkIdentical(lmv, stage); err != nil {
+		return "", fmt.Errorf("failed to check identical: %v", err)
+	} else if same {
+		// no change
+		tag = tags[len(tags) - 1] // discard new tag
+		if err := updateVersion(lmv, tag); err != nil {
+			return "", fmt.Errorf("failed to update version.go: %v", err)
 		}
 		return tag, nil
-	}
-	// for v1 it's a bit more complicated since stage is a subdir of LMV.
-	// first move stage to a temp dir outside of LMV, then remove LMV, then move temp to LMV
-	dest := filepath.Dir(stage)
-	temp := dest + "1temp"
-	if err := os.Rename(stage, temp); err != nil {
-		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", stage, temp, err)
-	}
-	if err := os.RemoveAll(dest); err != nil {
-		return "", fmt.Errorf("failed to delete '%s': %v", dest, err)
-	}
-	if err := os.Rename(temp, dest); err != nil {
-		return "", fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
+	} else {
+		// there are changes
+		if err := updateVersion(lmv, tag); err != nil {
+			return "", fmt.Errorf("failed to update version.go: %v", err)
+		}
+		// write changelog
+		if err := writeChangelog(lmv, mod); err != nil {
+			return "", fmt.Errorf("failed to write changelog: %v", err)
+		}
 	}
 	return tag, nil
+}
+
+// move stage folder over lmv folder
+func moveStageFolderOverLmvFolder(lmv, stage string, mod modinfo.Provider) error {
+	if modinfo.HasVersionSuffix(lmv) {
+		// for v2 or more modules, just override the v2 (for instance) folder using the stage folder
+		if err := os.RemoveAll(lmv); err != nil {
+			return fmt.Errorf("failed to delete '%s': %v", lmv, err)
+		}
+		if err := os.Rename(stage, mod.DestDir()); err != nil {
+			return fmt.Errorf("failed to rename '%s' toi '%s': %v", stage, lmv, err)
+		}
+	} else {
+		// for v1 it's a bit more complicated since stage is a subdir of LMV.
+		// first move stage to a temp dir outside of LMV, then remove LMV, then move temp to LMV
+		dest := filepath.Dir(stage)
+		vprintln(dest == lmv) // dest should be the same as lmv
+		temp := dest + "1temp"
+		if err := os.Rename(stage, temp); err != nil {
+			return fmt.Errorf("failed to rename '%s' to '%s': %v", stage, temp, err)
+		}
+		if err := os.RemoveAll(dest); err != nil {
+			return fmt.Errorf("failed to delete '%s': %v", dest, err)
+		}
+		if err := os.Rename(temp, dest); err != nil {
+			return fmt.Errorf("failed to rename '%s' to '%s': %v", temp, dest, err)
+		}
+	}
+	return nil
 }
 
 func updateVersion(path, tag string) error {
@@ -495,4 +518,70 @@ func calculateModuleTag(tags []string, mod modinfo.Provider) (string, error) {
 		sv = &n
 	}
 	return strings.Replace(tag, v, "v"+sv.String(), 1), nil
+}
+
+func checkIdentical(dest, stage string) (bool, error) {
+	// get files with changes
+	files, err := getFilesWithRealChanges(dest, stage)
+	if err != nil {
+		return false, err
+	}
+	// check if there is no change
+	if len(files) == 0 {
+		return true, nil
+	}
+	// there is only version.go file changed
+	if len(files) == 1 && filepath.Base(files[0]) == "version.go" {
+		return true, nil
+	}
+	return false, nil
+}
+
+func getFilesWithRealChanges(dest, stage string) ([]string, error) {
+	defer reset(dest)
+	c := exec.Command("git", "add", dest)
+	output, err := c.CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("failed to call git add: %s", string(output))
+	}
+	c = exec.Command("git", "status", "-s", "--no-renames", dest)
+	output, err = c.CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("failed to call git status: %s", string(output))
+	}
+	changes, err := analyzeOutput(string(output), stage)
+	if err != nil {
+		return nil, fmt.Errorf("failed to analyze git status output: %v", err)
+	}
+	return changes, nil
+}
+
+func reset(dest string) error {
+	c := exec.Command("git", "reset", "HEAD", dest)
+	output, err := c.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("failed to call git reset: %s", string(output))
+	}
+	return nil
+}
+
+func analyzeOutput(output, stage string) ([]string, error) {
+	lines := strings.Split(output, "\n")
+	pwd, err := os.Getwd()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get current working directory: %v", err)
+	}
+	var files []string
+	for _, line := range  lines {
+		if len(line) < 4 {
+			continue
+		}
+		path := filepath.Join(pwd, line[3:])
+		// ignore stage folder and everything other than go source files
+		if strings.HasPrefix(path, stage) || !strings.HasSuffix(path, ".go") {
+			continue
+		}
+		files = append(files, path)
+	}
+	return files, nil
 }

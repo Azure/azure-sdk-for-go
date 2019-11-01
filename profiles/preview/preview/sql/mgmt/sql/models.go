@@ -92,6 +92,13 @@ const (
 	ManagedServerCreateModePointInTimeRestore ManagedServerCreateMode = original.ManagedServerCreateModePointInTimeRestore
 )
 
+type ReplicaType = original.ReplicaType
+
+const (
+	Primary           ReplicaType = original.Primary
+	ReadableSecondary ReplicaType = original.ReadableSecondary
+)
+
 type SecurityAlertPolicyState = original.SecurityAlertPolicyState
 
 const (
@@ -349,6 +356,9 @@ func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride
 }
 func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
 	return original.PossibleManagedServerCreateModeValues()
+}
+func PossibleReplicaTypeValues() []ReplicaType {
+	return original.PossibleReplicaTypeValues()
 }
 func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 	return original.PossibleSecurityAlertPolicyStateValues()

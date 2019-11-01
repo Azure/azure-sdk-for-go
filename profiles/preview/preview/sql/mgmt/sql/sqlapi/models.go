@@ -31,5 +31,6 @@ type ManagedDatabasesClientAPI = original.ManagedDatabasesClientAPI
 type ManagedInstanceVulnerabilityAssessmentsClientAPI = original.ManagedInstanceVulnerabilityAssessmentsClientAPI
 type ManagedInstancesClientAPI = original.ManagedInstancesClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type ServerAzureADAdministratorsClientAPI = original.ServerAzureADAdministratorsClientAPI
 type ServerVulnerabilityAssessmentsClientAPI = original.ServerVulnerabilityAssessmentsClientAPI
 type UsagesClientAPI = original.UsagesClientAPI

@@ -265,6 +265,12 @@ func (client BlobServicesClient) SetServiceProperties(ctx context.Context, resou
 							{Target: "parameters.BlobServicePropertiesProperties.DeleteRetentionPolicy.Days", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 						}},
 					}},
+					{Target: "parameters.BlobServicePropertiesProperties.ContainerDeleteRetentionPolicy", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "parameters.BlobServicePropertiesProperties.ContainerDeleteRetentionPolicy.Days", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "parameters.BlobServicePropertiesProperties.ContainerDeleteRetentionPolicy.Days", Name: validation.InclusiveMaximum, Rule: int64(365), Chain: nil},
+								{Target: "parameters.BlobServicePropertiesProperties.ContainerDeleteRetentionPolicy.Days", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+							}},
+						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("storage.BlobServicesClient", "SetServiceProperties", err.Error())
 	}

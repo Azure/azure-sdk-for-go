@@ -50,6 +50,7 @@ const (
 type HanaInstanceSizeNamesEnum = original.HanaInstanceSizeNamesEnum
 
 const (
+	S112     HanaInstanceSizeNamesEnum = original.S112
 	S144     HanaInstanceSizeNamesEnum = original.S144
 	S144m    HanaInstanceSizeNamesEnum = original.S144m
 	S192     HanaInstanceSizeNamesEnum = original.S192
@@ -58,6 +59,9 @@ const (
 	S224m    HanaInstanceSizeNamesEnum = original.S224m
 	S224o    HanaInstanceSizeNamesEnum = original.S224o
 	S224om   HanaInstanceSizeNamesEnum = original.S224om
+	S224oo   HanaInstanceSizeNamesEnum = original.S224oo
+	S224oom  HanaInstanceSizeNamesEnum = original.S224oom
+	S224ooo  HanaInstanceSizeNamesEnum = original.S224ooo
 	S224oxm  HanaInstanceSizeNamesEnum = original.S224oxm
 	S224oxxm HanaInstanceSizeNamesEnum = original.S224oxxm
 	S384     HanaInstanceSizeNamesEnum = original.S384

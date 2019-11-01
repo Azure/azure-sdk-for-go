@@ -606,8 +606,9 @@ const (
 type SsisPackageLocationType = original.SsisPackageLocationType
 
 const (
-	File   SsisPackageLocationType = original.File
-	SSISDB SsisPackageLocationType = original.SSISDB
+	File          SsisPackageLocationType = original.File
+	InlinePackage SsisPackageLocationType = original.InlinePackage
+	SSISDB        SsisPackageLocationType = original.SSISDB
 )
 
 type StoredProcedureParameterType = original.StoredProcedureParameterType
@@ -1848,6 +1849,7 @@ type SQLServerTableDatasetTypeProperties = original.SQLServerTableDatasetTypePro
 type SQLSink = original.SQLSink
 type SQLSource = original.SQLSource
 type SSISAccessCredential = original.SSISAccessCredential
+type SSISChildPackage = original.SSISChildPackage
 type SSISExecutionCredential = original.SSISExecutionCredential
 type SSISExecutionParameter = original.SSISExecutionParameter
 type SSISLogLocation = original.SSISLogLocation

@@ -19,7 +19,7 @@ package documentdbapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2019-08-01-preview/documentdb"
+	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2019-08-01-preview/documentdb"
 	"github.com/Azure/go-autorest/autorest"
 )
 

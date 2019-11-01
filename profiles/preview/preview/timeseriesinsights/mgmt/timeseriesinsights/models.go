@@ -123,6 +123,7 @@ type SkuName = original.SkuName
 
 const (
 	L1 SkuName = original.L1
+	P1 SkuName = original.P1
 	S1 SkuName = original.S1
 	S2 SkuName = original.S2
 )
@@ -132,6 +133,14 @@ type StorageLimitExceededBehavior = original.StorageLimitExceededBehavior
 const (
 	PauseIngress StorageLimitExceededBehavior = original.PauseIngress
 	PurgeOldData StorageLimitExceededBehavior = original.PurgeOldData
+)
+
+type WarmStoragePropertiesState = original.WarmStoragePropertiesState
+
+const (
+	WarmStoragePropertiesStateError   WarmStoragePropertiesState = original.WarmStoragePropertiesStateError
+	WarmStoragePropertiesStateOk      WarmStoragePropertiesState = original.WarmStoragePropertiesStateOk
+	WarmStoragePropertiesStateUnknown WarmStoragePropertiesState = original.WarmStoragePropertiesStateUnknown
 )
 
 type AccessPoliciesClient = original.AccessPoliciesClient
@@ -220,6 +229,10 @@ type StandardEnvironmentResourceProperties = original.StandardEnvironmentResourc
 type StandardEnvironmentUpdateParameters = original.StandardEnvironmentUpdateParameters
 type TimeSeriesIDProperty = original.TimeSeriesIDProperty
 type TrackedResource = original.TrackedResource
+type WarmStorageEnvironmentStatus = original.WarmStorageEnvironmentStatus
+type WarmStoragePropertiesUsage = original.WarmStoragePropertiesUsage
+type WarmStoragePropertiesUsageStateDetails = original.WarmStoragePropertiesUsageStateDetails
+type WarmStoreConfigurationProperties = original.WarmStoreConfigurationProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -301,6 +314,9 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
 	return original.PossibleStorageLimitExceededBehaviorValues()
+}
+func PossibleWarmStoragePropertiesStateValues() []WarmStoragePropertiesState {
+	return original.PossibleWarmStoragePropertiesStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

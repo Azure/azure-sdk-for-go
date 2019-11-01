@@ -1,5 +1,43 @@
 # CHANGELOG
 
+## `v36.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| documentdb | 2019-08-01-preview |
+| machinelearningservices | 2019-11-01 |
+| managementgroups | 2019-11-01 |
+| policy | 2019-09-01 |
+| workspaces | 2019-10-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| datafactory | 2018-06-01 |
+| hanaonazure | 2017-11-03-preview |
+| securityinsight | 2017-08-01-preview |
+| storage | 2019-06-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| authoring | luis |
+| network | 2019-04-01<br/>2019-06-01<br/>2019-07-01<br/>2019-08-01<br/>2019-09-01 |
+| serialconsole | 2018-05-01 |
+| signalr | 2018-10-01 |
+| sql | 2018-06-01-preview |
+| timeseriesinsights | 2018-08-15-preview |
+
+### Removed Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| documentdb | 2019-08-01-preview |
+
 ## `v35.1.0`
 
 ### New Packages

@@ -187,7 +187,7 @@ func forInplaceUpdate(lmv, stage string, mod modinfo.Provider) (string, error) {
 		return "", fmt.Errorf("failed to check identical: %v", err)
 	} else if same {
 		// no change
-		tag = tags[len(tags) - 1] // discard new tag
+		tag = tags[len(tags)-1] // discard new tag
 		if err := updateVersion(lmv, tag); err != nil {
 			return "", fmt.Errorf("failed to update version.go: %v", err)
 		}
@@ -572,7 +572,7 @@ func analyzeOutput(output, stage string) ([]string, error) {
 		return nil, fmt.Errorf("failed to get current working directory: %v", err)
 	}
 	var files []string
-	for _, line := range  lines {
+	for _, line := range lines {
 		if len(line) < 4 {
 			continue
 		}

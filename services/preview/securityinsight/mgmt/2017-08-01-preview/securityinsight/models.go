@@ -661,13 +661,15 @@ const (
 	AzureAdvancedThreatProtection MicrosoftSecurityProductName = "Azure Advanced Threat Protection"
 	// AzureSecurityCenter ...
 	AzureSecurityCenter MicrosoftSecurityProductName = "Azure Security Center"
+	// AzureSecurityCenterforIoT ...
+	AzureSecurityCenterforIoT MicrosoftSecurityProductName = "Azure Security Center for IoT"
 	// MicrosoftCloudAppSecurity ...
 	MicrosoftCloudAppSecurity MicrosoftSecurityProductName = "Microsoft Cloud App Security"
 )
 
 // PossibleMicrosoftSecurityProductNameValues returns an array of possible values for the MicrosoftSecurityProductName const type.
 func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName {
-	return []MicrosoftSecurityProductName{AzureActiveDirectoryIdentityProtection, AzureAdvancedThreatProtection, AzureSecurityCenter, MicrosoftCloudAppSecurity}
+	return []MicrosoftSecurityProductName{AzureActiveDirectoryIdentityProtection, AzureAdvancedThreatProtection, AzureSecurityCenter, AzureSecurityCenterforIoT, MicrosoftCloudAppSecurity}
 }
 
 // OSFamily enumerates the values for os family.
@@ -7661,7 +7663,7 @@ func (msicar *MicrosoftSecurityIncidentCreationAlertRule) UnmarshalJSON(body []b
 type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
 	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
-	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
+	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection', 'AzureSecurityCenterforIoT'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
@@ -7684,7 +7686,7 @@ type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
-	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
+	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection', 'AzureSecurityCenterforIoT'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
@@ -7822,7 +7824,7 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
-	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
+	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection', 'AzureSecurityCenterforIoT'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`

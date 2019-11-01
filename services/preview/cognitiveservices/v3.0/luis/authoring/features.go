@@ -90,7 +90,7 @@ func (client FeaturesClient) AddEntityFeaturePreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/entities/{entityId}/features", pathParameters),
 		autorest.WithJSON(featureRelationCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -169,7 +169,7 @@ func (client FeaturesClient) AddIntentFeaturePreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/intents/{intentId}/features", pathParameters),
 		autorest.WithJSON(featureRelationCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -247,7 +247,7 @@ func (client FeaturesClient) AddPhraseListPreparer(ctx context.Context, appID uu
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists", pathParameters),
 		autorest.WithJSON(phraselistCreateObject))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -324,7 +324,7 @@ func (client FeaturesClient) DeletePhraseListPreparer(ctx context.Context, appID
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -400,7 +400,7 @@ func (client FeaturesClient) GetPhraseListPreparer(ctx context.Context, appID uu
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -500,7 +500,7 @@ func (client FeaturesClient) ListPreparer(ctx context.Context, appID uuid.UUID, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/features", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -601,7 +601,7 @@ func (client FeaturesClient) ListPhraseListsPreparer(ctx context.Context, appID 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -682,7 +682,7 @@ func (client FeaturesClient) UpdatePhraseListPreparer(ctx context.Context, appID
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("{Endpoint}/luis/api/v3.0-preview", urlParameters),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
 		autorest.WithPathParameters("/apps/{appId}/versions/{versionId}/phraselists/{phraselistId}", pathParameters))
 	if phraselistUpdateObject != nil {
 		preparer = autorest.DecoratePreparer(preparer,

@@ -1502,12 +1502,14 @@ type BlobServicePropertiesProperties struct {
 	Cors *CorsRules `json:"cors,omitempty"`
 	// DefaultServiceVersion - DefaultServiceVersion indicates the default version to use for requests to the Blob service if an incoming request’s version is not specified. Possible values include version 2008-10-27 and all more recent versions.
 	DefaultServiceVersion *string `json:"defaultServiceVersion,omitempty"`
-	// DeleteRetentionPolicy - The blob service properties for soft delete.
+	// DeleteRetentionPolicy - The blob service properties for blob soft delete.
 	DeleteRetentionPolicy *DeleteRetentionPolicy `json:"deleteRetentionPolicy,omitempty"`
 	// AutomaticSnapshotPolicyEnabled - Automatic Snapshot is enabled if set to true.
 	AutomaticSnapshotPolicyEnabled *bool `json:"automaticSnapshotPolicyEnabled,omitempty"`
 	// ChangeFeed - The blob service properties for change feed events.
 	ChangeFeed *ChangeFeed `json:"changeFeed,omitempty"`
+	// ContainerDeleteRetentionPolicy - The blob service properties for container soft delete.
+	ContainerDeleteRetentionPolicy *DeleteRetentionPolicy `json:"containerDeleteRetentionPolicy,omitempty"`
 }
 
 // ChangeFeed the blob service properties for change feed events.
@@ -1775,6 +1777,8 @@ func (fsp *FileServiceProperties) UnmarshalJSON(body []byte) error {
 type FileServicePropertiesProperties struct {
 	// Cors - Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the File service.
 	Cors *CorsRules `json:"cors,omitempty"`
+	// ShareDeleteRetentionPolicy - The file service properties for share soft delete.
+	ShareDeleteRetentionPolicy *DeleteRetentionPolicy `json:"shareDeleteRetentionPolicy,omitempty"`
 }
 
 // FileShare properties of the file share, including Id, resource name, resource type, Etag.

@@ -312,6 +312,7 @@ const (
 	AzureActiveDirectoryIdentityProtection MicrosoftSecurityProductName = original.AzureActiveDirectoryIdentityProtection
 	AzureAdvancedThreatProtection          MicrosoftSecurityProductName = original.AzureAdvancedThreatProtection
 	AzureSecurityCenter                    MicrosoftSecurityProductName = original.AzureSecurityCenter
+	AzureSecurityCenterforIoT              MicrosoftSecurityProductName = original.AzureSecurityCenterforIoT
 	MicrosoftCloudAppSecurity              MicrosoftSecurityProductName = original.MicrosoftCloudAppSecurity
 )
 

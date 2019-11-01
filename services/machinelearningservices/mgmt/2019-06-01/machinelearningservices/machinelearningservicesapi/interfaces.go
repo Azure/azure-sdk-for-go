@@ -46,7 +46,7 @@ var _ WorkspacesClientAPI = (*machinelearningservices.WorkspacesClient)(nil)
 
 // UsagesClientAPI contains the set of methods on the UsagesClient type.
 type UsagesClientAPI interface {
-	List(ctx context.Context, location string) (result machinelearningservices.ListUsagesResultPage, err error)
+	List(ctx context.Context, location string, expandChildren string) (result machinelearningservices.ListUsagesResultPage, err error)
 }
 
 var _ UsagesClientAPI = (*machinelearningservices.UsagesClient)(nil)

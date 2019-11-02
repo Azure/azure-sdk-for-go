@@ -50,7 +50,7 @@ func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptio
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 // parameters - the required parameters for creating or updating an Active Directory Administrator.
-func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName1 string, parameters ServerAzureADAdministrator) (result ServerAzureADAdministratorsCreateOrUpdateFuture, err error) {
+func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ServerAzureADAdministrator) (result ServerAzureADAdministratorsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAzureADAdministratorsClient.CreateOrUpdate")
 		defer func() {
@@ -72,7 +72,7 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Conte
 		return result, validation.NewError("sql.ServerAzureADAdministratorsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, administratorName1, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -88,10 +88,9 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Conte
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ServerAzureADAdministratorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, administratorName1 string, parameters ServerAzureADAdministrator) (*http.Request, error) {
+func (client ServerAzureADAdministratorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, parameters ServerAzureADAdministrator) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"administratorName": autorest.Encode("path", "activeDirectory"),
-		"administratorName": autorest.Encode("path", administratorName1),
+		"administratorName": autorest.Encode("path", "ActiveDirectory"),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -172,7 +171,7 @@ func (client ServerAzureADAdministratorsClient) Delete(ctx context.Context, reso
 // DeletePreparer prepares the Delete request.
 func (client ServerAzureADAdministratorsClient) DeletePreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"administratorName": autorest.Encode("path", "activeDirectory"),
+		"administratorName": autorest.Encode("path", "ActiveDirectory"),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -256,7 +255,7 @@ func (client ServerAzureADAdministratorsClient) Get(ctx context.Context, resourc
 // GetPreparer prepares the Get request.
 func (client ServerAzureADAdministratorsClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"administratorName": autorest.Encode("path", "activeDirectory"),
+		"administratorName": autorest.Encode("path", "ActiveDirectory"),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),

@@ -139,3 +139,13 @@ type PrivateEndpointConnectionsClientAPI interface {
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*sql.PrivateEndpointConnectionsClient)(nil)
+
+// AdministratorsClientAPI contains the set of methods on the AdministratorsClient type.
+type AdministratorsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName string, parameters sql.ServerAzureADAdministrator) (result sql.AdministratorsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (result sql.AdministratorsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (result sql.ServerAzureADAdministrator, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultPage, err error)
+}
+
+var _ AdministratorsClientAPI = (*sql.AdministratorsClient)(nil)

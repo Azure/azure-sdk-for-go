@@ -372,6 +372,58 @@ type AdministratorProperties struct {
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
+// AdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AdministratorsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AdministratorsCreateOrUpdateFuture) Result(client AdministratorsClient) (saaa ServerAzureADAdministrator, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.AdministratorsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if saaa.Response.Response, err = future.GetResult(sender); err == nil && saaa.Response.Response.StatusCode != http.StatusNoContent {
+		saaa, err = client.CreateOrUpdateResponder(saaa.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.AdministratorsCreateOrUpdateFuture", "Result", saaa.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AdministratorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AdministratorsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AdministratorsDeleteFuture) Result(client AdministratorsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.AdministratorsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // CompleteDatabaseRestoreDefinition contains the information necessary to perform a complete database
 // restore operation.
 type CompleteDatabaseRestoreDefinition struct {
@@ -2912,58 +2964,6 @@ func (saaa *ServerAzureADAdministrator) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
-type ServerAzureADAdministratorsCreateOrUpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServerAzureADAdministratorsCreateOrUpdateFuture) Result(client ServerAzureADAdministratorsClient) (saaa ServerAzureADAdministrator, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if saaa.Response.Response, err = future.GetResult(sender); err == nil && saaa.Response.Response.StatusCode != http.StatusNoContent {
-		saaa, err = client.CreateOrUpdateResponder(saaa.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsCreateOrUpdateFuture", "Result", saaa.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// ServerAzureADAdministratorsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ServerAzureADAdministratorsDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ServerAzureADAdministratorsDeleteFuture) Result(client ServerAzureADAdministratorsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
 }
 
 // ServerVulnerabilityAssessment a server vulnerability assessment.

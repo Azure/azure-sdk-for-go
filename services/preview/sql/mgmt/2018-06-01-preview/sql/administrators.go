@@ -26,21 +26,21 @@ import (
 	"net/http"
 )
 
-// ServerAzureADAdministratorsClient is the the Azure SQL Database management API provides a RESTful set of web
-// services that interact with Azure SQL Database services to manage your databases. The API enables you to create,
-// retrieve, update, and delete databases.
-type ServerAzureADAdministratorsClient struct {
+// AdministratorsClient is the the Azure SQL Database management API provides a RESTful set of web services that
+// interact with Azure SQL Database services to manage your databases. The API enables you to create, retrieve, update,
+// and delete databases.
+type AdministratorsClient struct {
 	BaseClient
 }
 
-// NewServerAzureADAdministratorsClient creates an instance of the ServerAzureADAdministratorsClient client.
-func NewServerAzureADAdministratorsClient(subscriptionID string) ServerAzureADAdministratorsClient {
-	return NewServerAzureADAdministratorsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewAdministratorsClient creates an instance of the AdministratorsClient client.
+func NewAdministratorsClient(subscriptionID string) AdministratorsClient {
+	return NewAdministratorsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewServerAzureADAdministratorsClientWithBaseURI creates an instance of the ServerAzureADAdministratorsClient client.
-func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAzureADAdministratorsClient {
-	return ServerAzureADAdministratorsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewAdministratorsClientWithBaseURI creates an instance of the AdministratorsClient client.
+func NewAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) AdministratorsClient {
+	return AdministratorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates an existing Azure Active Directory administrator.
@@ -49,9 +49,9 @@ func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptio
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 // parameters - the requested Azure Active Directory administrator Resource state.
-func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName string, parameters ServerAzureADAdministrator) (result ServerAzureADAdministratorsCreateOrUpdateFuture, err error) {
+func (client AdministratorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName string, parameters ServerAzureADAdministrator) (result AdministratorsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAzureADAdministratorsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdministratorsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -67,18 +67,18 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Conte
 					{Target: "parameters.AdministratorProperties.Login", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.AdministratorProperties.Sid", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("sql.ServerAzureADAdministratorsClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("sql.AdministratorsClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, administratorName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -86,7 +86,7 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Conte
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ServerAzureADAdministratorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, administratorName string, parameters ServerAzureADAdministrator) (*http.Request, error) {
+func (client AdministratorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, administratorName string, parameters ServerAzureADAdministrator) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"administratorName": autorest.Encode("path", administratorName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -111,7 +111,7 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdatePreparer(ctx conte
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerAzureADAdministratorsClient) CreateOrUpdateSender(req *http.Request) (future ServerAzureADAdministratorsCreateOrUpdateFuture, err error) {
+func (client AdministratorsClient) CreateOrUpdateSender(req *http.Request) (future AdministratorsCreateOrUpdateFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -124,7 +124,7 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdateSender(req *http.R
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client ServerAzureADAdministratorsClient) CreateOrUpdateResponder(resp *http.Response) (result ServerAzureADAdministrator, err error) {
+func (client AdministratorsClient) CreateOrUpdateResponder(resp *http.Response) (result ServerAzureADAdministrator, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -141,9 +141,9 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdateResponder(resp *ht
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 // administratorName - the name of server active directory administrator.
-func (client ServerAzureADAdministratorsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (result ServerAzureADAdministratorsDeleteFuture, err error) {
+func (client AdministratorsClient) Delete(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (result AdministratorsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAzureADAdministratorsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdministratorsClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -154,13 +154,13 @@ func (client ServerAzureADAdministratorsClient) Delete(ctx context.Context, reso
 	}
 	req, err := client.DeletePreparer(ctx, resourceGroupName, serverName, administratorName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -168,7 +168,7 @@ func (client ServerAzureADAdministratorsClient) Delete(ctx context.Context, reso
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ServerAzureADAdministratorsClient) DeletePreparer(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (*http.Request, error) {
+func (client AdministratorsClient) DeletePreparer(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"administratorName": autorest.Encode("path", administratorName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -191,7 +191,7 @@ func (client ServerAzureADAdministratorsClient) DeletePreparer(ctx context.Conte
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerAzureADAdministratorsClient) DeleteSender(req *http.Request) (future ServerAzureADAdministratorsDeleteFuture, err error) {
+func (client AdministratorsClient) DeleteSender(req *http.Request) (future AdministratorsDeleteFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -204,7 +204,7 @@ func (client ServerAzureADAdministratorsClient) DeleteSender(req *http.Request) 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ServerAzureADAdministratorsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client AdministratorsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -220,9 +220,9 @@ func (client ServerAzureADAdministratorsClient) DeleteResponder(resp *http.Respo
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
 // administratorName - the name of server active directory administrator.
-func (client ServerAzureADAdministratorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (result ServerAzureADAdministrator, err error) {
+func (client AdministratorsClient) Get(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (result ServerAzureADAdministrator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAzureADAdministratorsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdministratorsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -233,27 +233,27 @@ func (client ServerAzureADAdministratorsClient) Get(ctx context.Context, resourc
 	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, serverName, administratorName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ServerAzureADAdministratorsClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (*http.Request, error) {
+func (client AdministratorsClient) GetPreparer(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"administratorName": autorest.Encode("path", administratorName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -276,14 +276,14 @@ func (client ServerAzureADAdministratorsClient) GetPreparer(ctx context.Context,
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerAzureADAdministratorsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client AdministratorsClient) GetSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ServerAzureADAdministratorsClient) GetResponder(resp *http.Response) (result ServerAzureADAdministrator, err error) {
+func (client AdministratorsClient) GetResponder(resp *http.Response) (result ServerAzureADAdministrator, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -299,9 +299,9 @@ func (client ServerAzureADAdministratorsClient) GetResponder(resp *http.Response
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
-func (client ServerAzureADAdministratorsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result AdministratorListResultPage, err error) {
+func (client AdministratorsClient) ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result AdministratorListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAzureADAdministratorsClient.ListByServer")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdministratorsClient.ListByServer")
 		defer func() {
 			sc := -1
 			if result.alr.Response.Response != nil {
@@ -313,27 +313,27 @@ func (client ServerAzureADAdministratorsClient) ListByServer(ctx context.Context
 	result.fn = client.listByServerNextResults
 	req, err := client.ListByServerPreparer(ctx, resourceGroupName, serverName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "ListByServer", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "ListByServer", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListByServerSender(req)
 	if err != nil {
 		result.alr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "ListByServer", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "ListByServer", resp, "Failure sending request")
 		return
 	}
 
 	result.alr, err = client.ListByServerResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "ListByServer", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "ListByServer", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // ListByServerPreparer prepares the ListByServer request.
-func (client ServerAzureADAdministratorsClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
+func (client AdministratorsClient) ListByServerPreparer(ctx context.Context, resourceGroupName string, serverName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
@@ -355,14 +355,14 @@ func (client ServerAzureADAdministratorsClient) ListByServerPreparer(ctx context
 
 // ListByServerSender sends the ListByServer request. The method will close the
 // http.Response Body if it receives an error.
-func (client ServerAzureADAdministratorsClient) ListByServerSender(req *http.Request) (*http.Response, error) {
+func (client AdministratorsClient) ListByServerSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
 // ListByServerResponder handles the response to the ListByServer request. The method always
 // closes the http.Response Body.
-func (client ServerAzureADAdministratorsClient) ListByServerResponder(resp *http.Response) (result AdministratorListResult, err error) {
+func (client AdministratorsClient) ListByServerResponder(resp *http.Response) (result AdministratorListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -374,10 +374,10 @@ func (client ServerAzureADAdministratorsClient) ListByServerResponder(resp *http
 }
 
 // listByServerNextResults retrieves the next set of results, if any.
-func (client ServerAzureADAdministratorsClient) listByServerNextResults(ctx context.Context, lastResults AdministratorListResult) (result AdministratorListResult, err error) {
+func (client AdministratorsClient) listByServerNextResults(ctx context.Context, lastResults AdministratorListResult) (result AdministratorListResult, err error) {
 	req, err := lastResults.administratorListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "listByServerNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "sql.AdministratorsClient", "listByServerNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -385,19 +385,19 @@ func (client ServerAzureADAdministratorsClient) listByServerNextResults(ctx cont
 	resp, err := client.ListByServerSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "listByServerNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "sql.AdministratorsClient", "listByServerNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListByServerResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "listByServerNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "sql.AdministratorsClient", "listByServerNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListByServerComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ServerAzureADAdministratorsClient) ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result AdministratorListResultIterator, err error) {
+func (client AdministratorsClient) ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result AdministratorListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAzureADAdministratorsClient.ListByServer")
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdministratorsClient.ListByServer")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

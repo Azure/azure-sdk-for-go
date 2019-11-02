@@ -205,18 +205,17 @@ func (client ServerAzureADAdministratorsClient) DeleteSender(req *http.Request) 
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ServerAzureADAdministratorsClient) DeleteResponder(resp *http.Response) (result ServerAzureADAdministrator, err error) {
+func (client ServerAzureADAdministratorsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 
-// Get gets an server Administrator.
+// Get gets a server Administrator.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.

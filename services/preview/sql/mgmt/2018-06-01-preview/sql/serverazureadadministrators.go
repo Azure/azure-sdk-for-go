@@ -43,7 +43,8 @@ func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptio
 	return ServerAzureADAdministratorsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates an existing Azure Active Directory administrator.
+// CreateOrUpdate creates a new Server Active Directory Administrator or updates an existing server Active Directory
+// Administrator
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -135,7 +136,7 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdateResponder(resp *ht
 	return
 }
 
-// Delete deletes the Azure Active Directory administrator with the given name.
+// Delete deletes an existing server Active Directory Administrator.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -214,7 +215,7 @@ func (client ServerAzureADAdministratorsClient) DeleteResponder(resp *http.Respo
 	return
 }
 
-// Get gets a Azure Active Directory administrator.
+// Get gets a server Administrator.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -294,7 +295,7 @@ func (client ServerAzureADAdministratorsClient) GetResponder(resp *http.Response
 	return
 }
 
-// ListByServer gets a list of Azure Active Directory administrators in a server.
+// ListByServer gets a list of server Administrators.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.

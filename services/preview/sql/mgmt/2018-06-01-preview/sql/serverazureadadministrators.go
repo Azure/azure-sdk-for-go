@@ -44,12 +44,12 @@ func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptio
 }
 
 // CreateOrUpdate creates a new Server Active Directory Administrator or updates an existing server Active Directory
-// Administrator
+// Administrator.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
-// parameters - the requested Azure Active Directory administrator Resource state.
+// parameters - the required parameters for creating or updating an Active Directory Administrator.
 func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName string, parameters ServerAzureADAdministrator) (result ServerAzureADAdministratorsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAzureADAdministratorsClient.CreateOrUpdate")

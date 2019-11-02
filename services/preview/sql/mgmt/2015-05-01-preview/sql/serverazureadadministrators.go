@@ -49,8 +49,8 @@ func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptio
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serverName - the name of the server.
-// properties - the required parameters for creating or updating an Active Directory Administrator.
-func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties ServerAzureADAdministrator) (result ServerAzureADAdministratorsCreateOrUpdateFuture, err error) {
+// parameters - the required parameters for creating or updating an Active Directory Administrator.
+func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName1 string, parameters ServerAzureADAdministrator) (result ServerAzureADAdministratorsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServerAzureADAdministratorsClient.CreateOrUpdate")
 		defer func() {
@@ -62,17 +62,17 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Conte
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: properties,
-			Constraints: []validation.Constraint{{Target: "properties.ServerAdministratorProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "properties.ServerAdministratorProperties.AdministratorType", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "properties.ServerAdministratorProperties.Login", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "properties.ServerAdministratorProperties.Sid", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "properties.ServerAdministratorProperties.TenantID", Name: validation.Null, Rule: true, Chain: nil},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.ServerAdministratorProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.ServerAdministratorProperties.AdministratorType", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.ServerAdministratorProperties.Login", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.ServerAdministratorProperties.Sid", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.ServerAdministratorProperties.TenantID", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("sql.ServerAzureADAdministratorsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, properties)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serverName, administratorName1, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -88,9 +88,10 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdate(ctx context.Conte
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ServerAzureADAdministratorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, properties ServerAzureADAdministrator) (*http.Request, error) {
+func (client ServerAzureADAdministratorsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, administratorName1 string, parameters ServerAzureADAdministrator) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"administratorName": autorest.Encode("path", "activeDirectory"),
+		"administratorName": autorest.Encode("path", administratorName1),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serverName":        autorest.Encode("path", serverName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -106,7 +107,7 @@ func (client ServerAzureADAdministratorsClient) CreateOrUpdatePreparer(ctx conte
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/administrators/{administratorName}", pathParameters),
-		autorest.WithJSON(properties),
+		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

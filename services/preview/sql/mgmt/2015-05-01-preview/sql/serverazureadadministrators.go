@@ -216,7 +216,7 @@ func (client ServerAzureADAdministratorsClient) DeleteResponder(resp *http.Respo
 	return
 }
 
-// Get returns an server Administrator.
+// Get gets an server Administrator.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -295,7 +295,7 @@ func (client ServerAzureADAdministratorsClient) GetResponder(resp *http.Response
 	return
 }
 
-// ListByServer returns a list of server Administrators.
+// ListByServer gets a list of server Administrators.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.

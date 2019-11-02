@@ -1450,10 +1450,17 @@ type FirewallPolicyRuleGroupProperties = original.FirewallPolicyRuleGroupPropert
 type FirewallPolicyRuleGroupsClient = original.FirewallPolicyRuleGroupsClient
 type FirewallPolicyRuleGroupsCreateOrUpdateFuture = original.FirewallPolicyRuleGroupsCreateOrUpdateFuture
 type FirewallPolicyRuleGroupsDeleteFuture = original.FirewallPolicyRuleGroupsDeleteFuture
+type FlowLog = original.FlowLog
 type FlowLogFormatParameters = original.FlowLogFormatParameters
 type FlowLogInformation = original.FlowLogInformation
+type FlowLogListResult = original.FlowLogListResult
 type FlowLogProperties = original.FlowLogProperties
+type FlowLogPropertiesFormat = original.FlowLogPropertiesFormat
+type FlowLogRequestParameters = original.FlowLogRequestParameters
 type FlowLogStatusParameters = original.FlowLogStatusParameters
+type FlowLogsClient = original.FlowLogsClient
+type FlowLogsCreateOrUpdateFuture = original.FlowLogsCreateOrUpdateFuture
+type FlowLogsDeleteFuture = original.FlowLogsDeleteFuture
 type FrontendIPConfiguration = original.FrontendIPConfiguration
 type FrontendIPConfigurationPropertiesFormat = original.FrontendIPConfigurationPropertiesFormat
 type GatewayRoute = original.GatewayRoute
@@ -2371,6 +2378,12 @@ func NewFirewallPolicyRuleGroupsClient(subscriptionID string) FirewallPolicyRule
 }
 func NewFirewallPolicyRuleGroupsClientWithBaseURI(baseURI string, subscriptionID string) FirewallPolicyRuleGroupsClient {
 	return original.NewFirewallPolicyRuleGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewFlowLogsClient(subscriptionID string) FlowLogsClient {
+	return original.NewFlowLogsClient(subscriptionID)
+}
+func NewFlowLogsClientWithBaseURI(baseURI string, subscriptionID string) FlowLogsClient {
+	return original.NewFlowLogsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewHubVirtualNetworkConnectionsClient(subscriptionID string) HubVirtualNetworkConnectionsClient {
 	return original.NewHubVirtualNetworkConnectionsClient(subscriptionID)

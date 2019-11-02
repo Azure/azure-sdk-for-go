@@ -506,6 +506,16 @@ type WatchersClientAPI interface {
 
 var _ WatchersClientAPI = (*network.WatchersClient)(nil)
 
+// FlowLogsClientAPI contains the set of methods on the FlowLogsClient type.
+type FlowLogsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters network.FlowLogRequestParameters) (result network.FlowLogsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string) (result network.FlowLogsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string) (result network.FlowLog, err error)
+	List(ctx context.Context, resourceGroupName string, networkWatcherName string) (result network.FlowLogListResult, err error)
+}
+
+var _ FlowLogsClientAPI = (*network.FlowLogsClient)(nil)
+
 // PacketCapturesClientAPI contains the set of methods on the PacketCapturesClient type.
 type PacketCapturesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, networkWatcherName string, packetCaptureName string, parameters network.PacketCapture) (result network.PacketCapturesCreateFuture, err error)

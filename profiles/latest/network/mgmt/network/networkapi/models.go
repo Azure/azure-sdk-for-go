@@ -51,6 +51,7 @@ type ExpressRoutePortsLocationsClientAPI = original.ExpressRoutePortsLocationsCl
 type ExpressRouteServiceProvidersClientAPI = original.ExpressRouteServiceProvidersClientAPI
 type FirewallPoliciesClientAPI = original.FirewallPoliciesClientAPI
 type FirewallPolicyRuleGroupsClientAPI = original.FirewallPolicyRuleGroupsClientAPI
+type FlowLogsClientAPI = original.FlowLogsClientAPI
 type HubVirtualNetworkConnectionsClientAPI = original.HubVirtualNetworkConnectionsClientAPI
 type IPGroupsClientAPI = original.IPGroupsClientAPI
 type InboundNatRulesClientAPI = original.InboundNatRulesClientAPI

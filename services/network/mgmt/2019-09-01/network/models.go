@@ -14796,6 +14796,121 @@ func (future *FirewallPolicyRuleGroupsDeleteFuture) Result(client FirewallPolicy
 	return
 }
 
+// FlowLog a flow log resource.
+type FlowLog struct {
+	autorest.Response `json:"-"`
+	// FlowLogPropertiesFormat - Properties of the flow log.
+	*FlowLogPropertiesFormat `json:"properties,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for FlowLog.
+func (fl FlowLog) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fl.FlowLogPropertiesFormat != nil {
+		objectMap["properties"] = fl.FlowLogPropertiesFormat
+	}
+	if fl.ID != nil {
+		objectMap["id"] = fl.ID
+	}
+	if fl.Location != nil {
+		objectMap["location"] = fl.Location
+	}
+	if fl.Tags != nil {
+		objectMap["tags"] = fl.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for FlowLog struct.
+func (fl *FlowLog) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var flowLogPropertiesFormat FlowLogPropertiesFormat
+				err = json.Unmarshal(*v, &flowLogPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				fl.FlowLogPropertiesFormat = &flowLogPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				fl.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				fl.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				fl.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				fl.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				fl.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				fl.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // FlowLogFormatParameters parameters that define the flow log format.
 type FlowLogFormatParameters struct {
 	// Type - The file type of flow log. Possible values include: 'JSON'
@@ -14872,6 +14987,13 @@ func (fli *FlowLogInformation) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// FlowLogListResult list of flow logs.
+type FlowLogListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Information about flow log resource.
+	Value *[]FlowLog `json:"value,omitempty"`
+}
+
 // FlowLogProperties parameters that define the configuration of flow log.
 type FlowLogProperties struct {
 	// StorageID - ID of the storage account which is used to store the flow log.
@@ -14882,6 +15004,76 @@ type FlowLogProperties struct {
 	RetentionPolicy *RetentionPolicyParameters `json:"retentionPolicy,omitempty"`
 	// Format - Parameters that define the flow log format.
 	Format *FlowLogFormatParameters `json:"format,omitempty"`
+}
+
+// FlowLogPropertiesFormat parameters that define the configuration of flow log.
+type FlowLogPropertiesFormat struct {
+	// TargetResourceID - ID of network security group to which flow log will be applied.
+	TargetResourceID *string `json:"targetResourceId,omitempty"`
+	// StorageID - ID of the storage account which is used to store the flow log.
+	StorageID *string `json:"storageId,omitempty"`
+	// Enabled - Flag to enable/disable flow logging.
+	Enabled *bool `json:"enabled,omitempty"`
+	// RetentionPolicy - Parameters that define the retention policy for flow log.
+	RetentionPolicy *RetentionPolicyParameters `json:"retentionPolicy,omitempty"`
+	// Format - Parameters that define the flow log format.
+	Format *FlowLogFormatParameters `json:"format,omitempty"`
+	// FlowAnalyticsConfiguration - Parameters that define the configuration of traffic analytics.
+	FlowAnalyticsConfiguration *TrafficAnalyticsProperties `json:"flowAnalyticsConfiguration,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the flow log. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// FlowLogsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type FlowLogsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *FlowLogsCreateOrUpdateFuture) Result(client FlowLogsClient) (fl FlowLog, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.FlowLogsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.FlowLogsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if fl.Response.Response, err = future.GetResult(sender); err == nil && fl.Response.Response.StatusCode != http.StatusNoContent {
+		fl, err = client.CreateOrUpdateResponder(fl.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "network.FlowLogsCreateOrUpdateFuture", "Result", fl.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// FlowLogsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type FlowLogsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *FlowLogsDeleteFuture) Result(client FlowLogsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.FlowLogsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.FlowLogsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // FlowLogStatusParameters parameters that define a resource to query flow log and traffic analytics

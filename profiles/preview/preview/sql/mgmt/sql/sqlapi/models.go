@@ -21,7 +21,6 @@ package sqlapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2018-06-01-preview/sql/sqlapi"
 
-type AdministratorsClientAPI = original.AdministratorsClientAPI
 type DatabaseSecurityAlertPoliciesClientAPI = original.DatabaseSecurityAlertPoliciesClientAPI
 type DatabasesClientAPI = original.DatabasesClientAPI
 type ElasticPoolsClientAPI = original.ElasticPoolsClientAPI
@@ -32,5 +31,6 @@ type ManagedDatabasesClientAPI = original.ManagedDatabasesClientAPI
 type ManagedInstanceVulnerabilityAssessmentsClientAPI = original.ManagedInstanceVulnerabilityAssessmentsClientAPI
 type ManagedInstancesClientAPI = original.ManagedInstancesClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type ServerAdministratorsClientAPI = original.ServerAdministratorsClientAPI
 type ServerVulnerabilityAssessmentsClientAPI = original.ServerVulnerabilityAssessmentsClientAPI
 type UsagesClientAPI = original.UsagesClientAPI

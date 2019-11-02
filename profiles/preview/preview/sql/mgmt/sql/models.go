@@ -118,9 +118,6 @@ type AdministratorListResult = original.AdministratorListResult
 type AdministratorListResultIterator = original.AdministratorListResultIterator
 type AdministratorListResultPage = original.AdministratorListResultPage
 type AdministratorProperties = original.AdministratorProperties
-type AdministratorsClient = original.AdministratorsClient
-type AdministratorsCreateOrUpdateFuture = original.AdministratorsCreateOrUpdateFuture
-type AdministratorsDeleteFuture = original.AdministratorsDeleteFuture
 type BaseClient = original.BaseClient
 type CompleteDatabaseRestoreDefinition = original.CompleteDatabaseRestoreDefinition
 type DatabaseSecurityAlertListResult = original.DatabaseSecurityAlertListResult
@@ -193,6 +190,9 @@ type SensitivityLabelListResult = original.SensitivityLabelListResult
 type SensitivityLabelListResultIterator = original.SensitivityLabelListResultIterator
 type SensitivityLabelListResultPage = original.SensitivityLabelListResultPage
 type SensitivityLabelProperties = original.SensitivityLabelProperties
+type ServerAdministratorsClient = original.ServerAdministratorsClient
+type ServerAdministratorsCreateOrUpdateFuture = original.ServerAdministratorsCreateOrUpdateFuture
+type ServerAdministratorsDeleteFuture = original.ServerAdministratorsDeleteFuture
 type ServerAzureADAdministrator = original.ServerAzureADAdministrator
 type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
 type ServerVulnerabilityAssessmentListResult = original.ServerVulnerabilityAssessmentListResult
@@ -217,12 +217,6 @@ func NewAdministratorListResultIterator(page AdministratorListResultPage) Admini
 }
 func NewAdministratorListResultPage(getNextPage func(context.Context, AdministratorListResult) (AdministratorListResult, error)) AdministratorListResultPage {
 	return original.NewAdministratorListResultPage(getNextPage)
-}
-func NewAdministratorsClient(subscriptionID string) AdministratorsClient {
-	return original.NewAdministratorsClient(subscriptionID)
-}
-func NewAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) AdministratorsClient {
-	return original.NewAdministratorsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatabaseSecurityAlertListResultIterator(page DatabaseSecurityAlertListResultPage) DatabaseSecurityAlertListResultIterator {
 	return original.NewDatabaseSecurityAlertListResultIterator(page)
@@ -325,6 +319,12 @@ func NewSensitivityLabelListResultIterator(page SensitivityLabelListResultPage) 
 }
 func NewSensitivityLabelListResultPage(getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
 	return original.NewSensitivityLabelListResultPage(getNextPage)
+}
+func NewServerAdministratorsClient(subscriptionID string) ServerAdministratorsClient {
+	return original.NewServerAdministratorsClient(subscriptionID)
+}
+func NewServerAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAdministratorsClient {
+	return original.NewServerAdministratorsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerVulnerabilityAssessmentListResultIterator(page ServerVulnerabilityAssessmentListResultPage) ServerVulnerabilityAssessmentListResultIterator {
 	return original.NewServerVulnerabilityAssessmentListResultIterator(page)

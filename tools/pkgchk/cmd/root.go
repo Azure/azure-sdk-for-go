@@ -16,6 +16,7 @@ package cmd
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -25,7 +26,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/internal/pkgs"
 
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 

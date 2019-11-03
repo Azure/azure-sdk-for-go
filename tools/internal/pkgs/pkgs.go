@@ -40,6 +40,7 @@ func (p Pkg) IsARMPackage() bool {
 	return strings.Index(p.Dest, "/mgmt/") > -1
 }
 
+// IsPreviewPackage returns if this package is preview package
 func (p Pkg) IsPreviewPackage() bool {
 	return strings.Index(p.Dest, "preview") > -1
 }

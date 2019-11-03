@@ -22,20 +22,19 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/pkgs"
 	"github.com/spf13/cobra"
 )
 
 var initCmd = &cobra.Command{
-	Use:   "init <searching dir> [initial module version]",
+	Use:   "init <searching dir>",
 	Short: "Initialize a package into go module with initial version",
 	Long: `This tool will detect every possible service under the searching directory, 
-and make them as module with initial version. The default version for new modules is v1.0.0 
-or the value specified for [initial module version].
+and make them as module with initial version. 
+The default version for new stable modules is v1.0.0 and for new preview modules is v0.0.0.
 NOTE: This command is only used on local and only for initial release.
 `,
-	Args: cobra.RangeArgs(1, 2),
+	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return theInitCommand(args)
 	},
@@ -82,11 +81,13 @@ func Version() string {
 	goVersion = `go 1.12`
 )
 
-var exceptFile string
+var classicalFile string
+var skipClassical bool
 
 func init() {
 	rootCmd.AddCommand(initCmd)
-	initCmd.PersistentFlags().StringVarP(&exceptFile, "exceptions", "e", "", "file for exception package list")
+	initCmd.PersistentFlags().StringVarP(&classicalFile, "classical", "c", "", "file for classical package list")
+	initCmd.PersistentFlags().BoolVarP(&skipClassical, "skip-classical", "s", false, "skip classical packages")
 }
 
 func theInitCommand(args []string) error {
@@ -94,15 +95,9 @@ func theInitCommand(args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get absolute path from '%s': %+v", args[0], err)
 	}
-	if len(args) == 2 {
-		if !modinfo.IsValidModuleVersion(args[1]) {
-			return fmt.Errorf("the string '%s' is not a valid module version", args[1])
-		}
-		startingModVer = args[1]
-	}
-	exceptions, err := loadExceptions(exceptFile)
+	classicalPackages, err := loadClassicalPackages(classicalFile)
 	if err != nil {
-		return fmt.Errorf("failed to load exceptions: %+v", err)
+		return fmt.Errorf("failed to load classical packages: %+v", err)
 	}
 	ps, err := pkgs.GetPkgs(root)
 	if err != nil {
@@ -110,8 +105,10 @@ func theInitCommand(args []string) error {
 	}
 	var errs []error
 	for _, p := range ps {
-		if _, ok := exceptions[p.Dest]; ok {
-			vprintf("Classical package %s, skip\n", p.Dest)
+		// test if this is a classical package
+		_, classical := classicalPackages[p.Dest]
+		if classical && skipClassical {
+			vprintf("Skipping classical package: %s\n", p.Dest)
 			continue
 		}
 		path := filepath.Join(root, p.Dest)
@@ -119,16 +116,19 @@ func theInitCommand(args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get tag prefix: %+v", err)
 		}
-		vprintf("TagPrefix: %s\n", tagPrefix)
-		if err := createVersionFile(root, p, tagPrefix); err != nil {
-			errs = append(errs, err)
+		// get tag and ver
+		startingVer := getStartingVer(p)
+		tag := tagPrefix + "/" + startingVer
+		ver := versionGoRegex.FindString(startingVer)
+		if !classical {
+			if err := createVersionFile(root, p, tag, ver); err != nil {
+				errs = append(errs, err)
+			}
 		}
 		if err := createGoModFile(root, p); err != nil {
 			errs = append(errs, err)
 		}
-		if err := createChangeLogFile(root, p); err != nil {
-			errs = append(errs, err)
-		}
+		vprintf("Created module: %s\n", tag)
 	}
 	// handle errors
 	if len(errs) == 0 {
@@ -140,14 +140,12 @@ func theInitCommand(args []string) error {
 	return fmt.Errorf("execution failed with %d errors", len(errs))
 }
 
-func createVersionFile(root string, p pkgs.Pkg, tagPrefix string) error {
+func createVersionFile(root string, p pkgs.Pkg, tag, ver string) error {
 	verFilePath := filepath.Join(root, p.Dest, "version.go")
 	apiVersion, err := p.GetAPIVersion()
 	if err != nil {
 		return fmt.Errorf("failed to get api version of package %s: %+v", p.Dest, err)
 	}
-	tag := tagPrefix + "/" + startingModVer
-	ver := versionGoRegex.FindString(startingModVer)
 	content := fmt.Sprintf(initialVerGo, p.Package.Name, ver, p.Package.Name, apiVersion, ver, tag)
 	err = ioutil.WriteFile(verFilePath, []byte(content), 0755)
 	if err != nil {
@@ -172,18 +170,14 @@ func createGoModFile(root string, p pkgs.Pkg) error {
 	return nil
 }
 
-func createChangeLogFile(root string, p pkgs.Pkg) error {
-	logFilePath := filepath.Join(root, p.Dest, changeLogName)
-	log, err := os.Create(logFilePath)
-	if err != nil {
-		return fmt.Errorf("failed to create %s: %v", changeLogName, err)
+func getStartingVer(p pkgs.Pkg) string {
+	if p.IsPreviewPackage() {
+		return startingModVerPreview
 	}
-	defer log.Close()
-	_, err = log.WriteString("No changes to exported content compared to the previous release.\n")
-	return err
+	return startingModVer
 }
 
-func loadExceptions(exceptFile string) (map[string]bool, error) {
+func loadClassicalPackages(exceptFile string) (map[string]bool, error) {
 	result := make(map[string]bool)
 	if exceptFile == "" {
 		return result, nil

@@ -39,8 +39,8 @@ var unstageCmd = &cobra.Command{
 breaking changes.  If there are no breaking changes the latest major version is updated
 with the staged content.  If there are breaking changes the staged content becomes the
 next latest major version and the go.mod file is updated.
-The default version for new stable modules is v1.0.0 and for new preview modules is v0.0.0 
-or the value specified for [initial module version].
+The default version for new stable modules is v1.0.0 or the value specified for [initial module version].
+The default version for new preview modules is v0.0.0.
 `,
 	Args: cobra.RangeArgs(1, 2),
 	RunE: func(cmd *cobra.Command, args []string) error {

@@ -35,15 +35,19 @@ type Pkg struct {
 	Package *ast.Package
 }
 
-// IsARMPkg returns if this package is ARM package (management plane)
-func (p Pkg) IsARMPkg() bool {
+// IsARMPackage returns if this package is ARM package (management plane)
+func (p Pkg) IsARMPackage() bool {
 	return strings.Index(p.Dest, "/mgmt/") > -1
+}
+
+func (p Pkg) IsPreviewPackage() bool {
+	return strings.Index(p.Dest, "preview") > -1
 }
 
 // GetAPIVersion returns the api version of this package
 func (p Pkg) GetAPIVersion() (string, error) {
 	dest := p.Dest
-	if p.IsARMPkg() {
+	if p.IsARMPackage() {
 		// management-plane
 		regex := regexp.MustCompile(`mgmt/(.+)/`)
 		groups := regex.FindStringSubmatch(dest)

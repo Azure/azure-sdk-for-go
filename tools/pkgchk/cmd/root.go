@@ -173,7 +173,7 @@ func verifyDirectoryStructure(p pkgs.Pkg) error {
 	// /preview/signalr/mgmt/2018-03-01-preview/signalr
 	// /preview/security/mgmt/v2.0/security (version scheme for composite packages)
 	// /network/mgmt/2019-10-01/network/v2 (new with modules)
-	if !p.IsARMPkg() {
+	if !p.IsARMPackage() {
 		return nil
 	}
 	regexStr := strings.Join([]string{

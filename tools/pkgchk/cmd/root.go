@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -60,15 +59,15 @@ func Execute() {
 func theCommand(args []string) error {
 	rootDir, err := filepath.Abs(args[0])
 	if err != nil {
-		return errors.Wrap(err, "failed to get absolute path")
+		return fmt.Errorf("failed to get absolute path: %+v", err)
 	}
 	ps, err := pkgs.GetPkgs(rootDir)
 	if err != nil {
-		return errors.Wrap(err, "failed to get packages")
+		return fmt.Errorf("failed to get packages: %+v", err)
 	}
 	exceptions, err := loadExceptions(exceptFileFlag)
 	if err != nil {
-		return errors.Wrap(err, "failed to load exceptions")
+		return fmt.Errorf("failed to load exceptions: %+v", err)
 	}
 	verifiers := getVerifiers()
 	count := 0
@@ -107,17 +106,17 @@ func loadExceptions(exceptFile string) ([]string, error) {
 		return nil, err
 	}
 	defer f.Close()
-	exceps := []string{}
+	var excepts []string
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		exceps = append(exceps, scanner.Text())
+		excepts = append(excepts, scanner.Text())
 	}
 	if err = scanner.Err(); err != nil {
 		return nil, err
 	}
 
-	return exceps, nil
+	return excepts, nil
 }
 
 type verifier func(p pkgs.Pkg) error

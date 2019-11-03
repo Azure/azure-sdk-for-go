@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package fooapi
+package foo
 
-import "github.com/Azure/azure-sdk-for-go/tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo"
-
-// GatewaysClientAPI ...
-type GatewaysClientAPI interface {
-	CreateOrUpdate(resGroup string, parameters foo.Gateway) error
+// Gateway ...
+type Gateway struct {
+	// Name ...
+	Name *string
+	// ID is an ID for a gateway instance
+	ID *int
 }

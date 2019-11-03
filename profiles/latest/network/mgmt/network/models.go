@@ -1456,6 +1456,7 @@ type FlowLogInformation = original.FlowLogInformation
 type FlowLogListResult = original.FlowLogListResult
 type FlowLogProperties = original.FlowLogProperties
 type FlowLogPropertiesFormat = original.FlowLogPropertiesFormat
+type FlowLogRequest = original.FlowLogRequest
 type FlowLogRequestParameters = original.FlowLogRequestParameters
 type FlowLogStatusParameters = original.FlowLogStatusParameters
 type FlowLogsClient = original.FlowLogsClient

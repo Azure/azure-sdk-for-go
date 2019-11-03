@@ -15026,6 +15026,59 @@ type FlowLogPropertiesFormat struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// FlowLogRequest parameters that define the configuration of flow log.
+type FlowLogRequest struct {
+	// Location - Flow log location.
+	Location *string `json:"location,omitempty"`
+	// FlowLogRequestParameters - Properties of the flow log.
+	*FlowLogRequestParameters `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FlowLogRequest.
+func (flr FlowLogRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if flr.Location != nil {
+		objectMap["location"] = flr.Location
+	}
+	if flr.FlowLogRequestParameters != nil {
+		objectMap["properties"] = flr.FlowLogRequestParameters
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for FlowLogRequest struct.
+func (flr *FlowLogRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				flr.Location = &location
+			}
+		case "properties":
+			if v != nil {
+				var flowLogRequestParameters FlowLogRequestParameters
+				err = json.Unmarshal(*v, &flowLogRequestParameters)
+				if err != nil {
+					return err
+				}
+				flr.FlowLogRequestParameters = &flowLogRequestParameters
+			}
+		}
+	}
+
+	return nil
+}
+
 // FlowLogRequestParameters parameters that define the configuration of flow log.
 type FlowLogRequestParameters struct {
 	// TargetResourceID - ID of network security group to which flow log will be applied.

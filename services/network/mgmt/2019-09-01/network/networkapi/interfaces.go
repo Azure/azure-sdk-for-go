@@ -508,7 +508,7 @@ var _ WatchersClientAPI = (*network.WatchersClient)(nil)
 
 // FlowLogsClientAPI contains the set of methods on the FlowLogsClient type.
 type FlowLogsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters network.FlowLogRequestParameters) (result network.FlowLogsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters network.FlowLogRequest) (result network.FlowLogsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string) (result network.FlowLogsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string) (result network.FlowLog, err error)
 	List(ctx context.Context, resourceGroupName string, networkWatcherName string) (result network.FlowLogListResult, err error)

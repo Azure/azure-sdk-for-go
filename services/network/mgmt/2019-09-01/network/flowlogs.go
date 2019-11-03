@@ -47,7 +47,7 @@ func NewFlowLogsClientWithBaseURI(baseURI string, subscriptionID string) FlowLog
 // networkWatcherName - the name of the network watcher.
 // flowLogName - the name of the flow log.
 // parameters - parameters that define the create or update flow log resource.
-func (client FlowLogsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLogRequestParameters) (result FlowLogsCreateOrUpdateFuture, err error) {
+func (client FlowLogsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLogRequest) (result FlowLogsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FlowLogsClient.CreateOrUpdate")
 		defer func() {
@@ -60,8 +60,10 @@ func (client FlowLogsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "parameters.StorageID", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "parameters.FlowLogRequestParameters", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.FlowLogRequestParameters.TargetResourceID", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.FlowLogRequestParameters.StorageID", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
 		return result, validation.NewError("network.FlowLogsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -81,7 +83,7 @@ func (client FlowLogsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client FlowLogsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLogRequestParameters) (*http.Request, error) {
+func (client FlowLogsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, parameters FlowLogRequest) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"flowLogName":        autorest.Encode("path", flowLogName),
 		"networkWatcherName": autorest.Encode("path", networkWatcherName),

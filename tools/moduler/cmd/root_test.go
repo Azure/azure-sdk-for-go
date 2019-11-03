@@ -56,6 +56,26 @@ var (
 		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.1",
 		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.2",
 		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.0.1",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.0",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.1",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
 	}
 )
 
@@ -103,6 +123,11 @@ func Test_findAllVersionFiles(t *testing.T) {
 		"../../testdata/scenarioi/foo/mgmt/2019-10-23/foo/version.go",
 		"../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/version.go",
 		"../../testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2/version.go",
+		"../../testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/version.go",
+		"../../testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/version.go",
+		"../../testdata/scenariom/foo/mgmt/2019-11-01-preview/foo/version.go",
+		"../../testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/version.go",
+		"../../testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/version.go",
 	}
 	root, err := filepath.Abs("../../testdata")
 	if err != nil {
@@ -185,6 +210,11 @@ func Test_readNewTags(t *testing.T) {
 		"tools/testdata/scenarioi/foo/mgmt/2019-10-23/foo/v1.1.2",
 		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v1.1.2",
 		"tools/testdata/scenarioj/foo/mgmt/2019-10-23/foo/v2.0.0",
+		"tools/testdata/scenariok/foo/mgmt/2019-11-01-preview/foo/v0.2.0",
+		"tools/testdata/scenariol/foo/mgmt/2019-11-01-preview/foo/v0.2.0",
+		"tools/testdata/scenariom/foo/mgmt/2019-11-01-preview/foo/v0.0.0",
+		"tools/testdata/scenarion/foo/mgmt/2019-11-01-preview/foo/v0.1.3",
+		"tools/testdata/scenarioo/foo/mgmt/2019-11-01-preview/foo/v0.1.2",
 	}
 	root, err := filepath.Abs("../../testdata")
 	if err != nil {

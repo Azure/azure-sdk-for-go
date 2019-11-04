@@ -240,6 +240,13 @@ const (
 	QuotaID                     ReasonCode = original.QuotaID
 )
 
+type RoutingChoice = original.RoutingChoice
+
+const (
+	InternetRouting  RoutingChoice = original.InternetRouting
+	MicrosoftRouting RoutingChoice = original.MicrosoftRouting
+)
+
 type Services = original.Services
 
 const (
@@ -310,11 +317,13 @@ const (
 type Account = original.Account
 type AccountCheckNameAvailabilityParameters = original.AccountCheckNameAvailabilityParameters
 type AccountCreateParameters = original.AccountCreateParameters
+type AccountInternetEndpoints = original.AccountInternetEndpoints
 type AccountKey = original.AccountKey
 type AccountListKeysResult = original.AccountListKeysResult
 type AccountListResult = original.AccountListResult
 type AccountListResultIterator = original.AccountListResultIterator
 type AccountListResultPage = original.AccountListResultPage
+type AccountMicrosoftEndpoints = original.AccountMicrosoftEndpoints
 type AccountProperties = original.AccountProperties
 type AccountPropertiesCreateParameters = original.AccountPropertiesCreateParameters
 type AccountPropertiesUpdateParameters = original.AccountPropertiesUpdateParameters
@@ -408,6 +417,7 @@ type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionSt
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type Restriction = original.Restriction
+type RoutingPreference = original.RoutingPreference
 type SKUCapability = original.SKUCapability
 type ServiceSasParameters = original.ServiceSasParameters
 type ServiceSpecification = original.ServiceSpecification
@@ -593,6 +603,9 @@ func PossibleReasonCodeValues() []ReasonCode {
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
+}
+func PossibleRoutingChoiceValues() []RoutingChoice {
+	return original.PossibleRoutingChoiceValues()
 }
 func PossibleServicesValues() []Services {
 	return original.PossibleServicesValues()

@@ -21,6 +21,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -2379,7 +2380,7 @@ type AzureFileShareProtectionPolicy struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -2404,11 +2405,6 @@ func (afspp AzureFileShareProtectionPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureFileShareProtectionPolicy.
-func (afspp AzureFileShareProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureFileShareProtectionPolicy is the BasicProtectionPolicy implementation for AzureFileShareProtectionPolicy.
 func (afspp AzureFileShareProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFileShareProtectionPolicy, bool) {
 	return &afspp, true
@@ -2421,6 +2417,11 @@ func (afspp AzureFileShareProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*Az
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for AzureFileShareProtectionPolicy.
 func (afspp AzureFileShareProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureFileShareProtectionPolicy.
+func (afspp AzureFileShareProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 
@@ -4174,6 +4175,7 @@ type AzureIaaSVMProtectedItemExtendedInfo struct {
 
 // AzureIaaSVMProtectionPolicy iaaS VM workload-specific backup policy.
 type AzureIaaSVMProtectionPolicy struct {
+	InstantRPDetails *InstantRPAdditionalDetails `json:"instantRPDetails,omitempty"`
 	// SchedulePolicy - Backup schedule specified as part of backup policy.
 	SchedulePolicy BasicSchedulePolicy `json:"schedulePolicy,omitempty"`
 	// RetentionPolicy - Retention policy with the details on backup copy retention ranges.
@@ -4184,7 +4186,7 @@ type AzureIaaSVMProtectionPolicy struct {
 	TimeZone *string `json:"timeZone,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -4192,6 +4194,9 @@ type AzureIaaSVMProtectionPolicy struct {
 func (aispp AzureIaaSVMProtectionPolicy) MarshalJSON() ([]byte, error) {
 	aispp.BackupManagementType = BackupManagementTypeAzureIaasVM
 	objectMap := make(map[string]interface{})
+	if aispp.InstantRPDetails != nil {
+		objectMap["instantRPDetails"] = aispp.InstantRPDetails
+	}
 	objectMap["schedulePolicy"] = aispp.SchedulePolicy
 	objectMap["retentionPolicy"] = aispp.RetentionPolicy
 	if aispp.InstantRpRetentionRangeInDays != nil {
@@ -4209,11 +4214,6 @@ func (aispp AzureIaaSVMProtectionPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureIaaSVMProtectionPolicy.
-func (aispp AzureIaaSVMProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureFileShareProtectionPolicy is the BasicProtectionPolicy implementation for AzureIaaSVMProtectionPolicy.
 func (aispp AzureIaaSVMProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFileShareProtectionPolicy, bool) {
 	return nil, false
@@ -4226,6 +4226,11 @@ func (aispp AzureIaaSVMProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*Azure
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for AzureIaaSVMProtectionPolicy.
 func (aispp AzureIaaSVMProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureIaaSVMProtectionPolicy.
+func (aispp AzureIaaSVMProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 
@@ -4258,6 +4263,15 @@ func (aispp *AzureIaaSVMProtectionPolicy) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "instantRPDetails":
+			if v != nil {
+				var instantRPDetails InstantRPAdditionalDetails
+				err = json.Unmarshal(*v, &instantRPDetails)
+				if err != nil {
+					return err
+				}
+				aispp.InstantRPDetails = &instantRPDetails
+			}
 		case "schedulePolicy":
 			if v != nil {
 				schedulePolicy, err := unmarshalBasicSchedulePolicy(*v)
@@ -4991,7 +5005,7 @@ type AzureSQLProtectionPolicy struct {
 	RetentionPolicy BasicRetentionPolicy `json:"retentionPolicy,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -5009,11 +5023,6 @@ func (aspp AzureSQLProtectionPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
-func (aspp AzureSQLProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureFileShareProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
 func (aspp AzureSQLProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFileShareProtectionPolicy, bool) {
 	return nil, false
@@ -5027,6 +5036,11 @@ func (aspp AzureSQLProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaS
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
 func (aspp AzureSQLProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
 	return &aspp, true
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
+func (aspp AzureSQLProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
+	return nil, false
 }
 
 // AsGenericProtectionPolicy is the BasicProtectionPolicy implementation for AzureSQLProtectionPolicy.
@@ -6397,7 +6411,7 @@ type AzureVMWorkloadProtectionPolicy struct {
 	MakePolicyConsistent *bool `json:"makePolicyConsistent,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -6426,11 +6440,6 @@ func (avwpp AzureVMWorkloadProtectionPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
-func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return &avwpp, true
-}
-
 // AsAzureFileShareProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
 func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFileShareProtectionPolicy, bool) {
 	return nil, false
@@ -6444,6 +6453,11 @@ func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*A
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
 func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
 	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
+func (avwpp AzureVMWorkloadProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
+	return &avwpp, true
 }
 
 // AsGenericProtectionPolicy is the BasicProtectionPolicy implementation for AzureVMWorkloadProtectionPolicy.
@@ -12981,7 +12995,7 @@ type GenericProtectionPolicy struct {
 	FabricName *string `json:"fabricName,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -13007,11 +13021,6 @@ func (gpp GenericProtectionPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for GenericProtectionPolicy.
-func (gpp GenericProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureFileShareProtectionPolicy is the BasicProtectionPolicy implementation for GenericProtectionPolicy.
 func (gpp GenericProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFileShareProtectionPolicy, bool) {
 	return nil, false
@@ -13024,6 +13033,11 @@ func (gpp GenericProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVM
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for GenericProtectionPolicy.
 func (gpp GenericProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for GenericProtectionPolicy.
+func (gpp GenericProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 
@@ -15293,7 +15307,7 @@ type MabProtectionPolicy struct {
 	RetentionPolicy BasicRetentionPolicy `json:"retentionPolicy,omitempty"`
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -15312,11 +15326,6 @@ func (mpp MabProtectionPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for MabProtectionPolicy.
-func (mpp MabProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureFileShareProtectionPolicy is the BasicProtectionPolicy implementation for MabProtectionPolicy.
 func (mpp MabProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFileShareProtectionPolicy, bool) {
 	return nil, false
@@ -15329,6 +15338,11 @@ func (mpp MabProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProt
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for MabProtectionPolicy.
 func (mpp MabProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for MabProtectionPolicy.
+func (mpp MabProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 
@@ -17849,12 +17863,41 @@ func NewProtectionIntentResourceListPage(getNextPage func(context.Context, Prote
 	return ProtectionIntentResourceListPage{fn: getNextPage}
 }
 
+// ProtectionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ProtectionPoliciesCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ProtectionPoliciesCreateOrUpdateFuture) Result(client ProtectionPoliciesClient) (ppr ProtectionPolicyResource, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "backup.ProtectionPoliciesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("backup.ProtectionPoliciesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ppr.Response.Response, err = future.GetResult(sender); err == nil && ppr.Response.Response.StatusCode != http.StatusNoContent {
+		ppr, err = client.CreateOrUpdateResponder(ppr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "backup.ProtectionPoliciesCreateOrUpdateFuture", "Result", ppr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // BasicProtectionPolicy base class for backup policy. Workload-specific backup policies are derived from this class.
 type BasicProtectionPolicy interface {
-	AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool)
 	AsAzureFileShareProtectionPolicy() (*AzureFileShareProtectionPolicy, bool)
 	AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtectionPolicy, bool)
 	AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool)
+	AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool)
 	AsGenericProtectionPolicy() (*GenericProtectionPolicy, bool)
 	AsMabProtectionPolicy() (*MabProtectionPolicy, bool)
 	AsProtectionPolicy() (*ProtectionPolicy, bool)
@@ -17865,7 +17908,7 @@ type BasicProtectionPolicy interface {
 type ProtectionPolicy struct {
 	// ProtectedItemsCount - Number of items associated with this policy.
 	ProtectedItemsCount *int32 `json:"protectedItemsCount,omitempty"`
-	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
+	// BackupManagementType - Possible values include: 'BackupManagementTypeProtectionPolicy', 'BackupManagementTypeAzureStorage', 'BackupManagementTypeAzureIaasVM', 'BackupManagementTypeAzureSQL', 'BackupManagementTypeAzureWorkload', 'BackupManagementTypeGenericProtectionPolicy', 'BackupManagementTypeMAB'
 	BackupManagementType ManagementTypeBasicProtectionPolicy `json:"backupManagementType,omitempty"`
 }
 
@@ -17877,10 +17920,6 @@ func unmarshalBasicProtectionPolicy(body []byte) (BasicProtectionPolicy, error) 
 	}
 
 	switch m["backupManagementType"] {
-	case string(BackupManagementTypeAzureWorkload):
-		var avwpp AzureVMWorkloadProtectionPolicy
-		err := json.Unmarshal(body, &avwpp)
-		return avwpp, err
 	case string(BackupManagementTypeAzureStorage):
 		var afspp AzureFileShareProtectionPolicy
 		err := json.Unmarshal(body, &afspp)
@@ -17893,6 +17932,10 @@ func unmarshalBasicProtectionPolicy(body []byte) (BasicProtectionPolicy, error) 
 		var aspp AzureSQLProtectionPolicy
 		err := json.Unmarshal(body, &aspp)
 		return aspp, err
+	case string(BackupManagementTypeAzureWorkload):
+		var avwpp AzureVMWorkloadProtectionPolicy
+		err := json.Unmarshal(body, &avwpp)
+		return avwpp, err
 	case string(BackupManagementTypeGenericProtectionPolicy):
 		var gpp GenericProtectionPolicy
 		err := json.Unmarshal(body, &gpp)
@@ -17939,11 +17982,6 @@ func (pp ProtectionPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for ProtectionPolicy.
-func (pp ProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
-	return nil, false
-}
-
 // AsAzureFileShareProtectionPolicy is the BasicProtectionPolicy implementation for ProtectionPolicy.
 func (pp ProtectionPolicy) AsAzureFileShareProtectionPolicy() (*AzureFileShareProtectionPolicy, bool) {
 	return nil, false
@@ -17956,6 +17994,11 @@ func (pp ProtectionPolicy) AsAzureIaaSVMProtectionPolicy() (*AzureIaaSVMProtecti
 
 // AsAzureSQLProtectionPolicy is the BasicProtectionPolicy implementation for ProtectionPolicy.
 func (pp ProtectionPolicy) AsAzureSQLProtectionPolicy() (*AzureSQLProtectionPolicy, bool) {
+	return nil, false
+}
+
+// AsAzureVMWorkloadProtectionPolicy is the BasicProtectionPolicy implementation for ProtectionPolicy.
+func (pp ProtectionPolicy) AsAzureVMWorkloadProtectionPolicy() (*AzureVMWorkloadProtectionPolicy, bool) {
 	return nil, false
 }
 

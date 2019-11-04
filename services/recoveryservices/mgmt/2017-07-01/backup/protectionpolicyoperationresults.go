@@ -89,7 +89,7 @@ func (client ProtectionPolicyOperationResultsClient) GetPreparer(ctx context.Con
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2019-05-13"
+	const APIVersion = "2019-06-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -23,6 +23,29 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// PoliciesClientAPI contains the set of methods on the PoliciesClient type.
+type PoliciesClientAPI interface {
+	List(ctx context.Context, vaultName string, resourceGroupName string, filter string) (result backup.ProtectionPolicyResourceListPage, err error)
+}
+
+var _ PoliciesClientAPI = (*backup.PoliciesClient)(nil)
+
+// ProtectionPoliciesClientAPI contains the set of methods on the ProtectionPoliciesClient type.
+type ProtectionPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, policyName string, parameters backup.ProtectionPolicyResource) (result backup.ProtectionPoliciesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, vaultName string, resourceGroupName string, policyName string) (result autorest.Response, err error)
+	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string) (result backup.ProtectionPolicyResource, err error)
+}
+
+var _ ProtectionPoliciesClientAPI = (*backup.ProtectionPoliciesClient)(nil)
+
+// ProtectionPolicyOperationResultsClientAPI contains the set of methods on the ProtectionPolicyOperationResultsClient type.
+type ProtectionPolicyOperationResultsClientAPI interface {
+	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string) (result backup.ProtectionPolicyResource, err error)
+}
+
+var _ ProtectionPolicyOperationResultsClientAPI = (*backup.ProtectionPolicyOperationResultsClient)(nil)
+
 // ResourceVaultConfigsClientAPI contains the set of methods on the ResourceVaultConfigsClient type.
 type ResourceVaultConfigsClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string) (result backup.ResourceVaultConfigResource, err error)
@@ -61,29 +84,6 @@ type RestoresClientAPI interface {
 }
 
 var _ RestoresClientAPI = (*backup.RestoresClient)(nil)
-
-// PoliciesClientAPI contains the set of methods on the PoliciesClient type.
-type PoliciesClientAPI interface {
-	List(ctx context.Context, vaultName string, resourceGroupName string, filter string) (result backup.ProtectionPolicyResourceListPage, err error)
-}
-
-var _ PoliciesClientAPI = (*backup.PoliciesClient)(nil)
-
-// ProtectionPoliciesClientAPI contains the set of methods on the ProtectionPoliciesClient type.
-type ProtectionPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, policyName string, parameters backup.ProtectionPolicyResource) (result backup.ProtectionPolicyResource, err error)
-	Delete(ctx context.Context, vaultName string, resourceGroupName string, policyName string) (result autorest.Response, err error)
-	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string) (result backup.ProtectionPolicyResource, err error)
-}
-
-var _ ProtectionPoliciesClientAPI = (*backup.ProtectionPoliciesClient)(nil)
-
-// ProtectionPolicyOperationResultsClientAPI contains the set of methods on the ProtectionPolicyOperationResultsClient type.
-type ProtectionPolicyOperationResultsClientAPI interface {
-	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string) (result backup.ProtectionPolicyResource, err error)
-}
-
-var _ ProtectionPolicyOperationResultsClientAPI = (*backup.ProtectionPolicyOperationResultsClient)(nil)
 
 // JobsClientAPI contains the set of methods on the JobsClient type.
 type JobsClientAPI interface {

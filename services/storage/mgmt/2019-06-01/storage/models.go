@@ -1622,11 +1622,11 @@ type DateAfterModification struct {
 	DaysAfterModificationGreaterThan *float64 `json:"daysAfterModificationGreaterThan,omitempty"`
 }
 
-// DeleteRetentionPolicy the blob service properties for soft delete.
+// DeleteRetentionPolicy the service properties for soft delete.
 type DeleteRetentionPolicy struct {
-	// Enabled - Indicates whether DeleteRetentionPolicy is enabled for the Blob service.
+	// Enabled - Indicates whether DeleteRetentionPolicy is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
-	// Days - Indicates the number of days that the deleted blob should be retained. The minimum specified value can be 1 and the maximum value can be 365.
+	// Days - Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.
 	Days *int32 `json:"days,omitempty"`
 }
 

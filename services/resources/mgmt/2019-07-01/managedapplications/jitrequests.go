@@ -61,7 +61,16 @@ func (client JitRequestsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\p{L}\._\(\)\w]+$`, Chain: nil}}},
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.JitRequestProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.JitRequestProperties.ApplicationResourceID", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.JitRequestProperties.JitAuthorizationPolicies", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.JitRequestProperties.JitSchedulingPolicy", Name: validation.Null, Rule: true,
+						Chain: []validation.Constraint{{Target: "parameters.JitRequestProperties.JitSchedulingPolicy.Duration", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "parameters.JitRequestProperties.JitSchedulingPolicy.StartTime", Name: validation.Null, Rule: true, Chain: nil},
+						}},
+				}}}}}); err != nil {
 		return result, validation.NewError("managedapplications.JitRequestsClient", "CreateOrUpdate", err.Error())
 	}
 

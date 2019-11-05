@@ -54,6 +54,13 @@ type PolicyEvent = original.PolicyEvent
 type PolicyEventsClient = original.PolicyEventsClient
 type PolicyEventsQueryResults = original.PolicyEventsQueryResults
 type PolicyGroupSummary = original.PolicyGroupSummary
+type PolicyMetadata = original.PolicyMetadata
+type PolicyMetadataClient = original.PolicyMetadataClient
+type PolicyMetadataCollection = original.PolicyMetadataCollection
+type PolicyMetadataCollectionIterator = original.PolicyMetadataCollectionIterator
+type PolicyMetadataCollectionPage = original.PolicyMetadataCollectionPage
+type PolicyMetadataProperties = original.PolicyMetadataProperties
+type PolicyMetadataSlimProperties = original.PolicyMetadataSlimProperties
 type PolicyState = original.PolicyState
 type PolicyStatesClient = original.PolicyStatesClient
 type PolicyStatesQueryResults = original.PolicyStatesQueryResults
@@ -76,6 +83,7 @@ type RemediationListResultIterator = original.RemediationListResultIterator
 type RemediationListResultPage = original.RemediationListResultPage
 type RemediationProperties = original.RemediationProperties
 type RemediationsClient = original.RemediationsClient
+type SlimPolicyMetadata = original.SlimPolicyMetadata
 type String = original.String
 type SummarizeResults = original.SummarizeResults
 type Summary = original.Summary
@@ -97,6 +105,18 @@ func NewPolicyEventsClient() PolicyEventsClient {
 }
 func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
 	return original.NewPolicyEventsClientWithBaseURI(baseURI)
+}
+func NewPolicyMetadataClient() PolicyMetadataClient {
+	return original.NewPolicyMetadataClient()
+}
+func NewPolicyMetadataClientWithBaseURI(baseURI string) PolicyMetadataClient {
+	return original.NewPolicyMetadataClientWithBaseURI(baseURI)
+}
+func NewPolicyMetadataCollectionIterator(page PolicyMetadataCollectionPage) PolicyMetadataCollectionIterator {
+	return original.NewPolicyMetadataCollectionIterator(page)
+}
+func NewPolicyMetadataCollectionPage(getNextPage func(context.Context, PolicyMetadataCollection) (PolicyMetadataCollection, error)) PolicyMetadataCollectionPage {
+	return original.NewPolicyMetadataCollectionPage(getNextPage)
 }
 func NewPolicyStatesClient() PolicyStatesClient {
 	return original.NewPolicyStatesClient()

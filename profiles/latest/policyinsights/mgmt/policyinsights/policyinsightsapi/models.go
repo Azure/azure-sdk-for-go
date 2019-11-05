@@ -23,6 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/policyinsights/mgmt/
 
 type OperationsClientAPI = original.OperationsClientAPI
 type PolicyEventsClientAPI = original.PolicyEventsClientAPI
+type PolicyMetadataClientAPI = original.PolicyMetadataClientAPI
 type PolicyStatesClientAPI = original.PolicyStatesClientAPI
 type PolicyTrackedResourcesClientAPI = original.PolicyTrackedResourcesClientAPI
 type RemediationsClientAPI = original.RemediationsClientAPI

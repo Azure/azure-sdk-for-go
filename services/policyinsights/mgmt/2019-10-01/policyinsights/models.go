@@ -645,6 +645,266 @@ type PolicyGroupSummary struct {
 	Results *SummaryResults `json:"results,omitempty"`
 }
 
+// PolicyMetadata policy metadata resource definition.
+type PolicyMetadata struct {
+	autorest.Response `json:"-"`
+	// PolicyMetadataProperties - Properties of the policy metadata.
+	*PolicyMetadataProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The ID of the policy metadata.
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; The type of the policy metadata.
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; The name of the policy metadata.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PolicyMetadata.
+func (pm PolicyMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pm.PolicyMetadataProperties != nil {
+		objectMap["properties"] = pm.PolicyMetadataProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PolicyMetadata struct.
+func (pm *PolicyMetadata) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var policyMetadataProperties PolicyMetadataProperties
+				err = json.Unmarshal(*v, &policyMetadataProperties)
+				if err != nil {
+					return err
+				}
+				pm.PolicyMetadataProperties = &policyMetadataProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pm.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pm.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pm.Name = &name
+			}
+		}
+	}
+
+	return nil
+}
+
+// PolicyMetadataCollection collection of policy metadata resources.
+type PolicyMetadataCollection struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of policy metadata definitions.
+	Value *[]SlimPolicyMetadata `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URL to get the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PolicyMetadataCollectionIterator provides access to a complete listing of SlimPolicyMetadata values.
+type PolicyMetadataCollectionIterator struct {
+	i    int
+	page PolicyMetadataCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PolicyMetadataCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyMetadataCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PolicyMetadataCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PolicyMetadataCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PolicyMetadataCollectionIterator) Response() PolicyMetadataCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PolicyMetadataCollectionIterator) Value() SlimPolicyMetadata {
+	if !iter.page.NotDone() {
+		return SlimPolicyMetadata{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PolicyMetadataCollectionIterator type.
+func NewPolicyMetadataCollectionIterator(page PolicyMetadataCollectionPage) PolicyMetadataCollectionIterator {
+	return PolicyMetadataCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (pmc PolicyMetadataCollection) IsEmpty() bool {
+	return pmc.Value == nil || len(*pmc.Value) == 0
+}
+
+// policyMetadataCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pmc PolicyMetadataCollection) policyMetadataCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if pmc.NextLink == nil || len(to.String(pmc.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pmc.NextLink)))
+}
+
+// PolicyMetadataCollectionPage contains a page of SlimPolicyMetadata values.
+type PolicyMetadataCollectionPage struct {
+	fn  func(context.Context, PolicyMetadataCollection) (PolicyMetadataCollection, error)
+	pmc PolicyMetadataCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PolicyMetadataCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyMetadataCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.pmc)
+	if err != nil {
+		return err
+	}
+	page.pmc = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PolicyMetadataCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PolicyMetadataCollectionPage) NotDone() bool {
+	return !page.pmc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PolicyMetadataCollectionPage) Response() PolicyMetadataCollection {
+	return page.pmc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PolicyMetadataCollectionPage) Values() []SlimPolicyMetadata {
+	if page.pmc.IsEmpty() {
+		return nil
+	}
+	return *page.pmc.Value
+}
+
+// Creates a new instance of the PolicyMetadataCollectionPage type.
+func NewPolicyMetadataCollectionPage(getNextPage func(context.Context, PolicyMetadataCollection) (PolicyMetadataCollection, error)) PolicyMetadataCollectionPage {
+	return PolicyMetadataCollectionPage{fn: getNextPage}
+}
+
+// PolicyMetadataProperties the properties of the policy metadata.
+type PolicyMetadataProperties struct {
+	// MetadataID - READ-ONLY; The policy metadata identifier.
+	MetadataID *string `json:"metadataId,omitempty"`
+	// Category - READ-ONLY; The category of the policy metadata.
+	Category *string `json:"category,omitempty"`
+	// Title - READ-ONLY; The title of the policy metadata.
+	Title *string `json:"title,omitempty"`
+	// Owner - READ-ONLY; The owner of the policy metadata.
+	Owner *string `json:"owner,omitempty"`
+	// Description - READ-ONLY; The description of the policy metadata.
+	Description *string `json:"description,omitempty"`
+	// Requirements - READ-ONLY; The requirements of the policy metadata.
+	Requirements *string `json:"requirements,omitempty"`
+	// AdditionalContentURL - READ-ONLY; Url for getting additional content about the resource metadata.
+	AdditionalContentURL *string `json:"additionalContentUrl,omitempty"`
+	// Metadata - READ-ONLY; Additional metadata.
+	Metadata interface{} `json:"metadata,omitempty"`
+}
+
+// PolicyMetadataSlimProperties the properties of the policy metadata, excluding properties containing
+// large strings
+type PolicyMetadataSlimProperties struct {
+	// MetadataID - READ-ONLY; The policy metadata identifier.
+	MetadataID *string `json:"metadataId,omitempty"`
+	// Category - READ-ONLY; The category of the policy metadata.
+	Category *string `json:"category,omitempty"`
+	// Title - READ-ONLY; The title of the policy metadata.
+	Title *string `json:"title,omitempty"`
+	// Owner - READ-ONLY; The owner of the policy metadata.
+	Owner *string `json:"owner,omitempty"`
+	// Description - READ-ONLY; The description of the policy metadata.
+	Description *string `json:"description,omitempty"`
+	// Requirements - READ-ONLY; The requirements of the policy metadata.
+	Requirements *string `json:"requirements,omitempty"`
+	// AdditionalContentURL - READ-ONLY; Url for getting additional content about the resource metadata.
+	AdditionalContentURL *string `json:"additionalContentUrl,omitempty"`
+	// Metadata - READ-ONLY; Additional metadata.
+	Metadata interface{} `json:"metadata,omitempty"`
+}
+
 // PolicyState policy state record.
 type PolicyState struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -1710,6 +1970,79 @@ type RemediationProperties struct {
 	Filters *RemediationFilters `json:"filters,omitempty"`
 	// DeploymentStatus - The deployment status summary for all deployments created by the remediation.
 	DeploymentStatus *RemediationDeploymentSummary `json:"deploymentStatus,omitempty"`
+}
+
+// SlimPolicyMetadata slim version of policy metadata resource definition, excluding properties with large
+// strings
+type SlimPolicyMetadata struct {
+	// PolicyMetadataSlimProperties - Properties of the policy metadata.
+	*PolicyMetadataSlimProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The ID of the policy metadata.
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; The type of the policy metadata.
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; The name of the policy metadata.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SlimPolicyMetadata.
+func (spm SlimPolicyMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spm.PolicyMetadataSlimProperties != nil {
+		objectMap["properties"] = spm.PolicyMetadataSlimProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SlimPolicyMetadata struct.
+func (spm *SlimPolicyMetadata) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var policyMetadataSlimProperties PolicyMetadataSlimProperties
+				err = json.Unmarshal(*v, &policyMetadataSlimProperties)
+				if err != nil {
+					return err
+				}
+				spm.PolicyMetadataSlimProperties = &policyMetadataSlimProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				spm.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				spm.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				spm.Name = &name
+			}
+		}
+	}
+
+	return nil
 }
 
 // String ...

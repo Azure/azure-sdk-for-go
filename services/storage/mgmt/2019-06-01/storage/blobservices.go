@@ -304,6 +304,7 @@ func (client BlobServicesClient) SetServicePropertiesPreparer(ctx context.Contex
 		"api-version": APIVersion,
 	}
 
+	parameters.Sku = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

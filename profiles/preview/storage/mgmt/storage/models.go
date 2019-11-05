@@ -422,6 +422,7 @@ type SKUCapability = original.SKUCapability
 type ServiceSasParameters = original.ServiceSasParameters
 type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
+type SkuInformation = original.SkuInformation
 type SkuListResult = original.SkuListResult
 type SkusClient = original.SkusClient
 type TagProperty = original.TagProperty

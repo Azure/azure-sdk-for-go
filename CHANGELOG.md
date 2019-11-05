@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v36.1.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| eventgrid | 2020-01-01-preview |
+
 ## `v36.0.0`
 
 ### New Packages

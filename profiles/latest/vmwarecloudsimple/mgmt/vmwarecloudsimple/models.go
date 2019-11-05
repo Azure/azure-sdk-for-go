@@ -100,6 +100,13 @@ const (
 	MicrosoftVMwareCloudSimpleprivateClouds PrivateCloudResourceType = original.MicrosoftVMwareCloudSimpleprivateClouds
 )
 
+type PurchaseType = original.PurchaseType
+
+const (
+	Node           PurchaseType = original.Node
+	NodeAndService PurchaseType = original.NodeAndService
+)
+
 type StopMode = original.StopMode
 
 const (
@@ -203,6 +210,12 @@ type DedicatedCloudServiceListResponsePage = original.DedicatedCloudServiceListR
 type DedicatedCloudServiceProperties = original.DedicatedCloudServiceProperties
 type DedicatedCloudServicesClient = original.DedicatedCloudServicesClient
 type DedicatedCloudServicesDeleteFuture = original.DedicatedCloudServicesDeleteFuture
+type Folder = original.Folder
+type FolderProperties = original.FolderProperties
+type FoldersClient = original.FoldersClient
+type FoldersListResponse = original.FoldersListResponse
+type FoldersListResponseIterator = original.FoldersListResponseIterator
+type FoldersListResponsePage = original.FoldersListResponsePage
 type GuestOSCustomization = original.GuestOSCustomization
 type GuestOSNICCustomization = original.GuestOSNICCustomization
 type OperationError = original.OperationError
@@ -306,6 +319,18 @@ func NewDedicatedCloudServicesClient(subscriptionID string, referer string) Dedi
 }
 func NewDedicatedCloudServicesClientWithBaseURI(baseURI string, subscriptionID string, referer string) DedicatedCloudServicesClient {
 	return original.NewDedicatedCloudServicesClientWithBaseURI(baseURI, subscriptionID, referer)
+}
+func NewFoldersClient(subscriptionID string, referer string) FoldersClient {
+	return original.NewFoldersClient(subscriptionID, referer)
+}
+func NewFoldersClientWithBaseURI(baseURI string, subscriptionID string, referer string) FoldersClient {
+	return original.NewFoldersClientWithBaseURI(baseURI, subscriptionID, referer)
+}
+func NewFoldersListResponseIterator(page FoldersListResponsePage) FoldersListResponseIterator {
+	return original.NewFoldersListResponseIterator(page)
+}
+func NewFoldersListResponsePage(getNextPage func(context.Context, FoldersListResponse) (FoldersListResponse, error)) FoldersListResponsePage {
+	return original.NewFoldersListResponsePage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string, referer string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, referer)
@@ -426,6 +451,9 @@ func PossibleOperationOriginValues() []OperationOrigin {
 }
 func PossiblePrivateCloudResourceTypeValues() []PrivateCloudResourceType {
 	return original.PossiblePrivateCloudResourceTypeValues()
+}
+func PossiblePurchaseTypeValues() []PurchaseType {
+	return original.PossiblePurchaseTypeValues()
 }
 func PossibleStopModeValues() []StopMode {
 	return original.PossibleStopModeValues()

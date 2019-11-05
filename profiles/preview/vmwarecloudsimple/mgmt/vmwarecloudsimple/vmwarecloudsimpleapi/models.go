@@ -24,6 +24,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/vmwarecloudsimple/mg
 type CustomizationPoliciesClientAPI = original.CustomizationPoliciesClientAPI
 type DedicatedCloudNodesClientAPI = original.DedicatedCloudNodesClientAPI
 type DedicatedCloudServicesClientAPI = original.DedicatedCloudServicesClientAPI
+type FoldersClientAPI = original.FoldersClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PrivateCloudsClientAPI = original.PrivateCloudsClientAPI
 type ResourcePoolsClientAPI = original.ResourcePoolsClientAPI

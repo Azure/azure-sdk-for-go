@@ -63,9 +63,7 @@ func (client DedicatedCloudServicesClient) CreateOrUpdate(ctx context.Context, r
 		{TargetValue: dedicatedCloudServiceRequest,
 			Constraints: []validation.Constraint{{Target: "dedicatedCloudServiceRequest.Location", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "dedicatedCloudServiceRequest.Name", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "dedicatedCloudServiceRequest.Name", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]([-_.a-zA-Z0-9]*[a-zA-Z0-9])?$`, Chain: nil}}},
-				{Target: "dedicatedCloudServiceRequest.DedicatedCloudServiceProperties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "dedicatedCloudServiceRequest.DedicatedCloudServiceProperties.GatewaySubnet", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+					Chain: []validation.Constraint{{Target: "dedicatedCloudServiceRequest.Name", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]([-_.a-zA-Z0-9]*[a-zA-Z0-9])?$`, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("vmwarecloudsimple.DedicatedCloudServicesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -112,7 +110,8 @@ func (client DedicatedCloudServicesClient) CreateOrUpdatePreparer(ctx context.Co
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VMwareCloudSimple/dedicatedCloudServices/{dedicatedCloudServiceName}", pathParameters),
 		autorest.WithJSON(dedicatedCloudServiceRequest),
-		autorest.WithQueryParameters(queryParameters))
+		autorest.WithQueryParameters(queryParameters),
+		autorest.WithHeader("Referer", client.Referer))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

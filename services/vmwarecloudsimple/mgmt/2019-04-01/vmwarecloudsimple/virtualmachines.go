@@ -70,6 +70,8 @@ func (client VirtualMachinesClient) CreateOrUpdate(ctx context.Context, resource
 						{Target: "virtualMachineRequest.VirtualMachineProperties.PrivateCloudID", Name: validation.Null, Rule: true, Chain: nil},
 						{Target: "virtualMachineRequest.VirtualMachineProperties.ResourcePool", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "virtualMachineRequest.VirtualMachineProperties.ResourcePool.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+						{Target: "virtualMachineRequest.VirtualMachineProperties.VirtualFolder", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "virtualMachineRequest.VirtualMachineProperties.VirtualFolder.ID", Name: validation.Null, Rule: true, Chain: nil}}},
 					}}}}}); err != nil {
 		return result, validation.NewError("vmwarecloudsimple.VirtualMachinesClient", "CreateOrUpdate", err.Error())
 	}

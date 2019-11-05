@@ -183,6 +183,21 @@ func PossiblePrivateCloudResourceTypeValues() []PrivateCloudResourceType {
 	return []PrivateCloudResourceType{MicrosoftVMwareCloudSimpleprivateClouds}
 }
 
+// PurchaseType enumerates the values for purchase type.
+type PurchaseType string
+
+const (
+	// Node ...
+	Node PurchaseType = "node"
+	// NodeAndService ...
+	NodeAndService PurchaseType = "node-and-service"
+)
+
+// PossiblePurchaseTypeValues returns an array of possible values for the PurchaseType const type.
+func PossiblePurchaseTypeValues() []PurchaseType {
+	return []PurchaseType{Node, NodeAndService}
+}
+
 // StopMode enumerates the values for stop mode.
 type StopMode string
 
@@ -833,7 +848,7 @@ type CustomizationPolicy struct {
 	Name *string `json:"name,omitempty"`
 	// CustomizationPolicyProperties - Customization Policy properties
 	*CustomizationPolicyProperties `json:"properties,omitempty"`
-	// Type - READ-ONLY
+	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1218,8 +1233,10 @@ type DedicatedCloudNodeProperties struct {
 	PrivateCloudName *string `json:"privateCloudName,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning status of the resource
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// PurchaseID - purchase id
+	// PurchaseID - Id uniquely identifying a purchase. Must be the same for the case when multiple nodes are being purchased at once.
 	PurchaseID *uuid.UUID `json:"purchaseId,omitempty"`
+	// PurchaseType - Indicates whether purchase made for a node(s) only or for a node(s), service, and private cloud. Possible values include: 'Node', 'NodeAndService'
+	PurchaseType PurchaseType `json:"purchaseType,omitempty"`
 	// SkuDescription - Dedicated Cloud Nodes SKU's description
 	*SkuDescription `json:"skuDescription,omitempty"`
 	// Status - READ-ONLY; Node status, indicates is private cloud set up on this node or not. Possible values include: 'Unused', 'Used'
@@ -1242,6 +1259,9 @@ func (dcnp DedicatedCloudNodeProperties) MarshalJSON() ([]byte, error) {
 	}
 	if dcnp.PurchaseID != nil {
 		objectMap["purchaseId"] = dcnp.PurchaseID
+	}
+	if dcnp.PurchaseType != "" {
+		objectMap["purchaseType"] = dcnp.PurchaseType
 	}
 	if dcnp.SkuDescription != nil {
 		objectMap["skuDescription"] = dcnp.SkuDescription
@@ -1356,6 +1376,15 @@ func (dcnp *DedicatedCloudNodeProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dcnp.PurchaseID = &purchaseID
+			}
+		case "purchaseType":
+			if v != nil {
+				var purchaseType PurchaseType
+				err = json.Unmarshal(*v, &purchaseType)
+				if err != nil {
+					return err
+				}
+				dcnp.PurchaseType = purchaseType
 			}
 		case "skuDescription":
 			if v != nil {
@@ -1675,6 +1704,12 @@ type DedicatedCloudServiceProperties struct {
 	IsAccountOnboarded OnboardingStatus `json:"isAccountOnboarded,omitempty"`
 	// Nodes - READ-ONLY; total nodes purchased
 	Nodes *int32 `json:"nodes,omitempty"`
+	// PrivateCloud - The private cloud
+	PrivateCloud *PrivateCloud `json:"privateCloud,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning status of the resource
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// PurchaseID - Id uniquely identifying a purchase. Must be the same for the case when multiple nodes are being purchased at once.
+	PurchaseID *uuid.UUID `json:"purchaseId,omitempty"`
 	// ServiceURL - READ-ONLY; link to a service management web portal
 	ServiceURL *string `json:"serviceURL,omitempty"`
 }
@@ -1700,6 +1735,247 @@ func (future *DedicatedCloudServicesDeleteFuture) Result(client DedicatedCloudSe
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// Folder folder model
+type Folder struct {
+	autorest.Response `json:"-"`
+	// ID - folder id
+	ID *string `json:"id,omitempty"`
+	// Location - READ-ONLY; Azure region
+	Location *string `json:"location,omitempty"`
+	// Name - READ-ONLY; folder name
+	Name *string `json:"name,omitempty"`
+	// FolderProperties - Resource pool properties
+	*FolderProperties `json:"properties,omitempty"`
+	// Type - READ-ONLY; folder type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Folder.
+func (f Folder) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if f.ID != nil {
+		objectMap["id"] = f.ID
+	}
+	if f.FolderProperties != nil {
+		objectMap["properties"] = f.FolderProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Folder struct.
+func (f *Folder) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				f.ID = &ID
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				f.Location = &location
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				f.Name = &name
+			}
+		case "properties":
+			if v != nil {
+				var folderProperties FolderProperties
+				err = json.Unmarshal(*v, &folderProperties)
+				if err != nil {
+					return err
+				}
+				f.FolderProperties = &folderProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				f.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// FolderProperties properties of folder
+type FolderProperties struct {
+	// FullName - READ-ONLY; Full name of a folder
+	FullName *string `json:"fullName,omitempty"`
+	// PrivateCloudID - READ-ONLY; The Private Cloud Id
+	PrivateCloudID *string `json:"privateCloudId,omitempty"`
+}
+
+// FoldersListResponse list of folders response model
+type FoldersListResponse struct {
+	autorest.Response `json:"-"`
+	// NextLink - Link for next list of ResourcePoolsList
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Results of the Folders list
+	Value *[]Folder `json:"value,omitempty"`
+}
+
+// FoldersListResponseIterator provides access to a complete listing of Folder values.
+type FoldersListResponseIterator struct {
+	i    int
+	page FoldersListResponsePage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *FoldersListResponseIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FoldersListResponseIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *FoldersListResponseIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter FoldersListResponseIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter FoldersListResponseIterator) Response() FoldersListResponse {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter FoldersListResponseIterator) Value() Folder {
+	if !iter.page.NotDone() {
+		return Folder{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the FoldersListResponseIterator type.
+func NewFoldersListResponseIterator(page FoldersListResponsePage) FoldersListResponseIterator {
+	return FoldersListResponseIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (flr FoldersListResponse) IsEmpty() bool {
+	return flr.Value == nil || len(*flr.Value) == 0
+}
+
+// foldersListResponsePreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (flr FoldersListResponse) foldersListResponsePreparer(ctx context.Context) (*http.Request, error) {
+	if flr.NextLink == nil || len(to.String(flr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(flr.NextLink)))
+}
+
+// FoldersListResponsePage contains a page of Folder values.
+type FoldersListResponsePage struct {
+	fn  func(context.Context, FoldersListResponse) (FoldersListResponse, error)
+	flr FoldersListResponse
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *FoldersListResponsePage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/FoldersListResponsePage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.flr)
+	if err != nil {
+		return err
+	}
+	page.flr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *FoldersListResponsePage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page FoldersListResponsePage) NotDone() bool {
+	return !page.flr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page FoldersListResponsePage) Response() FoldersListResponse {
+	return page.flr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page FoldersListResponsePage) Values() []Folder {
+	if page.flr.IsEmpty() {
+		return nil
+	}
+	return *page.flr.Value
+}
+
+// Creates a new instance of the FoldersListResponsePage type.
+func NewFoldersListResponsePage(getNextPage func(context.Context, FoldersListResponse) (FoldersListResponse, error)) FoldersListResponsePage {
+	return FoldersListResponsePage{fn: getNextPage}
 }
 
 // GuestOSCustomization guest OS Customization properties
@@ -2032,6 +2308,8 @@ type PrivateCloudProperties struct {
 	DNSServers *[]string `json:"dnsServers,omitempty"`
 	// Expires - Expiration date of PC
 	Expires *string `json:"expires,omitempty"`
+	// ManagementSubnet - VMware Management Network (CIDR Range for vSphere/vSAN subnets etc.)
+	ManagementSubnet *string `json:"managementSubnet,omitempty"`
 	// NsxType - Nsx Type, e.g. "Advanced"
 	NsxType *string `json:"nsxType,omitempty"`
 	// PlacementGroupID - Placement Group id, e.g. "n1"
@@ -2959,7 +3237,7 @@ type VirtualMachineProperties struct {
 	Dnsname *string `json:"dnsname,omitempty"`
 	// ExposeToGuestVM - Expose Guest OS or not
 	ExposeToGuestVM *bool `json:"exposeToGuestVM,omitempty"`
-	// Folder - READ-ONLY; The path to virtual machine folder in VCenter
+	// Folder - READ-ONLY; The path to virtual machine folder in VCenter, deprecated - use virtualFolder
 	Folder *string `json:"folder,omitempty"`
 	// GuestOS - READ-ONLY; The name of Guest OS
 	GuestOS *string `json:"guestOS,omitempty"`
@@ -2987,6 +3265,8 @@ type VirtualMachineProperties struct {
 	Username *string `json:"username,omitempty"`
 	// VSphereNetworks - The list of Virtual VSphere Networks
 	VSphereNetworks *[]string `json:"vSphereNetworks,omitempty"`
+	// VirtualFolder - Virtual Machines Folder
+	VirtualFolder *Folder `json:"virtualFolder,omitempty"`
 	// VMID - READ-ONLY; The internal id of Virtual Machine in VCenter
 	VMID *string `json:"vmId,omitempty"`
 	// Vmwaretools - READ-ONLY; VMware tools version
@@ -3656,6 +3936,8 @@ type VirtualNic struct {
 	NicType NICType `json:"nicType,omitempty"`
 	// PowerOnBoot - Is NIC powered on/off on boot
 	PowerOnBoot *bool `json:"powerOnBoot,omitempty"`
+	// PublicIPAddresses - List of IP addresses associated with VM
+	PublicIPAddresses *[]string `json:"publicIpAddresses,omitempty"`
 	// VirtualNicID - NIC id
 	VirtualNicID *string `json:"virtualNicId,omitempty"`
 	// VirtualNicName - READ-ONLY; NIC name

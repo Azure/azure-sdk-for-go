@@ -78,6 +78,14 @@ type CustomizationPoliciesClientAPI interface {
 
 var _ CustomizationPoliciesClientAPI = (*vmwarecloudsimple.CustomizationPoliciesClient)(nil)
 
+// FoldersClientAPI contains the set of methods on the FoldersClient type.
+type FoldersClientAPI interface {
+	Get(ctx context.Context, regionID string, pcName string, folderName string) (result vmwarecloudsimple.Folder, err error)
+	List(ctx context.Context, regionID string, pcName string, resourcePoolName string) (result vmwarecloudsimple.FoldersListResponsePage, err error)
+}
+
+var _ FoldersClientAPI = (*vmwarecloudsimple.FoldersClient)(nil)
+
 // ResourcePoolsClientAPI contains the set of methods on the ResourcePoolsClient type.
 type ResourcePoolsClientAPI interface {
 	Get(ctx context.Context, regionID string, pcName string, resourcePoolName string) (result vmwarecloudsimple.ResourcePool, err error)

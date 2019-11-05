@@ -481,6 +481,21 @@ func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
+// RoutingChoice enumerates the values for routing choice.
+type RoutingChoice string
+
+const (
+	// InternetRouting ...
+	InternetRouting RoutingChoice = "InternetRouting"
+	// MicrosoftRouting ...
+	MicrosoftRouting RoutingChoice = "MicrosoftRouting"
+)
+
+// PossibleRoutingChoiceValues returns an array of possible values for the RoutingChoice const type.
+func PossibleRoutingChoiceValues() []RoutingChoice {
+	return []RoutingChoice{InternetRouting, MicrosoftRouting}
+}
+
 // Services enumerates the values for services.
 type Services string
 
@@ -877,6 +892,19 @@ func (acp *AccountCreateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AccountInternetEndpoints the URIs that are used to perform a retrieval of a public blob, file, web or
+// dfs object via a internet routing endpoint.
+type AccountInternetEndpoints struct {
+	// Blob - READ-ONLY; Gets the blob endpoint.
+	Blob *string `json:"blob,omitempty"`
+	// File - READ-ONLY; Gets the file endpoint.
+	File *string `json:"file,omitempty"`
+	// Web - READ-ONLY; Gets the web endpoint.
+	Web *string `json:"web,omitempty"`
+	// Dfs - READ-ONLY; Gets the dfs endpoint.
+	Dfs *string `json:"dfs,omitempty"`
+}
+
 // AccountKey an access key for the storage account.
 type AccountKey struct {
 	// KeyName - READ-ONLY; Name of the key.
@@ -1040,6 +1068,23 @@ func NewAccountListResultPage(getNextPage func(context.Context, AccountListResul
 	return AccountListResultPage{fn: getNextPage}
 }
 
+// AccountMicrosoftEndpoints the URIs that are used to perform a retrieval of a public blob, queue, table,
+// web or dfs object via a microsoft routing endpoint.
+type AccountMicrosoftEndpoints struct {
+	// Blob - READ-ONLY; Gets the blob endpoint.
+	Blob *string `json:"blob,omitempty"`
+	// Queue - READ-ONLY; Gets the queue endpoint.
+	Queue *string `json:"queue,omitempty"`
+	// Table - READ-ONLY; Gets the table endpoint.
+	Table *string `json:"table,omitempty"`
+	// File - READ-ONLY; Gets the file endpoint.
+	File *string `json:"file,omitempty"`
+	// Web - READ-ONLY; Gets the web endpoint.
+	Web *string `json:"web,omitempty"`
+	// Dfs - READ-ONLY; Gets the dfs endpoint.
+	Dfs *string `json:"dfs,omitempty"`
+}
+
 // AccountProperties properties of the storage account.
 type AccountProperties struct {
 	// ProvisioningState - READ-ONLY; Gets the status of the storage account at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateResolvingDNS', 'ProvisioningStateSucceeded'
@@ -1082,6 +1127,8 @@ type AccountProperties struct {
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connection associated with the specified storage account
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	// RoutingPreference - Maintains information about the network routing choice opted by the user for data transfer
+	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 }
 
 // AccountPropertiesCreateParameters the parameters used to create the storage account.
@@ -1102,6 +1149,8 @@ type AccountPropertiesCreateParameters struct {
 	IsHnsEnabled *bool `json:"isHnsEnabled,omitempty"`
 	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
+	// RoutingPreference - Maintains information about the network routing choice opted by the user for data transfer
+	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 }
 
 // AccountPropertiesUpdateParameters the parameters used when updating a storage account.
@@ -1120,6 +1169,8 @@ type AccountPropertiesUpdateParameters struct {
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
 	// LargeFileSharesState - Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. Possible values include: 'Disabled', 'Enabled'
 	LargeFileSharesState LargeFileSharesState `json:"largeFileSharesState,omitempty"`
+	// RoutingPreference - Maintains information about the network routing choice opted by the user for data transfer
+	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 }
 
 // AccountRegenerateKeyParameters the parameters used to regenerate the storage account key.
@@ -1683,6 +1734,109 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty"`
 	// Dfs - READ-ONLY; Gets the dfs endpoint.
 	Dfs *string `json:"dfs,omitempty"`
+	// AccountMicrosoftEndpoints - Gets the microsoft routing storage endpoints.
+	*AccountMicrosoftEndpoints `json:"microsoftEndpoints,omitempty"`
+	// AccountInternetEndpoints - Gets the internet routing storage endpoints
+	*AccountInternetEndpoints `json:"internetEndpoints,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Endpoints.
+func (e Endpoints) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.AccountMicrosoftEndpoints != nil {
+		objectMap["microsoftEndpoints"] = e.AccountMicrosoftEndpoints
+	}
+	if e.AccountInternetEndpoints != nil {
+		objectMap["internetEndpoints"] = e.AccountInternetEndpoints
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Endpoints struct.
+func (e *Endpoints) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "blob":
+			if v != nil {
+				var blob string
+				err = json.Unmarshal(*v, &blob)
+				if err != nil {
+					return err
+				}
+				e.Blob = &blob
+			}
+		case "queue":
+			if v != nil {
+				var queue string
+				err = json.Unmarshal(*v, &queue)
+				if err != nil {
+					return err
+				}
+				e.Queue = &queue
+			}
+		case "table":
+			if v != nil {
+				var table string
+				err = json.Unmarshal(*v, &table)
+				if err != nil {
+					return err
+				}
+				e.Table = &table
+			}
+		case "file":
+			if v != nil {
+				var file string
+				err = json.Unmarshal(*v, &file)
+				if err != nil {
+					return err
+				}
+				e.File = &file
+			}
+		case "web":
+			if v != nil {
+				var web string
+				err = json.Unmarshal(*v, &web)
+				if err != nil {
+					return err
+				}
+				e.Web = &web
+			}
+		case "dfs":
+			if v != nil {
+				var dfs string
+				err = json.Unmarshal(*v, &dfs)
+				if err != nil {
+					return err
+				}
+				e.Dfs = &dfs
+			}
+		case "microsoftEndpoints":
+			if v != nil {
+				var accountMicrosoftEndpoints AccountMicrosoftEndpoints
+				err = json.Unmarshal(*v, &accountMicrosoftEndpoints)
+				if err != nil {
+					return err
+				}
+				e.AccountMicrosoftEndpoints = &accountMicrosoftEndpoints
+			}
+		case "internetEndpoints":
+			if v != nil {
+				var accountInternetEndpoints AccountInternetEndpoints
+				err = json.Unmarshal(*v, &accountInternetEndpoints)
+				if err != nil {
+					return err
+				}
+				e.AccountInternetEndpoints = &accountInternetEndpoints
+			}
+		}
+	}
+
+	return nil
 }
 
 // ErrorResponse an error response from the storage resource provider.
@@ -3095,6 +3249,17 @@ type Restriction struct {
 	Values *[]string `json:"values,omitempty"`
 	// ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota. The "NotAvailableForSubscription" is related to capacity at DC. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ReasonCode `json:"reasonCode,omitempty"`
+}
+
+// RoutingPreference routing preference defines the type of network, either microsoft or internet routing
+// to be used to deliver the user data, the default option is microsoft routing
+type RoutingPreference struct {
+	// RoutingChoice - Routing Choice defines the kind of network routing opted by the user. The default option is microsoft routing. Possible values include: 'MicrosoftRouting', 'InternetRouting'
+	RoutingChoice RoutingChoice `json:"routingChoice,omitempty"`
+	// PublishMicrosoftEndpoints - A boolean flag which indicates whether microsoft routing storage endpoints are to be published
+	PublishMicrosoftEndpoints *bool `json:"publishMicrosoftEndpoints,omitempty"`
+	// PublishInternetEndpoints - A boolean flag which indicates whether internet routing storage endpoints are to be published
+	PublishInternetEndpoints *bool `json:"publishInternetEndpoints,omitempty"`
 }
 
 // ServiceSasParameters the parameters to list service SAS credentials of a specific resource.

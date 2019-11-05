@@ -1439,7 +1439,7 @@ func (jrp JitRequestPatchable) MarshalJSON() ([]byte, error) {
 type JitRequestProperties struct {
 	// ApplicationResourceID - The parent application id.
 	ApplicationResourceID *string `json:"applicationResourceId,omitempty"`
-	// PublisherTenantID - The publisher tenant id.
+	// PublisherTenantID - READ-ONLY; The publisher tenant id.
 	PublisherTenantID *string `json:"publisherTenantId,omitempty"`
 	// JitAuthorizationPolicies - The JIT authorization policies.
 	JitAuthorizationPolicies *[]JitAuthorizationPolicies `json:"jitAuthorizationPolicies,omitempty"`
@@ -1449,9 +1449,9 @@ type JitRequestProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// JitRequestState - READ-ONLY; The JIT request state. Possible values include: 'NotSpecified', 'Pending', 'Approved', 'Denied', 'Failed', 'Canceled', 'Expired', 'Timeout'
 	JitRequestState JitRequestState `json:"jitRequestState,omitempty"`
-	// CreatedBy - The client entity that created the JIT request.
+	// CreatedBy - READ-ONLY; The client entity that created the JIT request.
 	CreatedBy *ApplicationClientDetails `json:"createdBy,omitempty"`
-	// UpdatedBy - The client entity that last updated the JIT request.
+	// UpdatedBy - READ-ONLY; The client entity that last updated the JIT request.
 	UpdatedBy *ApplicationClientDetails `json:"updatedBy,omitempty"`
 }
 

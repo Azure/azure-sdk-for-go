@@ -49,7 +49,6 @@ type ReplicationLinksClientAPI = original.ReplicationLinksClientAPI
 type RestorableDroppedDatabasesClientAPI = original.RestorableDroppedDatabasesClientAPI
 type RestorePointsClientAPI = original.RestorePointsClientAPI
 type ServerAdvisorsClientAPI = original.ServerAdvisorsClientAPI
-type ServerAzureADAdministratorsClientAPI = original.ServerAzureADAdministratorsClientAPI
 type ServerCommunicationLinksClientAPI = original.ServerCommunicationLinksClientAPI
 type ServerConnectionPoliciesClientAPI = original.ServerConnectionPoliciesClientAPI
 type ServerTableAuditingPoliciesClientAPI = original.ServerTableAuditingPoliciesClientAPI

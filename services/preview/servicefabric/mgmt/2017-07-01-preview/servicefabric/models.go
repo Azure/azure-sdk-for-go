@@ -991,7 +991,7 @@ type ClusterProperties struct {
 // ClusterPropertiesUpdateParameters describes the cluster resource properties that can be updated during
 // PATCH operation.
 type ClusterPropertiesUpdateParameters struct {
-	// ReliabilityLevel - The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). Possible values include: 'ReliabilityLevel1Bronze', 'ReliabilityLevel1Silver', 'ReliabilityLevel1Gold'
+	// ReliabilityLevel - The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity). Possible values include: 'ReliabilityLevel1Bronze', 'ReliabilityLevel1Silver', 'ReliabilityLevel1Gold'
 	ReliabilityLevel ReliabilityLevel1 `json:"reliabilityLevel,omitempty"`
 	// UpgradeMode - The upgrade mode of the cluster. This indicates if the cluster should be automatically upgraded when new Service Fabric runtime version is available. Possible values include: 'UpgradeMode1Automatic', 'UpgradeMode1Manual'
 	UpgradeMode UpgradeMode1 `json:"upgradeMode,omitempty"`

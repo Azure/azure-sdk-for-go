@@ -445,6 +445,7 @@ func (client VirtualMachineScaleSetExtensionsClient) UpdatePreparer(ctx context.
 		"api-version": APIVersion,
 	}
 
+	extensionParameters.Name = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

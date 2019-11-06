@@ -10019,6 +10019,119 @@ func (future *VirtualMachineScaleSetExtensionsDeleteFuture) Result(client Virtua
 	return
 }
 
+// VirtualMachineScaleSetExtensionsUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type VirtualMachineScaleSetExtensionsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineScaleSetExtensionsUpdateFuture) Result(client VirtualMachineScaleSetExtensionsClient) (vmsse VirtualMachineScaleSetExtension, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetExtensionsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if vmsse.Response.Response, err = future.GetResult(sender); err == nil && vmsse.Response.Response.StatusCode != http.StatusNoContent {
+		vmsse, err = client.UpdateResponder(vmsse.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsUpdateFuture", "Result", vmsse.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// VirtualMachineScaleSetExtensionUpdate describes a Virtual Machine Scale Set Extension.
+type VirtualMachineScaleSetExtensionUpdate struct {
+	// Name - The name of the extension.
+	Name                                             *string `json:"name,omitempty"`
+	*VirtualMachineScaleSetExtensionUpdateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetExtensionUpdate.
+func (vmsseu VirtualMachineScaleSetExtensionUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmsseu.Name != nil {
+		objectMap["name"] = vmsseu.Name
+	}
+	if vmsseu.VirtualMachineScaleSetExtensionUpdateProperties != nil {
+		objectMap["properties"] = vmsseu.VirtualMachineScaleSetExtensionUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetExtensionUpdate struct.
+func (vmsseu *VirtualMachineScaleSetExtensionUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vmsseu.Name = &name
+			}
+		case "properties":
+			if v != nil {
+				var virtualMachineScaleSetExtensionUpdateProperties VirtualMachineScaleSetExtensionUpdateProperties
+				err = json.Unmarshal(*v, &virtualMachineScaleSetExtensionUpdateProperties)
+				if err != nil {
+					return err
+				}
+				vmsseu.VirtualMachineScaleSetExtensionUpdateProperties = &virtualMachineScaleSetExtensionUpdateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vmsseu.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
+// VirtualMachineScaleSetExtensionUpdateProperties describes the properties of a Virtual Machine Scale Set
+// Extension.
+type VirtualMachineScaleSetExtensionUpdateProperties struct {
+	// ForceUpdateTag - If a value is provided and is different from the previous value, the extension handler will be forced to update even if the extension configuration has not changed.
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+	// Publisher - The name of the extension handler publisher.
+	Publisher *string `json:"publisher,omitempty"`
+	// Type - Specifies the type of the extension; an example is "CustomScriptExtension".
+	Type *string `json:"type,omitempty"`
+	// TypeHandlerVersion - Specifies the version of the script handler.
+	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
+	// AutoUpgradeMinorVersion - Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
+	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
+	// Settings - Json formatted public settings for the extension.
+	Settings interface{} `json:"settings,omitempty"`
+	// ProtectedSettings - The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
+	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+	// ProvisionAfterExtensions - Collection of extension names after which this extension needs to be provisioned.
+	ProvisionAfterExtensions *[]string `json:"provisionAfterExtensions,omitempty"`
+}
+
 // VirtualMachineScaleSetIdentity identity for the virtual machine scale set.
 type VirtualMachineScaleSetIdentity struct {
 	// PrincipalID - READ-ONLY; The principal id of virtual machine scale set identity. This property will only be provided for a system assigned identity.

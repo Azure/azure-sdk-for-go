@@ -118,7 +118,7 @@ type Evaluation struct {
 
 // EvaluationContract a counterfactual evaluation.
 type EvaluationContract struct {
-	// EnableOfflineExperimentation - True if the evaluation should explore for a more optimal policy.
+	// EnableOfflineExperimentation - True if the evaluation should explore for a more optimal Learning settings.
 	EnableOfflineExperimentation *bool `json:"enableOfflineExperimentation,omitempty"`
 	// Name - The name of the evaluation.
 	Name *string `json:"name,omitempty"`
@@ -126,7 +126,7 @@ type EvaluationContract struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the evaluation.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// Policies - Additional policies to evaluate.
+	// Policies - Additional Learning settings to evaluate.
 	Policies *[]PolicyContract `json:"policies,omitempty"`
 }
 
@@ -168,12 +168,12 @@ type ModelProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 }
 
-// PolicyContract policy specifying how to train the model.
+// PolicyContract learning settings specifying how to train the model.
 type PolicyContract struct {
 	autorest.Response `json:"-"`
-	// Name - Name of the Policy.
+	// Name - Name of the Learning settings.
 	Name *string `json:"name,omitempty"`
-	// Arguments - Arguments of the Policy.
+	// Arguments - Arguments of the Learning settings.
 	Arguments *string `json:"arguments,omitempty"`
 }
 
@@ -248,12 +248,15 @@ type RankRequest struct {
 	// ContextFeatures - Features of the context used for Personalizer as a
 	// dictionary of dictionaries. This depends on the application, and
 	// typically includes features about the current user, their
-	// device, profile information, data about time and date, etc.
+	// device, profile information, aggregated data about time and date, etc.
+	// Features should not include personally identifiable information (PII),
+	// unique UserIDs, or precise timestamps.
 	ContextFeatures *[]interface{} `json:"contextFeatures,omitempty"`
 	// Actions - The set of actions the Personalizer service can pick from.
 	// The set should not contain more than 50 actions.
 	// The order of the actions does not affect the rank result but the order
 	// should match the sequence your application would have used to display them.
+	// The first item in the array will be used as Baseline item in Offline evaluations.
 	Actions *[]RankableAction `json:"actions,omitempty"`
 	// ExcludedActions - The set of action ids to exclude from ranking.
 	ExcludedActions *[]string `json:"excludedActions,omitempty"`
@@ -262,15 +265,16 @@ type RankRequest struct {
 	// associating this request with its reward, as well as seeding the pseudo-random
 	// generator when making a Personalizer call.
 	EventID *string `json:"eventId,omitempty"`
-	// DeferActivation - Send false if the user will see the rank results, therefore
+	// DeferActivation - Send false if it is certain the rewardActionId in rank results will be shown to the user, therefore
 	// Personalizer will expect a Reward call, otherwise it will assign the default
 	// Reward to the event. Send true if it is possible the user will not see the
-	// rank results, because the page is rendering later, or the Rank results may be
+	// action specified in the rank results, because the page is rendering later, or the Rank results may be
 	// overridden by code further downstream.
 	DeferActivation *bool `json:"deferActivation,omitempty"`
 }
 
-// RankResponse a resulting ordered list of actions that result from a rank request.
+// RankResponse returns which action to use as rewardActionId, and additional information about each action
+// as a result of a Rank request.
 type RankResponse struct {
 	autorest.Response `json:"-"`
 	// Ranking - READ-ONLY; The calculated ranking for the current request.
@@ -301,16 +305,16 @@ type ServiceConfiguration struct {
 	RewardWaitTime *string `json:"rewardWaitTime,omitempty"`
 	// DefaultReward - The reward given if a reward is not received within the specified wait time.
 	DefaultReward *float64 `json:"defaultReward,omitempty"`
-	// RewardAggregation - The function used to process rewards.
+	// RewardAggregation - The function used to process rewards, if multiple reward scores are recieved before rewardWaitTime is over.
 	RewardAggregation *string `json:"rewardAggregation,omitempty"`
 	// ExplorationPercentage - The percentage of rank responses that will use exploration.
 	ExplorationPercentage *float64 `json:"explorationPercentage,omitempty"`
-	// ModelExportFrequency - The time delay between exporting trained models.
+	// ModelExportFrequency - Personalizer will start using the most updated trained model for online ranks automatically every specified time period.
 	ModelExportFrequency *string `json:"modelExportFrequency,omitempty"`
 	// LogMirrorEnabled - Flag indicates whether log mirroring is enabled.
 	LogMirrorEnabled *bool `json:"logMirrorEnabled,omitempty"`
 	// LogMirrorSasURI - Azure storage account container SAS URI for log mirroring.
 	LogMirrorSasURI *string `json:"logMirrorSasUri,omitempty"`
-	// LogRetentionDays - Number of days historical logs are to be maintained.
+	// LogRetentionDays - Number of days historical logs are to be maintained. -1 implies the logs will never be deleted.
 	LogRetentionDays *int32 `json:"logRetentionDays,omitempty"`
 }

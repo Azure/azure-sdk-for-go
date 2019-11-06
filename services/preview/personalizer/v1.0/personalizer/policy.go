@@ -188,8 +188,10 @@ func (client PolicyClient) Update(ctx context.Context, policy PolicyContract) (r
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: policy,
-			Constraints: []validation.Constraint{{Target: "policy.Name", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "policy.Arguments", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "policy.Name", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "policy.Name", Name: validation.MaxLength, Rule: 256, Chain: nil}}},
+				{Target: "policy.Arguments", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "policy.Arguments", Name: validation.MaxLength, Rule: 1024, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("personalizer.PolicyClient", "Update", err.Error())
 	}
 

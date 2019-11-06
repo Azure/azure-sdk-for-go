@@ -52,7 +52,8 @@ func NewWithoutDefaults(endpoint string) BaseClient {
 	}
 }
 
-// Rank submit a Personalizer rank request.
+// Rank submit a Personalizer rank request, to get which of the provided actions should be used in the provided
+// context.
 // Parameters:
 // rankRequest - a Personalizer request.
 func (client BaseClient) Rank(ctx context.Context, rankRequest RankRequest) (result RankResponse, err error) {

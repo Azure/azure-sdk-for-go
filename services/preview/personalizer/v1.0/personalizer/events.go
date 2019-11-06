@@ -117,10 +117,10 @@ func (client EventsClient) ActivateResponder(resp *http.Response) (result autore
 	return
 }
 
-// Reward report reward to allocate to the top ranked action for the specified event.
+// Reward report reward that resulted from using the action specified in rewardActionId for the specified event.
 // Parameters:
 // eventID - the event id this reward applies to.
-// reward - the reward should be a floating point number.
+// reward - the reward should be a floating point number, typically between 0 and 1.
 func (client EventsClient) Reward(ctx context.Context, eventID string, reward RewardRequest) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventsClient.Reward")

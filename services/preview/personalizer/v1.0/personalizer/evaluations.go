@@ -56,7 +56,8 @@ func (client EvaluationsClient) Create(ctx context.Context, evaluation Evaluatio
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: evaluation,
-			Constraints: []validation.Constraint{{Target: "evaluation.Name", Name: validation.Null, Rule: true, Chain: nil},
+			Constraints: []validation.Constraint{{Target: "evaluation.Name", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "evaluation.Name", Name: validation.MaxLength, Rule: 256, Chain: nil}}},
 				{Target: "evaluation.StartTime", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "evaluation.EndTime", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "evaluation.Policies", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {

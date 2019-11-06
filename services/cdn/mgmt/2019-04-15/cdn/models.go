@@ -5764,7 +5764,7 @@ func (ura URLRewriteAction) AsBasicDeliveryRuleAction() (BasicDeliveryRuleAction
 // URLRewriteActionParameters defines the parameters for the url rewrite action.
 type URLRewriteActionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
-	// SourcePattern - define a request URI pattern that identifies the type of requests that may be rewritten. Currently, source pattern uses a prefix-based match. To match all URL paths, use “/” as the source pattern value. To match only the root directory and re-write this path, use the origin path field
+	// SourcePattern - define a request URI pattern that identifies the type of requests that may be rewritten. Currently, source pattern uses a prefix-based match. To match all URL paths, use "/" as the source pattern value. To match only the root directory and re-write this path, use the origin path field
 	SourcePattern *string `json:"sourcePattern,omitempty"`
 	// Destination - Define the destination path for be used in the rewrite. This will overwrite the source pattern
 	Destination *string `json:"destination,omitempty"`

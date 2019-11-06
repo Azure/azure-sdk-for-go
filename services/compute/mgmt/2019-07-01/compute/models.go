@@ -10050,8 +10050,6 @@ func (future *VirtualMachineScaleSetExtensionsUpdateFuture) Result(client Virtua
 
 // VirtualMachineScaleSetExtensionUpdate describes a Virtual Machine Scale Set Extension.
 type VirtualMachineScaleSetExtensionUpdate struct {
-	// Name - The name of the extension.
-	Name                                             *string `json:"name,omitempty"`
 	*VirtualMachineScaleSetExtensionUpdateProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -10060,9 +10058,6 @@ type VirtualMachineScaleSetExtensionUpdate struct {
 // MarshalJSON is the custom marshaler for VirtualMachineScaleSetExtensionUpdate.
 func (vmsseu VirtualMachineScaleSetExtensionUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if vmsseu.Name != nil {
-		objectMap["name"] = vmsseu.Name
-	}
 	if vmsseu.VirtualMachineScaleSetExtensionUpdateProperties != nil {
 		objectMap["properties"] = vmsseu.VirtualMachineScaleSetExtensionUpdateProperties
 	}
@@ -10078,15 +10073,6 @@ func (vmsseu *VirtualMachineScaleSetExtensionUpdate) UnmarshalJSON(body []byte) 
 	}
 	for k, v := range m {
 		switch k {
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				vmsseu.Name = &name
-			}
 		case "properties":
 			if v != nil {
 				var virtualMachineScaleSetExtensionUpdateProperties VirtualMachineScaleSetExtensionUpdateProperties

@@ -10115,7 +10115,7 @@ type VirtualMachineScaleSetExtensionUpdateProperties struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 	// Publisher - The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
-	// Type - Specifies the type of the extension; an example is "CustomScriptExtension".
+	// Type - READ-ONLY; Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
 	// TypeHandlerVersion - Specifies the version of the script handler.
 	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`

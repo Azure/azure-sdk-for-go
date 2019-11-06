@@ -172,7 +172,7 @@ func (client ProtectionPoliciesClient) DeletePreparer(ctx context.Context, vault
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2016-12-01"
+	const APIVersion = "2019-06-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

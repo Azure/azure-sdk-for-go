@@ -106,13 +106,6 @@ type OperationStatusesClientAPI interface {
 
 var _ OperationStatusesClientAPI = (*backup.OperationStatusesClient)(nil)
 
-// ProtectionPoliciesClientAPI contains the set of methods on the ProtectionPoliciesClient type.
-type ProtectionPoliciesClientAPI interface {
-	Delete(ctx context.Context, vaultName string, resourceGroupName string, policyName string) (result autorest.Response, err error)
-}
-
-var _ ProtectionPoliciesClientAPI = (*backup.ProtectionPoliciesClient)(nil)
-
 // ProtectionPolicyOperationStatusesClientAPI contains the set of methods on the ProtectionPolicyOperationStatusesClient type.
 type ProtectionPolicyOperationStatusesClientAPI interface {
 	Get(ctx context.Context, vaultName string, resourceGroupName string, policyName string, operationID string) (result backup.OperationStatus, err error)

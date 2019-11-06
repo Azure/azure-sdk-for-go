@@ -1743,109 +1743,10 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty"`
 	// Dfs - READ-ONLY; Gets the dfs endpoint.
 	Dfs *string `json:"dfs,omitempty"`
-	// AccountMicrosoftEndpoints - Gets the microsoft routing storage endpoints.
-	*AccountMicrosoftEndpoints `json:"microsoftEndpoints,omitempty"`
-	// AccountInternetEndpoints - Gets the internet routing storage endpoints
-	*AccountInternetEndpoints `json:"internetEndpoints,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for Endpoints.
-func (e Endpoints) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if e.AccountMicrosoftEndpoints != nil {
-		objectMap["microsoftEndpoints"] = e.AccountMicrosoftEndpoints
-	}
-	if e.AccountInternetEndpoints != nil {
-		objectMap["internetEndpoints"] = e.AccountInternetEndpoints
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for Endpoints struct.
-func (e *Endpoints) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "blob":
-			if v != nil {
-				var blob string
-				err = json.Unmarshal(*v, &blob)
-				if err != nil {
-					return err
-				}
-				e.Blob = &blob
-			}
-		case "queue":
-			if v != nil {
-				var queue string
-				err = json.Unmarshal(*v, &queue)
-				if err != nil {
-					return err
-				}
-				e.Queue = &queue
-			}
-		case "table":
-			if v != nil {
-				var table string
-				err = json.Unmarshal(*v, &table)
-				if err != nil {
-					return err
-				}
-				e.Table = &table
-			}
-		case "file":
-			if v != nil {
-				var file string
-				err = json.Unmarshal(*v, &file)
-				if err != nil {
-					return err
-				}
-				e.File = &file
-			}
-		case "web":
-			if v != nil {
-				var web string
-				err = json.Unmarshal(*v, &web)
-				if err != nil {
-					return err
-				}
-				e.Web = &web
-			}
-		case "dfs":
-			if v != nil {
-				var dfs string
-				err = json.Unmarshal(*v, &dfs)
-				if err != nil {
-					return err
-				}
-				e.Dfs = &dfs
-			}
-		case "microsoftEndpoints":
-			if v != nil {
-				var accountMicrosoftEndpoints AccountMicrosoftEndpoints
-				err = json.Unmarshal(*v, &accountMicrosoftEndpoints)
-				if err != nil {
-					return err
-				}
-				e.AccountMicrosoftEndpoints = &accountMicrosoftEndpoints
-			}
-		case "internetEndpoints":
-			if v != nil {
-				var accountInternetEndpoints AccountInternetEndpoints
-				err = json.Unmarshal(*v, &accountInternetEndpoints)
-				if err != nil {
-					return err
-				}
-				e.AccountInternetEndpoints = &accountInternetEndpoints
-			}
-		}
-	}
-
-	return nil
+	// MicrosoftEndpoints - Gets the microsoft routing storage endpoints.
+	MicrosoftEndpoints *AccountMicrosoftEndpoints `json:"microsoftEndpoints,omitempty"`
+	// InternetEndpoints - Gets the internet routing storage endpoints
+	InternetEndpoints *AccountInternetEndpoints `json:"internetEndpoints,omitempty"`
 }
 
 // ErrorResponse an error response from the storage resource provider.
@@ -3274,7 +3175,7 @@ type Restriction struct {
 // RoutingPreference routing preference defines the type of network, either microsoft or internet routing
 // to be used to deliver the user data, the default option is microsoft routing
 type RoutingPreference struct {
-	// RoutingChoice - Routing Choice defines the kind of network routing opted by the user. The default option is microsoft routing. Possible values include: 'MicrosoftRouting', 'InternetRouting'
+	// RoutingChoice - Routing Choice defines the kind of network routing opted by the user. Possible values include: 'MicrosoftRouting', 'InternetRouting'
 	RoutingChoice RoutingChoice `json:"routingChoice,omitempty"`
 	// PublishMicrosoftEndpoints - A boolean flag which indicates whether microsoft routing storage endpoints are to be published
 	PublishMicrosoftEndpoints *bool `json:"publishMicrosoftEndpoints,omitempty"`

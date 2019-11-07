@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-09-30-preview/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-10-27-preview/containerservice"
 )
 
 const (
@@ -397,6 +397,7 @@ type ManagedClustersUpdateTagsFuture = original.ManagedClustersUpdateTagsFuture
 type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
 type NetworkProfileType = original.NetworkProfileType
+type OpenShiftAPIProperties = original.OpenShiftAPIProperties
 type OpenShiftManagedCluster = original.OpenShiftManagedCluster
 type OpenShiftManagedClusterAADIdentityProvider = original.OpenShiftManagedClusterAADIdentityProvider
 type OpenShiftManagedClusterAgentPoolProfile = original.OpenShiftManagedClusterAgentPoolProfile

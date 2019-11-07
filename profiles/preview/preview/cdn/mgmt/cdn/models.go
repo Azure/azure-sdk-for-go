@@ -415,6 +415,17 @@ const (
 	Uppercase Transform = original.Uppercase
 )
 
+type TransformType = original.TransformType
+
+const (
+	TransformTypeLowercase   TransformType = original.TransformTypeLowercase
+	TransformTypeRemoveNulls TransformType = original.TransformTypeRemoveNulls
+	TransformTypeTrim        TransformType = original.TransformTypeTrim
+	TransformTypeUppercase   TransformType = original.TransformTypeUppercase
+	TransformTypeURLDecode   TransformType = original.TransformTypeURLDecode
+	TransformTypeURLEncode   TransformType = original.TransformTypeURLEncode
+)
+
 type URLFileExtensionOperator = original.URLFileExtensionOperator
 
 const (
@@ -845,6 +856,9 @@ func PossibleResourceTypeValues() []ResourceType {
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
+}
+func PossibleTransformTypeValues() []TransformType {
+	return original.PossibleTransformTypeValues()
 }
 func PossibleTransformValues() []Transform {
 	return original.PossibleTransformValues()

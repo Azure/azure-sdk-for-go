@@ -840,6 +840,29 @@ func PossibleTransformValues() []Transform {
 	return []Transform{Lowercase, Uppercase}
 }
 
+// TransformType enumerates the values for transform type.
+type TransformType string
+
+const (
+	// TransformTypeLowercase ...
+	TransformTypeLowercase TransformType = "Lowercase"
+	// TransformTypeRemoveNulls ...
+	TransformTypeRemoveNulls TransformType = "RemoveNulls"
+	// TransformTypeTrim ...
+	TransformTypeTrim TransformType = "Trim"
+	// TransformTypeUppercase ...
+	TransformTypeUppercase TransformType = "Uppercase"
+	// TransformTypeURLDecode ...
+	TransformTypeURLDecode TransformType = "UrlDecode"
+	// TransformTypeURLEncode ...
+	TransformTypeURLEncode TransformType = "UrlEncode"
+)
+
+// PossibleTransformTypeValues returns an array of possible values for the TransformType const type.
+func PossibleTransformTypeValues() []TransformType {
+	return []TransformType{TransformTypeLowercase, TransformTypeRemoveNulls, TransformTypeTrim, TransformTypeUppercase, TransformTypeURLDecode, TransformTypeURLEncode}
+}
+
 // URLFileExtensionOperator enumerates the values for url file extension operator.
 type URLFileExtensionOperator string
 
@@ -4879,6 +4902,8 @@ type MatchCondition struct {
 	NegateCondition *bool `json:"negateCondition,omitempty"`
 	// MatchValue - List of possible match values.
 	MatchValue *[]string `json:"matchValue,omitempty"`
+	// Transforms - List of transforms.
+	Transforms *[]TransformType `json:"transforms,omitempty"`
 }
 
 // Operation CDN REST API operation

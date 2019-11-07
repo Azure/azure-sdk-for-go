@@ -72,7 +72,7 @@ type Identity struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// IdentityProperties - The properties associated with the identity.
+	// IdentityProperties - READ-ONLY; The properties associated with the identity.
 	*IdentityProperties `json:"properties,omitempty"`
 	// Type - READ-ONLY; The type of resource i.e. Microsoft.ManagedIdentity/userAssignedIdentities. Possible values include: 'MicrosoftManagedIdentityuserAssignedIdentities'
 	Type UserAssignedIdentities `json:"type,omitempty"`
@@ -86,9 +86,6 @@ func (i Identity) MarshalJSON() ([]byte, error) {
 	}
 	if i.Tags != nil {
 		objectMap["tags"] = i.Tags
-	}
-	if i.IdentityProperties != nil {
-		objectMap["properties"] = i.IdentityProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -170,7 +167,7 @@ type IdentityProperties struct {
 	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
 	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
 	ClientID *uuid.UUID `json:"clientId,omitempty"`
-	// ClientSecretURL - READ-ONLY;  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials.
+	// ClientSecretURL - READ-ONLY;  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials. If identity is user assigned, then the clientSecretUrl will not be present in the response, otherwise it will be present.
 	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
 }
 
@@ -338,6 +335,13 @@ func (page OperationListResultPage) Values() []Operation {
 // Creates a new instance of the OperationListResultPage type.
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return OperationListResultPage{fn: getNextPage}
+}
+
+// SystemAssignedIdentityResult values returned by the display operation.
+type SystemAssignedIdentityResult struct {
+	autorest.Response `json:"-"`
+	// Value - The systemAssignedIdentity returned by the operation.
+	Value *string `json:"value,omitempty"`
 }
 
 // UserAssignedIdentitiesListResult values returned by the List operation.

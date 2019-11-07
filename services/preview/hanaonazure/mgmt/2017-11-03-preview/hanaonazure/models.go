@@ -938,7 +938,7 @@ type SapMonitorProperties struct {
 	// LogAnalyticsWorkspaceArmID - The ARM ID of the Log Analytics Workspace that is used for monitoring
 	LogAnalyticsWorkspaceArmID *string `json:"logAnalyticsWorkspaceArmId,omitempty"`
 	// LogAnalyticsWorkspaceID - The workspace ID of the log analytics workspace to be used for monitoring
-	LogAnalyticsWorkspaceID *string `json:"logAnalyticsWorkspaceID,omitempty"`
+	LogAnalyticsWorkspaceID *string `json:"logAnalyticsWorkspaceId,omitempty"`
 	// LogAnalyticsWorkspaceSharedKey - The shared key of the log analytics workspace that is used for monitoring
 	LogAnalyticsWorkspaceSharedKey *string `json:"logAnalyticsWorkspaceSharedKey,omitempty"`
 }

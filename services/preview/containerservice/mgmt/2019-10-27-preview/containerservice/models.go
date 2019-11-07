@@ -2419,10 +2419,10 @@ type NetworkProfileType struct {
 	LoadBalancerProfile *ManagedClusterLoadBalancerProfile `json:"loadBalancerProfile,omitempty"`
 }
 
-// OpenShiftAPIProperties defines futher properties on the API.
+// OpenShiftAPIProperties defines further properties on the API.
 type OpenShiftAPIProperties struct {
 	// PrivateAPIServer - Specifies if API server is public or private.
-	PrivateAPIServer *bool `json:"PrivateAPIServer,omitempty"`
+	PrivateAPIServer *bool `json:"privateAPIServer,omitempty"`
 }
 
 // OpenShiftManagedCluster openShift Managed cluster.
@@ -2885,7 +2885,7 @@ type OpenShiftManagedClusterMasterPoolProfile struct {
 	VMSize OpenShiftContainerServiceVMSize `json:"vmSize,omitempty"`
 	// SubnetCidr - Subnet CIDR for the peering.
 	SubnetCidr *string `json:"subnetCidr,omitempty"`
-	// APIProperties - Defines futher properties on the API.
+	// APIProperties - Defines further properties on the API.
 	APIProperties *OpenShiftAPIProperties `json:"apiProperties,omitempty"`
 }
 

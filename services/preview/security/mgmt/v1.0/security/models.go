@@ -693,13 +693,6 @@ type AadSolutionProperties struct {
 	ConnectivityState AadConnectivityState `json:"connectivityState,omitempty"`
 }
 
-// ActualTrafficConnectedResources the actual traffic details
-type ActualTrafficConnectedResources struct {
-	// Volume - READ-ONLY; The actual traffic volume between the actual traffic start time to the actual traffic end time
-	Volume             *string              `json:"volume,omitempty"`
-	ConnectionsDetails *[]ConnectionDetails `json:"connectionsDetails,omitempty"`
-}
-
 // AdaptiveNetworkHardening the resource whose properties describes the Adaptive Network Hardening settings
 // for some Azure resource
 type AdaptiveNetworkHardening struct {
@@ -2786,14 +2779,6 @@ type ConnectedWorkspace struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// ConnectionDetails details of the actual traffic connections
-type ConnectionDetails struct {
-	// PortAndProtocol - READ-ONLY; The port and the protocol of the traffic
-	PortAndProtocol *string `json:"portAndProtocol,omitempty"`
-	// Volume - READ-ONLY; The volume of the traffic between the actual traffic start time to the actual traffic end time
-	Volume *string `json:"volume,omitempty"`
-}
-
 // Contact contact details for security issues
 type Contact struct {
 	autorest.Response `json:"-"`
@@ -4735,9 +4720,9 @@ type NetworkDataConnectableResourceActualTraffic struct {
 	// EndTime - READ-ONLY; The UTC end time of the actual traffic time range
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// TrafficDataState - Indicate whether the network traffic data is collected on the Azure resource. Possible values include: 'Available', 'Notavailable'
-	TrafficDataState           TrafficDataState                 `json:"trafficDataState,omitempty"`
-	InboundConnectedResources  *ActualTrafficConnectedResources `json:"inboundConnectedResources,omitempty"`
-	OutboundConnectedResources *ActualTrafficConnectedResources `json:"outboundConnectedResources,omitempty"`
+	TrafficDataState           TrafficDataState    `json:"trafficDataState,omitempty"`
+	InboundConnectedResources  *ConnectedResources `json:"inboundConnectedResources,omitempty"`
+	OutboundConnectedResources *ConnectedResources `json:"outboundConnectedResources,omitempty"`
 }
 
 // NetworkDataConnectableResourceAllowedConnections the allowed connections details

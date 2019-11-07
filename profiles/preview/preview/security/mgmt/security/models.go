@@ -355,7 +355,6 @@ const (
 type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
-type ActualTrafficConnectedResources = original.ActualTrafficConnectedResources
 type AdaptiveApplicationControlsClient = original.AdaptiveApplicationControlsClient
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
@@ -414,7 +413,6 @@ type ConnectableResource = original.ConnectableResource
 type ConnectedResource = original.ConnectedResource
 type ConnectedResources = original.ConnectedResources
 type ConnectedWorkspace = original.ConnectedWorkspace
-type ConnectionDetails = original.ConnectionDetails
 type Contact = original.Contact
 type ContactList = original.ContactList
 type ContactListIterator = original.ContactListIterator

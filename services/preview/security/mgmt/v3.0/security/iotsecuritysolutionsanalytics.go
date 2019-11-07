@@ -26,30 +26,30 @@ import (
 	"net/http"
 )
 
-// IotSecuritySolutionAnalyticsClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
-type IotSecuritySolutionAnalyticsClient struct {
+// IoTSecuritySolutionsAnalyticsClient is the API spec for Microsoft.Security (Azure Security Center) resource provider
+type IoTSecuritySolutionsAnalyticsClient struct {
 	BaseClient
 }
 
-// NewIotSecuritySolutionAnalyticsClient creates an instance of the IotSecuritySolutionAnalyticsClient client.
-func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
-	return NewIotSecuritySolutionAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
+// NewIoTSecuritySolutionsAnalyticsClient creates an instance of the IoTSecuritySolutionsAnalyticsClient client.
+func NewIoTSecuritySolutionsAnalyticsClient(subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsClient {
+	return NewIoTSecuritySolutionsAnalyticsClientWithBaseURI(DefaultBaseURI, subscriptionID, ascLocation)
 }
 
-// NewIotSecuritySolutionAnalyticsClientWithBaseURI creates an instance of the IotSecuritySolutionAnalyticsClient
+// NewIoTSecuritySolutionsAnalyticsClientWithBaseURI creates an instance of the IoTSecuritySolutionsAnalyticsClient
 // client.
-func NewIotSecuritySolutionAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
-	return IotSecuritySolutionAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
+func NewIoTSecuritySolutionsAnalyticsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IoTSecuritySolutionsAnalyticsClient {
+	return IoTSecuritySolutionsAnalyticsClient{NewWithBaseURI(baseURI, subscriptionID, ascLocation)}
 }
 
-// Get use this method to get IoT Security Analytics metrics.
+// GetAll security Analytics of a security solution
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
-// solutionName - the name of the IoT Security solution.
-func (client IotSecuritySolutionAnalyticsClient) Get(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModel, err error) {
+// solutionName - the solution manager name
+func (client IoTSecuritySolutionsAnalyticsClient) GetAll(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModelList, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionAnalyticsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsAnalyticsClient.GetAll")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -65,120 +65,32 @@ func (client IotSecuritySolutionAnalyticsClient) Get(ctx context.Context, resour
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.IotSecuritySolutionAnalyticsClient", "Get", err.Error())
+		return result, validation.NewError("security.IoTSecuritySolutionsAnalyticsClient", "GetAll", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, solutionName)
+	req, err := client.GetAllPreparer(ctx, resourceGroupName, solutionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "GetAll", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetSender(req)
+	resp, err := client.GetAllSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "GetAll", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetResponder(resp)
+	result, err = client.GetAllResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "GetAll", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetPreparer prepares the Get request.
-func (client IotSecuritySolutionAnalyticsClient) GetPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"solutionName":      autorest.Encode("path", solutionName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client IotSecuritySolutionAnalyticsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client IotSecuritySolutionAnalyticsClient) GetResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModel, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// List use this method to get IoT security Analytics metrics in an array.
-// Parameters:
-// resourceGroupName - the name of the resource group within the user's subscription. The name is case
-// insensitive.
-// solutionName - the name of the IoT Security solution.
-func (client IotSecuritySolutionAnalyticsClient) List(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModelList, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IotSecuritySolutionAnalyticsClient.List")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("security.IotSecuritySolutionAnalyticsClient", "List", err.Error())
-	}
-
-	req, err := client.ListPreparer(ctx, resourceGroupName, solutionName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "List", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "List", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionAnalyticsClient", "List", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListPreparer prepares the List request.
-func (client IotSecuritySolutionAnalyticsClient) ListPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
+// GetAllPreparer prepares the GetAll request.
+func (client IoTSecuritySolutionsAnalyticsClient) GetAllPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"solutionName":      autorest.Encode("path", solutionName),
@@ -198,16 +110,104 @@ func (client IotSecuritySolutionAnalyticsClient) ListPreparer(ctx context.Contex
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListSender sends the List request. The method will close the
+// GetAllSender sends the GetAll request. The method will close the
 // http.Response Body if it receives an error.
-func (client IotSecuritySolutionAnalyticsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client IoTSecuritySolutionsAnalyticsClient) GetAllSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// ListResponder handles the response to the List request. The method always
+// GetAllResponder handles the response to the GetAll request. The method always
 // closes the http.Response Body.
-func (client IotSecuritySolutionAnalyticsClient) ListResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModelList, err error) {
+func (client IoTSecuritySolutionsAnalyticsClient) GetAllResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModelList, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetDefault security Analytics of a security solution
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// solutionName - the solution manager name
+func (client IoTSecuritySolutionsAnalyticsClient) GetDefault(ctx context.Context, resourceGroupName string, solutionName string) (result IoTSecuritySolutionAnalyticsModel, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IoTSecuritySolutionsAnalyticsClient.GetDefault")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.IoTSecuritySolutionsAnalyticsClient", "GetDefault", err.Error())
+	}
+
+	req, err := client.GetDefaultPreparer(ctx, resourceGroupName, solutionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "GetDefault", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetDefaultSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "GetDefault", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetDefaultResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsClient", "GetDefault", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetDefaultPreparer prepares the GetDefault request.
+func (client IoTSecuritySolutionsAnalyticsClient) GetDefaultPreparer(ctx context.Context, resourceGroupName string, solutionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"solutionName":      autorest.Encode("path", solutionName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/iotSecuritySolutions/{solutionName}/analyticsModels/default", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetDefaultSender sends the GetDefault request. The method will close the
+// http.Response Body if it receives an error.
+func (client IoTSecuritySolutionsAnalyticsClient) GetDefaultSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetDefaultResponder handles the response to the GetDefault request. The method always
+// closes the http.Response Body.
+func (client IoTSecuritySolutionsAnalyticsClient) GetDefaultResponder(resp *http.Response) (result IoTSecuritySolutionAnalyticsModel, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

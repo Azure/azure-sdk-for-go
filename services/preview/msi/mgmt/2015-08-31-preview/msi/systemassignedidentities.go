@@ -40,12 +40,12 @@ func NewSystemAssignedIdentitiesClientWithBaseURI(baseURI string, subscriptionID
 	return SystemAssignedIdentitiesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// DisplayByScope displays the systemAssignedIdentity available under the specified RP scope.
+// GetByScope gets the systemAssignedIdentity available under the specified RP scope.
 // Parameters:
 // scope - the scope of the resource. Parent resource being extended by Managed Identities.
-func (client SystemAssignedIdentitiesClient) DisplayByScope(ctx context.Context, scope string) (result SystemAssignedIdentityResult, err error) {
+func (client SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, scope string) (result SystemAssignedIdentityResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SystemAssignedIdentitiesClient.DisplayByScope")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SystemAssignedIdentitiesClient.GetByScope")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -54,29 +54,29 @@ func (client SystemAssignedIdentitiesClient) DisplayByScope(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DisplayByScopePreparer(ctx, scope)
+	req, err := client.GetByScopePreparer(ctx, scope)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "msi.SystemAssignedIdentitiesClient", "DisplayByScope", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "msi.SystemAssignedIdentitiesClient", "GetByScope", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.DisplayByScopeSender(req)
+	resp, err := client.GetByScopeSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "msi.SystemAssignedIdentitiesClient", "DisplayByScope", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "msi.SystemAssignedIdentitiesClient", "GetByScope", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.DisplayByScopeResponder(resp)
+	result, err = client.GetByScopeResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "msi.SystemAssignedIdentitiesClient", "DisplayByScope", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "msi.SystemAssignedIdentitiesClient", "GetByScope", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// DisplayByScopePreparer prepares the DisplayByScope request.
-func (client SystemAssignedIdentitiesClient) DisplayByScopePreparer(ctx context.Context, scope string) (*http.Request, error) {
+// GetByScopePreparer prepares the GetByScope request.
+func (client SystemAssignedIdentitiesClient) GetByScopePreparer(ctx context.Context, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"scope": scope,
 	}
@@ -94,16 +94,16 @@ func (client SystemAssignedIdentitiesClient) DisplayByScopePreparer(ctx context.
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// DisplayByScopeSender sends the DisplayByScope request. The method will close the
+// GetByScopeSender sends the GetByScope request. The method will close the
 // http.Response Body if it receives an error.
-func (client SystemAssignedIdentitiesClient) DisplayByScopeSender(req *http.Request) (*http.Response, error) {
+func (client SystemAssignedIdentitiesClient) GetByScopeSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// DisplayByScopeResponder handles the response to the DisplayByScope request. The method always
+// GetByScopeResponder handles the response to the GetByScope request. The method always
 // closes the http.Response Body.
-func (client SystemAssignedIdentitiesClient) DisplayByScopeResponder(resp *http.Response) (result SystemAssignedIdentityResult, err error) {
+func (client SystemAssignedIdentitiesClient) GetByScopeResponder(resp *http.Response) (result SystemAssignedIdentityResult, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

@@ -19,12 +19,12 @@
 
 package netappapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-07-01/netapp/netappapi"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-08-01/netapp/netappapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
-type BaseClientAPI = original.BaseClientAPI
 type MountTargetsClientAPI = original.MountTargetsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PoolsClientAPI = original.PoolsClientAPI
+type ResourceClientAPI = original.ResourceClientAPI
 type SnapshotsClientAPI = original.SnapshotsClientAPI
 type VolumesClientAPI = original.VolumesClientAPI

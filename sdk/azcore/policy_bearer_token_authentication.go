@@ -25,6 +25,7 @@ func NewBearerTokenAuthPolicy(scopes []string, cred TokenCredential) (Policy, er
 	return &bearerTokenAuthPolicy{scopes: scopes, credential: cred}, nil
 }
 
+// Do implements the Policy interface and sets the appropriate headers for authentication requests
 func (c *bearerTokenAuthPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
 	if req.Request.URL.Scheme != "https" {
 		// HTTPS must be used, otherwise the tokens are at the risk of being exposed

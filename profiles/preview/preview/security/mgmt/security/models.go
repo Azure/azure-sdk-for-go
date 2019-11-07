@@ -308,6 +308,14 @@ const (
 	OffByPolicy   ResourceStatus = original.OffByPolicy
 )
 
+type RuleState = original.RuleState
+
+const (
+	RuleStateDisabled RuleState = original.RuleStateDisabled
+	RuleStateEnabled  RuleState = original.RuleStateEnabled
+	RuleStateExpired  RuleState = original.RuleStateExpired
+)
+
 type Script = original.Script
 
 const (
@@ -447,6 +455,13 @@ type AscLocationListIterator = original.AscLocationListIterator
 type AscLocationListPage = original.AscLocationListPage
 type AtaExternalSecuritySolution = original.AtaExternalSecuritySolution
 type AtaSolutionProperties = original.AtaSolutionProperties
+type AutoDismissAlertsRule = original.AutoDismissAlertsRule
+type AutoDismissAlertsRuleProperties = original.AutoDismissAlertsRuleProperties
+type AutoDismissAlertsRulesClient = original.AutoDismissAlertsRulesClient
+type AutoDismissAlertsRulesList = original.AutoDismissAlertsRulesList
+type AutoDismissAlertsRulesListIterator = original.AutoDismissAlertsRulesListIterator
+type AutoDismissAlertsRulesListPage = original.AutoDismissAlertsRulesListPage
+type AutoDismissAlertsScope = original.AutoDismissAlertsScope
 type AutoProvisioningSetting = original.AutoProvisioningSetting
 type AutoProvisioningSettingList = original.AutoProvisioningSettingList
 type AutoProvisioningSettingListIterator = original.AutoProvisioningSettingListIterator
@@ -600,6 +615,7 @@ type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStand
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
 type ResourceDetails = original.ResourceDetails
+type RuleImpact = original.RuleImpact
 type SQLServerVulnerabilityProperties = original.SQLServerVulnerabilityProperties
 type SensitivityLabel = original.SensitivityLabel
 type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
@@ -696,6 +712,18 @@ func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterato
 }
 func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
 	return original.NewAscLocationListPage(getNextPage)
+}
+func NewAutoDismissAlertsRulesClient(subscriptionID string, ascLocation string) AutoDismissAlertsRulesClient {
+	return original.NewAutoDismissAlertsRulesClient(subscriptionID, ascLocation)
+}
+func NewAutoDismissAlertsRulesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutoDismissAlertsRulesClient {
+	return original.NewAutoDismissAlertsRulesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAutoDismissAlertsRulesListIterator(page AutoDismissAlertsRulesListPage) AutoDismissAlertsRulesListIterator {
+	return original.NewAutoDismissAlertsRulesListIterator(page)
+}
+func NewAutoDismissAlertsRulesListPage(getNextPage func(context.Context, AutoDismissAlertsRulesList) (AutoDismissAlertsRulesList, error)) AutoDismissAlertsRulesListPage {
+	return original.NewAutoDismissAlertsRulesListPage(getNextPage)
 }
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)
@@ -1071,6 +1099,9 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 }
 func PossibleResourceStatusValues() []ResourceStatus {
 	return original.PossibleResourceStatusValues()
+}
+func PossibleRuleStateValues() []RuleState {
+	return original.PossibleRuleStateValues()
 }
 func PossibleScriptValues() []Script {
 	return original.PossibleScriptValues()

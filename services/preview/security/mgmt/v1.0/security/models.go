@@ -513,6 +513,23 @@ func PossibleReportedSeverityValues() []ReportedSeverity {
 	return []ReportedSeverity{High, Information, Low, Silent}
 }
 
+// RuleState enumerates the values for rule state.
+type RuleState string
+
+const (
+	// Disabled ...
+	Disabled RuleState = "Disabled"
+	// Enabled ...
+	Enabled RuleState = "Enabled"
+	// Expired ...
+	Expired RuleState = "Expired"
+)
+
+// PossibleRuleStateValues returns an array of possible values for the RuleState const type.
+func PossibleRuleStateValues() []RuleState {
+	return []RuleState{Disabled, Enabled, Expired}
+}
+
 // Script enumerates the values for script.
 type Script string
 
@@ -639,17 +656,17 @@ func PossibleStatusValues() []Status {
 type StatusReason string
 
 const (
-	// Expired ...
-	Expired StatusReason = "Expired"
-	// NewerRequestInitiated ...
-	NewerRequestInitiated StatusReason = "NewerRequestInitiated"
-	// UserRequested ...
-	UserRequested StatusReason = "UserRequested"
+	// StatusReasonExpired ...
+	StatusReasonExpired StatusReason = "Expired"
+	// StatusReasonNewerRequestInitiated ...
+	StatusReasonNewerRequestInitiated StatusReason = "NewerRequestInitiated"
+	// StatusReasonUserRequested ...
+	StatusReasonUserRequested StatusReason = "UserRequested"
 )
 
 // PossibleStatusReasonValues returns an array of possible values for the StatusReason const type.
 func PossibleStatusReasonValues() []StatusReason {
-	return []StatusReason{Expired, NewerRequestInitiated, UserRequested}
+	return []StatusReason{StatusReasonExpired, StatusReasonNewerRequestInitiated, StatusReasonUserRequested}
 }
 
 // SubAssessmentStatusCode enumerates the values for sub assessment status code.
@@ -2249,6 +2266,250 @@ func (asp *AtaSolutionProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// AutoDismissAlertsRule describes the auto dismiss rule
+type AutoDismissAlertsRule struct {
+	autorest.Response                `json:"-"`
+	*AutoDismissAlertsRuleProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AutoDismissAlertsRule.
+func (adar AutoDismissAlertsRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if adar.AutoDismissAlertsRuleProperties != nil {
+		objectMap["properties"] = adar.AutoDismissAlertsRuleProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AutoDismissAlertsRule struct.
+func (adar *AutoDismissAlertsRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var autoDismissAlertsRuleProperties AutoDismissAlertsRuleProperties
+				err = json.Unmarshal(*v, &autoDismissAlertsRuleProperties)
+				if err != nil {
+					return err
+				}
+				adar.AutoDismissAlertsRuleProperties = &autoDismissAlertsRuleProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				adar.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				adar.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				adar.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AutoDismissAlertsRuleProperties describes AutoDismissAlertsRule properties
+type AutoDismissAlertsRuleProperties struct {
+	// AlertType - Type of the auto dismissed alert. For all alert types, use '*'
+	AlertType *string `json:"alertType,omitempty"`
+	// LastModifiedUTC - READ-ONLY; The last time this rule was modified
+	LastModifiedUTC *date.Time `json:"lastModifiedUTC,omitempty"`
+	// ExpirationDateUTC - Expiration date of the rule
+	ExpirationDateUTC *date.Time `json:"expirationDateUTC,omitempty"`
+	// Reason - The reason for dismissing the alert
+	Reason *string `json:"reason,omitempty"`
+	// State - Possible states of the rule. Possible values include: 'Enabled', 'Disabled', 'Expired'
+	State RuleState `json:"state,omitempty"`
+	// Comment - Any comment regarding the rule
+	Comment *string `json:"comment,omitempty"`
+	// AutoDismissAlertsScope - The auto dismiss conditions
+	AutoDismissAlertsScope *AutoDismissAlertsScope `json:"autoDismissAlertsScope,omitempty"`
+	// RuleImpact - READ-ONLY; Statistics about the impact of this rule, if enabled
+	RuleImpact *RuleImpact `json:"ruleImpact,omitempty"`
+}
+
+// AutoDismissAlertsRulesList auto dismiss rules list for subscription.
+type AutoDismissAlertsRulesList struct {
+	autorest.Response `json:"-"`
+	Value             *[]AutoDismissAlertsRule `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AutoDismissAlertsRulesListIterator provides access to a complete listing of AutoDismissAlertsRule
+// values.
+type AutoDismissAlertsRulesListIterator struct {
+	i    int
+	page AutoDismissAlertsRulesListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AutoDismissAlertsRulesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AutoDismissAlertsRulesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AutoDismissAlertsRulesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AutoDismissAlertsRulesListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AutoDismissAlertsRulesListIterator) Response() AutoDismissAlertsRulesList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AutoDismissAlertsRulesListIterator) Value() AutoDismissAlertsRule {
+	if !iter.page.NotDone() {
+		return AutoDismissAlertsRule{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AutoDismissAlertsRulesListIterator type.
+func NewAutoDismissAlertsRulesListIterator(page AutoDismissAlertsRulesListPage) AutoDismissAlertsRulesListIterator {
+	return AutoDismissAlertsRulesListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (adarl AutoDismissAlertsRulesList) IsEmpty() bool {
+	return adarl.Value == nil || len(*adarl.Value) == 0
+}
+
+// autoDismissAlertsRulesListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (adarl AutoDismissAlertsRulesList) autoDismissAlertsRulesListPreparer(ctx context.Context) (*http.Request, error) {
+	if adarl.NextLink == nil || len(to.String(adarl.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(adarl.NextLink)))
+}
+
+// AutoDismissAlertsRulesListPage contains a page of AutoDismissAlertsRule values.
+type AutoDismissAlertsRulesListPage struct {
+	fn    func(context.Context, AutoDismissAlertsRulesList) (AutoDismissAlertsRulesList, error)
+	adarl AutoDismissAlertsRulesList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AutoDismissAlertsRulesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AutoDismissAlertsRulesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.adarl)
+	if err != nil {
+		return err
+	}
+	page.adarl = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AutoDismissAlertsRulesListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AutoDismissAlertsRulesListPage) NotDone() bool {
+	return !page.adarl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AutoDismissAlertsRulesListPage) Response() AutoDismissAlertsRulesList {
+	return page.adarl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AutoDismissAlertsRulesListPage) Values() []AutoDismissAlertsRule {
+	if page.adarl.IsEmpty() {
+		return nil
+	}
+	return *page.adarl.Value
+}
+
+// Creates a new instance of the AutoDismissAlertsRulesListPage type.
+func NewAutoDismissAlertsRulesListPage(getNextPage func(context.Context, AutoDismissAlertsRulesList) (AutoDismissAlertsRulesList, error)) AutoDismissAlertsRulesListPage {
+	return AutoDismissAlertsRulesListPage{fn: getNextPage}
+}
+
+// AutoDismissAlertsScope ...
+type AutoDismissAlertsScope struct {
+	// AllOf - All the conditions inside need to be true in order to auto dismiss the alert
+	AllOf *[]interface{} `json:"allOf,omitempty"`
 }
 
 // AutoProvisioningSetting auto provisioning setting
@@ -4924,7 +5185,7 @@ type JitNetworkAccessRequestPort struct {
 	EndTimeUtc *date.Time `json:"endTimeUtc,omitempty"`
 	// Status - The status of the port. Possible values include: 'Revoked', 'Initiated'
 	Status Status `json:"status,omitempty"`
-	// StatusReason - A description of why the `status` has its value. Possible values include: 'Expired', 'UserRequested', 'NewerRequestInitiated'
+	// StatusReason - A description of why the `status` has its value. Possible values include: 'StatusReasonExpired', 'StatusReasonUserRequested', 'StatusReasonNewerRequestInitiated'
 	StatusReason StatusReason `json:"statusReason,omitempty"`
 	// MappedPort - The port which is mapped to this port's `number` in the Azure Firewall, if applicable
 	MappedPort *int32 `json:"mappedPort,omitempty"`
@@ -6213,6 +6474,12 @@ type Rule struct {
 	Protocols *[]TransportProtocol `json:"protocols,omitempty"`
 	// IPAddresses - The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+}
+
+// RuleImpact ...
+type RuleImpact struct {
+	ScannedAlertsNumber   *int32 `json:"scannedAlertsNumber,omitempty"`
+	DismissedAlertsNumber *int32 `json:"dismissedAlertsNumber,omitempty"`
 }
 
 // SensitivityLabel the sensitivity label.

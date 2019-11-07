@@ -5,26 +5,25 @@ package azidentity
 
 import (
 	"context"
-	"errors"
-	"fmt"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ChainedTokenCredential provides a TokenCredential implementation which chains multiple TokenCredential implementations to be tried in order
 // until one of the GetToken methods returns a non-default AccessToken.
 type ChainedTokenCredential struct {
-	TokenCredential
-	sources []TokenCredential
+	sources []azcore.TokenCredential
 }
 
-// NewChainedTokenCredential creates an instance with the specified TokenCredential sources.
-func NewChainedTokenCredential(sources ...TokenCredential) (*ChainedTokenCredential, error) {
+// NewChainedTokenCredential creates an instance of ChainedTokenCredential with the specified TokenCredential sources.
+func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
-		return &ChainedTokenCredential{sources: nil}, errors.New("NewChainedTokenCredential: length of sources cannot be 0")
+		return nil, &CredentialUnavailableError{Message: "NewChainedTokenCredential: length of sources cannot be 0"}
 	}
-
+	// TODO: test for each of these conditions
 	for _, source := range sources {
 		if source == nil {
-			return &ChainedTokenCredential{sources: nil}, errors.New("NewChainedTokenCredential: sources cannot contain a nil TokenCredential")
+			return nil, &CredentialUnavailableError{Message: "NewChainedTokenCredential: sources cannot contain a nil TokenCredential"}
 		}
 	}
 
@@ -32,48 +31,26 @@ func NewChainedTokenCredential(sources ...TokenCredential) (*ChainedTokenCredent
 }
 
 // GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the first non default AccessToken.
-// If all credentials in the chain return default, a default AccessToken is returned.
-func (c ChainedTokenCredential) GetToken(ctx context.Context, scopes []string) (*AccessToken, error) {
-	var token *AccessToken
+func (c *ChainedTokenCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
+	// CP: Notes from session with Jeff, have two funcs for the DefaultAzureCredential the main default func will issue the call that hits the wire, however internally first we create the chain and return a credUnavailable error if no credentials are found, if one works then we immediately return the one that works. End goal to always try to use the same credential type so we dont switch between credentials during execution, or at least reduce the possibility of that happening?
+	var token *azcore.AccessToken
 	var err error
+	var errList []error
+
 	for i := 0; i < len(c.sources) && token == nil; i++ {
 		token, err = c.sources[i].GetToken(ctx, scopes)
+		// CP: This currently works the same way as the other languages
+		// TODO: instead of appending to an error slice, check if the error returned is an auth failure then stop the function completely and return the auth failure, credunavailable is still ok to continue looping
 		if err != nil {
-			return nil, fmt.Errorf("ChainedTokenCredential GetToken(): %w", err)
+			errList = append(errList, err)
 		}
 	}
+
+	if token == nil && len(errList) > 0 {
+		// Here we dont want to return the slice of errors, instead ideally just return an auth failed error since the credential unavailable error should already have been discarded.
+		err = &AggregateError{ErrList: errList}
+		return nil, err
+	}
+
 	return token, nil
-}
-
-// NewDefaultTokenCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
-// types will be tried, in order:
-// - EnvironmentCredential
-// - ManagedIdentityCredential
-// Consult the documentation of these credential types for more information on how they attempt authentication.
-func NewDefaultTokenCredential(o *IdentityClientOptions) (*ChainedTokenCredential, error) {
-	// CP: This is fine because we are not calling GetToken we are simple creating the new EnvironmentClient
-	envClient, err := NewEnvironmentCredential(o)
-	if err != nil {
-		return &ChainedTokenCredential{sources: nil}, fmt.Errorf("NewDefaultTokenCredential: %w", err)
-	}
-	// TODO: check this implementation:
-	// 1. params for constructor should be nilable
-	// 2. Should this func ask for a client id? or get it from somewhere else?
-	msiClient, err := NewManagedIdentityCredential("", o)
-	if err != nil {
-		return &ChainedTokenCredential{sources: nil}, fmt.Errorf("NewDefaultTokenCredential: %w", err)
-	}
-
-	return NewChainedTokenCredential(
-		envClient,
-		msiClient,
-		credentialNotFoundGuard{})
-}
-
-type credentialNotFoundGuard struct {
-	TokenCredential
-}
-
-func (c credentialNotFoundGuard) GetToken(ctx context.Context, scopes []string) (*AccessToken, error) {
-	return &AccessToken{}, errors.New("Failed to find a credential to use for authentication.  If running in an environment where a managed identity is not available ensure the environment variables AZURE_TENANT_ID, AZURE_CLIENT_ID, and AZURE_CLIENT_SECRET are set")
 }

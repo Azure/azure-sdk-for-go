@@ -5,23 +5,21 @@ package azidentity
 
 import (
 	"context"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ClientSecretCredential enables authentication to Azure Active Directory using a client secret that was generated for an App Registration.  More information on how
 // to configure a client secret can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis#add-credentials-to-your-web-application
 type ClientSecretCredential struct {
-	TokenCredential
-
 	client *aadIdentityClient
-	// Gets the Azure Active Directory tenant (directory) Id of the service principal
-	TenantID string
+	// TODO: unexport
+	TenantID string // Gets the Azure Active Directory tenant (directory) Id of the service principal
 
-	// Gets the client (application) ID of the service principal
-	ClientID string
+	ClientID string // Gets the client (application) ID of the service principal
 
-	// Gets the client secret that was generated for the App Registration used to authenticate the client.
-	ClientSecret string
+	ClientSecret string // Gets the client secret that was generated for the App Registration used to authenticate the client.
 }
 
 // NewClientSecretCredential constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
@@ -29,23 +27,24 @@ type ClientSecretCredential struct {
 // clientID: The client (application) ID of the service principal.
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions) *ClientSecretCredential {
-	var err error
-	if options == nil {
-		options, err = newIdentityClientOptions()
-		if err != nil {
-			// return err
-		}
-	}
-	var client *aadIdentityClient = newAADIdentityClient(options)
+func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions) (*ClientSecretCredential, error) {
+	return &ClientSecretCredential{TenantID: tenantID, ClientID: clientID, ClientSecret: clientSecret, client: newAADIdentityClient(options)}, nil
+}
 
-	return &ClientSecretCredential{TenantID: tenantID, ClientID: clientID, ClientSecret: clientSecret, client: client}
+// NewClientSecretCredentialWithPipeline constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
+// tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
+// clientID: The client (application) ID of the service principal.
+// clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
+// options: allow to configure the management of the requests sent to the Azure Active Directory service.
+// pipeline: Custom pipeline to be used for API requests.
+func NewClientSecretCredentialWithPipeline(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions, pipeline azcore.Pipeline) (*ClientSecretCredential, error) {
+	return &ClientSecretCredential{TenantID: tenantID, ClientID: clientID, ClientSecret: clientSecret, client: newAADIdentityClientWithPipeline(options, pipeline)}, nil
 }
 
 // GetToken obtains a token from the Azure Active Directory service, using the specified client secret to authenticate.
-// scopes: The list of scopes for which the token will have access.
 // ctx: controlling the request lifetime.
+// scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c ClientSecretCredential) GetToken(ctx context.Context, scopes []string) (*AccessToken, error) {
-	return c.client.Authenticate(ctx, c.TenantID, c.ClientID, c.ClientSecret, scopes)
+func (c ClientSecretCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
+	return c.client.authenticate(ctx, c.TenantID, c.ClientID, c.ClientSecret, scopes)
 }

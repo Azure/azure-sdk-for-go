@@ -4,8 +4,7 @@
 package azidentity
 
 import (
-	"context"
-	"fmt"
+	"encoding/json"
 	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -15,54 +14,85 @@ const (
 	defaultAuthorityHost = "https://login.microsoftonline.com/"
 )
 
+// AuthenticationFailedError is a struct used to marshal responses when authentication has failed
+type AuthenticationFailedError struct {
+	Message       string `json:"error"`
+	Description   string `json:"error_description"`
+	Timestamp     string `json:"timestamp"`
+	TraceID       string `json:"trace_id"`
+	CorrelationID string `json:"correlation_id"`
+	URI           string `json:"error_uri"`
+	Response      *azcore.Response
+}
+
+func (e *AuthenticationFailedError) Error() string {
+	return e.Message + ": " + e.Description
+}
+
+func newAuthenticationFailedError(resp *azcore.Response) error {
+	var authFailed *AuthenticationFailedError
+	err := json.Unmarshal(resp.Payload, authFailed)
+	if err != nil {
+		authFailed.Message = resp.Status
+		authFailed.Description = "Failed to unmarshal response: " + err.Error()
+	}
+	authFailed.Response = resp
+	return authFailed
+}
+
+// CredentialUnavailableError an error type returned when the conditions required to create a credential do not exist
+type CredentialUnavailableError struct {
+	Message string
+}
+
+func (e *CredentialUnavailableError) Error() string {
+	return e.Message
+}
+
+// AggregateError a specific error type for the chained token credential
+type AggregateError struct {
+	Msg     string
+	Err     error
+	ErrList []error
+}
+
+func (e *AggregateError) Error() string {
+	errString := ""
+	for _, err := range e.ErrList {
+		errString += "\n" + err.Error()
+	}
+
+	return errString
+}
+
 // IdentityClientOptions to configure requests made to Azure Identity Services
 type IdentityClientOptions struct {
-	pipelineOptions azcore.PipelineOptions
-	AuthorityHost   url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	PipelineOptions azcore.PipelineOptions
+	AuthorityHost   *url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com
 }
 
-// // ClientOptions is used to ...
-// type ClientOptions struct {
-// 	Transport azcore.Pipeline
-// }
-
-// newIdentityClientOptions function initializes the default Authority Host to authenticate against
-func newIdentityClientOptions() (*IdentityClientOptions, error) {
-	var c *IdentityClientOptions = &IdentityClientOptions{}
-	res, err := url.Parse(defaultAuthorityHost)
-	if err != nil {
-		return nil, fmt.Errorf("Parse: %w", err)
+// NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
+func (c *IdentityClientOptions) setDefaultValues() *IdentityClientOptions {
+	if c == nil {
+		c = &IdentityClientOptions{}
+		c.AuthorityHost, _ = url.Parse(defaultAuthorityHost)
 	}
-	c.AuthorityHost = *res
-	return c, nil
+	return c
 }
 
-// TokenCredential interface serves as an anonymous field for all other credentials to use the GetToken method
-// CP: check this
-type TokenCredential interface {
-	GetToken(ctx context.Context, scopes []string) (*AccessToken, error)
-}
-
-// // ServicePrincipalCertificateSecret implements ServicePrincipalSecret for generic RSA cert auth with signed JWTs.
-// type ServicePrincipalCertificateSecret struct {
-// 	Certificate *x509.Certificate
-// 	PrivateKey  *rsa.PrivateKey
-// }
-
-// NewDefaultPipeline creates a Pipeline using the specified credentials and options.
+// NewDefaultPipeline creates a Pipeline using the specified pipeline options
+// CP: should this be exported?
 func NewDefaultPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientPolicy()
 	}
-	// Closest to API goes first; closest to the wire goes last
-	// NOTE: The credential's policy factory must appear close to the wire so it can sign any
-	// changes made by other factories (like UniqueRequestIDPolicyFactory)
+
 	return azcore.NewPipeline(
-		// azcore.NewTelemetryPolicy(o.Telemetry),
-		// azcore.NewUniqueRequestIDPolicy(),
-		// azcore.NewRetryPolicy(o.Retry),
-		// azcore.NewBodyDownloadPolicy(),
-		// azcore.NewRequestLogPolicy(o.RequestLog),
+		azcore.NewTelemetryPolicy(o.Telemetry),
+		azcore.NewUniqueRequestIDPolicy(),
+		azcore.NewRetryPolicy(o.Retry),
+		azcore.NewBodyDownloadPolicy(),
+		azcore.NewRequestLogPolicy(o.LogOptions),
 		o.HTTPClient)
 }
 

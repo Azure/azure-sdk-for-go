@@ -32,7 +32,7 @@ type payloadJWT struct {
 }
 
 // createClientAssertionJWT build the JWT header, payload and signature,
-// then returns a string of the JWT assertion
+// then returns a string for the JWT assertion
 func createClientAssertionJWT(clientID string, audience string, clientCertificate string) (string, error) {
 	fingerprint, err := spkiFingerprint(clientCertificate)
 	if err != nil {

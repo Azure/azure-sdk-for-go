@@ -5,8 +5,9 @@ package azidentity
 
 import (
 	"context"
-	"fmt"
 	"os"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // EnvironmentCredential type enables authentication to Azure Active Directory using client secret
@@ -18,31 +19,33 @@ import (
 // perform the authentication using these details. Please consult the
 // documentation of that class for more details.
 type EnvironmentCredential struct {
-	credential TokenCredential
+	credential azcore.TokenCredential
 }
 
 // NewEnvironmentCredential creates an instance of the EnvironmentCredential type and reads client secret details from environment variables.
 // If the expected environment variables are not found at this time, the GetToken method will return the default AccessToken when invoked.
-// options: allow to configure the management of the requests sent to the Azure Active Directory service.
+// - options: The options used to configure the management of the requests sent to the Azure Active Directory service.
 func NewEnvironmentCredential(options *IdentityClientOptions) (*EnvironmentCredential, error) {
-	var credential *ClientSecretCredential
-	var tenantID string = os.Getenv("AZURE_TENANT_ID")
-	var clientID string = os.Getenv("AZURE_CLIENT_ID")
-	var clientSecret string = os.Getenv("AZURE_CLIENT_SECRET")
+	tenantID := os.Getenv("AZURE_TENANT_ID")
+	clientID := os.Getenv("AZURE_CLIENT_ID")
+	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
 
 	if tenantID == "" {
-		return &EnvironmentCredential{}, fmt.Errorf("Missing environment variable: AZURE_TENANT_ID")
+		return nil, &CredentialUnavailableError{Message: "Missing environment variable: AZURE_TENANT_ID"}
 	}
 
 	if clientID == "" {
-		return &EnvironmentCredential{}, fmt.Errorf("Missing environment variable: AZURE_CLIENT_ID")
+		return nil, &CredentialUnavailableError{Message: "Missing environment variable: AZURE_CLIENT_ID"}
 	}
 
 	if clientSecret == "" {
-		return &EnvironmentCredential{}, fmt.Errorf("Missing environment variable: AZURE_CLIENT_SECRET")
+		return nil, &CredentialUnavailableError{Message: "Missing environment variable: AZURE_CLIENT_SECRET"}
 	}
 
-	credential = NewClientSecretCredential(tenantID, clientID, clientSecret, options)
+	credential, err := NewClientSecretCredential(tenantID, clientID, clientSecret, options)
+	if err != nil {
+		return nil, err
+	}
 	return &EnvironmentCredential{credential: credential}, nil
 }
 
@@ -51,9 +54,8 @@ func NewEnvironmentCredential(options *IdentityClientOptions) (*EnvironmentCrede
 // scopes: The list of scopes for which the token will have access.
 // ctx: controlling the request lifetime.
 // If the environment variables AZURE_TENANT_ID, AZURE_CLIENT_ID, and AZURE_CLIENT_SECRET are not specified, the default AccessToken is returned
-func (c EnvironmentCredential) GetToken(ctx context.Context, scopes []string) (*AccessToken, error) {
-	if c.credential == nil {
-		return &AccessToken{}, nil
-	}
+func (c EnvironmentCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
 	return c.credential.GetToken(ctx, scopes)
 }
+
+// TODO: credential methods by ref

@@ -29,26 +29,20 @@ func (f fingerprint) String() string {
 	return buf.String()
 }
 
-// // SPKIFingerprint calculates a SHA256 digest of the SubjectPublicKeyInfo
-// // section of an X.509 certificate.
-// func SPKIFingerprint(cert *x509.Certificate) Fingerprint {
-// 	h := sha1.New()
-// 	h.Write(cert.RawSubjectPublicKeyInfo)
-// 	return Fingerprint(h.Sum(nil))
-// }
-
 // spkiFingerprint calculates the fingerprint of the certificate based on it's Subject Public Key Info with the SHA-1
 // signing algorithm.
 func spkiFingerprint(cert string) (fingerprint, error) {
 	privateKeyFile, err := os.Open(cert)
-
+	defer privateKeyFile.Close()
 	if err != nil {
 		return fingerprint{}, fmt.Errorf("File not found in path: %w", err)
 	}
 
-	defer privateKeyFile.Close()
+	pemFileInfo, err := privateKeyFile.Stat()
+	if err != nil {
+		return fingerprint{}, err
+	}
 
-	pemFileInfo, _ := privateKeyFile.Stat()
 	var size int64 = pemFileInfo.Size()
 	pemBytes := make([]byte, size)
 	buffer := bufio.NewReader(privateKeyFile)
@@ -69,7 +63,6 @@ func spkiFingerprint(cert string) (fingerprint, error) {
 		}
 		return nil, errors.New("Cannot find CERTIFICATE in file")
 	}
-	// data, _ = pem.Decode([]byte(rest))
 	h := sha1.New()
 	h.Write(data.Bytes)
 

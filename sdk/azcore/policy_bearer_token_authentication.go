@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azcore
 
 import (
@@ -13,7 +16,7 @@ type bearerTokenAuthPolicy struct {
 }
 
 // NewBearerTokenAuthPolicy creates a BearerTokenAuthPolicy object configured using the specified scopes and Token Credential.
-func NewBearerTokenAuthPolicy(scopes []string, cred TokenCredential) (Policy, error) {
+func NewBearerTokenAuthPolicy(cred TokenCredential, scopes ...string) (Policy, error) {
 	if cred == nil {
 		return nil, errors.New("cred cannot be nil")
 	}
@@ -37,6 +40,6 @@ func (c *bearerTokenAuthPolicy) Do(ctx context.Context, req *Request) (*Response
 		return nil, err
 	}
 
-	req.Request.Header.Set(headerAuthorization, "Bearer "+token.Token)
+	req.Request.Header.Set(HeaderAuthorization, "Bearer "+token.Token)
 	return req.Do(ctx)
 }

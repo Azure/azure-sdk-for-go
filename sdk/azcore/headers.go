@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azcore
 
 // Constants ensuring that header names are correctly spelled and consistently cased.
@@ -17,6 +20,7 @@ const (
 	HeaderIfUnmodifiedSince  = "If-Unmodified-Since"
 	HeaderMetadata           = "Metadata"
 	HeaderRange              = "Range"
+	HeaderURLEncoded         = "application/x-www-form-urlencoded"
 	HeaderUserAgent          = "User-Agent"
 	HeaderXmsDate            = "x-ms-date"
 	HeaderXmsVersion         = "x-ms-version"

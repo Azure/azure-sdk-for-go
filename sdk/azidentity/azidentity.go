@@ -81,8 +81,7 @@ func (c *IdentityClientOptions) setDefaultValues() *IdentityClientOptions {
 }
 
 // NewDefaultPipeline creates a Pipeline using the specified pipeline options
-// CP: should this be exported?
-func NewDefaultPipeline(o azcore.PipelineOptions) azcore.Pipeline {
+func newDefaultPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientPolicy()
 	}

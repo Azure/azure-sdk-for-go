@@ -64,7 +64,7 @@ func newManagedIdentityClient(options *IdentityClientOptions) (*managedIdentityC
 	// TODO: create a separate pipeline for imds that had its own retry policy
 	return &managedIdentityClient{
 		options:                *options.setDefaultValues(),
-		pipeline:               NewDefaultPipeline(options.PipelineOptions),
+		pipeline:               newDefaultPipeline(options.PipelineOptions),
 		sIMDSEndpoint:          sIMDSEndpoint,
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,

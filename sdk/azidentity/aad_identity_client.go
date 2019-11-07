@@ -27,9 +27,6 @@ const (
 )
 
 const (
-	headerURLEncoded = "application/x-www-form-urlencoded"
-)
-const (
 	qpClientAssertionType = "client_assertion_type"
 	qpClientAssertion     = "client_assertion"
 	qpClientID            = "client_id"
@@ -54,7 +51,7 @@ type aadIdentityClient struct {
 // will be used to retrieve tokens and authenticate
 func newAADIdentityClient(options *IdentityClientOptions) *aadIdentityClient {
 	options = options.setDefaultValues()
-	return &aadIdentityClient{options: *options, pipeline: NewDefaultPipeline(options.PipelineOptions)}
+	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(options.PipelineOptions)}
 }
 
 func newAADIdentityClientWithPipeline(options *IdentityClientOptions, pipeline azcore.Pipeline) *aadIdentityClient {
@@ -142,7 +139,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
 	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
-	msg.Header.Set(azcore.HeaderContentType, headerURLEncoded)
+	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	err = msg.SetBody(body)
 	if err != nil {
 		return nil, err
@@ -173,7 +170,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
 	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
-	msg.Header.Set(azcore.HeaderContentType, headerURLEncoded)
+	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 
 	err = msg.SetBody(body)
 	if err != nil {
@@ -224,7 +221,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, c
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
 	msg := c.pipeline.NewRequest(http.MethodPost, *urlFormat)
-	msg.Header.Set(azcore.HeaderContentType, headerURLEncoded)
+	msg.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	err = msg.SetBody(body)
 	if err != nil {
 		return nil, err

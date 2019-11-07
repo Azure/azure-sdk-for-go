@@ -937,6 +937,8 @@ type SapMonitorProperties struct {
 	ManagedResourceGroupName *string `json:"managedResourceGroupName,omitempty"`
 	// LogAnalyticsWorkspaceArmID - READ-ONLY; The ARM ID of the Log Analytics Workspace that is used for monitoring
 	LogAnalyticsWorkspaceArmID *string `json:"logAnalyticsWorkspaceArmId,omitempty"`
+	// EnableCustomerAnalytics - The value indicating whether to send analytics to Microsoft
+	EnableCustomerAnalytics *bool `json:"enableCustomerAnalytics,omitempty"`
 }
 
 // SapMonitorsCreateFuture an abstraction for monitoring and retrieving the results of a long-running

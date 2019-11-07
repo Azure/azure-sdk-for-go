@@ -9731,7 +9731,9 @@ type VirtualMachineScaleSetDataDisk struct {
 type VirtualMachineScaleSetExtension struct {
 	autorest.Response `json:"-"`
 	// Name - The name of the extension.
-	Name                                       *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type                                       *string `json:"type,omitempty"`
 	*VirtualMachineScaleSetExtensionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -9766,6 +9768,15 @@ func (vmsse *VirtualMachineScaleSetExtension) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmsse.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmsse.Type = &typeVar
 			}
 		case "properties":
 			if v != nil {
@@ -10051,7 +10062,9 @@ func (future *VirtualMachineScaleSetExtensionsUpdateFuture) Result(client Virtua
 // VirtualMachineScaleSetExtensionUpdate describes a Virtual Machine Scale Set Extension.
 type VirtualMachineScaleSetExtensionUpdate struct {
 	// Name - READ-ONLY; The name of the extension.
-	Name                                             *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type                                             *string `json:"type,omitempty"`
 	*VirtualMachineScaleSetExtensionUpdateProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -10084,6 +10097,15 @@ func (vmsseu *VirtualMachineScaleSetExtensionUpdate) UnmarshalJSON(body []byte) 
 				}
 				vmsseu.Name = &name
 			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmsseu.Type = &typeVar
+			}
 		case "properties":
 			if v != nil {
 				var virtualMachineScaleSetExtensionUpdateProperties VirtualMachineScaleSetExtensionUpdateProperties
@@ -10115,7 +10137,7 @@ type VirtualMachineScaleSetExtensionUpdateProperties struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 	// Publisher - The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
-	// Type - READ-ONLY; Specifies the type of the extension; an example is "CustomScriptExtension".
+	// Type - Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
 	// TypeHandlerVersion - Specifies the version of the script handler.
 	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`

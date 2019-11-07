@@ -20,27 +20,6 @@ import (
 
 var _ Credential = (*SharedKeyCredential)(nil)
 
-// Constants ensuring that header names are correctly spelled and consistently cased.
-const (
-	headerAuthorization      = "Authorization"
-	headerCacheControl       = "Cache-Control"
-	headerContentEncoding    = "Content-Encoding"
-	headerContentDisposition = "Content-Disposition"
-	headerContentLanguage    = "Content-Language"
-	headerContentLength      = "Content-Length"
-	headerContentMD5         = "Content-MD5"
-	headerContentType        = "Content-Type"
-	headerDate               = "Date"
-	headerIfMatch            = "If-Match"
-	headerIfModifiedSince    = "If-Modified-Since"
-	headerIfNoneMatch        = "If-None-Match"
-	headerIfUnmodifiedSince  = "If-Unmodified-Since"
-	headerRange              = "Range"
-	headerUserAgent          = "User-Agent"
-	headerXmsDate            = "x-ms-date"
-	headerXmsVersion         = "x-ms-version"
-)
-
 // TODO: move to storage common
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
@@ -81,7 +60,7 @@ func (c SharedKeyCredential) ComputeHMACSHA256(message string) (base64String str
 func (c SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
 	headers := req.Header
-	contentLength := headers.Get(headerContentLength)
+	contentLength := headers.Get(HeaderContentLength)
 	if contentLength == "0" {
 		contentLength = ""
 	}
@@ -93,17 +72,17 @@ func (c SharedKeyCredential) buildStringToSign(req *http.Request) (string, error
 
 	stringToSign := strings.Join([]string{
 		req.Method,
-		headers.Get(headerContentEncoding),
-		headers.Get(headerContentLanguage),
+		headers.Get(HeaderContentEncoding),
+		headers.Get(HeaderContentLanguage),
 		contentLength,
-		headers.Get(headerContentMD5),
-		headers.Get(headerContentType),
+		headers.Get(HeaderContentMD5),
+		headers.Get(HeaderContentType),
 		"", // Empty date because x-ms-date is expected (as per web page above)
-		headers.Get(headerIfModifiedSince),
-		headers.Get(headerIfMatch),
-		headers.Get(headerIfNoneMatch),
-		headers.Get(headerIfUnmodifiedSince),
-		headers.Get(headerRange),
+		headers.Get(HeaderIfModifiedSince),
+		headers.Get(HeaderIfMatch),
+		headers.Get(HeaderIfNoneMatch),
+		headers.Get(HeaderIfUnmodifiedSince),
+		headers.Get(HeaderRange),
 		c.buildCanonicalizedHeader(headers),
 		canonicalizedResource,
 	}, "\n")
@@ -182,8 +161,8 @@ func (c SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, err
 // Do implements the credential's policy interface.
 func (c SharedKeyCredential) Do(ctx context.Context, req *Request) (*Response, error) {
 	// Add a x-ms-date header if it doesn't already exist
-	if d := req.Request.Header.Get(headerXmsDate); d == "" {
-		req.Request.Header[headerXmsDate] = []string{time.Now().UTC().Format(http.TimeFormat)}
+	if d := req.Request.Header.Get(HeaderXmsDate); d == "" {
+		req.Request.Header[HeaderXmsDate] = []string{time.Now().UTC().Format(http.TimeFormat)}
 	}
 	stringToSign, err := c.buildStringToSign(req.Request)
 	if err != nil {
@@ -191,7 +170,7 @@ func (c SharedKeyCredential) Do(ctx context.Context, req *Request) (*Response, e
 	}
 	signature := c.ComputeHMACSHA256(stringToSign)
 	authHeader := strings.Join([]string{"SharedKey ", c.AccountName(), ":", signature}, "")
-	req.Request.Header[headerAuthorization] = []string{authHeader}
+	req.Request.Header[HeaderAuthorization] = []string{authHeader}
 
 	response, err := req.Do(ctx)
 	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {

@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-05-01/netapp"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-08-01/netapp"
 
 // CheckNameResourceTypes enumerates the values for check name resource types.
 type CheckNameResourceTypes string
@@ -92,7 +92,7 @@ type Account struct {
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// AccountProperties - NetApp Account properties
 	*AccountProperties `json:"properties,omitempty"`
 }
@@ -159,7 +159,7 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 			}
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -199,7 +199,7 @@ type AccountPatch struct {
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// AccountProperties - NetApp Account properties
 	*AccountProperties `json:"properties,omitempty"`
 }
@@ -266,7 +266,7 @@ func (ap *AccountPatch) UnmarshalJSON(body []byte) error {
 			}
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -358,7 +358,7 @@ type ActiveDirectory struct {
 	Password *string `json:"password,omitempty"`
 	// Domain - Name of the Active Directory domain
 	Domain *string `json:"domain,omitempty"`
-	// DNS - Comma separated list of DNS server IP addresses for the Active Directory domain
+	// DNS - Comma separated list of DNS server IP addresses (IPv4 only) for the Active Directory domain
 	DNS *string `json:"dns,omitempty"`
 	// Status - Status of the Active Directory
 	Status *string `json:"status,omitempty"`
@@ -380,7 +380,7 @@ type CapacityPool struct {
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// PoolProperties - Capacity pool properties
 	*PoolProperties `json:"properties,omitempty"`
 }
@@ -447,7 +447,7 @@ func (cp *CapacityPool) UnmarshalJSON(body []byte) error {
 			}
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -487,7 +487,7 @@ type CapacityPoolPatch struct {
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// PoolPatchProperties - Capacity pool properties
 	*PoolPatchProperties `json:"properties,omitempty"`
 }
@@ -554,7 +554,7 @@ func (cpp *CapacityPoolPatch) UnmarshalJSON(body []byte) error {
 			}
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -596,8 +596,8 @@ type ExportPolicyRule struct {
 	Cifs *bool `json:"cifs,omitempty"`
 	// Nfsv3 - Allows NFSv3 protocol
 	Nfsv3 *bool `json:"nfsv3,omitempty"`
-	// Nfsv4 - Deprecated: Will use the NFSv4.1 protocol, please use swagger version 2019-07-01 or later
-	Nfsv4 *bool `json:"nfsv4,omitempty"`
+	// Nfsv41 - Allows NFSv4.1 protocol
+	Nfsv41 *bool `json:"nfsv41,omitempty"`
 	// AllowedClients - Client ingress specification as comma separated string with IPv4 CIDRs, IPv4 host addresses and host names
 	AllowedClients *string `json:"allowedClients,omitempty"`
 }
@@ -632,8 +632,10 @@ type MountTarget struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// MountTargetProperties - Mount Target Properties
 	*MountTargetProperties `json:"properties,omitempty"`
 }
@@ -689,9 +691,18 @@ func (mt *MountTarget) UnmarshalJSON(body []byte) error {
 				}
 				mt.Name = &name
 			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mt.Type = &typeVar
+			}
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -922,6 +933,18 @@ func (future *PoolsDeleteFuture) Result(client PoolsClient) (ar autorest.Respons
 	return
 }
 
+// ReplicationObject replication properties
+type ReplicationObject struct {
+	// ReplicationID - Id
+	ReplicationID *string `json:"replicationId,omitempty"`
+	// EndpointType - Indicates whether the local volume is the source or destination for the Volume Replication
+	EndpointType *string `json:"endpointType,omitempty"`
+	// ReplicationSchedule - Schedule
+	ReplicationSchedule *string `json:"replicationSchedule,omitempty"`
+	// RemoteVolumeResourceID - The resource ID of the remote volume.
+	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
+}
+
 // ResourceNameAvailability information regarding availability of a resource name.
 type ResourceNameAvailability struct {
 	autorest.Response `json:"-"`
@@ -961,7 +984,7 @@ type Snapshot struct {
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// SnapshotProperties - Snapshot Properties
 	*SnapshotProperties `json:"properties,omitempty"`
 }
@@ -1028,7 +1051,7 @@ func (s *Snapshot) UnmarshalJSON(body []byte) error {
 			}
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -1053,7 +1076,16 @@ func (s *Snapshot) UnmarshalJSON(body []byte) error {
 // SnapshotPatch snapshot patch
 type SnapshotPatch struct {
 	// Tags - Resource tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for SnapshotPatch.
+func (sp SnapshotPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.Tags != nil {
+		objectMap["tags"] = sp.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // SnapshotProperties snapshot properties
@@ -1062,8 +1094,8 @@ type SnapshotProperties struct {
 	SnapshotID *string `json:"snapshotId,omitempty"`
 	// FileSystemID - UUID v4 used to identify the FileSystem
 	FileSystemID *string `json:"fileSystemId,omitempty"`
-	// CreationDate - READ-ONLY; The creation date of the snapshot
-	CreationDate *date.Time `json:"creationDate,omitempty"`
+	// Created - READ-ONLY; The creation date of the snapshot
+	Created *date.Time `json:"created,omitempty"`
 	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -1139,7 +1171,7 @@ type Volume struct {
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// VolumeProperties - Volume properties
 	*VolumeProperties `json:"properties,omitempty"`
 }
@@ -1206,7 +1238,7 @@ func (vVar *Volume) UnmarshalJSON(body []byte) error {
 			}
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -1246,7 +1278,7 @@ type VolumePatch struct {
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 	// Tags - Resource tags
-	Tags interface{} `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags"`
 	// VolumePatchProperties - Patchable volume properties
 	*VolumePatchProperties `json:"properties,omitempty"`
 }
@@ -1313,7 +1345,7 @@ func (vp *VolumePatch) UnmarshalJSON(body []byte) error {
 			}
 		case "tags":
 			if v != nil {
-				var tags interface{}
+				var tags map[string]*string
 				err = json.Unmarshal(*v, &tags)
 				if err != nil {
 					return err
@@ -1367,7 +1399,7 @@ type VolumeProperties struct {
 	ProtocolTypes *[]string `json:"protocolTypes,omitempty"`
 	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// SnapshotID - UUID v4 used to identify the Snapshot
+	// SnapshotID - UUID v4 or resource identifier used to identify the Snapshot.
 	SnapshotID *string `json:"snapshotId,omitempty"`
 	// BaremetalTenantID - READ-ONLY; Unique Baremetal Tenant Identifier.
 	BaremetalTenantID *string `json:"baremetalTenantId,omitempty"`
@@ -1375,6 +1407,16 @@ type VolumeProperties struct {
 	SubnetID *string `json:"subnetId,omitempty"`
 	// MountTargets - List of mount targets
 	MountTargets interface{} `json:"mountTargets,omitempty"`
+	// VolumeType - What type of volume is this
+	VolumeType *string `json:"volumeType,omitempty"`
+	// DataProtection - DataProtection volume, can have a replication object
+	DataProtection *VolumePropertiesDataProtection `json:"dataProtection,omitempty"`
+}
+
+// VolumePropertiesDataProtection dataProtection volume, can have a replication object
+type VolumePropertiesDataProtection struct {
+	// Replication - Replication properties
+	Replication *ReplicationObject `json:"replication,omitempty"`
 }
 
 // VolumePropertiesExportPolicy set of export policy rules

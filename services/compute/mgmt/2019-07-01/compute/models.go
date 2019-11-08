@@ -10064,8 +10064,8 @@ type VirtualMachineScaleSetExtensionUpdate struct {
 	// Name - READ-ONLY; The name of the extension.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
-	Type                                             *string `json:"type,omitempty"`
-	*VirtualMachineScaleSetExtensionUpdateProperties `json:"properties,omitempty"`
+	Type                                       *string `json:"type,omitempty"`
+	*VirtualMachineScaleSetExtensionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 }
@@ -10073,8 +10073,8 @@ type VirtualMachineScaleSetExtensionUpdate struct {
 // MarshalJSON is the custom marshaler for VirtualMachineScaleSetExtensionUpdate.
 func (vmsseu VirtualMachineScaleSetExtensionUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if vmsseu.VirtualMachineScaleSetExtensionUpdateProperties != nil {
-		objectMap["properties"] = vmsseu.VirtualMachineScaleSetExtensionUpdateProperties
+	if vmsseu.VirtualMachineScaleSetExtensionProperties != nil {
+		objectMap["properties"] = vmsseu.VirtualMachineScaleSetExtensionProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -10108,12 +10108,12 @@ func (vmsseu *VirtualMachineScaleSetExtensionUpdate) UnmarshalJSON(body []byte) 
 			}
 		case "properties":
 			if v != nil {
-				var virtualMachineScaleSetExtensionUpdateProperties VirtualMachineScaleSetExtensionUpdateProperties
-				err = json.Unmarshal(*v, &virtualMachineScaleSetExtensionUpdateProperties)
+				var virtualMachineScaleSetExtensionProperties VirtualMachineScaleSetExtensionProperties
+				err = json.Unmarshal(*v, &virtualMachineScaleSetExtensionProperties)
 				if err != nil {
 					return err
 				}
-				vmsseu.VirtualMachineScaleSetExtensionUpdateProperties = &virtualMachineScaleSetExtensionUpdateProperties
+				vmsseu.VirtualMachineScaleSetExtensionProperties = &virtualMachineScaleSetExtensionProperties
 			}
 		case "id":
 			if v != nil {
@@ -10128,27 +10128,6 @@ func (vmsseu *VirtualMachineScaleSetExtensionUpdate) UnmarshalJSON(body []byte) 
 	}
 
 	return nil
-}
-
-// VirtualMachineScaleSetExtensionUpdateProperties describes the properties of a Virtual Machine Scale Set
-// Extension.
-type VirtualMachineScaleSetExtensionUpdateProperties struct {
-	// ForceUpdateTag - If a value is provided and is different from the previous value, the extension handler will be forced to update even if the extension configuration has not changed.
-	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
-	// Publisher - READ-ONLY; The name of the extension handler publisher.
-	Publisher *string `json:"publisher,omitempty"`
-	// Type - READ-ONLY; Specifies the type of the extension; an example is "CustomScriptExtension".
-	Type *string `json:"type,omitempty"`
-	// TypeHandlerVersion - Specifies the version of the script handler.
-	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
-	// AutoUpgradeMinorVersion - Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
-	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
-	// Settings - Json formatted public settings for the extension.
-	Settings interface{} `json:"settings,omitempty"`
-	// ProtectedSettings - The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
-	// ProvisionAfterExtensions - Collection of extension names after which this extension needs to be provisioned.
-	ProvisionAfterExtensions *[]string `json:"provisionAfterExtensions,omitempty"`
 }
 
 // VirtualMachineScaleSetIdentity identity for the virtual machine scale set.

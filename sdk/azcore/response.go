@@ -115,8 +115,8 @@ func (r *Response) RetryAfter() time.Duration {
 	return 0
 }
 
-// retryAfter returns (non-zero, true) if the response contains a Retry-After header value
-func (r *Response) retryAfter() (time.Duration, bool) {
+// RetryAfter returns (non-zero, true) if the response contains a Retry-After header value
+func (r *Response) RetryAfter() (time.Duration, bool) {
 	if r == nil {
 		return 0, false
 	}

@@ -4625,6 +4625,370 @@ func (tpup *TaskPropertiesUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// TaskRun the task run that has the ARM resource and properties.
+// The task run will have the information of request and result of a run.
+type TaskRun struct {
+	autorest.Response `json:"-"`
+	// Identity - Identity for the resource.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// TaskRunProperties - The properties associated with the task run, i.e., request and result of the run
+	*TaskRunProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+	// Location - The location of the resource. This cannot be changed after the resource is created.
+	Location *string `json:"location,omitempty"`
+	// Tags - The tags of the resource.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TaskRun.
+func (tr TaskRun) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Identity != nil {
+		objectMap["identity"] = tr.Identity
+	}
+	if tr.TaskRunProperties != nil {
+		objectMap["properties"] = tr.TaskRunProperties
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRun struct.
+func (tr *TaskRun) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity IdentityProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				tr.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var taskRunProperties TaskRunProperties
+				err = json.Unmarshal(*v, &taskRunProperties)
+				if err != nil {
+					return err
+				}
+				tr.TaskRunProperties = &taskRunProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				tr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				tr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				tr.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				tr.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				tr.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// TaskRunListResult the collection of task runs.
+type TaskRunListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The collection value.
+	Value *[]TaskRun `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next set of paged results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// TaskRunListResultIterator provides access to a complete listing of TaskRun values.
+type TaskRunListResultIterator struct {
+	i    int
+	page TaskRunListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *TaskRunListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TaskRunListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *TaskRunListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter TaskRunListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter TaskRunListResultIterator) Response() TaskRunListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter TaskRunListResultIterator) Value() TaskRun {
+	if !iter.page.NotDone() {
+		return TaskRun{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the TaskRunListResultIterator type.
+func NewTaskRunListResultIterator(page TaskRunListResultPage) TaskRunListResultIterator {
+	return TaskRunListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (trlr TaskRunListResult) IsEmpty() bool {
+	return trlr.Value == nil || len(*trlr.Value) == 0
+}
+
+// taskRunListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (trlr TaskRunListResult) taskRunListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if trlr.NextLink == nil || len(to.String(trlr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(trlr.NextLink)))
+}
+
+// TaskRunListResultPage contains a page of TaskRun values.
+type TaskRunListResultPage struct {
+	fn   func(context.Context, TaskRunListResult) (TaskRunListResult, error)
+	trlr TaskRunListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *TaskRunListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TaskRunListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.trlr)
+	if err != nil {
+		return err
+	}
+	page.trlr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *TaskRunListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page TaskRunListResultPage) NotDone() bool {
+	return !page.trlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page TaskRunListResultPage) Response() TaskRunListResult {
+	return page.trlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page TaskRunListResultPage) Values() []TaskRun {
+	if page.trlr.IsEmpty() {
+		return nil
+	}
+	return *page.trlr.Value
+}
+
+// Creates a new instance of the TaskRunListResultPage type.
+func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResult) (TaskRunListResult, error)) TaskRunListResultPage {
+	return TaskRunListResultPage{fn: getNextPage}
+}
+
+// TaskRunProperties the properties of task run.
+type TaskRunProperties struct {
+	// ProvisioningState - READ-ONLY; The provisioning state of this task run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// RunRequest - The request (parameters) for the run
+	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
+	// RunResult - READ-ONLY; The result of this task run
+	RunResult *Run `json:"runResult,omitempty"`
+	// ForceUpdateTag - How the run should be forced to rerun even if the run request configuration has not changed
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRunProperties struct.
+func (trp *TaskRunProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "provisioningState":
+			if v != nil {
+				var provisioningState ProvisioningState
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				trp.ProvisioningState = provisioningState
+			}
+		case "runRequest":
+			if v != nil {
+				runRequest, err := unmarshalBasicRunRequest(*v)
+				if err != nil {
+					return err
+				}
+				trp.RunRequest = runRequest
+			}
+		case "runResult":
+			if v != nil {
+				var runResult Run
+				err = json.Unmarshal(*v, &runResult)
+				if err != nil {
+					return err
+				}
+				trp.RunResult = &runResult
+			}
+		case "forceUpdateTag":
+			if v != nil {
+				var forceUpdateTag string
+				err = json.Unmarshal(*v, &forceUpdateTag)
+				if err != nil {
+					return err
+				}
+				trp.ForceUpdateTag = &forceUpdateTag
+			}
+		}
+	}
+
+	return nil
+}
+
+// TaskRunPropertiesUpdateParameters the properties of a task run update parameters.
+type TaskRunPropertiesUpdateParameters struct {
+	// RunRequest - The request (parameters) for the new run
+	RunRequest BasicRunRequest `json:"runRequest,omitempty"`
+	// ForceUpdateTag - How the run should be forced to rerun even if the run request configuration has not changed
+	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRunPropertiesUpdateParameters struct.
+func (trpup *TaskRunPropertiesUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "runRequest":
+			if v != nil {
+				runRequest, err := unmarshalBasicRunRequest(*v)
+				if err != nil {
+					return err
+				}
+				trpup.RunRequest = runRequest
+			}
+		case "forceUpdateTag":
+			if v != nil {
+				var forceUpdateTag string
+				err = json.Unmarshal(*v, &forceUpdateTag)
+				if err != nil {
+					return err
+				}
+				trpup.ForceUpdateTag = &forceUpdateTag
+			}
+		}
+	}
+
+	return nil
+}
+
 // TaskRunRequest the parameters for a task run request.
 type TaskRunRequest struct {
 	// TaskID - The resource ID of task against which run has to be queued.
@@ -4684,6 +5048,154 @@ func (trr TaskRunRequest) AsRunRequest() (*RunRequest, bool) {
 // AsBasicRunRequest is the BasicRunRequest implementation for TaskRunRequest.
 func (trr TaskRunRequest) AsBasicRunRequest() (BasicRunRequest, bool) {
 	return &trr, true
+}
+
+// TaskRunsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type TaskRunsCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TaskRunsCreateFuture) Result(client TaskRunsClient) (tr TaskRun, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TaskRunsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr, err = client.CreateResponder(tr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsCreateFuture", "Result", tr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TaskRunsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type TaskRunsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TaskRunsDeleteFuture) Result(client TaskRunsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TaskRunsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// TaskRunsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type TaskRunsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *TaskRunsUpdateFuture) Result(client TaskRunsClient) (tr TaskRun, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerregistry.TaskRunsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr, err = client.UpdateResponder(tr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsUpdateFuture", "Result", tr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TaskRunUpdateParameters the parameters for updating a task run.
+type TaskRunUpdateParameters struct {
+	// Identity - Identity for the resource.
+	Identity *IdentityProperties `json:"identity,omitempty"`
+	// TaskRunPropertiesUpdateParameters - The properties for updating a task run.
+	*TaskRunPropertiesUpdateParameters `json:"properties,omitempty"`
+	// Tags - The ARM resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for TaskRunUpdateParameters.
+func (trup TaskRunUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if trup.Identity != nil {
+		objectMap["identity"] = trup.Identity
+	}
+	if trup.TaskRunPropertiesUpdateParameters != nil {
+		objectMap["properties"] = trup.TaskRunPropertiesUpdateParameters
+	}
+	if trup.Tags != nil {
+		objectMap["tags"] = trup.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for TaskRunUpdateParameters struct.
+func (trup *TaskRunUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "identity":
+			if v != nil {
+				var identity IdentityProperties
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				trup.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var taskRunPropertiesUpdateParameters TaskRunPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &taskRunPropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				trup.TaskRunPropertiesUpdateParameters = &taskRunPropertiesUpdateParameters
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				trup.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // TasksCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.

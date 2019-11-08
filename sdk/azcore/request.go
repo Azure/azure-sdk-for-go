@@ -130,6 +130,9 @@ func (req *Request) RewindBody() error {
 
 // Close closes the request body.
 func (req *Request) Close() error {
+	if req.Body == nil {
+		return nil
+	}
 	return req.Body.(*retryableRequestBody).realClose()
 }
 

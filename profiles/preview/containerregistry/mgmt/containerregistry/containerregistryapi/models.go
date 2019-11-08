@@ -26,6 +26,7 @@ type RegistriesClientAPI = original.RegistriesClientAPI
 type ReplicationsClientAPI = original.ReplicationsClientAPI
 type RunsClientAPI = original.RunsClientAPI
 type ScopeMapsClientAPI = original.ScopeMapsClientAPI
+type TaskRunsClientAPI = original.TaskRunsClientAPI
 type TasksClientAPI = original.TasksClientAPI
 type TokensClientAPI = original.TokensClientAPI
 type WebhooksClientAPI = original.WebhooksClientAPI

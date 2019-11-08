@@ -67,7 +67,7 @@ func (client AgentPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]$|^[a-zA-Z0-9][-_a-zA-Z0-9]{0,61}[a-zA-Z0-9]$`, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ManagedClusterAgentPoolProfileProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "parameters.ManagedClusterAgentPoolProfileProperties.Count", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "parameters.ManagedClusterAgentPoolProfileProperties.Count", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "parameters.ManagedClusterAgentPoolProfileProperties.Count", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
 						{Target: "parameters.ManagedClusterAgentPoolProfileProperties.Count", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 					}},

@@ -231,3 +231,21 @@ type GremlinResourcesClientAPI interface {
 }
 
 var _ GremlinResourcesClientAPI = (*documentdb.GremlinResourcesClient)(nil)
+
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, accountName string, groupName string) (result documentdb.PrivateLinkResource, err error)
+	ListByDatabaseAccount(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.PrivateLinkResourceListResult, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*documentdb.PrivateLinkResourcesClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters documentdb.PrivateEndpointConnection) (result documentdb.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result documentdb.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result documentdb.PrivateEndpointConnection, err error)
+	ListByDatabaseAccount(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.PrivateEndpointConnectionListResult, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*documentdb.PrivateEndpointConnectionsClient)(nil)

@@ -32,13 +32,13 @@ type CassandraResourcesClient struct {
 }
 
 // NewCassandraResourcesClient creates an instance of the CassandraResourcesClient client.
-func NewCassandraResourcesClient(subscriptionID string) CassandraResourcesClient {
-	return NewCassandraResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCassandraResourcesClient(subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
+	return NewCassandraResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewCassandraResourcesClientWithBaseURI creates an instance of the CassandraResourcesClient client.
-func NewCassandraResourcesClientWithBaseURI(baseURI string, subscriptionID string) CassandraResourcesClient {
-	return CassandraResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCassandraResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
+	return CassandraResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateUpdateCassandraKeyspace create or update an Azure Cosmos DB Cassandra keyspace

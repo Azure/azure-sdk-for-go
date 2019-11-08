@@ -120,23 +120,6 @@ const (
 	PrimaryAggregationTypeTotal   PrimaryAggregationType = original.PrimaryAggregationTypeTotal
 )
 
-type TriggerOperation = original.TriggerOperation
-
-const (
-	All     TriggerOperation = original.All
-	Create  TriggerOperation = original.Create
-	Delete  TriggerOperation = original.Delete
-	Replace TriggerOperation = original.Replace
-	Update  TriggerOperation = original.Update
-)
-
-type TriggerType = original.TriggerType
-
-const (
-	Post TriggerType = original.Post
-	Pre  TriggerType = original.Pre
-)
-
 type UnitType = original.UnitType
 
 const (
@@ -150,30 +133,22 @@ const (
 )
 
 type ARMProxyResource = original.ARMProxyResource
-type ARMResourceProperties = original.ARMResourceProperties
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type Capability = original.Capability
+type CassandraKeyspace = original.CassandraKeyspace
 type CassandraKeyspaceCreateUpdateParameters = original.CassandraKeyspaceCreateUpdateParameters
 type CassandraKeyspaceCreateUpdateProperties = original.CassandraKeyspaceCreateUpdateProperties
-type CassandraKeyspaceGetProperties = original.CassandraKeyspaceGetProperties
-type CassandraKeyspaceGetResults = original.CassandraKeyspaceGetResults
 type CassandraKeyspaceListResult = original.CassandraKeyspaceListResult
+type CassandraKeyspaceProperties = original.CassandraKeyspaceProperties
 type CassandraKeyspaceResource = original.CassandraKeyspaceResource
 type CassandraPartitionKey = original.CassandraPartitionKey
-type CassandraResourcesClient = original.CassandraResourcesClient
-type CassandraResourcesCreateUpdateCassandraKeyspaceFuture = original.CassandraResourcesCreateUpdateCassandraKeyspaceFuture
-type CassandraResourcesCreateUpdateCassandraTableFuture = original.CassandraResourcesCreateUpdateCassandraTableFuture
-type CassandraResourcesDeleteCassandraKeyspaceFuture = original.CassandraResourcesDeleteCassandraKeyspaceFuture
-type CassandraResourcesDeleteCassandraTableFuture = original.CassandraResourcesDeleteCassandraTableFuture
-type CassandraResourcesUpdateCassandraKeyspaceThroughputFuture = original.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture
-type CassandraResourcesUpdateCassandraTableThroughputFuture = original.CassandraResourcesUpdateCassandraTableThroughputFuture
 type CassandraSchema = original.CassandraSchema
+type CassandraTable = original.CassandraTable
 type CassandraTableCreateUpdateParameters = original.CassandraTableCreateUpdateParameters
 type CassandraTableCreateUpdateProperties = original.CassandraTableCreateUpdateProperties
-type CassandraTableGetProperties = original.CassandraTableGetProperties
-type CassandraTableGetResults = original.CassandraTableGetResults
 type CassandraTableListResult = original.CassandraTableListResult
+type CassandraTableProperties = original.CassandraTableProperties
 type CassandraTableResource = original.CassandraTableResource
 type ClusterKey = original.ClusterKey
 type CollectionClient = original.CollectionClient
@@ -184,52 +159,73 @@ type Column = original.Column
 type ConflictResolutionPolicy = original.ConflictResolutionPolicy
 type ConsistencyPolicy = original.ConsistencyPolicy
 type ContainerPartitionKey = original.ContainerPartitionKey
+type DatabaseAccount = original.DatabaseAccount
 type DatabaseAccountConnectionString = original.DatabaseAccountConnectionString
 type DatabaseAccountCreateUpdateParameters = original.DatabaseAccountCreateUpdateParameters
 type DatabaseAccountCreateUpdateProperties = original.DatabaseAccountCreateUpdateProperties
-type DatabaseAccountGetProperties = original.DatabaseAccountGetProperties
-type DatabaseAccountGetResults = original.DatabaseAccountGetResults
 type DatabaseAccountListConnectionStringsResult = original.DatabaseAccountListConnectionStringsResult
 type DatabaseAccountListKeysResult = original.DatabaseAccountListKeysResult
 type DatabaseAccountListReadOnlyKeysResult = original.DatabaseAccountListReadOnlyKeysResult
+type DatabaseAccountPatchParameters = original.DatabaseAccountPatchParameters
+type DatabaseAccountPatchProperties = original.DatabaseAccountPatchProperties
+type DatabaseAccountProperties = original.DatabaseAccountProperties
 type DatabaseAccountRegenerateKeyParameters = original.DatabaseAccountRegenerateKeyParameters
 type DatabaseAccountRegionClient = original.DatabaseAccountRegionClient
-type DatabaseAccountUpdateParameters = original.DatabaseAccountUpdateParameters
-type DatabaseAccountUpdateProperties = original.DatabaseAccountUpdateProperties
 type DatabaseAccountsClient = original.DatabaseAccountsClient
 type DatabaseAccountsCreateOrUpdateFuture = original.DatabaseAccountsCreateOrUpdateFuture
+type DatabaseAccountsCreateUpdateCassandraKeyspaceFuture = original.DatabaseAccountsCreateUpdateCassandraKeyspaceFuture
+type DatabaseAccountsCreateUpdateCassandraTableFuture = original.DatabaseAccountsCreateUpdateCassandraTableFuture
+type DatabaseAccountsCreateUpdateGremlinDatabaseFuture = original.DatabaseAccountsCreateUpdateGremlinDatabaseFuture
+type DatabaseAccountsCreateUpdateGremlinGraphFuture = original.DatabaseAccountsCreateUpdateGremlinGraphFuture
+type DatabaseAccountsCreateUpdateMongoDBCollectionFuture = original.DatabaseAccountsCreateUpdateMongoDBCollectionFuture
+type DatabaseAccountsCreateUpdateMongoDBDatabaseFuture = original.DatabaseAccountsCreateUpdateMongoDBDatabaseFuture
+type DatabaseAccountsCreateUpdateSQLContainerFuture = original.DatabaseAccountsCreateUpdateSQLContainerFuture
+type DatabaseAccountsCreateUpdateSQLDatabaseFuture = original.DatabaseAccountsCreateUpdateSQLDatabaseFuture
+type DatabaseAccountsCreateUpdateTableFuture = original.DatabaseAccountsCreateUpdateTableFuture
+type DatabaseAccountsDeleteCassandraKeyspaceFuture = original.DatabaseAccountsDeleteCassandraKeyspaceFuture
+type DatabaseAccountsDeleteCassandraTableFuture = original.DatabaseAccountsDeleteCassandraTableFuture
 type DatabaseAccountsDeleteFuture = original.DatabaseAccountsDeleteFuture
+type DatabaseAccountsDeleteGremlinDatabaseFuture = original.DatabaseAccountsDeleteGremlinDatabaseFuture
+type DatabaseAccountsDeleteGremlinGraphFuture = original.DatabaseAccountsDeleteGremlinGraphFuture
+type DatabaseAccountsDeleteMongoDBCollectionFuture = original.DatabaseAccountsDeleteMongoDBCollectionFuture
+type DatabaseAccountsDeleteMongoDBDatabaseFuture = original.DatabaseAccountsDeleteMongoDBDatabaseFuture
+type DatabaseAccountsDeleteSQLContainerFuture = original.DatabaseAccountsDeleteSQLContainerFuture
+type DatabaseAccountsDeleteSQLDatabaseFuture = original.DatabaseAccountsDeleteSQLDatabaseFuture
+type DatabaseAccountsDeleteTableFuture = original.DatabaseAccountsDeleteTableFuture
 type DatabaseAccountsFailoverPriorityChangeFuture = original.DatabaseAccountsFailoverPriorityChangeFuture
 type DatabaseAccountsListResult = original.DatabaseAccountsListResult
 type DatabaseAccountsOfflineRegionFuture = original.DatabaseAccountsOfflineRegionFuture
 type DatabaseAccountsOnlineRegionFuture = original.DatabaseAccountsOnlineRegionFuture
+type DatabaseAccountsPatchFuture = original.DatabaseAccountsPatchFuture
 type DatabaseAccountsRegenerateKeyFuture = original.DatabaseAccountsRegenerateKeyFuture
-type DatabaseAccountsUpdateFuture = original.DatabaseAccountsUpdateFuture
+type DatabaseAccountsUpdateCassandraKeyspaceThroughputFuture = original.DatabaseAccountsUpdateCassandraKeyspaceThroughputFuture
+type DatabaseAccountsUpdateCassandraTableThroughputFuture = original.DatabaseAccountsUpdateCassandraTableThroughputFuture
+type DatabaseAccountsUpdateGremlinDatabaseThroughputFuture = original.DatabaseAccountsUpdateGremlinDatabaseThroughputFuture
+type DatabaseAccountsUpdateGremlinGraphThroughputFuture = original.DatabaseAccountsUpdateGremlinGraphThroughputFuture
+type DatabaseAccountsUpdateMongoDBCollectionThroughputFuture = original.DatabaseAccountsUpdateMongoDBCollectionThroughputFuture
+type DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture = original.DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture
+type DatabaseAccountsUpdateSQLContainerThroughputFuture = original.DatabaseAccountsUpdateSQLContainerThroughputFuture
+type DatabaseAccountsUpdateSQLDatabaseThroughputFuture = original.DatabaseAccountsUpdateSQLDatabaseThroughputFuture
+type DatabaseAccountsUpdateTableThroughputFuture = original.DatabaseAccountsUpdateTableThroughputFuture
 type DatabaseClient = original.DatabaseClient
+type DbResource = original.DbResource
 type ErrorResponse = original.ErrorResponse
 type ExcludedPath = original.ExcludedPath
 type ExtendedResourceProperties = original.ExtendedResourceProperties
 type FailoverPolicies = original.FailoverPolicies
 type FailoverPolicy = original.FailoverPolicy
+type GremlinDatabase = original.GremlinDatabase
 type GremlinDatabaseCreateUpdateParameters = original.GremlinDatabaseCreateUpdateParameters
 type GremlinDatabaseCreateUpdateProperties = original.GremlinDatabaseCreateUpdateProperties
-type GremlinDatabaseGetProperties = original.GremlinDatabaseGetProperties
-type GremlinDatabaseGetResults = original.GremlinDatabaseGetResults
 type GremlinDatabaseListResult = original.GremlinDatabaseListResult
+type GremlinDatabaseProperties = original.GremlinDatabaseProperties
 type GremlinDatabaseResource = original.GremlinDatabaseResource
+type GremlinGraph = original.GremlinGraph
 type GremlinGraphCreateUpdateParameters = original.GremlinGraphCreateUpdateParameters
 type GremlinGraphCreateUpdateProperties = original.GremlinGraphCreateUpdateProperties
-type GremlinGraphGetProperties = original.GremlinGraphGetProperties
-type GremlinGraphGetResults = original.GremlinGraphGetResults
 type GremlinGraphListResult = original.GremlinGraphListResult
+type GremlinGraphProperties = original.GremlinGraphProperties
 type GremlinGraphResource = original.GremlinGraphResource
-type GremlinResourcesClient = original.GremlinResourcesClient
-type GremlinResourcesCreateUpdateGremlinDatabaseFuture = original.GremlinResourcesCreateUpdateGremlinDatabaseFuture
-type GremlinResourcesCreateUpdateGremlinGraphFuture = original.GremlinResourcesCreateUpdateGremlinGraphFuture
-type GremlinResourcesDeleteGremlinDatabaseFuture = original.GremlinResourcesDeleteGremlinDatabaseFuture
-type GremlinResourcesDeleteGremlinGraphFuture = original.GremlinResourcesDeleteGremlinGraphFuture
-type GremlinResourcesUpdateGremlinDatabaseThroughputFuture = original.GremlinResourcesUpdateGremlinDatabaseThroughputFuture
-type GremlinResourcesUpdateGremlinGraphThroughputFuture = original.GremlinResourcesUpdateGremlinGraphThroughputFuture
 type IncludedPath = original.IncludedPath
 type Indexes = original.Indexes
 type IndexingPolicy = original.IndexingPolicy
@@ -241,25 +237,18 @@ type MetricDefinitionsListResult = original.MetricDefinitionsListResult
 type MetricListResult = original.MetricListResult
 type MetricName = original.MetricName
 type MetricValue = original.MetricValue
+type MongoDBCollection = original.MongoDBCollection
 type MongoDBCollectionCreateUpdateParameters = original.MongoDBCollectionCreateUpdateParameters
 type MongoDBCollectionCreateUpdateProperties = original.MongoDBCollectionCreateUpdateProperties
-type MongoDBCollectionGetProperties = original.MongoDBCollectionGetProperties
-type MongoDBCollectionGetResults = original.MongoDBCollectionGetResults
 type MongoDBCollectionListResult = original.MongoDBCollectionListResult
+type MongoDBCollectionProperties = original.MongoDBCollectionProperties
 type MongoDBCollectionResource = original.MongoDBCollectionResource
+type MongoDBDatabase = original.MongoDBDatabase
 type MongoDBDatabaseCreateUpdateParameters = original.MongoDBDatabaseCreateUpdateParameters
 type MongoDBDatabaseCreateUpdateProperties = original.MongoDBDatabaseCreateUpdateProperties
-type MongoDBDatabaseGetProperties = original.MongoDBDatabaseGetProperties
-type MongoDBDatabaseGetResults = original.MongoDBDatabaseGetResults
 type MongoDBDatabaseListResult = original.MongoDBDatabaseListResult
+type MongoDBDatabaseProperties = original.MongoDBDatabaseProperties
 type MongoDBDatabaseResource = original.MongoDBDatabaseResource
-type MongoDBResourcesClient = original.MongoDBResourcesClient
-type MongoDBResourcesCreateUpdateMongoDBCollectionFuture = original.MongoDBResourcesCreateUpdateMongoDBCollectionFuture
-type MongoDBResourcesCreateUpdateMongoDBDatabaseFuture = original.MongoDBResourcesCreateUpdateMongoDBDatabaseFuture
-type MongoDBResourcesDeleteMongoDBCollectionFuture = original.MongoDBResourcesDeleteMongoDBCollectionFuture
-type MongoDBResourcesDeleteMongoDBDatabaseFuture = original.MongoDBResourcesDeleteMongoDBDatabaseFuture
-type MongoDBResourcesUpdateMongoDBCollectionThroughputFuture = original.MongoDBResourcesUpdateMongoDBCollectionThroughputFuture
-type MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture = original.MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture
 type MongoIndex = original.MongoIndex
 type MongoIndexKeys = original.MongoIndexKeys
 type MongoIndexOptions = original.MongoIndexOptions
@@ -296,64 +285,29 @@ type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConn
 type ProxyResource = original.ProxyResource
 type RegionForOnlineOffline = original.RegionForOnlineOffline
 type Resource = original.Resource
+type SQLContainer = original.SQLContainer
 type SQLContainerCreateUpdateParameters = original.SQLContainerCreateUpdateParameters
 type SQLContainerCreateUpdateProperties = original.SQLContainerCreateUpdateProperties
-type SQLContainerGetProperties = original.SQLContainerGetProperties
-type SQLContainerGetResults = original.SQLContainerGetResults
 type SQLContainerListResult = original.SQLContainerListResult
+type SQLContainerProperties = original.SQLContainerProperties
 type SQLContainerResource = original.SQLContainerResource
+type SQLDatabase = original.SQLDatabase
 type SQLDatabaseCreateUpdateParameters = original.SQLDatabaseCreateUpdateParameters
 type SQLDatabaseCreateUpdateProperties = original.SQLDatabaseCreateUpdateProperties
-type SQLDatabaseGetProperties = original.SQLDatabaseGetProperties
-type SQLDatabaseGetResults = original.SQLDatabaseGetResults
 type SQLDatabaseListResult = original.SQLDatabaseListResult
+type SQLDatabaseProperties = original.SQLDatabaseProperties
 type SQLDatabaseResource = original.SQLDatabaseResource
-type SQLResourcesClient = original.SQLResourcesClient
-type SQLResourcesCreateUpdateSQLContainerFuture = original.SQLResourcesCreateUpdateSQLContainerFuture
-type SQLResourcesCreateUpdateSQLDatabaseFuture = original.SQLResourcesCreateUpdateSQLDatabaseFuture
-type SQLResourcesCreateUpdateSQLStoredProcedureFuture = original.SQLResourcesCreateUpdateSQLStoredProcedureFuture
-type SQLResourcesCreateUpdateSQLTriggerFuture = original.SQLResourcesCreateUpdateSQLTriggerFuture
-type SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture = original.SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture
-type SQLResourcesDeleteSQLContainerFuture = original.SQLResourcesDeleteSQLContainerFuture
-type SQLResourcesDeleteSQLDatabaseFuture = original.SQLResourcesDeleteSQLDatabaseFuture
-type SQLResourcesDeleteSQLStoredProcedureFuture = original.SQLResourcesDeleteSQLStoredProcedureFuture
-type SQLResourcesDeleteSQLTriggerFuture = original.SQLResourcesDeleteSQLTriggerFuture
-type SQLResourcesDeleteSQLUserDefinedFunctionFuture = original.SQLResourcesDeleteSQLUserDefinedFunctionFuture
-type SQLResourcesUpdateSQLContainerThroughputFuture = original.SQLResourcesUpdateSQLContainerThroughputFuture
-type SQLResourcesUpdateSQLDatabaseThroughputFuture = original.SQLResourcesUpdateSQLDatabaseThroughputFuture
-type SQLStoredProcedureCreateUpdateParameters = original.SQLStoredProcedureCreateUpdateParameters
-type SQLStoredProcedureCreateUpdateProperties = original.SQLStoredProcedureCreateUpdateProperties
-type SQLStoredProcedureGetProperties = original.SQLStoredProcedureGetProperties
-type SQLStoredProcedureGetResults = original.SQLStoredProcedureGetResults
-type SQLStoredProcedureListResult = original.SQLStoredProcedureListResult
-type SQLStoredProcedureResource = original.SQLStoredProcedureResource
-type SQLTriggerCreateUpdateParameters = original.SQLTriggerCreateUpdateParameters
-type SQLTriggerCreateUpdateProperties = original.SQLTriggerCreateUpdateProperties
-type SQLTriggerGetProperties = original.SQLTriggerGetProperties
-type SQLTriggerGetResults = original.SQLTriggerGetResults
-type SQLTriggerListResult = original.SQLTriggerListResult
-type SQLTriggerResource = original.SQLTriggerResource
-type SQLUserDefinedFunctionCreateUpdateParameters = original.SQLUserDefinedFunctionCreateUpdateParameters
-type SQLUserDefinedFunctionCreateUpdateProperties = original.SQLUserDefinedFunctionCreateUpdateProperties
-type SQLUserDefinedFunctionGetProperties = original.SQLUserDefinedFunctionGetProperties
-type SQLUserDefinedFunctionGetResults = original.SQLUserDefinedFunctionGetResults
-type SQLUserDefinedFunctionListResult = original.SQLUserDefinedFunctionListResult
-type SQLUserDefinedFunctionResource = original.SQLUserDefinedFunctionResource
+type Table = original.Table
 type TableCreateUpdateParameters = original.TableCreateUpdateParameters
 type TableCreateUpdateProperties = original.TableCreateUpdateProperties
-type TableGetProperties = original.TableGetProperties
-type TableGetResults = original.TableGetResults
 type TableListResult = original.TableListResult
+type TableProperties = original.TableProperties
 type TableResource = original.TableResource
-type TableResourcesClient = original.TableResourcesClient
-type TableResourcesCreateUpdateTableFuture = original.TableResourcesCreateUpdateTableFuture
-type TableResourcesDeleteTableFuture = original.TableResourcesDeleteTableFuture
-type TableResourcesUpdateTableThroughputFuture = original.TableResourcesUpdateTableThroughputFuture
-type ThroughputSettingsGetProperties = original.ThroughputSettingsGetProperties
-type ThroughputSettingsGetResults = original.ThroughputSettingsGetResults
-type ThroughputSettingsResource = original.ThroughputSettingsResource
-type ThroughputSettingsUpdateParameters = original.ThroughputSettingsUpdateParameters
-type ThroughputSettingsUpdateProperties = original.ThroughputSettingsUpdateProperties
+type Throughput = original.Throughput
+type ThroughputProperties = original.ThroughputProperties
+type ThroughputResource = original.ThroughputResource
+type ThroughputUpdateParameters = original.ThroughputUpdateParameters
+type ThroughputUpdateProperties = original.ThroughputUpdateProperties
 type TrackedResource = original.TrackedResource
 type UniqueKey = original.UniqueKey
 type UniqueKeyPolicy = original.UniqueKeyPolicy
@@ -363,12 +317,6 @@ type VirtualNetworkRule = original.VirtualNetworkRule
 
 func New(subscriptionID string, subscriptionID1 string) BaseClient {
 	return original.New(subscriptionID, subscriptionID1)
-}
-func NewCassandraResourcesClient(subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
-	return original.NewCassandraResourcesClient(subscriptionID, subscriptionID1)
-}
-func NewCassandraResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
-	return original.NewCassandraResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewCollectionClient(subscriptionID string, subscriptionID1 string) CollectionClient {
 	return original.NewCollectionClient(subscriptionID, subscriptionID1)
@@ -411,18 +359,6 @@ func NewDatabaseClient(subscriptionID string, subscriptionID1 string) DatabaseCl
 }
 func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseClient {
 	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
-}
-func NewGremlinResourcesClient(subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
-	return original.NewGremlinResourcesClient(subscriptionID, subscriptionID1)
-}
-func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
-	return original.NewGremlinResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
-}
-func NewMongoDBResourcesClient(subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
-	return original.NewMongoDBResourcesClient(subscriptionID, subscriptionID1)
-}
-func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
-	return original.NewMongoDBResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -478,18 +414,6 @@ func NewPrivateLinkResourcesClient(subscriptionID string, subscriptionID1 string
 func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PrivateLinkResourcesClient {
 	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewSQLResourcesClient(subscriptionID string, subscriptionID1 string) SQLResourcesClient {
-	return original.NewSQLResourcesClient(subscriptionID, subscriptionID1)
-}
-func NewSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SQLResourcesClient {
-	return original.NewSQLResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
-}
-func NewTableResourcesClient(subscriptionID string, subscriptionID1 string) TableResourcesClient {
-	return original.NewTableResourcesClient(subscriptionID, subscriptionID1)
-}
-func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TableResourcesClient {
-	return original.NewTableResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
-}
 func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
@@ -525,12 +449,6 @@ func PossiblePartitionKindValues() []PartitionKind {
 }
 func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	return original.PossiblePrimaryAggregationTypeValues()
-}
-func PossibleTriggerOperationValues() []TriggerOperation {
-	return original.PossibleTriggerOperationValues()
-}
-func PossibleTriggerTypeValues() []TriggerType {
-	return original.PossibleTriggerTypeValues()
 }
 func PossibleUnitTypeValues() []UnitType {
 	return original.PossibleUnitTypeValues()

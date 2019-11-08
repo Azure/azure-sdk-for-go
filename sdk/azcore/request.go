@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
-	"strings"
 )
 
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
@@ -37,28 +36,6 @@ func (ov opValues) get(value interface{}) bool {
 		reflect.Indirect(reflect.ValueOf(value)).Set(reflect.ValueOf(v))
 	}
 	return ok
-}
-
-// NewRequest ...
-func (p Pipeline) NewRequest(method string, URL url.URL) *Request {
-	// removeEmptyPort strips the empty port in ":port" to ""
-	// as mandated by RFC 3986 Section 6.2.3.
-	// adapted from removeEmptyPort() in net/http.go
-	if strings.LastIndex(URL.Host, ":") > strings.LastIndex(URL.Host, "]") {
-		URL.Host = strings.TrimSuffix(URL.Host, ":")
-	}
-	return &Request{
-		Request: &http.Request{
-			Method:     method,
-			URL:        &URL,
-			Proto:      "HTTP/1.1",
-			ProtoMajor: 1,
-			ProtoMinor: 1,
-			Header:     http.Header{},
-			Host:       URL.Host,
-		},
-		policies: p.policies,
-	}
 }
 
 // Do is called for each and every HTTP request. It passes the Context through all the Policy objects
@@ -136,7 +113,7 @@ func (req *Request) SetBody(body ReadSeekCloser) error {
 	return nil
 }
 
-// SkipBodyDownload will disable automatic downloading of the response body via the DownloadResponseBody policy.
+// SkipBodyDownload will disable automatic downloading of the response body.
 func (req *Request) SkipBodyDownload() {
 	req.SetOperationValue(bodyDownloadPolicyOpValues{skip: true})
 }
@@ -149,6 +126,11 @@ func (req *Request) RewindBody() error {
 		return err
 	}
 	return nil
+}
+
+// Close closes the request body.
+func (req *Request) Close() error {
+	return req.Body.(*retryableRequestBody).realClose()
 }
 
 func (req *Request) copy() *Request {

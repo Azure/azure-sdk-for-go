@@ -30,13 +30,9 @@ func init() {
 	}
 }
 
-// DefaultHTTPClientPolicy ...
-func DefaultHTTPClientPolicy() Policy {
-	return PolicyFunc(func(ctx context.Context, req *Request) (*Response, error) {
-		response, err := defaultHTTPClient.Do(req.Request.WithContext(ctx))
-		if err != nil {
-			return nil, err
-		}
-		return &Response{Response: response}, nil
+// DefaultHTTPClientTransport ...
+func DefaultHTTPClientTransport() Transport {
+	return TransportFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
+		return defaultHTTPClient.Do(req.WithContext(ctx))
 	})
 }

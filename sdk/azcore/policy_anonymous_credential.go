@@ -5,14 +5,6 @@ package azcore
 
 import "context"
 
-// Credential represent any credential type; it is used to create a credential policy Factory.
-type Credential interface {
-	Policy
-	marker()
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
 var singletonAnonymousCredential = AnonymousCredential{}
 
 // NewAnonymousCredential creates an anonymous credential for use with HTTP(S) requests that read public resource

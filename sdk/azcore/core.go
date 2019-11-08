@@ -6,17 +6,17 @@ package azcore
 import (
 	"context"
 	"io"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
-// The Policy interface represents a mutable Policy object created by a Factory. The object can mutate/process
-// the HTTP request and then forward it on to the next Policy object in the linked-list. The returned
-// Response goes backward through the linked-list for additional processing.
-// NOTE: Request is passed by value so changes do not change the caller's version of
-// the request. However, Request has some fields that reference mutable objects (not strings).
-// These references are copied; a deep copy is not performed. Specifically, this means that
-// you should avoid modifying the objects referred to by these fields: URL, Header, Body,
-// GetBody, TransferEncoding, Form, MultipartForm, Trailer, TLS, Cancel, and Response.
+// Policy represents an extensibility point for the Pipeline that can mutate the specified
+// Request and react to the received Response.
 type Policy interface {
+	// Do applies the policy to the specified Request.  When implementing a Policy, mutate the
+	// request before calling req.Do() to move on to the next policy, and respond to the result
+	// before returning to the caller.
 	Do(ctx context.Context, req *Request) (*Response, error)
 }
 
@@ -29,25 +29,72 @@ func (pf PolicyFunc) Do(ctx context.Context, req *Request) (*Response, error) {
 	return pf(ctx, req)
 }
 
-// NewPipeline creates a new goroutine-safe Pipeline object from the slice of Factory objects and the specified options.
-func NewPipeline(policies ...Policy) Pipeline {
+// Transport represents an HTTP pipeline transport used to send HTTP requests and receive responses.
+type Transport interface {
+	// Do sends the HTTP request and returns the HTTP response or error.
+	Do(ctx context.Context, req *http.Request) (*http.Response, error)
+}
+
+// TransportFunc is a type that implements the Transport interface.
+// Use this type when implementing a stateless transport as a first-class function.
+type TransportFunc func(context.Context, *http.Request) (*http.Response, error)
+
+// Do implements the Transport interface on TransportFunc.
+func (tf TransportFunc) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
+	return tf(ctx, req)
+}
+
+type transportPolicy struct {
+	trans Transport
+}
+
+func (tp transportPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
+	resp, err := tp.trans.Do(ctx, req.Request)
+	if err != nil {
+		return nil, err
+	}
+	return &Response{Response: resp}, nil
+}
+
+// Pipeline represents a primitive for sending HTTP requests and receiving responses.
+// Its behavior can be extended by specifying policies during construction.
+type Pipeline struct {
+	policies []Policy
+}
+
+// NewPipeline creates a new goroutine-safe Pipeline object from the specified Policies.
+// If no transport is provided then the default HTTP transport will be used.
+func NewPipeline(transport Transport, policies ...Policy) Pipeline {
+	if transport == nil {
+		transport = DefaultHTTPClientTransport()
+	}
+	// transport policy must always be the last in the slice
+	policies = append(policies, newBodyDownloadPolicy(), transportPolicy{trans: transport})
 	return Pipeline{
-		policies: append(policies[0:0:0], policies...), // append to an empty slice all the policies => makes a copy of the policy slice so it's immutable
+		policies: policies,
 	}
 }
 
-// Pipeline represents a linked-list of policies and pipeline options that apply to all policies in the pipeline.
-// You construct a Pipeline by calling the pipeline.NewPipeline function. To send an HTTP request, call pipeline.NewRequest
-// and then call Pipeline's Do method passing a context, the request, and a method-specific Factory (or nil). Passing a
-// method-specific Factory allows this one call to Do to inject a Policy into the linked-list. The policy is injected where
-// the MethodFactoryMarker (see the pipeline.MethodFactoryMarker function) is in the slice of Factory objects.
-//
-// When Do is called, the Pipeline object asks each Factory object to construct its Policy object and adds each Policy to a linked-list.
-// THen, Do sends the Context and Request through all the Policy objects. The final Policy object sends the request over the network
-// (via the HTTPSender object passed to NewPipeline) and the response is returned backwards through all the Policy objects.
-// Since Pipeline and Factory objects are goroutine-safe, you typically create 1 Pipeline object and reuse it to make many HTTP requests.
-type Pipeline struct {
-	policies []Policy
+// NewRequest creates a new Request associated with this pipeline.
+func (p Pipeline) NewRequest(httpMethod string, URL url.URL) *Request {
+	// removeEmptyPort strips the empty port in ":port" to ""
+	// as mandated by RFC 3986 Section 6.2.3.
+	// adapted from removeEmptyPort() in net/http.go
+	if strings.LastIndex(URL.Host, ":") > strings.LastIndex(URL.Host, "]") {
+		URL.Host = strings.TrimSuffix(URL.Host, ":")
+	}
+	return &Request{
+		Request: &http.Request{
+			Method:     httpMethod,
+			URL:        &URL,
+			Proto:      "HTTP/1.1",
+			ProtoMajor: 1,
+			ProtoMinor: 1,
+			Header:     http.Header{},
+			Host:       URL.Host,
+		},
+		policies: p.policies,
+	}
 }
 
 // PipelineOptions is used to configure a request policy pipeline's retry policy and logging.
@@ -58,9 +105,9 @@ type PipelineOptions struct {
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry TelemetryOptions
 
-	// HTTPClient sets the policy for making HTTP requests.
-	// Leave this as nil to use the default HTTP request policy.
-	HTTPClient Policy
+	// HTTPClient sets the transport for making HTTP requests.
+	// Leave this as nil to use the default HTTP transport.
+	HTTPClient Transport
 
 	// LogOptions configures the built-in request logging policy behavior.
 	LogOptions RequestLogOptions

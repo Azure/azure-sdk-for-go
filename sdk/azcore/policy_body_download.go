@@ -9,8 +9,8 @@ import (
 	"io/ioutil"
 )
 
-// NewBodyDownloadPolicy creates a policy object that downloads the response's body to a []byte.
-func NewBodyDownloadPolicy() Policy {
+// newBodyDownloadPolicy creates a policy object that downloads the response's body to a []byte.
+func newBodyDownloadPolicy() Policy {
 	return PolicyFunc(func(ctx context.Context, req *Request) (*Response, error) {
 		response, err := req.Do(ctx)
 		if err != nil {

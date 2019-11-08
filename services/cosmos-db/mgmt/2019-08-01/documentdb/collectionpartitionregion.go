@@ -32,13 +32,13 @@ type CollectionPartitionRegionClient struct {
 }
 
 // NewCollectionPartitionRegionClient creates an instance of the CollectionPartitionRegionClient client.
-func NewCollectionPartitionRegionClient(subscriptionID string) CollectionPartitionRegionClient {
-	return NewCollectionPartitionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCollectionPartitionRegionClient(subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
+	return NewCollectionPartitionRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewCollectionPartitionRegionClientWithBaseURI creates an instance of the CollectionPartitionRegionClient client.
-func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionRegionClient {
-	return CollectionPartitionRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
+	return CollectionPartitionRegionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given collection and region, split by

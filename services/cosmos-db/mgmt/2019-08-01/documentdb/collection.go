@@ -32,13 +32,13 @@ type CollectionClient struct {
 }
 
 // NewCollectionClient creates an instance of the CollectionClient client.
-func NewCollectionClient(subscriptionID string) CollectionClient {
-	return NewCollectionClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCollectionClient(subscriptionID string, subscriptionID1 string) CollectionClient {
+	return NewCollectionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewCollectionClientWithBaseURI creates an instance of the CollectionClient client.
-func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string) CollectionClient {
-	return CollectionClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionClient {
+	return CollectionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // ListMetricDefinitions retrieves metric definitions for the given collection.

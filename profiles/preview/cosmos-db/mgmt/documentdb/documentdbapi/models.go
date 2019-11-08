@@ -37,5 +37,7 @@ type PartitionKeyRangeIDRegionClientAPI = original.PartitionKeyRangeIDRegionClie
 type PercentileClientAPI = original.PercentileClientAPI
 type PercentileSourceTargetClientAPI = original.PercentileSourceTargetClientAPI
 type PercentileTargetClientAPI = original.PercentileTargetClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type SQLResourcesClientAPI = original.SQLResourcesClientAPI
 type TableResourcesClientAPI = original.TableResourcesClientAPI

@@ -47,14 +47,14 @@ func (c ClientSecretCredential) GetToken(ctx context.Context, scopes []string) (
 }
 
 // Policy implements the azcore.Credential interface on ClientSecretCredential.
-func (c ClientSecretCredential) Policy(scopes ...string) azcore.Policy {
+func (c ClientSecretCredential) Policy(options azcore.CredentialPolicyOptions) azcore.Policy {
 	return azcore.PolicyFunc(func(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
-		return applyToken(ctx, c, req, scopes...)
+		return applyToken(ctx, c, req, options)
 	})
 }
 
-func applyToken(ctx context.Context, token azcore.TokenCredential, req *azcore.Request, scopes ...string) (*azcore.Response, error) {
-	tk, err := token.GetToken(ctx, scopes)
+func applyToken(ctx context.Context, token azcore.TokenCredential, req *azcore.Request, options azcore.CredentialPolicyOptions) (*azcore.Response, error) {
+	tk, err := token.GetToken(ctx, options.Scopes)
 	if err != nil {
 		return nil, err
 	}

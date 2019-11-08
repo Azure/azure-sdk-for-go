@@ -145,6 +145,7 @@ type retryPolicy struct {
 func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err error) {
 	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
 	// When to retry: connection failure or temporary/timeout.
+	defer req.Close()
 	for try := int32(1); try <= p.options.MaxTries; try++ {
 		resp = nil // reset
 		logf("\n=====> Try=%d\n", try)
@@ -173,7 +174,7 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		resp.Drain()
 
 		// use the delay from retry-after if available
-		delay, ok := resp.retryAfter()
+		delay, ok := resp.RetryAfter()
 		if !ok {
 			delay = p.options.calcDelay(try)
 		}

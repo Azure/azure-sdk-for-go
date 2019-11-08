@@ -83,16 +83,15 @@ func (c *IdentityClientOptions) setDefaultValues() *IdentityClientOptions {
 // NewDefaultPipeline creates a Pipeline using the specified pipeline options
 func newDefaultPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
-		o.HTTPClient = azcore.DefaultHTTPClientPolicy()
+		o.HTTPClient = azcore.DefaultHTTPClientTransport()
 	}
 
 	return azcore.NewPipeline(
+		o.HTTPClient,
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(o.Retry),
-		azcore.NewBodyDownloadPolicy(),
-		azcore.NewRequestLogPolicy(o.LogOptions),
-		o.HTTPClient)
+		azcore.NewRequestLogPolicy(o.LogOptions))
 }
 
 /*********************************************************************

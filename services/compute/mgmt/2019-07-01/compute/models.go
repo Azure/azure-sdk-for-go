@@ -10135,9 +10135,9 @@ func (vmsseu *VirtualMachineScaleSetExtensionUpdate) UnmarshalJSON(body []byte) 
 type VirtualMachineScaleSetExtensionUpdateProperties struct {
 	// ForceUpdateTag - If a value is provided and is different from the previous value, the extension handler will be forced to update even if the extension configuration has not changed.
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
-	// Publisher - The name of the extension handler publisher.
+	// Publisher - READ-ONLY; The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
-	// Type - Specifies the type of the extension; an example is "CustomScriptExtension".
+	// Type - READ-ONLY; Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
 	// TypeHandlerVersion - Specifies the version of the script handler.
 	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`

@@ -30,17 +30,49 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/personalizer/v1
 type ErrorCode string
 
 const (
-	// BadRequest BadRequest - Request could not be understood by the server.
+	// BadRequest Request could not be understood by the server.
 	BadRequest ErrorCode = "BadRequest"
-	// InternalServerError InternalServerError - A generic error has occurred on the server.
+	// EvaluationNotFound Evaluation not found.
+	EvaluationNotFound ErrorCode = "EvaluationNotFound"
+	// FrontEndNotFound Front end not found.
+	FrontEndNotFound ErrorCode = "FrontEndNotFound"
+	// InternalServerError A generic error has occurred on the server.
 	InternalServerError ErrorCode = "InternalServerError"
-	// ResourceNotFound ResourceNotFound - Requested resource does not exist on the server.
+	// InvalidContainer SAS Uri must be the Uri to a container that has write permissions.
+	InvalidContainer ErrorCode = "InvalidContainer"
+	// InvalidEvaluationContract Invalid evaluation contract.
+	InvalidEvaluationContract ErrorCode = "InvalidEvaluationContract"
+	// InvalidEventIDToActivate Invalid activate event request.
+	InvalidEventIDToActivate ErrorCode = "InvalidEventIdToActivate"
+	// InvalidExportLogsRequest Invalid export logs request.
+	InvalidExportLogsRequest ErrorCode = "InvalidExportLogsRequest"
+	// InvalidPolicyConfiguration Invalid policy configuration.
+	InvalidPolicyConfiguration ErrorCode = "InvalidPolicyConfiguration"
+	// InvalidPolicyContract Invalid policy contract.
+	InvalidPolicyContract ErrorCode = "InvalidPolicyContract"
+	// InvalidRankRequest Invalid rank request.
+	InvalidRankRequest ErrorCode = "InvalidRankRequest"
+	// InvalidRewardRequest Invalid reward request.
+	InvalidRewardRequest ErrorCode = "InvalidRewardRequest"
+	// InvalidServiceConfiguration Invalid service configuration.
+	InvalidServiceConfiguration ErrorCode = "InvalidServiceConfiguration"
+	// LogsPropertiesNotFound Logs properties not found.
+	LogsPropertiesNotFound ErrorCode = "LogsPropertiesNotFound"
+	// MissingContainer SAS Uri container is required to enable copying.
+	MissingContainer ErrorCode = "MissingContainer"
+	// ModelResetFailed Model reset failed.
+	ModelResetFailed ErrorCode = "ModelResetFailed"
+	// RankNullResponse Rank call returned null response.
+	RankNullResponse ErrorCode = "RankNullResponse"
+	// ResourceNotFound Requested resource does not exist on the server.
 	ResourceNotFound ErrorCode = "ResourceNotFound"
+	// UpdateConfigurationFailed Failed to update configuration.
+	UpdateConfigurationFailed ErrorCode = "UpdateConfigurationFailed"
 )
 
 // PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
 func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{BadRequest, InternalServerError, ResourceNotFound}
+	return []ErrorCode{BadRequest, EvaluationNotFound, FrontEndNotFound, InternalServerError, InvalidContainer, InvalidEvaluationContract, InvalidEventIDToActivate, InvalidExportLogsRequest, InvalidPolicyConfiguration, InvalidPolicyContract, InvalidRankRequest, InvalidRewardRequest, InvalidServiceConfiguration, LogsPropertiesNotFound, MissingContainer, ModelResetFailed, RankNullResponse, ResourceNotFound, UpdateConfigurationFailed}
 }
 
 // EvaluationJobStatus enumerates the values for evaluation job status.
@@ -79,7 +111,7 @@ type DateRange struct {
 
 // Error the error object.
 type Error struct {
-	// Code - High level error code. Possible values include: 'BadRequest', 'ResourceNotFound', 'InternalServerError'
+	// Code - High level error code. Possible values include: 'BadRequest', 'ResourceNotFound', 'InvalidServiceConfiguration', 'InvalidPolicyConfiguration', 'InvalidPolicyContract', 'InvalidEvaluationContract', 'InvalidRewardRequest', 'InvalidEventIDToActivate', 'ModelResetFailed', 'InvalidRankRequest', 'InvalidExportLogsRequest', 'InvalidContainer', 'MissingContainer', 'FrontEndNotFound', 'EvaluationNotFound', 'LogsPropertiesNotFound', 'InternalServerError', 'RankNullResponse', 'UpdateConfigurationFailed'
 	Code ErrorCode `json:"code,omitempty"`
 	// Message - A message explaining the error reported by the service.
 	Message *string `json:"message,omitempty"`
@@ -302,6 +334,8 @@ type RewardRequest struct {
 type ServiceConfiguration struct {
 	autorest.Response `json:"-"`
 	// RewardWaitTime - The time span waited until a request is marked with the default reward.
+	// For example, PT5M (5 mins). For information about the time format,
+	// see http://en.wikipedia.org/wiki/ISO_8601#Durations
 	RewardWaitTime *string `json:"rewardWaitTime,omitempty"`
 	// DefaultReward - The reward given if a reward is not received within the specified wait time.
 	DefaultReward *float64 `json:"defaultReward,omitempty"`
@@ -310,6 +344,8 @@ type ServiceConfiguration struct {
 	// ExplorationPercentage - The percentage of rank responses that will use exploration.
 	ExplorationPercentage *float64 `json:"explorationPercentage,omitempty"`
 	// ModelExportFrequency - Personalizer will start using the most updated trained model for online ranks automatically every specified time period.
+	// For example, PT5M (5 mins). For information about the time format,
+	// see http://en.wikipedia.org/wiki/ISO_8601#Durations
 	ModelExportFrequency *string `json:"modelExportFrequency,omitempty"`
 	// LogMirrorEnabled - Flag indicates whether log mirroring is enabled.
 	LogMirrorEnabled *bool `json:"logMirrorEnabled,omitempty"`

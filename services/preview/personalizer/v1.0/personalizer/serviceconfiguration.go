@@ -134,8 +134,6 @@ func (client ServiceConfigurationClient) Update(ctx context.Context, config Serv
 						{Target: "config.ExplorationPercentage", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 					}},
 				{Target: "config.ModelExportFrequency", Name: validation.Null, Rule: true, Chain: nil},
-				{Target: "config.LogMirrorSasURI", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "config.LogMirrorSasURI", Name: validation.MaxLength, Rule: 2048, Chain: nil}}},
 				{Target: "config.LogRetentionDays", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "config.LogRetentionDays", Name: validation.InclusiveMaximum, Rule: int64(2147483647), Chain: nil},
 						{Target: "config.LogRetentionDays", Name: validation.InclusiveMinimum, Rule: -1, Chain: nil},

@@ -54,12 +54,6 @@ func (client EventsClient) Activate(ctx context.Context, eventID string) (result
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: eventID,
-			Constraints: []validation.Constraint{{Target: "eventID", Name: validation.MaxLength, Rule: 256, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("personalizer.EventsClient", "Activate", err.Error())
-	}
-
 	req, err := client.ActivatePreparer(ctx, eventID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.EventsClient", "Activate", nil, "Failure preparing request")
@@ -94,7 +88,7 @@ func (client EventsClient) ActivatePreparer(ctx context.Context, eventID string)
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/personalizer/v1.0", urlParameters),
-		autorest.WithPathParameters("/events/{eventId}/activate", pathParameters))
+		autorest.WithPathParameters("/events/{eventId}:maxlength(256)/activate", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -133,8 +127,6 @@ func (client EventsClient) Reward(ctx context.Context, eventID string, reward Re
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
-		{TargetValue: eventID,
-			Constraints: []validation.Constraint{{Target: "eventID", Name: validation.MaxLength, Rule: 256, Chain: nil}}},
 		{TargetValue: reward,
 			Constraints: []validation.Constraint{{Target: "reward.Value", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("personalizer.EventsClient", "Reward", err.Error())
@@ -175,7 +167,7 @@ func (client EventsClient) RewardPreparer(ctx context.Context, eventID string, r
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithCustomBaseURL("{Endpoint}/personalizer/v1.0", urlParameters),
-		autorest.WithPathParameters("/events/{eventId}/reward", pathParameters),
+		autorest.WithPathParameters("/events/{eventId}:maxlength(256)/reward", pathParameters),
 		autorest.WithJSON(reward))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

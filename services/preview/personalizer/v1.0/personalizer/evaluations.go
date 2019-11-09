@@ -168,7 +168,7 @@ func (client EvaluationsClient) DeletePreparer(ctx context.Context, evaluationID
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/personalizer/v1.0", urlParameters),
-		autorest.WithPathParameters("/evaluations/{evaluationId}", pathParameters))
+		autorest.WithPathParameters("/evaluations/{evaluationId}:maxlength(256)", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -239,7 +239,7 @@ func (client EvaluationsClient) GetPreparer(ctx context.Context, evaluationID st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/personalizer/v1.0", urlParameters),
-		autorest.WithPathParameters("/evaluations/{evaluationId}", pathParameters))
+		autorest.WithPathParameters("/evaluations/{evaluationId}:maxlength(256)", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

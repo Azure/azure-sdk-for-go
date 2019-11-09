@@ -24,9 +24,25 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/personalizer
 type ErrorCode = original.ErrorCode
 
 const (
-	BadRequest          ErrorCode = original.BadRequest
-	InternalServerError ErrorCode = original.InternalServerError
-	ResourceNotFound    ErrorCode = original.ResourceNotFound
+	BadRequest                  ErrorCode = original.BadRequest
+	EvaluationNotFound          ErrorCode = original.EvaluationNotFound
+	FrontEndNotFound            ErrorCode = original.FrontEndNotFound
+	InternalServerError         ErrorCode = original.InternalServerError
+	InvalidContainer            ErrorCode = original.InvalidContainer
+	InvalidEvaluationContract   ErrorCode = original.InvalidEvaluationContract
+	InvalidEventIDToActivate    ErrorCode = original.InvalidEventIDToActivate
+	InvalidExportLogsRequest    ErrorCode = original.InvalidExportLogsRequest
+	InvalidPolicyConfiguration  ErrorCode = original.InvalidPolicyConfiguration
+	InvalidPolicyContract       ErrorCode = original.InvalidPolicyContract
+	InvalidRankRequest          ErrorCode = original.InvalidRankRequest
+	InvalidRewardRequest        ErrorCode = original.InvalidRewardRequest
+	InvalidServiceConfiguration ErrorCode = original.InvalidServiceConfiguration
+	LogsPropertiesNotFound      ErrorCode = original.LogsPropertiesNotFound
+	MissingContainer            ErrorCode = original.MissingContainer
+	ModelResetFailed            ErrorCode = original.ModelResetFailed
+	RankNullResponse            ErrorCode = original.RankNullResponse
+	ResourceNotFound            ErrorCode = original.ResourceNotFound
+	UpdateConfigurationFailed   ErrorCode = original.UpdateConfigurationFailed
 )
 
 type EvaluationJobStatus = original.EvaluationJobStatus

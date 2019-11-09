@@ -339,7 +339,7 @@ type ServiceConfiguration struct {
 	RewardWaitTime *string `json:"rewardWaitTime,omitempty"`
 	// DefaultReward - The reward given if a reward is not received within the specified wait time.
 	DefaultReward *float64 `json:"defaultReward,omitempty"`
-	// RewardAggregation - The function used to process rewards, if multiple reward scores are recieved before rewardWaitTime is over.
+	// RewardAggregation - The function used to process rewards, if multiple reward scores are received before rewardWaitTime is over.
 	RewardAggregation *string `json:"rewardAggregation,omitempty"`
 	// ExplorationPercentage - The percentage of rank responses that will use exploration.
 	ExplorationPercentage *float64 `json:"explorationPercentage,omitempty"`

@@ -42,14 +42,16 @@ var _ PricingsClientAPI = (*security.PricingsClient)(nil)
 
 // AlertsClientAPI contains the set of methods on the AlertsClient type.
 type AlertsClientAPI interface {
+	Dismiss(ctx context.Context, alertName string) (result autorest.Response, err error)
+	Dismiss1(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
 	GetResourceGroupLevelAlerts(ctx context.Context, alertName string, resourceGroupName string) (result security.Alert, err error)
 	GetSubscriptionLevelAlert(ctx context.Context, alertName string) (result security.Alert, err error)
 	List(ctx context.Context, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
 	ListResourceGroupLevelAlertsByRegion(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
 	ListSubscriptionLevelAlertsByRegion(ctx context.Context, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
-	UpdateResourceGroupLevelAlertState(ctx context.Context, alertName string, alertUpdateActionType string, resourceGroupName string) (result autorest.Response, err error)
-	UpdateSubscriptionLevelAlertState(ctx context.Context, alertName string, alertUpdateActionType string) (result autorest.Response, err error)
+	Reactivate(ctx context.Context, alertName string) (result autorest.Response, err error)
+	Reactivate1(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
 }
 
 var _ AlertsClientAPI = (*security.AlertsClient)(nil)

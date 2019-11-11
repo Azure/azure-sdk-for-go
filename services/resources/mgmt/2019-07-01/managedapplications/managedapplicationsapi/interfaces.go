@@ -60,13 +60,6 @@ type ApplicationDefinitionsClientAPI interface {
 
 var _ ApplicationDefinitionsClientAPI = (*managedapplications.ApplicationDefinitionsClient)(nil)
 
-// ApplicationDefinitionArtifactsClientAPI contains the set of methods on the ApplicationDefinitionArtifactsClient type.
-type ApplicationDefinitionArtifactsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, applicationDefinitionName string, applicationArtifactName string) (result managedapplications.String, err error)
-}
-
-var _ ApplicationDefinitionArtifactsClientAPI = (*managedapplications.ApplicationDefinitionArtifactsClient)(nil)
-
 // JitRequestsClientAPI contains the set of methods on the JitRequestsClient type.
 type JitRequestsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, jitRequestName string, parameters managedapplications.JitRequestDefinition) (result managedapplications.JitRequestsCreateOrUpdateFuture, err error)

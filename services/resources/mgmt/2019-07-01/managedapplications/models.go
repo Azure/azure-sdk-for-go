@@ -1727,9 +1727,3 @@ type Sku struct {
 	// Capacity - The SKU capacity.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
-
-// String ...
-type String struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
-}

@@ -91,7 +91,6 @@ type Application = original.Application
 type ApplicationArtifact = original.ApplicationArtifact
 type ApplicationClientDetails = original.ApplicationClientDetails
 type ApplicationDefinition = original.ApplicationDefinition
-type ApplicationDefinitionArtifactsClient = original.ApplicationDefinitionArtifactsClient
 type ApplicationDefinitionListResult = original.ApplicationDefinitionListResult
 type ApplicationDefinitionListResultIterator = original.ApplicationDefinitionListResultIterator
 type ApplicationDefinitionListResultPage = original.ApplicationDefinitionListResultPage
@@ -135,16 +134,9 @@ type Plan = original.Plan
 type PlanPatchable = original.PlanPatchable
 type Resource = original.Resource
 type Sku = original.Sku
-type String = original.String
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
-}
-func NewApplicationDefinitionArtifactsClient(subscriptionID string) ApplicationDefinitionArtifactsClient {
-	return original.NewApplicationDefinitionArtifactsClient(subscriptionID)
-}
-func NewApplicationDefinitionArtifactsClientWithBaseURI(baseURI string, subscriptionID string) ApplicationDefinitionArtifactsClient {
-	return original.NewApplicationDefinitionArtifactsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewApplicationDefinitionListResultIterator(page ApplicationDefinitionListResultPage) ApplicationDefinitionListResultIterator {
 	return original.NewApplicationDefinitionListResultIterator(page)

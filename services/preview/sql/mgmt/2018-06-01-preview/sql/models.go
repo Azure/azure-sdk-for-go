@@ -166,6 +166,29 @@ func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
 	return []ManagedServerCreateMode{ManagedServerCreateModeDefault, ManagedServerCreateModePointInTimeRestore}
 }
 
+// ManagementOperationState enumerates the values for management operation state.
+type ManagementOperationState string
+
+const (
+	// CancelInProgress ...
+	CancelInProgress ManagementOperationState = "CancelInProgress"
+	// Cancelled ...
+	Cancelled ManagementOperationState = "Cancelled"
+	// Failed ...
+	Failed ManagementOperationState = "Failed"
+	// InProgress ...
+	InProgress ManagementOperationState = "InProgress"
+	// Pending ...
+	Pending ManagementOperationState = "Pending"
+	// Succeeded ...
+	Succeeded ManagementOperationState = "Succeeded"
+)
+
+// PossibleManagementOperationStateValues returns an array of possible values for the ManagementOperationState const type.
+func PossibleManagementOperationStateValues() []ManagementOperationState {
+	return []ManagementOperationState{CancelInProgress, Cancelled, Failed, InProgress, Pending, Succeeded}
+}
+
 // ReplicaType enumerates the values for replica type.
 type ReplicaType string
 
@@ -1659,6 +1682,255 @@ func (page ManagedInstanceListResultPage) Values() []ManagedInstance {
 // Creates a new instance of the ManagedInstanceListResultPage type.
 func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
 	return ManagedInstanceListResultPage{fn: getNextPage}
+}
+
+// ManagedInstanceOperation a managed instance operation.
+type ManagedInstanceOperation struct {
+	// ManagedInstanceOperationProperties - Resource properties.
+	*ManagedInstanceOperationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstanceOperation.
+func (mio ManagedInstanceOperation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mio.ManagedInstanceOperationProperties != nil {
+		objectMap["properties"] = mio.ManagedInstanceOperationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedInstanceOperation struct.
+func (mio *ManagedInstanceOperation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedInstanceOperationProperties ManagedInstanceOperationProperties
+				err = json.Unmarshal(*v, &managedInstanceOperationProperties)
+				if err != nil {
+					return err
+				}
+				mio.ManagedInstanceOperationProperties = &managedInstanceOperationProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				mio.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				mio.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				mio.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedInstanceOperationListResult the response to a list managed instance operations request
+type ManagedInstanceOperationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]ManagedInstanceOperation `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedInstanceOperationListResultIterator provides access to a complete listing of
+// ManagedInstanceOperation values.
+type ManagedInstanceOperationListResultIterator struct {
+	i    int
+	page ManagedInstanceOperationListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedInstanceOperationListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedInstanceOperationListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ManagedInstanceOperationListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedInstanceOperationListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedInstanceOperationListResultIterator) Response() ManagedInstanceOperationListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedInstanceOperationListResultIterator) Value() ManagedInstanceOperation {
+	if !iter.page.NotDone() {
+		return ManagedInstanceOperation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ManagedInstanceOperationListResultIterator type.
+func NewManagedInstanceOperationListResultIterator(page ManagedInstanceOperationListResultPage) ManagedInstanceOperationListResultIterator {
+	return ManagedInstanceOperationListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (miolr ManagedInstanceOperationListResult) IsEmpty() bool {
+	return miolr.Value == nil || len(*miolr.Value) == 0
+}
+
+// managedInstanceOperationListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (miolr ManagedInstanceOperationListResult) managedInstanceOperationListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if miolr.NextLink == nil || len(to.String(miolr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(miolr.NextLink)))
+}
+
+// ManagedInstanceOperationListResultPage contains a page of ManagedInstanceOperation values.
+type ManagedInstanceOperationListResultPage struct {
+	fn    func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error)
+	miolr ManagedInstanceOperationListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedInstanceOperationListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedInstanceOperationListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.miolr)
+	if err != nil {
+		return err
+	}
+	page.miolr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ManagedInstanceOperationListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedInstanceOperationListResultPage) NotDone() bool {
+	return !page.miolr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedInstanceOperationListResultPage) Response() ManagedInstanceOperationListResult {
+	return page.miolr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedInstanceOperationListResultPage) Values() []ManagedInstanceOperation {
+	if page.miolr.IsEmpty() {
+		return nil
+	}
+	return *page.miolr.Value
+}
+
+// Creates a new instance of the ManagedInstanceOperationListResultPage type.
+func NewManagedInstanceOperationListResultPage(getNextPage func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error)) ManagedInstanceOperationListResultPage {
+	return ManagedInstanceOperationListResultPage{fn: getNextPage}
+}
+
+// ManagedInstanceOperationProperties the properties of a managed instance operation.
+type ManagedInstanceOperationProperties struct {
+	// ManagedInstanceName - READ-ONLY; The name of the managed instance the operation is being performed on.
+	ManagedInstanceName *string `json:"managedInstanceName,omitempty"`
+	// Operation - READ-ONLY; The name of operation.
+	Operation *string `json:"operation,omitempty"`
+	// OperationFriendlyName - READ-ONLY; The friendly name of operation.
+	OperationFriendlyName *string `json:"operationFriendlyName,omitempty"`
+	// PercentComplete - READ-ONLY; The percentage of the operation completed.
+	PercentComplete *int32 `json:"percentComplete,omitempty"`
+	// StartTime - READ-ONLY; The operation start time.
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// State - READ-ONLY; The operation state. Possible values include: 'Pending', 'InProgress', 'Succeeded', 'Failed', 'CancelInProgress', 'Cancelled'
+	State ManagementOperationState `json:"state,omitempty"`
+	// ErrorCode - READ-ONLY; The operation error code.
+	ErrorCode *int32 `json:"errorCode,omitempty"`
+	// ErrorDescription - READ-ONLY; The operation error description.
+	ErrorDescription *string `json:"errorDescription,omitempty"`
+	// ErrorSeverity - READ-ONLY; The operation error severity.
+	ErrorSeverity *int32 `json:"errorSeverity,omitempty"`
+	// IsUserError - READ-ONLY; Whether or not the error is a user error.
+	IsUserError *bool `json:"isUserError,omitempty"`
+	// EstimatedCompletionTime - READ-ONLY; The estimated completion time of the operation.
+	EstimatedCompletionTime *date.Time `json:"estimatedCompletionTime,omitempty"`
+	// Description - READ-ONLY; The operation description.
+	Description *string `json:"description,omitempty"`
+	// IsCancellable - READ-ONLY; Whether the operation can be cancelled.
+	IsCancellable *bool `json:"isCancellable,omitempty"`
 }
 
 // ManagedInstanceProperties the properties of a managed instance.

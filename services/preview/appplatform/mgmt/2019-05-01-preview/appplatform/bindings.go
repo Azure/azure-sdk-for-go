@@ -42,13 +42,13 @@ func NewBindingsClientWithBaseURI(baseURI string, subscriptionID string) Binding
 
 // CreateOrUpdate create a new Binding or update an exiting Binding.
 // Parameters:
+// bindingResource - parameters for the create or update operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
 // appName - the name of the App resource.
 // bindingName - the name of the Binding resource.
-// bindingResource - parameters for the create or update operation
-func (client BindingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource *BindingResource) (result BindingResource, err error) {
+func (client BindingsClient) CreateOrUpdate(ctx context.Context, bindingResource BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (result BindingResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BindingsClient.CreateOrUpdate")
 		defer func() {
@@ -59,7 +59,7 @@ func (client BindingsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, appName, bindingName, bindingResource)
+	req, err := client.CreateOrUpdatePreparer(ctx, bindingResource, resourceGroupName, serviceName, appName, bindingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.BindingsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -81,7 +81,7 @@ func (client BindingsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client BindingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource *BindingResource) (*http.Request, error) {
+func (client BindingsClient) CreateOrUpdatePreparer(ctx context.Context, bindingResource BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appName":           autorest.Encode("path", appName),
 		"bindingName":       autorest.Encode("path", bindingName),
@@ -100,11 +100,8 @@ func (client BindingsClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/bindings/{bindingName}", pathParameters),
+		autorest.WithJSON(bindingResource),
 		autorest.WithQueryParameters(queryParameters))
-	if bindingResource != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(bindingResource))
-	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -411,13 +408,13 @@ func (client BindingsClient) ListComplete(ctx context.Context, resourceGroupName
 
 // Update operation to update an exiting Binding.
 // Parameters:
+// bindingResource - parameters for the update operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
 // appName - the name of the App resource.
 // bindingName - the name of the Binding resource.
-// bindingResource - parameters for the update operation
-func (client BindingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource *BindingResource) (result BindingResource, err error) {
+func (client BindingsClient) Update(ctx context.Context, bindingResource BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (result BindingResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BindingsClient.Update")
 		defer func() {
@@ -428,7 +425,7 @@ func (client BindingsClient) Update(ctx context.Context, resourceGroupName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceName, appName, bindingName, bindingResource)
+	req, err := client.UpdatePreparer(ctx, bindingResource, resourceGroupName, serviceName, appName, bindingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.BindingsClient", "Update", nil, "Failure preparing request")
 		return
@@ -450,7 +447,7 @@ func (client BindingsClient) Update(ctx context.Context, resourceGroupName strin
 }
 
 // UpdatePreparer prepares the Update request.
-func (client BindingsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource *BindingResource) (*http.Request, error) {
+func (client BindingsClient) UpdatePreparer(ctx context.Context, bindingResource BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appName":           autorest.Encode("path", appName),
 		"bindingName":       autorest.Encode("path", bindingName),
@@ -469,11 +466,8 @@ func (client BindingsClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/bindings/{bindingName}", pathParameters),
+		autorest.WithJSON(bindingResource),
 		autorest.WithQueryParameters(queryParameters))
-	if bindingResource != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(bindingResource))
-	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

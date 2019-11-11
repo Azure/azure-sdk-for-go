@@ -2771,6 +2771,8 @@ type ConnectedResources struct {
 	TCPPorts *string `json:"tcpPorts,omitempty"`
 	// UDPPorts - READ-ONLY; The connections udp ports
 	UDPPorts *string `json:"udpPorts,omitempty"`
+	// Ports - READ-ONLY; The connections ports
+	Ports *string `json:"ports,omitempty"`
 }
 
 // ConnectedWorkspace ...

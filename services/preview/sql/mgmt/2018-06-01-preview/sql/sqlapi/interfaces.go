@@ -55,6 +55,13 @@ type ManagedInstanceVulnerabilityAssessmentsClientAPI interface {
 
 var _ ManagedInstanceVulnerabilityAssessmentsClientAPI = (*sql.ManagedInstanceVulnerabilityAssessmentsClient)(nil)
 
+// ManagedInstanceOperationsClientAPI contains the set of methods on the ManagedInstanceOperationsClient type.
+type ManagedInstanceOperationsClientAPI interface {
+	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceOperationListResultPage, err error)
+}
+
+var _ ManagedInstanceOperationsClientAPI = (*sql.ManagedInstanceOperationsClient)(nil)
+
 // ServerVulnerabilityAssessmentsClientAPI contains the set of methods on the ServerVulnerabilityAssessmentsClient type.
 type ServerVulnerabilityAssessmentsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerVulnerabilityAssessment) (result sql.ServerVulnerabilityAssessment, err error)

@@ -92,6 +92,17 @@ const (
 	ManagedServerCreateModePointInTimeRestore ManagedServerCreateMode = original.ManagedServerCreateModePointInTimeRestore
 )
 
+type ManagementOperationState = original.ManagementOperationState
+
+const (
+	CancelInProgress ManagementOperationState = original.CancelInProgress
+	Cancelled        ManagementOperationState = original.Cancelled
+	Failed           ManagementOperationState = original.Failed
+	InProgress       ManagementOperationState = original.InProgress
+	Pending          ManagementOperationState = original.Pending
+	Succeeded        ManagementOperationState = original.Succeeded
+)
+
 type ReplicaType = original.ReplicaType
 
 const (
@@ -154,6 +165,12 @@ type ManagedInstance = original.ManagedInstance
 type ManagedInstanceListResult = original.ManagedInstanceListResult
 type ManagedInstanceListResultIterator = original.ManagedInstanceListResultIterator
 type ManagedInstanceListResultPage = original.ManagedInstanceListResultPage
+type ManagedInstanceOperation = original.ManagedInstanceOperation
+type ManagedInstanceOperationListResult = original.ManagedInstanceOperationListResult
+type ManagedInstanceOperationListResultIterator = original.ManagedInstanceOperationListResultIterator
+type ManagedInstanceOperationListResultPage = original.ManagedInstanceOperationListResultPage
+type ManagedInstanceOperationProperties = original.ManagedInstanceOperationProperties
+type ManagedInstanceOperationsClient = original.ManagedInstanceOperationsClient
 type ManagedInstanceProperties = original.ManagedInstanceProperties
 type ManagedInstanceUpdate = original.ManagedInstanceUpdate
 type ManagedInstanceVulnerabilityAssessment = original.ManagedInstanceVulnerabilityAssessment
@@ -270,6 +287,18 @@ func NewManagedInstanceListResultIterator(page ManagedInstanceListResultPage) Ma
 func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
 	return original.NewManagedInstanceListResultPage(getNextPage)
 }
+func NewManagedInstanceOperationListResultIterator(page ManagedInstanceOperationListResultPage) ManagedInstanceOperationListResultIterator {
+	return original.NewManagedInstanceOperationListResultIterator(page)
+}
+func NewManagedInstanceOperationListResultPage(getNextPage func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error)) ManagedInstanceOperationListResultPage {
+	return original.NewManagedInstanceOperationListResultPage(getNextPage)
+}
+func NewManagedInstanceOperationsClient(subscriptionID string) ManagedInstanceOperationsClient {
+	return original.NewManagedInstanceOperationsClient(subscriptionID)
+}
+func NewManagedInstanceOperationsClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceOperationsClient {
+	return original.NewManagedInstanceOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewManagedInstanceVulnerabilityAssessmentListResultIterator(page ManagedInstanceVulnerabilityAssessmentListResultPage) ManagedInstanceVulnerabilityAssessmentListResultIterator {
 	return original.NewManagedInstanceVulnerabilityAssessmentListResultIterator(page)
 }
@@ -356,6 +385,9 @@ func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride
 }
 func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
 	return original.PossibleManagedServerCreateModeValues()
+}
+func PossibleManagementOperationStateValues() []ManagementOperationState {
+	return original.PossibleManagementOperationStateValues()
 }
 func PossibleReplicaTypeValues() []ReplicaType {
 	return original.PossibleReplicaTypeValues()

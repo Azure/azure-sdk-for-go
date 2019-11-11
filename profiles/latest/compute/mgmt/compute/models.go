@@ -471,6 +471,7 @@ type VirtualMachinePriorityTypes = original.VirtualMachinePriorityTypes
 const (
 	Low     VirtualMachinePriorityTypes = original.Low
 	Regular VirtualMachinePriorityTypes = original.Regular
+	Spot    VirtualMachinePriorityTypes = original.Spot
 )
 
 type VirtualMachineScaleSetScaleInRules = original.VirtualMachineScaleSetScaleInRules

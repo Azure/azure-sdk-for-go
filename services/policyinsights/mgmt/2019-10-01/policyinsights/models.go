@@ -45,6 +45,22 @@ func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	return []PolicyStatesResource{Default, Latest}
 }
 
+// ResourceDiscoveryMode enumerates the values for resource discovery mode.
+type ResourceDiscoveryMode string
+
+const (
+	// ExistingNonCompliant Remediate resources that are already known to be non-compliant.
+	ExistingNonCompliant ResourceDiscoveryMode = "ExistingNonCompliant"
+	// ReEvaluateCompliance Re-evaluate the compliance state of resources and then remediate the resources
+	// found to be non-compliant.
+	ReEvaluateCompliance ResourceDiscoveryMode = "ReEvaluateCompliance"
+)
+
+// PossibleResourceDiscoveryModeValues returns an array of possible values for the ResourceDiscoveryMode const type.
+func PossibleResourceDiscoveryModeValues() []ResourceDiscoveryMode {
+	return []ResourceDiscoveryMode{ExistingNonCompliant, ReEvaluateCompliance}
+}
+
 // ComplianceDetail the compliance state rollup.
 type ComplianceDetail struct {
 	// ComplianceState - The compliance state.
@@ -1794,11 +1810,11 @@ func NewRemediationDeploymentsListResultPage(getNextPage func(context.Context, R
 // RemediationDeploymentSummary the deployment status summary for all deployments created by the
 // remediation.
 type RemediationDeploymentSummary struct {
-	// TotalDeployments - The number of deployments required by the remediation.
+	// TotalDeployments - READ-ONLY; The number of deployments required by the remediation.
 	TotalDeployments *int32 `json:"totalDeployments,omitempty"`
-	// SuccessfulDeployments - The number of deployments required by the remediation that have succeeded.
+	// SuccessfulDeployments - READ-ONLY; The number of deployments required by the remediation that have succeeded.
 	SuccessfulDeployments *int32 `json:"successfulDeployments,omitempty"`
-	// FailedDeployments - The number of deployments required by the remediation that have failed.
+	// FailedDeployments - READ-ONLY; The number of deployments required by the remediation that have failed.
 	FailedDeployments *int32 `json:"failedDeployments,omitempty"`
 }
 
@@ -1960,6 +1976,8 @@ type RemediationProperties struct {
 	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
 	// PolicyDefinitionReferenceID - The policy definition reference ID of the individual definition that should be remediated. Required when the policy assignment being remediated assigns a policy set definition.
 	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	// ResourceDiscoveryMode - The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified. Possible values include: 'ExistingNonCompliant', 'ReEvaluateCompliance'
+	ResourceDiscoveryMode ResourceDiscoveryMode `json:"resourceDiscoveryMode,omitempty"`
 	// ProvisioningState - READ-ONLY; The status of the remediation.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// CreatedOn - READ-ONLY; The time at which the remediation was created.
@@ -1968,7 +1986,7 @@ type RemediationProperties struct {
 	LastUpdatedOn *date.Time `json:"lastUpdatedOn,omitempty"`
 	// Filters - The filters that will be applied to determine which resources to remediate.
 	Filters *RemediationFilters `json:"filters,omitempty"`
-	// DeploymentStatus - The deployment status summary for all deployments created by the remediation.
+	// DeploymentStatus - READ-ONLY; The deployment status summary for all deployments created by the remediation.
 	DeploymentStatus *RemediationDeploymentSummary `json:"deploymentStatus,omitempty"`
 }
 

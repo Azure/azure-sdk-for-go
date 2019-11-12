@@ -5,6 +5,8 @@ package azidentity
 
 import (
 	"context"
+	"sync"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -42,22 +44,57 @@ func NewClientSecretCredentialWithPipeline(tenantID string, clientID string, cli
 // ctx: controlling the request lifetime.
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c ClientSecretCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
+func (c *ClientSecretCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
 	return c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, scopes)
 }
 
 // Policy implements the azcore.Credential interface on ClientSecretCredential.
-func (c ClientSecretCredential) Policy(options azcore.CredentialPolicyOptions) azcore.Policy {
-	return azcore.PolicyFunc(func(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
-		return applyToken(ctx, c, req, options)
-	})
+func (c *ClientSecretCredential) Policy(options azcore.CredentialPolicyOptions) azcore.Policy {
+	return newBearerTokenPolicy(c, options.Scopes)
 }
 
-func applyToken(ctx context.Context, token azcore.TokenCredential, req *azcore.Request, options azcore.CredentialPolicyOptions) (*azcore.Response, error) {
-	tk, err := token.GetToken(ctx, options.Scopes)
-	if err != nil {
-		return nil, err
+type bearerTokenPolicy struct {
+	// take lock when manipulating header/expiresOn fields
+	lock      sync.RWMutex
+	header    string
+	expiresOn time.Time
+	creds     azcore.TokenCredential // R/O
+	scopes    []string               // R/O
+}
+
+func newBearerTokenPolicy(creds azcore.TokenCredential, scopes []string) *bearerTokenPolicy {
+	// set the token as expired so first call to Do() refreshes it
+	return &bearerTokenPolicy{creds: creds, scopes: scopes, expiresOn: time.Now().UTC()}
+}
+
+func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+	var bt string
+	// take read lock and check if the token has expired
+	b.lock.RLock()
+	now := time.Now().UTC()
+	if now.Equal(b.expiresOn) || now.After(b.expiresOn) {
+		// token has expired, take the write lock then check again
+		b.lock.RUnlock()
+		// don't defer Unlock(), we want to release it ASAP
+		b.lock.Lock()
+		if now.Equal(b.expiresOn) || now.After(b.expiresOn) {
+			// token has expired, get a new one and update shared state
+			tk, err := b.creds.GetToken(ctx, b.scopes)
+			if err != nil {
+				b.lock.Unlock()
+				return nil, err
+			}
+			b.expiresOn = tk.ExpiresOn
+			b.header = "Bearer " + tk.Token
+		} // else { another go routine already refreshed the token }
+		bt = b.header
+		b.lock.Unlock()
+	} else {
+		// token is still valid
+		bt = b.header
+		b.lock.RUnlock()
 	}
-	req.Request.Header.Set(azcore.HeaderAuthorization, "Bearer "+tk.Token)
+	// no locks are to be held at this point
+	req.Request.Header.Set(azcore.HeaderAuthorization, bt)
 	return req.Do(ctx)
 }

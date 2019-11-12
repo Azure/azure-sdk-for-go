@@ -85,7 +85,7 @@ func (client RemediationsClient) CancelAtManagementGroupPreparer(ctx context.Con
 		"remediationName":           autorest.Encode("path", remediationName),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -161,7 +161,7 @@ func (client RemediationsClient) CancelAtResourcePreparer(ctx context.Context, r
 		"resourceId":      resourceID,
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -239,7 +239,7 @@ func (client RemediationsClient) CancelAtResourceGroupPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -315,7 +315,7 @@ func (client RemediationsClient) CancelAtSubscriptionPreparer(ctx context.Contex
 		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -393,7 +393,7 @@ func (client RemediationsClient) CreateOrUpdateAtManagementGroupPreparer(ctx con
 		"remediationName":           autorest.Encode("path", remediationName),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -475,7 +475,7 @@ func (client RemediationsClient) CreateOrUpdateAtResourcePreparer(ctx context.Co
 		"resourceId":      resourceID,
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -559,7 +559,7 @@ func (client RemediationsClient) CreateOrUpdateAtResourceGroupPreparer(ctx conte
 		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -641,7 +641,7 @@ func (client RemediationsClient) CreateOrUpdateAtSubscriptionPreparer(ctx contex
 		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -723,7 +723,7 @@ func (client RemediationsClient) DeleteAtManagementGroupPreparer(ctx context.Con
 		"remediationName":           autorest.Encode("path", remediationName),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -799,7 +799,7 @@ func (client RemediationsClient) DeleteAtResourcePreparer(ctx context.Context, r
 		"resourceId":      resourceID,
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -877,7 +877,7 @@ func (client RemediationsClient) DeleteAtResourceGroupPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -953,7 +953,7 @@ func (client RemediationsClient) DeleteAtSubscriptionPreparer(ctx context.Contex
 		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1030,7 +1030,7 @@ func (client RemediationsClient) GetAtManagementGroupPreparer(ctx context.Contex
 		"remediationName":           autorest.Encode("path", remediationName),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1106,7 +1106,7 @@ func (client RemediationsClient) GetAtResourcePreparer(ctx context.Context, reso
 		"resourceId":      resourceID,
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1184,7 +1184,7 @@ func (client RemediationsClient) GetAtResourceGroupPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1260,7 +1260,7 @@ func (client RemediationsClient) GetAtSubscriptionPreparer(ctx context.Context, 
 		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1346,7 +1346,7 @@ func (client RemediationsClient) ListDeploymentsAtManagementGroupPreparer(ctx co
 		"remediationName":           autorest.Encode("path", remediationName),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1471,7 +1471,7 @@ func (client RemediationsClient) ListDeploymentsAtResourcePreparer(ctx context.C
 		"resourceId":      resourceID,
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1598,7 +1598,7 @@ func (client RemediationsClient) ListDeploymentsAtResourceGroupPreparer(ctx cont
 		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1723,7 +1723,7 @@ func (client RemediationsClient) ListDeploymentsAtSubscriptionPreparer(ctx conte
 		"subscriptionId":  autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1848,7 +1848,7 @@ func (client RemediationsClient) ListForManagementGroupPreparer(ctx context.Cont
 		"managementGroupsNamespace": autorest.Encode("path", "Microsoft.Management"),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1975,7 +1975,7 @@ func (client RemediationsClient) ListForResourcePreparer(ctx context.Context, re
 		"resourceId": resourceID,
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2104,7 +2104,7 @@ func (client RemediationsClient) ListForResourceGroupPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2231,7 +2231,7 @@ func (client RemediationsClient) ListForSubscriptionPreparer(ctx context.Context
 		"subscriptionId": autorest.Encode("path", subscriptionID),
 	}
 
-	const APIVersion = "2018-07-01-preview"
+	const APIVersion = "2019-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

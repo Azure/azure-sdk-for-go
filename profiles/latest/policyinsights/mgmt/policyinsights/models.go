@@ -36,6 +36,13 @@ const (
 	Latest  PolicyStatesResource = original.Latest
 )
 
+type ResourceDiscoveryMode = original.ResourceDiscoveryMode
+
+const (
+	ExistingNonCompliant ResourceDiscoveryMode = original.ExistingNonCompliant
+	ReEvaluateCompliance ResourceDiscoveryMode = original.ReEvaluateCompliance
+)
+
 type BaseClient = original.BaseClient
 type ComplianceDetail = original.ComplianceDetail
 type ErrorDefinition = original.ErrorDefinition
@@ -159,6 +166,9 @@ func NewWithBaseURI(baseURI string) BaseClient {
 }
 func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	return original.PossiblePolicyStatesResourceValues()
+}
+func PossibleResourceDiscoveryModeValues() []ResourceDiscoveryMode {
+	return original.PossibleResourceDiscoveryModeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

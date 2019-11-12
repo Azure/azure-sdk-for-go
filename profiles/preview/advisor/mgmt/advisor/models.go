@@ -69,6 +69,7 @@ type ConfigurationListResult = original.ConfigurationListResult
 type ConfigurationListResultIterator = original.ConfigurationListResultIterator
 type ConfigurationListResultPage = original.ConfigurationListResultPage
 type ConfigurationsClient = original.ConfigurationsClient
+type DigestConfig = original.DigestConfig
 type MetadataEntity = original.MetadataEntity
 type MetadataEntityListResult = original.MetadataEntityListResult
 type MetadataEntityListResultIterator = original.MetadataEntityListResultIterator

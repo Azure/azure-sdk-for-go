@@ -110,43 +110,36 @@ type ARMErrorResponseBody struct {
 
 // ConfigData the Advisor configuration data structure.
 type ConfigData struct {
+	// ConfigDataProperties - The configuration data properties
+	*ConfigDataProperties `json:"properties,omitempty"`
 	// ID - The resource Id of the configuration resource.
 	ID *string `json:"id,omitempty"`
 	// Type - The type of the configuration resource.
 	Type *string `json:"type,omitempty"`
 	// Name - The name of the configuration resource.
 	Name *string `json:"name,omitempty"`
-	// Properties - The list of property name/value pairs.
-	Properties *ConfigDataProperties `json:"properties,omitempty"`
 }
 
-// ConfigDataProperties the list of property name/value pairs.
-type ConfigDataProperties struct {
-	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
-	AdditionalProperties map[string]interface{} `json:""`
-	// Exclude - Exclude the resource from Advisor evaluations. Valid values: False (default) or True.
-	Exclude *bool `json:"exclude,omitempty"`
-	// LowCPUThreshold - Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid only for subscriptions. Valid values: 5 (default), 10, 15 or 20.
-	LowCPUThreshold *string `json:"low_cpu_threshold,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ConfigDataProperties.
-func (cd ConfigDataProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ConfigData.
+func (cd ConfigData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if cd.Exclude != nil {
-		objectMap["exclude"] = cd.Exclude
+	if cd.ConfigDataProperties != nil {
+		objectMap["properties"] = cd.ConfigDataProperties
 	}
-	if cd.LowCPUThreshold != nil {
-		objectMap["low_cpu_threshold"] = cd.LowCPUThreshold
+	if cd.ID != nil {
+		objectMap["id"] = cd.ID
 	}
-	for k, v := range cd.AdditionalProperties {
-		objectMap[k] = v
+	if cd.Type != nil {
+		objectMap["type"] = cd.Type
+	}
+	if cd.Name != nil {
+		objectMap["name"] = cd.Name
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for ConfigDataProperties struct.
-func (cd *ConfigDataProperties) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ConfigData struct.
+func (cd *ConfigData) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -154,40 +147,56 @@ func (cd *ConfigDataProperties) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		default:
+		case "properties":
 			if v != nil {
-				var additionalProperties interface{}
-				err = json.Unmarshal(*v, &additionalProperties)
+				var configDataProperties ConfigDataProperties
+				err = json.Unmarshal(*v, &configDataProperties)
 				if err != nil {
 					return err
 				}
-				if cd.AdditionalProperties == nil {
-					cd.AdditionalProperties = make(map[string]interface{})
-				}
-				cd.AdditionalProperties[k] = additionalProperties
+				cd.ConfigDataProperties = &configDataProperties
 			}
-		case "exclude":
+		case "id":
 			if v != nil {
-				var exclude bool
-				err = json.Unmarshal(*v, &exclude)
+				var ID string
+				err = json.Unmarshal(*v, &ID)
 				if err != nil {
 					return err
 				}
-				cd.Exclude = &exclude
+				cd.ID = &ID
 			}
-		case "low_cpu_threshold":
+		case "type":
 			if v != nil {
-				var lowCPUThreshold string
-				err = json.Unmarshal(*v, &lowCPUThreshold)
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
 				if err != nil {
 					return err
 				}
-				cd.LowCPUThreshold = &lowCPUThreshold
+				cd.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cd.Name = &name
 			}
 		}
 	}
 
 	return nil
+}
+
+// ConfigDataProperties configuration data properties
+type ConfigDataProperties struct {
+	// Exclude - Exclude the resource from Advisor evaluations. Valid values: False (default) or True.
+	Exclude *bool `json:"exclude,omitempty"`
+	// LowCPUThreshold - Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid only for subscriptions. Valid values: 5 (default), 10, 15 or 20.
+	LowCPUThreshold *string `json:"low_cpu_threshold,omitempty"`
+	// Digests - Advisor digest configuration. Valid only for subscriptions
+	Digests *[]DigestConfig `json:"digests,omitempty"`
 }
 
 // ConfigurationListResult the list of Advisor configurations.
@@ -334,6 +343,16 @@ func (page ConfigurationListResultPage) Values() []ConfigData {
 // Creates a new instance of the ConfigurationListResultPage type.
 func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
 	return ConfigurationListResultPage{fn: getNextPage}
+}
+
+// DigestConfig advisor Digest configuration entity
+type DigestConfig struct {
+	// ActionGroupResourceID - Action group resource id used by digest.
+	ActionGroupResourceID *string `json:"actionGroupResourceId,omitempty"`
+	// Frequency - Frequency that digest will be triggered. Value must conform to ISO 8601 standard and must be greater than equal to 1 day and less than or equal to 30 days.
+	Frequency *string `json:"frequency,omitempty"`
+	// Categories - Categories to send digest for. If categories are not provided, then digest will be sent for all categories.
+	Categories *[]string `json:"categories,omitempty"`
 }
 
 // MetadataEntity the metadata entity contract.

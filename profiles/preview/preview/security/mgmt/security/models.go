@@ -417,6 +417,13 @@ const (
 	VersionAndAboveSignature Type = original.VersionAndAboveSignature
 )
 
+type UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatus
+
+const (
+	UnmaskedIPLoggingStatusDisabled UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatusDisabled
+	UnmaskedIPLoggingStatusEnabled  UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatusEnabled
+)
+
 type ValueType = original.ValueType
 
 const (
@@ -1146,6 +1153,9 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
+}
+func PossibleUnmaskedIPLoggingStatusValues() []UnmaskedIPLoggingStatus {
+	return original.PossibleUnmaskedIPLoggingStatusValues()
 }
 func PossibleValueTypeValues() []ValueType {
 	return original.PossibleValueTypeValues()

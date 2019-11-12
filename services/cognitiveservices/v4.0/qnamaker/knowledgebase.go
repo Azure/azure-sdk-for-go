@@ -55,7 +55,11 @@ func (client KnowledgebaseClient) Create(ctx context.Context, createKbPayload Cr
 			Constraints: []validation.Constraint{{Target: "createKbPayload.Name", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "createKbPayload.Name", Name: validation.MaxLength, Rule: 100, Chain: nil},
 					{Target: "createKbPayload.Name", Name: validation.MinLength, Rule: 1, Chain: nil},
-				}}}}}); err != nil {
+				}},
+				{Target: "createKbPayload.DefaultAnswerUsedForExtraction", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "createKbPayload.DefaultAnswerUsedForExtraction", Name: validation.MaxLength, Rule: 300, Chain: nil},
+						{Target: "createKbPayload.DefaultAnswerUsedForExtraction", Name: validation.MinLength, Rule: 1, Chain: nil},
+					}}}}}); err != nil {
 		return result, validation.NewError("qnamaker.KnowledgebaseClient", "Create", err.Error())
 	}
 

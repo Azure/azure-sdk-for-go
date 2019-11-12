@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datashare/mgmt/2018-11-01-preview/datashare"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/stable/datashare/mgmt/2019-11-01/datashare"
 
 // DataSetMappingStatus enumerates the values for data set mapping status.
 type DataSetMappingStatus string
@@ -6723,6 +6723,8 @@ type ShareSubscriptionProperties struct {
 	ShareSubscriptionStatus ShareSubscriptionStatus `json:"shareSubscriptionStatus,omitempty"`
 	// ShareTerms - READ-ONLY; Terms of a share
 	ShareTerms *string `json:"shareTerms,omitempty"`
+	// SourceShareLocation - Source share location.
+	SourceShareLocation *string `json:"sourceShareLocation,omitempty"`
 	// UserEmail - READ-ONLY; Email of the user who created the resource
 	UserEmail *string `json:"userEmail,omitempty"`
 	// UserName - READ-ONLY; Name of the user who created the resource

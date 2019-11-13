@@ -437,7 +437,7 @@ func (client GalleryApplicationVersionsClient) ListByGalleryApplicationComplete(
 // semantic version name pattern: The allowed characters are digit and period. Digits must be within the range
 // of a 32-bit integer. Format: <MajorVersion>.<MinorVersion>.<Patch>
 // galleryApplicationVersion - parameters supplied to the update gallery Application Version operation.
-func (client GalleryApplicationVersionsClient) Update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion) (result GalleryApplicationVersionsUpdateFuture, err error) {
+func (client GalleryApplicationVersionsClient) Update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate) (result GalleryApplicationVersionsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationVersionsClient.Update")
 		defer func() {
@@ -464,7 +464,7 @@ func (client GalleryApplicationVersionsClient) Update(ctx context.Context, resou
 }
 
 // UpdatePreparer prepares the Update request.
-func (client GalleryApplicationVersionsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion) (*http.Request, error) {
+func (client GalleryApplicationVersionsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"galleryApplicationName":        autorest.Encode("path", galleryApplicationName),
 		"galleryApplicationVersionName": autorest.Encode("path", galleryApplicationVersionName),

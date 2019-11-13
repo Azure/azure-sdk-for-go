@@ -503,7 +503,7 @@ func (client GalleriesClient) ListByResourceGroupComplete(ctx context.Context, r
 // galleryName - the name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
 // dots and periods allowed in the middle. The maximum length is 80 characters.
 // gallery - parameters supplied to the update Shared Image Gallery operation.
-func (client GalleriesClient) Update(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery) (result GalleriesUpdateFuture, err error) {
+func (client GalleriesClient) Update(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate) (result GalleriesUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GalleriesClient.Update")
 		defer func() {
@@ -530,7 +530,7 @@ func (client GalleriesClient) Update(ctx context.Context, resourceGroupName stri
 }
 
 // UpdatePreparer prepares the Update request.
-func (client GalleriesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, galleryName string, gallery Gallery) (*http.Request, error) {
+func (client GalleriesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, galleryName string, gallery GalleryUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"galleryName":       autorest.Encode("path", galleryName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

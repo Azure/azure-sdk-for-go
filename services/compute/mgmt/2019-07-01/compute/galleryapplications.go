@@ -409,7 +409,7 @@ func (client GalleryApplicationsClient) ListByGalleryComplete(ctx context.Contex
 // characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum
 // length is 80 characters.
 // galleryApplication - parameters supplied to the update gallery Application operation.
-func (client GalleryApplicationsClient) Update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication) (result GalleryApplicationsUpdateFuture, err error) {
+func (client GalleryApplicationsClient) Update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate) (result GalleryApplicationsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryApplicationsClient.Update")
 		defer func() {
@@ -436,7 +436,7 @@ func (client GalleryApplicationsClient) Update(ctx context.Context, resourceGrou
 }
 
 // UpdatePreparer prepares the Update request.
-func (client GalleryApplicationsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplication) (*http.Request, error) {
+func (client GalleryApplicationsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication GalleryApplicationUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"galleryApplicationName": autorest.Encode("path", galleryApplicationName),
 		"galleryName":            autorest.Encode("path", galleryName),

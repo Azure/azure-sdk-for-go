@@ -4603,6 +4603,59 @@ func (future *GalleryApplicationsUpdateFuture) Result(client GalleryApplications
 	return
 }
 
+// GalleryApplicationUpdate specifies information about the gallery Application Definition that you want to
+// update.
+type GalleryApplicationUpdate struct {
+	*GalleryApplicationProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryApplicationUpdate.
+func (gau GalleryApplicationUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gau.GalleryApplicationProperties != nil {
+		objectMap["properties"] = gau.GalleryApplicationProperties
+	}
+	if gau.Tags != nil {
+		objectMap["tags"] = gau.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryApplicationUpdate struct.
+func (gau *GalleryApplicationUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryApplicationProperties GalleryApplicationProperties
+				err = json.Unmarshal(*v, &galleryApplicationProperties)
+				if err != nil {
+					return err
+				}
+				gau.GalleryApplicationProperties = &galleryApplicationProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				gau.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // GalleryApplicationVersion specifies information about the gallery Application Version that you want to
 // create or update.
 type GalleryApplicationVersion struct {
@@ -4960,6 +5013,59 @@ func (future *GalleryApplicationVersionsUpdateFuture) Result(client GalleryAppli
 		}
 	}
 	return
+}
+
+// GalleryApplicationVersionUpdate specifies information about the gallery Application Version that you
+// want to update.
+type GalleryApplicationVersionUpdate struct {
+	*GalleryApplicationVersionProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryApplicationVersionUpdate.
+func (gavu GalleryApplicationVersionUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gavu.GalleryApplicationVersionProperties != nil {
+		objectMap["properties"] = gavu.GalleryApplicationVersionProperties
+	}
+	if gavu.Tags != nil {
+		objectMap["tags"] = gavu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryApplicationVersionUpdate struct.
+func (gavu *GalleryApplicationVersionUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryApplicationVersionProperties GalleryApplicationVersionProperties
+				err = json.Unmarshal(*v, &galleryApplicationVersionProperties)
+				if err != nil {
+					return err
+				}
+				gavu.GalleryApplicationVersionProperties = &galleryApplicationVersionProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				gavu.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // GalleryArtifactPublishingProfileBase describes the basic gallery artifact publishing profile.
@@ -5378,6 +5484,58 @@ func (future *GalleryImagesUpdateFuture) Result(client GalleryImagesClient) (gi 
 	return
 }
 
+// GalleryImageUpdate specifies information about the gallery Image Definition that you want to update.
+type GalleryImageUpdate struct {
+	*GalleryImageProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryImageUpdate.
+func (giu GalleryImageUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if giu.GalleryImageProperties != nil {
+		objectMap["properties"] = giu.GalleryImageProperties
+	}
+	if giu.Tags != nil {
+		objectMap["tags"] = giu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryImageUpdate struct.
+func (giu *GalleryImageUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryImageProperties GalleryImageProperties
+				err = json.Unmarshal(*v, &galleryImageProperties)
+				if err != nil {
+					return err
+				}
+				giu.GalleryImageProperties = &galleryImageProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				giu.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // GalleryImageVersion specifies information about the gallery Image Version that you want to create or
 // update.
 type GalleryImageVersion struct {
@@ -5740,6 +5898,58 @@ func (future *GalleryImageVersionsUpdateFuture) Result(client GalleryImageVersio
 	return
 }
 
+// GalleryImageVersionUpdate specifies information about the gallery Image Version that you want to update.
+type GalleryImageVersionUpdate struct {
+	*GalleryImageVersionProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryImageVersionUpdate.
+func (givu GalleryImageVersionUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if givu.GalleryImageVersionProperties != nil {
+		objectMap["properties"] = givu.GalleryImageVersionProperties
+	}
+	if givu.Tags != nil {
+		objectMap["tags"] = givu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryImageVersionUpdate struct.
+func (givu *GalleryImageVersionUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryImageVersionProperties GalleryImageVersionProperties
+				err = json.Unmarshal(*v, &galleryImageVersionProperties)
+				if err != nil {
+					return err
+				}
+				givu.GalleryImageVersionProperties = &galleryImageVersionProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				givu.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // GalleryList the List Galleries operation response.
 type GalleryList struct {
 	autorest.Response `json:"-"`
@@ -5902,6 +6112,58 @@ type GalleryProperties struct {
 	Identifier  *GalleryIdentifier `json:"identifier,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateDeleting', 'ProvisioningStateMigrating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// GalleryUpdate specifies information about the Shared Image Gallery that you want to update.
+type GalleryUpdate struct {
+	*GalleryProperties `json:"properties,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for GalleryUpdate.
+func (gu GalleryUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gu.GalleryProperties != nil {
+		objectMap["properties"] = gu.GalleryProperties
+	}
+	if gu.Tags != nil {
+		objectMap["tags"] = gu.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for GalleryUpdate struct.
+func (gu *GalleryUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var galleryProperties GalleryProperties
+				err = json.Unmarshal(*v, &galleryProperties)
+				if err != nil {
+					return err
+				}
+				gu.GalleryProperties = &galleryProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				gu.Tags = tags
+			}
+		}
+	}
+
+	return nil
 }
 
 // GrantAccessData data used for requesting a SAS.

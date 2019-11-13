@@ -430,7 +430,7 @@ func (client GalleryImageVersionsClient) ListByGalleryImageComplete(ctx context.
 // version name pattern: The allowed characters are digit and period. Digits must be within the range of a
 // 32-bit integer. Format: <MajorVersion>.<MinorVersion>.<Patch>
 // galleryImageVersion - parameters supplied to the update gallery Image Version operation.
-func (client GalleryImageVersionsClient) Update(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersion) (result GalleryImageVersionsUpdateFuture, err error) {
+func (client GalleryImageVersionsClient) Update(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersionUpdate) (result GalleryImageVersionsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryImageVersionsClient.Update")
 		defer func() {
@@ -457,7 +457,7 @@ func (client GalleryImageVersionsClient) Update(ctx context.Context, resourceGro
 }
 
 // UpdatePreparer prepares the Update request.
-func (client GalleryImageVersionsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersion) (*http.Request, error) {
+func (client GalleryImageVersionsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersionUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"galleryImageName":        autorest.Encode("path", galleryImageName),
 		"galleryImageVersionName": autorest.Encode("path", galleryImageVersionName),

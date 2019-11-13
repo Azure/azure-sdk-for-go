@@ -38,7 +38,6 @@ const (
 	InvalidRewardRequest        ErrorCode = original.InvalidRewardRequest
 	InvalidServiceConfiguration ErrorCode = original.InvalidServiceConfiguration
 	LogsPropertiesNotFound      ErrorCode = original.LogsPropertiesNotFound
-	MissingContainer            ErrorCode = original.MissingContainer
 	ModelResetFailed            ErrorCode = original.ModelResetFailed
 	RankNullResponse            ErrorCode = original.RankNullResponse
 	ResourceNotFound            ErrorCode = original.ResourceNotFound

@@ -40,72 +40,6 @@ func NewPolicyClient(endpoint string) PolicyClient {
 	return PolicyClient{New(endpoint)}
 }
 
-// Delete resets the Learning settings of the Personalizer service to default.
-func (client PolicyClient) Delete(ctx context.Context) (result PolicyContract, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.Delete")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	req, err := client.DeletePreparer(ctx)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "personalizer.PolicyClient", "Delete", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.DeleteSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "personalizer.PolicyClient", "Delete", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "personalizer.PolicyClient", "Delete", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// DeletePreparer prepares the Delete request.
-func (client PolicyClient) DeletePreparer(ctx context.Context) (*http.Request, error) {
-	urlParameters := map[string]interface{}{
-		"Endpoint": client.Endpoint,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("{Endpoint}/personalizer/v1.0", urlParameters),
-		autorest.WithPath("/configurations/policy"))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// DeleteSender sends the Delete request. The method will close the
-// http.Response Body if it receives an error.
-func (client PolicyClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// DeleteResponder handles the response to the Delete request. The method always
-// closes the http.Response Body.
-func (client PolicyClient) DeleteResponder(resp *http.Response) (result PolicyContract, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
 // Get get the Learning settings currently used by the Personalizer service.
 func (client PolicyClient) Get(ctx context.Context) (result PolicyContract, err error) {
 	if tracing.IsEnabled() {
@@ -162,6 +96,72 @@ func (client PolicyClient) GetSender(req *http.Request) (*http.Response, error) 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
 func (client PolicyClient) GetResponder(resp *http.Response) (result PolicyContract, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Reset resets the Learning settings of the Personalizer service to default.
+func (client PolicyClient) Reset(ctx context.Context) (result PolicyContract, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyClient.Reset")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ResetPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "personalizer.PolicyClient", "Reset", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ResetSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "personalizer.PolicyClient", "Reset", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ResetResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "personalizer.PolicyClient", "Reset", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ResetPreparer prepares the Reset request.
+func (client PolicyClient) ResetPreparer(ctx context.Context) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithCustomBaseURL("{Endpoint}/personalizer/v1.0", urlParameters),
+		autorest.WithPath("/configurations/policy"))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ResetSender sends the Reset request. The method will close the
+// http.Response Body if it receives an error.
+func (client PolicyClient) ResetSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ResetResponder handles the response to the Reset request. The method always
+// closes the http.Response Body.
+func (client PolicyClient) ResetResponder(resp *http.Response) (result PolicyContract, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

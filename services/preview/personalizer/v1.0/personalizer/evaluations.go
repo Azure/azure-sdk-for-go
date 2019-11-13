@@ -134,6 +134,12 @@ func (client EvaluationsClient) Delete(ctx context.Context, evaluationID string)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: evaluationID,
+			Constraints: []validation.Constraint{{Target: "evaluationID", Name: validation.MaxLength, Rule: 256, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("personalizer.EvaluationsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, evaluationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.EvaluationsClient", "Delete", nil, "Failure preparing request")
@@ -168,7 +174,7 @@ func (client EvaluationsClient) DeletePreparer(ctx context.Context, evaluationID
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithCustomBaseURL("{Endpoint}/personalizer/v1.0", urlParameters),
-		autorest.WithPathParameters("/evaluations/{evaluationId}:maxlength(256)", pathParameters))
+		autorest.WithPathParameters("/evaluations/{evaluationId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -205,6 +211,12 @@ func (client EvaluationsClient) Get(ctx context.Context, evaluationID string) (r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: evaluationID,
+			Constraints: []validation.Constraint{{Target: "evaluationID", Name: validation.MaxLength, Rule: 256, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("personalizer.EvaluationsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, evaluationID)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "personalizer.EvaluationsClient", "Get", nil, "Failure preparing request")
@@ -239,7 +251,7 @@ func (client EvaluationsClient) GetPreparer(ctx context.Context, evaluationID st
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithCustomBaseURL("{Endpoint}/personalizer/v1.0", urlParameters),
-		autorest.WithPathParameters("/evaluations/{evaluationId}:maxlength(256)", pathParameters))
+		autorest.WithPathParameters("/evaluations/{evaluationId}", pathParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

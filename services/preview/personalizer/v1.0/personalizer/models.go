@@ -58,8 +58,6 @@ const (
 	InvalidServiceConfiguration ErrorCode = "InvalidServiceConfiguration"
 	// LogsPropertiesNotFound Logs properties not found.
 	LogsPropertiesNotFound ErrorCode = "LogsPropertiesNotFound"
-	// MissingContainer SAS Uri container is required to enable copying.
-	MissingContainer ErrorCode = "MissingContainer"
 	// ModelResetFailed Model reset failed.
 	ModelResetFailed ErrorCode = "ModelResetFailed"
 	// RankNullResponse Rank call returned null response.
@@ -72,7 +70,7 @@ const (
 
 // PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
 func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{BadRequest, EvaluationNotFound, FrontEndNotFound, InternalServerError, InvalidContainer, InvalidEvaluationContract, InvalidEventIDToActivate, InvalidExportLogsRequest, InvalidPolicyConfiguration, InvalidPolicyContract, InvalidRankRequest, InvalidRewardRequest, InvalidServiceConfiguration, LogsPropertiesNotFound, MissingContainer, ModelResetFailed, RankNullResponse, ResourceNotFound, UpdateConfigurationFailed}
+	return []ErrorCode{BadRequest, EvaluationNotFound, FrontEndNotFound, InternalServerError, InvalidContainer, InvalidEvaluationContract, InvalidEventIDToActivate, InvalidExportLogsRequest, InvalidPolicyConfiguration, InvalidPolicyContract, InvalidRankRequest, InvalidRewardRequest, InvalidServiceConfiguration, LogsPropertiesNotFound, ModelResetFailed, RankNullResponse, ResourceNotFound, UpdateConfigurationFailed}
 }
 
 // EvaluationJobStatus enumerates the values for evaluation job status.
@@ -111,7 +109,7 @@ type DateRange struct {
 
 // Error the error object.
 type Error struct {
-	// Code - High level error code. Possible values include: 'BadRequest', 'ResourceNotFound', 'InvalidServiceConfiguration', 'InvalidPolicyConfiguration', 'InvalidPolicyContract', 'InvalidEvaluationContract', 'InvalidRewardRequest', 'InvalidEventIDToActivate', 'ModelResetFailed', 'InvalidRankRequest', 'InvalidExportLogsRequest', 'InvalidContainer', 'MissingContainer', 'FrontEndNotFound', 'EvaluationNotFound', 'LogsPropertiesNotFound', 'InternalServerError', 'RankNullResponse', 'UpdateConfigurationFailed'
+	// Code - High level error code. Possible values include: 'BadRequest', 'ResourceNotFound', 'InternalServerError', 'InvalidServiceConfiguration', 'InvalidPolicyConfiguration', 'InvalidPolicyContract', 'InvalidEvaluationContract', 'InvalidRewardRequest', 'InvalidEventIDToActivate', 'InvalidRankRequest', 'InvalidExportLogsRequest', 'InvalidContainer', 'FrontEndNotFound', 'EvaluationNotFound', 'LogsPropertiesNotFound', 'RankNullResponse', 'UpdateConfigurationFailed', 'ModelResetFailed'
 	Code ErrorCode `json:"code,omitempty"`
 	// Message - A message explaining the error reported by the service.
 	Message *string `json:"message,omitempty"`

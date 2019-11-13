@@ -40,8 +40,8 @@ var _ ServiceConfigurationClientAPI = (*personalizer.ServiceConfigurationClient)
 
 // PolicyClientAPI contains the set of methods on the PolicyClient type.
 type PolicyClientAPI interface {
-	Delete(ctx context.Context) (result personalizer.PolicyContract, err error)
 	Get(ctx context.Context) (result personalizer.PolicyContract, err error)
+	Reset(ctx context.Context) (result personalizer.PolicyContract, err error)
 	Update(ctx context.Context, policy personalizer.PolicyContract) (result personalizer.PolicyContract, err error)
 }
 
@@ -75,9 +75,9 @@ var _ LogClientAPI = (*personalizer.LogClient)(nil)
 
 // ModelClientAPI contains the set of methods on the ModelClient type.
 type ModelClientAPI interface {
-	Delete(ctx context.Context) (result autorest.Response, err error)
 	Get(ctx context.Context) (result personalizer.ReadCloser, err error)
 	GetProperties(ctx context.Context) (result personalizer.ModelProperties, err error)
+	Reset(ctx context.Context) (result autorest.Response, err error)
 }
 
 var _ ModelClientAPI = (*personalizer.ModelClient)(nil)

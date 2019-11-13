@@ -26,30 +26,31 @@ import (
 	"net/http"
 )
 
-// GremlinResourcesClient is the azure Cosmos DB Database Service Resource Provider REST API
-type GremlinResourcesClient struct {
+// MongoDBResourcesClient is the azure Cosmos DB Database Service Resource Provider REST API
+type MongoDBResourcesClient struct {
 	BaseClient
 }
 
-// NewGremlinResourcesClient creates an instance of the GremlinResourcesClient client.
-func NewGremlinResourcesClient(subscriptionID string) GremlinResourcesClient {
-	return NewGremlinResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewMongoDBResourcesClient creates an instance of the MongoDBResourcesClient client.
+func NewMongoDBResourcesClient(subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
+	return NewMongoDBResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
-// NewGremlinResourcesClientWithBaseURI creates an instance of the GremlinResourcesClient client.
-func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string) GremlinResourcesClient {
-	return GremlinResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewMongoDBResourcesClientWithBaseURI creates an instance of the MongoDBResourcesClient client.
+func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
+	return MongoDBResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
-// CreateUpdateGremlinDatabase create or update an Azure Cosmos DB Gremlin database
+// CreateUpdateMongoDBCollection create or update an Azure Cosmos DB MongoDB Collection
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// createUpdateGremlinDatabaseParameters - the parameters to provide for the current Gremlin database.
-func (client GremlinResourcesClient) CreateUpdateGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters GremlinDatabaseCreateUpdateParameters) (result GremlinResourcesCreateUpdateGremlinDatabaseFuture, err error) {
+// collectionName - cosmos DB collection name.
+// createUpdateMongoDBCollectionParameters - the parameters to provide for the current MongoDB Collection.
+func (client MongoDBResourcesClient) CreateUpdateMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters) (result MongoDBResourcesCreateUpdateMongoDBCollectionFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.CreateUpdateGremlinDatabase")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.CreateUpdateMongoDBCollection")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -67,34 +68,35 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabase(ctx context.Con
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}},
-		{TargetValue: createUpdateGremlinDatabaseParameters,
-			Constraints: []validation.Constraint{{Target: "createUpdateGremlinDatabaseParameters.GremlinDatabaseCreateUpdateProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "createUpdateGremlinDatabaseParameters.GremlinDatabaseCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "createUpdateGremlinDatabaseParameters.GremlinDatabaseCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "createUpdateGremlinDatabaseParameters.GremlinDatabaseCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
+		{TargetValue: createUpdateMongoDBCollectionParameters,
+			Constraints: []validation.Constraint{{Target: "createUpdateMongoDBCollectionParameters.MongoDBCollectionCreateUpdateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "createUpdateMongoDBCollectionParameters.MongoDBCollectionCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "createUpdateMongoDBCollectionParameters.MongoDBCollectionCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "createUpdateMongoDBCollectionParameters.MongoDBCollectionCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "CreateUpdateGremlinDatabase", err.Error())
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "CreateUpdateMongoDBCollection", err.Error())
 	}
 
-	req, err := client.CreateUpdateGremlinDatabasePreparer(ctx, resourceGroupName, accountName, databaseName, createUpdateGremlinDatabaseParameters)
+	req, err := client.CreateUpdateMongoDBCollectionPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "CreateUpdateGremlinDatabase", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "CreateUpdateMongoDBCollection", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateUpdateGremlinDatabaseSender(req)
+	result, err = client.CreateUpdateMongoDBCollectionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "CreateUpdateGremlinDatabase", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "CreateUpdateMongoDBCollection", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreateUpdateGremlinDatabasePreparer prepares the CreateUpdateGremlinDatabase request.
-func (client GremlinResourcesClient) CreateUpdateGremlinDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters GremlinDatabaseCreateUpdateParameters) (*http.Request, error) {
+// CreateUpdateMongoDBCollectionPreparer prepares the CreateUpdateMongoDBCollection request.
+func (client MongoDBResourcesClient) CreateUpdateMongoDBCollectionPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
+		"collectionName":    autorest.Encode("path", collectionName),
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -109,15 +111,15 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabasePreparer(ctx con
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}", pathParameters),
-		autorest.WithJSON(createUpdateGremlinDatabaseParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}", pathParameters),
+		autorest.WithJSON(createUpdateMongoDBCollectionParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateUpdateGremlinDatabaseSender sends the CreateUpdateGremlinDatabase request. The method will close the
+// CreateUpdateMongoDBCollectionSender sends the CreateUpdateMongoDBCollection request. The method will close the
 // http.Response Body if it receives an error.
-func (client GremlinResourcesClient) CreateUpdateGremlinDatabaseSender(req *http.Request) (future GremlinResourcesCreateUpdateGremlinDatabaseFuture, err error) {
+func (client MongoDBResourcesClient) CreateUpdateMongoDBCollectionSender(req *http.Request) (future MongoDBResourcesCreateUpdateMongoDBCollectionFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -128,9 +130,9 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabaseSender(req *http
 	return
 }
 
-// CreateUpdateGremlinDatabaseResponder handles the response to the CreateUpdateGremlinDatabase request. The method always
+// CreateUpdateMongoDBCollectionResponder handles the response to the CreateUpdateMongoDBCollection request. The method always
 // closes the http.Response Body.
-func (client GremlinResourcesClient) CreateUpdateGremlinDatabaseResponder(resp *http.Response) (result GremlinDatabaseGetResults, err error) {
+func (client MongoDBResourcesClient) CreateUpdateMongoDBCollectionResponder(resp *http.Response) (result MongoDBCollectionGetResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -141,16 +143,15 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabaseResponder(resp *
 	return
 }
 
-// CreateUpdateGremlinGraph create or update an Azure Cosmos DB Gremlin graph
+// CreateUpdateMongoDBDatabase create or updates Azure Cosmos DB MongoDB database
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// graphName - cosmos DB graph name.
-// createUpdateGremlinGraphParameters - the parameters to provide for the current Gremlin graph.
-func (client GremlinResourcesClient) CreateUpdateGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters) (result GremlinResourcesCreateUpdateGremlinGraphFuture, err error) {
+// createUpdateMongoDBDatabaseParameters - the parameters to provide for the current MongoDB database.
+func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters) (result MongoDBResourcesCreateUpdateMongoDBDatabaseFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.CreateUpdateGremlinGraph")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.CreateUpdateMongoDBDatabase")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -168,43 +169,35 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraph(ctx context.Contex
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}},
-		{TargetValue: createUpdateGremlinGraphParameters,
-			Constraints: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.PartitionKey", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.Null, Rule: false,
-								Chain: []validation.Constraint{{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.InclusiveMaximum, Rule: int64(2), Chain: nil},
-									{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Resource.PartitionKey.Version", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
-								}},
-							}},
-					}},
-					{Target: "createUpdateGremlinGraphParameters.GremlinGraphCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
+		{TargetValue: createUpdateMongoDBDatabaseParameters,
+			Constraints: []validation.Constraint{{Target: "createUpdateMongoDBDatabaseParameters.MongoDBDatabaseCreateUpdateProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "createUpdateMongoDBDatabaseParameters.MongoDBDatabaseCreateUpdateProperties.Resource", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "createUpdateMongoDBDatabaseParameters.MongoDBDatabaseCreateUpdateProperties.Resource.ID", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "createUpdateMongoDBDatabaseParameters.MongoDBDatabaseCreateUpdateProperties.Options", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "CreateUpdateGremlinGraph", err.Error())
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "CreateUpdateMongoDBDatabase", err.Error())
 	}
 
-	req, err := client.CreateUpdateGremlinGraphPreparer(ctx, resourceGroupName, accountName, databaseName, graphName, createUpdateGremlinGraphParameters)
+	req, err := client.CreateUpdateMongoDBDatabasePreparer(ctx, resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "CreateUpdateGremlinGraph", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "CreateUpdateMongoDBDatabase", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateUpdateGremlinGraphSender(req)
+	result, err = client.CreateUpdateMongoDBDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "CreateUpdateGremlinGraph", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "CreateUpdateMongoDBDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreateUpdateGremlinGraphPreparer prepares the CreateUpdateGremlinGraph request.
-func (client GremlinResourcesClient) CreateUpdateGremlinGraphPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters) (*http.Request, error) {
+// CreateUpdateMongoDBDatabasePreparer prepares the CreateUpdateMongoDBDatabase request.
+func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
-		"graphName":         autorest.Encode("path", graphName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -218,15 +211,15 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraphPreparer(ctx contex
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}", pathParameters),
-		autorest.WithJSON(createUpdateGremlinGraphParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}", pathParameters),
+		autorest.WithJSON(createUpdateMongoDBDatabaseParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateUpdateGremlinGraphSender sends the CreateUpdateGremlinGraph request. The method will close the
+// CreateUpdateMongoDBDatabaseSender sends the CreateUpdateMongoDBDatabase request. The method will close the
 // http.Response Body if it receives an error.
-func (client GremlinResourcesClient) CreateUpdateGremlinGraphSender(req *http.Request) (future GremlinResourcesCreateUpdateGremlinGraphFuture, err error) {
+func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabaseSender(req *http.Request) (future MongoDBResourcesCreateUpdateMongoDBDatabaseFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -237,9 +230,9 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraphSender(req *http.Re
 	return
 }
 
-// CreateUpdateGremlinGraphResponder handles the response to the CreateUpdateGremlinGraph request. The method always
+// CreateUpdateMongoDBDatabaseResponder handles the response to the CreateUpdateMongoDBDatabase request. The method always
 // closes the http.Response Body.
-func (client GremlinResourcesClient) CreateUpdateGremlinGraphResponder(resp *http.Response) (result GremlinGraphGetResults, err error) {
+func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabaseResponder(resp *http.Response) (result MongoDBDatabaseGetResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -250,14 +243,15 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraphResponder(resp *htt
 	return
 }
 
-// DeleteGremlinDatabase deletes an existing Azure Cosmos DB Gremlin database.
+// DeleteMongoDBCollection deletes an existing Azure Cosmos DB MongoDB Collection.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-func (client GremlinResourcesClient) DeleteGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result GremlinResourcesDeleteGremlinDatabaseFuture, err error) {
+// collectionName - cosmos DB collection name.
+func (client MongoDBResourcesClient) DeleteMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result MongoDBResourcesDeleteMongoDBCollectionFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.DeleteGremlinDatabase")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.DeleteMongoDBCollection")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -275,28 +269,29 @@ func (client GremlinResourcesClient) DeleteGremlinDatabase(ctx context.Context, 
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "DeleteGremlinDatabase", err.Error())
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "DeleteMongoDBCollection", err.Error())
 	}
 
-	req, err := client.DeleteGremlinDatabasePreparer(ctx, resourceGroupName, accountName, databaseName)
+	req, err := client.DeleteMongoDBCollectionPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "DeleteGremlinDatabase", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "DeleteMongoDBCollection", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.DeleteGremlinDatabaseSender(req)
+	result, err = client.DeleteMongoDBCollectionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "DeleteGremlinDatabase", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "DeleteMongoDBCollection", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// DeleteGremlinDatabasePreparer prepares the DeleteGremlinDatabase request.
-func (client GremlinResourcesClient) DeleteGremlinDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
+// DeleteMongoDBCollectionPreparer prepares the DeleteMongoDBCollection request.
+func (client MongoDBResourcesClient) DeleteMongoDBCollectionPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
+		"collectionName":    autorest.Encode("path", collectionName),
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -310,14 +305,14 @@ func (client GremlinResourcesClient) DeleteGremlinDatabasePreparer(ctx context.C
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// DeleteGremlinDatabaseSender sends the DeleteGremlinDatabase request. The method will close the
+// DeleteMongoDBCollectionSender sends the DeleteMongoDBCollection request. The method will close the
 // http.Response Body if it receives an error.
-func (client GremlinResourcesClient) DeleteGremlinDatabaseSender(req *http.Request) (future GremlinResourcesDeleteGremlinDatabaseFuture, err error) {
+func (client MongoDBResourcesClient) DeleteMongoDBCollectionSender(req *http.Request) (future MongoDBResourcesDeleteMongoDBCollectionFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -328,9 +323,9 @@ func (client GremlinResourcesClient) DeleteGremlinDatabaseSender(req *http.Reque
 	return
 }
 
-// DeleteGremlinDatabaseResponder handles the response to the DeleteGremlinDatabase request. The method always
+// DeleteMongoDBCollectionResponder handles the response to the DeleteMongoDBCollection request. The method always
 // closes the http.Response Body.
-func (client GremlinResourcesClient) DeleteGremlinDatabaseResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client MongoDBResourcesClient) DeleteMongoDBCollectionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -340,15 +335,14 @@ func (client GremlinResourcesClient) DeleteGremlinDatabaseResponder(resp *http.R
 	return
 }
 
-// DeleteGremlinGraph deletes an existing Azure Cosmos DB Gremlin graph.
+// DeleteMongoDBDatabase deletes an existing Azure Cosmos DB MongoDB database.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// graphName - cosmos DB graph name.
-func (client GremlinResourcesClient) DeleteGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result GremlinResourcesDeleteGremlinGraphFuture, err error) {
+func (client MongoDBResourcesClient) DeleteMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongoDBResourcesDeleteMongoDBDatabaseFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.DeleteGremlinGraph")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.DeleteMongoDBDatabase")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -366,30 +360,29 @@ func (client GremlinResourcesClient) DeleteGremlinGraph(ctx context.Context, res
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "DeleteGremlinGraph", err.Error())
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "DeleteMongoDBDatabase", err.Error())
 	}
 
-	req, err := client.DeleteGremlinGraphPreparer(ctx, resourceGroupName, accountName, databaseName, graphName)
+	req, err := client.DeleteMongoDBDatabasePreparer(ctx, resourceGroupName, accountName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "DeleteGremlinGraph", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "DeleteMongoDBDatabase", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.DeleteGremlinGraphSender(req)
+	result, err = client.DeleteMongoDBDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "DeleteGremlinGraph", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "DeleteMongoDBDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// DeleteGremlinGraphPreparer prepares the DeleteGremlinGraph request.
-func (client GremlinResourcesClient) DeleteGremlinGraphPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (*http.Request, error) {
+// DeleteMongoDBDatabasePreparer prepares the DeleteMongoDBDatabase request.
+func (client MongoDBResourcesClient) DeleteMongoDBDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
-		"graphName":         autorest.Encode("path", graphName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -402,14 +395,14 @@ func (client GremlinResourcesClient) DeleteGremlinGraphPreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// DeleteGremlinGraphSender sends the DeleteGremlinGraph request. The method will close the
+// DeleteMongoDBDatabaseSender sends the DeleteMongoDBDatabase request. The method will close the
 // http.Response Body if it receives an error.
-func (client GremlinResourcesClient) DeleteGremlinGraphSender(req *http.Request) (future GremlinResourcesDeleteGremlinGraphFuture, err error) {
+func (client MongoDBResourcesClient) DeleteMongoDBDatabaseSender(req *http.Request) (future MongoDBResourcesDeleteMongoDBDatabaseFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -420,9 +413,9 @@ func (client GremlinResourcesClient) DeleteGremlinGraphSender(req *http.Request)
 	return
 }
 
-// DeleteGremlinGraphResponder handles the response to the DeleteGremlinGraph request. The method always
+// DeleteMongoDBDatabaseResponder handles the response to the DeleteMongoDBDatabase request. The method always
 // closes the http.Response Body.
-func (client GremlinResourcesClient) DeleteGremlinGraphResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client MongoDBResourcesClient) DeleteMongoDBDatabaseResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -432,15 +425,15 @@ func (client GremlinResourcesClient) DeleteGremlinGraphResponder(resp *http.Resp
 	return
 }
 
-// GetGremlinDatabase gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided
-// name.
+// GetMongoDBCollection gets the MongoDB collection under an existing Azure Cosmos DB database account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-func (client GremlinResourcesClient) GetGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result GremlinDatabaseGetResults, err error) {
+// collectionName - cosmos DB collection name.
+func (client MongoDBResourcesClient) GetMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result MongoDBCollectionGetResults, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.GetGremlinDatabase")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.GetMongoDBCollection")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -458,34 +451,35 @@ func (client GremlinResourcesClient) GetGremlinDatabase(ctx context.Context, res
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "GetGremlinDatabase", err.Error())
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "GetMongoDBCollection", err.Error())
 	}
 
-	req, err := client.GetGremlinDatabasePreparer(ctx, resourceGroupName, accountName, databaseName)
+	req, err := client.GetMongoDBCollectionPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinDatabase", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBCollection", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetGremlinDatabaseSender(req)
+	resp, err := client.GetMongoDBCollectionSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinDatabase", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBCollection", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetGremlinDatabaseResponder(resp)
+	result, err = client.GetMongoDBCollectionResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinDatabase", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBCollection", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetGremlinDatabasePreparer prepares the GetGremlinDatabase request.
-func (client GremlinResourcesClient) GetGremlinDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
+// GetMongoDBCollectionPreparer prepares the GetMongoDBCollection request.
+func (client MongoDBResourcesClient) GetMongoDBCollectionPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
+		"collectionName":    autorest.Encode("path", collectionName),
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -499,21 +493,21 @@ func (client GremlinResourcesClient) GetGremlinDatabasePreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetGremlinDatabaseSender sends the GetGremlinDatabase request. The method will close the
+// GetMongoDBCollectionSender sends the GetMongoDBCollection request. The method will close the
 // http.Response Body if it receives an error.
-func (client GremlinResourcesClient) GetGremlinDatabaseSender(req *http.Request) (*http.Response, error) {
+func (client MongoDBResourcesClient) GetMongoDBCollectionSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// GetGremlinDatabaseResponder handles the response to the GetGremlinDatabase request. The method always
+// GetMongoDBCollectionResponder handles the response to the GetMongoDBCollection request. The method always
 // closes the http.Response Body.
-func (client GremlinResourcesClient) GetGremlinDatabaseResponder(resp *http.Response) (result GremlinDatabaseGetResults, err error) {
+func (client MongoDBResourcesClient) GetMongoDBCollectionResponder(resp *http.Response) (result MongoDBCollectionGetResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -524,15 +518,16 @@ func (client GremlinResourcesClient) GetGremlinDatabaseResponder(resp *http.Resp
 	return
 }
 
-// GetGremlinDatabaseThroughput gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB
+// GetMongoDBCollectionThroughput gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB
 // database account with the provided name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-func (client GremlinResourcesClient) GetGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result ThroughputSettingsGetResults, err error) {
+// collectionName - cosmos DB collection name.
+func (client MongoDBResourcesClient) GetMongoDBCollectionThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result ThroughputSettingsGetResults, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.GetGremlinDatabaseThroughput")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.GetMongoDBCollectionThroughput")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -550,32 +545,125 @@ func (client GremlinResourcesClient) GetGremlinDatabaseThroughput(ctx context.Co
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "GetGremlinDatabaseThroughput", err.Error())
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "GetMongoDBCollectionThroughput", err.Error())
 	}
 
-	req, err := client.GetGremlinDatabaseThroughputPreparer(ctx, resourceGroupName, accountName, databaseName)
+	req, err := client.GetMongoDBCollectionThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinDatabaseThroughput", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBCollectionThroughput", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetGremlinDatabaseThroughputSender(req)
+	resp, err := client.GetMongoDBCollectionThroughputSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinDatabaseThroughput", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBCollectionThroughput", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetGremlinDatabaseThroughputResponder(resp)
+	result, err = client.GetMongoDBCollectionThroughputResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinDatabaseThroughput", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBCollectionThroughput", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetGremlinDatabaseThroughputPreparer prepares the GetGremlinDatabaseThroughput request.
-func (client GremlinResourcesClient) GetGremlinDatabaseThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
+// GetMongoDBCollectionThroughputPreparer prepares the GetMongoDBCollectionThroughput request.
+func (client MongoDBResourcesClient) GetMongoDBCollectionThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"collectionName":    autorest.Encode("path", collectionName),
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetMongoDBCollectionThroughputSender sends the GetMongoDBCollectionThroughput request. The method will close the
+// http.Response Body if it receives an error.
+func (client MongoDBResourcesClient) GetMongoDBCollectionThroughputSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetMongoDBCollectionThroughputResponder handles the response to the GetMongoDBCollectionThroughput request. The method always
+// closes the http.Response Body.
+func (client MongoDBResourcesClient) GetMongoDBCollectionThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetMongoDBDatabase gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided
+// name.
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseName - cosmos DB database name.
+func (client MongoDBResourcesClient) GetMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongoDBDatabaseGetResults, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.GetMongoDBDatabase")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "GetMongoDBDatabase", err.Error())
+	}
+
+	req, err := client.GetMongoDBDatabasePreparer(ctx, resourceGroupName, accountName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBDatabase", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetMongoDBDatabaseSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBDatabase", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetMongoDBDatabaseResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBDatabase", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetMongoDBDatabasePreparer prepares the GetMongoDBDatabase request.
+func (client MongoDBResourcesClient) GetMongoDBDatabasePreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
@@ -591,21 +679,21 @@ func (client GremlinResourcesClient) GetGremlinDatabaseThroughputPreparer(ctx co
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// GetGremlinDatabaseThroughputSender sends the GetGremlinDatabaseThroughput request. The method will close the
+// GetMongoDBDatabaseSender sends the GetMongoDBDatabase request. The method will close the
 // http.Response Body if it receives an error.
-func (client GremlinResourcesClient) GetGremlinDatabaseThroughputSender(req *http.Request) (*http.Response, error) {
+func (client MongoDBResourcesClient) GetMongoDBDatabaseSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// GetGremlinDatabaseThroughputResponder handles the response to the GetGremlinDatabaseThroughput request. The method always
+// GetMongoDBDatabaseResponder handles the response to the GetMongoDBDatabase request. The method always
 // closes the http.Response Body.
-func (client GremlinResourcesClient) GetGremlinDatabaseThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
+func (client MongoDBResourcesClient) GetMongoDBDatabaseResponder(resp *http.Response) (result MongoDBDatabaseGetResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -616,15 +704,15 @@ func (client GremlinResourcesClient) GetGremlinDatabaseThroughputResponder(resp 
 	return
 }
 
-// GetGremlinGraph gets the Gremlin graph under an existing Azure Cosmos DB database account.
+// GetMongoDBDatabaseThroughput gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB
+// database account with the provided name.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// graphName - cosmos DB graph name.
-func (client GremlinResourcesClient) GetGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result GremlinGraphGetResults, err error) {
+func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result ThroughputSettingsGetResults, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.GetGremlinGraph")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.GetMongoDBDatabaseThroughput")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -642,307 +730,32 @@ func (client GremlinResourcesClient) GetGremlinGraph(ctx context.Context, resour
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "GetGremlinGraph", err.Error())
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "GetMongoDBDatabaseThroughput", err.Error())
 	}
 
-	req, err := client.GetGremlinGraphPreparer(ctx, resourceGroupName, accountName, databaseName, graphName)
+	req, err := client.GetMongoDBDatabaseThroughputPreparer(ctx, resourceGroupName, accountName, databaseName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinGraph", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBDatabaseThroughput", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetGremlinGraphSender(req)
+	resp, err := client.GetMongoDBDatabaseThroughputSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinGraph", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBDatabaseThroughput", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetGremlinGraphResponder(resp)
+	result, err = client.GetMongoDBDatabaseThroughputResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinGraph", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "GetMongoDBDatabaseThroughput", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetGremlinGraphPreparer prepares the GetGremlinGraph request.
-func (client GremlinResourcesClient) GetGremlinGraphPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"databaseName":      autorest.Encode("path", databaseName),
-		"graphName":         autorest.Encode("path", graphName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetGremlinGraphSender sends the GetGremlinGraph request. The method will close the
-// http.Response Body if it receives an error.
-func (client GremlinResourcesClient) GetGremlinGraphSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetGremlinGraphResponder handles the response to the GetGremlinGraph request. The method always
-// closes the http.Response Body.
-func (client GremlinResourcesClient) GetGremlinGraphResponder(resp *http.Response) (result GremlinGraphGetResults, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetGremlinGraphThroughput gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with
-// the provided name.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// databaseName - cosmos DB database name.
-// graphName - cosmos DB graph name.
-func (client GremlinResourcesClient) GetGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result ThroughputSettingsGetResults, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.GetGremlinGraphThroughput")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: accountName,
-			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "GetGremlinGraphThroughput", err.Error())
-	}
-
-	req, err := client.GetGremlinGraphThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, graphName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinGraphThroughput", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetGremlinGraphThroughputSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinGraphThroughput", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetGremlinGraphThroughputResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "GetGremlinGraphThroughput", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetGremlinGraphThroughputPreparer prepares the GetGremlinGraphThroughput request.
-func (client GremlinResourcesClient) GetGremlinGraphThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"databaseName":      autorest.Encode("path", databaseName),
-		"graphName":         autorest.Encode("path", graphName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetGremlinGraphThroughputSender sends the GetGremlinGraphThroughput request. The method will close the
-// http.Response Body if it receives an error.
-func (client GremlinResourcesClient) GetGremlinGraphThroughputSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetGremlinGraphThroughputResponder handles the response to the GetGremlinGraphThroughput request. The method always
-// closes the http.Response Body.
-func (client GremlinResourcesClient) GetGremlinGraphThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListGremlinDatabases lists the Gremlin databases under an existing Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-func (client GremlinResourcesClient) ListGremlinDatabases(ctx context.Context, resourceGroupName string, accountName string) (result GremlinDatabaseListResult, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.ListGremlinDatabases")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: accountName,
-			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "ListGremlinDatabases", err.Error())
-	}
-
-	req, err := client.ListGremlinDatabasesPreparer(ctx, resourceGroupName, accountName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "ListGremlinDatabases", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListGremlinDatabasesSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "ListGremlinDatabases", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListGremlinDatabasesResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "ListGremlinDatabases", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListGremlinDatabasesPreparer prepares the ListGremlinDatabases request.
-func (client GremlinResourcesClient) ListGremlinDatabasesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"accountName":       autorest.Encode("path", accountName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2019-08-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListGremlinDatabasesSender sends the ListGremlinDatabases request. The method will close the
-// http.Response Body if it receives an error.
-func (client GremlinResourcesClient) ListGremlinDatabasesSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListGremlinDatabasesResponder handles the response to the ListGremlinDatabases request. The method always
-// closes the http.Response Body.
-func (client GremlinResourcesClient) ListGremlinDatabasesResponder(resp *http.Response) (result GremlinDatabaseListResult, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListGremlinGraphs lists the Gremlin graph under an existing Azure Cosmos DB database account.
-// Parameters:
-// resourceGroupName - name of an Azure resource group.
-// accountName - cosmos DB database account name.
-// databaseName - cosmos DB database name.
-func (client GremlinResourcesClient) ListGremlinGraphs(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result GremlinGraphListResult, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.ListGremlinGraphs")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: accountName,
-			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
-				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "ListGremlinGraphs", err.Error())
-	}
-
-	req, err := client.ListGremlinGraphsPreparer(ctx, resourceGroupName, accountName, databaseName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "ListGremlinGraphs", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListGremlinGraphsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "ListGremlinGraphs", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListGremlinGraphsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "ListGremlinGraphs", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListGremlinGraphsPreparer prepares the ListGremlinGraphs request.
-func (client GremlinResourcesClient) ListGremlinGraphsPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
+// GetMongoDBDatabaseThroughputPreparer prepares the GetMongoDBDatabaseThroughput request.
+func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
@@ -958,21 +771,21 @@ func (client GremlinResourcesClient) ListGremlinGraphsPreparer(ctx context.Conte
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListGremlinGraphsSender sends the ListGremlinGraphs request. The method will close the
+// GetMongoDBDatabaseThroughputSender sends the GetMongoDBDatabaseThroughput request. The method will close the
 // http.Response Body if it receives an error.
-func (client GremlinResourcesClient) ListGremlinGraphsSender(req *http.Request) (*http.Response, error) {
+func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughputSender(req *http.Request) (*http.Response, error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	return autorest.SendWithSender(client, req, sd...)
 }
 
-// ListGremlinGraphsResponder handles the response to the ListGremlinGraphs request. The method always
+// GetMongoDBDatabaseThroughputResponder handles the response to the GetMongoDBDatabaseThroughput request. The method always
 // closes the http.Response Body.
-func (client GremlinResourcesClient) ListGremlinGraphsResponder(resp *http.Response) (result GremlinGraphListResult, err error) {
+func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -983,16 +796,197 @@ func (client GremlinResourcesClient) ListGremlinGraphsResponder(resp *http.Respo
 	return
 }
 
-// UpdateGremlinDatabaseThroughput update RUs per second of an Azure Cosmos DB Gremlin database
+// ListMongoDBCollections lists the MongoDB collection under an existing Azure Cosmos DB database account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// updateThroughputParameters - the RUs per second of the parameters to provide for the current Gremlin
-// database.
-func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters) (result GremlinResourcesUpdateGremlinDatabaseThroughputFuture, err error) {
+func (client MongoDBResourcesClient) ListMongoDBCollections(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result MongoDBCollectionListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.UpdateGremlinDatabaseThroughput")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.ListMongoDBCollections")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "ListMongoDBCollections", err.Error())
+	}
+
+	req, err := client.ListMongoDBCollectionsPreparer(ctx, resourceGroupName, accountName, databaseName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "ListMongoDBCollections", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListMongoDBCollectionsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "ListMongoDBCollections", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListMongoDBCollectionsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "ListMongoDBCollections", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListMongoDBCollectionsPreparer prepares the ListMongoDBCollections request.
+func (client MongoDBResourcesClient) ListMongoDBCollectionsPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"databaseName":      autorest.Encode("path", databaseName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListMongoDBCollectionsSender sends the ListMongoDBCollections request. The method will close the
+// http.Response Body if it receives an error.
+func (client MongoDBResourcesClient) ListMongoDBCollectionsSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListMongoDBCollectionsResponder handles the response to the ListMongoDBCollections request. The method always
+// closes the http.Response Body.
+func (client MongoDBResourcesClient) ListMongoDBCollectionsResponder(resp *http.Response) (result MongoDBCollectionListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListMongoDBDatabases lists the MongoDB databases under an existing Azure Cosmos DB database account.
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+func (client MongoDBResourcesClient) ListMongoDBDatabases(ctx context.Context, resourceGroupName string, accountName string) (result MongoDBDatabaseListResult, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.ListMongoDBDatabases")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[a-z0-9]+(-[a-z0-9]+)*`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "ListMongoDBDatabases", err.Error())
+	}
+
+	req, err := client.ListMongoDBDatabasesPreparer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "ListMongoDBDatabases", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListMongoDBDatabasesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "ListMongoDBDatabases", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ListMongoDBDatabasesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "ListMongoDBDatabases", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListMongoDBDatabasesPreparer prepares the ListMongoDBDatabases request.
+func (client MongoDBResourcesClient) ListMongoDBDatabasesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListMongoDBDatabasesSender sends the ListMongoDBDatabases request. The method will close the
+// http.Response Body if it receives an error.
+func (client MongoDBResourcesClient) ListMongoDBDatabasesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListMongoDBDatabasesResponder handles the response to the ListMongoDBDatabases request. The method always
+// closes the http.Response Body.
+func (client MongoDBResourcesClient) ListMongoDBDatabasesResponder(resp *http.Response) (result MongoDBDatabaseListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// UpdateMongoDBCollectionThroughput update the RUs per second of an Azure Cosmos DB MongoDB collection
+// Parameters:
+// resourceGroupName - name of an Azure resource group.
+// accountName - cosmos DB database account name.
+// databaseName - cosmos DB database name.
+// collectionName - cosmos DB collection name.
+// updateThroughputParameters - the RUs per second of the parameters to provide for the current MongoDB
+// collection.
+func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters) (result MongoDBResourcesUpdateMongoDBCollectionThroughputFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.UpdateMongoDBCollectionThroughput")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -1015,28 +1009,29 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughput(ctx context
 				Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.Throughput", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "UpdateGremlinDatabaseThroughput", err.Error())
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "UpdateMongoDBCollectionThroughput", err.Error())
 	}
 
-	req, err := client.UpdateGremlinDatabaseThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters)
+	req, err := client.UpdateMongoDBCollectionThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "UpdateGremlinDatabaseThroughput", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "UpdateMongoDBCollectionThroughput", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.UpdateGremlinDatabaseThroughputSender(req)
+	result, err = client.UpdateMongoDBCollectionThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "UpdateGremlinDatabaseThroughput", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "UpdateMongoDBCollectionThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// UpdateGremlinDatabaseThroughputPreparer prepares the UpdateGremlinDatabaseThroughput request.
-func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters) (*http.Request, error) {
+// UpdateMongoDBCollectionThroughputPreparer prepares the UpdateMongoDBCollectionThroughput request.
+func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
+		"collectionName":    autorest.Encode("path", collectionName),
 		"databaseName":      autorest.Encode("path", databaseName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -1051,15 +1046,15 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputPreparer(ctx
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/throughputSettings/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default", pathParameters),
 		autorest.WithJSON(updateThroughputParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateGremlinDatabaseThroughputSender sends the UpdateGremlinDatabaseThroughput request. The method will close the
+// UpdateMongoDBCollectionThroughputSender sends the UpdateMongoDBCollectionThroughput request. The method will close the
 // http.Response Body if it receives an error.
-func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputSender(req *http.Request) (future GremlinResourcesUpdateGremlinDatabaseThroughputFuture, err error) {
+func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughputSender(req *http.Request) (future MongoDBResourcesUpdateMongoDBCollectionThroughputFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -1070,9 +1065,9 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputSender(req *
 	return
 }
 
-// UpdateGremlinDatabaseThroughputResponder handles the response to the UpdateGremlinDatabaseThroughput request. The method always
+// UpdateMongoDBCollectionThroughputResponder handles the response to the UpdateMongoDBCollectionThroughput request. The method always
 // closes the http.Response Body.
-func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
+func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),
@@ -1083,16 +1078,16 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputResponder(re
 	return
 }
 
-// UpdateGremlinGraphThroughput update RUs per second of an Azure Cosmos DB Gremlin graph
+// UpdateMongoDBDatabaseThroughput update RUs per second of the an Azure Cosmos DB MongoDB database
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
 // databaseName - cosmos DB database name.
-// graphName - cosmos DB graph name.
-// updateThroughputParameters - the RUs per second of the parameters to provide for the current Gremlin graph.
-func (client GremlinResourcesClient) UpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters) (result GremlinResourcesUpdateGremlinGraphThroughputFuture, err error) {
+// updateThroughputParameters - the RUs per second of the parameters to provide for the current MongoDB
+// database.
+func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters) (result MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.UpdateGremlinGraphThroughput")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -1115,30 +1110,29 @@ func (client GremlinResourcesClient) UpdateGremlinGraphThroughput(ctx context.Co
 				Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "updateThroughputParameters.ThroughputSettingsUpdateProperties.Resource.Throughput", Name: validation.Null, Rule: true, Chain: nil}}},
 				}}}}}); err != nil {
-		return result, validation.NewError("documentdb.GremlinResourcesClient", "UpdateGremlinGraphThroughput", err.Error())
+		return result, validation.NewError("documentdb.MongoDBResourcesClient", "UpdateMongoDBDatabaseThroughput", err.Error())
 	}
 
-	req, err := client.UpdateGremlinGraphThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, graphName, updateThroughputParameters)
+	req, err := client.UpdateMongoDBDatabaseThroughputPreparer(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "UpdateGremlinGraphThroughput", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "UpdateMongoDBDatabaseThroughput", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.UpdateGremlinGraphThroughputSender(req)
+	result, err = client.UpdateMongoDBDatabaseThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "UpdateGremlinGraphThroughput", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.MongoDBResourcesClient", "UpdateMongoDBDatabaseThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// UpdateGremlinGraphThroughputPreparer prepares the UpdateGremlinGraphThroughput request.
-func (client GremlinResourcesClient) UpdateGremlinGraphThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters) (*http.Request, error) {
+// UpdateMongoDBDatabaseThroughputPreparer prepares the UpdateMongoDBDatabaseThroughput request.
+func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughputPreparer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"databaseName":      autorest.Encode("path", databaseName),
-		"graphName":         autorest.Encode("path", graphName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -1152,15 +1146,15 @@ func (client GremlinResourcesClient) UpdateGremlinGraphThroughputPreparer(ctx co
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinDatabases/{databaseName}/graphs/{graphName}/throughputSettings/default", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default", pathParameters),
 		autorest.WithJSON(updateThroughputParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateGremlinGraphThroughputSender sends the UpdateGremlinGraphThroughput request. The method will close the
+// UpdateMongoDBDatabaseThroughputSender sends the UpdateMongoDBDatabaseThroughput request. The method will close the
 // http.Response Body if it receives an error.
-func (client GremlinResourcesClient) UpdateGremlinGraphThroughputSender(req *http.Request) (future GremlinResourcesUpdateGremlinGraphThroughputFuture, err error) {
+func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughputSender(req *http.Request) (future MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture, err error) {
 	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
 	var resp *http.Response
 	resp, err = autorest.SendWithSender(client, req, sd...)
@@ -1171,9 +1165,9 @@ func (client GremlinResourcesClient) UpdateGremlinGraphThroughputSender(req *htt
 	return
 }
 
-// UpdateGremlinGraphThroughputResponder handles the response to the UpdateGremlinGraphThroughput request. The method always
+// UpdateMongoDBDatabaseThroughputResponder handles the response to the UpdateMongoDBDatabaseThroughput request. The method always
 // closes the http.Response Body.
-func (client GremlinResourcesClient) UpdateGremlinGraphThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
+func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
 		client.ByInspecting(),

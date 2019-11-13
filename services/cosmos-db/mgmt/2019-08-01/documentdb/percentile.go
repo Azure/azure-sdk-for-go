@@ -32,13 +32,13 @@ type PercentileClient struct {
 }
 
 // NewPercentileClient creates an instance of the PercentileClient client.
-func NewPercentileClient(subscriptionID string, subscriptionID1 string) PercentileClient {
-	return NewPercentileClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewPercentileClient(subscriptionID string) PercentileClient {
+	return NewPercentileClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPercentileClientWithBaseURI creates an instance of the PercentileClient client.
-func NewPercentileClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileClient {
-	return PercentileClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewPercentileClientWithBaseURI(baseURI string, subscriptionID string) PercentileClient {
+	return PercentileClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given database account. This url is only

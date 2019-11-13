@@ -28,7 +28,7 @@ import (
             GetOperation(ctx context.Context, subscriptionID string, operationID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result marketplacefulfillment.Operation, err error)
             GetSubscription(ctx context.Context, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result marketplacefulfillment.Subscription, err error)
             PatchOperation(ctx context.Context, patchPayload marketplacefulfillment.Operation, subscriptionID string, operationID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result marketplacefulfillment.Operation, err error)
-            Resolve(ctx context.Context, xMsMarketplaceToken string, xMsRequestid string, xMsCorrelationid string) (result marketplacefulfillment.Subscription, err error)
+            Resolve(ctx context.Context, xMsMarketplaceToken string, xMsRequestid string, xMsCorrelationid string, authorization string) (result marketplacefulfillment.Subscription, err error)
         }
 
         var _ ClientAPI = (*marketplacefulfillment.Client)(nil)

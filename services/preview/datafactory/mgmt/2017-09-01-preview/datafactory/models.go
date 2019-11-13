@@ -64673,41 +64673,9 @@ func (msls *MySQLLinkedService) UnmarshalJSON(body []byte) error {
 // MySQLLinkedServiceTypeProperties mySQL linked service properties.
 type MySQLLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for MySQLLinkedServiceTypeProperties struct.
-func (mslstp *MySQLLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				mslstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				mslstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // NetezzaLinkedService netezza linked service.
@@ -73508,41 +73476,9 @@ func (psls *PostgreSQLLinkedService) UnmarshalJSON(body []byte) error {
 // PostgreSQLLinkedServiceTypeProperties postgreSQL linked service properties.
 type PostgreSQLLinkedServiceTypeProperties struct {
 	// ConnectionString - The connection string.
-	ConnectionString BasicSecretBase `json:"connectionString,omitempty"`
+	ConnectionString interface{} `json:"connectionString,omitempty"`
 	// EncryptedCredential - The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
 	EncryptedCredential interface{} `json:"encryptedCredential,omitempty"`
-}
-
-// UnmarshalJSON is the custom unmarshaler for PostgreSQLLinkedServiceTypeProperties struct.
-func (pslstp *PostgreSQLLinkedServiceTypeProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "connectionString":
-			if v != nil {
-				connectionString, err := unmarshalBasicSecretBase(*v)
-				if err != nil {
-					return err
-				}
-				pslstp.ConnectionString = connectionString
-			}
-		case "encryptedCredential":
-			if v != nil {
-				var encryptedCredential interface{}
-				err = json.Unmarshal(*v, &encryptedCredential)
-				if err != nil {
-					return err
-				}
-				pslstp.EncryptedCredential = encryptedCredential
-			}
-		}
-	}
-
-	return nil
 }
 
 // PrestoLinkedService presto server linked service.

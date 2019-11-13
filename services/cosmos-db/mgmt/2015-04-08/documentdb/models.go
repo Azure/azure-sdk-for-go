@@ -1977,31 +1977,6 @@ func (future *DatabaseAccountsUpdateTableThroughputFuture) Result(client Databas
 	return
 }
 
-// DbResource the core properties of ARM resources.
-type DbResource struct {
-	// ID - READ-ONLY; The unique resource identifier of the database account.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the database account.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of Azure resource.
-	Type *string `json:"type,omitempty"`
-	// Location - The location of the resource group to which the resource belongs.
-	Location *string            `json:"location,omitempty"`
-	Tags     map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for DbResource.
-func (dr DbResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if dr.Location != nil {
-		objectMap["location"] = dr.Location
-	}
-	if dr.Tags != nil {
-		objectMap["tags"] = dr.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
 // ErrorResponse error Response.
 type ErrorResponse struct {
 	// Code - Error code.
@@ -3248,6 +3223,31 @@ type PercentileMetricValue struct {
 type RegionForOnlineOffline struct {
 	// Region - Cosmos DB region, with spaces between words and each word capitalized.
 	Region *string `json:"region,omitempty"`
+}
+
+// Resource the core properties of ARM resources.
+type Resource struct {
+	// ID - READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+	// Location - The location of the resource group to which the resource belongs.
+	Location *string            `json:"location,omitempty"`
+	Tags     map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	if r.Tags != nil {
+		objectMap["tags"] = r.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // SQLContainer an Azure Cosmos DB container.

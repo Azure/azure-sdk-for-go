@@ -1250,6 +1250,17 @@ func (etsup EncodedTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (
 	return &etsup, true
 }
 
+// Error the resource model definition for a ARM proxy resource. It will have everything other than
+// required location and tags.
+type Error struct {
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
 // Event the event for a webhook.
 type Event struct {
 	// EventRequestMessage - The event request message sent to the service URI.

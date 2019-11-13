@@ -32,13 +32,13 @@ type MongoDBResourcesClient struct {
 }
 
 // NewMongoDBResourcesClient creates an instance of the MongoDBResourcesClient client.
-func NewMongoDBResourcesClient(subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
-	return NewMongoDBResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewMongoDBResourcesClient(subscriptionID string) MongoDBResourcesClient {
+	return NewMongoDBResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewMongoDBResourcesClientWithBaseURI creates an instance of the MongoDBResourcesClient client.
-func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
-	return MongoDBResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string) MongoDBResourcesClient {
+	return MongoDBResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateUpdateMongoDBCollection create or update an Azure Cosmos DB MongoDB Collection

@@ -1,4 +1,4 @@
-// Package documentdb implements the Azure ARM Documentdb service API version .
+// Package documentdb implements the Azure ARM Documentdb service API version 2019-08-01.
 //
 // Azure Cosmos DB Database Service Resource Provider REST API
 package documentdb
@@ -32,22 +32,20 @@ const (
 // BaseClient is the base client for Documentdb.
 type BaseClient struct {
 	autorest.Client
-	BaseURI         string
-	SubscriptionID  string
-	SubscriptionID1 string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, subscriptionID1 string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client.
-func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:          autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:         baseURI,
-		SubscriptionID:  subscriptionID,
-		SubscriptionID1: subscriptionID1,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }

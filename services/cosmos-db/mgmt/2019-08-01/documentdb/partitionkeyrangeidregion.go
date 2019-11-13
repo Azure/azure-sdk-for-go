@@ -32,13 +32,13 @@ type PartitionKeyRangeIDRegionClient struct {
 }
 
 // NewPartitionKeyRangeIDRegionClient creates an instance of the PartitionKeyRangeIDRegionClient client.
-func NewPartitionKeyRangeIDRegionClient(subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDRegionClient {
-	return NewPartitionKeyRangeIDRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewPartitionKeyRangeIDRegionClient(subscriptionID string) PartitionKeyRangeIDRegionClient {
+	return NewPartitionKeyRangeIDRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPartitionKeyRangeIDRegionClientWithBaseURI creates an instance of the PartitionKeyRangeIDRegionClient client.
-func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDRegionClient {
-	return PartitionKeyRangeIDRegionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDRegionClient {
+	return PartitionKeyRangeIDRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given partition key range id and region.

@@ -32,13 +32,13 @@ type TableResourcesClient struct {
 }
 
 // NewTableResourcesClient creates an instance of the TableResourcesClient client.
-func NewTableResourcesClient(subscriptionID string) TableResourcesClient {
-	return NewTableResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewTableResourcesClient(subscriptionID string, subscriptionID1 string) TableResourcesClient {
+	return NewTableResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewTableResourcesClientWithBaseURI creates an instance of the TableResourcesClient client.
-func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) TableResourcesClient {
-	return TableResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TableResourcesClient {
+	return TableResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateUpdateTable create or update an Azure Cosmos DB Table

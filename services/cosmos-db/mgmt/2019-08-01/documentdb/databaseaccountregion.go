@@ -32,13 +32,13 @@ type DatabaseAccountRegionClient struct {
 }
 
 // NewDatabaseAccountRegionClient creates an instance of the DatabaseAccountRegionClient client.
-func NewDatabaseAccountRegionClient(subscriptionID string, subscriptionID1 string) DatabaseAccountRegionClient {
-	return NewDatabaseAccountRegionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewDatabaseAccountRegionClient(subscriptionID string) DatabaseAccountRegionClient {
+	return NewDatabaseAccountRegionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDatabaseAccountRegionClientWithBaseURI creates an instance of the DatabaseAccountRegionClient client.
-func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseAccountRegionClient {
-	return DatabaseAccountRegionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountRegionClient {
+	return DatabaseAccountRegionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given database account and region.

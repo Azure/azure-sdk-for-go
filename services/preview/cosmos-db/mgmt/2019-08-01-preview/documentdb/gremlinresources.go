@@ -32,13 +32,13 @@ type GremlinResourcesClient struct {
 }
 
 // NewGremlinResourcesClient creates an instance of the GremlinResourcesClient client.
-func NewGremlinResourcesClient(subscriptionID string) GremlinResourcesClient {
-	return NewGremlinResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewGremlinResourcesClient(subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
+	return NewGremlinResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewGremlinResourcesClientWithBaseURI creates an instance of the GremlinResourcesClient client.
-func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string) GremlinResourcesClient {
-	return GremlinResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
+	return GremlinResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateUpdateGremlinDatabase create or update an Azure Cosmos DB Gremlin database

@@ -32,13 +32,13 @@ type SQLResourcesClient struct {
 }
 
 // NewSQLResourcesClient creates an instance of the SQLResourcesClient client.
-func NewSQLResourcesClient(subscriptionID string) SQLResourcesClient {
-	return NewSQLResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSQLResourcesClient(subscriptionID string, subscriptionID1 string) SQLResourcesClient {
+	return NewSQLResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewSQLResourcesClientWithBaseURI creates an instance of the SQLResourcesClient client.
-func NewSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string) SQLResourcesClient {
-	return SQLResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SQLResourcesClient {
+	return SQLResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateUpdateSQLContainer create or update an Azure Cosmos DB SQL container

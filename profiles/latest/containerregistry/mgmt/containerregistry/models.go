@@ -288,7 +288,6 @@ type DockerBuildStepUpdateParameters = original.DockerBuildStepUpdateParameters
 type EncodedTaskRunRequest = original.EncodedTaskRunRequest
 type EncodedTaskStep = original.EncodedTaskStep
 type EncodedTaskStepUpdateParameters = original.EncodedTaskStepUpdateParameters
-type Error = original.Error
 type Event = original.Event
 type EventContent = original.EventContent
 type EventInfo = original.EventInfo

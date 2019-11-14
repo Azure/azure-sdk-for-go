@@ -1250,15 +1250,18 @@ func (etsup EncodedTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (
 	return &etsup, true
 }
 
-// Error the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags.
+// Error an error response from the Azure Container Registry service.
 type Error struct {
-	// ID - READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty"`
+	// Code - error code.
+	Code *string `json:"code,omitempty"`
+	// Message - error message.
+	Message *string `json:"message,omitempty"`
+}
+
+// ErrorSchema an error response from the Azure Container Registry service.
+type ErrorSchema struct {
+	// Error - Azure container registry build API error body.
+	Error *Error `json:"error,omitempty"`
 }
 
 // Event the event for a webhook.

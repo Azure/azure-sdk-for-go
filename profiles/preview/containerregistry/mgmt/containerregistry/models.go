@@ -319,6 +319,7 @@ type EncodedTaskRunRequest = original.EncodedTaskRunRequest
 type EncodedTaskStep = original.EncodedTaskStep
 type EncodedTaskStepUpdateParameters = original.EncodedTaskStepUpdateParameters
 type Error = original.Error
+type ErrorSchema = original.ErrorSchema
 type Event = original.Event
 type EventContent = original.EventContent
 type EventInfo = original.EventInfo

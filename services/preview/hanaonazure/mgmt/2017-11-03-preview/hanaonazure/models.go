@@ -937,6 +937,8 @@ type SapMonitorProperties struct {
 	ManagedResourceGroupName *string `json:"managedResourceGroupName,omitempty"`
 	// LogAnalyticsWorkspaceArmID - The ARM ID of the Log Analytics Workspace that is used for monitoring
 	LogAnalyticsWorkspaceArmID *string `json:"logAnalyticsWorkspaceArmId,omitempty"`
+	// EnableCustomerAnalytics - The value indicating whether to send analytics to Microsoft
+	EnableCustomerAnalytics *bool `json:"enableCustomerAnalytics,omitempty"`
 	// LogAnalyticsWorkspaceID - The workspace ID of the log analytics workspace to be used for monitoring
 	LogAnalyticsWorkspaceID *string `json:"logAnalyticsWorkspaceId,omitempty"`
 	// LogAnalyticsWorkspaceSharedKey - The shared key of the log analytics workspace that is used for monitoring

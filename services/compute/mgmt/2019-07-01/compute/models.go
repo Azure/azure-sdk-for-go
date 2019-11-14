@@ -1730,6 +1730,8 @@ type AvailabilitySetUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -1793,6 +1795,15 @@ func (asu *AvailabilitySetUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				asu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				asu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -2709,6 +2720,8 @@ type DedicatedHostGroupUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -2772,6 +2785,15 @@ func (dhgu *DedicatedHostGroupUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dhgu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dhgu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -3053,6 +3075,8 @@ type DedicatedHostUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -3104,6 +3128,15 @@ func (dhu *DedicatedHostUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dhu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dhu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -4677,6 +4710,8 @@ type GalleryApplicationUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -4728,6 +4763,15 @@ func (gau *GalleryApplicationUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				gau.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gau.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -5111,6 +5155,8 @@ type GalleryApplicationVersionUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -5162,6 +5208,15 @@ func (gavu *GalleryApplicationVersionUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				gavu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gavu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -5601,6 +5656,8 @@ type GalleryImageUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -5652,6 +5709,15 @@ func (giu *GalleryImageUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				giu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				giu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -6037,6 +6103,8 @@ type GalleryImageVersionUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -6088,6 +6156,15 @@ func (givu *GalleryImageVersionUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				givu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				givu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -6275,6 +6352,8 @@ type GalleryUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -6326,6 +6405,15 @@ func (gu *GalleryUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				gu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				gu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -6808,6 +6896,8 @@ type ImageUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -6859,6 +6949,15 @@ func (iu *ImageUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				iu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				iu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -7704,6 +7803,8 @@ type ProximityPlacementGroupUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -9052,6 +9153,8 @@ type UpdateResource struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -9706,6 +9809,8 @@ type VirtualMachineExtensionUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -9757,6 +9862,15 @@ func (vmeu *VirtualMachineExtensionUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmeu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vmeu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -12079,6 +12193,8 @@ type VirtualMachineScaleSetUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -12166,6 +12282,15 @@ func (vmssu *VirtualMachineScaleSetUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmssu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vmssu.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -13676,6 +13801,8 @@ type VirtualMachineUpdate struct {
 	Tags map[string]*string `json:"tags"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
 }
@@ -13763,6 +13890,15 @@ func (vmu *VirtualMachineUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmu.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vmu.Name = &name
 			}
 		case "type":
 			if v != nil {

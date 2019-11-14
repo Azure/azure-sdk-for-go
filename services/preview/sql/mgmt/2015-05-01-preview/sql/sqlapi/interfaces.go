@@ -64,19 +64,6 @@ type RestorePointsClientAPI interface {
 
 var _ RestorePointsClientAPI = (*sql.RestorePointsClient)(nil)
 
-// ServersClientAPI contains the set of methods on the ServersClient type.
-type ServersClientAPI interface {
-	CheckNameAvailability(ctx context.Context, parameters sql.CheckNameAvailabilityRequest) (result sql.CheckNameAvailabilityResponse, err error)
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.Server) (result sql.ServersCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServersDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.Server, err error)
-	List(ctx context.Context) (result sql.ServerListResultPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ServerListResultPage, err error)
-	Update(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerUpdate) (result sql.ServersUpdateFuture, err error)
-}
-
-var _ ServersClientAPI = (*sql.ServersClient)(nil)
-
 // ServerConnectionPoliciesClientAPI contains the set of methods on the ServerConnectionPoliciesClient type.
 type ServerConnectionPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerConnectionPolicy) (result sql.ServerConnectionPolicy, err error)
@@ -320,6 +307,18 @@ type ServerKeysClientAPI interface {
 }
 
 var _ ServerKeysClientAPI = (*sql.ServerKeysClient)(nil)
+
+// ServersClientAPI contains the set of methods on the ServersClient type.
+type ServersClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.Server) (result sql.ServersCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServersDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.Server, err error)
+	List(ctx context.Context) (result sql.ServerListResultPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ServerListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerUpdate) (result sql.ServersUpdateFuture, err error)
+}
+
+var _ ServersClientAPI = (*sql.ServersClient)(nil)
 
 // SyncAgentsClientAPI contains the set of methods on the SyncAgentsClient type.
 type SyncAgentsClientAPI interface {

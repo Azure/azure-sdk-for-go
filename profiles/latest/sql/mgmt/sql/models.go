@@ -65,13 +65,6 @@ const (
 	CapabilityStatusVisible   CapabilityStatus = original.CapabilityStatusVisible
 )
 
-type CheckNameAvailabilityReason = original.CheckNameAvailabilityReason
-
-const (
-	AlreadyExists CheckNameAvailabilityReason = original.AlreadyExists
-	Invalid       CheckNameAvailabilityReason = original.Invalid
-)
-
 type CreateMode = original.CreateMode
 
 const (
@@ -492,8 +485,6 @@ type BackupLongTermRetentionVaultsClient = original.BackupLongTermRetentionVault
 type BackupLongTermRetentionVaultsCreateOrUpdateFuture = original.BackupLongTermRetentionVaultsCreateOrUpdateFuture
 type BaseClient = original.BaseClient
 type CapabilitiesClient = original.CapabilitiesClient
-type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
-type CheckNameAvailabilityResponse = original.CheckNameAvailabilityResponse
 type DataMaskingPoliciesClient = original.DataMaskingPoliciesClient
 type DataMaskingPolicy = original.DataMaskingPolicy
 type DataMaskingPolicyProperties = original.DataMaskingPolicyProperties
@@ -929,9 +920,6 @@ func PossibleBackupLongTermRetentionPolicyStateValues() []BackupLongTermRetentio
 }
 func PossibleCapabilityStatusValues() []CapabilityStatus {
 	return original.PossibleCapabilityStatusValues()
-}
-func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
-	return original.PossibleCheckNameAvailabilityReasonValues()
 }
 func PossibleCreateModeValues() []CreateMode {
 	return original.PossibleCreateModeValues()

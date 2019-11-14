@@ -221,21 +221,6 @@ func PossibleCatalogCollationTypeValues() []CatalogCollationType {
 	return []CatalogCollationType{DATABASEDEFAULT, SQLLatin1GeneralCP1CIAS}
 }
 
-// CheckNameAvailabilityReason enumerates the values for check name availability reason.
-type CheckNameAvailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid CheckNameAvailabilityReason = "Invalid"
-)
-
-// PossibleCheckNameAvailabilityReasonValues returns an array of possible values for the CheckNameAvailabilityReason const type.
-func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
-	return []CheckNameAvailabilityReason{AlreadyExists, Invalid}
-}
-
 // CreateMode enumerates the values for create mode.
 type CreateMode string
 
@@ -1777,28 +1762,6 @@ func (future *BackupLongTermRetentionVaultsCreateOrUpdateFuture) Result(client B
 		}
 	}
 	return
-}
-
-// CheckNameAvailabilityRequest a request to check whether the specified name for a resource is available.
-type CheckNameAvailabilityRequest struct {
-	// Name - The name whose availability is to be checked.
-	Name *string `json:"name,omitempty"`
-	// Type - The type of resource that is used as the scope of the availability check.
-	Type *string `json:"type,omitempty"`
-}
-
-// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is
-// available.
-type CheckNameAvailabilityResponse struct {
-	autorest.Response `json:"-"`
-	// Available - READ-ONLY; True if the name is available, otherwise false.
-	Available *bool `json:"available,omitempty"`
-	// Message - READ-ONLY; A message explaining why the name is unavailable. Will be null if the name is available.
-	Message *string `json:"message,omitempty"`
-	// Name - READ-ONLY; The name whose availability was checked.
-	Name *string `json:"name,omitempty"`
-	// Reason - READ-ONLY; The reason code explaining why the name is unavailable. Will be null if the name is available. Possible values include: 'Invalid', 'AlreadyExists'
-	Reason CheckNameAvailabilityReason `json:"reason,omitempty"`
 }
 
 // CompleteDatabaseRestoreDefinition contains the information necessary to perform a complete database

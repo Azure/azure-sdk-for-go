@@ -43,14 +43,14 @@ func (ov opValues) get(value interface{}) bool {
 // transformed HTTP request over the network.
 func (req *Request) Do(ctx context.Context) (*Response, error) {
 	nextPolicy := req.policies[0]
-	nextMsg := req
-	nextMsg.policies = nextMsg.policies[1:]
+	nextReq := *req
+	nextReq.policies = nextReq.policies[1:]
 	// encode any pending query params
-	if nextMsg.qp != nil {
-		nextMsg.Request.URL.RawQuery = nextMsg.qp.Encode()
-		nextMsg.qp = nil
+	if nextReq.qp != nil {
+		nextReq.Request.URL.RawQuery = nextReq.qp.Encode()
+		nextReq.qp = nil
 	}
-	return nextPolicy.Do(ctx, nextMsg)
+	return nextPolicy.Do(ctx, &nextReq)
 }
 
 // MarshalAsXML calls xml.Marshal() to get the XML encoding of v then calls SetBody.

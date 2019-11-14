@@ -32,7 +32,7 @@ func init() {
 
 // DefaultHTTPClientTransport ...
 func DefaultHTTPClientTransport() Transport {
-	return TransportFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
+	return transportFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
 		return defaultHTTPClient.Do(req.WithContext(ctx))
 	})
 }

@@ -1728,6 +1728,10 @@ type AvailabilitySetUpdate struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AvailabilitySetUpdate.
@@ -1780,6 +1784,24 @@ func (asu *AvailabilitySetUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				asu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				asu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				asu.Type = &typeVar
 			}
 		}
 	}
@@ -2685,6 +2707,10 @@ type DedicatedHostGroupUpdate struct {
 	Zones *[]string `json:"zones,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DedicatedHostGroupUpdate.
@@ -2737,6 +2763,24 @@ func (dhgu *DedicatedHostGroupUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dhgu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dhgu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dhgu.Type = &typeVar
 			}
 		}
 	}
@@ -3007,6 +3051,10 @@ type DedicatedHostUpdate struct {
 	*DedicatedHostProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DedicatedHostUpdate.
@@ -3047,6 +3095,24 @@ func (dhu *DedicatedHostUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dhu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dhu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dhu.Type = &typeVar
 			}
 		}
 	}
@@ -4609,6 +4675,10 @@ type GalleryApplicationUpdate struct {
 	*GalleryApplicationProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GalleryApplicationUpdate.
@@ -4649,6 +4719,24 @@ func (gau *GalleryApplicationUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				gau.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gau.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gau.Type = &typeVar
 			}
 		}
 	}
@@ -5021,6 +5109,10 @@ type GalleryApplicationVersionUpdate struct {
 	*GalleryApplicationVersionProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GalleryApplicationVersionUpdate.
@@ -5061,6 +5153,24 @@ func (gavu *GalleryApplicationVersionUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				gavu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gavu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gavu.Type = &typeVar
 			}
 		}
 	}
@@ -5489,6 +5599,10 @@ type GalleryImageUpdate struct {
 	*GalleryImageProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GalleryImageUpdate.
@@ -5529,6 +5643,24 @@ func (giu *GalleryImageUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				giu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				giu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				giu.Type = &typeVar
 			}
 		}
 	}
@@ -5903,6 +6035,10 @@ type GalleryImageVersionUpdate struct {
 	*GalleryImageVersionProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GalleryImageVersionUpdate.
@@ -5943,6 +6079,24 @@ func (givu *GalleryImageVersionUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				givu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				givu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				givu.Type = &typeVar
 			}
 		}
 	}
@@ -6119,6 +6273,10 @@ type GalleryUpdate struct {
 	*GalleryProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for GalleryUpdate.
@@ -6159,6 +6317,24 @@ func (gu *GalleryUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				gu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				gu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				gu.Type = &typeVar
 			}
 		}
 	}
@@ -6630,6 +6806,10 @@ type ImageUpdate struct {
 	*ImageProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ImageUpdate.
@@ -6670,6 +6850,24 @@ func (iu *ImageUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				iu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				iu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				iu.Type = &typeVar
 			}
 		}
 	}
@@ -7504,6 +7702,10 @@ type ProximityPlacementGroupProperties struct {
 type ProximityPlacementGroupUpdate struct {
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ProximityPlacementGroupUpdate.
@@ -8848,6 +9050,10 @@ type ThrottledRequestsInput struct {
 type UpdateResource struct {
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for UpdateResource.
@@ -9498,6 +9704,10 @@ type VirtualMachineExtensionUpdate struct {
 	*VirtualMachineExtensionUpdateProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for VirtualMachineExtensionUpdate.
@@ -9538,6 +9748,24 @@ func (vmeu *VirtualMachineExtensionUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmeu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vmeu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmeu.Type = &typeVar
 			}
 		}
 	}
@@ -11849,6 +12077,10 @@ type VirtualMachineScaleSetUpdate struct {
 	Identity *VirtualMachineScaleSetIdentity `json:"identity,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for VirtualMachineScaleSetUpdate.
@@ -11925,6 +12157,24 @@ func (vmssu *VirtualMachineScaleSetUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmssu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vmssu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmssu.Type = &typeVar
 			}
 		}
 	}
@@ -13424,6 +13674,10 @@ type VirtualMachineUpdate struct {
 	Zones *[]string `json:"zones,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for VirtualMachineUpdate.
@@ -13500,6 +13754,24 @@ func (vmu *VirtualMachineUpdate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmu.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vmu.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmu.Type = &typeVar
 			}
 		}
 	}

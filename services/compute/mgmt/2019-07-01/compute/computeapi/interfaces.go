@@ -47,7 +47,7 @@ var _ AvailabilitySetsClientAPI = (*compute.AvailabilitySetsClient)(nil)
 type ProximityPlacementGroupsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters compute.ProximityPlacementGroup) (result compute.ProximityPlacementGroup, err error)
 	Delete(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result compute.ProximityPlacementGroup, err error)
+	Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, includeColocationStatus string) (result compute.ProximityPlacementGroup, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.ProximityPlacementGroupListResultPage, err error)
 	ListBySubscription(ctx context.Context) (result compute.ProximityPlacementGroupListResultPage, err error)
 	Update(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters compute.ProximityPlacementGroupUpdate) (result compute.ProximityPlacementGroup, err error)

@@ -19,8 +19,10 @@
 
 package mediaapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/mediaservices/mgmt/2018-06-01-preview/media/mediaapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/mediaservices/mgmt/2019-05-01-preview/media/mediaapi"
 
+type AccountFiltersClientAPI = original.AccountFiltersClientAPI
+type AssetFiltersClientAPI = original.AssetFiltersClientAPI
 type AssetsClientAPI = original.AssetsClientAPI
 type ContentKeyPoliciesClientAPI = original.ContentKeyPoliciesClientAPI
 type JobsClientAPI = original.JobsClientAPI

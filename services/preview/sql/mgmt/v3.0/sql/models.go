@@ -1692,6 +1692,165 @@ func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAsses
 	return []VulnerabilityAssessmentScanTriggerType{VulnerabilityAssessmentScanTriggerTypeOnDemand, VulnerabilityAssessmentScanTriggerTypeRecurring}
 }
 
+// AdministratorListResult a list of active directory administrators.
+type AdministratorListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]ServerAzureADAdministrator `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AdministratorListResultIterator provides access to a complete listing of ServerAzureADAdministrator
+// values.
+type AdministratorListResultIterator struct {
+	i    int
+	page AdministratorListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AdministratorListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdministratorListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AdministratorListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AdministratorListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AdministratorListResultIterator) Response() AdministratorListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AdministratorListResultIterator) Value() ServerAzureADAdministrator {
+	if !iter.page.NotDone() {
+		return ServerAzureADAdministrator{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AdministratorListResultIterator type.
+func NewAdministratorListResultIterator(page AdministratorListResultPage) AdministratorListResultIterator {
+	return AdministratorListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (alr AdministratorListResult) IsEmpty() bool {
+	return alr.Value == nil || len(*alr.Value) == 0
+}
+
+// administratorListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (alr AdministratorListResult) administratorListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(alr.NextLink)))
+}
+
+// AdministratorListResultPage contains a page of ServerAzureADAdministrator values.
+type AdministratorListResultPage struct {
+	fn  func(context.Context, AdministratorListResult) (AdministratorListResult, error)
+	alr AdministratorListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AdministratorListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AdministratorListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.alr)
+	if err != nil {
+		return err
+	}
+	page.alr = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AdministratorListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AdministratorListResultPage) NotDone() bool {
+	return !page.alr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AdministratorListResultPage) Response() AdministratorListResult {
+	return page.alr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AdministratorListResultPage) Values() []ServerAzureADAdministrator {
+	if page.alr.IsEmpty() {
+		return nil
+	}
+	return *page.alr.Value
+}
+
+// Creates a new instance of the AdministratorListResultPage type.
+func NewAdministratorListResultPage(getNextPage func(context.Context, AdministratorListResult) (AdministratorListResult, error)) AdministratorListResultPage {
+	return AdministratorListResultPage{fn: getNextPage}
+}
+
+// AdministratorProperties properties of a active directory administrator.
+type AdministratorProperties struct {
+	// AdministratorType - Type of the sever administrator.
+	AdministratorType *string `json:"administratorType,omitempty"`
+	// Login - Login name of the server administrator.
+	Login *string `json:"login,omitempty"`
+	// Sid - SID (object ID) of the server administrator.
+	Sid *uuid.UUID `json:"sid,omitempty"`
+	// TenantID - Tenant ID of the administrator.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+}
+
 // AutomaticTuningOptions automatic tuning properties for individual advisors.
 type AutomaticTuningOptions struct {
 	// DesiredState - Automatic tuning option desired state. Possible values include: 'AutomaticTuningOptionModeDesiredOff', 'AutomaticTuningOptionModeDesiredOn', 'AutomaticTuningOptionModeDesiredDefault'
@@ -15491,25 +15650,6 @@ func (s *Server) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServerAdministratorListResult the response to a list Active Directory Administrators request.
-type ServerAdministratorListResult struct {
-	autorest.Response `json:"-"`
-	// Value - The list of server Active Directory Administrators for the server.
-	Value *[]ServerAzureADAdministrator `json:"value,omitempty"`
-}
-
-// ServerAdministratorProperties the properties of an server Administrator.
-type ServerAdministratorProperties struct {
-	// AdministratorType - The type of administrator.
-	AdministratorType *string `json:"administratorType,omitempty"`
-	// Login - The server administrator login value.
-	Login *string `json:"login,omitempty"`
-	// Sid - The server administrator Sid (Secure ID).
-	Sid *uuid.UUID `json:"sid,omitempty"`
-	// TenantID - The server Active Directory Administrator tenant id.
-	TenantID *uuid.UUID `json:"tenantId,omitempty"`
-}
-
 // ServerAutomaticTuning server-level Automatic Tuning.
 type ServerAutomaticTuning struct {
 	autorest.Response `json:"-"`
@@ -15583,11 +15723,11 @@ func (sat *ServerAutomaticTuning) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServerAzureADAdministrator an server Active Directory Administrator.
+// ServerAzureADAdministrator azure Active Directory administrator.
 type ServerAzureADAdministrator struct {
 	autorest.Response `json:"-"`
-	// ServerAdministratorProperties - The properties of the resource.
-	*ServerAdministratorProperties `json:"properties,omitempty"`
+	// AdministratorProperties - Resource properties.
+	*AdministratorProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name.
@@ -15599,8 +15739,8 @@ type ServerAzureADAdministrator struct {
 // MarshalJSON is the custom marshaler for ServerAzureADAdministrator.
 func (saaa ServerAzureADAdministrator) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if saaa.ServerAdministratorProperties != nil {
-		objectMap["properties"] = saaa.ServerAdministratorProperties
+	if saaa.AdministratorProperties != nil {
+		objectMap["properties"] = saaa.AdministratorProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -15616,12 +15756,12 @@ func (saaa *ServerAzureADAdministrator) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var serverAdministratorProperties ServerAdministratorProperties
-				err = json.Unmarshal(*v, &serverAdministratorProperties)
+				var administratorProperties AdministratorProperties
+				err = json.Unmarshal(*v, &administratorProperties)
 				if err != nil {
 					return err
 				}
-				saaa.ServerAdministratorProperties = &serverAdministratorProperties
+				saaa.AdministratorProperties = &administratorProperties
 			}
 		case "id":
 			if v != nil {
@@ -15693,7 +15833,7 @@ type ServerAzureADAdministratorsDeleteFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *ServerAzureADAdministratorsDeleteFuture) Result(client ServerAzureADAdministratorsClient) (saaa ServerAzureADAdministrator, err error) {
+func (future *ServerAzureADAdministratorsDeleteFuture) Result(client ServerAzureADAdministratorsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -15704,13 +15844,7 @@ func (future *ServerAzureADAdministratorsDeleteFuture) Result(client ServerAzure
 		err = azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsDeleteFuture")
 		return
 	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if saaa.Response.Response, err = future.GetResult(sender); err == nil && saaa.Response.Response.StatusCode != http.StatusNoContent {
-		saaa, err = client.DeleteResponder(saaa.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.ServerAzureADAdministratorsDeleteFuture", "Result", saaa.Response.Response, "Failure responding to request")
-		}
-	}
+	ar.Response = future.Response()
 	return
 }
 

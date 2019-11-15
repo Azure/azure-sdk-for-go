@@ -174,16 +174,6 @@ type ReplicationLinksClientAPI interface {
 
 var _ ReplicationLinksClientAPI = (*sql.ReplicationLinksClient)(nil)
 
-// ServerAzureADAdministratorsClientAPI contains the set of methods on the ServerAzureADAdministratorsClient type.
-type ServerAzureADAdministratorsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties sql.ServerAzureADAdministrator) (result sql.ServerAzureADAdministratorsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministratorsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministrator, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAdministratorListResult, err error)
-}
-
-var _ ServerAzureADAdministratorsClientAPI = (*sql.ServerAzureADAdministratorsClient)(nil)
-
 // ServerCommunicationLinksClientAPI contains the set of methods on the ServerCommunicationLinksClient type.
 type ServerCommunicationLinksClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, communicationLinkName string, parameters sql.ServerCommunicationLink) (result sql.ServerCommunicationLinksCreateOrUpdateFuture, err error)

@@ -35,15 +35,16 @@ type Transport interface {
 	Do(ctx context.Context, req *http.Request) (*http.Response, error)
 }
 
-// TransportFunc is a type that implements the Transport interface.
+// transportFunc is a type that implements the Transport interface.
 // Use this type when implementing a stateless transport as a first-class function.
-type TransportFunc func(context.Context, *http.Request) (*http.Response, error)
+type transportFunc func(context.Context, *http.Request) (*http.Response, error)
 
-// Do implements the Transport interface on TransportFunc.
-func (tf TransportFunc) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
+// Do implements the Transport interface on transportFunc.
+func (tf transportFunc) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
 	return tf(ctx, req)
 }
 
+// used to adapt a TransportPolicy to a Policy
 type transportPolicy struct {
 	trans Transport
 }

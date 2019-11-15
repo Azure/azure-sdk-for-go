@@ -55,7 +55,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, scopes []string) 
 	return token, nil
 }
 
-// Policy implements the azcore.Policy interface on ChainedTokenCredential.
-func (c *ChainedTokenCredential) Policy(options azcore.CredentialPolicyOptions) azcore.Policy {
+// AuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential.
+func (c *ChainedTokenCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options.Scopes)
 }

@@ -153,8 +153,8 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 	return string(cr.Bytes()), nil
 }
 
-// Policy implements the Policy interface on SharedKeyCredential.
-func (c *SharedKeyCredential) Policy(azcore.CredentialPolicyOptions) azcore.Policy {
+// AuthenticationPolicy implements the Credential interface on SharedKeyCredential.
+func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return azcore.PolicyFunc(func(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
 		// Add a x-ms-date header if it doesn't already exist
 		if d := req.Request.Header.Get(azcore.HeaderXmsDate); d == "" {

@@ -25,7 +25,7 @@ func NewServiceClient(endpoint string, cred azcore.Credential, options azcore.Pi
 		azcore.NewTelemetryPolicy(options.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(options.Retry),
-		cred.Policy(azcore.CredentialPolicyOptions{Scopes: []string{scope}}),
+		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Scopes: []string{scope}}),
 		azcore.NewRequestLogPolicy(options.LogOptions))
 	return NewServiceClientWithPipeline(endpoint, p)
 }

@@ -48,8 +48,8 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, scopes []string) 
 	return c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, scopes)
 }
 
-// Policy implements the azcore.Credential interface on ClientSecretCredential.
-func (c *ClientSecretCredential) Policy(options azcore.CredentialPolicyOptions) azcore.Policy {
+// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
+func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options.Scopes)
 }
 
@@ -98,3 +98,5 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 	req.Request.Header.Set(azcore.HeaderAuthorization, bt)
 	return req.Do(ctx)
 }
+
+var _ azcore.TokenCredential = (*ClientSecretCredential)(nil)

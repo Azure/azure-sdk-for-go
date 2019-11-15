@@ -33,6 +33,11 @@ func NewManagedIdentityCredential(clientID string, options *IdentityClientOption
 // GetToken obtains an AccessToken from the Managed Identity service if available.
 // - scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls, or a default AccessToken if no managed identity is available.
-func (c ManagedIdentityCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
+func (c *ManagedIdentityCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
 	return c.client.authenticate(ctx, c.clientID, scopes)
+}
+
+// AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
+func (c *ManagedIdentityCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return newBearerTokenPolicy(c, options.Scopes)
 }

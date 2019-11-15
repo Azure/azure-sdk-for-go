@@ -2356,8 +2356,6 @@ type AutoDismissAlertsRuleProperties struct {
 	Comment *string `json:"comment,omitempty"`
 	// AutoDismissAlertsScope - The auto dismiss conditions
 	AutoDismissAlertsScope *AutoDismissAlertsScope `json:"autoDismissAlertsScope,omitempty"`
-	// RuleImpact - READ-ONLY; Statistics about the impact of this rule, if enabled
-	RuleImpact *RuleImpact `json:"ruleImpact,omitempty"`
 }
 
 // AutoDismissAlertsRulesList auto dismiss rules list for subscription.
@@ -2504,6 +2502,19 @@ func (page AutoDismissAlertsRulesListPage) Values() []AutoDismissAlertsRule {
 // Creates a new instance of the AutoDismissAlertsRulesListPage type.
 func NewAutoDismissAlertsRulesListPage(getNextPage func(context.Context, AutoDismissAlertsRulesList) (AutoDismissAlertsRulesList, error)) AutoDismissAlertsRulesListPage {
 	return AutoDismissAlertsRulesListPage{fn: getNextPage}
+}
+
+// AutoDismissAlertsRulesSimulation auto dismiss rules simulation result for subscription
+type AutoDismissAlertsRulesSimulation struct {
+	Location              *string `json:"location,omitempty"`
+	ScannedAlertsNumber   *int32  `json:"scannedAlertsNumber,omitempty"`
+	DismissedAlertsNumber *int32  `json:"dismissedAlertsNumber,omitempty"`
+}
+
+// AutoDismissAlertsRulesSimulationList auto dismiss rules simulation result list for subscription
+type AutoDismissAlertsRulesSimulationList struct {
+	autorest.Response `json:"-"`
+	Value             *[]AutoDismissAlertsRulesSimulation `json:"value,omitempty"`
 }
 
 // AutoDismissAlertsScope ...
@@ -6474,12 +6485,6 @@ type Rule struct {
 	Protocols *[]TransportProtocol `json:"protocols,omitempty"`
 	// IPAddresses - The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`
-}
-
-// RuleImpact ...
-type RuleImpact struct {
-	ScannedAlertsNumber   *int32 `json:"scannedAlertsNumber,omitempty"`
-	DismissedAlertsNumber *int32 `json:"dismissedAlertsNumber,omitempty"`
 }
 
 // SensitivityLabel the sensitivity label.

@@ -326,9 +326,8 @@ func (client AutoDismissAlertsRulesClient) ListComplete(ctx context.Context, ale
 // Update update existing rule or create new rule if it doesn't exist
 // Parameters:
 // autoDismissAlertsRuleName - the unique name of the auto dismiss alert rule
-// autoDismissAlertsRule - describes the auto dismiss rule
-// testRule - type of the alert to get rules for
-func (client AutoDismissAlertsRulesClient) Update(ctx context.Context, autoDismissAlertsRuleName string, autoDismissAlertsRule AutoDismissAlertsRule, testRule *bool) (result AutoDismissAlertsRule, err error) {
+// autoDismissAlertsRule - auto dismiss rule object
+func (client AutoDismissAlertsRulesClient) Update(ctx context.Context, autoDismissAlertsRuleName string, autoDismissAlertsRule AutoDismissAlertsRule) (result AutoDismissAlertsRule, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AutoDismissAlertsRulesClient.Update")
 		defer func() {
@@ -348,15 +347,11 @@ func (client AutoDismissAlertsRulesClient) Update(ctx context.Context, autoDismi
 					{Target: "autoDismissAlertsRule.AutoDismissAlertsRuleProperties.Reason", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "autoDismissAlertsRule.AutoDismissAlertsRuleProperties.AutoDismissAlertsScope", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "autoDismissAlertsRule.AutoDismissAlertsRuleProperties.AutoDismissAlertsScope.AllOf", Name: validation.Null, Rule: true, Chain: nil}}},
-					{Target: "autoDismissAlertsRule.AutoDismissAlertsRuleProperties.RuleImpact", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "autoDismissAlertsRule.AutoDismissAlertsRuleProperties.RuleImpact.ScannedAlertsNumber", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "autoDismissAlertsRule.AutoDismissAlertsRuleProperties.RuleImpact.DismissedAlertsNumber", Name: validation.Null, Rule: true, Chain: nil},
-						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("security.AutoDismissAlertsRulesClient", "Update", err.Error())
 	}
 
-	req, err := client.UpdatePreparer(ctx, autoDismissAlertsRuleName, autoDismissAlertsRule, testRule)
+	req, err := client.UpdatePreparer(ctx, autoDismissAlertsRuleName, autoDismissAlertsRule)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AutoDismissAlertsRulesClient", "Update", nil, "Failure preparing request")
 		return
@@ -378,7 +373,7 @@ func (client AutoDismissAlertsRulesClient) Update(ctx context.Context, autoDismi
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AutoDismissAlertsRulesClient) UpdatePreparer(ctx context.Context, autoDismissAlertsRuleName string, autoDismissAlertsRule AutoDismissAlertsRule, testRule *bool) (*http.Request, error) {
+func (client AutoDismissAlertsRulesClient) UpdatePreparer(ctx context.Context, autoDismissAlertsRuleName string, autoDismissAlertsRule AutoDismissAlertsRule) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"autoDismissAlertsRuleName": autorest.Encode("path", autoDismissAlertsRuleName),
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
@@ -387,9 +382,6 @@ func (client AutoDismissAlertsRulesClient) UpdatePreparer(ctx context.Context, a
 	const APIVersion = "2019-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if testRule != nil {
-		queryParameters["TestRule"] = autorest.Encode("query", *testRule)
 	}
 
 	preparer := autorest.CreatePreparer(

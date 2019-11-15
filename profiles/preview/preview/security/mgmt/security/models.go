@@ -461,6 +461,9 @@ type AutoDismissAlertsRulesClient = original.AutoDismissAlertsRulesClient
 type AutoDismissAlertsRulesList = original.AutoDismissAlertsRulesList
 type AutoDismissAlertsRulesListIterator = original.AutoDismissAlertsRulesListIterator
 type AutoDismissAlertsRulesListPage = original.AutoDismissAlertsRulesListPage
+type AutoDismissAlertsRulesSimulation = original.AutoDismissAlertsRulesSimulation
+type AutoDismissAlertsRulesSimulationClient = original.AutoDismissAlertsRulesSimulationClient
+type AutoDismissAlertsRulesSimulationList = original.AutoDismissAlertsRulesSimulationList
 type AutoDismissAlertsScope = original.AutoDismissAlertsScope
 type AutoProvisioningSetting = original.AutoProvisioningSetting
 type AutoProvisioningSettingList = original.AutoProvisioningSettingList
@@ -615,7 +618,6 @@ type RegulatoryComplianceStandardProperties = original.RegulatoryComplianceStand
 type RegulatoryComplianceStandardsClient = original.RegulatoryComplianceStandardsClient
 type Resource = original.Resource
 type ResourceDetails = original.ResourceDetails
-type RuleImpact = original.RuleImpact
 type SQLServerVulnerabilityProperties = original.SQLServerVulnerabilityProperties
 type SensitivityLabel = original.SensitivityLabel
 type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
@@ -724,6 +726,12 @@ func NewAutoDismissAlertsRulesListIterator(page AutoDismissAlertsRulesListPage) 
 }
 func NewAutoDismissAlertsRulesListPage(getNextPage func(context.Context, AutoDismissAlertsRulesList) (AutoDismissAlertsRulesList, error)) AutoDismissAlertsRulesListPage {
 	return original.NewAutoDismissAlertsRulesListPage(getNextPage)
+}
+func NewAutoDismissAlertsRulesSimulationClient(subscriptionID string, ascLocation string) AutoDismissAlertsRulesSimulationClient {
+	return original.NewAutoDismissAlertsRulesSimulationClient(subscriptionID, ascLocation)
+}
+func NewAutoDismissAlertsRulesSimulationClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutoDismissAlertsRulesSimulationClient {
+	return original.NewAutoDismissAlertsRulesSimulationClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)

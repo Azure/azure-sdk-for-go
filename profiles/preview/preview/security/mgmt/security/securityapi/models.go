@@ -26,6 +26,7 @@ type AdvancedThreatProtectionClientAPI = original.AdvancedThreatProtectionClient
 type AlertsClientAPI = original.AlertsClientAPI
 type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
 type AutoDismissAlertsRulesClientAPI = original.AutoDismissAlertsRulesClientAPI
+type AutoDismissAlertsRulesSimulationClientAPI = original.AutoDismissAlertsRulesSimulationClientAPI
 type AutoProvisioningSettingsClientAPI = original.AutoProvisioningSettingsClientAPI
 type ComplianceResultsClientAPI = original.ComplianceResultsClientAPI
 type CompliancesClientAPI = original.CompliancesClientAPI

@@ -55,7 +55,7 @@ func ExampleAnonymousCredential() {
 	client, err := NewServiceClient(endpoint,
 		// switch out with other credential functions above
 		azcore.AnonymousCredential(),
-		azcore.PipelineOptions{})
+		nil)
 	if err != nil {
 		panic(err)
 	}

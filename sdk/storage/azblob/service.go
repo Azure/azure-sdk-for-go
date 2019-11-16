@@ -15,32 +15,78 @@ const (
 	scope = "https://storage.azure.com/.default"
 )
 
+// ServiceVersion enumerates the possible service API versions.
+type ServiceVersion string
+
+const (
+	// V2019_02_02 specifies the 2019-02-02 service API version.
+	V2019_02_02 = "2019-02-02"
+)
+
+//ServiceClient provides access to Azure Storage service resources and blob containers.
 type ServiceClient struct {
 	u *url.URL
 	p azcore.Pipeline
+	o ServiceClientOptions
 }
 
-func NewServiceClient(endpoint string, cred azcore.Credential, options azcore.PipelineOptions) (*ServiceClient, error) {
-	p := azcore.NewPipeline(options.HTTPClient,
+// ServiceClientOptions contains client configuration options for connecting to blob storage.
+type ServiceClientOptions struct {
+	azcore.PipelineOptions
+	// Version is the service API version to use when making requests.
+	// Leaving this empty will default to the latest API version.
+	Version ServiceVersion
+
+	// SecondaryEndpoint is the secondary storage endpoint that can be read from if the storage
+	// account is enabled for RA-GRS.
+	// If this value is set, the secondary endpoint will be used for GET or HEAD requests during retries.
+	// If the status of the response from the secondary endpoint is a 404, then subsequent retries for
+	// the request will not use the secondary endpoint again, as this indicates that the resource
+	// may not have propagated there yet. Otherwise, subsequent retries will alternate back and forth
+	// between the primary and secondary endpoint.
+	SecondaryEndpoint string
+}
+
+func setDefaultClientOptions(s *ServiceClientOptions) *ServiceClientOptions {
+	if s == nil {
+		s = &ServiceClientOptions{}
+	}
+	if len(s.Version) == 0 {
+		s.Version = V2019_02_02
+	}
+	return s
+}
+
+// NewServiceClient creates a new instance of ServiceClient with the specified values.
+// Passing nil for cred will default to anonymous access.
+// Pass nil for options to use the default configuration.
+func NewServiceClient(endpoint string, cred azcore.Credential, options *ServiceClientOptions) (*ServiceClient, error) {
+	if cred == nil {
+		cred = azcore.AnonymousCredential()
+	}
+	options = setDefaultClientOptions(options)
+	p := azcore.NewPipeline(options.HTTPTransport,
 		azcore.NewTelemetryPolicy(options.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Scopes: []string{scope}}),
 		azcore.NewRequestLogPolicy(options.LogOptions))
-	return NewServiceClientWithPipeline(endpoint, p)
+	return NewServiceClientWithPipeline(endpoint, p, options)
 }
 
-func NewServiceClientWithPipeline(endpoint string, p azcore.Pipeline) (*ServiceClient, error) {
+// NewServiceClientWithPipeline creates a new instance of ServiceClient with the specified values.
+func NewServiceClientWithPipeline(endpoint string, pipeline azcore.Pipeline, options *ServiceClientOptions) (*ServiceClient, error) {
 	u, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, err
 	}
-	return &ServiceClient{u: u, p: p}, nil
+	options = setDefaultClientOptions(options)
+	return &ServiceClient{u: u, p: pipeline, o: *options}, nil
 }
 
-func (c *ServiceClient) ServiceVersion() string {
-	// this is a method instead of a package-level const to handle the case of composite services
-	return "2018-11-09"
+// ServiceVersion returns the service API version used when making requests.
+func (c *ServiceClient) ServiceVersion() ServiceVersion {
+	return c.o.Version
 }
 
 // ListContainers the List Containers Segment operation returns a list of the containers under the specified
@@ -95,7 +141,7 @@ func (c *ServiceClient) listContainersPreparer(options *ListContainersOptions) *
 		}
 	}
 	req.SetQueryParam("comp", "list")
-	req.Header.Set("x-ms-version", c.ServiceVersion())
+	req.Header.Set("x-ms-version", string(c.ServiceVersion()))
 	return req
 }
 

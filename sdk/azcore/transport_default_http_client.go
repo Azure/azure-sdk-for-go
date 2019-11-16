@@ -24,13 +24,13 @@ func init() {
 			MinVersion: tls.VersionTLS12,
 		},
 	}
-	// TODO: in track 1 we created a cookiejar, do we need one here?  make it an option?  user-specified HTTP client policy?
 	defaultHTTPClient = &http.Client{
 		Transport: transport,
 	}
 }
 
-// DefaultHTTPClientTransport ...
+// DefaultHTTPClientTransport returns the default Transport implementation.
+// It uses http.DefaultTransport with a TLS minimum version of 1.2.
 func DefaultHTTPClientTransport() Transport {
 	return transportFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
 		return defaultHTTPClient.Do(req.WithContext(ctx))

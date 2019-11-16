@@ -106,9 +106,9 @@ type PipelineOptions struct {
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry TelemetryOptions
 
-	// HTTPClient sets the transport for making HTTP requests.
+	// HTTPTransport sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
-	HTTPClient Transport
+	HTTPTransport Transport
 
 	// LogOptions configures the built-in request logging policy behavior.
 	LogOptions RequestLogOptions

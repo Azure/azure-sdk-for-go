@@ -428,7 +428,8 @@ func (client Client) PatchOperationResponder(resp *http.Response) (result Operat
         // xMsCorrelationid - a unique string value for operation on the client. This parameter correlates all events
         // from client operation with events on the server side. If this value isn't provided, one will be generated
         // and provided in the response headers.
-func (client Client) Resolve(ctx context.Context, xMsMarketplaceToken string, xMsRequestid string, xMsCorrelationid string) (result Subscription, err error) {
+        // authorization - JWT bearer token
+func (client Client) Resolve(ctx context.Context, xMsMarketplaceToken string, xMsRequestid string, xMsCorrelationid string, authorization string) (result Subscription, err error) {
     if tracing.IsEnabled() {
         ctx = tracing.StartSpan(ctx, fqdn + "/Client.Resolve")
         defer func() {
@@ -439,7 +440,7 @@ func (client Client) Resolve(ctx context.Context, xMsMarketplaceToken string, xM
             tracing.EndSpan(ctx, sc, err)
         }()
     }
-        req, err := client.ResolvePreparer(ctx, xMsMarketplaceToken, xMsRequestid, xMsCorrelationid)
+        req, err := client.ResolvePreparer(ctx, xMsMarketplaceToken, xMsRequestid, xMsCorrelationid, authorization)
     if err != nil {
     err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "Resolve", nil , "Failure preparing request")
     return
@@ -461,7 +462,7 @@ func (client Client) Resolve(ctx context.Context, xMsMarketplaceToken string, xM
     }
 
     // ResolvePreparer prepares the Resolve request.
-    func (client Client) ResolvePreparer(ctx context.Context, xMsMarketplaceToken string, xMsRequestid string, xMsCorrelationid string) (*http.Request, error) {
+    func (client Client) ResolvePreparer(ctx context.Context, xMsMarketplaceToken string, xMsRequestid string, xMsCorrelationid string, authorization string) (*http.Request, error) {
                     const APIVersion = "2018-08-31"
         queryParameters := map[string]interface{} {
         "api-version": APIVersion,
@@ -480,6 +481,10 @@ func (client Client) Resolve(ctx context.Context, xMsMarketplaceToken string, xM
             if len(xMsCorrelationid) > 0 {
             preparer = autorest.DecoratePreparer(preparer,
             autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
+            }
+            if len(authorization) > 0 {
+            preparer = autorest.DecoratePreparer(preparer,
+            autorest.WithHeader("authorization",autorest.String(authorization)))
             }
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }

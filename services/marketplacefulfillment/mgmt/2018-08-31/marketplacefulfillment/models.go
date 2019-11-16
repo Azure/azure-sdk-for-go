@@ -265,6 +265,10 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             PlanID *string `json:"planId,omitempty"`
             // Quantity - Quantity.
             Quantity *string `json:"quantity,omitempty"`
+            // Beneficiary - Tenant for which SaaS subscription is purchased.
+            Beneficiary *Tenant `json:"beneficiary,omitempty"`
+            // Purchaser - Tenant that purchased the SaaS subscription.
+            Purchaser *Tenant `json:"purchaser,omitempty"`
             }
 
         // MarshalJSON is the custom marshaler for Subscription.
@@ -290,6 +294,12 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
                 }
                 if(s.Quantity != nil) {
                 objectMap["quantity"] = s.Quantity
+                }
+                if(s.Beneficiary != nil) {
+                objectMap["beneficiary"] = s.Beneficiary
+                }
+                if(s.Purchaser != nil) {
+                objectMap["purchaser"] = s.Purchaser
                 }
                 return json.Marshal(objectMap)
         }
@@ -365,6 +375,24 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
     }
         s.Quantity = &quantity
     }
+                case "beneficiary":
+    if v != nil {
+        var beneficiary Tenant
+        err = json.Unmarshal(*v, &beneficiary)
+    if err != nil {
+    return err
+    }
+        s.Beneficiary = &beneficiary
+    }
+                case "purchaser":
+    if v != nil {
+        var purchaser Tenant
+        err = json.Unmarshal(*v, &purchaser)
+    if err != nil {
+    return err
+    }
+        s.Purchaser = &purchaser
+    }
             }
         }
 
@@ -385,5 +413,21 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/
             PlanID *string `json:"planId,omitempty"`
             // Quantity - Quantity.
             Quantity *string `json:"quantity,omitempty"`
+            // Beneficiary - Tenant for which SaaS subscription is purchased.
+            Beneficiary *Tenant `json:"beneficiary,omitempty"`
+            // Purchaser - Tenant that purchased the SaaS subscription.
+            Purchaser *Tenant `json:"purchaser,omitempty"`
+            }
+
+            // Tenant the properties of a tenant.
+            type Tenant struct {
+            // EmailID - The email of the tenant.
+            EmailID *string `json:"emailId,omitempty"`
+            // ObjectID - The object id of the tenant.
+            ObjectID *string `json:"objectId,omitempty"`
+            // TenantID - The tenant id of the tenant.
+            TenantID *string `json:"tenantId,omitempty"`
+            // Puid - The puid of the tenant.
+            Puid *string `json:"puid,omitempty"`
             }
 

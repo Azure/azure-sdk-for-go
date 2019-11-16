@@ -26,7 +26,7 @@ import (
 
 const (
 // DefaultBaseURI is the default URI used for the service Marketplacemeteredbilling
-DefaultBaseURI = "https://marketplaceapi.microsoft.com")
+DefaultBaseURI = "https://marketplaceapi.microsoft.com/api")
 
 // BaseClient is the base client for Marketplacemeteredbilling.
 type BaseClient struct {

@@ -50,7 +50,11 @@ type ActionType = original.ActionType
 const (
 	ActionTypeAutomationAction ActionType = original.ActionTypeAutomationAction
 	ActionTypeEventHub         ActionType = original.ActionTypeEventHub
+	ActionTypeEventHub1        ActionType = original.ActionTypeEventHub1
+	ActionTypeEventHub2        ActionType = original.ActionTypeEventHub2
 	ActionTypeLogicApp         ActionType = original.ActionTypeLogicApp
+	ActionTypeLogicApp1        ActionType = original.ActionTypeLogicApp1
+	ActionTypeLogicApp2        ActionType = original.ActionTypeLogicApp2
 	ActionTypeSecurityEmail    ActionType = original.ActionTypeSecurityEmail
 	ActionTypeWorkspace        ActionType = original.ActionTypeWorkspace
 )
@@ -448,6 +452,13 @@ const (
 	VersionAndAboveSignature Type = original.VersionAndAboveSignature
 )
 
+type UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatus
+
+const (
+	UnmaskedIPLoggingStatusDisabled UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatusDisabled
+	UnmaskedIPLoggingStatusEnabled  UnmaskedIPLoggingStatus = original.UnmaskedIPLoggingStatusEnabled
+)
+
 type ValueType = original.ValueType
 
 const (
@@ -498,7 +509,11 @@ type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
 type Automation = original.Automation
 type AutomationAction = original.AutomationAction
 type AutomationActionEventHub = original.AutomationActionEventHub
+type AutomationActionEventHubInput = original.AutomationActionEventHubInput
+type AutomationActionEventHubOutput = original.AutomationActionEventHubOutput
 type AutomationActionLogicApp = original.AutomationActionLogicApp
+type AutomationActionLogicAppInput = original.AutomationActionLogicAppInput
+type AutomationActionLogicAppOutput = original.AutomationActionLogicAppOutput
 type AutomationActionSecurityEmail = original.AutomationActionSecurityEmail
 type AutomationActionWorkspace = original.AutomationActionWorkspace
 type AutomationList = original.AutomationList
@@ -517,6 +532,8 @@ type AzureResourceDetails = original.AzureResourceDetails
 type BaseClient = original.BaseClient
 type BasicAdditionalData = original.BasicAdditionalData
 type BasicAutomationAction = original.BasicAutomationAction
+type BasicAutomationActionEventHub = original.BasicAutomationActionEventHub
+type BasicAutomationActionLogicApp = original.BasicAutomationActionLogicApp
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
 type BasicResourceDetails = original.BasicResourceDetails
 type CVE = original.CVE
@@ -1194,6 +1211,9 @@ func PossibleSubscriptionRbacRolesValues() []SubscriptionRbacRoles {
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
+}
+func PossibleUnmaskedIPLoggingStatusValues() []UnmaskedIPLoggingStatus {
+	return original.PossibleUnmaskedIPLoggingStatusValues()
 }
 func PossibleValueTypeValues() []ValueType {
 	return original.PossibleValueTypeValues()

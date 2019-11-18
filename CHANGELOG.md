@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v36.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| media | 2019-05-01-preview |
+| netapp | 2019-08-01 |
+| sql | v3.0 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| containerservice | 2019-06-01 |
+
 ## `v36.1.0`
 
 ### Updated Packages

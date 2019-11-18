@@ -47,7 +47,7 @@ var _ AvailabilitySetsClientAPI = (*compute.AvailabilitySetsClient)(nil)
 type ProximityPlacementGroupsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters compute.ProximityPlacementGroup) (result compute.ProximityPlacementGroup, err error)
 	Delete(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result compute.ProximityPlacementGroup, err error)
+	Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, includeColocationStatus string) (result compute.ProximityPlacementGroup, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.ProximityPlacementGroupListResultPage, err error)
 	ListBySubscription(ctx context.Context) (result compute.ProximityPlacementGroupListResultPage, err error)
 	Update(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters compute.ProximityPlacementGroupUpdate) (result compute.ProximityPlacementGroup, err error)
@@ -311,6 +311,7 @@ type GalleriesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, galleryName string) (result compute.Gallery, err error)
 	List(ctx context.Context) (result compute.GalleryListPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.GalleryListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, gallery compute.GalleryUpdate) (result compute.GalleriesUpdateFuture, err error)
 }
 
 var _ GalleriesClientAPI = (*compute.GalleriesClient)(nil)
@@ -321,6 +322,7 @@ type GalleryImagesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (result compute.GalleryImagesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (result compute.GalleryImage, err error)
 	ListByGallery(ctx context.Context, resourceGroupName string, galleryName string) (result compute.GalleryImageListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage compute.GalleryImageUpdate) (result compute.GalleryImagesUpdateFuture, err error)
 }
 
 var _ GalleryImagesClientAPI = (*compute.GalleryImagesClient)(nil)
@@ -331,6 +333,7 @@ type GalleryImageVersionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string) (result compute.GalleryImageVersionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, expand compute.ReplicationStatusTypes) (result compute.GalleryImageVersion, err error)
 	ListByGalleryImage(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (result compute.GalleryImageVersionListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion compute.GalleryImageVersionUpdate) (result compute.GalleryImageVersionsUpdateFuture, err error)
 }
 
 var _ GalleryImageVersionsClientAPI = (*compute.GalleryImageVersionsClient)(nil)
@@ -341,6 +344,7 @@ type GalleryApplicationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplicationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplication, err error)
 	ListByGallery(ctx context.Context, resourceGroupName string, galleryName string) (result compute.GalleryApplicationListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication compute.GalleryApplicationUpdate) (result compute.GalleryApplicationsUpdateFuture, err error)
 }
 
 var _ GalleryApplicationsClientAPI = (*compute.GalleryApplicationsClient)(nil)
@@ -351,6 +355,7 @@ type GalleryApplicationVersionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string) (result compute.GalleryApplicationVersionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, expand compute.ReplicationStatusTypes) (result compute.GalleryApplicationVersion, err error)
 	ListByGalleryApplication(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplicationVersionListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion compute.GalleryApplicationVersionUpdate) (result compute.GalleryApplicationVersionsUpdateFuture, err error)
 }
 
 var _ GalleryApplicationVersionsClientAPI = (*compute.GalleryApplicationVersionsClient)(nil)

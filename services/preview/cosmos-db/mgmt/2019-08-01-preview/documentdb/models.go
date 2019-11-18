@@ -2155,16 +2155,6 @@ type GremlinGraphGetPropertiesResource struct {
 	Ts interface{} `json:"_ts,omitempty"`
 	// Etag - READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string `json:"_etag,omitempty"`
-	// Docs - A system generated property that specified the self-link for documents in a resource.
-	Docs *string `json:"_docs,omitempty"`
-	// Sprocs - A system generated property that specifies the self-link for stored procedures in a resource.
-	Sprocs *string `json:"_sprocs,omitempty"`
-	// Triggers - A system generated property that specifies the self-link for triggers in a resource.
-	Triggers *string `json:"_triggers,omitempty"`
-	// Udfs - A system generated property that specifies the self-link for user defined functions in a resource.
-	Udfs *string `json:"_udfs,omitempty"`
-	// Conflicts - A system generated property that specifies the self-link for conflicts in a resource.
-	Conflicts *string `json:"_conflicts,omitempty"`
 }
 
 // GremlinGraphGetResults an Azure Cosmos DB Gremlin graph.

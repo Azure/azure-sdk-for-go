@@ -3985,8 +3985,6 @@ type SQLContainerGetPropertiesResource struct {
 	PartitionKey *ContainerPartitionKey `json:"partitionKey,omitempty"`
 	// DefaultTTL - Default time to live
 	DefaultTTL *int32 `json:"defaultTtl,omitempty"`
-	// TTLPropertyPath - This property should be only present when DefaultTimeToLive is set. When this property is present, time to live for a resource is decided based on the value of this property in the resource. By default, it is set to null meaning the time to live is based on the _ts property in resource
-	TTLPropertyPath *string `json:"ttlPropertyPath,omitempty"`
 	// UniqueKeyPolicy - The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
 	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
 	// ConflictResolutionPolicy - The conflict resolution policy for the container.
@@ -3997,16 +3995,6 @@ type SQLContainerGetPropertiesResource struct {
 	Ts interface{} `json:"_ts,omitempty"`
 	// Etag - READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
 	Etag *string `json:"_etag,omitempty"`
-	// Docs - A system generated property that specified the self-link for documents in a resource.
-	Docs *string `json:"_docs,omitempty"`
-	// Sprocs - A system generated property that specifies the self-link for stored procedures in a resource.
-	Sprocs *string `json:"_sprocs,omitempty"`
-	// Triggers - A system generated property that specifies the self-link for triggers in a resource.
-	Triggers *string `json:"_triggers,omitempty"`
-	// Udfs - A system generated property that specifies the self-link for user defined functions in a resource.
-	Udfs *string `json:"_udfs,omitempty"`
-	// Conflicts - A system generated property that specifies the self-link for conflicts in a resource.
-	Conflicts *string `json:"_conflicts,omitempty"`
 }
 
 // SQLContainerGetResults an Azure Cosmos DB container.
@@ -4126,8 +4114,6 @@ type SQLContainerResource struct {
 	PartitionKey *ContainerPartitionKey `json:"partitionKey,omitempty"`
 	// DefaultTTL - Default time to live
 	DefaultTTL *int32 `json:"defaultTtl,omitempty"`
-	// TTLPropertyPath - This property should be only present when DefaultTimeToLive is set. When this property is present, time to live for a resource is decided based on the value of this property in the resource. By default, it is set to null meaning the time to live is based on the _ts property in resource
-	TTLPropertyPath *string `json:"ttlPropertyPath,omitempty"`
 	// UniqueKeyPolicy - The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
 	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
 	// ConflictResolutionPolicy - The conflict resolution policy for the container.

@@ -5,11 +5,12 @@ package azblob
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azstorage"
 )
 
 const (
@@ -22,48 +23,27 @@ const (
 	clientSecret = "<secret>"
 )
 
-const (
-	accountName = "<storageaccount>"
-	accountKey  = "<accountkey>"
-)
-
-func clientSecretCredential() azcore.Credential {
-	secret, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		panic(err)
-	}
-	return secret
-}
-
-func sharedKeyCredential() azcore.Credential {
-	sharedKey, err := azstorage.NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		panic(err)
-	}
-	return sharedKey
-}
-
-func defaultCredential() azcore.Credential {
-	cred, err := azidentity.NewDefaultTokenCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-	return cred
-}
-
 func ExampleAnonymousCredential() {
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	if err != nil {
+		panic(err)
+	}
 	client, err := NewServiceClient(endpoint,
-		// switch out with other credential functions above
-		azcore.AnonymousCredential(),
+		cred,
 		azcore.PipelineOptions{})
 	if err != nil {
 		panic(err)
 	}
 	iter := client.ListContainers(nil)
-	for iter.NextItem(context.Background()) {
-		fmt.Println(iter.Item().Name)
-	}
-	if iter.Err() != nil {
-		panic(iter.Err())
+	for {
+		p, err := iter.NextPage(context.Background())
+		if errors.Is(err, io.EOF) {
+			break
+		} else if err != nil {
+			panic(err)
+		}
+		for _, i := range p.Value.ContainerItems {
+			fmt.Println(i.Name)
+		}
 	}
 }

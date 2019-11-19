@@ -31,9 +31,9 @@ func (ov opValues) set(value interface{}) {
 
 // Get looks for a value set by SetValue first
 func (ov opValues) get(value interface{}) bool {
-	v, ok := ov[reflect.TypeOf(value).Elem()]
+	v, ok := ov[reflect.ValueOf(value).Elem().Type()]
 	if ok {
-		reflect.Indirect(reflect.ValueOf(value)).Set(reflect.ValueOf(v))
+		reflect.ValueOf(value).Elem().Set(reflect.ValueOf(v))
 	}
 	return ok
 }
@@ -77,7 +77,7 @@ func (req *Request) OperationValue(value interface{}) bool {
 	if req.values == nil {
 		return false
 	}
-	return req.values.get(&value)
+	return req.values.get(value)
 }
 
 // SetQueryParam sets the key to value.

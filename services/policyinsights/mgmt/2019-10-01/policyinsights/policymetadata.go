@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -115,7 +116,9 @@ func (client PolicyMetadataClient) GetResourceResponder(resp *http.Response) (re
 }
 
 // List get a list of the policy metadata resources.
-func (client PolicyMetadataClient) List(ctx context.Context) (result PolicyMetadataCollectionPage, err error) {
+// Parameters:
+// top - maximum number of records to return.
+func (client PolicyMetadataClient) List(ctx context.Context, top *int32) (result PolicyMetadataCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyMetadataClient.List")
 		defer func() {
@@ -126,8 +129,15 @@ func (client PolicyMetadataClient) List(ctx context.Context) (result PolicyMetad
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: top,
+			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("policyinsights.PolicyMetadataClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx)
+	req, err := client.ListPreparer(ctx, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policyinsights.PolicyMetadataClient", "List", nil, "Failure preparing request")
 		return
@@ -149,10 +159,13 @@ func (client PolicyMetadataClient) List(ctx context.Context) (result PolicyMetad
 }
 
 // ListPreparer prepares the List request.
-func (client PolicyMetadataClient) ListPreparer(ctx context.Context) (*http.Request, error) {
+func (client PolicyMetadataClient) ListPreparer(ctx context.Context, top *int32) (*http.Request, error) {
 	const APIVersion = "2019-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -205,7 +218,7 @@ func (client PolicyMetadataClient) listNextResults(ctx context.Context, lastResu
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client PolicyMetadataClient) ListComplete(ctx context.Context) (result PolicyMetadataCollectionIterator, err error) {
+func (client PolicyMetadataClient) ListComplete(ctx context.Context, top *int32) (result PolicyMetadataCollectionIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PolicyMetadataClient.List")
 		defer func() {
@@ -216,6 +229,6 @@ func (client PolicyMetadataClient) ListComplete(ctx context.Context) (result Pol
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx)
+	result.page, err = client.List(ctx, top)
 	return
 }

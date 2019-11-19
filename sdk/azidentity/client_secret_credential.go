@@ -5,7 +5,8 @@ package azidentity
 
 import (
 	"context"
-	"sync"
+	"runtime"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -54,47 +55,62 @@ func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.Authenticat
 }
 
 type bearerTokenPolicy struct {
-	// take lock when manipulating header/expiresOn fields
-	lock      sync.RWMutex
-	header    string
-	expiresOn time.Time
+	updating  int64                  // atomically set to 1 to indicate a refresh is in progress
+	header    atomic.Value           // string
+	expiresOn atomic.Value           // time.Time
 	creds     azcore.TokenCredential // R/O
 	scopes    []string               // R/O
 }
 
 func newBearerTokenPolicy(creds azcore.TokenCredential, scopes []string) *bearerTokenPolicy {
-	// set the token as expired so first call to Do() refreshes it
-	return &bearerTokenPolicy{creds: creds, scopes: scopes, expiresOn: time.Now().UTC()}
+	bt := bearerTokenPolicy{creds: creds, scopes: scopes}
+	// set initial values to their zero-value
+	bt.header.Store("")
+	bt.expiresOn.Store(time.Time{})
+	return &bt
 }
 
 func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+	// TODO: is window really constant, what about short-lived tokens?
+	const window = 5 * time.Minute
 	var bt string
-	// take read lock and check if the token has expired
-	b.lock.RLock()
+	// check if the token has expired
 	now := time.Now().UTC()
-	if now.Equal(b.expiresOn) || now.After(b.expiresOn) {
-		// token has expired, take the write lock then check again
-		b.lock.RUnlock()
-		// don't defer Unlock(), we want to release it ASAP
-		b.lock.Lock()
-		if now.Equal(b.expiresOn) || now.After(b.expiresOn) {
-			// token has expired, get a new one and update shared state
+	exp := b.expiresOn.Load().(time.Time)
+	if now.After(exp) {
+		// token has expired, set update flag and begin the refresh
+		if atomic.CompareAndSwapInt64(&b.updating, 0, 1) {
 			tk, err := b.creds.GetToken(ctx, b.scopes)
 			if err != nil {
-				b.lock.Unlock()
+				atomic.StoreInt64(&b.updating, 0)
 				return nil, err
 			}
-			b.expiresOn = tk.ExpiresOn
-			b.header = "Bearer " + tk.Token
-		} // else { another go routine already refreshed the token }
-		bt = b.header
-		b.lock.Unlock()
+			// we must set header before expiresOn.  this is to prevent a race
+			// when setting header for the very first time.  if expiresOn is set
+			// first it's possible to get an empty header.
+			b.header.Store("Bearer " + tk.Token)
+			// create a "refresh window" before the token's real expiration date.
+			// this allows callers to continue to use the old token while the
+			// refresh is in progress.
+			b.expiresOn.Store(tk.ExpiresOn.Add(-window))
+			// signal the refresh is complete
+			atomic.StoreInt64(&b.updating, 0)
+		} // else { another go routine is refreshing the token }
+		for {
+			bt = b.header.Load().(string)
+			// for the very first call to Do() the header will be
+			// the empty string.  in this case we need to spin-wait
+			// until header contains a value.  subsequent calls to
+			// Do() will never spin-wait.
+			if bt != "" {
+				break
+			}
+			runtime.Gosched()
+		}
 	} else {
 		// token is still valid
-		bt = b.header
-		b.lock.RUnlock()
+		bt = b.header.Load().(string)
 	}
-	// no locks are to be held at this point
 	req.Request.Header.Set(azcore.HeaderAuthorization, bt)
 	return req.Do(ctx)
 }

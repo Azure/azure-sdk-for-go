@@ -7,7 +7,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -37,7 +36,7 @@ func ExampleAnonymousCredential() {
 	iter := client.ListContainers(nil)
 	for {
 		p, err := iter.NextPage(context.Background())
-		if errors.Is(err, io.EOF) {
+		if errors.Is(err, azcore.IterationDone) {
 			break
 		} else if err != nil {
 			panic(err)

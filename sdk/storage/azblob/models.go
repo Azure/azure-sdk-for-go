@@ -5,8 +5,8 @@ package azblob
 
 import (
 	"context"
-	"io"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	azinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/azblob"
 )
 
@@ -16,11 +16,11 @@ type ListContainersIterator struct {
 	op     *ListContainersOptions
 }
 
-// NextPage fetches the next page.  It returns the page and nil or nil and
-// an error.  If there are no more pages the error returned is io.EOF.
+// NextPage fetches the next page.  It returns the page and nil or nil and an
+// error.  If there are no more pages the error returned is azcore.IterationDone.
 func (iter *ListContainersIterator) NextPage(ctx context.Context) (*ListContainersPage, error) {
 	if iter.op.Marker != nil && *iter.op.Marker == "" {
-		return nil, io.EOF
+		return nil, azcore.IterationDone
 	}
 	req := iter.client.s.ListContainersCreateRequest(iter.client.u, iter.client.p, iter.op)
 	resp, err := req.Do(ctx)

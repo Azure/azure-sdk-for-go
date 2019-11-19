@@ -737,7 +737,7 @@ type ApplicationDefinitionProperties struct {
 	LockingPolicy *ApplicationPackageLockingPolicyDefinition `json:"lockingPolicy,omitempty"`
 	// DeploymentPolicy - The managed application deployment policy.
 	DeploymentPolicy *ApplicationDeploymentPolicy `json:"deploymentPolicy,omitempty"`
-	// ManagementPolicy - The managed application management policy that determines ISV's access to the managed resource group.
+	// ManagementPolicy - The managed application management policy that determines publisher's access to the managed resource group.
 	ManagementPolicy *ApplicationManagementPolicy `json:"managementPolicy,omitempty"`
 	// Policies - The managed application provider policies.
 	Policies *[]ApplicationPolicy `json:"policies,omitempty"`
@@ -1039,7 +1039,7 @@ type ApplicationPackageContact struct {
 	Phone *string `json:"phone,omitempty"`
 }
 
-// ApplicationPackageLockingPolicyDefinition managed application locling policy.
+// ApplicationPackageLockingPolicyDefinition managed application locking policy.
 type ApplicationPackageLockingPolicyDefinition struct {
 	// AllowedActions - The deny assignment excluded actions.
 	AllowedActions *[]string `json:"allowedActions,omitempty"`

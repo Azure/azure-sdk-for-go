@@ -2775,7 +2775,7 @@ func (aaeh AutomationActionEventHub) AsBasicAutomationAction() (BasicAutomationA
 
 // AutomationActionEventHubInput the target Event Hub to which event data will be exported.
 type AutomationActionEventHubInput struct {
-	// ConnectionString - The traget Event Hub connection string
+	// ConnectionString - The target Event Hub connection string
 	ConnectionString *string `json:"connectionString,omitempty"`
 	// EventHubResourceID - The target Event Hub Azure Resource ID.
 	EventHubResourceID *string `json:"eventHubResourceId,omitempty"`
@@ -3591,7 +3591,7 @@ type AutomationProperties struct {
 	Scopes *[]AutomationScope `json:"scopes,omitempty"`
 	// Sources - A collection of the source event types which evaluate the security automation set of rules.
 	Sources *[]AutomationSource `json:"sources,omitempty"`
-	// Actions - A collection of the actions which are triggered if all the configured rules evaluations, within at least one ruleset, are true.
+	// Actions - A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule set, are true.
 	Actions *[]BasicAutomationAction `json:"actions,omitempty"`
 }
 

@@ -854,9 +854,9 @@ var _ PrivateLinkResourcesClientAPI = (*sql.PrivateLinkResourcesClient)(nil)
 
 // ServerAzureADAdministratorsClientAPI contains the set of methods on the ServerAzureADAdministratorsClient type.
 type ServerAzureADAdministratorsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, administratorName string, parameters sql.ServerAzureADAdministrator) (result sql.ServerAzureADAdministratorsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (result sql.ServerAzureADAdministratorsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, administratorName string) (result sql.ServerAzureADAdministrator, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters sql.ServerAzureADAdministrator) (result sql.ServerAzureADAdministratorsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministratorsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerAzureADAdministrator, err error)
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultPage, err error)
 }
 

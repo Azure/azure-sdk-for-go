@@ -37,57 +37,131 @@ type ApplicationArtifactType string
 const (
 	// Custom ...
 	Custom ApplicationArtifactType = "Custom"
+	// NotSpecified ...
+	NotSpecified ApplicationArtifactType = "NotSpecified"
 	// Template ...
 	Template ApplicationArtifactType = "Template"
 )
 
 // PossibleApplicationArtifactTypeValues returns an array of possible values for the ApplicationArtifactType const type.
 func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
-	return []ApplicationArtifactType{Custom, Template}
+	return []ApplicationArtifactType{Custom, NotSpecified, Template}
+}
+
+// ApplicationDefinitionArtifactName enumerates the values for application definition artifact name.
+type ApplicationDefinitionArtifactName string
+
+const (
+	// ApplicationDefinitionArtifactNameApplicationResourceTemplate ...
+	ApplicationDefinitionArtifactNameApplicationResourceTemplate ApplicationDefinitionArtifactName = "ApplicationResourceTemplate"
+	// ApplicationDefinitionArtifactNameCreateUIDefinition ...
+	ApplicationDefinitionArtifactNameCreateUIDefinition ApplicationDefinitionArtifactName = "CreateUiDefinition"
+	// ApplicationDefinitionArtifactNameMainTemplateParameters ...
+	ApplicationDefinitionArtifactNameMainTemplateParameters ApplicationDefinitionArtifactName = "MainTemplateParameters"
+	// ApplicationDefinitionArtifactNameNotSpecified ...
+	ApplicationDefinitionArtifactNameNotSpecified ApplicationDefinitionArtifactName = "NotSpecified"
+)
+
+// PossibleApplicationDefinitionArtifactNameValues returns an array of possible values for the ApplicationDefinitionArtifactName const type.
+func PossibleApplicationDefinitionArtifactNameValues() []ApplicationDefinitionArtifactName {
+	return []ApplicationDefinitionArtifactName{ApplicationDefinitionArtifactNameApplicationResourceTemplate, ApplicationDefinitionArtifactNameCreateUIDefinition, ApplicationDefinitionArtifactNameMainTemplateParameters, ApplicationDefinitionArtifactNameNotSpecified}
 }
 
 // ApplicationLockLevel enumerates the values for application lock level.
 type ApplicationLockLevel string
 
 const (
-	// CanNotDelete ...
-	CanNotDelete ApplicationLockLevel = "CanNotDelete"
-	// None ...
-	None ApplicationLockLevel = "None"
-	// ReadOnly ...
-	ReadOnly ApplicationLockLevel = "ReadOnly"
+	// ApplicationLockLevelCanNotDelete ...
+	ApplicationLockLevelCanNotDelete ApplicationLockLevel = "CanNotDelete"
+	// ApplicationLockLevelNone ...
+	ApplicationLockLevelNone ApplicationLockLevel = "None"
+	// ApplicationLockLevelNotSpecified ...
+	ApplicationLockLevelNotSpecified ApplicationLockLevel = "NotSpecified"
+	// ApplicationLockLevelReadOnly ...
+	ApplicationLockLevelReadOnly ApplicationLockLevel = "ReadOnly"
 )
 
 // PossibleApplicationLockLevelValues returns an array of possible values for the ApplicationLockLevel const type.
 func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
-	return []ApplicationLockLevel{CanNotDelete, None, ReadOnly}
+	return []ApplicationLockLevel{ApplicationLockLevelCanNotDelete, ApplicationLockLevelNone, ApplicationLockLevelNotSpecified, ApplicationLockLevelReadOnly}
+}
+
+// ApplicationManagementMode enumerates the values for application management mode.
+type ApplicationManagementMode string
+
+const (
+	// ApplicationManagementModeManaged ...
+	ApplicationManagementModeManaged ApplicationManagementMode = "Managed"
+	// ApplicationManagementModeNotSpecified ...
+	ApplicationManagementModeNotSpecified ApplicationManagementMode = "NotSpecified"
+	// ApplicationManagementModeUnmanaged ...
+	ApplicationManagementModeUnmanaged ApplicationManagementMode = "Unmanaged"
+)
+
+// PossibleApplicationManagementModeValues returns an array of possible values for the ApplicationManagementMode const type.
+func PossibleApplicationManagementModeValues() []ApplicationManagementMode {
+	return []ApplicationManagementMode{ApplicationManagementModeManaged, ApplicationManagementModeNotSpecified, ApplicationManagementModeUnmanaged}
+}
+
+// DeploymentMode enumerates the values for deployment mode.
+type DeploymentMode string
+
+const (
+	// DeploymentModeComplete ...
+	DeploymentModeComplete DeploymentMode = "Complete"
+	// DeploymentModeIncremental ...
+	DeploymentModeIncremental DeploymentMode = "Incremental"
+	// DeploymentModeNotSpecified ...
+	DeploymentModeNotSpecified DeploymentMode = "NotSpecified"
+)
+
+// PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
+func PossibleDeploymentModeValues() []DeploymentMode {
+	return []DeploymentMode{DeploymentModeComplete, DeploymentModeIncremental, DeploymentModeNotSpecified}
+}
+
+// JitApprovalMode enumerates the values for jit approval mode.
+type JitApprovalMode string
+
+const (
+	// JitApprovalModeAutoApprove ...
+	JitApprovalModeAutoApprove JitApprovalMode = "AutoApprove"
+	// JitApprovalModeManualApprove ...
+	JitApprovalModeManualApprove JitApprovalMode = "ManualApprove"
+	// JitApprovalModeNotSpecified ...
+	JitApprovalModeNotSpecified JitApprovalMode = "NotSpecified"
+)
+
+// PossibleJitApprovalModeValues returns an array of possible values for the JitApprovalMode const type.
+func PossibleJitApprovalModeValues() []JitApprovalMode {
+	return []JitApprovalMode{JitApprovalModeAutoApprove, JitApprovalModeManualApprove, JitApprovalModeNotSpecified}
 }
 
 // JitRequestState enumerates the values for jit request state.
 type JitRequestState string
 
 const (
-	// Approved ...
-	Approved JitRequestState = "Approved"
-	// Canceled ...
-	Canceled JitRequestState = "Canceled"
-	// Denied ...
-	Denied JitRequestState = "Denied"
-	// Expired ...
-	Expired JitRequestState = "Expired"
-	// Failed ...
-	Failed JitRequestState = "Failed"
-	// NotSpecified ...
-	NotSpecified JitRequestState = "NotSpecified"
-	// Pending ...
-	Pending JitRequestState = "Pending"
-	// Timeout ...
-	Timeout JitRequestState = "Timeout"
+	// JitRequestStateApproved ...
+	JitRequestStateApproved JitRequestState = "Approved"
+	// JitRequestStateCanceled ...
+	JitRequestStateCanceled JitRequestState = "Canceled"
+	// JitRequestStateDenied ...
+	JitRequestStateDenied JitRequestState = "Denied"
+	// JitRequestStateExpired ...
+	JitRequestStateExpired JitRequestState = "Expired"
+	// JitRequestStateFailed ...
+	JitRequestStateFailed JitRequestState = "Failed"
+	// JitRequestStateNotSpecified ...
+	JitRequestStateNotSpecified JitRequestState = "NotSpecified"
+	// JitRequestStatePending ...
+	JitRequestStatePending JitRequestState = "Pending"
+	// JitRequestStateTimeout ...
+	JitRequestStateTimeout JitRequestState = "Timeout"
 )
 
 // PossibleJitRequestStateValues returns an array of possible values for the JitRequestState const type.
 func PossibleJitRequestStateValues() []JitRequestState {
-	return []JitRequestState{Approved, Canceled, Denied, Expired, Failed, NotSpecified, Pending, Timeout}
+	return []JitRequestState{JitRequestStateApproved, JitRequestStateCanceled, JitRequestStateDenied, JitRequestStateExpired, JitRequestStateFailed, JitRequestStateNotSpecified, JitRequestStatePending, JitRequestStateTimeout}
 }
 
 // JitSchedulingType enumerates the values for jit scheduling type.
@@ -125,6 +199,8 @@ const (
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
 	// ProvisioningStateFailed ...
 	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateNotSpecified ...
+	ProvisioningStateNotSpecified ProvisioningState = "NotSpecified"
 	// ProvisioningStateReady ...
 	ProvisioningStateReady ProvisioningState = "Ready"
 	// ProvisioningStateRunning ...
@@ -137,7 +213,7 @@ const (
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateAccepted, ProvisioningStateCanceled, ProvisioningStateCreated, ProvisioningStateCreating, ProvisioningStateDeleted, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateReady, ProvisioningStateRunning, ProvisioningStateSucceeded, ProvisioningStateUpdating}
+	return []ProvisioningState{ProvisioningStateAccepted, ProvisioningStateCanceled, ProvisioningStateCreated, ProvisioningStateCreating, ProvisioningStateDeleted, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateNotSpecified, ProvisioningStateReady, ProvisioningStateRunning, ProvisioningStateSucceeded, ProvisioningStateUpdating}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.
@@ -162,12 +238,12 @@ type Application struct {
 	Plan *Plan `json:"plan,omitempty"`
 	// Kind - The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
 	Kind *string `json:"kind,omitempty"`
+	// Identity - The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
 	// ManagedBy - ID of the resource that manages this resource.
 	ManagedBy *string `json:"managedBy,omitempty"`
 	// Sku - The SKU of the resource.
 	Sku *Sku `json:"sku,omitempty"`
-	// Identity - The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
 	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -192,14 +268,14 @@ func (a Application) MarshalJSON() ([]byte, error) {
 	if a.Kind != nil {
 		objectMap["kind"] = a.Kind
 	}
+	if a.Identity != nil {
+		objectMap["identity"] = a.Identity
+	}
 	if a.ManagedBy != nil {
 		objectMap["managedBy"] = a.ManagedBy
 	}
 	if a.Sku != nil {
 		objectMap["sku"] = a.Sku
-	}
-	if a.Identity != nil {
-		objectMap["identity"] = a.Identity
 	}
 	if a.Location != nil {
 		objectMap["location"] = a.Location
@@ -246,6 +322,15 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 				}
 				a.Kind = &kind
 			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				a.Identity = &identity
+			}
 		case "managedBy":
 			if v != nil {
 				var managedBy string
@@ -263,15 +348,6 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.Sku = &sku
-			}
-		case "identity":
-			if v != nil {
-				var identity Identity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				a.Identity = &identity
 			}
 		case "id":
 			if v != nil {
@@ -326,12 +402,26 @@ func (a *Application) UnmarshalJSON(body []byte) error {
 
 // ApplicationArtifact managed application artifact.
 type ApplicationArtifact struct {
-	// Name - The managed application artifact name.
-	Name *string `json:"name,omitempty"`
+	// Name - The managed application artifact name. Possible values include: 'ApplicationDefinitionArtifactNameNotSpecified', 'ApplicationDefinitionArtifactNameApplicationResourceTemplate', 'ApplicationDefinitionArtifactNameCreateUIDefinition', 'ApplicationDefinitionArtifactNameMainTemplateParameters'
+	Name ApplicationDefinitionArtifactName `json:"name,omitempty"`
 	// URI - The managed application artifact blob uri.
 	URI *string `json:"uri,omitempty"`
-	// Type - The managed application artifact type. Possible values include: 'Template', 'Custom'
+	// Type - The managed application artifact type. Possible values include: 'NotSpecified', 'Template', 'Custom'
 	Type ApplicationArtifactType `json:"type,omitempty"`
+}
+
+// ApplicationAuthorization the managed application provider authorization.
+type ApplicationAuthorization struct {
+	// PrincipalID - The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the managed application resources.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// RoleDefinitionID - The provider's role definition identifier. This role will define all the permissions that the provider must have on the managed application's container resource group. This role definition cannot have permission to delete the resource group.
+	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+}
+
+// ApplicationBillingDetailsDefinition managed application billing details definition.
+type ApplicationBillingDetailsDefinition struct {
+	// ResourceUsageID - The managed application resource usage Id.
+	ResourceUsageID *string `json:"resourceUsageId,omitempty"`
 }
 
 // ApplicationClientDetails the application client details to track the entity creating/updating the
@@ -354,8 +444,6 @@ type ApplicationDefinition struct {
 	ManagedBy *string `json:"managedBy,omitempty"`
 	// Sku - The SKU of the resource.
 	Sku *Sku `json:"sku,omitempty"`
-	// Identity - The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
 	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -379,9 +467,6 @@ func (ad ApplicationDefinition) MarshalJSON() ([]byte, error) {
 	}
 	if ad.Sku != nil {
 		objectMap["sku"] = ad.Sku
-	}
-	if ad.Identity != nil {
-		objectMap["identity"] = ad.Identity
 	}
 	if ad.Location != nil {
 		objectMap["location"] = ad.Location
@@ -427,15 +512,6 @@ func (ad *ApplicationDefinition) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ad.Sku = &sku
-			}
-		case "identity":
-			if v != nil {
-				var identity Identity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				ad.Identity = &identity
 			}
 		case "id":
 			if v != nil {
@@ -637,14 +713,14 @@ func NewApplicationDefinitionListResultPage(getNextPage func(context.Context, Ap
 
 // ApplicationDefinitionProperties the managed application definition properties.
 type ApplicationDefinitionProperties struct {
-	// LockLevel - The managed application lock level. Possible values include: 'CanNotDelete', 'ReadOnly', 'None'
+	// LockLevel - The managed application lock level. Possible values include: 'ApplicationLockLevelNotSpecified', 'ApplicationLockLevelCanNotDelete', 'ApplicationLockLevelReadOnly', 'ApplicationLockLevelNone'
 	LockLevel ApplicationLockLevel `json:"lockLevel,omitempty"`
 	// DisplayName - The managed application definition display name.
 	DisplayName *string `json:"displayName,omitempty"`
 	// IsEnabled - A value indicating whether the package is enabled or not.
 	IsEnabled *string `json:"isEnabled,omitempty"`
 	// Authorizations - The managed application provider authorizations.
-	Authorizations *[]ApplicationProviderAuthorization `json:"authorizations,omitempty"`
+	Authorizations *[]ApplicationAuthorization `json:"authorizations,omitempty"`
 	// Artifacts - The collection of managed application artifacts. The portal will use the files specified as artifacts to construct the user experience of creating a managed application from a managed application definition.
 	Artifacts *[]ApplicationArtifact `json:"artifacts,omitempty"`
 	// Description - The managed application definition description.
@@ -655,6 +731,16 @@ type ApplicationDefinitionProperties struct {
 	MainTemplate interface{} `json:"mainTemplate,omitempty"`
 	// CreateUIDefinition - The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject or well-formed JSON string.
 	CreateUIDefinition interface{} `json:"createUiDefinition,omitempty"`
+	// NotificationPolicy - The managed application notification policy.
+	NotificationPolicy *ApplicationNotificationPolicy `json:"notificationPolicy,omitempty"`
+	// LockingPolicy - The managed application locking policy.
+	LockingPolicy *ApplicationPackageLockingPolicyDefinition `json:"lockingPolicy,omitempty"`
+	// DeploymentPolicy - The managed application deployment policy.
+	DeploymentPolicy *ApplicationDeploymentPolicy `json:"deploymentPolicy,omitempty"`
+	// ManagementPolicy - The managed application management policy that determines ISV's access to the managed resource group.
+	ManagementPolicy *ApplicationManagementPolicy `json:"managementPolicy,omitempty"`
+	// Policies - The managed application provider policies.
+	Policies *[]ApplicationPolicy `json:"policies,omitempty"`
 }
 
 // ApplicationDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results
@@ -759,6 +845,24 @@ func (future *ApplicationDefinitionsDeleteFuture) Result(client ApplicationDefin
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// ApplicationDeploymentPolicy managed application deployment policy.
+type ApplicationDeploymentPolicy struct {
+	// DeploymentMode - The managed application deployment mode. Possible values include: 'DeploymentModeNotSpecified', 'DeploymentModeIncremental', 'DeploymentModeComplete'
+	DeploymentMode DeploymentMode `json:"deploymentMode,omitempty"`
+}
+
+// ApplicationJitAccessPolicy managed application Jit access policy.
+type ApplicationJitAccessPolicy struct {
+	// JITAccessEnabled - Whether the JIT access is enabled.
+	JITAccessEnabled *string `json:"JITAccessEnabled,omitempty"`
+	// JITApprovalMode - JIT approval mode. Possible values include: 'JitApprovalModeNotSpecified', 'JitApprovalModeAutoApprove', 'JitApprovalModeManualApprove'
+	JITApprovalMode JitApprovalMode `json:"JITApprovalMode,omitempty"`
+	// JITApprovers - The JIT approvers
+	JITApprovers *[]JitApproverDefinition `json:"JITApprovers,omitempty"`
+	// MaximumJitAccessDuration - READ-ONLY; The maximum duration JIT access is granted.
+	MaximumJitAccessDuration *string `json:"maximumJitAccessDuration,omitempty"`
 }
 
 // ApplicationListResult list of managed applications.
@@ -907,6 +1011,48 @@ func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationL
 	return ApplicationListResultPage{fn: getNextPage}
 }
 
+// ApplicationManagementPolicy managed application management policy.
+type ApplicationManagementPolicy struct {
+	// Mode - The managed application management mode. Possible values include: 'ApplicationManagementModeNotSpecified', 'ApplicationManagementModeUnmanaged', 'ApplicationManagementModeManaged'
+	Mode ApplicationManagementMode `json:"mode,omitempty"`
+}
+
+// ApplicationNotificationEndpoint managed application notification endpoint.
+type ApplicationNotificationEndpoint struct {
+	// URI - The managed application notification endpoint uri.
+	URI *string `json:"uri,omitempty"`
+}
+
+// ApplicationNotificationPolicy managed application notification policy.
+type ApplicationNotificationPolicy struct {
+	// NotificationEndpoints - The managed application notification endpoint.
+	NotificationEndpoints *[]ApplicationNotificationEndpoint `json:"notificationEndpoints,omitempty"`
+}
+
+// ApplicationPackageContact the application package contact information.
+type ApplicationPackageContact struct {
+	// ContactName - The contact name.
+	ContactName *string `json:"contactName,omitempty"`
+	// Email - The contact email.
+	Email *string `json:"email,omitempty"`
+	// Phone - The contact phone number.
+	Phone *string `json:"phone,omitempty"`
+}
+
+// ApplicationPackageLockingPolicyDefinition managed application locling policy.
+type ApplicationPackageLockingPolicyDefinition struct {
+	// AllowedActions - The deny assignment excluded actions.
+	AllowedActions *[]string `json:"allowedActions,omitempty"`
+}
+
+// ApplicationPackageSupportUrls the appliance package support URLs.
+type ApplicationPackageSupportUrls struct {
+	// PublicAzure - The public azure support URL.
+	PublicAzure *string `json:"publicAzure,omitempty"`
+	// GovernmentCloud - The government cloud support URL.
+	GovernmentCloud *string `json:"governmentCloud,omitempty"`
+}
+
 // ApplicationPatchable information about managed application.
 type ApplicationPatchable struct {
 	// ApplicationPropertiesPatchable - The managed application properties.
@@ -915,12 +1061,12 @@ type ApplicationPatchable struct {
 	Plan *PlanPatchable `json:"plan,omitempty"`
 	// Kind - The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
 	Kind *string `json:"kind,omitempty"`
+	// Identity - The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
 	// ManagedBy - ID of the resource that manages this resource.
 	ManagedBy *string `json:"managedBy,omitempty"`
 	// Sku - The SKU of the resource.
 	Sku *Sku `json:"sku,omitempty"`
-	// Identity - The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
 	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -945,14 +1091,14 @@ func (ap ApplicationPatchable) MarshalJSON() ([]byte, error) {
 	if ap.Kind != nil {
 		objectMap["kind"] = ap.Kind
 	}
+	if ap.Identity != nil {
+		objectMap["identity"] = ap.Identity
+	}
 	if ap.ManagedBy != nil {
 		objectMap["managedBy"] = ap.ManagedBy
 	}
 	if ap.Sku != nil {
 		objectMap["sku"] = ap.Sku
-	}
-	if ap.Identity != nil {
-		objectMap["identity"] = ap.Identity
 	}
 	if ap.Location != nil {
 		objectMap["location"] = ap.Location
@@ -999,6 +1145,15 @@ func (ap *ApplicationPatchable) UnmarshalJSON(body []byte) error {
 				}
 				ap.Kind = &kind
 			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				ap.Identity = &identity
+			}
 		case "managedBy":
 			if v != nil {
 				var managedBy string
@@ -1016,15 +1171,6 @@ func (ap *ApplicationPatchable) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ap.Sku = &sku
-			}
-		case "identity":
-			if v != nil {
-				var identity Identity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				ap.Identity = &identity
 			}
 		case "id":
 			if v != nil {
@@ -1077,6 +1223,18 @@ func (ap *ApplicationPatchable) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ApplicationPolicy managed application policy.
+type ApplicationPolicy struct {
+	// Name - The policy name
+	Name *string `json:"name,omitempty"`
+	// PolicyDefinitionID - The policy definition Id.
+	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	// Parameters - The policy parameters.
+	Parameters *string `json:"parameters,omitempty"`
+	// Sku - The policy sku.
+	Sku *string `json:"sku,omitempty"`
+}
+
 // ApplicationProperties the managed application properties.
 type ApplicationProperties struct {
 	// ManagedResourceGroupID - The managed resource group Id.
@@ -1087,8 +1245,54 @@ type ApplicationProperties struct {
 	Parameters interface{} `json:"parameters,omitempty"`
 	// Outputs - READ-ONLY; Name and value pairs that define the managed application outputs.
 	Outputs interface{} `json:"outputs,omitempty"`
-	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateRunning', 'ProvisioningStateReady', 'ProvisioningStateCreating', 'ProvisioningStateCreated', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateCanceled', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating'
+	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'ProvisioningStateNotSpecified', 'ProvisioningStateAccepted', 'ProvisioningStateRunning', 'ProvisioningStateReady', 'ProvisioningStateCreating', 'ProvisioningStateCreated', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateCanceled', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// BillingDetails - The managed application billing details.
+	BillingDetails *ApplicationBillingDetailsDefinition `json:"billingDetails,omitempty"`
+	// AdditionalManagedScopes - The additional managed scopes outside of the normal managed resource group.
+	AdditionalManagedScopes map[string]*string `json:"additionalManagedScopes"`
+	// JITAccessPolicy - The managed application Jit access policy.
+	JITAccessPolicy *ApplicationJitAccessPolicy `json:"JITAccessPolicy,omitempty"`
+	// PublisherTenantID - READ-ONLY; The publisher tenant Id.
+	PublisherTenantID *string `json:"publisherTenantId,omitempty"`
+	// Authorizations - READ-ONLY; The  read-only authorizations property that is retrieved from the application package.
+	Authorizations *[]ApplicationAuthorization `json:"authorizations,omitempty"`
+	// ManagementMode - READ-ONLY; The managed application management mode. Possible values include: 'ApplicationManagementModeNotSpecified', 'ApplicationManagementModeUnmanaged', 'ApplicationManagementModeManaged'
+	ManagementMode ApplicationManagementMode `json:"managementMode,omitempty"`
+	// CustomerSupport - READ-ONLY; The read-only customer support property that is retrieved from the application package.
+	CustomerSupport *ApplicationPackageContact `json:"customerSupport,omitempty"`
+	// SupportUrls - READ-ONLY; The  read-only support URLs property that is retrieved from the application package.
+	SupportUrls *ApplicationPackageSupportUrls `json:"supportUrls,omitempty"`
+	// Artifacts - READ-ONLY; The collection of managed application artifacts.
+	Artifacts *[]ApplicationArtifact `json:"artifacts,omitempty"`
+	// CreatedBy - READ-ONLY; The client entity that created the JIT request.
+	CreatedBy *ApplicationClientDetails `json:"createdBy,omitempty"`
+	// UpdatedBy - READ-ONLY; The client entity that last updated the JIT request.
+	UpdatedBy *ApplicationClientDetails `json:"updatedBy,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationProperties.
+func (ap ApplicationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.ManagedResourceGroupID != nil {
+		objectMap["managedResourceGroupId"] = ap.ManagedResourceGroupID
+	}
+	if ap.ApplicationDefinitionID != nil {
+		objectMap["applicationDefinitionId"] = ap.ApplicationDefinitionID
+	}
+	if ap.Parameters != nil {
+		objectMap["parameters"] = ap.Parameters
+	}
+	if ap.BillingDetails != nil {
+		objectMap["billingDetails"] = ap.BillingDetails
+	}
+	if ap.AdditionalManagedScopes != nil {
+		objectMap["additionalManagedScopes"] = ap.AdditionalManagedScopes
+	}
+	if ap.JITAccessPolicy != nil {
+		objectMap["JITAccessPolicy"] = ap.JITAccessPolicy
+	}
+	return json.Marshal(objectMap)
 }
 
 // ApplicationPropertiesPatchable the managed application properties.
@@ -1101,16 +1305,8 @@ type ApplicationPropertiesPatchable struct {
 	Parameters interface{} `json:"parameters,omitempty"`
 	// Outputs - READ-ONLY; Name and value pairs that define the managed application outputs.
 	Outputs interface{} `json:"outputs,omitempty"`
-	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateRunning', 'ProvisioningStateReady', 'ProvisioningStateCreating', 'ProvisioningStateCreated', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateCanceled', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating'
+	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'ProvisioningStateNotSpecified', 'ProvisioningStateAccepted', 'ProvisioningStateRunning', 'ProvisioningStateReady', 'ProvisioningStateCreating', 'ProvisioningStateCreated', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateCanceled', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-}
-
-// ApplicationProviderAuthorization the managed application provider authorization.
-type ApplicationProviderAuthorization struct {
-	// PrincipalID - The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the managed application resources.
-	PrincipalID *string `json:"principalId,omitempty"`
-	// RoleDefinitionID - The provider's role definition identifier. This role will define all the permissions that the provider must have on the managed application's container resource group. This role definition cannot have permission to delete the resource group.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 }
 
 // ApplicationsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
@@ -1257,8 +1453,6 @@ type GenericResource struct {
 	ManagedBy *string `json:"managedBy,omitempty"`
 	// Sku - The SKU of the resource.
 	Sku *Sku `json:"sku,omitempty"`
-	// Identity - The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
 	// ID - READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -1280,9 +1474,6 @@ func (gr GenericResource) MarshalJSON() ([]byte, error) {
 	if gr.Sku != nil {
 		objectMap["sku"] = gr.Sku
 	}
-	if gr.Identity != nil {
-		objectMap["identity"] = gr.Identity
-	}
 	if gr.Location != nil {
 		objectMap["location"] = gr.Location
 	}
@@ -1300,6 +1491,16 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// JitApproverDefinition JIT approver definition.
+type JitApproverDefinition struct {
+	// ID - The approver service principal Id.
+	ID *string `json:"id,omitempty"`
+	// Type - The approver type.
+	Type *string `json:"type,omitempty"`
+	// DisplayName - The approver display name.
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // JitAuthorizationPolicies the JIT authorization policies.
@@ -1445,9 +1646,9 @@ type JitRequestProperties struct {
 	JitAuthorizationPolicies *[]JitAuthorizationPolicies `json:"jitAuthorizationPolicies,omitempty"`
 	// JitSchedulingPolicy - The JIT request properties.
 	JitSchedulingPolicy *JitSchedulingPolicy `json:"jitSchedulingPolicy,omitempty"`
-	// ProvisioningState - READ-ONLY; The JIT request provisioning state. Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateRunning', 'ProvisioningStateReady', 'ProvisioningStateCreating', 'ProvisioningStateCreated', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateCanceled', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating'
+	// ProvisioningState - READ-ONLY; The JIT request provisioning state. Possible values include: 'ProvisioningStateNotSpecified', 'ProvisioningStateAccepted', 'ProvisioningStateRunning', 'ProvisioningStateReady', 'ProvisioningStateCreating', 'ProvisioningStateCreated', 'ProvisioningStateDeleting', 'ProvisioningStateDeleted', 'ProvisioningStateCanceled', 'ProvisioningStateFailed', 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// JitRequestState - READ-ONLY; The JIT request state. Possible values include: 'NotSpecified', 'Pending', 'Approved', 'Denied', 'Failed', 'Canceled', 'Expired', 'Timeout'
+	// JitRequestState - READ-ONLY; The JIT request state. Possible values include: 'JitRequestStateNotSpecified', 'JitRequestStatePending', 'JitRequestStateApproved', 'JitRequestStateDenied', 'JitRequestStateFailed', 'JitRequestStateCanceled', 'JitRequestStateExpired', 'JitRequestStateTimeout'
 	JitRequestState JitRequestState `json:"jitRequestState,omitempty"`
 	// CreatedBy - READ-ONLY; The client entity that created the JIT request.
 	CreatedBy *ApplicationClientDetails `json:"createdBy,omitempty"`

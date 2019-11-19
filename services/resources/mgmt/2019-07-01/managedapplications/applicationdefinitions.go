@@ -67,7 +67,9 @@ func (client ApplicationDefinitionsClient) CreateOrUpdate(ctx context.Context, r
 				{Target: "applicationDefinitionName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ApplicationDefinitionProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.ApplicationDefinitionProperties.Authorizations", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "parameters.ApplicationDefinitionProperties.NotificationPolicy", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.ApplicationDefinitionProperties.NotificationPolicy.NotificationEndpoints", Name: validation.Null, Rule: true, Chain: nil}}},
+				}}}}}); err != nil {
 		return result, validation.NewError("managedapplications.ApplicationDefinitionsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -155,7 +157,9 @@ func (client ApplicationDefinitionsClient) CreateOrUpdateByID(ctx context.Contex
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ApplicationDefinitionProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.ApplicationDefinitionProperties.Authorizations", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "parameters.ApplicationDefinitionProperties.NotificationPolicy", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "parameters.ApplicationDefinitionProperties.NotificationPolicy.NotificationEndpoints", Name: validation.Null, Rule: true, Chain: nil}}},
+				}}}}}); err != nil {
 		return result, validation.NewError("managedapplications.ApplicationDefinitionsClient", "CreateOrUpdateByID", err.Error())
 	}
 

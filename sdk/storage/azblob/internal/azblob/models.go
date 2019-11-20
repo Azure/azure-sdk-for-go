@@ -6,8 +6,6 @@ package azblob
 import (
 	"encoding/xml"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ETag is an entity tag.
@@ -128,15 +126,6 @@ func PossiblePublicAccessTypeValues() []PublicAccessType {
 	return []PublicAccessType{PublicAccessBlob, PublicAccessContainer, PublicAccessNone}
 }
 
-type BlobContainersSegment struct {
-	ServiceEndpoint string          `xml:"ServiceEndpoint,attr"`
-	Prefix          *string         `xml:"Prefix"`
-	Marker          *string         `xml:"Marker"`
-	MaxResults      *int32          `xml:"MaxResults"`
-	ContainerItems  []ContainerItem `xml:"Containers>Container"`
-	NextMarker      *string         `xml:"NextMarker"`
-}
-
 // ContainerItem - An Azure Storage container
 type ContainerItem struct {
 	// XMLName is used for marshalling and is subject to removal in a future release.
@@ -173,6 +162,12 @@ type ListContainersOptions struct {
 
 // ListContainersPage - An enumeration of containers
 type ListContainersPage struct {
-	RawResponse *azcore.Response
-	Value       *BlobContainersSegment `xml:"EnumerationResults"`
+	// XMLName is used for marshalling and is subject to removal in a future release.
+	XMLName         xml.Name        `xml:"EnumerationResults"`
+	ServiceEndpoint string          `xml:"ServiceEndpoint,attr"`
+	Prefix          *string         `xml:"Prefix"`
+	Marker          *string         `xml:"Marker"`
+	MaxResults      *int32          `xml:"MaxResults"`
+	ContainerItems  []ContainerItem `xml:"Containers>Container"`
+	NextMarker      *string         `xml:"NextMarker"`
 }

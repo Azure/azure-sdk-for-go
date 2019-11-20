@@ -31,7 +31,7 @@ func (iter *ListContainersIterator) NextPage(ctx context.Context) (*ListContaine
 	if err != nil {
 		return nil, err
 	}
-	iter.op.Marker = page.Value.NextMarker
+	iter.op.Marker = page.NextMarker
 	return page, nil
 }
 

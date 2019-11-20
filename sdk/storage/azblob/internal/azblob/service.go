@@ -47,6 +47,6 @@ func (Service) ListContainersCreateResponse(resp *azcore.Response) (*ListContain
 	if err := resp.CheckStatusCode(http.StatusOK); err != nil {
 		return nil, err
 	}
-	result := &ListContainersPage{RawResponse: resp, Value: &BlobContainersSegment{}}
-	return result, resp.UnmarshalAsXML(result.Value)
+	result := &ListContainersPage{}
+	return result, resp.UnmarshalAsXML(result)
 }

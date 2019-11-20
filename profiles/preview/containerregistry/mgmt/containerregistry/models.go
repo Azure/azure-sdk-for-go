@@ -318,6 +318,8 @@ type DockerBuildStepUpdateParameters = original.DockerBuildStepUpdateParameters
 type EncodedTaskRunRequest = original.EncodedTaskRunRequest
 type EncodedTaskStep = original.EncodedTaskStep
 type EncodedTaskStepUpdateParameters = original.EncodedTaskStepUpdateParameters
+type Error = original.Error
+type ErrorSchema = original.ErrorSchema
 type Event = original.Event
 type EventContent = original.EventContent
 type EventInfo = original.EventInfo
@@ -431,7 +433,18 @@ type TaskListResultIterator = original.TaskListResultIterator
 type TaskListResultPage = original.TaskListResultPage
 type TaskProperties = original.TaskProperties
 type TaskPropertiesUpdateParameters = original.TaskPropertiesUpdateParameters
+type TaskRun = original.TaskRun
+type TaskRunListResult = original.TaskRunListResult
+type TaskRunListResultIterator = original.TaskRunListResultIterator
+type TaskRunListResultPage = original.TaskRunListResultPage
+type TaskRunProperties = original.TaskRunProperties
+type TaskRunPropertiesUpdateParameters = original.TaskRunPropertiesUpdateParameters
 type TaskRunRequest = original.TaskRunRequest
+type TaskRunUpdateParameters = original.TaskRunUpdateParameters
+type TaskRunsClient = original.TaskRunsClient
+type TaskRunsCreateFuture = original.TaskRunsCreateFuture
+type TaskRunsDeleteFuture = original.TaskRunsDeleteFuture
+type TaskRunsUpdateFuture = original.TaskRunsUpdateFuture
 type TaskStepProperties = original.TaskStepProperties
 type TaskStepUpdateParameters = original.TaskStepUpdateParameters
 type TaskUpdateParameters = original.TaskUpdateParameters
@@ -549,6 +562,18 @@ func NewTaskListResultIterator(page TaskListResultPage) TaskListResultIterator {
 }
 func NewTaskListResultPage(getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
 	return original.NewTaskListResultPage(getNextPage)
+}
+func NewTaskRunListResultIterator(page TaskRunListResultPage) TaskRunListResultIterator {
+	return original.NewTaskRunListResultIterator(page)
+}
+func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResult) (TaskRunListResult, error)) TaskRunListResultPage {
+	return original.NewTaskRunListResultPage(getNextPage)
+}
+func NewTaskRunsClient(subscriptionID string) TaskRunsClient {
+	return original.NewTaskRunsClient(subscriptionID)
+}
+func NewTaskRunsClientWithBaseURI(baseURI string, subscriptionID string) TaskRunsClient {
+	return original.NewTaskRunsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewTasksClient(subscriptionID string) TasksClient {
 	return original.NewTasksClient(subscriptionID)

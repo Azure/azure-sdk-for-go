@@ -4,11 +4,10 @@
 package azblob
 
 import (
-	"net/http"
 	"net/url"
-	"strconv"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/azblob"
 )
 
 const (
@@ -16,6 +15,7 @@ const (
 )
 
 type ServiceClient struct {
+	s azinternal.Service
 	u *url.URL
 	p azcore.Pipeline
 }
@@ -36,11 +36,6 @@ func NewServiceClientWithPipeline(endpoint string, p azcore.Pipeline) (*ServiceC
 		return nil, err
 	}
 	return &ServiceClient{u: u, p: p}, nil
-}
-
-func (c *ServiceClient) ServiceVersion() string {
-	// this is a method instead of a package-level const to handle the case of composite services
-	return "2018-11-09"
 }
 
 // ListContainers the List Containers Segment operation returns a list of the containers under the specified
@@ -69,41 +64,4 @@ func (c *ServiceClient) ListContainers(options *ListContainersOptions) *ListCont
 		client: c,
 		op:     options,
 	}
-}
-
-// listContainersPreparer prepares the ListContainersSegment request.
-func (c *ServiceClient) listContainersPreparer(options *ListContainersOptions) *azcore.Request {
-	req := c.p.NewRequest(http.MethodGet, *c.u)
-	if options != nil {
-		if options.Prefix != nil && len(*options.Prefix) > 0 {
-			req.SetQueryParam("prefix", *options.Prefix)
-		}
-		if options.Marker != nil && len(*options.Marker) > 0 {
-			req.SetQueryParam("marker", *options.Marker)
-		}
-		if options.Maxresults != nil {
-			req.SetQueryParam("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
-		}
-		if options.Include != ListContainersIncludeNone {
-			req.SetQueryParam("include", string(options.Include))
-		}
-		if options.Timeout != nil {
-			req.SetQueryParam("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-		}
-		if options.RequestID != nil {
-			req.Header.Set("x-ms-client-request-id", *options.RequestID)
-		}
-	}
-	req.SetQueryParam("comp", "list")
-	req.Header.Set("x-ms-version", c.ServiceVersion())
-	return req
-}
-
-// listContainersResponder handles the response to the ListContainersSegment request.
-func (c *ServiceClient) listContainersResponder(resp *azcore.Response) (*ListContainersPage, error) {
-	if err := resp.CheckStatusCode(http.StatusOK); err != nil {
-		return nil, err
-	}
-	result := &ListContainersPage{response: resp}
-	return result, resp.UnmarshalAsXML(result)
 }

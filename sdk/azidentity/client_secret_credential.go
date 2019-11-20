@@ -26,9 +26,11 @@ type ClientSecretCredential struct {
 // clientID: The client (application) ID of the service principal.
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions) (*ClientSecretCredential, error) {
-	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: newAADIdentityClient(options)}, nil
+func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions) *ClientSecretCredential {
+	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: newAADIdentityClient(options)}
 }
+
+// TODO: make sure guid params are always in the same order
 
 // NewClientSecretCredentialWithPipeline constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
 // tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
@@ -36,16 +38,16 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
 // pipeline: Custom pipeline to be used for API requests.
-func NewClientSecretCredentialWithPipeline(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions, pipeline azcore.Pipeline) (*ClientSecretCredential, error) {
-	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: newAADIdentityClientWithPipeline(options, pipeline)}, nil
-}
+func newClientSecretCredentialWithPipeline(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions, pipeline azcore.Pipeline) *ClientSecretCredential {
+	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: newAADIdentityClientWithPipeline(options, pipeline)}
+} // TODO: consider authority host cases with custom pipeline + remove for v1?
 
 // GetToken obtains a token from the Azure Active Directory service, using the specified client secret to authenticate.
 // ctx: controlling the request lifetime.
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *ClientSecretCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
-	return c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, scopes)
+func (c *ClientSecretCredential) GetToken(ctx context.Context, opts *azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	return c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, opts.Scopes)
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
@@ -79,7 +81,7 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 		b.lock.Lock()
 		if now.Equal(b.expiresOn) || now.After(b.expiresOn) {
 			// token has expired, get a new one and update shared state
-			tk, err := b.creds.GetToken(ctx, b.scopes)
+			tk, err := b.creds.GetToken(ctx, &azcore.TokenRequestOptions{Scopes: b.scopes})
 			if err != nil {
 				b.lock.Unlock()
 				return nil, err
@@ -100,3 +102,6 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 }
 
 var _ azcore.TokenCredential = (*ClientSecretCredential)(nil)
+
+// TODO: rename credentialpolicyoptions
+// TODO: wrap scopes in a token request type

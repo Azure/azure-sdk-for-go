@@ -22,6 +22,10 @@ const (
 )
 
 const (
+	imdsEndpoint = "http://169.254.169.254/metadata/identity/oauth2/token"
+)
+
+const (
 	msiEndpointEnvironemntVariable = "MSI_ENDPOINT"
 	msiSecretEnvironemntVariable   = "MSI_SECRET"
 	appServiceMsiAPIVersion        = "2017-09-01"
@@ -43,53 +47,58 @@ const (
 type managedIdentityClient struct {
 	options                IdentityClientOptions
 	pipeline               azcore.Pipeline
-	sIMDSEndpoint          *url.URL
+	imdsEndpoint           *url.URL
 	imdsAPIVersion         string
 	imdsAvailableTimeoutMS int
-	sMSIType               msiType
-	sEndpoint              *url.URL
+	msiType                msiType
+	endpoint               *url.URL
 }
 
 // NewManagedIdentityClient creates a new instance of the ManagedIdentityClient with the IdentityClientOptions
 // that are passed into it along with a default pipeline.
-// - options: IdentityClientOptions that adds policies for the pipeline and the authority host that
-//   will be used to retrieve tokens and authenticate
-func newManagedIdentityClient(options *IdentityClientOptions) (*managedIdentityClient, error) {
-	// TODO: mimic aad client and make string a const
-	sIMDSEndpoint, err := url.Parse("http://169.254.169.254/metadata/identity/oauth2/token")
+// options: IdentityClientOptions that adds policies for the pipeline and the authority host that
+// will be used to retrieve tokens and authenticate
+func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*managedIdentityClient, error) {
+	// TODO: mimic aad client and make string a const parse only once, create in init
+	imdsEndpoint, err := url.Parse(imdsEndpoint)
 	if err != nil {
 		return nil, fmt.Errorf("NewManagedIdentityClient: %w", err)
+	}
+
+	if options == nil {
+		options = NewDefaultManagedIdentityOptions()
 	}
 	// document the use of these variables
 	// TODO: create a separate pipeline for imds that had its own retry policy
 	return &managedIdentityClient{
-		options:                *options.setDefaultValues(),
+		// TODO: setDefaultValues should return by val
+		options:                options.Options,
 		pipeline:               newDefaultPipeline(options.PipelineOptions),
-		sIMDSEndpoint:          sIMDSEndpoint,
+		imdsEndpoint:           imdsEndpoint,
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,
-		sMSIType:               unknown,
+		msiType:                unknown,
 	}, nil
 }
 
 // Authenticate creates an authentication request for a Managed Identity and returns the resulting Access Token or
 // an error in case of authentication failure.
-// - ctx: The current request context
-// - clientID: The client (application) ID of the service principal
-// - scopes: The scopes required for the token
+// ctx: The current request context
+// clientID: The client (application) ID of the service principal
+// scopes: The scopes required for the token
 func (c *managedIdentityClient) authenticate(ctx context.Context, clientID string, scopes []string) (*azcore.AccessToken, error) {
-	// TODO: fix variable name
-	sType, err := c.getMSIType(ctx)
+	currentMSI, err := c.getMSIType(ctx)
 	if err != nil {
 		return nil, err
 	}
 	// if msi is unavailable or we were unable to determine the type return a nil access token
-	if sType == unavailable || sType == unknown {
+	if currentMSI == unavailable || currentMSI == unknown {
 		// TODO: add message
-		return nil, &CredentialUnavailableError{}
+		// CP: maybe this should be an auth failed error?
+		return nil, &CredentialUnavailableError{Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
 	}
 
-	AT, err := c.sendAuthRequest(ctx, sType, clientID, scopes)
+	AT, err := c.sendAuthRequest(ctx, currentMSI, clientID, scopes)
 	if err != nil {
 		return nil, err
 	}
@@ -147,14 +156,14 @@ func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID stri
 	case cloudShell:
 		req, err = c.createCloudShellAuthRequest(clientID, scopes)
 	default:
-		// TODO: return an error CredentialUnavailable
+		return nil, &CredentialUnavailableError{Message: "Make sure you are running in a valid Managed Identity Environment"}
 	}
 
 	return req, err
 }
 
 func (c *managedIdentityClient) createIMDSAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
-	request := c.pipeline.NewRequest(http.MethodGet, *c.sEndpoint)
+	request := c.pipeline.NewRequest(http.MethodGet, *c.endpoint)
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
@@ -165,7 +174,7 @@ func (c *managedIdentityClient) createIMDSAuthRequest(clientID string, scopes []
 }
 
 func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
-	request := c.pipeline.NewRequest(http.MethodGet, *c.sEndpoint)
+	request := c.pipeline.NewRequest(http.MethodGet, *c.endpoint)
 	request.Header.Set("secret", os.Getenv(msiSecretEnvironemntVariable))
 	q := request.URL.Query()
 	q.Add("api-version", appServiceMsiAPIVersion)
@@ -179,7 +188,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, sco
 }
 
 func (c *managedIdentityClient) createCloudShellAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
-	request := c.pipeline.NewRequest(http.MethodPost, *c.sEndpoint)
+	request := c.pipeline.NewRequest(http.MethodPost, *c.endpoint)
 	request.Header.Set(azcore.HeaderContentType, "application/x-www-form-urlencoded")
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	data := url.Values{}
@@ -197,37 +206,38 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(clientID string, sco
 }
 
 func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error) {
-	if c.sMSIType == unknown { // if we haven't already determined the msi type
+	if c.msiType == unknown { // if we haven't already determined the msi type
 		if endpointEnvVar := os.Getenv(msiEndpointEnvironemntVariable); endpointEnvVar != "" { // if the env var MSI_ENDPOINT is set
-			sEndpoint, err := url.Parse(endpointEnvVar)
+			endpoint, err := url.Parse(endpointEnvVar)
 			if err != nil {
 				return unknown, err
 			}
-			c.sEndpoint = sEndpoint
+			c.endpoint = endpoint
 			if secretEnvVar := os.Getenv(msiSecretEnvironemntVariable); secretEnvVar != "" { // if BOTH the env vars MSI_ENDPOINT and MSI_SECRET are set the MsiType is AppService
-				c.sMSIType = appService
+				c.msiType = appService
 			} else { // if ONLY the env var MSI_ENDPOINT is set the MsiType is CloudShell
-				c.sMSIType = cloudShell
+				c.msiType = cloudShell
 			}
 		} else if c.imdsAvailable(ctx) { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the MsiType is Imds
-			c.sEndpoint = c.sIMDSEndpoint
-			c.sMSIType = imds
+			c.endpoint = c.imdsEndpoint
+			c.msiType = imds
 		} else { // if MSI_ENDPOINT is NOT set and IMDS enpoint is not available ManagedIdentity is not available
 			// CP: should we just fail here? Or is it fine to fail in the func that did the calling?
-			c.sMSIType = unavailable
+			c.msiType = unavailable
 			// TODO: return a cred unavailable err
+			return unknown, &CredentialUnavailableError{Message: "Make sure you are running in a valid Managed Identity Environment"}
 		}
 	}
-	return c.sMSIType, nil
+	return c.msiType, nil
 }
 
 func (c *managedIdentityClient) imdsAvailable(ctx context.Context) bool {
-	request := c.pipeline.NewRequest(http.MethodGet, *c.sIMDSEndpoint)
-	request.Header.Set(azcore.HeaderMetadata, "true")
+	request := c.pipeline.NewRequest(http.MethodGet, *c.imdsEndpoint)
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	request.URL.RawQuery = q.Encode()
 	// TODO: missing setting timeout and handling it
+	// TODO: check for deadline exceeded, return an error
 	_, err := request.Do(ctx)
 	if err != nil {
 		return false

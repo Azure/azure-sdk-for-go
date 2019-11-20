@@ -11,8 +11,7 @@ There is no guarantee that the credential type used will not change
 
 */
 import (
-	"context"
-	"fmt"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -21,14 +20,22 @@ const (
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 )
 
-// TODO: check how we're going to implement this, delete probably
-// DefaultAzureCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
+// DefaultTokenCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
 // types will be tried, in order:
 // - EnvironmentCredential
 // - ManagedIdentityCredential
 // Consult the documentation of these credential types for more information on how they attempt authentication.
-type DefaultAzureCredential struct {
-	defaultCredentialChain *[]azcore.TokenCredential
+type DefaultTokenCredential struct {
+	sources []azcore.TokenCredential
+}
+
+// DefaultTokenCredentialOptions contain information that can configure Default Token Credentials
+type DefaultTokenCredentialOptions struct {
+	// Scopes []string
+	// EnvCredential *ClientSecretCredential
+	// MSICredential *ManagedIdentityCredential // A pointer
+	ExcludeEnvironmentCredential bool
+	ExcludeMSICredential         bool
 }
 
 // NewDefaultTokenCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
@@ -36,31 +43,73 @@ type DefaultAzureCredential struct {
 // - EnvironmentCredential
 // - ManagedIdentityCredential
 // Consult the documentation of these credential types for more information on how they attempt authentication.
-func NewDefaultTokenCredential(o *IdentityClientOptions) (*ChainedTokenCredential, error) {
-	// CP: This is fine because we are not calling GetToken we are simple creating the new EnvironmentClient
-	envClient, err := NewEnvironmentCredential(o)
+func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*ChainedTokenCredential, error) {
+	cred := &DefaultTokenCredential{}
+	err := cred.getDefaultTokenCredentialChain(options)
 	if err != nil {
-		// CP: Should we return here? OR allow the program to continue? There could be a check later on to see if both types of credentials return an error
 		return nil, err
 	}
-	// TODO: check this implementation:
-	// 1. params for constructor should be nilable
-	// 2. Should this func ask for a client id? or get it from somewhere else? client id is optional anyways so it is also not necessary
-	msiClient, err := NewManagedIdentityCredential("", o)
-	if err != nil {
-		return nil, fmt.Errorf("NewDefaultTokenCredential: %w", err)
+
+	return NewChainedTokenCredential(cred.sources...)
+}
+
+func (c *DefaultTokenCredential) getDefaultTokenCredentialChain(options *DefaultTokenCredentialOptions) error {
+	errCount := 0
+
+	if options == nil {
+		// CP: these could be set up once in an init?
+		envCred, err := NewEnvironmentCredential(nil)
+		if err != nil {
+			if errors.Is(err, &AuthenticationFailedError{}) {
+				return err
+			}
+			errCount++
+		}
+		msiCred, err := NewManagedIdentityCredential("", nil)
+		if err != nil {
+			// CP: this check shouldnt be necessary since we arent authenticating here, just creating the credential? Unless we wrap all other unexpected errors in an auth failed error
+			if errors.Is(err, &AuthenticationFailedError{}) {
+				return err
+			}
+			errCount++
+		}
+
+		if errCount > 1 {
+			return &AuthenticationFailedError{Message: "Failed to find any available credentials. Make sure you are running in a Managed Identity Environment or have set the appropriate environment variables"}
+		}
+
+		if envCred != nil {
+			c.sources = append(c.sources, envCred)
+		}
+
+		if msiCred != nil {
+			c.sources = append(c.sources, msiCred)
+		}
+
+		return nil
 	}
 
-	return NewChainedTokenCredential(
-		envClient,
-		msiClient,
-		&credentialNotFoundGuard{})
-}
+	if !options.ExcludeEnvironmentCredential {
+		envCred, err := NewEnvironmentCredential(nil)
+		if err != nil {
+			if errors.Is(err, &AuthenticationFailedError{}) {
+				return err
+			}
+			errCount++
+		}
+		c.sources = append(c.sources, envCred)
+	}
 
-type credentialNotFoundGuard struct {
-	azcore.TokenCredential
-}
+	if !options.ExcludeMSICredential {
+		msiCred, err := NewManagedIdentityCredential("", nil)
+		if err != nil {
+			if errors.Is(err, &AuthenticationFailedError{}) {
+				return err
+			}
+			errCount++
+		}
+		c.sources = append(c.sources, msiCred)
+	}
 
-func (c *credentialNotFoundGuard) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
-	return nil, &CredentialUnavailableError{Message: "example"}
+	return nil
 }

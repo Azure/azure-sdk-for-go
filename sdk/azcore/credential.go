@@ -6,6 +6,7 @@ package azcore
 import (
 	"context"
 	"encoding/json"
+	"net/url"
 	"time"
 )
 
@@ -13,7 +14,8 @@ import (
 type AuthenticationPolicyOptions struct {
 	// Scopes is the list of OAuth2 authentication scopes used when requesting a token.
 	// This field is ignored for other forms of authentication (e.g. shared key).
-	Scopes []string
+	Scopes        []string
+	AuthorityHost url.URL
 }
 
 // Credential represents any credential type.
@@ -35,7 +37,7 @@ func (cf credentialFunc) AuthenticationPolicy(options AuthenticationPolicyOption
 type TokenCredential interface {
 	Credential
 	// GetToken requests an access token for the specified set of scopes.
-	GetToken(ctx context.Context, scopes []string) (*AccessToken, error)
+	GetToken(ctx context.Context, opts *TokenRequestOptions) (*AccessToken, error)
 }
 
 // AccessToken represents an Azure service bearer access token with expiry information.
@@ -43,4 +45,9 @@ type AccessToken struct {
 	Token     string      `json:"access_token"`
 	ExpiresIn json.Number `json:"expires_in"`
 	ExpiresOn time.Time
+}
+
+// TokenRequestOptions contain specific parameter that may be used by credentials types when attempting to get a token
+type TokenRequestOptions struct {
+	Scopes []string
 }

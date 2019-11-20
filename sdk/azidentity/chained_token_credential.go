@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -20,7 +21,7 @@ func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedToken
 	if len(sources) == 0 {
 		return nil, &CredentialUnavailableError{Message: "NewChainedTokenCredential: length of sources cannot be 0"}
 	}
-	// TODO: test for each of these conditions
+
 	for _, source := range sources {
 		if source == nil {
 			return nil, &CredentialUnavailableError{Message: "NewChainedTokenCredential: sources cannot contain a nil TokenCredential"}
@@ -31,24 +32,25 @@ func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedToken
 }
 
 // GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the first non default AccessToken.
-func (c *ChainedTokenCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
-	// CP: Notes from session with Jeff, have two funcs for the DefaultAzureCredential the main default func will issue the call that hits the wire, however internally first we create the chain and return a credUnavailable error if no credentials are found, if one works then we immediately return the one that works. End goal to always try to use the same credential type so we dont switch between credentials during execution, or at least reduce the possibility of that happening?
+func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts *azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	var token *azcore.AccessToken
 	var err error
 	var errList []error
 
-	for i := 0; i < len(c.sources) && token == nil; i++ {
-		token, err = c.sources[i].GetToken(ctx, scopes)
-		// CP: This currently works the same way as the other languages
-		// TODO: instead of appending to an error slice, check if the error returned is an auth failure then stop the function completely and return the auth failure, credunavailable is still ok to continue looping
-		if err != nil {
+	for i := 0; i < len(c.sources); i++ {
+		token, err = c.sources[i].GetToken(ctx, opts)
+		// TODO: check if the err is an auth failure and stop loop, if cred unavailable you can continue
+		if errors.Is(err, &CredentialUnavailableError{}) {
 			errList = append(errList, err)
+		} else { // TODO fix this
+			return token, &AuthenticationFailedError{Message: err.Error()}
 		}
 	}
 
 	if token == nil && len(errList) > 0 {
-		// Here we dont want to return the slice of errors, instead ideally just return an auth failed error since the credential unavailable error should already have been discarded.
-		err = &AggregateError{ErrList: errList}
+		// TODO err message should include cred name and failure reason
+		// Pass back slice of errors here
+		err = &CredentialUnavailableError{ErrList: errList}
 		return nil, err
 	}
 

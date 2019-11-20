@@ -54,6 +54,7 @@ func newAADIdentityClient(options *IdentityClientOptions) *aadIdentityClient {
 	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(options.PipelineOptions)}
 }
 
+// TODO: think about having a singleton pipeline
 func newAADIdentityClientWithPipeline(options *IdentityClientOptions, pipeline azcore.Pipeline) *aadIdentityClient {
 	options = options.setDefaultValues()
 	return &aadIdentityClient{options: *options, pipeline: pipeline}
@@ -110,7 +111,7 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 	return nil, newAuthenticationFailedError(resp)
 }
 
-func (c aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
+func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
 	value := &azcore.AccessToken{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
 		return nil, fmt.Errorf("azcore.AccessToken: %w", err)
@@ -154,7 +155,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	if err != nil {
 		return nil, err
 	}
-	// TODO: test for failures to see error returned to user
+
 	clientAssertion, err := createClientAssertionJWT(clientID, urlStr, clientCertificate)
 	if err != nil {
 		return nil, err

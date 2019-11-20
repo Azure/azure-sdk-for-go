@@ -10,12 +10,9 @@ import (
 
 func TestNilCredentialInChain(t *testing.T) {
 	var unavailableError *CredentialUnavailableError
-	secretClient, err := NewClientSecretCredential("expected_tenant", "client", "secret", nil)
-	if err != nil {
-		t.Fail()
-	}
+	cred := NewClientSecretCredential("expected_tenant", "client", "secret", nil)
 
-	_, err = NewChainedTokenCredential(secretClient, nil, secretClient)
+	_, err := NewChainedTokenCredential(cred, nil, cred)
 	if err != nil {
 		switch i := err.(type) {
 		case *CredentialUnavailableError:

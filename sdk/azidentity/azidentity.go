@@ -43,26 +43,18 @@ func newAuthenticationFailedError(resp *azcore.Response) error {
 // CredentialUnavailableError an error type returned when the conditions required to create a credential do not exist
 type CredentialUnavailableError struct {
 	Message string
-}
-
-func (e *CredentialUnavailableError) Error() string {
-	return e.Message
-}
-
-// AggregateError a specific error type for the chained token credential
-type AggregateError struct {
-	Msg     string
-	Err     error
 	ErrList []error
 }
 
-func (e *AggregateError) Error() string {
-	errString := ""
-	for _, err := range e.ErrList {
-		errString += "\n" + err.Error()
+func (e *CredentialUnavailableError) Error() string {
+	if len(e.ErrList) > 0 {
+		msg := ""
+		for _, err := range e.ErrList {
+			msg += err.Error() + "\n"
+		}
+		e.Message = msg
 	}
-
-	return errString
+	return e.Message
 }
 
 // IdentityClientOptions to configure requests made to Azure Identity Services
@@ -71,10 +63,13 @@ type IdentityClientOptions struct {
 	AuthorityHost   *url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com
 }
 
+// TODO singleton default options?
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *IdentityClientOptions) setDefaultValues() *IdentityClientOptions {
+	// Invert logic if c!= nil
 	if c == nil {
 		c = &IdentityClientOptions{}
+		// The error for parse is run during testing
 		c.AuthorityHost, _ = url.Parse(defaultAuthorityHost)
 	}
 	return c

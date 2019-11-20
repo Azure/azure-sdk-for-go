@@ -49,11 +49,11 @@ func spkiFingerprint(cert string) (fingerprint, error) {
 	_, err = buffer.Read(pemBytes)
 	// Get first block of PEM file
 	data, rest := pem.Decode([]byte(pemBytes))
-
-	if data.Type != "CERTIFICATE" {
+	const key = "CERTIFICATE"
+	if data.Type != key {
 		for len(rest) > 0 {
 			data, rest = pem.Decode(rest)
-			if data.Type == "CERTIFICATE" {
+			if data.Type == key {
 				// Sign the CERTIFICATE block with SHA1
 				h := sha1.New()
 				h.Write(data.Bytes)

@@ -6,10 +6,10 @@ package azidentity
 import (
 	"context"
 	"runtime"
-	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/atomic"
 )
 
 // ClientSecretCredential enables authentication to Azure Active Directory using a client secret that was generated for an App Registration.  More information on how
@@ -55,9 +55,9 @@ func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.Authenticat
 }
 
 type bearerTokenPolicy struct {
-	updating  int64                  // atomically set to 1 to indicate a refresh is in progress
-	header    atomic.Value           // string
-	expiresOn atomic.Value           // time.Time
+	updating  atomic.Int64 // atomically set to 1 to indicate a refresh is in progress
+	header    atomic.String
+	expiresOn atomic.Time
 	creds     azcore.TokenCredential // R/O
 	scopes    []string               // R/O
 }
@@ -78,16 +78,16 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 	var bt string
 	// check if the token has expired
 	now := time.Now().UTC()
-	exp := b.expiresOn.Load().(time.Time)
+	exp := b.expiresOn.Load()
 	if now.After(exp.Add(-window)) {
 		// token has expired, set update flag and begin the refresh.
 		// if no other go routine has initiated a refresh the calling
 		// go routine will do it.
-		if atomic.CompareAndSwapInt64(&b.updating, 0, 1) {
+		if b.updating.CAS(0, 1) {
 			tk, err := b.creds.GetToken(ctx, b.scopes)
 			if err != nil {
 				// clear updating flag before returning
-				atomic.StoreInt64(&b.updating, 0)
+				b.updating.Store(0)
 				return nil, err
 			}
 			// we must set header before expiresOn.  this is to prevent a race
@@ -97,10 +97,10 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 			b.expiresOn.Store(tk.ExpiresOn)
 			// signal the refresh is complete. this must happen after all shared
 			// state has been updated.
-			atomic.StoreInt64(&b.updating, 0)
+			b.updating.Store(0)
 		} // else { another go routine is refreshing the token }
 		for {
-			bt = b.header.Load().(string)
+			bt = b.header.Load()
 			// for the very first call to Do() the header will be
 			// the empty string.  in this case we need to spin-wait
 			// until header contains a value.  subsequent calls to
@@ -112,7 +112,7 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 		}
 	} else {
 		// token is still valid
-		bt = b.header.Load().(string)
+		bt = b.header.Load()
 	}
 	req.Request.Header.Set(azcore.HeaderAuthorization, bt)
 	return req.Do(ctx)

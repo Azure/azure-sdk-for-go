@@ -27,7 +27,7 @@ func (iter *ListContainersIterator) NextPage(ctx context.Context) (*ListContaine
 	if err != nil {
 		return nil, err
 	}
-	page, err := iter.client.s.ListContainersCreateResponse(resp)
+	page, err := iter.client.s.ListContainersHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}

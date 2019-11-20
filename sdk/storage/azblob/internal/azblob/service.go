@@ -42,8 +42,8 @@ func (Service) ListContainersCreateRequest(u *url.URL, p azcore.Pipeline, option
 	return req
 }
 
-// ListContainersCreateResponse handles the response to the ListContainersSegment request.
-func (Service) ListContainersCreateResponse(resp *azcore.Response) (*ListContainersPage, error) {
+// ListContainersHandleResponse handles the response to the ListContainersSegment request.
+func (Service) ListContainersHandleResponse(resp *azcore.Response) (*ListContainersPage, error) {
 	if err := resp.CheckStatusCode(http.StatusOK); err != nil {
 		return nil, err
 	}

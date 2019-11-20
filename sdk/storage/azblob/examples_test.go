@@ -22,7 +22,7 @@ const (
 	clientSecret = "<secret>"
 )
 
-func ExampleAnonymousCredential() {
+func ExampleServiceClientListContainers() {
 	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
 	if err != nil {
 		panic(err)
@@ -41,7 +41,7 @@ func ExampleAnonymousCredential() {
 		} else if err != nil {
 			panic(err)
 		}
-		for _, i := range p.Value.ContainerItems {
+		for _, i := range p.ContainerItems {
 			fmt.Println(i.Name)
 		}
 	}

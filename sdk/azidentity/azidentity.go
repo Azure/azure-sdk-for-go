@@ -102,6 +102,7 @@ type TokenCredentialOptions struct {
 	AuthorityHost   *url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com
 }
 
+// TODO singleton default options?
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
 	if c == nil {

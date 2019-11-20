@@ -115,3 +115,6 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 }
 
 var _ azcore.TokenCredential = (*ClientSecretCredential)(nil)
+
+// TODO: rename credentialpolicyoptions
+// TODO: wrap scopes in a token request type

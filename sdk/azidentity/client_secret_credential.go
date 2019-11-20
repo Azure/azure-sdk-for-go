@@ -71,11 +71,13 @@ func newBearerTokenPolicy(creds azcore.TokenCredential, scopes []string) *bearer
 }
 
 func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
-	// check if the token is empty
+	// check if the token is empty.  this will return true for
+	// the first read.  all other reads will block until the
+	// token has been obtained at which point it returns false
 	if <-b.empty {
 		tk, err := b.creds.GetToken(ctx, b.scopes)
 		if err != nil {
-			// failed to get a token, let other go routines try
+			// failed to get a token, let another go routine try
 			b.empty <- true
 			return nil, err
 		}

@@ -624,7 +624,13 @@ type RestorePointListResult = original.RestorePointListResult
 type RestorePointProperties = original.RestorePointProperties
 type RestorePointsClient = original.RestorePointsClient
 type Server = original.Server
+type ServerAdministratorListResult = original.ServerAdministratorListResult
+type ServerAdministratorProperties = original.ServerAdministratorProperties
 type ServerAdvisorsClient = original.ServerAdvisorsClient
+type ServerAzureADAdministrator = original.ServerAzureADAdministrator
+type ServerAzureADAdministratorsClient = original.ServerAzureADAdministratorsClient
+type ServerAzureADAdministratorsCreateOrUpdateFuture = original.ServerAzureADAdministratorsCreateOrUpdateFuture
+type ServerAzureADAdministratorsDeleteFuture = original.ServerAzureADAdministratorsDeleteFuture
 type ServerCommunicationLink = original.ServerCommunicationLink
 type ServerCommunicationLinkListResult = original.ServerCommunicationLinkListResult
 type ServerCommunicationLinkProperties = original.ServerCommunicationLinkProperties
@@ -839,6 +845,12 @@ func NewServerAdvisorsClient(subscriptionID string) ServerAdvisorsClient {
 }
 func NewServerAdvisorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAdvisorsClient {
 	return original.NewServerAdvisorsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServerAzureADAdministratorsClient(subscriptionID string) ServerAzureADAdministratorsClient {
+	return original.NewServerAzureADAdministratorsClient(subscriptionID)
+}
+func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAzureADAdministratorsClient {
+	return original.NewServerAzureADAdministratorsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerCommunicationLinksClient(subscriptionID string) ServerCommunicationLinksClient {
 	return original.NewServerCommunicationLinksClient(subscriptionID)

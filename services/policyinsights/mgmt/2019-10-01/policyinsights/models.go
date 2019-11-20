@@ -882,6 +882,10 @@ func NewPolicyMetadataCollectionPage(getNextPage func(context.Context, PolicyMet
 
 // PolicyMetadataProperties the properties of the policy metadata.
 type PolicyMetadataProperties struct {
+	// Description - READ-ONLY; The description of the policy metadata.
+	Description *string `json:"description,omitempty"`
+	// Requirements - READ-ONLY; The requirements of the policy metadata.
+	Requirements *string `json:"requirements,omitempty"`
 	// MetadataID - READ-ONLY; The policy metadata identifier.
 	MetadataID *string `json:"metadataId,omitempty"`
 	// Category - READ-ONLY; The category of the policy metadata.
@@ -890,10 +894,6 @@ type PolicyMetadataProperties struct {
 	Title *string `json:"title,omitempty"`
 	// Owner - READ-ONLY; The owner of the policy metadata.
 	Owner *string `json:"owner,omitempty"`
-	// Description - READ-ONLY; The description of the policy metadata.
-	Description *string `json:"description,omitempty"`
-	// Requirements - READ-ONLY; The requirements of the policy metadata.
-	Requirements *string `json:"requirements,omitempty"`
 	// AdditionalContentURL - READ-ONLY; Url for getting additional content about the resource metadata.
 	AdditionalContentURL *string `json:"additionalContentUrl,omitempty"`
 	// Metadata - READ-ONLY; Additional metadata.
@@ -911,10 +911,6 @@ type PolicyMetadataSlimProperties struct {
 	Title *string `json:"title,omitempty"`
 	// Owner - READ-ONLY; The owner of the policy metadata.
 	Owner *string `json:"owner,omitempty"`
-	// Description - READ-ONLY; The description of the policy metadata.
-	Description *string `json:"description,omitempty"`
-	// Requirements - READ-ONLY; The requirements of the policy metadata.
-	Requirements *string `json:"requirements,omitempty"`
 	// AdditionalContentURL - READ-ONLY; Url for getting additional content about the resource metadata.
 	AdditionalContentURL *string `json:"additionalContentUrl,omitempty"`
 	// Metadata - READ-ONLY; Additional metadata.

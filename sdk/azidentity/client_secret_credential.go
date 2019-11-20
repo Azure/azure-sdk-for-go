@@ -5,7 +5,6 @@ package azidentity
 
 import (
 	"context"
-	"runtime"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -55,6 +54,7 @@ func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.Authenticat
 }
 
 type bearerTokenPolicy struct {
+	empty     chan bool    // indicates we don't have a token yet
 	updating  atomic.Int64 // atomically set to 1 to indicate a refresh is in progress
 	header    atomic.String
 	expiresOn atomic.Time
@@ -64,18 +64,31 @@ type bearerTokenPolicy struct {
 
 func newBearerTokenPolicy(creds azcore.TokenCredential, scopes []string) *bearerTokenPolicy {
 	bt := bearerTokenPolicy{creds: creds, scopes: scopes}
-	// set initial values to their zero-value
-	bt.header.Store("")
-	bt.expiresOn.Store(time.Time{})
+	// prime channel indicating there is no token
+	bt.empty = make(chan bool, 1)
+	bt.empty <- true
 	return &bt
 }
 
 func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+	// check if the token is empty
+	if <-b.empty {
+		tk, err := b.creds.GetToken(ctx, b.scopes)
+		if err != nil {
+			// failed to get a token, let other go routines try
+			b.empty <- true
+			return nil, err
+		}
+		b.header.Store("Bearer " + tk.Token)
+		b.expiresOn.Store(tk.ExpiresOn)
+		// signal token has been initialized.  go routines
+		// that read from b.empty will always get false.
+		close(b.empty)
+	}
 	// create a "refresh window" before the token's real expiration date.
 	// this allows callers to continue to use the old token while the
 	// refresh is in progress.
 	const window = 2 * time.Minute
-	var bt string
 	// check if the token has expired
 	now := time.Now().UTC()
 	exp := b.expiresOn.Load()
@@ -86,35 +99,20 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 		if b.updating.CAS(0, 1) {
 			tk, err := b.creds.GetToken(ctx, b.scopes)
 			if err != nil {
-				// clear updating flag before returning
+				// clear updating flag before returning so other
+				// go routines can attempt to refresh
 				b.updating.Store(0)
 				return nil, err
 			}
-			// we must set header before expiresOn.  this is to prevent a race
-			// when setting header for the very first time.  if expiresOn is set
-			// first it's possible to get an empty header.
 			b.header.Store("Bearer " + tk.Token)
+			// set expiresOn last since refresh is predicated on it
 			b.expiresOn.Store(tk.ExpiresOn)
 			// signal the refresh is complete. this must happen after all shared
 			// state has been updated.
 			b.updating.Store(0)
-		} // else { another go routine is refreshing the token }
-		for {
-			bt = b.header.Load()
-			// for the very first call to Do() the header will be
-			// the empty string.  in this case we need to spin-wait
-			// until header contains a value.  subsequent calls to
-			// Do() will never spin-wait.
-			if bt != "" {
-				break
-			}
-			runtime.Gosched()
-		}
-	} else {
-		// token is still valid
-		bt = b.header.Load()
+		} // else { another go routine is refreshing the token, use previous token }
 	}
-	req.Request.Header.Set(azcore.HeaderAuthorization, bt)
+	req.Request.Header.Set(azcore.HeaderAuthorization, b.header.Load())
 	return req.Do(ctx)
 }
 

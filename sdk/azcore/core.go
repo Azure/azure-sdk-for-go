@@ -5,6 +5,7 @@ package azcore
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 	"net/url"
@@ -132,3 +133,6 @@ func (n nopCloser) Close() error {
 func NopCloser(rs io.ReadSeeker) ReadSeekCloser {
 	return nopCloser{rs}
 }
+
+// IterationDone is returned by an iterator's Next method when iteration is complete.
+var IterationDone = errors.New("no more items in iterator")

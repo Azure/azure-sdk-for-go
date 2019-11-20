@@ -71,17 +71,22 @@ func newBearerTokenPolicy(creds azcore.TokenCredential, scopes []string) *bearer
 }
 
 func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
-	// TODO: is window really constant, what about short-lived tokens?
-	const window = 5 * time.Minute
+	// create a "refresh window" before the token's real expiration date.
+	// this allows callers to continue to use the old token while the
+	// refresh is in progress.
+	const window = 2 * time.Minute
 	var bt string
 	// check if the token has expired
 	now := time.Now().UTC()
 	exp := b.expiresOn.Load().(time.Time)
-	if now.After(exp) {
-		// token has expired, set update flag and begin the refresh
+	if now.After(exp.Add(-window)) {
+		// token has expired, set update flag and begin the refresh.
+		// if no other go routine has initiated a refresh the calling
+		// go routine will do it.
 		if atomic.CompareAndSwapInt64(&b.updating, 0, 1) {
 			tk, err := b.creds.GetToken(ctx, b.scopes)
 			if err != nil {
+				// clear updating flag before returning
 				atomic.StoreInt64(&b.updating, 0)
 				return nil, err
 			}
@@ -89,11 +94,9 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 			// when setting header for the very first time.  if expiresOn is set
 			// first it's possible to get an empty header.
 			b.header.Store("Bearer " + tk.Token)
-			// create a "refresh window" before the token's real expiration date.
-			// this allows callers to continue to use the old token while the
-			// refresh is in progress.
-			b.expiresOn.Store(tk.ExpiresOn.Add(-window))
-			// signal the refresh is complete
+			b.expiresOn.Store(tk.ExpiresOn)
+			// signal the refresh is complete. this must happen after all shared
+			// state has been updated.
 			atomic.StoreInt64(&b.updating, 0)
 		} // else { another go routine is refreshing the token }
 		for {

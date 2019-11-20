@@ -22,7 +22,7 @@ const (
 	clientSecret = "<secret>"
 )
 
-func ExampleServiceClientListContainers() {
+func ExampleServiceClient_ListContainers() {
 	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
 	if err != nil {
 		panic(err)

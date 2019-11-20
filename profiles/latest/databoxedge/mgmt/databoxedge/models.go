@@ -22,7 +22,7 @@ package databoxedge
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-07-01/databoxedge"
+	original "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-08-01/databoxedge"
 )
 
 const (
@@ -67,6 +67,16 @@ const (
 	ReadWrite ClientPermissionType = original.ReadWrite
 )
 
+type ContainerStatus = original.ContainerStatus
+
+const (
+	NeedsAttention ContainerStatus = original.NeedsAttention
+	Offline        ContainerStatus = original.Offline
+	OK             ContainerStatus = original.OK
+	Unknown        ContainerStatus = original.Unknown
+	Updating       ContainerStatus = original.Updating
+)
+
 type DataPolicy = original.DataPolicy
 
 const (
@@ -89,13 +99,13 @@ const (
 type DeviceStatus = original.DeviceStatus
 
 const (
-	Disconnected          DeviceStatus = original.Disconnected
-	Maintenance           DeviceStatus = original.Maintenance
-	NeedsAttention        DeviceStatus = original.NeedsAttention
-	Offline               DeviceStatus = original.Offline
-	Online                DeviceStatus = original.Online
-	PartiallyDisconnected DeviceStatus = original.PartiallyDisconnected
-	ReadyToSetup          DeviceStatus = original.ReadyToSetup
+	DeviceStatusDisconnected          DeviceStatus = original.DeviceStatusDisconnected
+	DeviceStatusMaintenance           DeviceStatus = original.DeviceStatusMaintenance
+	DeviceStatusNeedsAttention        DeviceStatus = original.DeviceStatusNeedsAttention
+	DeviceStatusOffline               DeviceStatus = original.DeviceStatusOffline
+	DeviceStatusOnline                DeviceStatus = original.DeviceStatusOnline
+	DeviceStatusPartiallyDisconnected DeviceStatus = original.DeviceStatusPartiallyDisconnected
+	DeviceStatusReadyToSetup          DeviceStatus = original.DeviceStatusReadyToSetup
 )
 
 type DeviceType = original.DeviceType
@@ -107,10 +117,10 @@ const (
 type DownloadPhase = original.DownloadPhase
 
 const (
-	Downloading  DownloadPhase = original.Downloading
-	Initializing DownloadPhase = original.Initializing
-	Unknown      DownloadPhase = original.Unknown
-	Verifying    DownloadPhase = original.Verifying
+	DownloadPhaseDownloading  DownloadPhase = original.DownloadPhaseDownloading
+	DownloadPhaseInitializing DownloadPhase = original.DownloadPhaseInitializing
+	DownloadPhaseUnknown      DownloadPhase = original.DownloadPhaseUnknown
+	DownloadPhaseVerifying    DownloadPhase = original.DownloadPhaseVerifying
 )
 
 type EncryptionAlgorithm = original.EncryptionAlgorithm
@@ -144,11 +154,12 @@ const (
 type JobType = original.JobType
 
 const (
-	JobTypeDownloadUpdates JobType = original.JobTypeDownloadUpdates
-	JobTypeInstallUpdates  JobType = original.JobTypeInstallUpdates
-	JobTypeInvalid         JobType = original.JobTypeInvalid
-	JobTypeRefreshShare    JobType = original.JobTypeRefreshShare
-	JobTypeScanForUpdates  JobType = original.JobTypeScanForUpdates
+	JobTypeDownloadUpdates  JobType = original.JobTypeDownloadUpdates
+	JobTypeInstallUpdates   JobType = original.JobTypeInstallUpdates
+	JobTypeInvalid          JobType = original.JobTypeInvalid
+	JobTypeRefreshContainer JobType = original.JobTypeRefreshContainer
+	JobTypeRefreshShare     JobType = original.JobTypeRefreshShare
+	JobTypeScanForUpdates   JobType = original.JobTypeScanForUpdates
 )
 
 type Kind = original.Kind
@@ -321,14 +332,38 @@ const (
 type SkuName = original.SkuName
 
 const (
-	Edge    SkuName = original.Edge
-	Gateway SkuName = original.Gateway
+	Edge              SkuName = original.Edge
+	Gateway           SkuName = original.Gateway
+	TEA1Node          SkuName = original.TEA1Node
+	TEA1NodeHeater    SkuName = original.TEA1NodeHeater
+	TEA1NodeUPS       SkuName = original.TEA1NodeUPS
+	TEA1NodeUPSHeater SkuName = original.TEA1NodeUPSHeater
+	TEA4NodeHeater    SkuName = original.TEA4NodeHeater
+	TEA4NodeUPSHeater SkuName = original.TEA4NodeUPSHeater
+	TMA               SkuName = original.TMA
+)
+
+type SkuRestrictionReasonCode = original.SkuRestrictionReasonCode
+
+const (
+	NotAvailableForSubscription SkuRestrictionReasonCode = original.NotAvailableForSubscription
+	QuotaID                     SkuRestrictionReasonCode = original.QuotaID
 )
 
 type SkuTier = original.SkuTier
 
 const (
 	Standard SkuTier = original.Standard
+)
+
+type StorageAccountStatus = original.StorageAccountStatus
+
+const (
+	StorageAccountStatusNeedsAttention StorageAccountStatus = original.StorageAccountStatusNeedsAttention
+	StorageAccountStatusOffline        StorageAccountStatus = original.StorageAccountStatusOffline
+	StorageAccountStatusOK             StorageAccountStatus = original.StorageAccountStatusOK
+	StorageAccountStatusUnknown        StorageAccountStatus = original.StorageAccountStatusUnknown
+	StorageAccountStatusUpdating       StorageAccountStatus = original.StorageAccountStatusUpdating
 )
 
 type TimeGrain = original.TimeGrain
@@ -375,6 +410,14 @@ const (
 	UpdateOperationStageUnknown          UpdateOperationStage = original.UpdateOperationStageUnknown
 )
 
+type UserType = original.UserType
+
+const (
+	UserTypeARM             UserType = original.UserTypeARM
+	UserTypeLocalManagement UserType = original.UserTypeLocalManagement
+	UserTypeShare           UserType = original.UserTypeShare
+)
+
 type ARMBaseModel = original.ARMBaseModel
 type Address = original.Address
 type Alert = original.Alert
@@ -402,6 +445,15 @@ type ClientAccessRight = original.ClientAccessRight
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type ContactDetails = original.ContactDetails
+type Container = original.Container
+type ContainerList = original.ContainerList
+type ContainerListIterator = original.ContainerListIterator
+type ContainerListPage = original.ContainerListPage
+type ContainerProperties = original.ContainerProperties
+type ContainersClient = original.ContainersClient
+type ContainersCreateOrUpdateFuture = original.ContainersCreateOrUpdateFuture
+type ContainersDeleteFuture = original.ContainersDeleteFuture
+type ContainersRefreshFuture = original.ContainersRefreshFuture
 type Device = original.Device
 type DeviceExtendedInfo = original.DeviceExtendedInfo
 type DeviceExtendedInfoProperties = original.DeviceExtendedInfoProperties
@@ -430,6 +482,7 @@ type JobErrorDetails = original.JobErrorDetails
 type JobErrorItem = original.JobErrorItem
 type JobProperties = original.JobProperties
 type JobsClient = original.JobsClient
+type LocationsClient = original.LocationsClient
 type MetricDimensionV1 = original.MetricDimensionV1
 type MetricSpecificationV1 = original.MetricSpecificationV1
 type MountPointMap = original.MountPointMap
@@ -463,6 +516,7 @@ type PeriodicTimerProperties = original.PeriodicTimerProperties
 type PeriodicTimerSourceInfo = original.PeriodicTimerSourceInfo
 type RawCertificateData = original.RawCertificateData
 type RefreshDetails = original.RefreshDetails
+type ResourceTypeSku = original.ResourceTypeSku
 type Role = original.Role
 type RoleList = original.RoleList
 type RoleListIterator = original.RoleListIterator
@@ -486,6 +540,12 @@ type SharesCreateOrUpdateFuture = original.SharesCreateOrUpdateFuture
 type SharesDeleteFuture = original.SharesDeleteFuture
 type SharesRefreshFuture = original.SharesRefreshFuture
 type Sku = original.Sku
+type SkuCost = original.SkuCost
+type SkuInformationList = original.SkuInformationList
+type SkuLocationInfo = original.SkuLocationInfo
+type SkuRestriction = original.SkuRestriction
+type SkuRestrictionInfo = original.SkuRestrictionInfo
+type StorageAccount = original.StorageAccount
 type StorageAccountCredential = original.StorageAccountCredential
 type StorageAccountCredentialList = original.StorageAccountCredentialList
 type StorageAccountCredentialListIterator = original.StorageAccountCredentialListIterator
@@ -494,6 +554,13 @@ type StorageAccountCredentialProperties = original.StorageAccountCredentialPrope
 type StorageAccountCredentialsClient = original.StorageAccountCredentialsClient
 type StorageAccountCredentialsCreateOrUpdateFuture = original.StorageAccountCredentialsCreateOrUpdateFuture
 type StorageAccountCredentialsDeleteFuture = original.StorageAccountCredentialsDeleteFuture
+type StorageAccountList = original.StorageAccountList
+type StorageAccountListIterator = original.StorageAccountListIterator
+type StorageAccountListPage = original.StorageAccountListPage
+type StorageAccountProperties = original.StorageAccountProperties
+type StorageAccountsClient = original.StorageAccountsClient
+type StorageAccountsCreateOrUpdateFuture = original.StorageAccountsCreateOrUpdateFuture
+type StorageAccountsDeleteFuture = original.StorageAccountsDeleteFuture
 type SymmetricKey = original.SymmetricKey
 type TrackingInfo = original.TrackingInfo
 type Trigger = original.Trigger
@@ -547,6 +614,18 @@ func NewBandwidthSchedulesListIterator(page BandwidthSchedulesListPage) Bandwidt
 func NewBandwidthSchedulesListPage(getNextPage func(context.Context, BandwidthSchedulesList) (BandwidthSchedulesList, error)) BandwidthSchedulesListPage {
 	return original.NewBandwidthSchedulesListPage(getNextPage)
 }
+func NewContainerListIterator(page ContainerListPage) ContainerListIterator {
+	return original.NewContainerListIterator(page)
+}
+func NewContainerListPage(getNextPage func(context.Context, ContainerList) (ContainerList, error)) ContainerListPage {
+	return original.NewContainerListPage(getNextPage)
+}
+func NewContainersClient(subscriptionID string) ContainersClient {
+	return original.NewContainersClient(subscriptionID)
+}
+func NewContainersClientWithBaseURI(baseURI string, subscriptionID string) ContainersClient {
+	return original.NewContainersClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewDeviceListIterator(page DeviceListPage) DeviceListIterator {
 	return original.NewDeviceListIterator(page)
 }
@@ -564,6 +643,12 @@ func NewJobsClient(subscriptionID string) JobsClient {
 }
 func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
 	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLocationsClient(subscriptionID string) LocationsClient {
+	return original.NewLocationsClient(subscriptionID)
+}
+func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) LocationsClient {
+	return original.NewLocationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewNodesClient(subscriptionID string) NodesClient {
 	return original.NewNodesClient(subscriptionID)
@@ -637,6 +722,18 @@ func NewStorageAccountCredentialsClient(subscriptionID string) StorageAccountCre
 func NewStorageAccountCredentialsClientWithBaseURI(baseURI string, subscriptionID string) StorageAccountCredentialsClient {
 	return original.NewStorageAccountCredentialsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewStorageAccountListIterator(page StorageAccountListPage) StorageAccountListIterator {
+	return original.NewStorageAccountListIterator(page)
+}
+func NewStorageAccountListPage(getNextPage func(context.Context, StorageAccountList) (StorageAccountList, error)) StorageAccountListPage {
+	return original.NewStorageAccountListPage(getNextPage)
+}
+func NewStorageAccountsClient(subscriptionID string) StorageAccountsClient {
+	return original.NewStorageAccountsClient(subscriptionID)
+}
+func NewStorageAccountsClientWithBaseURI(baseURI string, subscriptionID string) StorageAccountsClient {
+	return original.NewStorageAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewTriggerListIterator(page TriggerListPage) TriggerListIterator {
 	return original.NewTriggerListIterator(page)
 }
@@ -678,6 +775,9 @@ func PossibleAzureContainerDataFormatValues() []AzureContainerDataFormat {
 }
 func PossibleClientPermissionTypeValues() []ClientPermissionType {
 	return original.PossibleClientPermissionTypeValues()
+}
+func PossibleContainerStatusValues() []ContainerStatus {
+	return original.PossibleContainerStatusValues()
 }
 func PossibleDataPolicyValues() []DataPolicy {
 	return original.PossibleDataPolicyValues()
@@ -766,8 +866,14 @@ func PossibleShareStatusValues() []ShareStatus {
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
+func PossibleSkuRestrictionReasonCodeValues() []SkuRestrictionReasonCode {
+	return original.PossibleSkuRestrictionReasonCodeValues()
+}
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
+}
+func PossibleStorageAccountStatusValues() []StorageAccountStatus {
+	return original.PossibleStorageAccountStatusValues()
 }
 func PossibleTimeGrainValues() []TimeGrain {
 	return original.PossibleTimeGrainValues()
@@ -777,6 +883,9 @@ func PossibleUpdateOperationStageValues() []UpdateOperationStage {
 }
 func PossibleUpdateOperationValues() []UpdateOperation {
 	return original.PossibleUpdateOperationValues()
+}
+func PossibleUserTypeValues() []UserType {
+	return original.PossibleUserTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

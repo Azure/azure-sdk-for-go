@@ -29,13 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type Action = original.Action
+type ActionType = original.ActionType
 
 const (
-	Allow    Action = original.Allow
-	Block    Action = original.Block
-	Log      Action = original.Log
-	Redirect Action = original.Redirect
+	Allow    ActionType = original.Allow
+	Block    ActionType = original.Block
+	Log      ActionType = original.Log
+	Redirect ActionType = original.Redirect
 )
 
 type CacheBehavior = original.CacheBehavior
@@ -59,6 +59,20 @@ type CertificateType = original.CertificateType
 const (
 	Dedicated CertificateType = original.Dedicated
 	Shared    CertificateType = original.Shared
+)
+
+type CookiesOperator = original.CookiesOperator
+
+const (
+	Any                CookiesOperator = original.Any
+	BeginsWith         CookiesOperator = original.BeginsWith
+	Contains           CookiesOperator = original.Contains
+	EndsWith           CookiesOperator = original.EndsWith
+	Equal              CookiesOperator = original.Equal
+	GreaterThan        CookiesOperator = original.GreaterThan
+	GreaterThanOrEqual CookiesOperator = original.GreaterThanOrEqual
+	LessThan           CookiesOperator = original.LessThan
+	LessThanOrEqual    CookiesOperator = original.LessThanOrEqual
 )
 
 type CustomDomainResourceState = original.CustomDomainResourceState
@@ -156,10 +170,20 @@ const (
 	RequestURI    MatchVariable = original.RequestURI
 )
 
+type MinimumTLSVersion = original.MinimumTLSVersion
+
+const (
+	None  MinimumTLSVersion = original.None
+	TLS10 MinimumTLSVersion = original.TLS10
+	TLS12 MinimumTLSVersion = original.TLS12
+)
+
 type Name = original.Name
 
 const (
+	NameCookies               Name = original.NameCookies
 	NameDeliveryRuleCondition Name = original.NameDeliveryRuleCondition
+	NameHTTPVersion           Name = original.NameHTTPVersion
 	NameIsDevice              Name = original.NameIsDevice
 	NamePostArgs              Name = original.NamePostArgs
 	NameQueryString           Name = original.NameQueryString
@@ -178,27 +202,29 @@ type NameBasicDeliveryRuleAction = original.NameBasicDeliveryRuleAction
 
 const (
 	NameCacheExpiration      NameBasicDeliveryRuleAction = original.NameCacheExpiration
+	NameCacheKeyQueryString  NameBasicDeliveryRuleAction = original.NameCacheKeyQueryString
 	NameDeliveryRuleAction   NameBasicDeliveryRuleAction = original.NameDeliveryRuleAction
 	NameModifyRequestHeader  NameBasicDeliveryRuleAction = original.NameModifyRequestHeader
 	NameModifyResponseHeader NameBasicDeliveryRuleAction = original.NameModifyResponseHeader
 	NameURLRedirect          NameBasicDeliveryRuleAction = original.NameURLRedirect
+	NameURLRewrite           NameBasicDeliveryRuleAction = original.NameURLRewrite
 )
 
 type Operator = original.Operator
 
 const (
-	Any                Operator = original.Any
-	BeginsWith         Operator = original.BeginsWith
-	Contains           Operator = original.Contains
-	EndsWith           Operator = original.EndsWith
-	Equal              Operator = original.Equal
-	GeoMatch           Operator = original.GeoMatch
-	GreaterThan        Operator = original.GreaterThan
-	GreaterThanOrEqual Operator = original.GreaterThanOrEqual
-	IPMatch            Operator = original.IPMatch
-	LessThan           Operator = original.LessThan
-	LessThanOrEqual    Operator = original.LessThanOrEqual
-	RegEx              Operator = original.RegEx
+	OperatorAny                Operator = original.OperatorAny
+	OperatorBeginsWith         Operator = original.OperatorBeginsWith
+	OperatorContains           Operator = original.OperatorContains
+	OperatorEndsWith           Operator = original.OperatorEndsWith
+	OperatorEqual              Operator = original.OperatorEqual
+	OperatorGeoMatch           Operator = original.OperatorGeoMatch
+	OperatorGreaterThan        Operator = original.OperatorGreaterThan
+	OperatorGreaterThanOrEqual Operator = original.OperatorGreaterThanOrEqual
+	OperatorIPMatch            Operator = original.OperatorIPMatch
+	OperatorLessThan           Operator = original.OperatorLessThan
+	OperatorLessThanOrEqual    Operator = original.OperatorLessThanOrEqual
+	OperatorRegEx              Operator = original.OperatorRegEx
 )
 
 type OptimizationType = original.OptimizationType
@@ -280,6 +306,15 @@ const (
 	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
 	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
 	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+)
+
+type QueryStringBehavior = original.QueryStringBehavior
+
+const (
+	Exclude    QueryStringBehavior = original.Exclude
+	ExcludeAll QueryStringBehavior = original.ExcludeAll
+	Include    QueryStringBehavior = original.Include
+	IncludeAll QueryStringBehavior = original.IncludeAll
 )
 
 type QueryStringCachingBehavior = original.QueryStringCachingBehavior
@@ -374,6 +409,7 @@ type SkuName = original.SkuName
 
 const (
 	CustomVerizon     SkuName = original.CustomVerizon
+	PremiumChinaCdn   SkuName = original.PremiumChinaCdn
 	PremiumVerizon    SkuName = original.PremiumVerizon
 	StandardAkamai    SkuName = original.StandardAkamai
 	StandardChinaCdn  SkuName = original.StandardChinaCdn
@@ -386,6 +422,17 @@ type Transform = original.Transform
 const (
 	Lowercase Transform = original.Lowercase
 	Uppercase Transform = original.Uppercase
+)
+
+type TransformType = original.TransformType
+
+const (
+	TransformTypeLowercase   TransformType = original.TransformTypeLowercase
+	TransformTypeRemoveNulls TransformType = original.TransformTypeRemoveNulls
+	TransformTypeTrim        TransformType = original.TransformTypeTrim
+	TransformTypeUppercase   TransformType = original.TransformTypeUppercase
+	TransformTypeURLDecode   TransformType = original.TransformTypeURLDecode
+	TransformTypeURLEncode   TransformType = original.TransformTypeURLEncode
 )
 
 type URLFileExtensionOperator = original.URLFileExtensionOperator
@@ -431,16 +478,17 @@ const (
 	URLPathOperatorWildcard           URLPathOperator = original.URLPathOperatorWildcard
 )
 
-type ActionType = original.ActionType
 type BaseClient = original.BaseClient
 type BasicCustomDomainHTTPSParameters = original.BasicCustomDomainHTTPSParameters
 type BasicDeliveryRuleAction = original.BasicDeliveryRuleAction
 type BasicDeliveryRuleCondition = original.BasicDeliveryRuleCondition
 type CacheExpirationActionParameters = original.CacheExpirationActionParameters
+type CacheKeyQueryStringActionParameters = original.CacheKeyQueryStringActionParameters
 type CertificateSourceParameters = original.CertificateSourceParameters
 type CheckNameAvailabilityInput = original.CheckNameAvailabilityInput
 type CheckNameAvailabilityOutput = original.CheckNameAvailabilityOutput
 type CidrIPAddress = original.CidrIPAddress
+type CookiesMatchConditionParameters = original.CookiesMatchConditionParameters
 type CustomDomain = original.CustomDomain
 type CustomDomainHTTPSParameters = original.CustomDomainHTTPSParameters
 type CustomDomainListResult = original.CustomDomainListResult
@@ -459,7 +507,10 @@ type DeepCreatedOriginProperties = original.DeepCreatedOriginProperties
 type DeliveryRule = original.DeliveryRule
 type DeliveryRuleAction = original.DeliveryRuleAction
 type DeliveryRuleCacheExpirationAction = original.DeliveryRuleCacheExpirationAction
+type DeliveryRuleCacheKeyQueryStringAction = original.DeliveryRuleCacheKeyQueryStringAction
 type DeliveryRuleCondition = original.DeliveryRuleCondition
+type DeliveryRuleCookiesCondition = original.DeliveryRuleCookiesCondition
+type DeliveryRuleHTTPVersionCondition = original.DeliveryRuleHTTPVersionCondition
 type DeliveryRuleIsDeviceCondition = original.DeliveryRuleIsDeviceCondition
 type DeliveryRulePostArgsCondition = original.DeliveryRulePostArgsCondition
 type DeliveryRuleQueryStringCondition = original.DeliveryRuleQueryStringCondition
@@ -500,6 +551,7 @@ type EndpointsStopFuture = original.EndpointsStopFuture
 type EndpointsUpdateFuture = original.EndpointsUpdateFuture
 type ErrorResponse = original.ErrorResponse
 type GeoFilter = original.GeoFilter
+type HTTPVersionMatchConditionParameters = original.HTTPVersionMatchConditionParameters
 type HeaderActionParameters = original.HeaderActionParameters
 type IPAddressGroup = original.IPAddressGroup
 type IsDeviceMatchConditionParameters = original.IsDeviceMatchConditionParameters
@@ -575,6 +627,8 @@ type URLFileNameMatchConditionParameters = original.URLFileNameMatchConditionPar
 type URLPathMatchConditionParameters = original.URLPathMatchConditionParameters
 type URLRedirectAction = original.URLRedirectAction
 type URLRedirectActionParameters = original.URLRedirectActionParameters
+type URLRewriteAction = original.URLRewriteAction
+type URLRewriteActionParameters = original.URLRewriteActionParameters
 type UserManagedHTTPSParameters = original.UserManagedHTTPSParameters
 type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
@@ -701,8 +755,8 @@ func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, W
 func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func PossibleActionValues() []Action {
-	return original.PossibleActionValues()
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
 }
 func PossibleCacheBehaviorValues() []CacheBehavior {
 	return original.PossibleCacheBehaviorValues()
@@ -712,6 +766,9 @@ func PossibleCertificateSourceValues() []CertificateSource {
 }
 func PossibleCertificateTypeValues() []CertificateType {
 	return original.PossibleCertificateTypeValues()
+}
+func PossibleCookiesOperatorValues() []CookiesOperator {
+	return original.PossibleCookiesOperatorValues()
 }
 func PossibleCustomDomainResourceStateValues() []CustomDomainResourceState {
 	return original.PossibleCustomDomainResourceStateValues()
@@ -742,6 +799,9 @@ func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 }
 func PossibleMatchVariableValues() []MatchVariable {
 	return original.PossibleMatchVariableValues()
+}
+func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
+	return original.PossibleMinimumTLSVersionValues()
 }
 func PossibleNameBasicDeliveryRuleActionValues() []NameBasicDeliveryRuleAction {
 	return original.PossibleNameBasicDeliveryRuleActionValues()
@@ -779,6 +839,9 @@ func PossibleProtocolTypeValues() []ProtocolType {
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
+func PossibleQueryStringBehaviorValues() []QueryStringBehavior {
+	return original.PossibleQueryStringBehaviorValues()
+}
 func PossibleQueryStringCachingBehaviorValues() []QueryStringCachingBehavior {
 	return original.PossibleQueryStringCachingBehaviorValues()
 }
@@ -805,6 +868,9 @@ func PossibleResourceTypeValues() []ResourceType {
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
+}
+func PossibleTransformTypeValues() []TransformType {
+	return original.PossibleTransformTypeValues()
 }
 func PossibleTransformValues() []Transform {
 	return original.PossibleTransformValues()

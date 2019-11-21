@@ -7503,11 +7503,11 @@ type OSDiskImage struct {
 type OSProfile struct {
 	// ComputerName - Specifies the host OS name of the virtual machine. <br><br> This name cannot be updated after the VM is created. <br><br> **Max-length (Windows):** 15 characters <br><br> **Max-length (Linux):** 64 characters. <br><br> For naming conventions and restrictions see [Azure infrastructure services implementation guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
 	ComputerName *string `json:"computerName,omitempty"`
-	// AdminUsername - Specifies the name of the administrator account. <br><br> **Windows-only restriction:** Cannot end in "." <br><br> **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5". <br><br> **Minimum-length (Linux):** 1  character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20 characters  <br><br><li> For root access to the Linux VM, see [Using root privileges on Linux virtual machines in Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-use-root-privileges?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)<br><li> For a list of built-in system users on Linux that should not be used in this field, see [Selecting User Names for Linux on Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-usernames?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
+	// AdminUsername - Specifies the name of the administrator account. <br><br> This property cannot be updated after the VM is created. <br><br> **Windows-only restriction:** Cannot end in "." <br><br> **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5". <br><br> **Minimum-length (Linux):** 1  character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20 characters  <br><br><li> For root access to the Linux VM, see [Using root privileges on Linux virtual machines in Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-use-root-privileges?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)<br><li> For a list of built-in system users on Linux that should not be used in this field, see [Selecting User Names for Linux on Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-usernames?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
 	AdminUsername *string `json:"adminUsername,omitempty"`
 	// AdminPassword - Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br> For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows VM](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-reset-rdp?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) <br><br> For resetting root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess Extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-vmaccess-extension?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#reset-root-password)
 	AdminPassword *string `json:"adminPassword,omitempty"`
-	// CustomData - Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. <br><br> For using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during creation](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-cloud-init?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
+	// CustomData - Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. <br><br> This property cannot be updated after the VM is created. <br><br> For using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during creation](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-cloud-init?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
 	CustomData *string `json:"customData,omitempty"`
 	// WindowsConfiguration - Specifies Windows operating system settings on the virtual machine.
 	WindowsConfiguration *WindowsConfiguration `json:"windowsConfiguration,omitempty"`
@@ -10263,7 +10263,7 @@ type VirtualMachineProperties struct {
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
 	// AdditionalCapabilities - Specifies additional capabilities enabled or disabled on the virtual machine.
 	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`
-	// OsProfile - Specifies the operating system settings for the virtual machine.
+	// OsProfile - Specifies the operating system settings used while creating the virtual machine. Some of the settings cannot be changed once VM is provisioned.
 	OsProfile *OSProfile `json:"osProfile,omitempty"`
 	// NetworkProfile - Specifies the network interfaces of the virtual machine.
 	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
@@ -10482,7 +10482,9 @@ type VirtualMachineScaleSetDataDisk struct {
 type VirtualMachineScaleSetExtension struct {
 	autorest.Response `json:"-"`
 	// Name - The name of the extension.
-	Name                                       *string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type                                       *string `json:"type,omitempty"`
 	*VirtualMachineScaleSetExtensionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
@@ -10517,6 +10519,15 @@ func (vmsse *VirtualMachineScaleSetExtension) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vmsse.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmsse.Type = &typeVar
 			}
 		case "properties":
 			if v != nil {
@@ -10768,6 +10779,106 @@ func (future *VirtualMachineScaleSetExtensionsDeleteFuture) Result(client Virtua
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// VirtualMachineScaleSetExtensionsUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type VirtualMachineScaleSetExtensionsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *VirtualMachineScaleSetExtensionsUpdateFuture) Result(client VirtualMachineScaleSetExtensionsClient) (vmsse VirtualMachineScaleSetExtension, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetExtensionsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if vmsse.Response.Response, err = future.GetResult(sender); err == nil && vmsse.Response.Response.StatusCode != http.StatusNoContent {
+		vmsse, err = client.UpdateResponder(vmsse.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetExtensionsUpdateFuture", "Result", vmsse.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// VirtualMachineScaleSetExtensionUpdate describes a Virtual Machine Scale Set Extension.
+type VirtualMachineScaleSetExtensionUpdate struct {
+	// Name - READ-ONLY; The name of the extension.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type                                       *string `json:"type,omitempty"`
+	*VirtualMachineScaleSetExtensionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetExtensionUpdate.
+func (vmsseu VirtualMachineScaleSetExtensionUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmsseu.VirtualMachineScaleSetExtensionProperties != nil {
+		objectMap["properties"] = vmsseu.VirtualMachineScaleSetExtensionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetExtensionUpdate struct.
+func (vmsseu *VirtualMachineScaleSetExtensionUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vmsseu.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmsseu.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var virtualMachineScaleSetExtensionProperties VirtualMachineScaleSetExtensionProperties
+				err = json.Unmarshal(*v, &virtualMachineScaleSetExtensionProperties)
+				if err != nil {
+					return err
+				}
+				vmsseu.VirtualMachineScaleSetExtensionProperties = &virtualMachineScaleSetExtensionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vmsseu.ID = &ID
+			}
+		}
+	}
+
+	return nil
 }
 
 // VirtualMachineScaleSetIdentity identity for the virtual machine scale set.

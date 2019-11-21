@@ -207,7 +207,8 @@ func (client VirtualMachinesClient) ConvertToManagedDisksResponder(resp *http.Re
 	return
 }
 
-// CreateOrUpdate the operation to create or update a virtual machine.
+// CreateOrUpdate the operation to create or update a virtual machine. Some properties can be set only during
+// provisioning the virtual machine.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // VMName - the name of the virtual machine.

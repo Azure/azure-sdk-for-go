@@ -52,7 +52,7 @@ func NewFileSharesClientWithBaseURI(baseURI string, subscriptionID string) FileS
 // between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
 // character must be immediately preceded and followed by a letter or number.
 // fileShare - properties of the file share to create.
-func (client FileSharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare) (result FileShare, err error) {
+func (client FileSharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShareCreateParameters) (result FileShare, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FileSharesClient.Create")
 		defer func() {
@@ -75,11 +75,9 @@ func (client FileSharesClient) Create(ctx context.Context, resourceGroupName str
 			Constraints: []validation.Constraint{{Target: "shareName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "shareName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: fileShare,
-			Constraints: []validation.Constraint{{Target: "fileShare.FileShareProperties", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "fileShare.FileShareProperties.ShareQuota", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "fileShare.FileShareProperties.ShareQuota", Name: validation.InclusiveMaximum, Rule: int64(5120), Chain: nil},
-						{Target: "fileShare.FileShareProperties.ShareQuota", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
-					}},
+			Constraints: []validation.Constraint{{Target: "fileShare.ShareQuota", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "fileShare.ShareQuota", Name: validation.InclusiveMaximum, Rule: int64(5120), Chain: nil},
+					{Target: "fileShare.ShareQuota", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 				}}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
@@ -108,7 +106,7 @@ func (client FileSharesClient) Create(ctx context.Context, resourceGroupName str
 }
 
 // CreatePreparer prepares the Create request.
-func (client FileSharesClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare) (*http.Request, error) {
+func (client FileSharesClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShareCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -497,7 +495,7 @@ func (client FileSharesClient) ListComplete(ctx context.Context, resourceGroupNa
 // between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
 // character must be immediately preceded and followed by a letter or number.
 // fileShare - properties to update for the file share.
-func (client FileSharesClient) Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare) (result FileShare, err error) {
+func (client FileSharesClient) Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShareUpdateParameters) (result FileShare, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/FileSharesClient.Update")
 		defer func() {
@@ -546,7 +544,7 @@ func (client FileSharesClient) Update(ctx context.Context, resourceGroupName str
 }
 
 // UpdatePreparer prepares the Update request.
-func (client FileSharesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare) (*http.Request, error) {
+func (client FileSharesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShareUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

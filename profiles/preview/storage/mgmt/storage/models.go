@@ -89,6 +89,13 @@ const (
 	DirectoryServiceOptionsNone  DirectoryServiceOptions = original.DirectoryServiceOptionsNone
 )
 
+type EnabledProtocols = original.EnabledProtocols
+
+const (
+	NFS EnabledProtocols = original.NFS
+	SMB EnabledProtocols = original.SMB
+)
+
 type GeoReplicationStatus = original.GeoReplicationStatus
 
 const (
@@ -240,6 +247,14 @@ const (
 	QuotaID                     ReasonCode = original.QuotaID
 )
 
+type RootSquash = original.RootSquash
+
+const (
+	RootSquashAllSquash    RootSquash = original.RootSquashAllSquash
+	RootSquashNoRootSquash RootSquash = original.RootSquashNoRootSquash
+	RootSquashRootSquash   RootSquash = original.RootSquashRootSquash
+)
+
 type RoutingChoice = original.RoutingChoice
 
 const (
@@ -365,11 +380,13 @@ type FileServiceProperties = original.FileServiceProperties
 type FileServicePropertiesProperties = original.FileServicePropertiesProperties
 type FileServicesClient = original.FileServicesClient
 type FileShare = original.FileShare
+type FileShareCreateParameters = original.FileShareCreateParameters
 type FileShareItem = original.FileShareItem
 type FileShareItems = original.FileShareItems
 type FileShareItemsIterator = original.FileShareItemsIterator
 type FileShareItemsPage = original.FileShareItemsPage
 type FileShareProperties = original.FileShareProperties
+type FileShareUpdateParameters = original.FileShareUpdateParameters
 type FileSharesClient = original.FileSharesClient
 type GeoReplicationStats = original.GeoReplicationStats
 type IPRule = original.IPRule
@@ -548,6 +565,9 @@ func PossibleDefaultActionValues() []DefaultAction {
 func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return original.PossibleDirectoryServiceOptionsValues()
 }
+func PossibleEnabledProtocolsValues() []EnabledProtocols {
+	return original.PossibleEnabledProtocolsValues()
+}
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return original.PossibleGeoReplicationStatusValues()
 }
@@ -604,6 +624,9 @@ func PossibleReasonCodeValues() []ReasonCode {
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
+}
+func PossibleRootSquashValues() []RootSquash {
+	return original.PossibleRootSquashValues()
 }
 func PossibleRoutingChoiceValues() []RoutingChoice {
 	return original.PossibleRoutingChoiceValues()

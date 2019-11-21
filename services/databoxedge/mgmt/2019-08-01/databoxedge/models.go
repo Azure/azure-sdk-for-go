@@ -3743,8 +3743,6 @@ type ResourceTypeSku struct {
 	Kind *string `json:"kind,omitempty"`
 	// Tier - READ-ONLY; The Sku tier. Possible values include: 'Standard'
 	Tier SkuTier `json:"tier,omitempty"`
-	// Size - READ-ONLY; The Sku kind
-	Size *string `json:"size,omitempty"`
 	// Family - READ-ONLY; The Sku family
 	Family *string `json:"family,omitempty"`
 	// Locations - READ-ONLY; Availability of the SKU for the region

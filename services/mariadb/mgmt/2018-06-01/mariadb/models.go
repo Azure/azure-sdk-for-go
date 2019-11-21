@@ -25,6 +25,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
+	"github.com/satori/go.uuid"
 	"net/http"
 )
 
@@ -65,6 +66,21 @@ const (
 // PossibleGeoRedundantBackupValues returns an array of possible values for the GeoRedundantBackup const type.
 func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 	return []GeoRedundantBackup{Disabled, Enabled}
+}
+
+// IdentityType enumerates the values for identity type.
+type IdentityType string
+
+const (
+	// None ...
+	None IdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned IdentityType = "SystemAssigned"
+)
+
+// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{None, SystemAssigned}
 }
 
 // OperationOrigin enumerates the values for operation origin.
@@ -815,6 +831,16 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// ResourceIdentity azure Active Directory identity configuration for a resource.
+type ResourceIdentity struct {
+	// PrincipalID - READ-ONLY; The Azure Active Directory principal id.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// Type - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the resource. Possible values include: 'SystemAssigned', 'None'
+	Type IdentityType `json:"type,omitempty"`
+	// TenantID - READ-ONLY; The Azure Active Directory tenant id.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+}
+
 // SecurityAlertPolicyProperties properties of a security alert policy.
 type SecurityAlertPolicyProperties struct {
 	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'ServerSecurityAlertPolicyStateEnabled', 'ServerSecurityAlertPolicyStateDisabled'
@@ -836,6 +862,8 @@ type SecurityAlertPolicyProperties struct {
 // Server represents a server.
 type Server struct {
 	autorest.Response `json:"-"`
+	// Identity - The Azure Active Directory identity of the server.
+	Identity *ResourceIdentity `json:"identity,omitempty"`
 	// Sku - The SKU (pricing tier) of the server.
 	Sku *Sku `json:"sku,omitempty"`
 	// ServerProperties - Properties of the server.
@@ -855,6 +883,9 @@ type Server struct {
 // MarshalJSON is the custom marshaler for Server.
 func (s Server) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if s.Identity != nil {
+		objectMap["identity"] = s.Identity
+	}
 	if s.Sku != nil {
 		objectMap["sku"] = s.Sku
 	}
@@ -879,6 +910,15 @@ func (s *Server) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "identity":
+			if v != nil {
+				var identity ResourceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				s.Identity = &identity
+			}
 		case "sku":
 			if v != nil {
 				var sku Sku

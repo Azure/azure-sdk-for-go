@@ -862,8 +862,8 @@ type SecurityAlertPolicyProperties struct {
 // Server represents a server.
 type Server struct {
 	autorest.Response `json:"-"`
-	// ResourceIdentity - The Azure Active Directory identity of the server.
-	ResourceIdentity *ResourceIdentity `json:"ResourceIdentity,omitempty"`
+	// Identity - The Azure Active Directory identity of the server.
+	Identity *ResourceIdentity `json:"identity,omitempty"`
 	// Sku - The SKU (pricing tier) of the server.
 	Sku *Sku `json:"sku,omitempty"`
 	// ServerProperties - Properties of the server.
@@ -883,8 +883,8 @@ type Server struct {
 // MarshalJSON is the custom marshaler for Server.
 func (s Server) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if s.ResourceIdentity != nil {
-		objectMap["ResourceIdentity"] = s.ResourceIdentity
+	if s.Identity != nil {
+		objectMap["identity"] = s.Identity
 	}
 	if s.Sku != nil {
 		objectMap["sku"] = s.Sku
@@ -910,14 +910,14 @@ func (s *Server) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "ResourceIdentity":
+		case "identity":
 			if v != nil {
-				var resourceIdentity ResourceIdentity
-				err = json.Unmarshal(*v, &resourceIdentity)
+				var identity ResourceIdentity
+				err = json.Unmarshal(*v, &identity)
 				if err != nil {
 					return err
 				}
-				s.ResourceIdentity = &resourceIdentity
+				s.Identity = &identity
 			}
 		case "sku":
 			if v != nil {

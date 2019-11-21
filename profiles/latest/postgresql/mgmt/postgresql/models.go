@@ -46,6 +46,13 @@ const (
 	Enabled  GeoRedundantBackup = original.Enabled
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	None           IdentityType = original.None
+	SystemAssigned IdentityType = original.SystemAssigned
+)
+
 type OperationOrigin = original.OperationOrigin
 
 const (
@@ -150,6 +157,7 @@ type PerformanceTierProperties = original.PerformanceTierProperties
 type PerformanceTierServiceLevelObjectives = original.PerformanceTierServiceLevelObjectives
 type ProxyResource = original.ProxyResource
 type ReplicasClient = original.ReplicasClient
+type ResourceIdentity = original.ResourceIdentity
 type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
 type ServerForCreate = original.ServerForCreate
@@ -265,6 +273,9 @@ func PossibleCreateModeValues() []CreateMode {
 }
 func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 	return original.PossibleGeoRedundantBackupValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()

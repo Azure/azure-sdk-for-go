@@ -6815,8 +6815,8 @@ type WebApplicationFirewallPolicyProperties struct {
 	CustomRules *CustomRuleList `json:"customRules,omitempty"`
 	// ManagedRules - Describes managed rules inside the policy.
 	ManagedRules *ManagedRuleSetList `json:"managedRules,omitempty"`
-	// CdnEndpointLinks - READ-ONLY; Describes Azure CDN endpoints associated with this Web Application Firewall policy.
-	CdnEndpointLinks *[]EndpointType `json:"cdnEndpointLinks,omitempty"`
+	// EndpointLinks - READ-ONLY; Describes Azure CDN endpoints associated with this Web Application Firewall policy.
+	EndpointLinks *[]EndpointType `json:"endpointLinks,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the WebApplicationFirewallPolicy. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ResourceState - READ-ONLY; Possible values include: 'PolicyResourceStateCreating', 'PolicyResourceStateEnabling', 'PolicyResourceStateEnabled', 'PolicyResourceStateDisabling', 'PolicyResourceStateDisabled', 'PolicyResourceStateDeleting'

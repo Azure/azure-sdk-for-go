@@ -35,22 +35,21 @@ func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedToken
 func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts *azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	var token *azcore.AccessToken
 	var err error
-	var errList []error
+	var errList []*CredentialUnavailableError
 
 	for i := 0; i < len(c.sources); i++ {
 		token, err = c.sources[i].GetToken(ctx, opts)
-		// TODO: check if the err is an auth failure and stop loop, if cred unavailable you can continue
 		if errors.Is(err, &CredentialUnavailableError{}) {
-			errList = append(errList, err)
+			errList = append(errList, err.(*CredentialUnavailableError))
 		} else { // TODO fix this
-			return token, &AuthenticationFailedError{Message: err.Error()}
+			return token, &AuthenticationFailedError{Message: err.Error(), ErrorList: errList}
 		}
 	}
 
 	if token == nil && len(errList) > 0 {
 		// TODO err message should include cred name and failure reason
 		// Pass back slice of errors here
-		err = &CredentialUnavailableError{ErrList: errList}
+		err = &CredentialUnavailableError{ErrorList: errList}
 		return nil, err
 	}
 

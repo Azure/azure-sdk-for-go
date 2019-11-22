@@ -32,16 +32,6 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 
 // TODO: make sure guid params are always in the same order
 
-// NewClientSecretCredentialWithPipeline constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
-// tenantID: The Azure Active Directory tenant (directory) Id of the service principal.
-// clientID: The client (application) ID of the service principal.
-// clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
-// options: allow to configure the management of the requests sent to the Azure Active Directory service.
-// pipeline: Custom pipeline to be used for API requests.
-func newClientSecretCredentialWithPipeline(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions, pipeline azcore.Pipeline) *ClientSecretCredential {
-	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: newAADIdentityClientWithPipeline(options, pipeline)}
-} // TODO: consider authority host cases with custom pipeline + remove for v1?
-
 // GetToken obtains a token from the Azure Active Directory service, using the specified client secret to authenticate.
 // ctx: controlling the request lifetime.
 // scopes: The list of scopes for which the token will have access.

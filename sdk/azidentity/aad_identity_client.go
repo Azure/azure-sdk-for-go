@@ -50,14 +50,10 @@ type aadIdentityClient struct {
 // options: IdentityClientOptions that adds policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
 func newAADIdentityClient(options *IdentityClientOptions) *aadIdentityClient {
-	options = options.setDefaultValues()
+	if options == nil {
+		options = defaultIdentityClientOpts
+	}
 	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(options.PipelineOptions)}
-}
-
-// TODO: think about having a singleton pipeline
-func newAADIdentityClientWithPipeline(options *IdentityClientOptions, pipeline azcore.Pipeline) *aadIdentityClient {
-	options = options.setDefaultValues()
-	return &aadIdentityClient{options: *options, pipeline: pipeline}
 }
 
 // Authenticate creates a client secret authentication request and returns the resulting Access Token or
@@ -78,8 +74,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return nil, err
 	}
 
-	// TODO: look into HasStatusCode
-	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 

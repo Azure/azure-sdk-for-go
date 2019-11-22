@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"encoding/json"
+	"net/http"
 	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -13,6 +14,39 @@ import (
 const (
 	defaultAuthorityHost = "https://login.microsoftonline.com/"
 )
+
+var (
+	// StatusCodesForRetry is the default set of HTTP status code for which the policy will retry.
+	StatusCodesForRetry = [6]int{
+		http.StatusRequestTimeout,      // 408
+		http.StatusTooManyRequests,     // 429
+		http.StatusInternalServerError, // 500
+		http.StatusBadGateway,          // 502
+		http.StatusServiceUnavailable,  // 503
+		http.StatusGatewayTimeout,      // 504
+	}
+
+	successStatusCodes = [2]int{
+		http.StatusOK,      // 200
+		http.StatusCreated, // 201
+	}
+)
+
+var (
+	defaultAuthorityHostURL   *url.URL
+	defaultIdentityClientOpts *IdentityClientOptions
+)
+
+func init() {
+	var err error
+	defaultAuthorityHostURL, err = url.Parse(defaultAuthorityHost)
+	if err != nil {
+		// TODO fix this
+		panic(err)
+	}
+
+	defaultIdentityClientOpts = &IdentityClientOptions{AuthorityHost: defaultAuthorityHostURL}
+}
 
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
 type AuthenticationFailedError struct {
@@ -23,9 +57,16 @@ type AuthenticationFailedError struct {
 	CorrelationID string `json:"correlation_id"`
 	URI           string `json:"error_uri"`
 	Response      *azcore.Response
+	ErrorList     []*CredentialUnavailableError
 }
 
 func (e *AuthenticationFailedError) Error() string {
+	if len(e.ErrorList) > 1 {
+		msg := "Authentication Error: \n"
+		for i := 0; i < len(e.ErrorList); i++ {
+			msg = msg + e.ErrorList[i].CredentialType + " " + e.ErrorList[i].Message + "\n"
+		}
+	}
 	return e.Message + ": " + e.Description
 }
 
@@ -42,14 +83,15 @@ func newAuthenticationFailedError(resp *azcore.Response) error {
 
 // CredentialUnavailableError an error type returned when the conditions required to create a credential do not exist
 type CredentialUnavailableError struct {
-	Message string
-	ErrList []error
+	CredentialType string
+	Message        string
+	ErrorList      []*CredentialUnavailableError
 }
 
 func (e *CredentialUnavailableError) Error() string {
-	if len(e.ErrList) > 0 {
+	if len(e.ErrorList) > 0 {
 		msg := ""
-		for _, err := range e.ErrList {
+		for _, err := range e.ErrorList {
 			msg += err.Error() + "\n"
 		}
 		e.Message = msg
@@ -64,13 +106,13 @@ type IdentityClientOptions struct {
 }
 
 // TODO singleton default options?
+// TODO this is unnecessary if we keep the functionality in the init
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *IdentityClientOptions) setDefaultValues() *IdentityClientOptions {
 	// Invert logic if c!= nil
 	if c == nil {
 		c = &IdentityClientOptions{}
-		// The error for parse is run during testing
-		c.AuthorityHost, _ = url.Parse(defaultAuthorityHost)
+		c.AuthorityHost = defaultAuthorityHostURL
 	}
 	return c
 }
@@ -86,6 +128,49 @@ func newDefaultPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(o.Retry),
+		azcore.NewRequestLogPolicy(o.LogOptions))
+}
+
+// hasStatusCode returns true if the Response's status code is one of the specified values.
+func hasStatusCode(r *azcore.Response, statusCodes ...int) bool {
+	if r == nil {
+		return false
+	}
+	for _, sc := range statusCodes {
+		if r.StatusCode == sc {
+			return true
+		}
+	}
+	return false
+}
+
+// MSIPipelineOptions is used to configure a request policy pipeline's retry policy and logging.
+type MSIPipelineOptions struct {
+	// Retry configures the built-in retry policy behavior.
+	Retry azcore.RetryOptions
+
+	// Telemetry configures the built-in telemetry policy behavior.
+	Telemetry azcore.TelemetryOptions
+
+	// HTTPClient sets the transport for making HTTP requests.
+	// Leave this as nil to use the default HTTP transport.
+	HTTPClient azcore.Transport
+
+	// LogOptions configures the built-in request logging policy behavior.
+	LogOptions azcore.RequestLogOptions
+}
+
+// NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options
+func newDefaultMSIPipeline(o MSIPipelineOptions) azcore.Pipeline {
+	if o.HTTPClient == nil {
+		o.HTTPClient = azcore.DefaultHTTPClientTransport()
+	}
+
+	return azcore.NewPipeline(
+		o.HTTPClient,
+		azcore.NewTelemetryPolicy(o.Telemetry),
+		azcore.NewUniqueRequestIDPolicy(),
+		// NewMSIRetryPolicy(o.Retry),
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }
 

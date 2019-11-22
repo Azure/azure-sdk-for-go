@@ -54,27 +54,37 @@ type managedIdentityClient struct {
 	endpoint               *url.URL
 }
 
+var (
+	imdsURL        *url.URL
+	defaultMSIOpts *ManagedIdentityCredentialOptions
+)
+
+func init() {
+	var err error
+	imdsURL, err = url.Parse(imdsEndpoint)
+	if err != nil {
+		// TODO change this
+		panic(err)
+	}
+
+	defaultMSIOpts = newDefaultManagedIdentityOptions()
+}
+
 // NewManagedIdentityClient creates a new instance of the ManagedIdentityClient with the IdentityClientOptions
 // that are passed into it along with a default pipeline.
 // options: IdentityClientOptions that adds policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*managedIdentityClient, error) {
-	// TODO: mimic aad client and make string a const parse only once, create in init
-	imdsEndpoint, err := url.Parse(imdsEndpoint)
-	if err != nil {
-		return nil, fmt.Errorf("NewManagedIdentityClient: %w", err)
-	}
-
 	if options == nil {
-		options = NewDefaultManagedIdentityOptions()
+		options = defaultMSIOpts
 	}
 	// document the use of these variables
 	// TODO: create a separate pipeline for imds that had its own retry policy
 	return &managedIdentityClient{
 		// TODO: setDefaultValues should return by val
 		options:                options.Options,
-		pipeline:               newDefaultPipeline(options.PipelineOptions),
-		imdsEndpoint:           imdsEndpoint,
+		pipeline:               newDefaultMSIPipeline(options.PipelineOptions),
+		imdsEndpoint:           imdsURL,
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,
 		msiType:                unknown,
@@ -116,7 +126,7 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 		return nil, err
 	}
 
-	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated {
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 

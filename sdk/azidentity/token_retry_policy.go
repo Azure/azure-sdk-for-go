@@ -1,74 +1,9 @@
-// // Copyright (c) Microsoft Corporation. All rights reserved.
-// // Licensed under the MIT License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package azidentity
 
-// import (
-// 	"context"
-// 	"errors"
-// 	"math/rand"
-// 	"net/http"
-// 	"time"
-// )
-
-// // RetryPolicy tells the pipeline what kind of retry policy to use. See the RetryPolicy* constants.
-// type RetryPolicy int32
-
-// const (
-// 	// RetryPolicyExponential tells the pipeline to use an exponential back-off retry policy
-// 	RetryPolicyExponential RetryPolicy = 0
-
-// 	// RetryPolicyFixed tells the pipeline to use a fixed back-off retry policy
-// 	RetryPolicyFixed RetryPolicy = 1
-// )
-
-// // RetryOptions configures the retry policy's behavior.
-// type RetryOptions struct {
-// 	// Policy tells the pipeline what kind of retry policy to use. See the RetryPolicy* constants.\
-// 	// A value of zero means that you accept our default policy.
-// 	Policy RetryPolicy
-
-// 	// MaxTries specifies the maximum number of attempts an operation will be tried before producing an error (0=default).
-// 	// A value of zero means that you accept our default policy. A value of 1 means 1 try and no retries.
-// 	MaxTries int32
-
-// 	// TryTimeout indicates the maximum time allowed for any single try of an HTTP request.
-// 	// A value of zero means that you accept our default timeout. NOTE: When transferring large amounts
-// 	// of data, the default TryTimeout will probably not be sufficient. You should override this value
-// 	// based on the bandwidth available to the host machine and proximity to the Storage service. A good
-// 	// starting point may be something like (60 seconds per MB of anticipated-payload-size).
-// 	TryTimeout time.Duration
-
-// 	// RetryDelay specifies the amount of delay to use before retrying an operation (0=default).
-// 	// When RetryPolicy is specified as RetryPolicyExponential, the delay increases exponentially
-// 	// with each retry up to a maximum specified by MaxRetryDelay.
-// 	// If you specify 0, then you must also specify 0 for MaxRetryDelay.
-// 	// If you specify RetryDelay, then you must also specify MaxRetryDelay, and MaxRetryDelay should be
-// 	// equal to or greater than RetryDelay.
-// 	RetryDelay time.Duration
-
-// 	// MaxRetryDelay specifies the maximum delay allowed before retrying an operation (0=default).
-// 	// If you specify 0, then you must also specify 0 for RetryDelay.
-// 	MaxRetryDelay time.Duration
-
-// 	// StatusCodes specifies the HTTP status codes that indicate the operation should be retried.
-// 	// If unspecified it will default to the status codes in StatusCodesForRetry.
-// 	StatusCodes []int
-// }
-
-// var (
-// 	// StatusCodesForRetry is the default set of HTTP status code for which the policy will retry.
-// 	StatusCodesForRetry = [6]int{
-// 		http.StatusRequestTimeout,      // 408
-// 		http.StatusTooManyRequests,     // 429
-// 		http.StatusInternalServerError, // 500
-// 		http.StatusBadGateway,          // 502
-// 		http.StatusServiceUnavailable,  // 503
-// 		http.StatusGatewayTimeout,      // 504
-// 	}
-// )
-
-// func (o RetryOptions) defaults() RetryOptions {
+// func (o azcore.RetryOptions) msiDefaults() azcore.RetryOptions {
 // 	// We assume the following:
 // 	// 1. o.Policy should either be RetryPolicyExponential or RetryPolicyFixed
 // 	// 2. o.MaxTries >= 0
@@ -88,17 +23,17 @@ package azidentity
 
 // 	// Set defaults if unspecified
 // 	if o.MaxTries == 0 {
-// 		o.MaxTries = 4
+// 		o.MaxTries = 8
 // 	}
 // 	switch o.Policy {
 // 	default:
 // 		fallthrough
-// 	case RetryPolicyExponential:
+// 	case azcore.RetryPolicyExponential:
 // 		IfDefault(&o.TryTimeout, 1*time.Minute)
 // 		IfDefault(&o.RetryDelay, 4*time.Second)
 // 		IfDefault(&o.MaxRetryDelay, 120*time.Second)
 
-// 	case RetryPolicyFixed:
+// 	case azcore.RetryPolicyFixed:
 // 		IfDefault(&o.TryTimeout, 1*time.Minute)
 // 		IfDefault(&o.RetryDelay, 30*time.Second)
 // 		IfDefault(&o.MaxRetryDelay, 120*time.Second)
@@ -135,11 +70,11 @@ package azidentity
 // }
 
 // // NewRetryPolicy creates a policy object configured using the specified options.
-// func NewRetryPolicy(o RetryOptions) Policy {
+// func NewRetryPolicy(o RetryOptions) azcore.Policy {
 // 	return &retryPolicy{options: o.defaults()} // Force defaults to be calculated
 // }
 
-// func NewMSIRetryPolicy(o RetryOptions) Policy {
+// func NewMSIRetryPolicy(o RetryOptions) azcore.Policy {
 // 	return &retryPolicy{options: o.msiDefaults()}
 // }
 
@@ -147,7 +82,7 @@ package azidentity
 // 	options RetryOptions
 // }
 
-// func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err error) {
+// func (p *retryPolicy) Do(ctx context.Context, req *azcore.Request) (resp *azcore.Response, err error) {
 // 	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
 // 	// When to retry: connection failure or temporary/timeout.
 // 	defer req.Close()
@@ -171,7 +106,7 @@ package azidentity
 
 // 		// if there is no error and the response code isn't in the list of retry codes then we're done
 // 		// TODO: if this is a failure to get an access token don't retry
-// 		if (err == nil && !resp.hasStatusCode(p.options.StatusCodes...)) || errors.Is(err, &CredentialUnavailableError{}) || errors.Is(err, &AuthenticationFailedError{}) {
+// 		if (err == nil && !hasStatusCode(resp, p.options.StatusCodes...)) || errors.Is(err, &CredentialUnavailableError{}) || errors.Is(err, &AuthenticationFailedError{}) {
 // 			return
 // 		}
 

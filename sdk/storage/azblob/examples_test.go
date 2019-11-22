@@ -28,10 +28,10 @@ const (
 )
 
 func clientSecretCredential() azcore.Credential {
-	secret, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		panic(err)
-	}
+	secret := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	// if err != nil {
+	// 	panic(err)
+	// }
 	return secret
 }
 

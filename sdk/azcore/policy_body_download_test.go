@@ -5,40 +5,26 @@ package azcore
 
 import (
 	"context"
-	"io/ioutil"
 	"net/http"
-	"strings"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/mock"
 )
-
-func newEmptyRequest(pol ...Policy) *Request {
-	return &Request{
-		Request: &http.Request{
-			Header: http.Header{},
-		},
-		policies: pol,
-	}
-}
-
-func newMockResponsePolicy(resp *http.Response) Policy {
-	return PolicyFunc(func(ctx context.Context, req *Request) (*Response, error) {
-		return &Response{Response: resp}, nil
-	})
-}
-
-func newMockResponseWithBody(s string) *http.Response {
-	return &http.Response{
-		Body: ioutil.NopCloser(strings.NewReader(s)),
-	}
-}
 
 func TestDownloadBody(t *testing.T) {
 	const message = "downloaded"
-	req := newEmptyRequest(newMockResponsePolicy(newMockResponseWithBody(message)))
-	p := newBodyDownloadPolicy()
-	resp, err := p.Do(context.Background(), req)
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody(message))
+	// download policy is automatically added during pipeline construction
+	pl := NewPipeline(srv)
+	req := pl.NewRequest(http.MethodGet, srv.URL())
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(resp.Payload) == 0 {
+		t.Fatal("missing payload")
 	}
 	if string(resp.Payload) != message {
 		t.Fatalf("unexpected response: %s", string(resp.Payload))
@@ -47,10 +33,14 @@ func TestDownloadBody(t *testing.T) {
 
 func TestSkipBodyDownload(t *testing.T) {
 	const message = "not downloaded"
-	req := newEmptyRequest(newMockResponsePolicy(newMockResponseWithBody(message)))
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody(message))
+	// download policy is automatically added during pipeline construction
+	pl := NewPipeline(srv)
+	req := pl.NewRequest(http.MethodGet, srv.URL())
 	req.SkipBodyDownload()
-	p := newBodyDownloadPolicy()
-	resp, err := p.Do(context.Background(), req)
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

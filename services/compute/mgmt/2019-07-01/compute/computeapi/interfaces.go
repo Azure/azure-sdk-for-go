@@ -195,6 +195,7 @@ type VirtualMachineScaleSetExtensionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string, vmssExtensionName string) (result compute.VirtualMachineScaleSetExtensionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, vmssExtensionName string, expand string) (result compute.VirtualMachineScaleSetExtension, err error)
 	List(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetExtensionListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, VMScaleSetName string, vmssExtensionName string, extensionParameters compute.VirtualMachineScaleSetExtensionUpdate) (result compute.VirtualMachineScaleSetExtensionsUpdateFuture, err error)
 }
 
 var _ VirtualMachineScaleSetExtensionsClientAPI = (*compute.VirtualMachineScaleSetExtensionsClient)(nil)

@@ -42,9 +42,16 @@ type AuthenticationFailedError struct {
 	CorrelationID string `json:"correlation_id"`
 	URI           string `json:"error_uri"`
 	Response      *azcore.Response
+	ErrorList     []*CredentialUnavailableError
 }
 
 func (e *AuthenticationFailedError) Error() string {
+	if len(e.ErrorList) > 1 {
+		msg := "Authentication Error: \n"
+		for i := 0; i < len(e.ErrorList); i++ {
+			msg = msg + e.ErrorList[i].CredentialType + " " + e.ErrorList[i].Message + "\n"
+		}
+	}
 	return e.Message + ": " + e.Description
 }
 
@@ -103,6 +110,7 @@ type TokenCredentialOptions struct {
 }
 
 // TODO singleton default options?
+// TODO this is unnecessary if we keep the functionality in the init
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
 	if c == nil {

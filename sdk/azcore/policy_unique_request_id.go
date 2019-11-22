@@ -14,7 +14,7 @@ func NewUniqueRequestIDPolicy() Policy {
 		id := req.Request.Header.Get(xMsClientRequestID)
 		if id == "" {
 			// Add a unique request ID if the caller didn't specify one already
-			req.Request.Header.Set(xMsClientRequestID, "TODO" /*newUUID().String()*/)
+			req.Request.Header.Set(xMsClientRequestID, newUUID().String())
 		}
 		return req.Do(ctx)
 	})

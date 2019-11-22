@@ -1972,34 +1972,10 @@ func (fs *FileShare) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// FileShareCreateParameters ...
+// FileShareCreateParameters the parameters used to create the file share.
 type FileShareCreateParameters struct {
-	// Metadata - A name-value pair to associate with the share as metadata.
-	Metadata map[string]*string `json:"metadata"`
-	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
-	ShareQuota *int32 `json:"shareQuota,omitempty"`
-	// EnabledProtocols - Protocols for file shares. It cannot be changed after file share creation. Possible values include: 'SMB', 'NFS'
-	EnabledProtocols EnabledProtocols `json:"enabledProtocols,omitempty"`
-	// RootSquash - Reduction of the access rights for the remote superuser. Possible values include: 'RootSquashNoRootSquash', 'RootSquashRootSquash', 'RootSquashAllSquash'
-	RootSquash RootSquash `json:"rootSquash,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for FileShareCreateParameters.
-func (fscp FileShareCreateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if fscp.Metadata != nil {
-		objectMap["metadata"] = fscp.Metadata
-	}
-	if fscp.ShareQuota != nil {
-		objectMap["shareQuota"] = fscp.ShareQuota
-	}
-	if fscp.EnabledProtocols != "" {
-		objectMap["enabledProtocols"] = fscp.EnabledProtocols
-	}
-	if fscp.RootSquash != "" {
-		objectMap["rootSquash"] = fscp.RootSquash
-	}
-	return json.Marshal(objectMap)
+	// Properties - Properties of the file share to create the file share.
+	Properties *FileSharePropertiesCreateParameters `json:"properties,omitempty"`
 }
 
 // FileShareItem the file share properties be listed out.
@@ -2264,8 +2240,38 @@ func (fsp FileShareProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// FileShareUpdateParameters ...
-type FileShareUpdateParameters struct {
+// FileSharePropertiesCreateParameters ...
+type FileSharePropertiesCreateParameters struct {
+	// Metadata - A name-value pair to associate with the share as metadata.
+	Metadata map[string]*string `json:"metadata"`
+	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
+	ShareQuota *int32 `json:"shareQuota,omitempty"`
+	// EnabledProtocols - Protocols for file shares. It cannot be changed after file share creation. Possible values include: 'SMB', 'NFS'
+	EnabledProtocols EnabledProtocols `json:"enabledProtocols,omitempty"`
+	// RootSquash - Reduction of the access rights for the remote superuser. Possible values include: 'RootSquashNoRootSquash', 'RootSquashRootSquash', 'RootSquashAllSquash'
+	RootSquash RootSquash `json:"rootSquash,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileSharePropertiesCreateParameters.
+func (fspcp FileSharePropertiesCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fspcp.Metadata != nil {
+		objectMap["metadata"] = fspcp.Metadata
+	}
+	if fspcp.ShareQuota != nil {
+		objectMap["shareQuota"] = fspcp.ShareQuota
+	}
+	if fspcp.EnabledProtocols != "" {
+		objectMap["enabledProtocols"] = fspcp.EnabledProtocols
+	}
+	if fspcp.RootSquash != "" {
+		objectMap["rootSquash"] = fspcp.RootSquash
+	}
+	return json.Marshal(objectMap)
+}
+
+// FileSharePropertiesUpdateParameters ...
+type FileSharePropertiesUpdateParameters struct {
 	// Metadata - A name-value pair to associate with the share as metadata.
 	Metadata map[string]*string `json:"metadata"`
 	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
@@ -2274,19 +2280,25 @@ type FileShareUpdateParameters struct {
 	RootSquash RootSquash `json:"rootSquash,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for FileShareUpdateParameters.
-func (fsup FileShareUpdateParameters) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for FileSharePropertiesUpdateParameters.
+func (fspup FileSharePropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if fsup.Metadata != nil {
-		objectMap["metadata"] = fsup.Metadata
+	if fspup.Metadata != nil {
+		objectMap["metadata"] = fspup.Metadata
 	}
-	if fsup.ShareQuota != nil {
-		objectMap["shareQuota"] = fsup.ShareQuota
+	if fspup.ShareQuota != nil {
+		objectMap["shareQuota"] = fspup.ShareQuota
 	}
-	if fsup.RootSquash != "" {
-		objectMap["rootSquash"] = fsup.RootSquash
+	if fspup.RootSquash != "" {
+		objectMap["rootSquash"] = fspup.RootSquash
 	}
 	return json.Marshal(objectMap)
+}
+
+// FileShareUpdateParameters the parameters used to create the file share.
+type FileShareUpdateParameters struct {
+	// Properties - Properties of the file share to update the file share.
+	Properties *FileSharePropertiesUpdateParameters `json:"properties,omitempty"`
 }
 
 // GeoReplicationStats statistics related to replication for storage account's Blob, Table, Queue and File

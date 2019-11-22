@@ -50,9 +50,12 @@ func createClientAssertionJWT(clientID string, audience string, clientCertificat
 		return "", fmt.Errorf("Marshal: %w", err)
 	}
 	header := base64.RawURLEncoding.EncodeToString(headerJSON)
-
+	jti, err := newUUID()
+	if err != nil {
+		return "", fmt.Errorf("newUUID: %w", err)
+	}
 	payloadData := payloadJWT{
-		JTI: newUUID().String(),
+		JTI: jti.String(),
 		AUD: audience,
 		ISS: clientID,
 		SUB: clientID,

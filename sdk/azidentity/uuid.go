@@ -21,15 +21,18 @@ const (
 type uuid [16]byte
 
 // NewUUID returns a new uuid using RFC 4122 algorithm.
-func newUUID() (u uuid) {
-	u = uuid{}
+func newUUID() (uuid, error) {
+	u := uuid{}
 	// Set all bits to randomly (or pseudo-randomly) chosen values.
-	rand.Read(u[:])
+	_, err := rand.Read(u[:])
+	if err != nil {
+		return u, err
+	}
 	u[8] = (u[8] | reservedRFC4122) & 0x7F // u.setVariant(ReservedRFC4122)
 
 	var version byte = 4
 	u[6] = (u[6] & 0xF) | (version << 4) // u.setVersion(4)
-	return
+	return u, nil
 }
 
 // String returns an unparsed version of the generated UUID sequence.

@@ -4,8 +4,8 @@
 package azidentity
 
 import (
-	"crypto/rand"
 	"fmt"
+	"math/rand"
 	"strconv"
 )
 
@@ -21,18 +21,17 @@ const (
 type uuid [16]byte
 
 // NewUUID returns a new uuid using RFC 4122 algorithm.
-func newUUID() (uuid, error) {
+func newUUID() uuid {
 	u := uuid{}
 	// Set all bits to randomly (or pseudo-randomly) chosen values.
-	_, err := rand.Read(u[:])
-	if err != nil {
-		return u, err
-	}
+	// math/rand.Read() is no-fail so we omit any error checking.
+	// NOTE: this takes a process-wide lock
+	rand.Read(u[:])
 	u[8] = (u[8] | reservedRFC4122) & 0x7F // u.setVariant(ReservedRFC4122)
 
 	var version byte = 4
 	u[6] = (u[6] & 0xF) | (version << 4) // u.setVersion(4)
-	return u, nil
+	return u
 }
 
 // String returns an unparsed version of the generated UUID sequence.

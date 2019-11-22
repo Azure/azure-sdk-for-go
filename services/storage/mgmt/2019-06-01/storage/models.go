@@ -2176,7 +2176,7 @@ type FileShareProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Metadata - A name-value pair to associate with the share as metadata.
 	Metadata map[string]*string `json:"metadata"`
-	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
+	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 100000.
 	ShareQuota *int32 `json:"shareQuota,omitempty"`
 }
 

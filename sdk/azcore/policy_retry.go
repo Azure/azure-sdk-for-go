@@ -18,6 +18,10 @@ const (
 	defaultMaxRetries = 3
 )
 
+const (
+	defaultMaxRetries = 4
+)
+
 // RetryOptions configures the retry policy's behavior.
 type RetryOptions struct {
 	// MaxRetries specifies the maximum number of attempts a failed operation will be retried

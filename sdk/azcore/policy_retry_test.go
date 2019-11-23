@@ -198,6 +198,8 @@ func TestRetryPolicyFixedDelaySuccessWithRetry(t *testing.T) {
 	}
 }
 
+// TODO: add test for retry failing to read response body
+
 func newRewindTrackingBody(s string) *rewindTrackingBody {
 	// there are two rewinds that happen before rewinding for a retry
 	// 1. to get the body's size in SetBody()

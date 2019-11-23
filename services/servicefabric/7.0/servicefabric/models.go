@@ -2931,7 +2931,7 @@ type Scheme string
 const (
 	// HTTP Indicates that the probe is http.
 	HTTP Scheme = "http"
-	// HTTPS Indicates that the probe is https. No cert validaton.
+	// HTTPS Indicates that the probe is https. No cert validation.
 	HTTPS Scheme = "https"
 )
 
@@ -37687,13 +37687,13 @@ func (prs PrimaryReplicatorStatus) AsBasicReplicatorStatus() (BasicReplicatorSta
 
 // Probe probes have a number of fields that you can use to control their behavior.
 type Probe struct {
-	// InitialDelaySeconds - The initial delay in seconds to start executing probe once codepackage has started.
+	// InitialDelaySeconds - The initial delay in seconds to start executing probe once code package has started.
 	InitialDelaySeconds *int32 `json:"initialDelaySeconds,omitempty"`
 	// PeriodSeconds - Periodic seconds to execute probe.
 	PeriodSeconds *int32 `json:"periodSeconds,omitempty"`
 	// TimeoutSeconds - Period after which probe is considered as failed if it hasn't completed successfully.
 	TimeoutSeconds *int32 `json:"timeoutSeconds,omitempty"`
-	// SuccessThreshold - The count of succcessful probe executions after which probe is considered success.
+	// SuccessThreshold - The count of successful probe executions after which probe is considered success.
 	SuccessThreshold *int32 `json:"successThreshold,omitempty"`
 	// FailureThreshold - The count of failures after which probe is considered failed.
 	FailureThreshold *int32 `json:"failureThreshold,omitempty"`
@@ -37707,7 +37707,7 @@ type Probe struct {
 
 // ProbeExec exec command to run inside the container.
 type ProbeExec struct {
-	// Command - Comma seperated command to run inside the container for example "sh, -c, echo hello world".
+	// Command - Comma separated command to run inside the container for example "sh, -c, echo hello world".
 	Command *string `json:"command,omitempty"`
 }
 

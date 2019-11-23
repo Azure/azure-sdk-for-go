@@ -7,7 +7,6 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"net/url"
 	"strings"
 	"testing"
 
@@ -23,12 +22,9 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	defer close()
 	srv.SetResponse()
 	pl := NewPipeline(srv, NewRequestLogPolicy(RequestLogOptions{}))
-	ep := srv.URL()
-	qp := url.Values{}
-	qp.Add("one", "fish")
-	qp.Add("sig", "redact")
-	ep.RawQuery = qp.Encode()
-	req := pl.NewRequest(http.MethodGet, ep)
+	req := pl.NewRequest(http.MethodGet, srv.URL())
+	req.SetQueryParam("one", "fish")
+	req.SetQueryParam("sig", "redact")
 	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

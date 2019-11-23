@@ -78,22 +78,22 @@ func NewPipeline(transport Transport, policies ...Policy) Pipeline {
 }
 
 // NewRequest creates a new Request associated with this pipeline.
-func (p Pipeline) NewRequest(httpMethod string, URL url.URL) *Request {
+func (p Pipeline) NewRequest(httpMethod string, endpoint url.URL) *Request {
 	// removeEmptyPort strips the empty port in ":port" to ""
 	// as mandated by RFC 3986 Section 6.2.3.
 	// adapted from removeEmptyPort() in net/http.go
-	if strings.LastIndex(URL.Host, ":") > strings.LastIndex(URL.Host, "]") {
-		URL.Host = strings.TrimSuffix(URL.Host, ":")
+	if strings.LastIndex(endpoint.Host, ":") > strings.LastIndex(endpoint.Host, "]") {
+		endpoint.Host = strings.TrimSuffix(endpoint.Host, ":")
 	}
 	return &Request{
 		Request: &http.Request{
 			Method:     httpMethod,
-			URL:        &URL,
+			URL:        &endpoint,
 			Proto:      "HTTP/1.1",
 			ProtoMajor: 1,
 			ProtoMinor: 1,
 			Header:     http.Header{},
-			Host:       URL.Host,
+			Host:       endpoint.Host,
 		},
 		policies: p.policies,
 	}

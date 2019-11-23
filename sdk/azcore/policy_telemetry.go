@@ -29,19 +29,17 @@ func NewTelemetryPolicy(o TelemetryOptions) Policy {
 	if b.Len() > 0 {
 		b.WriteRune(' ')
 	}
-	//fmt.Fprintf(b, "Azure-Storage/%s %s", serviceLibVersion, platformInfo)
+	b.WriteString(platformInfo)
 	return &telemetryPolicy{telemetryValue: b.String()}
 }
 
 func (p telemetryPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
-	req.Request.Header.Set("User-Agent", p.telemetryValue)
+	req.Request.Header.Set(HeaderUserAgent, p.telemetryValue)
 	return req.Do(ctx)
 }
 
 // NOTE: the ONLY function that should write to this variable is this func
 var platformInfo = func() string {
-	// Azure-Storage/version (runtime; os type and version)”
-	// Azure-Storage/1.4.0 (NODE-VERSION v4.5.0; Windows_NT 10.0.14393)'
 	operatingSystem := runtime.GOOS // Default OS string
 	switch operatingSystem {
 	case "windows":

@@ -21,6 +21,10 @@ const (
 	RetryPolicyFixed RetryPolicy = 1
 )
 
+const (
+	defaultMaxRetries = 4
+)
+
 // RetryOptions configures the retry policy's behavior.
 type RetryOptions struct {
 	// Policy tells the pipeline what kind of retry policy to use. See the RetryPolicy* constants.\
@@ -87,7 +91,7 @@ func (o RetryOptions) defaults() RetryOptions {
 
 	// Set defaults if unspecified
 	if o.MaxTries == 0 {
-		o.MaxTries = 4
+		o.MaxTries = defaultMaxRetries
 	}
 	switch o.Policy {
 	default:

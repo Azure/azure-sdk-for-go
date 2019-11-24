@@ -2504,19 +2504,6 @@ func NewAutoDismissAlertsRulesListPage(getNextPage func(context.Context, AutoDis
 	return AutoDismissAlertsRulesListPage{fn: getNextPage}
 }
 
-// AutoDismissAlertsRulesSimulation auto dismiss rules simulation result for subscription
-type AutoDismissAlertsRulesSimulation struct {
-	Location              *string `json:"location,omitempty"`
-	ScannedAlertsNumber   *int32  `json:"scannedAlertsNumber,omitempty"`
-	DismissedAlertsNumber *int32  `json:"dismissedAlertsNumber,omitempty"`
-}
-
-// AutoDismissAlertsRulesSimulationList auto dismiss rules simulation result list for subscription
-type AutoDismissAlertsRulesSimulationList struct {
-	autorest.Response `json:"-"`
-	Value             *[]AutoDismissAlertsRulesSimulation `json:"value,omitempty"`
-}
-
 // AutoDismissAlertsScope ...
 type AutoDismissAlertsScope struct {
 	// AllOf - All the conditions inside need to be true in order to auto dismiss the alert

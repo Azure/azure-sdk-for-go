@@ -307,10 +307,3 @@ type AutoDismissAlertsRulesClientAPI interface {
 }
 
 var _ AutoDismissAlertsRulesClientAPI = (*security.AutoDismissAlertsRulesClient)(nil)
-
-// AutoDismissAlertsRulesSimulationClientAPI contains the set of methods on the AutoDismissAlertsRulesSimulationClient type.
-type AutoDismissAlertsRulesSimulationClientAPI interface {
-	Simulate(ctx context.Context, autoDismissAlertsRuleName string, autoDismissAlertsRule security.AutoDismissAlertsRule) (result security.AutoDismissAlertsRulesSimulationList, err error)
-}
-
-var _ AutoDismissAlertsRulesSimulationClientAPI = (*security.AutoDismissAlertsRulesSimulationClient)(nil)

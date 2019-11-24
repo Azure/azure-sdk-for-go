@@ -131,7 +131,7 @@ func (client AssessmentsMetadataSubscriptionClient) CreateResponder(resp *http.R
 }
 
 // Delete delete metadata information on an assessment type in a specific subscription, will cause the deletion of all
-// the assessments of that type in that subscrtipion
+// the assessments of that type in that subscription
 // Parameters:
 // assessmentMetadataName - the Assessment Key - Unique key for the assessment type
 func (client AssessmentsMetadataSubscriptionClient) Delete(ctx context.Context, assessmentMetadataName string) (result autorest.Response, err error) {

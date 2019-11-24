@@ -60,7 +60,10 @@ func (client AssessmentsMetadataSubscriptionClient) Create(ctx context.Context, 
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: assessmentMetadata,
+			Constraints: []validation.Constraint{{Target: "assessmentMetadata.AssessmentMetadataProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "assessmentMetadata.AssessmentMetadataProperties.DisplayName", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("security.AssessmentsMetadataSubscriptionClient", "Create", err.Error())
 	}
 
@@ -124,6 +127,87 @@ func (client AssessmentsMetadataSubscriptionClient) CreateResponder(resp *http.R
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Delete delete metadata information on an assessment type in a specific subscription, will cause the deletion of all
+// the assessments of that type in that subscrtipion
+// Parameters:
+// assessmentMetadataName - the Assessment Key - Unique key for the assessment type
+func (client AssessmentsMetadataSubscriptionClient) Delete(ctx context.Context, assessmentMetadataName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentsMetadataSubscriptionClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("security.AssessmentsMetadataSubscriptionClient", "Delete", err.Error())
+	}
+
+	req, err := client.DeletePreparer(ctx, assessmentMetadataName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataSubscriptionClient", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataSubscriptionClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataSubscriptionClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client AssessmentsMetadataSubscriptionClient) DeletePreparer(ctx context.Context, assessmentMetadataName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"assessmentMetadataName": autorest.Encode("path", assessmentMetadataName),
+		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssessmentsMetadataSubscriptionClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client AssessmentsMetadataSubscriptionClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }
 

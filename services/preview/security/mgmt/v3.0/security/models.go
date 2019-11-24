@@ -2237,21 +2237,20 @@ func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentM
 
 // AssessmentMetadataProperties describes properties of an assessment metadata.
 type AssessmentMetadataProperties struct {
-	// DisplayName - READ-ONLY; User friendly display name of the assessment
+	// DisplayName - User friendly display name of the assessment
 	DisplayName *string `json:"displayName,omitempty"`
 	// PolicyDefinitionID - READ-ONLY; Azure resource ID of the policy definition that turns this assessment calculation on
 	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
-	// Description - READ-ONLY; Human readable description of the assessment
+	// Description - Human readable description of the assessment
 	Description *string `json:"description,omitempty"`
-	// RemediationDescription - READ-ONLY; Human readable description of what you should do to mitigate this security issue
-	RemediationDescription *string `json:"remediationDescription,omitempty"`
-	// Category - READ-ONLY
-	Category *[]Category `json:"category,omitempty"`
-	// Severity - READ-ONLY; The severity level of the assessment. Possible values include: 'SeverityLow', 'SeverityMedium', 'SeverityHigh'
+	// RemediationDescription - Human readable description of what you should do to mitigate this security issue
+	RemediationDescription *string     `json:"remediationDescription,omitempty"`
+	Category               *[]Category `json:"category,omitempty"`
+	// Severity - The severity level of the assessment. Possible values include: 'SeverityLow', 'SeverityMedium', 'SeverityHigh'
 	Severity Severity `json:"severity,omitempty"`
-	// Preview - READ-ONLY; True if this assessment is in preview release status
+	// Preview - True if this assessment is in preview release status
 	Preview *bool `json:"preview,omitempty"`
-	// AssessmentType - READ-ONLY; BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'CustomPolicy', 'CustomerManaged'
+	// AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'CustomPolicy', 'CustomerManaged'
 	AssessmentType AssessmentType `json:"assessmentType,omitempty"`
 }
 

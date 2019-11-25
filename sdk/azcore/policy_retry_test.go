@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 const retryDelay = 20 * time.Millisecond

@@ -57,21 +57,19 @@ type AuthenticationFailedError struct {
 	CorrelationID string `json:"correlation_id"`
 	URI           string `json:"error_uri"`
 	Response      *azcore.Response
-	ErrorList     []*CredentialUnavailableError
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	if len(e.ErrorList) > 1 {
-		msg := "Authentication Error: \n"
-		for i := 0; i < len(e.ErrorList); i++ {
-			msg = msg + e.ErrorList[i].CredentialType + " " + e.ErrorList[i].Message + "\n"
-		}
-	}
 	return e.Message + ": " + e.Description
 }
 
 func newAuthenticationFailedError(resp *azcore.Response) error {
-	var authFailed *AuthenticationFailedError
+	authFailed := &AuthenticationFailedError{}
+	if resp == nil {
+		authFailed.Message = "Something unexpected happened when attempting to authenticate"
+		return authFailed
+	}
+
 	err := json.Unmarshal(resp.Payload, authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
@@ -85,10 +83,19 @@ func newAuthenticationFailedError(resp *azcore.Response) error {
 type CredentialUnavailableError struct {
 	CredentialType string
 	Message        string
-	ErrorList      []*CredentialUnavailableError
 }
 
 func (e *CredentialUnavailableError) Error() string {
+	return e.CredentialType + ": " + e.Message
+}
+
+// ChainedCredentialError ..
+type ChainedCredentialError struct {
+	ErrorList []*CredentialUnavailableError
+	Message   string
+}
+
+func (e *ChainedCredentialError) Error() string {
 	if len(e.ErrorList) > 0 {
 		msg := ""
 		for _, err := range e.ErrorList {
@@ -147,7 +154,7 @@ func hasStatusCode(r *azcore.Response, statusCodes ...int) bool {
 // MSIPipelineOptions is used to configure a request policy pipeline's retry policy and logging.
 type MSIPipelineOptions struct {
 	// Retry configures the built-in retry policy behavior.
-	Retry azcore.RetryOptions
+	Retry RetryOptions
 
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
@@ -170,7 +177,7 @@ func newDefaultMSIPipeline(o MSIPipelineOptions) azcore.Pipeline {
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
-		// NewMSIRetryPolicy(o.Retry),
+		NewMSIRetryPolicy(o.Retry),
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }
 

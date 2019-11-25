@@ -3,16 +3,7 @@
 
 package azidentity
 
-// -------------------- NOTES ------------------------------
-/*
-Currently all of the languages implement the DefaultAzureCredential as an abstraction over the ChainedTokenCredential
-DAC only calls env cred and msi cred (sdks with msal include shared token cache)
-There is no guarantee that the credential type used will not change
-
-*/
 import (
-	"errors"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -31,9 +22,6 @@ type DefaultTokenCredential struct {
 
 // DefaultTokenCredentialOptions contain information that can configure Default Token Credentials
 type DefaultTokenCredentialOptions struct {
-	// Scopes []string
-	// EnvCredential *ClientSecretCredential
-	// MSICredential *ManagedIdentityCredential // A pointer
 	ExcludeEnvironmentCredential bool
 	ExcludeMSICredential         bool
 }
@@ -49,65 +37,49 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 	if err != nil {
 		return nil, err
 	}
-
 	return NewChainedTokenCredential(cred.sources...)
 }
 
 func (c *DefaultTokenCredential) getDefaultTokenCredentialChain(options *DefaultTokenCredentialOptions) error {
 	errCount := 0
+	var envCred *ClientSecretCredential
+	var msiCred *ManagedIdentityCredential
+	var err error
 
 	if options == nil {
-		// CP: these could be set up once in an init?
-		envCred, err := NewEnvironmentCredential(nil)
+		envCred, err = NewEnvironmentCredential(nil)
 		if err != nil {
-			if errors.Is(err, &AuthenticationFailedError{}) {
-				return err
-			}
 			errCount++
 		}
-		msiCred, err := NewManagedIdentityCredential("", nil)
+		msiCred, err = NewManagedIdentityCredential("", nil)
 		if err != nil {
-			// CP: this check shouldnt be necessary since we arent authenticating here, just creating the credential? Unless we wrap all other unexpected errors in an auth failed error
-			if errors.Is(err, &AuthenticationFailedError{}) {
-				return err
-			}
 			errCount++
 		}
-
-		if errCount > 1 {
-			return &AuthenticationFailedError{Message: "Failed to find any available credentials. Make sure you are running in a Managed Identity Environment or have set the appropriate environment variables"}
-		}
-
-		if envCred != nil {
-			c.sources = append(c.sources, envCred)
-		}
-
-		if msiCred != nil {
-			c.sources = append(c.sources, msiCred)
-		}
-
-		return nil
 	}
 
 	if !options.ExcludeEnvironmentCredential {
-		envCred, err := NewEnvironmentCredential(nil)
+		envCred, err = NewEnvironmentCredential(nil)
 		if err != nil {
-			if errors.Is(err, &AuthenticationFailedError{}) {
-				return err
-			}
 			errCount++
 		}
-		c.sources = append(c.sources, envCred)
 	}
 
 	if !options.ExcludeMSICredential {
-		msiCred, err := NewManagedIdentityCredential("", nil)
+		msiCred, err = NewManagedIdentityCredential("", nil)
 		if err != nil {
-			if errors.Is(err, &AuthenticationFailedError{}) {
-				return err
-			}
 			errCount++
 		}
+	}
+
+	if errCount > 1 {
+		return &AuthenticationFailedError{Message: "Failed to find any available credentials. Make sure you are running in a Managed Identity Environment or have set the appropriate environment variables"}
+	}
+
+	if envCred != nil {
+		c.sources = append(c.sources, envCred)
+	}
+
+	if msiCred != nil {
 		c.sources = append(c.sources, msiCred)
 	}
 

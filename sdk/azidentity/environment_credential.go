@@ -13,17 +13,17 @@ import (
 func NewEnvironmentCredential(options *IdentityClientOptions) (*ClientSecretCredential, error) {
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {
-		return nil, &CredentialUnavailableError{Message: "Missing environment variable: AZURE_TENANT_ID"}
+		return nil, &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_TENANT_ID"}
 	}
 
 	clientID := os.Getenv("AZURE_CLIENT_ID")
 	if clientID == "" {
-		return nil, &CredentialUnavailableError{Message: "Missing environment variable: AZURE_CLIENT_ID"}
+		return nil, &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_ID"}
 	}
 
 	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
 	if clientSecret == "" {
-		return nil, &CredentialUnavailableError{Message: "Missing environment variable: AZURE_CLIENT_SECRET"}
+		return nil, &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_SECRET"}
 	}
 
 	return NewClientSecretCredential(tenantID, clientID, clientSecret, options), nil

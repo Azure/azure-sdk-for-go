@@ -9,7 +9,7 @@ import (
 )
 
 func Test_GetToken_CloudShell(t *testing.T) {
-	managedClient, err := NewManagedIdentityCredential("", NewDefaultManagedIdentityOptions())
+	managedClient, err := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
 	if err != nil {
 		fmt.Println("Managed ID error: ", err)
 	} else {

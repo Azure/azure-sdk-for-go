@@ -53,6 +53,11 @@ func newAADIdentityClient(options *IdentityClientOptions) *aadIdentityClient {
 	if options == nil {
 		options = defaultIdentityClientOpts
 	}
+
+	// TODO: should we check if the options are non-nil if there's an auth host?? or do we expect that to be populated when non-nil options are passed in?
+	if options.AuthorityHost == nil {
+		options.AuthorityHost = defaultIdentityClientOpts.AuthorityHost
+	}
 	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(options.PipelineOptions)}
 }
 
@@ -98,8 +103,8 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 	if err != nil {
 		return nil, err
 	}
-	// TODO: look into HasStatusCode
-	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated {
+
+	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 

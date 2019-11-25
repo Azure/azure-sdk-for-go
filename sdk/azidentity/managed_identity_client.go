@@ -105,7 +105,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 	if currentMSI == unavailable || currentMSI == unknown {
 		// TODO: add message
 		// CP: maybe this should be an auth failed error?
-		return nil, &CredentialUnavailableError{Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
+		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
 	}
 
 	AT, err := c.sendAuthRequest(ctx, currentMSI, clientID, scopes)
@@ -166,7 +166,7 @@ func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID stri
 	case cloudShell:
 		req, err = c.createCloudShellAuthRequest(clientID, scopes)
 	default:
-		return nil, &CredentialUnavailableError{Message: "Make sure you are running in a valid Managed Identity Environment"}
+		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment"}
 	}
 
 	return req, err
@@ -235,7 +235,7 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 			// CP: should we just fail here? Or is it fine to fail in the func that did the calling?
 			c.msiType = unavailable
 			// TODO: return a cred unavailable err
-			return unknown, &CredentialUnavailableError{Message: "Make sure you are running in a valid Managed Identity Environment"}
+			return unknown, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment"}
 		}
 	}
 	return c.msiType, nil

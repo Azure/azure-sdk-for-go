@@ -21,7 +21,7 @@ func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
 	// CP: fix this implementation
 	opts := &ManagedIdentityCredentialOptions{}
 	opt := opts.Options.setDefaultValues()
-	return &ManagedIdentityCredentialOptions{PipelineOptions: MSIPipelineOptions{}, Options: *opt}
+	return &ManagedIdentityCredentialOptions{Options: *opt}
 }
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in Azure VMs,

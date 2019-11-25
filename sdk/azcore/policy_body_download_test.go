@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestDownloadBody(t *testing.T) {

@@ -5,6 +5,8 @@ package azcore
 
 import (
 	"context"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 const xMsClientRequestID = "x-ms-client-request-id"
@@ -15,7 +17,7 @@ func NewUniqueRequestIDPolicy() Policy {
 		id := req.Request.Header.Get(xMsClientRequestID)
 		if id == "" {
 			// Add a unique request ID if the caller didn't specify one already
-			req.Request.Header.Set(xMsClientRequestID, newUUID().String())
+			req.Request.Header.Set(xMsClientRequestID, uuid.New().String())
 		}
 		return req.Do(ctx)
 	})

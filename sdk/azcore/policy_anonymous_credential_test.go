@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestAnonymousCredential(t *testing.T) {

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -56,6 +57,12 @@ func (client UserAssignedIdentitiesClient) CreateOrUpdate(ctx context.Context, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: parameters,
+			Constraints: []validation.Constraint{{Target: "parameters.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("msi.UserAssignedIdentitiesClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, resourceName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "msi.UserAssignedIdentitiesClient", "CreateOrUpdate", nil, "Failure preparing request")

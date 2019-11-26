@@ -350,9 +350,11 @@ type DigestConfig struct {
 	// ActionGroupResourceID - Action group resource id used by digest.
 	ActionGroupResourceID *string `json:"actionGroupResourceId,omitempty"`
 	// Frequency - Frequency that digest will be triggered. Value must conform to ISO 8601 standard and must be greater than equal to 1 day and less than or equal to 30 days.
-	Frequency *string `json:"frequency,omitempty"`
+	Frequency *date.Time `json:"frequency,omitempty"`
 	// Categories - Categories to send digest for. If categories are not provided, then digest will be sent for all categories.
-	Categories *[]string `json:"categories,omitempty"`
+	Categories *[]Category `json:"categories,omitempty"`
+	// Language - Language for digest content body. Value must be ISO 639-1 code for one of Azure portal supported languages. Otherwise, it will be converted into one. Default value is English (en).
+	Language *string `json:"language,omitempty"`
 }
 
 // MetadataEntity the metadata entity contract.

@@ -79,6 +79,11 @@ func (client BookmarksClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 					{Target: "bookmark.BookmarkProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "bookmark.BookmarkProperties.UpdatedBy", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.UpdatedBy.ObjectID", Name: validation.Null, Rule: true, Chain: nil}}},
+					{Target: "bookmark.BookmarkProperties.IncidentInfo", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "bookmark.BookmarkProperties.IncidentInfo.IncidentID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "bookmark.BookmarkProperties.IncidentInfo.Title", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "bookmark.BookmarkProperties.IncidentInfo.RelationName", Name: validation.Null, Rule: true, Chain: nil},
+						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("securityinsight.BookmarksClient", "CreateOrUpdate", err.Error())
 	}

@@ -89,7 +89,8 @@ func (e *CredentialUnavailableError) Error() string {
 	return e.CredentialType + ": " + e.Message
 }
 
-// ChainedCredentialError ..
+// ChainedCredentialError an error specific to ChainedTokenCredential and DefaultTokenCredential
+// this error type will return a list of Credential Unavailable errors
 type ChainedCredentialError struct {
 	ErrorList []*CredentialUnavailableError
 	Message   string
@@ -112,7 +113,6 @@ type IdentityClientOptions struct {
 	AuthorityHost   *url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com
 }
 
-// TODO singleton default options?
 // TODO this is unnecessary if we keep the functionality in the init
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *IdentityClientOptions) setDefaultValues() *IdentityClientOptions {
@@ -151,23 +151,8 @@ func hasStatusCode(r *azcore.Response, statusCodes ...int) bool {
 	return false
 }
 
-// // MSIPipelineOptions is used to configure a request policy pipeline's retry policy and logging.
-// type MSIPipelineOptions struct {
-// 	// Retry configures the built-in retry policy behavior.
-// 	Retry RetryOptions
-
-// 	// Telemetry configures the built-in telemetry policy behavior.
-// 	Telemetry azcore.TelemetryOptions
-
-// 	// HTTPClient sets the transport for making HTTP requests.
-// 	// Leave this as nil to use the default HTTP transport.
-// 	HTTPClient azcore.Transport
-
-// 	// LogOptions configures the built-in request logging policy behavior.
-// 	LogOptions azcore.RequestLogOptions
-// }
-
-// NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options
+// NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options needed
+// for a Managed Identity, such as a MSI specific retry policy
 func newDefaultMSIPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()

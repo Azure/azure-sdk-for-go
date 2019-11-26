@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -108,7 +109,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	if options.Options.AuthorityHost == nil {
 		options.Options.AuthorityHost = defaultAuthorityHostURL
 	}
-	// document the use of these variables
+	// TODO document the use of these variables
 	return &managedIdentityClient{
 		options:                *options.Options,
 		pipeline:               newDefaultMSIPipeline(options.Options.PipelineOptions),
@@ -131,7 +132,6 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 	}
 	// if msi is unavailable or we were unable to determine the type return a nil access token
 	if currentMSI == unavailable || currentMSI == unknown {
-		// TODO: add message
 		// CP: maybe this should be an auth failed error?
 		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
 	}
@@ -260,9 +260,7 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 			c.endpoint = c.imdsEndpoint
 			c.msiType = imds
 		} else { // if MSI_ENDPOINT is NOT set and IMDS enpoint is not available ManagedIdentity is not available
-			// CP: should we just fail here? Or is it fine to fail in the func that did the calling?
 			c.msiType = unavailable
-			// TODO: return a cred unavailable err
 			return unknown, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment"}
 		}
 	}
@@ -270,56 +268,16 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 }
 
 func (c *managedIdentityClient) imdsAvailable(ctx context.Context) bool {
+	tempCtx, cancel := context.WithTimeout(ctx, 500*time.Second)
+	defer cancel()
 	request := c.pipeline.NewRequest(http.MethodGet, *c.imdsEndpoint)
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	request.URL.RawQuery = q.Encode()
-	// TODO: missing setting timeout and handling it
-	// TODO: check for deadline exceeded, return an error
-	_, err := request.Do(ctx)
-	if err != nil {
+	_, err := request.Do(tempCtx)
+	if err != nil || errors.Is(err, context.DeadlineExceeded) {
 		return false
 	}
 
 	return true
 }
-
-// MISSING: ADD CONSIDERATIONS THAT THIS FUNC INCLUDES IN THE DESERIALIZATION OF THE ACCESSTOKEN
-// private static AccessToken Deserialize(JsonElement json)
-//         {
-//             if (!json.TryGetProperty("access_token", out JsonElement accessTokenProp))
-//             {
-//                 throw new AuthenticationFailedException(AuthenticationResponseInvalidFormatError);
-//             }
-
-//             string accessToken = accessTokenProp.GetString();
-//             if (!json.TryGetProperty("expires_on", out JsonElement expiresOnProp))
-//             {
-//                 throw new AuthenticationFailedException(AuthenticationResponseInvalidFormatError);
-//             }
-
-//             DateTimeOffset expiresOn;
-//             // if s_msiType is AppService expires_on will be a string formatted datetimeoffset
-//             if (s_msiType == MsiType.AppService)
-//             {
-//                 if (!DateTimeOffset.TryParse(expiresOnProp.GetString(), out expiresOn))
-//                 {
-//                     throw new AuthenticationFailedException(AuthenticationResponseInvalidFormatError);
-//                 }
-//             }
-//             // otherwise expires_on will be a unix timestamp seconds from epoch
-//             else
-//             {
-//                 // the seconds from epoch may be returned as a Json number or a Json string which is a number
-//                 // depending on the environment.  If neither of these are the case we throw an AuthException.
-//                 if (!(expiresOnProp.ValueKind == JsonValueKind.Number && expiresOnProp.TryGetInt64(out long expiresOnSec)) &&
-//                     !(expiresOnProp.ValueKind == JsonValueKind.String && long.TryParse(expiresOnProp.GetString(), out expiresOnSec)))
-//                 {
-//                     throw new AuthenticationFailedException(AuthenticationResponseInvalidFormatError);
-//                 }
-
-//                 expiresOn = DateTimeOffset.FromUnixTimeSeconds(expiresOnSec);
-//             }
-
-//             return new AccessToken(accessToken, expiresOn);
-//         }

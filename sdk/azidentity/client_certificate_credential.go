@@ -27,8 +27,6 @@ type ClientCertificateCredential struct {
 // clientCertificate: The path to the client certificate that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
 func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *IdentityClientOptions) (*ClientCertificateCredential, error) {
-	// CP: Do this or pass *os.File or io.Reader? Could also make a struct to pass io.Reader + file size for fingerprint and private key funcs
-	// NOTE: consider changing params and receiving an io.Reader
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
 		return nil, fmt.Errorf("Certificate file not found in path: %s", clientCertificate)

@@ -13,8 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// NewMSIRetryPolicy ..
-// TODO: add a check if we're passed
+// NewMSIRetryPolicy checks for authentication errors and stops retrying in case of
+// a failure in trying to get a token
 func NewMSIRetryPolicy(o azcore.RetryOptions) azcore.Policy {
 	return &msiRetryPolicy{options: o}
 }
@@ -24,7 +24,6 @@ type msiRetryPolicy struct {
 }
 
 func (p *msiRetryPolicy) Do(ctx context.Context, req *azcore.Request) (resp *azcore.Response, err error) {
-	// copied from client.go due to circular dependency
 	retries := []int{
 		http.StatusRequestTimeout,      // 408
 		http.StatusTooManyRequests,     // 429
@@ -56,6 +55,7 @@ func (p *msiRetryPolicy) Do(ctx context.Context, req *azcore.Request) (resp *azc
 	for attempt < p.options.MaxTries {
 		resp, err = req.Do(ctx)
 		// we want to retry if err is not nil or the status code is in the list of retry codes
+		// we will fail if we receive a token credential related error
 		var credUnavailable *CredentialUnavailableError
 		var credFailure *AuthenticationFailedError
 		if (err == nil && !hasStatusCode(resp, retries...)) || errors.As(err, &credUnavailable) || errors.As(err, &credFailure) || errors.Is(err, context.DeadlineExceeded) {

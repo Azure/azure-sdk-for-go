@@ -129,7 +129,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 	if err != nil {
 		return nil, err
 	}
-	// TODO: consider moving to its own func
+
 	data := url.Values{}
 	data.Set(qpGrantType, "client_credentials")
 	data.Set(qpClientID, clientID)

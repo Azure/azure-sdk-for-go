@@ -30,8 +30,6 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: newAADIdentityClient(options)}
 }
 
-// TODO: make sure guid params are always in the same order
-
 // GetToken obtains a token from the Azure Active Directory service, using the specified client secret to authenticate.
 // ctx: controlling the request lifetime.
 // scopes: The list of scopes for which the token will have access.

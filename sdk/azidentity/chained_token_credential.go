@@ -42,8 +42,8 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts *azcore.Toke
 		token, err = c.sources[i].GetToken(ctx, opts)
 		if errors.As(err, &credErr) {
 			errList = append(errList, err.(*CredentialUnavailableError))
-		} else { // TODO fix this
-			if err == nil {
+		} else {
+			if token != nil && err == nil {
 				return token, nil
 			}
 			return token, &ChainedCredentialError{Message: err.Error(), ErrorList: errList}
@@ -51,8 +51,6 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts *azcore.Toke
 	}
 
 	if token == nil && len(errList) > 0 {
-		// TODO err message should include cred name and failure reason
-		// Pass back slice of errors here
 		err = &ChainedCredentialError{ErrorList: errList}
 		return nil, err
 	}

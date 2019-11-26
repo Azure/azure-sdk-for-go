@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"reflect"
 	"strings"
 	"time"
 
@@ -70,20 +71,47 @@ func init() {
 	defaultMSIOpts = newDefaultManagedIdentityOptions()
 }
 
+func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
+	// CP: fix this implementation
+	opts := &ManagedIdentityCredentialOptions{}
+	opt := opts.Options.setDefaultValues()
+	opt.PipelineOptions = defaultMSIPipelineOptions(opt.PipelineOptions)
+	return &ManagedIdentityCredentialOptions{Options: opt}
+}
+
+func defaultMSIPipelineOptions(p azcore.PipelineOptions) azcore.PipelineOptions {
+	if reflect.DeepEqual(p, azcore.PipelineOptions{}) {
+		if reflect.DeepEqual(p.Retry, azcore.RetryOptions{}) {
+			p.Retry.Policy = azcore.RetryPolicyExponential
+			p.Retry.MaxTries = 5
+			p.Retry.RetryDelay = 0 * time.Second
+			p.Retry.MaxRetryDelay = 60 * time.Second
+		}
+	}
+	return p
+}
+
 // NewManagedIdentityClient creates a new instance of the ManagedIdentityClient with the IdentityClientOptions
 // that are passed into it along with a default pipeline.
 // options: IdentityClientOptions that adds policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*managedIdentityClient, error) {
 	if options == nil {
-		options = defaultMSIOpts
+		options = newDefaultManagedIdentityOptions()
+	}
+
+	// TODO check this
+	if reflect.DeepEqual(options.Options, IdentityClientOptions{}) {
+		options.Options = defaultIdentityClientOpts
+	}
+
+	if options.Options.AuthorityHost == nil {
+		options.Options.AuthorityHost = defaultAuthorityHostURL
 	}
 	// document the use of these variables
-	// TODO: create a separate pipeline for imds that had its own retry policy
 	return &managedIdentityClient{
-		// TODO: setDefaultValues should return by val
-		options:                options.Options,
-		pipeline:               newDefaultMSIPipeline(options.PipelineOptions),
+		options:                *options.Options,
+		pipeline:               newDefaultMSIPipeline(options.Options.PipelineOptions),
 		imdsEndpoint:           imdsURL,
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,

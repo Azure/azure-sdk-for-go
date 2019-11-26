@@ -151,24 +151,24 @@ func hasStatusCode(r *azcore.Response, statusCodes ...int) bool {
 	return false
 }
 
-// MSIPipelineOptions is used to configure a request policy pipeline's retry policy and logging.
-type MSIPipelineOptions struct {
-	// Retry configures the built-in retry policy behavior.
-	Retry RetryOptions
+// // MSIPipelineOptions is used to configure a request policy pipeline's retry policy and logging.
+// type MSIPipelineOptions struct {
+// 	// Retry configures the built-in retry policy behavior.
+// 	Retry RetryOptions
 
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry azcore.TelemetryOptions
+// 	// Telemetry configures the built-in telemetry policy behavior.
+// 	Telemetry azcore.TelemetryOptions
 
-	// HTTPClient sets the transport for making HTTP requests.
-	// Leave this as nil to use the default HTTP transport.
-	HTTPClient azcore.Transport
+// 	// HTTPClient sets the transport for making HTTP requests.
+// 	// Leave this as nil to use the default HTTP transport.
+// 	HTTPClient azcore.Transport
 
-	// LogOptions configures the built-in request logging policy behavior.
-	LogOptions azcore.RequestLogOptions
-}
+// 	// LogOptions configures the built-in request logging policy behavior.
+// 	LogOptions azcore.RequestLogOptions
+// }
 
 // NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options
-func newDefaultMSIPipeline(o MSIPipelineOptions) azcore.Pipeline {
+func newDefaultMSIPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()
 	}

@@ -22,26 +22,8 @@ const (
 	clientSecret = "<secret>"
 )
 
-<<<<<<< HEAD
-const (
-	accountName = "<storageaccount>"
-	accountKey  = "<accountkey>"
-)
-
-func clientSecretCredential() azcore.Credential {
-	secret := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	return secret
-}
-
-func sharedKeyCredential() azcore.Credential {
-	sharedKey, err := azstorage.NewSharedKeyCredential(accountName, accountKey)
-=======
 func ExampleServiceClient_ListContainers() {
 	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
->>>>>>> ffebe64c09864465d898722f5e6ee4a836873f7a
 	if err != nil {
 		panic(err)
 	}

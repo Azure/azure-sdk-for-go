@@ -6,181 +6,78 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"math/rand"
+	"math"
+	"net/http"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// RetryPolicy tells the pipeline what kind of retry policy to use. See the RetryPolicy* constants.
-type RetryPolicy int32
-
-const (
-	// RetryPolicyExponential tells the pipeline to use an exponential back-off retry policy
-	RetryPolicyExponential RetryPolicy = 0
-
-	// RetryPolicyFixed tells the pipeline to use a fixed back-off retry policy
-	RetryPolicyFixed RetryPolicy = 1
-)
-
-// RetryOptions configures the retry policy's behavior.
-type RetryOptions struct {
-	// Policy tells the pipeline what kind of retry policy to use. See the RetryPolicy* constants.\
-	// A value of zero means that you accept our default policy.
-	Policy RetryPolicy
-
-	// MaxTries specifies the maximum number of attempts an operation will be tried before producing an error (0=default).
-	// A value of zero means that you accept our default policy. A value of 1 means 1 try and no retries.
-	MaxTries int32
-
-	// TryTimeout indicates the maximum time allowed for any single try of an HTTP request.
-	// A value of zero means that you accept our default timeout. NOTE: When transferring large amounts
-	// of data, the default TryTimeout will probably not be sufficient. You should override this value
-	// based on the bandwidth available to the host machine and proximity to the Storage service. A good
-	// starting point may be something like (60 seconds per MB of anticipated-payload-size).
-	TryTimeout time.Duration
-
-	// RetryDelay specifies the amount of delay to use before retrying an operation (0=default).
-	// When RetryPolicy is specified as RetryPolicyExponential, the delay increases exponentially
-	// with each retry up to a maximum specified by MaxRetryDelay.
-	// If you specify 0, then you must also specify 0 for MaxRetryDelay.
-	// If you specify RetryDelay, then you must also specify MaxRetryDelay, and MaxRetryDelay should be
-	// equal to or greater than RetryDelay.
-	RetryDelay time.Duration
-
-	// MaxRetryDelay specifies the maximum delay allowed before retrying an operation (0=default).
-	// If you specify 0, then you must also specify 0 for RetryDelay.
-	MaxRetryDelay time.Duration
-
-	// StatusCodes specifies the HTTP status codes that indicate the operation should be retried.
-	// If unspecified it will default to the status codes in StatusCodesForRetry.
-	StatusCodes []int
-}
-
-func (o RetryOptions) msiDefaults() RetryOptions {
-	// We assume the following:
-	// 1. o.Policy should either be RetryPolicyExponential or RetryPolicyFixed
-	// 2. o.MaxTries >= 0
-	// 3. o.TryTimeout, o.RetryDelay, and o.MaxRetryDelay >=0
-	// 4. o.RetryDelay <= o.MaxRetryDelay
-	// 5. Both o.RetryDelay and o.MaxRetryDelay must be 0 or neither can be 0
-
-	if len(o.StatusCodes) == 0 {
-		o.StatusCodes = StatusCodesForRetry[:]
-	}
-
-	IfDefault := func(current *time.Duration, desired time.Duration) {
-		if *current == time.Duration(0) {
-			*current = desired
-		}
-	}
-
-	// Set defaults if unspecified
-	if o.MaxTries == 0 {
-		o.MaxTries = 4
-	}
-	switch o.Policy {
-	default:
-		fallthrough
-	case RetryPolicyExponential:
-		IfDefault(&o.TryTimeout, 1*time.Minute)
-		IfDefault(&o.RetryDelay, 4*time.Second)
-		IfDefault(&o.MaxRetryDelay, 120*time.Second)
-
-	case RetryPolicyFixed:
-		IfDefault(&o.TryTimeout, 1*time.Minute)
-		IfDefault(&o.RetryDelay, 30*time.Second)
-		IfDefault(&o.MaxRetryDelay, 120*time.Second)
-	}
-	return o
-}
-
-func (o RetryOptions) calcDelay(try int32) time.Duration { // try is >=1; never 0
-	pow := func(number int64, exponent int32) int64 { // pow is nested helper function
-		var result int64 = 1
-		for n := int32(0); n < exponent; n++ {
-			result *= number
-		}
-		return result
-	}
-
-	delay := time.Duration(0)
-	switch o.Policy {
-	default:
-		fallthrough
-	case RetryPolicyExponential:
-		delay = time.Duration(pow(2, try)-1) * o.RetryDelay
-
-	case RetryPolicyFixed:
-		delay = o.RetryDelay
-	}
-
-	// Introduce some jitter:  [0.0, 1.0) / 2 = [0.0, 0.5) + 0.8 = [0.8, 1.3)
-	delay = time.Duration(delay.Seconds() * (rand.Float64()/2 + 0.8) * float64(time.Second)) // NOTE: We want math/rand; not crypto/rand
-	if delay > o.MaxRetryDelay {
-		delay = o.MaxRetryDelay
-	}
-	return delay
-}
-
-func NewMSIRetryPolicy(o RetryOptions) azcore.Policy {
-	return &msiRetryPolicy{options: o.msiDefaults()}
+// NewMSIRetryPolicy ..
+// TODO: add a check if we're passed
+func NewMSIRetryPolicy(o azcore.RetryOptions) azcore.Policy {
+	return &msiRetryPolicy{options: o}
 }
 
 type msiRetryPolicy struct {
-	options RetryOptions
+	options azcore.RetryOptions
 }
 
 func (p *msiRetryPolicy) Do(ctx context.Context, req *azcore.Request) (resp *azcore.Response, err error) {
-	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
-	// When to retry: connection failure or temporary/timeout.
-	defer req.Close()
-	for try := int32(1); try <= p.options.MaxTries; try++ {
-		resp = nil // reset
-		logf("\n=====> Try=%d\n", try)
+	// copied from client.go due to circular dependency
+	retries := []int{
+		http.StatusRequestTimeout,      // 408
+		http.StatusTooManyRequests,     // 429
+		http.StatusInternalServerError, // 500
+		http.StatusBadGateway,          // 502
+		http.StatusServiceUnavailable,  // 503
+		http.StatusGatewayTimeout,      // 504
+	}
+	// extra retry status codes specific to IMDS
+	retries = append(retries,
+		http.StatusNotFound,
+		http.StatusGone,
+		// all remaining 5xx
+		http.StatusNotImplemented,
+		http.StatusHTTPVersionNotSupported,
+		http.StatusVariantAlsoNegotiates,
+		http.StatusInsufficientStorage,
+		http.StatusLoopDetected,
+		http.StatusNotExtended,
+		http.StatusNetworkAuthenticationRequired)
 
-		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
-		// the stream may not be at offset 0 when we first get it and we want the same behavior for the
-		// 1st try as for additional tries.
-		err = req.RewindBody()
-		if err != nil {
-			return
-		}
+	// see https://docs.microsoft.com/en-us/azure/active-directory/managed-service-identity/how-to-use-vm-token#retry-guidance
 
-		// Set the time for this particular retry operation and then Do the operation.
-		tryCtx, tryCancel := context.WithTimeout(ctx, p.options.TryTimeout)
-		resp, err = req.Do(tryCtx) // Make the request
-		tryCancel()
-		logf("Err=%v, response=%v\n", err, resp)
+	const maxDelay time.Duration = 60 * time.Second
 
-		// if there is no error and the response code isn't in the list of retry codes then we're done
-		// TODO: if this is a failure to get an access token don't retry
+	attempt := int32(0)
+	delay := time.Duration(0)
+
+	for attempt < p.options.MaxTries {
+		resp, err = req.Do(ctx)
+		// we want to retry if err is not nil or the status code is in the list of retry codes
 		var credUnavailable *CredentialUnavailableError
 		var credFailure *AuthenticationFailedError
-		// TODO: should context deadline exceeded be checked here or in the credential itself?
-		if (err == nil && !hasStatusCode(resp, p.options.StatusCodes...)) || errors.As(err, &credUnavailable) || errors.As(err, &credFailure) || errors.Is(err, context.DeadlineExceeded) {
+		if (err == nil && !hasStatusCode(resp, retries...)) || errors.As(err, &credUnavailable) || errors.As(err, &credFailure) || errors.Is(err, context.DeadlineExceeded) {
 			return
 		}
 
-		// drain before retrying so nothing is leaked
-		resp.Drain()
-
-		// use the delay from retry-after if available
-		delay, ok := resp.RetryAfter()
-		if !ok {
-			delay = p.options.calcDelay(try)
+		// perform exponential backoff with a cap.
+		// must increment attempt before calculating delay.
+		attempt++
+		// the base value of 2 is the "delta backoff" as specified in the guidance doc
+		delay += (time.Duration(math.Pow(2, float64(attempt))) * time.Second)
+		if delay > maxDelay {
+			delay = maxDelay
 		}
-		logf("Try=%d, Delay=%v\n", try, delay)
+
 		select {
 		case <-time.After(delay):
-			// no-op
-		case <-ctx.Done():
-			err = ctx.Err()
+			// intentionally left blank
+		case <-req.Context().Done():
+			err = req.Context().Err()
 			return
 		}
 	}
-	return // Not retryable or too many retries; return the last response/error
+	return
 }
-
-// According to https://github.com/golang/go/wiki/CompilerOptimizations, the compiler will inline this method and hopefully optimize all calls to it away
-var logf = func(format string, a ...interface{}) {}

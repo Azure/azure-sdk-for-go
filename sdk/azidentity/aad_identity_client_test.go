@@ -36,32 +36,6 @@ func NewTestClient(fn RoundTripFunc) *http.Client {
 	}
 }
 
-func TestSendAuthRequest(t *testing.T) {
-	// server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-	// 	// Test request parameters
-	// 	equals(t, req.URL.String(), "https://login.microsoftonline.com/")
-	// 	// Send response to be tested
-	// 	rw.Write([]byte(`OK`))
-	// }))
-	// // Close the server when test finishes
-	// defer server.Close()
-
-	// // Use Client & URL from our local test server
-	// urlStr, err := url.Parse("https://login.microsoftonline.com/")
-	// if err != nil {
-	// 	t.Fatalf("Error: %v", err)
-	// }
-	// pOpts := &IdentityClientOptions{AuthorityHost: urlStr, PipelineOptions: azcore.PipelineOptions{
-	// 	HTTPClient: azcore.TransportFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
-	// 		return server.Client().Do(req.WithContext(ctx))
-	// 	})}}
-	// // body := NewClientSecretCredential("expected_tenant", "expected_client", "secret", pOpts)
-	// body := NewClientSecretCredential("72f988bf-86f1-41af-91ab-2d7cd011db47", "31334978-f7d6-49a6-bf4f-8cebe115f455", "QBiIj7j54L3EvtM[@AZ?/CG/k3iJZuS8", pOpts)
-	// _, err = body.GetToken(context.Background(), &azcore.TokenRequestOptions{Scopes: []string{"www.storage.azure.com/.default"}})
-	// ok(t, err)
-	// equals(t, []byte("OK"), body)
-}
-
 // assert fails the test if the condition is false.
 func assert(tb testing.TB, condition bool, msg string, v ...interface{}) {
 	if !condition {

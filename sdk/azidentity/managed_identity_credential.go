@@ -13,15 +13,8 @@ import (
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure a Managed Identity Credential
 type ManagedIdentityCredentialOptions struct {
 	// Scopes          []string //This is set in the TokenRequestOptions
-	PipelineOptions MSIPipelineOptions
-	Options         IdentityClientOptions
-}
-
-func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
-	// CP: fix this implementation
-	opts := &ManagedIdentityCredentialOptions{}
-	opt := opts.Options.setDefaultValues()
-	return &ManagedIdentityCredentialOptions{Options: *opt}
+	// PipelineOptions *azcore.PipelineOptions
+	Options *IdentityClientOptions
 }
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in Azure VMs,

@@ -73,7 +73,7 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 	// the first read.  all other reads will block until the
 	// token has been obtained at which point it returns false
 	if <-b.empty {
-		tk, err := b.creds.GetToken(ctx, b.scopes)
+		tk, err := b.creds.GetToken(ctx, &azcore.TokenRequestOptions{Scopes: b.scopes})
 		if err != nil {
 			// failed to get a token, let another go routine try
 			b.empty <- true
@@ -91,24 +91,13 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 	const window = 2 * time.Minute
 	// check if the token has expired
 	now := time.Now().UTC()
-<<<<<<< HEAD
-	if now.Equal(b.expiresOn) || now.After(b.expiresOn) {
-		// token has expired, take the write lock then check again
-		b.lock.RUnlock()
-		// don't defer Unlock(), we want to release it ASAP
-		b.lock.Lock()
-		if now.Equal(b.expiresOn) || now.After(b.expiresOn) {
-			// token has expired, get a new one and update shared state
-			tk, err := b.creds.GetToken(ctx, &azcore.TokenRequestOptions{Scopes: b.scopes})
-=======
 	exp := b.expiresOn.Load()
 	if now.After(exp.Add(-window)) {
 		// token has expired, set update flag and begin the refresh.
 		// if no other go routine has initiated a refresh the calling
 		// go routine will do it.
 		if b.updating.CAS(0, 1) {
-			tk, err := b.creds.GetToken(ctx, b.scopes)
->>>>>>> ffebe64c09864465d898722f5e6ee4a836873f7a
+			tk, err := b.creds.GetToken(ctx, &azcore.TokenRequestOptions{Scopes: b.scopes})
 			if err != nil {
 				// clear updating flag before returning so other
 				// go routines can attempt to refresh

@@ -416,6 +416,27 @@ func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 	return []FileHashAlgorithm{MD5, SHA1, SHA256, SHA256AC, Unknown}
 }
 
+// IncidentSeverity enumerates the values for incident severity.
+type IncidentSeverity string
+
+const (
+	// IncidentSeverityCritical Critical severity
+	IncidentSeverityCritical IncidentSeverity = "Critical"
+	// IncidentSeverityHigh High severity
+	IncidentSeverityHigh IncidentSeverity = "High"
+	// IncidentSeverityInformational Informational severity
+	IncidentSeverityInformational IncidentSeverity = "Informational"
+	// IncidentSeverityLow Low severity
+	IncidentSeverityLow IncidentSeverity = "Low"
+	// IncidentSeverityMedium Medium severity
+	IncidentSeverityMedium IncidentSeverity = "Medium"
+)
+
+// PossibleIncidentSeverityValues returns an array of possible values for the IncidentSeverity const type.
+func PossibleIncidentSeverityValues() []IncidentSeverity {
+	return []IncidentSeverity{IncidentSeverityCritical, IncidentSeverityHigh, IncidentSeverityInformational, IncidentSeverityLow, IncidentSeverityMedium}
+}
+
 // KillChainIntent enumerates the values for kill chain intent.
 type KillChainIntent string
 
@@ -3209,6 +3230,8 @@ type BookmarkProperties struct {
 	Updated *date.Time `json:"updated,omitempty"`
 	// UpdatedBy - Describes a user that updated the bookmark
 	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
+	// IncidentInfo - Describes an incident that relates to bookmark
+	IncidentInfo *IncidentInfo `json:"incidentInfo,omitempty"`
 }
 
 // BookmarkRelation represents a bookmark relation
@@ -6807,6 +6830,18 @@ func (hep HostEntityProperties) MarshalJSON() ([]byte, error) {
 		objectMap["osFamily"] = hep.OsFamily
 	}
 	return json.Marshal(objectMap)
+}
+
+// IncidentInfo describes related incident information for the bookmark
+type IncidentInfo struct {
+	// IncidentID - Incident Id
+	IncidentID *string `json:"incidentId,omitempty"`
+	// Severity - The severity of the incident. Possible values include: 'IncidentSeverityCritical', 'IncidentSeverityHigh', 'IncidentSeverityMedium', 'IncidentSeverityLow', 'IncidentSeverityInformational'
+	Severity IncidentSeverity `json:"severity,omitempty"`
+	// Title - The title of the incident
+	Title *string `json:"title,omitempty"`
+	// RelationName - Relation Name
+	RelationName *string `json:"relationName,omitempty"`
 }
 
 // IPEntity represents an ip entity.

@@ -72,8 +72,8 @@ type Identity struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// IdentityProperties - READ-ONLY; The properties associated with the identity.
-	*IdentityProperties `json:"properties,omitempty"`
+	// UserAssignedIdentityProperties - READ-ONLY; The properties associated with the identity.
+	*UserAssignedIdentityProperties `json:"properties,omitempty"`
 	// Type - READ-ONLY; The type of resource i.e. Microsoft.ManagedIdentity/userAssignedIdentities. Possible values include: 'MicrosoftManagedIdentityuserAssignedIdentities'
 	Type UserAssignedIdentities `json:"type,omitempty"`
 }
@@ -137,12 +137,12 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 			}
 		case "properties":
 			if v != nil {
-				var identityProperties IdentityProperties
-				err = json.Unmarshal(*v, &identityProperties)
+				var userAssignedIdentityProperties UserAssignedIdentityProperties
+				err = json.Unmarshal(*v, &userAssignedIdentityProperties)
 				if err != nil {
 					return err
 				}
-				i.IdentityProperties = &identityProperties
+				i.UserAssignedIdentityProperties = &userAssignedIdentityProperties
 			}
 		case "type":
 			if v != nil {
@@ -157,18 +157,6 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// IdentityProperties the properties associated with the identity.
-type IdentityProperties struct {
-	// TenantID - READ-ONLY; The id of the tenant which the identity belongs to.
-	TenantID *uuid.UUID `json:"tenantId,omitempty"`
-	// PrincipalID - READ-ONLY; The id of the service principal object associated with the created identity.
-	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
-	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
-	ClientID *uuid.UUID `json:"clientId,omitempty"`
-	// ClientSecretURL - READ-ONLY;  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials. If identity is user assigned, then the clientSecretUrl will not be present in the response, otherwise it will be present.
-	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
 }
 
 // Operation operation supported by the Microsoft.ManagedIdentity REST API.
@@ -348,8 +336,8 @@ type SystemAssignedIdentity struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// IdentityProperties - READ-ONLY; The properties associated with the identity.
-	*IdentityProperties `json:"properties,omitempty"`
+	// SystemAssignedIdentityProperties - READ-ONLY; The properties associated with the identity.
+	*SystemAssignedIdentityProperties `json:"properties,omitempty"`
 	// Type - READ-ONLY; The type of resource i.e. Microsoft.Compute/virtualMachineScaleSets
 	Type *string `json:"type,omitempty"`
 }
@@ -413,12 +401,12 @@ func (sai *SystemAssignedIdentity) UnmarshalJSON(body []byte) error {
 			}
 		case "properties":
 			if v != nil {
-				var identityProperties IdentityProperties
-				err = json.Unmarshal(*v, &identityProperties)
+				var systemAssignedIdentityProperties SystemAssignedIdentityProperties
+				err = json.Unmarshal(*v, &systemAssignedIdentityProperties)
 				if err != nil {
 					return err
 				}
-				sai.IdentityProperties = &identityProperties
+				sai.SystemAssignedIdentityProperties = &systemAssignedIdentityProperties
 			}
 		case "type":
 			if v != nil {
@@ -433,6 +421,18 @@ func (sai *SystemAssignedIdentity) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// SystemAssignedIdentityProperties the properties associated with the system assigned identity.
+type SystemAssignedIdentityProperties struct {
+	// TenantID - READ-ONLY; The id of the tenant which the identity belongs to.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	// PrincipalID - READ-ONLY; The id of the service principal object associated with the created identity.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
+	ClientID *uuid.UUID `json:"clientId,omitempty"`
+	// ClientSecretURL - READ-ONLY;  The ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials.
+	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
 }
 
 // UserAssignedIdentitiesListResult values returned by the List operation.
@@ -579,4 +579,14 @@ func (page UserAssignedIdentitiesListResultPage) Values() []Identity {
 // Creates a new instance of the UserAssignedIdentitiesListResultPage type.
 func NewUserAssignedIdentitiesListResultPage(getNextPage func(context.Context, UserAssignedIdentitiesListResult) (UserAssignedIdentitiesListResult, error)) UserAssignedIdentitiesListResultPage {
 	return UserAssignedIdentitiesListResultPage{fn: getNextPage}
+}
+
+// UserAssignedIdentityProperties the properties associated with the user assigned identity.
+type UserAssignedIdentityProperties struct {
+	// TenantID - READ-ONLY; The id of the tenant which the identity belongs to.
+	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+	// PrincipalID - READ-ONLY; The id of the service principal object associated with the created identity.
+	PrincipalID *uuid.UUID `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
+	ClientID *uuid.UUID `json:"clientId,omitempty"`
 }

@@ -39,7 +39,6 @@ type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type Identity = original.Identity
-type IdentityProperties = original.IdentityProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -48,10 +47,12 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type SystemAssignedIdentitiesClient = original.SystemAssignedIdentitiesClient
 type SystemAssignedIdentity = original.SystemAssignedIdentity
+type SystemAssignedIdentityProperties = original.SystemAssignedIdentityProperties
 type UserAssignedIdentitiesClient = original.UserAssignedIdentitiesClient
 type UserAssignedIdentitiesListResult = original.UserAssignedIdentitiesListResult
 type UserAssignedIdentitiesListResultIterator = original.UserAssignedIdentitiesListResultIterator
 type UserAssignedIdentitiesListResultPage = original.UserAssignedIdentitiesListResultPage
+type UserAssignedIdentityProperties = original.UserAssignedIdentityProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

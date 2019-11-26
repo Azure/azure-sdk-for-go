@@ -25,7 +25,7 @@ import (
 
 // SystemAssignedIdentitiesClientAPI contains the set of methods on the SystemAssignedIdentitiesClient type.
 type SystemAssignedIdentitiesClientAPI interface {
-	GetByScope(ctx context.Context, resourceGroupName string, resourceProviderScope string) (result msi.SystemAssignedIdentity, err error)
+	GetByScope(ctx context.Context, scope string) (result msi.SystemAssignedIdentity, err error)
 }
 
 var _ SystemAssignedIdentitiesClientAPI = (*msi.SystemAssignedIdentitiesClient)(nil)

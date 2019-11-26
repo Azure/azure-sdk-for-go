@@ -42,10 +42,8 @@ func NewSystemAssignedIdentitiesClientWithBaseURI(baseURI string, subscriptionID
 
 // GetByScope gets the systemAssignedIdentity available under the specified RP scope.
 // Parameters:
-// resourceGroupName - the name of the Resource Group to which the identity belongs.
-// resourceProviderScope - the resource provider scope of the resource. Parent resource being extended by
-// Managed Identities.
-func (client SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, resourceGroupName string, resourceProviderScope string) (result SystemAssignedIdentity, err error) {
+// scope - the resource provider scope of the resource. Parent resource being extended by Managed Identities.
+func (client SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, scope string) (result SystemAssignedIdentity, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SystemAssignedIdentitiesClient.GetByScope")
 		defer func() {
@@ -56,7 +54,7 @@ func (client SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetByScopePreparer(ctx, resourceGroupName, resourceProviderScope)
+	req, err := client.GetByScopePreparer(ctx, scope)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "msi.SystemAssignedIdentitiesClient", "GetByScope", nil, "Failure preparing request")
 		return
@@ -78,11 +76,9 @@ func (client SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, res
 }
 
 // GetByScopePreparer prepares the GetByScope request.
-func (client SystemAssignedIdentitiesClient) GetByScopePreparer(ctx context.Context, resourceGroupName string, resourceProviderScope string) (*http.Request, error) {
+func (client SystemAssignedIdentitiesClient) GetByScopePreparer(ctx context.Context, scope string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"resourceProviderScope": resourceProviderScope,
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"scope": scope,
 	}
 
 	const APIVersion = "2018-11-30"
@@ -93,7 +89,7 @@ func (client SystemAssignedIdentitiesClient) GetByScopePreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderScope}/providers/Microsoft.ManagedIdentity/identities/default", pathParameters),
+		autorest.WithPathParameters("/{scope}/providers/Microsoft.ManagedIdentity/identities/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -101,7 +97,7 @@ func (client SystemAssignedIdentitiesClient) GetByScopePreparer(ctx context.Cont
 // GetByScopeSender sends the GetByScope request. The method will close the
 // http.Response Body if it receives an error.
 func (client SystemAssignedIdentitiesClient) GetByScopeSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	return autorest.SendWithSender(client, req, sd...)
 }
 

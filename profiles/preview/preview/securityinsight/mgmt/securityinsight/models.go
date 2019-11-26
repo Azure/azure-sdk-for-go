@@ -212,6 +212,16 @@ const (
 	Unknown  FileHashAlgorithm = original.Unknown
 )
 
+type IncidentSeverity = original.IncidentSeverity
+
+const (
+	IncidentSeverityCritical      IncidentSeverity = original.IncidentSeverityCritical
+	IncidentSeverityHigh          IncidentSeverity = original.IncidentSeverityHigh
+	IncidentSeverityInformational IncidentSeverity = original.IncidentSeverityInformational
+	IncidentSeverityLow           IncidentSeverity = original.IncidentSeverityLow
+	IncidentSeverityMedium        IncidentSeverity = original.IncidentSeverityMedium
+)
+
 type KillChainIntent = original.KillChainIntent
 
 const (
@@ -530,6 +540,7 @@ type HostEntity = original.HostEntity
 type HostEntityProperties = original.HostEntityProperties
 type IPEntity = original.IPEntity
 type IPEntityProperties = original.IPEntityProperties
+type IncidentInfo = original.IncidentInfo
 type MCASDataConnector = original.MCASDataConnector
 type MCASDataConnectorDataTypes = original.MCASDataConnectorDataTypes
 type MCASDataConnectorDataTypesDiscoveryLogs = original.MCASDataConnectorDataTypesDiscoveryLogs
@@ -829,6 +840,9 @@ func PossibleEntityTypeValues() []EntityType {
 }
 func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 	return original.PossibleFileHashAlgorithmValues()
+}
+func PossibleIncidentSeverityValues() []IncidentSeverity {
+	return original.PossibleIncidentSeverityValues()
 }
 func PossibleKillChainIntentValues() []KillChainIntent {
 	return original.PossibleKillChainIntentValues()

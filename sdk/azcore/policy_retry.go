@@ -5,6 +5,7 @@ package azcore
 
 import (
 	"context"
+	"io"
 	"math/rand"
 	"net/http"
 	"time"
@@ -149,7 +150,16 @@ type retryPolicy struct {
 func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err error) {
 	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
 	// When to retry: connection failure or temporary/timeout.
-	defer req.Close()
+	if req.Body != nil {
+		// wrap the body so we control when it's actually closed
+		rwbody := &retryableRequestBody{body: req.Body.(ReadSeekCloser)}
+		req.Body = rwbody
+		req.Request.GetBody = func() (io.ReadCloser, error) {
+			_, err := rwbody.Seek(0, io.SeekStart) // Seek back to the beginning of the stream
+			return rwbody, err
+		}
+		defer rwbody.realClose()
+	}
 	for try := int32(1); try <= p.options.MaxTries; try++ {
 		resp = nil // reset
 		logf("\n=====> Try=%d\n", try)
@@ -192,6 +202,35 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		}
 	}
 	return // Not retryable or too many retries; return the last response/error
+}
+
+// ********** The following type/methods implement the retryableRequestBody (a ReadSeekCloser)
+
+// This struct is used when sending a body to the network
+type retryableRequestBody struct {
+	body io.ReadSeeker // Seeking is required to support retries
+}
+
+// Read reads a block of data from an inner stream and reports progress
+func (b *retryableRequestBody) Read(p []byte) (n int, err error) {
+	return b.body.Read(p)
+}
+
+func (b *retryableRequestBody) Seek(offset int64, whence int) (offsetFromStart int64, err error) {
+	return b.body.Seek(offset, whence)
+}
+
+func (b *retryableRequestBody) Close() error {
+	// We don't want the underlying transport to close the request body on transient failures so this is a nop.
+	// The retry policy closes the request body upon success.
+	return nil
+}
+
+func (b *retryableRequestBody) realClose() error {
+	if c, ok := b.body.(io.Closer); ok {
+		return c.Close()
+	}
+	return nil
 }
 
 // According to https://github.com/golang/go/wiki/CompilerOptimizations, the compiler will inline this method and hopefully optimize all calls to it away

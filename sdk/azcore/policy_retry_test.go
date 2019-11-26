@@ -198,7 +198,44 @@ func TestRetryPolicyFixedDelaySuccessWithRetry(t *testing.T) {
 	}
 }
 
+type fatalError struct {
+	s string
+}
+
+func (f fatalError) Error() string {
+	return f.s
+}
+
+func (f fatalError) IsNotRetriable() bool {
+	return true
+}
+
+func TestRetryPolicyIsNotRetriable(t *testing.T) {
+	theErr := fatalError{s: "it's dead Jim"}
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendError(theErr)
+	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{
+		Policy:     RetryPolicyFixed,
+		RetryDelay: retryDelay,
+	}))
+	req := pl.NewRequest(http.MethodGet, srv.URL())
+	_, err := req.Do(context.Background())
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if !errors.Is(err, theErr) {
+		t.Fatalf("unexpected error type: got %v wanted %v", err, theErr)
+	}
+	if r := srv.Requests(); r != 2 {
+		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
+	}
+}
+
 // TODO: add test for retry failing to read response body
+
+// TODO: add test for per-retry timeout failed but e2e succeeded
 
 func newRewindTrackingBody(s string) *rewindTrackingBody {
 	// there are two rewinds that happen before rewinding for a retry

@@ -55,10 +55,10 @@ func TestRetryPolicyFailOnStatusCode(t *testing.T) {
 	if resp.StatusCode != http.StatusInternalServerError {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if r := srv.Requests(); r != defaultMaxRetries {
-		t.Fatalf("wrong retry count, got %d expected %d", r, defaultMaxRetries)
+	if r := srv.Requests(); r != defaultMaxTries {
+		t.Fatalf("wrong retry count, got %d expected %d", r, defaultMaxTries)
 	}
-	if body.rcount != defaultMaxRetries-1 {
+	if body.rcount != defaultMaxTries-1 {
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {
@@ -110,10 +110,10 @@ func TestRetryPolicyFailOnError(t *testing.T) {
 	if resp != nil {
 		t.Fatal("unexpected response")
 	}
-	if r := srv.Requests(); r != defaultMaxRetries {
-		t.Fatalf("wrong retry count, got %d expected %d", r, defaultMaxRetries)
+	if r := srv.Requests(); r != defaultMaxTries {
+		t.Fatalf("wrong retry count, got %d expected %d", r, defaultMaxTries)
 	}
-	if body.rcount != defaultMaxRetries-1 {
+	if body.rcount != defaultMaxTries-1 {
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {
@@ -139,10 +139,10 @@ func TestRetryPolicySuccessWithRetryComplex(t *testing.T) {
 	if resp.StatusCode != http.StatusAccepted {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if r := srv.Requests(); r != defaultMaxRetries {
+	if r := srv.Requests(); r != defaultMaxTries {
 		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
 	}
-	if body.rcount != defaultMaxRetries-1 {
+	if body.rcount != defaultMaxTries-1 {
 		t.Fatalf("unexpected rewind count: %d", body.rcount)
 	}
 	if !body.closed {

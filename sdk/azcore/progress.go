@@ -14,15 +14,12 @@ type ProgressReceiver func(bytesTransferred int64)
 
 // This struct is used when sending a body to the network
 type requestBodyProgress struct {
-	requestBody io.ReadSeeker // Seeking is required to support retries
+	requestBody ReadSeekCloser // Seeking is required to support retries
 	pr          ProgressReceiver
 }
 
 // NewRequestBodyProgress adds progress reporting to an HTTP request's body stream.
-func NewRequestBodyProgress(requestBody io.ReadSeeker, pr ProgressReceiver) io.ReadSeeker {
-	if pr == nil {
-		panic("pr must not be nil")
-	}
+func NewRequestBodyProgress(requestBody ReadSeekCloser, pr ProgressReceiver) ReadSeekCloser {
 	return &requestBodyProgress{requestBody: requestBody, pr: pr}
 }
 
@@ -35,7 +32,7 @@ func (rbp *requestBodyProgress) Read(p []byte) (n int, err error) {
 	// Invokes the user's callback method to report progress
 	position, err := rbp.requestBody.Seek(0, io.SeekCurrent)
 	if err != nil {
-		panic(err)
+		return
 	}
 	rbp.pr(position)
 	return
@@ -47,10 +44,7 @@ func (rbp *requestBodyProgress) Seek(offset int64, whence int) (offsetFromStart 
 
 // requestBodyProgress supports Close but the underlying stream may not; if it does, Close will close it.
 func (rbp *requestBodyProgress) Close() error {
-	if c, ok := rbp.requestBody.(io.Closer); ok {
-		return c.Close()
-	}
-	return nil
+	return rbp.requestBody.Close()
 }
 
 // ********** The following are specific to the response body (a ReadCloser)
@@ -64,9 +58,6 @@ type responseBodyProgress struct {
 
 // NewResponseBodyProgress adds progress reporting to an HTTP response's body stream.
 func NewResponseBodyProgress(responseBody io.ReadCloser, pr ProgressReceiver) io.ReadCloser {
-	if pr == nil {
-		panic("pr must not be nil")
-	}
 	return &responseBodyProgress{responseBody: responseBody, pr: pr, offset: 0}
 }
 

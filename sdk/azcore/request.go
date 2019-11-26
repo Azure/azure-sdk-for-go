@@ -14,6 +14,10 @@ import (
 	"reflect"
 )
 
+const (
+	contentTypeAppXML = "application/xml"
+)
+
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
 type Request struct {
 	*http.Request
@@ -60,7 +64,7 @@ func (req *Request) MarshalAsXML(v interface{}) error {
 	if err != nil {
 		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
 	}
-	req.Header.Set("Content-Type", "application/xml")
+	req.Header.Set(HeaderContentType, contentTypeAppXML)
 	return req.SetBody(NopCloser(bytes.NewReader(b)))
 }
 

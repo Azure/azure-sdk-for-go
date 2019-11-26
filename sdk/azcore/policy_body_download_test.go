@@ -15,7 +15,7 @@ func TestDownloadBody(t *testing.T) {
 	const message = "downloaded"
 	srv, close := mock.NewServer()
 	defer close()
-	srv.SetResponse(mock.WithBody(message))
+	srv.SetResponse(mock.WithBody([]byte(message)))
 	// download policy is automatically added during pipeline construction
 	pl := NewPipeline(srv)
 	req := pl.NewRequest(http.MethodGet, srv.URL())
@@ -35,7 +35,7 @@ func TestSkipBodyDownload(t *testing.T) {
 	const message = "not downloaded"
 	srv, close := mock.NewServer()
 	defer close()
-	srv.SetResponse(mock.WithBody(message))
+	srv.SetResponse(mock.WithBody([]byte(message)))
 	// download policy is automatically added during pipeline construction
 	pl := NewPipeline(srv)
 	req := pl.NewRequest(http.MethodGet, srv.URL())

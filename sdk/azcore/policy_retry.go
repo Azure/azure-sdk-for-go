@@ -5,6 +5,7 @@ package azcore
 
 import (
 	"context"
+	"errors"
 	"io"
 	"math/rand"
 	"net/http"
@@ -23,7 +24,7 @@ const (
 )
 
 const (
-	defaultMaxRetries = 4
+	defaultMaxTries = 4
 )
 
 // RetryOptions configures the retry policy's behavior.
@@ -92,7 +93,7 @@ func (o RetryOptions) defaults() RetryOptions {
 
 	// Set defaults if unspecified
 	if o.MaxTries == 0 {
-		o.MaxTries = defaultMaxRetries
+		o.MaxTries = defaultMaxTries
 	}
 	switch o.Policy {
 	default:
@@ -178,9 +179,9 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		tryCancel()
 		logf("Err=%v, response=%v\n", err, resp)
 
-		// if there is no error and the response code isn't in the list of retry codes then we're done
-		// TODO: if this is a failure to get an access token don't retry
-		if err == nil && !resp.hasStatusCode(p.options.StatusCodes...) {
+		// if there is no error and the response code isn't in the list of retry codes then we're done.
+		// or if we know the error to be terminal (e.g. deadline exceeded) then don't retry.
+		if (err == nil && !resp.hasStatusCode(p.options.StatusCodes...)) || isTerminalError(err) {
 			return
 		}
 
@@ -202,6 +203,15 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		}
 	}
 	return // Not retryable or too many retries; return the last response/error
+}
+
+// returns true if the error is terminal thus no retry is necessary.
+// if the error could *ever* be transient then it should return false.
+func isTerminalError(err error) bool {
+	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		return true
+	}
+	return false
 }
 
 // ********** The following type/methods implement the retryableRequestBody (a ReadSeekCloser)

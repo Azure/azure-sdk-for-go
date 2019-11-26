@@ -84,14 +84,6 @@ const (
 	StandardSSDLRS DiskAccountType = original.StandardSSDLRS
 )
 
-type DiskType = original.DiskType
-
-const (
-	DiskTypePremiumLRS     DiskType = original.DiskTypePremiumLRS
-	DiskTypeStandardLRS    DiskType = original.DiskTypeStandardLRS
-	DiskTypeStandardSSDLRS DiskType = original.DiskTypeStandardSSDLRS
-)
-
 type EthernetAddressType = original.EthernetAddressType
 
 const (
@@ -190,6 +182,7 @@ const (
 	InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure            InstanceTypeBasicEventProviderSpecificDetails = original.InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure
 	InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails InstanceTypeBasicEventProviderSpecificDetails = original.InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails
 	InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2                 InstanceTypeBasicEventProviderSpecificDetails = original.InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2
+	InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeVMwareCbt                     InstanceTypeBasicEventProviderSpecificDetails = original.InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeVMwareCbt
 )
 
 type InstanceTypeBasicEventSpecificDetails = original.InstanceTypeBasicEventSpecificDetails
@@ -358,9 +351,9 @@ const (
 type InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInput
 
 const (
-	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A                                                                                  InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A
-	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput                                    InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput
-	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeSixcSevendaFourFiveFiveFiveZeroSixfFourThreeffAOneSixaEightebOneZeroOneaebbSevenZero
+	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A                                               InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeA2A
+	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeReplicationProviderSpecificContainerCreationInput
+	InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeVMwareCbt                                         InstanceTypeBasicReplicationProviderSpecificContainerCreationInput = original.InstanceTypeBasicReplicationProviderSpecificContainerCreationInputInstanceTypeVMwareCbt
 )
 
 type InstanceTypeBasicReplicationProviderSpecificContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificContainerMappingInput
@@ -389,6 +382,13 @@ type InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput = o
 const (
 	InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A                                                    InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeA2A
 	InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput = original.InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputInstanceTypeReplicationProviderSpecificUpdateContainerMappingInput
+)
+
+type InstanceTypeBasicResyncProviderSpecificInput = original.InstanceTypeBasicResyncProviderSpecificInput
+
+const (
+	InstanceTypeBasicResyncProviderSpecificInputInstanceTypeResyncProviderSpecificInput InstanceTypeBasicResyncProviderSpecificInput = original.InstanceTypeBasicResyncProviderSpecificInputInstanceTypeResyncProviderSpecificInput
+	InstanceTypeBasicResyncProviderSpecificInputInstanceTypeVMwareCbt                   InstanceTypeBasicResyncProviderSpecificInput = original.InstanceTypeBasicResyncProviderSpecificInputInstanceTypeVMwareCbt
 )
 
 type InstanceTypeBasicReverseReplicationProviderSpecificInput = original.InstanceTypeBasicReverseReplicationProviderSpecificInput
@@ -458,6 +458,7 @@ type MigrationItemOperation = original.MigrationItemOperation
 const (
 	DisableMigration   MigrationItemOperation = original.DisableMigration
 	Migrate            MigrationItemOperation = original.Migrate
+	StartResync        MigrationItemOperation = original.StartResync
 	TestMigrate        MigrationItemOperation = original.TestMigrate
 	TestMigrateCleanup MigrationItemOperation = original.TestMigrateCleanup
 )
@@ -522,6 +523,15 @@ const (
 	Unknown    PresenceStatus = original.Unknown
 )
 
+type ProtectionHealth = original.ProtectionHealth
+
+const (
+	ProtectionHealthCritical ProtectionHealth = original.ProtectionHealthCritical
+	ProtectionHealthNone     ProtectionHealth = original.ProtectionHealthNone
+	ProtectionHealthNormal   ProtectionHealth = original.ProtectionHealthNormal
+	ProtectionHealthWarning  ProtectionHealth = original.ProtectionHealthWarning
+)
+
 type RecoveryPlanActionLocation = original.RecoveryPlanActionLocation
 
 const (
@@ -568,6 +578,14 @@ const (
 	ReplicationProtectedItemOperationTestFailover        ReplicationProtectedItemOperation = original.ReplicationProtectedItemOperationTestFailover
 	ReplicationProtectedItemOperationTestFailoverCleanup ReplicationProtectedItemOperation = original.ReplicationProtectedItemOperationTestFailoverCleanup
 	ReplicationProtectedItemOperationUnplannedFailover   ReplicationProtectedItemOperation = original.ReplicationProtectedItemOperationUnplannedFailover
+)
+
+type ResyncState = original.ResyncState
+
+const (
+	ResyncStateNone                         ResyncState = original.ResyncStateNone
+	ResyncStatePreparedForResynchronization ResyncState = original.ResyncStatePreparedForResynchronization
+	ResyncStateStartedResynchronization     ResyncState = original.ResyncStateStartedResynchronization
 )
 
 type RpInMageRecoveryPointType = original.RpInMageRecoveryPointType
@@ -681,6 +699,7 @@ type BasicReplicationProviderSpecificContainerCreationInput = original.BasicRepl
 type BasicReplicationProviderSpecificContainerMappingInput = original.BasicReplicationProviderSpecificContainerMappingInput
 type BasicReplicationProviderSpecificSettings = original.BasicReplicationProviderSpecificSettings
 type BasicReplicationProviderSpecificUpdateContainerMappingInput = original.BasicReplicationProviderSpecificUpdateContainerMappingInput
+type BasicResyncProviderSpecificInput = original.BasicResyncProviderSpecificInput
 type BasicReverseReplicationProviderSpecificInput = original.BasicReverseReplicationProviderSpecificInput
 type BasicSwitchProtectionProviderSpecificInput = original.BasicSwitchProtectionProviderSpecificInput
 type BasicTaskTypeDetails = original.BasicTaskTypeDetails
@@ -957,6 +976,7 @@ type ReplicationMigrationItemsClient = original.ReplicationMigrationItemsClient
 type ReplicationMigrationItemsCreateFuture = original.ReplicationMigrationItemsCreateFuture
 type ReplicationMigrationItemsDeleteFuture = original.ReplicationMigrationItemsDeleteFuture
 type ReplicationMigrationItemsMigrateFuture = original.ReplicationMigrationItemsMigrateFuture
+type ReplicationMigrationItemsResyncFuture = original.ReplicationMigrationItemsResyncFuture
 type ReplicationMigrationItemsTestMigrateCleanupFuture = original.ReplicationMigrationItemsTestMigrateCleanupFuture
 type ReplicationMigrationItemsTestMigrateFuture = original.ReplicationMigrationItemsTestMigrateFuture
 type ReplicationMigrationItemsUpdateFuture = original.ReplicationMigrationItemsUpdateFuture
@@ -1033,6 +1053,9 @@ type Resource = original.Resource
 type ResourceHealthSummary = original.ResourceHealthSummary
 type ResumeJobParams = original.ResumeJobParams
 type ResumeJobParamsProperties = original.ResumeJobParamsProperties
+type ResyncInput = original.ResyncInput
+type ResyncInputProperties = original.ResyncInputProperties
+type ResyncProviderSpecificInput = original.ResyncProviderSpecificInput
 type RetentionVolume = original.RetentionVolume
 type ReverseReplicationInput = original.ReverseReplicationInput
 type ReverseReplicationInputProperties = original.ReverseReplicationInputProperties
@@ -1108,6 +1131,7 @@ type VMwareCbtContainerCreationInput = original.VMwareCbtContainerCreationInput
 type VMwareCbtContainerMappingInput = original.VMwareCbtContainerMappingInput
 type VMwareCbtDiskInput = original.VMwareCbtDiskInput
 type VMwareCbtEnableMigrationInput = original.VMwareCbtEnableMigrationInput
+type VMwareCbtEventDetails = original.VMwareCbtEventDetails
 type VMwareCbtMigrateInput = original.VMwareCbtMigrateInput
 type VMwareCbtMigrationDetails = original.VMwareCbtMigrationDetails
 type VMwareCbtNicDetails = original.VMwareCbtNicDetails
@@ -1115,6 +1139,7 @@ type VMwareCbtNicInput = original.VMwareCbtNicInput
 type VMwareCbtPolicyCreationInput = original.VMwareCbtPolicyCreationInput
 type VMwareCbtProtectedDiskDetails = original.VMwareCbtProtectedDiskDetails
 type VMwareCbtProtectionContainerMappingDetails = original.VMwareCbtProtectionContainerMappingDetails
+type VMwareCbtResyncInput = original.VMwareCbtResyncInput
 type VMwareCbtTestMigrateInput = original.VMwareCbtTestMigrateInput
 type VMwareCbtUpdateMigrationItemInput = original.VMwareCbtUpdateMigrationItemInput
 type VMwareDetails = original.VMwareDetails
@@ -1432,9 +1457,6 @@ func PossibleDisableProtectionReasonValues() []DisableProtectionReason {
 func PossibleDiskAccountTypeValues() []DiskAccountType {
 	return original.PossibleDiskAccountTypeValues()
 }
-func PossibleDiskTypeValues() []DiskType {
-	return original.PossibleDiskTypeValues()
-}
 func PossibleEthernetAddressTypeValues() []EthernetAddressType {
 	return original.PossibleEthernetAddressTypeValues()
 }
@@ -1528,6 +1550,9 @@ func PossibleInstanceTypeBasicReplicationProviderSpecificSettingsValues() []Inst
 func PossibleInstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputValues() []InstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInput {
 	return original.PossibleInstanceTypeBasicReplicationProviderSpecificUpdateContainerMappingInputValues()
 }
+func PossibleInstanceTypeBasicResyncProviderSpecificInputValues() []InstanceTypeBasicResyncProviderSpecificInput {
+	return original.PossibleInstanceTypeBasicResyncProviderSpecificInputValues()
+}
 func PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues() []InstanceTypeBasicReverseReplicationProviderSpecificInput {
 	return original.PossibleInstanceTypeBasicReverseReplicationProviderSpecificInputValues()
 }
@@ -1576,6 +1601,9 @@ func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections
 func PossiblePresenceStatusValues() []PresenceStatus {
 	return original.PossiblePresenceStatusValues()
 }
+func PossibleProtectionHealthValues() []ProtectionHealth {
+	return original.PossibleProtectionHealthValues()
+}
 func PossibleRecoveryPlanActionLocationValues() []RecoveryPlanActionLocation {
 	return original.PossibleRecoveryPlanActionLocationValues()
 }
@@ -1590,6 +1618,9 @@ func PossibleRecoveryPointTypeValues() []RecoveryPointType {
 }
 func PossibleReplicationProtectedItemOperationValues() []ReplicationProtectedItemOperation {
 	return original.PossibleReplicationProtectedItemOperationValues()
+}
+func PossibleResyncStateValues() []ResyncState {
+	return original.PossibleResyncStateValues()
 }
 func PossibleRpInMageRecoveryPointTypeValues() []RpInMageRecoveryPointType {
 	return original.PossibleRpInMageRecoveryPointTypeValues()

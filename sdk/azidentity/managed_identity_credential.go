@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// TODO change client to credential in exported types
 package azidentity
 
 import (
@@ -9,6 +8,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
+
+// TODO change client to credential in exported types
 
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure a Managed Identity Credential
 type ManagedIdentityCredentialOptions struct{}

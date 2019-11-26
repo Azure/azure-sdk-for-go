@@ -512,7 +512,7 @@ func (client UserAssignedIdentitiesClient) ListBySubscriptionComplete(ctx contex
 // resourceGroupName - the name of the Resource Group to which the identity belongs.
 // resourceName - the name of the identity resource.
 // parameters - parameters to update the identity
-func (client UserAssignedIdentitiesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters Identity) (result Identity, err error) {
+func (client UserAssignedIdentitiesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters IdentityPatch) (result Identity, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/UserAssignedIdentitiesClient.Update")
 		defer func() {
@@ -545,7 +545,7 @@ func (client UserAssignedIdentitiesClient) Update(ctx context.Context, resourceG
 }
 
 // UpdatePreparer prepares the Update request.
-func (client UserAssignedIdentitiesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, parameters Identity) (*http.Request, error) {
+func (client UserAssignedIdentitiesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, resourceName string, parameters IdentityPatch) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),

@@ -159,6 +159,103 @@ func (i *Identity) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// IdentityPatch describes an identity resource.
+type IdentityPatch struct {
+	// ID - READ-ONLY; The id of the created identity.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the created identity.
+	Name *string `json:"name,omitempty"`
+	// Location - The Azure region where the identity lives.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+	// UserAssignedIdentityProperties - READ-ONLY; The properties associated with the identity.
+	*UserAssignedIdentityProperties `json:"properties,omitempty"`
+	// Type - READ-ONLY; The type of resource i.e. Microsoft.ManagedIdentity/userAssignedIdentities. Possible values include: 'MicrosoftManagedIdentityuserAssignedIdentities'
+	Type UserAssignedIdentities `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IdentityPatch.
+func (IP IdentityPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if IP.Location != nil {
+		objectMap["location"] = IP.Location
+	}
+	if IP.Tags != nil {
+		objectMap["tags"] = IP.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IdentityPatch struct.
+func (IP *IdentityPatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				IP.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				IP.Name = &name
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				IP.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				IP.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var userAssignedIdentityProperties UserAssignedIdentityProperties
+				err = json.Unmarshal(*v, &userAssignedIdentityProperties)
+				if err != nil {
+					return err
+				}
+				IP.UserAssignedIdentityProperties = &userAssignedIdentityProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar UserAssignedIdentities
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				IP.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // Operation operation supported by the Microsoft.ManagedIdentity REST API.
 type Operation struct {
 	// Name - The name of the REST Operation. This is of the format {provider}/{resource}/{operation}.
@@ -325,7 +422,7 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 	return OperationListResultPage{fn: getNextPage}
 }
 
-// SystemAssignedIdentity describes an identity resource.
+// SystemAssignedIdentity describes a system assigned identity resource.
 type SystemAssignedIdentity struct {
 	autorest.Response `json:"-"`
 	// ID - READ-ONLY; The id of the created identity.

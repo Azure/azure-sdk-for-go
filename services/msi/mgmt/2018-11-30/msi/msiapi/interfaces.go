@@ -44,7 +44,7 @@ type UserAssignedIdentitiesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result msi.Identity, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result msi.UserAssignedIdentitiesListResultPage, err error)
 	ListBySubscription(ctx context.Context) (result msi.UserAssignedIdentitiesListResultPage, err error)
-	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters msi.Identity) (result msi.Identity, err error)
+	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters msi.IdentityPatch) (result msi.Identity, err error)
 }
 
 var _ UserAssignedIdentitiesClientAPI = (*msi.UserAssignedIdentitiesClient)(nil)

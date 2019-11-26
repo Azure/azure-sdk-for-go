@@ -247,12 +247,12 @@ const (
 	QuotaID                     ReasonCode = original.QuotaID
 )
 
-type RootSquash = original.RootSquash
+type RootSquashType = original.RootSquashType
 
 const (
-	RootSquashAllSquash    RootSquash = original.RootSquashAllSquash
-	RootSquashNoRootSquash RootSquash = original.RootSquashNoRootSquash
-	RootSquashRootSquash   RootSquash = original.RootSquashRootSquash
+	AllSquash    RootSquashType = original.AllSquash
+	NoRootSquash RootSquashType = original.NoRootSquash
+	RootSquash   RootSquashType = original.RootSquash
 )
 
 type RoutingChoice = original.RoutingChoice
@@ -623,8 +623,8 @@ func PossibleReasonCodeValues() []ReasonCode {
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
 }
-func PossibleRootSquashValues() []RootSquash {
-	return original.PossibleRootSquashValues()
+func PossibleRootSquashTypeValues() []RootSquashType {
+	return original.PossibleRootSquashTypeValues()
 }
 func PossibleRoutingChoiceValues() []RoutingChoice {
 	return original.PossibleRoutingChoiceValues()

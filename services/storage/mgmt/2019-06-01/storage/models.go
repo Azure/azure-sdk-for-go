@@ -496,21 +496,21 @@ func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
-// RootSquash enumerates the values for root squash.
-type RootSquash string
+// RootSquashType enumerates the values for root squash type.
+type RootSquashType string
 
 const (
-	// RootSquashAllSquash ...
-	RootSquashAllSquash RootSquash = "AllSquash"
-	// RootSquashNoRootSquash ...
-	RootSquashNoRootSquash RootSquash = "NoRootSquash"
-	// RootSquashRootSquash ...
-	RootSquashRootSquash RootSquash = "RootSquash"
+	// AllSquash ...
+	AllSquash RootSquashType = "AllSquash"
+	// NoRootSquash ...
+	NoRootSquash RootSquashType = "NoRootSquash"
+	// RootSquash ...
+	RootSquash RootSquashType = "RootSquash"
 )
 
-// PossibleRootSquashValues returns an array of possible values for the RootSquash const type.
-func PossibleRootSquashValues() []RootSquash {
-	return []RootSquash{RootSquashAllSquash, RootSquashNoRootSquash, RootSquashRootSquash}
+// PossibleRootSquashTypeValues returns an array of possible values for the RootSquashType const type.
+func PossibleRootSquashTypeValues() []RootSquashType {
+	return []RootSquashType{AllSquash, NoRootSquash, RootSquash}
 }
 
 // RoutingChoice enumerates the values for routing choice.
@@ -2212,8 +2212,8 @@ type FileShareProperties struct {
 	ShareQuota *int32 `json:"shareQuota,omitempty"`
 	// EnabledProtocols - Protocols for file shares. Possible values include: 'SMB', 'NFS'
 	EnabledProtocols EnabledProtocols `json:"enabledProtocols,omitempty"`
-	// RootSquash - Reduction of the access rights for the remote superuser. Possible values include: 'RootSquashNoRootSquash', 'RootSquashRootSquash', 'RootSquashAllSquash'
-	RootSquash RootSquash `json:"rootSquash,omitempty"`
+	// RootSquash - Reduction of the access rights for the remote superuser. Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
+	RootSquash RootSquashType `json:"rootSquash,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FileShareProperties.

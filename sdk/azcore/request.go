@@ -31,9 +31,9 @@ func (ov opValues) set(value interface{}) {
 
 // Get looks for a value set by SetValue first
 func (ov opValues) get(value interface{}) bool {
-	v, ok := ov[reflect.TypeOf(value).Elem()]
+	v, ok := ov[reflect.ValueOf(value).Elem().Type()]
 	if ok {
-		reflect.Indirect(reflect.ValueOf(value)).Set(reflect.ValueOf(v))
+		reflect.ValueOf(value).Elem().Set(reflect.ValueOf(v))
 	}
 	return ok
 }
@@ -77,7 +77,7 @@ func (req *Request) OperationValue(value interface{}) bool {
 	if req.values == nil {
 		return false
 	}
-	return req.values.get(&value)
+	return req.values.get(value)
 }
 
 // SetQueryParam sets the key to value.
@@ -103,13 +103,8 @@ func (req *Request) SetBody(body ReadSeekCloser) error {
 	if err != nil {
 		return err
 	}
-	body = &retryableRequestBody{body: body}
 	req.Request.Body = body
 	req.Request.ContentLength = size
-	req.Request.GetBody = func() (io.ReadCloser, error) {
-		_, err := body.Seek(0, io.SeekStart) // Seek back to the beginning of the stream
-		return body, err
-	}
 	return nil
 }
 
@@ -133,7 +128,7 @@ func (req *Request) Close() error {
 	if req.Body == nil {
 		return nil
 	}
-	return req.Body.(*retryableRequestBody).realClose()
+	return req.Body.Close()
 }
 
 func (req *Request) copy() *Request {
@@ -153,33 +148,4 @@ func (req *Request) copy() *Request {
 			GetBody:       req.GetBody,
 		},
 	}
-}
-
-// ********** The following type/methods implement the retryableRequestBody (a ReadSeekCloser)
-
-// This struct is used when sending a body to the network
-type retryableRequestBody struct {
-	body io.ReadSeeker // Seeking is required to support retries
-}
-
-// Read reads a block of data from an inner stream and reports progress
-func (b *retryableRequestBody) Read(p []byte) (n int, err error) {
-	return b.body.Read(p)
-}
-
-func (b *retryableRequestBody) Seek(offset int64, whence int) (offsetFromStart int64, err error) {
-	return b.body.Seek(offset, whence)
-}
-
-func (b *retryableRequestBody) Close() error {
-	// We don't want the underlying transport to close the request body on transient failures so this is a nop.
-	// The pipeline closes the request body upon success.
-	return nil
-}
-
-func (b *retryableRequestBody) realClose() error {
-	if c, ok := b.body.(io.Closer); ok {
-		return c.Close()
-	}
-	return nil
 }

@@ -12,6 +12,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 // headerJWT type contains the fields necessary to create a JSON Web Token including the x5t field which must contain a x.509 certificate thumbprint
@@ -52,7 +54,7 @@ func createClientAssertionJWT(clientID string, audience string, clientCertificat
 	header := base64.RawURLEncoding.EncodeToString(headerJSON)
 
 	payloadData := payloadJWT{
-		JTI: newUUID().String(),
+		JTI: uuid.New().String(),
 		AUD: audience,
 		ISS: clientID,
 		SUB: clientID,

@@ -28,13 +28,7 @@ var (
 )
 
 func init() {
-	var err error
-	defaultAuthorityHostURL, err = url.Parse(defaultAuthorityHost)
-	if err != nil {
-		// TODO fix this
-		panic(err)
-	}
-
+	defaultAuthorityHostURL, _ = url.Parse(defaultAuthorityHost)
 	defaultIdentityClientOpts = &IdentityClientOptions{AuthorityHost: defaultAuthorityHostURL}
 }
 
@@ -55,11 +49,6 @@ func (e *AuthenticationFailedError) Error() string {
 
 func newAuthenticationFailedError(resp *azcore.Response) error {
 	authFailed := &AuthenticationFailedError{}
-	if resp == nil {
-		authFailed.Message = "Something unexpected happened when attempting to authenticate"
-		return authFailed
-	}
-
 	err := json.Unmarshal(resp.Payload, authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status

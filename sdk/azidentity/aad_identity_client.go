@@ -77,9 +77,15 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return nil, err
 	}
 
+	// This should never happen under normal conditions
+	if resp == nil {
+		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+	}
+
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
+
 	// TODO reproduce nil response error
 	return nil, newAuthenticationFailedError(resp)
 }
@@ -100,6 +106,11 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 	resp, err := msg.Do(ctx)
 	if err != nil {
 		return nil, err
+	}
+
+	// This should never happen under normal conditions
+	if resp == nil {
+		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
 	}
 
 	if resp.HasStatusCode(successStatusCodes[:]...) {
@@ -197,7 +208,12 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 		return nil, fmt.Errorf("AuthenticateUsernamePassword: %w", err)
 	}
 
-	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated {
+	// This should never happen under normal conditions
+	if resp == nil {
+		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 

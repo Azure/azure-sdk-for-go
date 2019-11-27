@@ -12,9 +12,10 @@ import (
 
 // AuthenticationPolicyOptions contains various options used to create a credential policy.
 type AuthenticationPolicyOptions struct {
-	// Scopes is the list of OAuth2 authentication scopes used when requesting a token.
+	// Options contains the TokenRequestOptions that includes a scopes field which contains
+	// the list of OAuth2 authentication scopes used when requesting a token.
 	// This field is ignored for other forms of authentication (e.g. shared key).
-	Scopes        []string
+	Options       TokenRequestOptions
 	AuthorityHost url.URL
 }
 

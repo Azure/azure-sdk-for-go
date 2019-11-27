@@ -45,3 +45,8 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.T
 	}
 	return c.client.authenticateUsernamePassword(ctx, c.tenantID, c.clientID, c.username, c.password, opts.Scopes)
 }
+
+// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
+func (c *UsernamePasswordCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return newBearerTokenPolicy(c, options)
+}

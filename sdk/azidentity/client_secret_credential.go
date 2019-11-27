@@ -43,7 +43,7 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.Token
 
 // AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
 func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options.Scopes)
+	return newBearerTokenPolicy(c, options)
 }
 
 type bearerTokenPolicy struct {
@@ -51,12 +51,12 @@ type bearerTokenPolicy struct {
 	updating  atomic.Int64 // atomically set to 1 to indicate a refresh is in progress
 	header    atomic.String
 	expiresOn atomic.Time
-	creds     azcore.TokenCredential // R/O
-	scopes    []string               // R/O
+	creds     azcore.TokenCredential     // R/O
+	options   azcore.TokenRequestOptions // R/O
 }
 
-func newBearerTokenPolicy(creds azcore.TokenCredential, scopes []string) *bearerTokenPolicy {
-	bt := bearerTokenPolicy{creds: creds, scopes: scopes}
+func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.AuthenticationPolicyOptions) *bearerTokenPolicy {
+	bt := bearerTokenPolicy{creds: creds, options: opts.Options}
 	// prime channel indicating there is no token
 	bt.empty = make(chan bool, 1)
 	bt.empty <- true
@@ -74,7 +74,7 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 	// the first read.  all other reads will block until the
 	// token has been obtained at which point it returns false
 	if <-b.empty {
-		tk, err := b.creds.GetToken(ctx, azcore.TokenRequestOptions{Scopes: b.scopes})
+		tk, err := b.creds.GetToken(ctx, azcore.TokenRequestOptions{Scopes: b.options.Scopes})
 		if err != nil {
 			// failed to get a token, let another go routine try
 			b.empty <- true
@@ -98,7 +98,7 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 		// if no other go routine has initiated a refresh the calling
 		// go routine will do it.
 		if b.updating.CAS(0, 1) {
-			tk, err := b.creds.GetToken(ctx, azcore.TokenRequestOptions{Scopes: b.scopes})
+			tk, err := b.creds.GetToken(ctx, azcore.TokenRequestOptions{Scopes: b.options.Scopes})
 			if err != nil {
 				// clear updating flag before returning so other
 				// go routines can attempt to refresh
@@ -118,6 +118,3 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 }
 
 var _ azcore.TokenCredential = (*ClientSecretCredential)(nil)
-
-// TODO: rename credentialpolicyoptions
-// TODO: wrap scopes in a token request type

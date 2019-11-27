@@ -44,3 +44,8 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.
 	}
 	return c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.clientCertificate, opts.Scopes)
 }
+
+// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
+func (c *ClientCertificateCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return newBearerTokenPolicy(c, options)
+}

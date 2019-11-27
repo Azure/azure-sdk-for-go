@@ -4,7 +4,6 @@
 package azidentity
 
 import (
-	"errors"
 	"net/url"
 	"testing"
 )
@@ -13,14 +12,5 @@ func Test_AuthorityHost_Parse(t *testing.T) {
 	_, err := url.Parse(defaultAuthorityHost)
 	if err != nil {
 		t.Fatalf("Failed to parse default authority host: %v", err)
-	}
-}
-
-func TestNilAuthFailedParam(t *testing.T) {
-	var err *AuthenticationFailedError
-	authFailed := newAuthenticationFailedError(nil)
-
-	if !errors.As(authFailed, &err) {
-		t.Fatalf("Failed to create the right error type")
 	}
 }

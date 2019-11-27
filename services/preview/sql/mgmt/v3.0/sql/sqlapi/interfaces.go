@@ -861,3 +861,23 @@ type PrivateLinkResourcesClientAPI interface {
 }
 
 var _ PrivateLinkResourcesClientAPI = (*sql.PrivateLinkResourcesClient)(nil)
+
+// WorkloadGroupsClientAPI contains the set of methods on the WorkloadGroupsClient type.
+type WorkloadGroupsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, parameters sql.WorkloadGroup) (result sql.WorkloadGroupsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string) (result sql.WorkloadGroupsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string) (result sql.WorkloadGroup, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.WorkloadGroupListResultPage, err error)
+}
+
+var _ WorkloadGroupsClientAPI = (*sql.WorkloadGroupsClient)(nil)
+
+// WorkloadClassifiersClientAPI contains the set of methods on the WorkloadClassifiersClient type.
+type WorkloadClassifiersClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, parameters sql.WorkloadClassifier) (result sql.WorkloadClassifiersCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string) (result sql.WorkloadClassifiersDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string) (result sql.WorkloadClassifier, err error)
+	ListByWorkloadGroup(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string) (result sql.WorkloadClassifierListResultPage, err error)
+}
+
+var _ WorkloadClassifiersClientAPI = (*sql.WorkloadClassifiersClient)(nil)

@@ -55,7 +55,6 @@ const (
 	ActionTypeLogicApp         ActionType = original.ActionTypeLogicApp
 	ActionTypeLogicApp1        ActionType = original.ActionTypeLogicApp1
 	ActionTypeLogicApp2        ActionType = original.ActionTypeLogicApp2
-	ActionTypeSecurityEmail    ActionType = original.ActionTypeSecurityEmail
 	ActionTypeWorkspace        ActionType = original.ActionTypeWorkspace
 )
 
@@ -432,15 +431,6 @@ const (
 	SubAssessmentStatusCodeUnhealthy     SubAssessmentStatusCode = original.SubAssessmentStatusCodeUnhealthy
 )
 
-type SubscriptionRbacRoles = original.SubscriptionRbacRoles
-
-const (
-	AccountAdmin SubscriptionRbacRoles = original.AccountAdmin
-	Contributor  SubscriptionRbacRoles = original.Contributor
-	Owner        SubscriptionRbacRoles = original.Owner
-	ServiceAdmin SubscriptionRbacRoles = original.ServiceAdmin
-)
-
 type Type = original.Type
 
 const (
@@ -514,7 +504,6 @@ type AutomationActionEventHubOutput = original.AutomationActionEventHubOutput
 type AutomationActionLogicApp = original.AutomationActionLogicApp
 type AutomationActionLogicAppInput = original.AutomationActionLogicAppInput
 type AutomationActionLogicAppOutput = original.AutomationActionLogicAppOutput
-type AutomationActionSecurityEmail = original.AutomationActionSecurityEmail
 type AutomationActionWorkspace = original.AutomationActionWorkspace
 type AutomationList = original.AutomationList
 type AutomationListIterator = original.AutomationListIterator
@@ -1205,9 +1194,6 @@ func PossibleStatusValues() []Status {
 }
 func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	return original.PossibleSubAssessmentStatusCodeValues()
-}
-func PossibleSubscriptionRbacRolesValues() []SubscriptionRbacRoles {
-	return original.PossibleSubscriptionRbacRolesValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

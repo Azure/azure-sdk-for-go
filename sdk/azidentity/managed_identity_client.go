@@ -49,7 +49,6 @@ const (
 type managedIdentityClient struct {
 	options                IdentityClientOptions
 	pipeline               azcore.Pipeline
-	imdsEndpoint           *url.URL
 	imdsAPIVersion         string
 	imdsAvailableTimeoutMS int
 	msiType                msiType
@@ -62,13 +61,8 @@ var (
 )
 
 func init() {
-	var err error
-	imdsURL, err = url.Parse(imdsEndpoint)
-	if err != nil {
-		// TODO change this
-		panic(err)
-	}
-
+	// The error check is handled in managed_identity_client_test.go
+	imdsURL, _ = url.Parse(imdsEndpoint)
 	defaultMSIOpts = newDefaultManagedIdentityOptions()
 }
 
@@ -113,7 +107,6 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	return &managedIdentityClient{
 		options:                *options.Options,
 		pipeline:               newDefaultMSIPipeline(options.Options.PipelineOptions),
-		imdsEndpoint:           imdsURL,
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,
 		msiType:                unknown,
@@ -257,7 +250,7 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 				c.msiType = cloudShell
 			}
 		} else if c.imdsAvailable(ctx) { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the MsiType is Imds
-			c.endpoint = c.imdsEndpoint
+			c.endpoint = imdsURL
 			c.msiType = imds
 		} else { // if MSI_ENDPOINT is NOT set and IMDS enpoint is not available ManagedIdentity is not available
 			c.msiType = unavailable
@@ -270,7 +263,7 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 func (c *managedIdentityClient) imdsAvailable(ctx context.Context) bool {
 	tempCtx, cancel := context.WithTimeout(ctx, 500*time.Second)
 	defer cancel()
-	request := c.pipeline.NewRequest(http.MethodGet, *c.imdsEndpoint)
+	request := c.pipeline.NewRequest(http.MethodGet, *imdsURL)
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	request.URL.RawQuery = q.Encode()

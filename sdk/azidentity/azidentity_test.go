@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestAuthorityHostParse(t *testing.T) {
+func Test_AuthorityHost_Parse(t *testing.T) {
 	_, err := url.Parse(defaultAuthorityHost)
 	if err != nil {
 		t.Fatalf("Failed to parse default authority host: %v", err)

@@ -28,6 +28,7 @@ var (
 )
 
 func init() {
+	// The error check is handled in azidentity_test.go
 	defaultAuthorityHostURL, _ = url.Parse(defaultAuthorityHost)
 	defaultIdentityClientOpts = &IdentityClientOptions{AuthorityHost: defaultAuthorityHostURL}
 }

@@ -16,16 +16,6 @@ const (
 )
 
 var (
-	// StatusCodesForRetry is the default set of HTTP status code for which the policy will retry.
-	StatusCodesForRetry = [6]int{
-		http.StatusRequestTimeout,      // 408
-		http.StatusTooManyRequests,     // 429
-		http.StatusInternalServerError, // 500
-		http.StatusBadGateway,          // 502
-		http.StatusServiceUnavailable,  // 503
-		http.StatusGatewayTimeout,      // 504
-	}
-
 	successStatusCodes = [2]int{
 		http.StatusOK,      // 200
 		http.StatusCreated, // 201
@@ -136,19 +126,6 @@ func newDefaultPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(o.Retry),
 		azcore.NewRequestLogPolicy(o.LogOptions))
-}
-
-// hasStatusCode returns true if the Response's status code is one of the specified values.
-func hasStatusCode(r *azcore.Response, statusCodes ...int) bool {
-	if r == nil {
-		return false
-	}
-	for _, sc := range statusCodes {
-		if r.StatusCode == sc {
-			return true
-		}
-	}
-	return false
 }
 
 // NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options needed

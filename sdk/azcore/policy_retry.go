@@ -180,7 +180,7 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 
 		// if there is no error and the response code isn't in the list of retry codes then we're done
 		// TODO: if this is a failure to get an access token don't retry
-		if err == nil && !resp.hasStatusCode(p.options.StatusCodes...) {
+		if err == nil && !resp.HasStatusCode(p.options.StatusCodes...) {
 			return
 		}
 

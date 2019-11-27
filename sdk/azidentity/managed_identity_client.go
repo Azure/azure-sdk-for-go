@@ -154,7 +154,7 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 

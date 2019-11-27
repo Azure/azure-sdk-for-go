@@ -58,7 +58,7 @@ func (p *msiRetryPolicy) Do(ctx context.Context, req *azcore.Request) (resp *azc
 		// we will fail if we receive a token credential related error
 		var credUnavailable *CredentialUnavailableError
 		var credFailure *AuthenticationFailedError
-		if (err == nil && !hasStatusCode(resp, retries...)) || errors.As(err, &credUnavailable) || errors.As(err, &credFailure) || errors.Is(err, context.DeadlineExceeded) {
+		if (err == nil && !resp.HasStatusCode(retries...)) || errors.As(err, &credUnavailable) || errors.As(err, &credFailure) || errors.Is(err, context.DeadlineExceeded) {
 			return
 		}
 

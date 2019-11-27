@@ -77,7 +77,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 	// TODO reproduce nil response error
@@ -102,7 +102,7 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 		return nil, err
 	}
 
-	if hasStatusCode(resp, successStatusCodes[:]...) {
+	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 

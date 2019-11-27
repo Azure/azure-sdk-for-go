@@ -2356,7 +2356,7 @@ type Automation struct {
 	Location *string `json:"location,omitempty"`
 	// Kind - Kind of the resource
 	Kind *string `json:"kind,omitempty"`
-	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource.
 	Etag *string `json:"etag,omitempty"`
 	// Tags - A list of key value pairs that describe the resource.
 	Tags map[string]*string `json:"tags"`
@@ -5244,11 +5244,9 @@ type EffectiveNetworkSecurityGroups struct {
 	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
 }
 
-// ETag entity tag is used for comparing two or more entities from the same requested resource. ETags may
-// be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency
-// control.
+// ETag entity tag is used for comparing two or more entities from the same requested resource.
 type ETag struct {
-	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource.
 	Etag *string `json:"etag,omitempty"`
 }
 
@@ -8773,7 +8771,7 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 	// Kind - Kind of the resource
 	Kind *string `json:"kind,omitempty"`
-	// Etag - Entity tag is used for comparing two or more entities from the same requested resource. ETags may be returned for individual resources, and then sent via If-Match / If-None-Match headers for concurrency control.
+	// Etag - Entity tag is used for comparing two or more entities from the same requested resource.
 	Etag *string `json:"etag,omitempty"`
 	// Tags - A list of key value pairs that describe the resource.
 	Tags map[string]*string `json:"tags"`

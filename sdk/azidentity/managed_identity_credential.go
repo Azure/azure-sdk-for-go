@@ -40,7 +40,10 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 // GetToken obtains an AccessToken from the Managed Identity service if available.
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls, or a default AccessToken if no managed identity is available.
-func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts *azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	if len(opts.Scopes) == 0 {
+		return nil, &AuthenticationFailedError{Message: "You need to include valid scopes in order to request a token with this credential"}
+	}
 	return c.client.authenticate(ctx, c.clientID, opts.Scopes)
 }
 

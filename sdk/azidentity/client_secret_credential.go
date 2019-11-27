@@ -34,7 +34,10 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 // ctx: controlling the request lifetime.
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *ClientSecretCredential) GetToken(ctx context.Context, opts *azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	if len(opts.Scopes) == 0 {
+		return nil, &AuthenticationFailedError{Message: "You need to include valid scopes in order to request a token with this credential"}
+	}
 	return c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, opts.Scopes)
 }
 
@@ -71,7 +74,7 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 	// the first read.  all other reads will block until the
 	// token has been obtained at which point it returns false
 	if <-b.empty {
-		tk, err := b.creds.GetToken(ctx, &azcore.TokenRequestOptions{Scopes: b.scopes})
+		tk, err := b.creds.GetToken(ctx, azcore.TokenRequestOptions{Scopes: b.scopes})
 		if err != nil {
 			// failed to get a token, let another go routine try
 			b.empty <- true
@@ -95,7 +98,7 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 		// if no other go routine has initiated a refresh the calling
 		// go routine will do it.
 		if b.updating.CAS(0, 1) {
-			tk, err := b.creds.GetToken(ctx, &azcore.TokenRequestOptions{Scopes: b.scopes})
+			tk, err := b.creds.GetToken(ctx, azcore.TokenRequestOptions{Scopes: b.scopes})
 			if err != nil {
 				// clear updating flag before returning so other
 				// go routines can attempt to refresh

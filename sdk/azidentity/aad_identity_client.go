@@ -80,7 +80,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 	if hasStatusCode(resp, successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
-
+	// TODO reproduce nil response error
 	return nil, newAuthenticationFailedError(resp)
 }
 

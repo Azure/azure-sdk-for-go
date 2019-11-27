@@ -37,7 +37,7 @@ func (cf credentialFunc) AuthenticationPolicy(options AuthenticationPolicyOption
 type TokenCredential interface {
 	Credential
 	// GetToken requests an access token for the specified set of scopes.
-	GetToken(ctx context.Context, opts *TokenRequestOptions) (*AccessToken, error)
+	GetToken(ctx context.Context, options TokenRequestOptions) (*AccessToken, error)
 }
 
 // AccessToken represents an Azure service bearer access token with expiry information.

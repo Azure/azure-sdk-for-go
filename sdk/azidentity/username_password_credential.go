@@ -39,6 +39,9 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 // - scopes: The list of scopes for which the token will have access.
 // - ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts *azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	if len(opts.Scopes) == 0 {
+		return nil, &AuthenticationFailedError{Message: "You need to include valid scopes in order to request a token with this credential"}
+	}
 	return c.client.authenticateUsernamePassword(ctx, c.tenantID, c.clientID, c.username, c.password, opts.Scopes)
 }

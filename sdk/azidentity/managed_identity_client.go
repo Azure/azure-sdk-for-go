@@ -227,7 +227,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, sco
 
 func (c *managedIdentityClient) createCloudShellAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
 	request := c.pipeline.NewRequest(http.MethodPost, *c.endpoint)
-	request.Header.Set(azcore.HeaderContentType, "application/x-www-form-urlencoded")
+	request.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	data := url.Values{}
 	data.Set("resource", strings.Join(scopes, " "))
@@ -261,7 +261,7 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 			c.msiType = imds
 		} else { // if MSI_ENDPOINT is NOT set and IMDS enpoint is not available ManagedIdentity is not available
 			c.msiType = unavailable
-			return unknown, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment"}
+			return c.msiType, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment"}
 		}
 	}
 	return c.msiType, nil

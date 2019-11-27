@@ -34,8 +34,8 @@ func (f fingerprint) String() string {
 func spkiFingerprint(cert string) (fingerprint, error) {
 	privateKeyFile, err := os.Open(cert)
 	defer privateKeyFile.Close()
-	if err != nil {
-		return fingerprint{}, fmt.Errorf("File not found in path: %w", err)
+	if err != nil { // TODO: check os error message
+		return fingerprint{}, fmt.Errorf("%s: %w", cert, err)
 	}
 
 	pemFileInfo, err := privateKeyFile.Stat()

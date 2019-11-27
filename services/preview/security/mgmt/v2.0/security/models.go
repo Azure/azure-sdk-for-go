@@ -3448,8 +3448,6 @@ func (aase AutomationActionSecurityEmail) AsBasicAutomationAction() (BasicAutoma
 type AutomationActionWorkspace struct {
 	// WorkspaceResourceID - The fully qualified Log Analytics Workspace Azure Resource ID.
 	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
-	// WorkspaceID - The Log Analytics Workspace ID in a GUID format.
-	WorkspaceID *string `json:"workspaceId,omitempty"`
 	// ActionType - Possible values include: 'ActionTypeAutomationAction', 'ActionTypeLogicApp', 'ActionTypeLogicApp1', 'ActionTypeLogicApp2', 'ActionTypeEventHub', 'ActionTypeEventHub1', 'ActionTypeEventHub2', 'ActionTypeSecurityEmail', 'ActionTypeWorkspace'
 	ActionType ActionType `json:"actionType,omitempty"`
 }
@@ -3460,9 +3458,6 @@ func (aaw AutomationActionWorkspace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if aaw.WorkspaceResourceID != nil {
 		objectMap["workspaceResourceId"] = aaw.WorkspaceResourceID
-	}
-	if aaw.WorkspaceID != nil {
-		objectMap["workspaceId"] = aaw.WorkspaceID
 	}
 	if aaw.ActionType != "" {
 		objectMap["actionType"] = aaw.ActionType

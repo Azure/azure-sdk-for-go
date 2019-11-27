@@ -45,6 +45,20 @@ const (
 	Remove      Action = original.Remove
 )
 
+type ActionType = original.ActionType
+
+const (
+	ActionTypeAutomationAction ActionType = original.ActionTypeAutomationAction
+	ActionTypeEventHub         ActionType = original.ActionTypeEventHub
+	ActionTypeEventHub1        ActionType = original.ActionTypeEventHub1
+	ActionTypeEventHub2        ActionType = original.ActionTypeEventHub2
+	ActionTypeLogicApp         ActionType = original.ActionTypeLogicApp
+	ActionTypeLogicApp1        ActionType = original.ActionTypeLogicApp1
+	ActionTypeLogicApp2        ActionType = original.ActionTypeLogicApp2
+	ActionTypeSecurityEmail    ActionType = original.ActionTypeSecurityEmail
+	ActionTypeWorkspace        ActionType = original.ActionTypeWorkspace
+)
+
 type AlertNotifications = original.AlertNotifications
 
 const (
@@ -134,6 +148,13 @@ const (
 	EnforcementMode1None    EnforcementMode1 = original.EnforcementMode1None
 )
 
+type EventSource = original.EventSource
+
+const (
+	Alerts      EventSource = original.Alerts
+	Assessments EventSource = original.Assessments
+)
+
 type Exe = original.Exe
 
 const (
@@ -212,11 +233,34 @@ const (
 	MsiNone    Msi = original.MsiNone
 )
 
+type Operator = original.Operator
+
+const (
+	Contains             Operator = original.Contains
+	EndsWith             Operator = original.EndsWith
+	Equals               Operator = original.Equals
+	GreaterThan          Operator = original.GreaterThan
+	GreaterThanOrEqualTo Operator = original.GreaterThanOrEqualTo
+	LesserThan           Operator = original.LesserThan
+	LesserThanOrEqualTo  Operator = original.LesserThanOrEqualTo
+	NotEquals            Operator = original.NotEquals
+	StartsWith           Operator = original.StartsWith
+)
+
 type PricingTier = original.PricingTier
 
 const (
 	Free     PricingTier = original.Free
 	Standard PricingTier = original.Standard
+)
+
+type PropertyType = original.PropertyType
+
+const (
+	Boolean PropertyType = original.Boolean
+	Integer PropertyType = original.Integer
+	Number  PropertyType = original.Number
+	String  PropertyType = original.String
 )
 
 type Protocol = original.Protocol
@@ -388,6 +432,15 @@ const (
 	SubAssessmentStatusCodeUnhealthy     SubAssessmentStatusCode = original.SubAssessmentStatusCodeUnhealthy
 )
 
+type SubscriptionRbacRoles = original.SubscriptionRbacRoles
+
+const (
+	AccountAdmin SubscriptionRbacRoles = original.AccountAdmin
+	Contributor  SubscriptionRbacRoles = original.Contributor
+	Owner        SubscriptionRbacRoles = original.Owner
+	ServiceAdmin SubscriptionRbacRoles = original.ServiceAdmin
+)
+
 type Type = original.Type
 
 const (
@@ -409,8 +462,8 @@ const (
 type ValueType = original.ValueType
 
 const (
-	IPCidr ValueType = original.IPCidr
-	String ValueType = original.String
+	ValueTypeIPCidr ValueType = original.ValueTypeIPCidr
+	ValueTypeString ValueType = original.ValueTypeString
 )
 
 type AadConnectivityState1 = original.AadConnectivityState1
@@ -453,10 +506,34 @@ type AutoProvisioningSettingListIterator = original.AutoProvisioningSettingListI
 type AutoProvisioningSettingListPage = original.AutoProvisioningSettingListPage
 type AutoProvisioningSettingProperties = original.AutoProvisioningSettingProperties
 type AutoProvisioningSettingsClient = original.AutoProvisioningSettingsClient
+type Automation = original.Automation
+type AutomationAction = original.AutomationAction
+type AutomationActionEventHub = original.AutomationActionEventHub
+type AutomationActionEventHubInput = original.AutomationActionEventHubInput
+type AutomationActionEventHubOutput = original.AutomationActionEventHubOutput
+type AutomationActionLogicApp = original.AutomationActionLogicApp
+type AutomationActionLogicAppInput = original.AutomationActionLogicAppInput
+type AutomationActionLogicAppOutput = original.AutomationActionLogicAppOutput
+type AutomationActionSecurityEmail = original.AutomationActionSecurityEmail
+type AutomationActionWorkspace = original.AutomationActionWorkspace
+type AutomationList = original.AutomationList
+type AutomationListIterator = original.AutomationListIterator
+type AutomationListPage = original.AutomationListPage
+type AutomationMetadata = original.AutomationMetadata
+type AutomationProperties = original.AutomationProperties
+type AutomationRuleSet = original.AutomationRuleSet
+type AutomationScope = original.AutomationScope
+type AutomationSource = original.AutomationSource
+type AutomationTriggeringRule = original.AutomationTriggeringRule
+type AutomationValidationStatus = original.AutomationValidationStatus
+type AutomationsClient = original.AutomationsClient
 type AwsResourceDetails = original.AwsResourceDetails
 type AzureResourceDetails = original.AzureResourceDetails
 type BaseClient = original.BaseClient
 type BasicAdditionalData = original.BasicAdditionalData
+type BasicAutomationAction = original.BasicAutomationAction
+type BasicAutomationActionEventHub = original.BasicAutomationActionEventHub
+type BasicAutomationActionLogicApp = original.BasicAutomationActionLogicApp
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
 type BasicResourceDetails = original.BasicResourceDetails
 type CVE = original.CVE
@@ -504,6 +581,7 @@ type DiscoveredSecuritySolutionListIterator = original.DiscoveredSecuritySolutio
 type DiscoveredSecuritySolutionListPage = original.DiscoveredSecuritySolutionListPage
 type DiscoveredSecuritySolutionProperties = original.DiscoveredSecuritySolutionProperties
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
+type ETag = original.ETag
 type ExternalSecuritySolution = original.ExternalSecuritySolution
 type ExternalSecuritySolutionKind1 = original.ExternalSecuritySolutionKind1
 type ExternalSecuritySolutionList = original.ExternalSecuritySolutionList
@@ -620,6 +698,7 @@ type SubAssessmentListPage = original.SubAssessmentListPage
 type SubAssessmentProperties = original.SubAssessmentProperties
 type SubAssessmentStatus = original.SubAssessmentStatus
 type SubAssessmentsClient = original.SubAssessmentsClient
+type Tags = original.Tags
 type TagsResource = original.TagsResource
 type Task = original.Task
 type TaskList = original.TaskList
@@ -639,6 +718,7 @@ type TopologyResourceProperties = original.TopologyResourceProperties
 type TopologySingleResource = original.TopologySingleResource
 type TopologySingleResourceChild = original.TopologySingleResourceChild
 type TopologySingleResourceParent = original.TopologySingleResourceParent
+type TrackedResource = original.TrackedResource
 type UpdateIoTSecuritySolutionProperties = original.UpdateIoTSecuritySolutionProperties
 type UpdateIotSecuritySolutionData = original.UpdateIotSecuritySolutionData
 type UserDefinedResourcesProperties = original.UserDefinedResourcesProperties
@@ -708,6 +788,18 @@ func NewAutoProvisioningSettingsClient(subscriptionID string, ascLocation string
 }
 func NewAutoProvisioningSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
 	return original.NewAutoProvisioningSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewAutomationListIterator(page AutomationListPage) AutomationListIterator {
+	return original.NewAutomationListIterator(page)
+}
+func NewAutomationListPage(getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
+	return original.NewAutomationListPage(getNextPage)
+}
+func NewAutomationsClient(subscriptionID string, ascLocation string) AutomationsClient {
+	return original.NewAutomationsClient(subscriptionID, ascLocation)
+}
+func NewAutomationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) AutomationsClient {
+	return original.NewAutomationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewComplianceListIterator(page ComplianceListPage) ComplianceListIterator {
 	return original.NewComplianceListIterator(page)
@@ -979,6 +1071,9 @@ func NewWorkspaceSettingsClientWithBaseURI(baseURI string, subscriptionID string
 func PossibleAadConnectivityStateValues() []AadConnectivityState {
 	return original.PossibleAadConnectivityStateValues()
 }
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
@@ -1015,6 +1110,9 @@ func PossibleEnforcementMode1Values() []EnforcementMode1 {
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()
 }
+func PossibleEventSourceValues() []EventSource {
+	return original.PossibleEventSourceValues()
+}
 func PossibleExeValues() []Exe {
 	return original.PossibleExeValues()
 }
@@ -1042,8 +1140,14 @@ func PossibleKindEnumValues() []KindEnum {
 func PossibleMsiValues() []Msi {
 	return original.PossibleMsiValues()
 }
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
+}
 func PossiblePricingTierValues() []PricingTier {
 	return original.PossiblePricingTierValues()
+}
+func PossiblePropertyTypeValues() []PropertyType {
+	return original.PossiblePropertyTypeValues()
 }
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
@@ -1101,6 +1205,9 @@ func PossibleStatusValues() []Status {
 }
 func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	return original.PossibleSubAssessmentStatusCodeValues()
+}
+func PossibleSubscriptionRbacRolesValues() []SubscriptionRbacRoles {
+	return original.PossibleSubscriptionRbacRolesValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

@@ -22,7 +22,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-09-07/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-11-09/kusto"
 )
 
 const (
@@ -59,6 +59,13 @@ type AzureSkuTier = original.AzureSkuTier
 const (
 	Basic    AzureSkuTier = original.Basic
 	Standard AzureSkuTier = original.Standard
+)
+
+type ClusterPrincipalRole = original.ClusterPrincipalRole
+
+const (
+	AllDatabasesAdmin  ClusterPrincipalRole = original.AllDatabasesAdmin
+	AllDatabasesViewer ClusterPrincipalRole = original.AllDatabasesViewer
 )
 
 type DataFormat = original.DataFormat
@@ -196,12 +203,20 @@ type CloudErrorBody = original.CloudErrorBody
 type Cluster = original.Cluster
 type ClusterCheckNameRequest = original.ClusterCheckNameRequest
 type ClusterListResult = original.ClusterListResult
+type ClusterPrincipalAssignment = original.ClusterPrincipalAssignment
+type ClusterPrincipalAssignmentCheckNameRequest = original.ClusterPrincipalAssignmentCheckNameRequest
+type ClusterPrincipalAssignmentListResult = original.ClusterPrincipalAssignmentListResult
+type ClusterPrincipalAssignmentsClient = original.ClusterPrincipalAssignmentsClient
+type ClusterPrincipalAssignmentsCreateOrUpdateFuture = original.ClusterPrincipalAssignmentsCreateOrUpdateFuture
+type ClusterPrincipalAssignmentsDeleteFuture = original.ClusterPrincipalAssignmentsDeleteFuture
+type ClusterPrincipalProperties = original.ClusterPrincipalProperties
 type ClusterProperties = original.ClusterProperties
 type ClusterUpdate = original.ClusterUpdate
 type ClustersClient = original.ClustersClient
 type ClustersCreateOrUpdateFuture = original.ClustersCreateOrUpdateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersDetachFollowerDatabasesFuture = original.ClustersDetachFollowerDatabasesFuture
+type ClustersDiagnoseVirtualNetworkFuture = original.ClustersDiagnoseVirtualNetworkFuture
 type ClustersStartFuture = original.ClustersStartFuture
 type ClustersStopFuture = original.ClustersStopFuture
 type ClustersUpdateFuture = original.ClustersUpdateFuture
@@ -220,13 +235,21 @@ type Database = original.Database
 type DatabaseListResult = original.DatabaseListResult
 type DatabaseModel = original.DatabaseModel
 type DatabasePrincipal = original.DatabasePrincipal
+type DatabasePrincipalAssignment = original.DatabasePrincipalAssignment
+type DatabasePrincipalAssignmentCheckNameRequest = original.DatabasePrincipalAssignmentCheckNameRequest
+type DatabasePrincipalAssignmentListResult = original.DatabasePrincipalAssignmentListResult
+type DatabasePrincipalAssignmentsClient = original.DatabasePrincipalAssignmentsClient
+type DatabasePrincipalAssignmentsCreateOrUpdateFuture = original.DatabasePrincipalAssignmentsCreateOrUpdateFuture
+type DatabasePrincipalAssignmentsDeleteFuture = original.DatabasePrincipalAssignmentsDeleteFuture
 type DatabasePrincipalListRequest = original.DatabasePrincipalListRequest
 type DatabasePrincipalListResult = original.DatabasePrincipalListResult
+type DatabasePrincipalProperties = original.DatabasePrincipalProperties
 type DatabaseStatistics = original.DatabaseStatistics
 type DatabasesClient = original.DatabasesClient
 type DatabasesCreateOrUpdateFuture = original.DatabasesCreateOrUpdateFuture
 type DatabasesDeleteFuture = original.DatabasesDeleteFuture
 type DatabasesUpdateFuture = original.DatabasesUpdateFuture
+type DiagnoseVirtualNetworkResult = original.DiagnoseVirtualNetworkResult
 type EventGridConnectionProperties = original.EventGridConnectionProperties
 type EventGridDataConnection = original.EventGridDataConnection
 type EventHubConnectionProperties = original.EventHubConnectionProperties
@@ -268,6 +291,12 @@ func NewAttachedDatabaseConfigurationsClient(subscriptionID string) AttachedData
 func NewAttachedDatabaseConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) AttachedDatabaseConfigurationsClient {
 	return original.NewAttachedDatabaseConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewClusterPrincipalAssignmentsClient(subscriptionID string) ClusterPrincipalAssignmentsClient {
+	return original.NewClusterPrincipalAssignmentsClient(subscriptionID)
+}
+func NewClusterPrincipalAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) ClusterPrincipalAssignmentsClient {
+	return original.NewClusterPrincipalAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
 }
@@ -279,6 +308,12 @@ func NewDataConnectionsClient(subscriptionID string) DataConnectionsClient {
 }
 func NewDataConnectionsClientWithBaseURI(baseURI string, subscriptionID string) DataConnectionsClient {
 	return original.NewDataConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDatabasePrincipalAssignmentsClient(subscriptionID string) DatabasePrincipalAssignmentsClient {
+	return original.NewDatabasePrincipalAssignmentsClient(subscriptionID)
+}
+func NewDatabasePrincipalAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) DatabasePrincipalAssignmentsClient {
+	return original.NewDatabasePrincipalAssignmentsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDatabasesClient(subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClient(subscriptionID)
@@ -309,6 +344,9 @@ func PossibleAzureSkuNameValues() []AzureSkuName {
 }
 func PossibleAzureSkuTierValues() []AzureSkuTier {
 	return original.PossibleAzureSkuTierValues()
+}
+func PossibleClusterPrincipalRoleValues() []ClusterPrincipalRole {
+	return original.PossibleClusterPrincipalRoleValues()
 }
 func PossibleDataFormatValues() []DataFormat {
 	return original.PossibleDataFormatValues()

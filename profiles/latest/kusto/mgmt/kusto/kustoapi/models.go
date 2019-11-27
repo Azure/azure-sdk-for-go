@@ -19,10 +19,12 @@
 
 package kustoapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-09-07/kusto/kustoapi"
+import original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-11-09/kusto/kustoapi"
 
 type AttachedDatabaseConfigurationsClientAPI = original.AttachedDatabaseConfigurationsClientAPI
+type ClusterPrincipalAssignmentsClientAPI = original.ClusterPrincipalAssignmentsClientAPI
 type ClustersClientAPI = original.ClustersClientAPI
 type DataConnectionsClientAPI = original.DataConnectionsClientAPI
+type DatabasePrincipalAssignmentsClientAPI = original.DatabasePrincipalAssignmentsClientAPI
 type DatabasesClientAPI = original.DatabasesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

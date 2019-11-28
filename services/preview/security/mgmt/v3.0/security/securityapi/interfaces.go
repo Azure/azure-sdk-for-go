@@ -297,3 +297,13 @@ type SubAssessmentsClientAPI interface {
 }
 
 var _ SubAssessmentsClientAPI = (*security.SubAssessmentsClient)(nil)
+
+// AutoDismissAlertsRulesClientAPI contains the set of methods on the AutoDismissAlertsRulesClient type.
+type AutoDismissAlertsRulesClientAPI interface {
+	Delete(ctx context.Context, autoDismissAlertsRuleName string) (result autorest.Response, err error)
+	Get(ctx context.Context, autoDismissAlertsRuleName string) (result security.AutoDismissAlertsRule, err error)
+	List(ctx context.Context, alertType string) (result security.AutoDismissAlertsRulesListPage, err error)
+	Update(ctx context.Context, autoDismissAlertsRuleName string, autoDismissAlertsRule security.AutoDismissAlertsRule) (result security.AutoDismissAlertsRule, err error)
+}
+
+var _ AutoDismissAlertsRulesClientAPI = (*security.AutoDismissAlertsRulesClient)(nil)

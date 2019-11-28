@@ -5850,6 +5850,8 @@ type ProviderShareSubscriptionProperties struct {
 	ConsumerTenantName *string `json:"consumerTenantName,omitempty"`
 	// CreatedAt - READ-ONLY; created at
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// ProviderEmail - READ-ONLY; Email of the provider who created the share
+	ProviderEmail *string `json:"providerEmail,omitempty"`
 	// ProviderName - READ-ONLY; Name of the provider who created the share
 	ProviderName *string `json:"providerName,omitempty"`
 	// SharedAt - READ-ONLY; Shared at

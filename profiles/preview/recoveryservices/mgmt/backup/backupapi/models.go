@@ -19,7 +19,7 @@
 
 package backupapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2017-07-01/backup/backupapi"
+import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2019-05-13/backup/backupapi"
 
 type BackupsClientAPI = original.BackupsClientAPI
 type EnginesClientAPI = original.EnginesClientAPI

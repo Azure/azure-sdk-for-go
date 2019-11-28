@@ -935,8 +935,14 @@ type SapMonitorProperties struct {
 	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
 	// ManagedResourceGroupName - READ-ONLY; The name of the resource group the SAP Monitor resources get deployed into.
 	ManagedResourceGroupName *string `json:"managedResourceGroupName,omitempty"`
-	// LogAnalyticsWorkspaceArmID - READ-ONLY; The ARM ID of the Log Analytics Workspace that is used for monitoring
+	// LogAnalyticsWorkspaceArmID - The ARM ID of the Log Analytics Workspace that is used for monitoring
 	LogAnalyticsWorkspaceArmID *string `json:"logAnalyticsWorkspaceArmId,omitempty"`
+	// EnableCustomerAnalytics - The value indicating whether to send analytics to Microsoft
+	EnableCustomerAnalytics *bool `json:"enableCustomerAnalytics,omitempty"`
+	// LogAnalyticsWorkspaceID - The workspace ID of the log analytics workspace to be used for monitoring
+	LogAnalyticsWorkspaceID *string `json:"logAnalyticsWorkspaceId,omitempty"`
+	// LogAnalyticsWorkspaceSharedKey - The shared key of the log analytics workspace that is used for monitoring
+	LogAnalyticsWorkspaceSharedKey *string `json:"logAnalyticsWorkspaceSharedKey,omitempty"`
 }
 
 // SapMonitorsCreateFuture an abstraction for monitoring and retrieving the results of a long-running

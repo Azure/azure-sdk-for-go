@@ -352,7 +352,7 @@ type GroupProperties struct {
 	VirtualNetworks *[]ResourceID `json:"virtualNetworks,omitempty"`
 	// Subnets - The collection of  subnets covered by the Managed Network
 	Subnets *[]ResourceID `json:"subnets,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values are: 'Updating', 'Deleting', and 'Failed'. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
+	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -419,7 +419,7 @@ type HubAndSpokePeeringPolicyProperties struct {
 	Spokes *[]ResourceID `json:"spokes,omitempty"`
 	// Mesh - Gets or sets the mesh group IDs
 	Mesh *[]ResourceID `json:"mesh,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values are: 'Updating', 'Deleting', and 'Failed'. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
+	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -735,7 +735,7 @@ type MeshPeeringPolicyProperties struct {
 	Spokes *[]ResourceID `json:"spokes,omitempty"`
 	// Mesh - Gets or sets the mesh group IDs
 	Mesh *[]ResourceID `json:"mesh,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values are: 'Updating', 'Deleting', and 'Failed'. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
+	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -1130,7 +1130,7 @@ type PeeringPolicyProperties struct {
 	Spokes *[]ResourceID `json:"spokes,omitempty"`
 	// Mesh - Gets or sets the mesh group IDs
 	Mesh *[]ResourceID `json:"mesh,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values are: 'Updating', 'Deleting', and 'Failed'. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
+	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -1142,7 +1142,7 @@ type Properties struct {
 	Scope *Scope `json:"scope,omitempty"`
 	// Connectivity - READ-ONLY; The collection of groups and policies concerned with connectivity
 	Connectivity *ConnectivityCollection `json:"connectivity,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values are: 'Updating', 'Deleting', and 'Failed'. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
+	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -1181,7 +1181,7 @@ type ResourceID struct {
 
 // ResourceProperties base for resource properties.
 type ResourceProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values are: 'Updating', 'Deleting', and 'Failed'. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
+	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
@@ -1437,7 +1437,7 @@ func NewScopeAssignmentListResultPage(getNextPage func(context.Context, ScopeAss
 type ScopeAssignmentProperties struct {
 	// AssignedManagedNetwork - The managed network ID with scope will be assigned to.
 	AssignedManagedNetwork *string `json:"assignedManagedNetwork,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values are: 'Updating', 'Deleting', and 'Failed'. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
+	// ProvisioningState - READ-ONLY; Provisioning state of the ManagedNetwork resource. Possible values include: 'Updating', 'Deleting', 'Failed', 'Succeeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`

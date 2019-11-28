@@ -77,7 +77,7 @@ func (client FileSharesClient) Create(ctx context.Context, resourceGroupName str
 		{TargetValue: fileShare,
 			Constraints: []validation.Constraint{{Target: "fileShare.FileShareProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "fileShare.FileShareProperties.ShareQuota", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "fileShare.FileShareProperties.ShareQuota", Name: validation.InclusiveMaximum, Rule: int64(5120), Chain: nil},
+					Chain: []validation.Constraint{{Target: "fileShare.FileShareProperties.ShareQuota", Name: validation.InclusiveMaximum, Rule: int64(100000), Chain: nil},
 						{Target: "fileShare.FileShareProperties.ShareQuota", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
 					}},
 				}}}},

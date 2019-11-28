@@ -21963,7 +21963,7 @@ type VMwareCbtDiskInput struct {
 	// DiskID - The disk Id.
 	DiskID *string `json:"diskId,omitempty"`
 	// IsOSDisk - A value indicating whether the disk is the OS disk.
-	IsOSDisk *bool `json:"isOSDisk,omitempty"`
+	IsOSDisk *string `json:"isOSDisk,omitempty"`
 	// LogStorageAccountID - The log storage account ARM Id.
 	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
 	// LogStorageAccountSasSecretName - The key vault secret name of the log storage account.
@@ -21999,7 +21999,7 @@ type VMwareCbtEnableMigrationInput struct {
 	// TargetBootDiagnosticsStorageAccountID - The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
 	// PerformAutoResync - A value indicating whether auto resync is to be done.
-	PerformAutoResync *bool `json:"performAutoResync,omitempty"`
+	PerformAutoResync *string `json:"performAutoResync,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeEnableMigrationProviderSpecificInput', 'InstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicEnableMigrationProviderSpecificInput `json:"instanceType,omitempty"`
 }
@@ -22134,7 +22134,7 @@ func (vmced VMwareCbtEventDetails) AsBasicEventProviderSpecificDetails() (BasicE
 // VMwareCbtMigrateInput vMwareCbt specific migrate input.
 type VMwareCbtMigrateInput struct {
 	// PerformShutdown - A value indicating whether VM is to be shutdown.
-	PerformShutdown *bool `json:"performShutdown,omitempty"`
+	PerformShutdown *string `json:"performShutdown,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeMigrateProviderSpecificInput', 'InstanceTypeBasicMigrateProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicMigrateProviderSpecificInput `json:"instanceType,omitempty"`
 }
@@ -22212,7 +22212,7 @@ type VMwareCbtMigrationDetails struct {
 	// ResyncState - READ-ONLY; The resync state. Possible values include: 'ResyncStateNone', 'ResyncStatePreparedForResynchronization', 'ResyncStateStartedResynchronization'
 	ResyncState ResyncState `json:"resyncState,omitempty"`
 	// PerformAutoResync - A value indicating whether auto resync is to be done.
-	PerformAutoResync *bool `json:"performAutoResync,omitempty"`
+	PerformAutoResync *string `json:"performAutoResync,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeMigrationProviderSpecificSettings', 'InstanceTypeBasicMigrationProviderSpecificSettingsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicMigrationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
@@ -22277,7 +22277,7 @@ type VMwareCbtNicDetails struct {
 	// NicID - READ-ONLY; The NIC Id.
 	NicID *string `json:"nicId,omitempty"`
 	// IsPrimaryNic - A value indicating whether this is the primary NIC.
-	IsPrimaryNic *bool `json:"isPrimaryNic,omitempty"`
+	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
 	// SourceIPAddress - READ-ONLY; The source IP address.
 	SourceIPAddress *string `json:"sourceIPAddress,omitempty"`
 	// SourceIPAddressType - READ-ONLY; The source IP address type. Possible values include: 'Dynamic', 'Static'
@@ -22291,7 +22291,7 @@ type VMwareCbtNicDetails struct {
 	// TargetSubnetName - Target subnet name.
 	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
 	// IsSelectedForMigration - A value indicating whether this NIC is selected for migration.
-	IsSelectedForMigration *bool `json:"isSelectedForMigration,omitempty"`
+	IsSelectedForMigration *string `json:"isSelectedForMigration,omitempty"`
 }
 
 // VMwareCbtNicInput vMwareCbt NIC input.
@@ -22299,13 +22299,13 @@ type VMwareCbtNicInput struct {
 	// NicID - The NIC Id.
 	NicID *string `json:"nicId,omitempty"`
 	// IsPrimaryNic - A value indicating whether this is the primary NIC.
-	IsPrimaryNic *bool `json:"isPrimaryNic,omitempty"`
+	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
 	// TargetSubnetName - Target subnet name.
 	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
 	// TargetStaticIPAddress - The static IP address.
 	TargetStaticIPAddress *string `json:"targetStaticIPAddress,omitempty"`
 	// IsSelectedForMigration - A value indicating whether this NIC is selected for migration.
-	IsSelectedForMigration *bool `json:"isSelectedForMigration,omitempty"`
+	IsSelectedForMigration *string `json:"isSelectedForMigration,omitempty"`
 }
 
 // VMwareCbtPolicyCreationInput vMware Cbt policy creation input.
@@ -22484,7 +22484,7 @@ type VMwareCbtProtectedDiskDetails struct {
 	// DiskPath - READ-ONLY; The disk path.
 	DiskPath *string `json:"diskPath,omitempty"`
 	// IsOSDisk - READ-ONLY; A value indicating whether the disk is the OS disk.
-	IsOSDisk *bool `json:"isOSDisk,omitempty"`
+	IsOSDisk *string `json:"isOSDisk,omitempty"`
 	// CapacityInBytes - READ-ONLY; The disk capacity in bytes.
 	CapacityInBytes *int64 `json:"capacityInBytes,omitempty"`
 	// LogStorageAccountID - READ-ONLY; The log storage account ARM Id.
@@ -22550,7 +22550,7 @@ func (vmcpcmd VMwareCbtProtectionContainerMappingDetails) AsBasicProtectionConta
 // VMwareCbtResyncInput vMwareCbt specific resync input.
 type VMwareCbtResyncInput struct {
 	// SkipCbtReset - A value indicating whether CBT is to be reset.
-	SkipCbtReset *bool `json:"skipCbtReset,omitempty"`
+	SkipCbtReset *string `json:"skipCbtReset,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicResyncProviderSpecificInputInstanceTypeResyncProviderSpecificInput', 'InstanceTypeBasicResyncProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicResyncProviderSpecificInput `json:"instanceType,omitempty"`
 }
@@ -22643,7 +22643,7 @@ type VMwareCbtUpdateMigrationItemInput struct {
 	// LicenseType - The license type. Possible values include: 'LicenseTypeNotSpecified', 'LicenseTypeNoLicenseType', 'LicenseTypeWindowsServer'
 	LicenseType LicenseType `json:"licenseType,omitempty"`
 	// PerformAutoResync - A value indicating whether auto resync is to be done.
-	PerformAutoResync *bool `json:"performAutoResync,omitempty"`
+	PerformAutoResync *string `json:"performAutoResync,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeUpdateMigrationItemProviderSpecificInput', 'InstanceTypeBasicUpdateMigrationItemProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicUpdateMigrationItemProviderSpecificInput `json:"instanceType,omitempty"`
 }

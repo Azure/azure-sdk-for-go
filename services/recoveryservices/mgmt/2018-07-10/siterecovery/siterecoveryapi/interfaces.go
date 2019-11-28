@@ -19,7 +19,7 @@ package siterecoveryapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-01-10/siterecovery"
+	"github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-07-10/siterecovery"
 )
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
@@ -37,6 +37,14 @@ type ReplicationAlertSettingsClientAPI interface {
 }
 
 var _ ReplicationAlertSettingsClientAPI = (*siterecovery.ReplicationAlertSettingsClient)(nil)
+
+// ReplicationEligibilityResultsClientAPI contains the set of methods on the ReplicationEligibilityResultsClient type.
+type ReplicationEligibilityResultsClientAPI interface {
+	Get(ctx context.Context, virtualMachineName string) (result siterecovery.ReplicationEligibilityResultsGetFuture, err error)
+	List(ctx context.Context, virtualMachineName string) (result siterecovery.ReplicationEligibilityResultsListFuture, err error)
+}
+
+var _ ReplicationEligibilityResultsClientAPI = (*siterecovery.ReplicationEligibilityResultsClient)(nil)
 
 // ReplicationEventsClientAPI contains the set of methods on the ReplicationEventsClient type.
 type ReplicationEventsClientAPI interface {
@@ -111,7 +119,6 @@ type ReplicationMigrationItemsClientAPI interface {
 	List(ctx context.Context, skipToken string, filter string) (result siterecovery.MigrationItemCollectionPage, err error)
 	ListByReplicationProtectionContainers(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.MigrationItemCollectionPage, err error)
 	Migrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, migrateInput siterecovery.MigrateInput) (result siterecovery.ReplicationMigrationItemsMigrateFuture, err error)
-	Resync(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input siterecovery.ResyncInput) (result siterecovery.ReplicationMigrationItemsResyncFuture, err error)
 	TestMigrate(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput siterecovery.TestMigrateInput) (result siterecovery.ReplicationMigrationItemsTestMigrateFuture, err error)
 	TestMigrateCleanup(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput siterecovery.TestMigrateCleanupInput) (result siterecovery.ReplicationMigrationItemsTestMigrateCleanupFuture, err error)
 	Update(ctx context.Context, fabricName string, protectionContainerName string, migrationItemName string, input siterecovery.UpdateMigrationItemInput) (result siterecovery.ReplicationMigrationItemsUpdateFuture, err error)
@@ -137,6 +144,7 @@ var _ ReplicationProtectableItemsClientAPI = (*siterecovery.ReplicationProtectab
 
 // ReplicationProtectedItemsClientAPI contains the set of methods on the ReplicationProtectedItemsClient type.
 type ReplicationProtectedItemsClientAPI interface {
+	AddDisks(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, addDisksInput siterecovery.AddDisksInput) (result siterecovery.ReplicationProtectedItemsAddDisksFuture, err error)
 	ApplyRecoveryPoint(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, applyRecoveryPointInput siterecovery.ApplyRecoveryPointInput) (result siterecovery.ReplicationProtectedItemsApplyRecoveryPointFuture, err error)
 	Create(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, input siterecovery.EnableProtectionInput) (result siterecovery.ReplicationProtectedItemsCreateFuture, err error)
 	Delete(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, disableProtectionInput siterecovery.DisableProtectionInput) (result siterecovery.ReplicationProtectedItemsDeleteFuture, err error)
@@ -146,8 +154,10 @@ type ReplicationProtectedItemsClientAPI interface {
 	ListByReplicationProtectionContainers(ctx context.Context, fabricName string, protectionContainerName string) (result siterecovery.ReplicationProtectedItemCollectionPage, err error)
 	PlannedFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput siterecovery.PlannedFailoverInput) (result siterecovery.ReplicationProtectedItemsPlannedFailoverFuture, err error)
 	Purge(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result siterecovery.ReplicationProtectedItemsPurgeFuture, err error)
+	RemoveDisks(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, removeDisksInput siterecovery.RemoveDisksInput) (result siterecovery.ReplicationProtectedItemsRemoveDisksFuture, err error)
 	RepairReplication(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string) (result siterecovery.ReplicationProtectedItemsRepairReplicationFuture, err error)
 	Reprotect(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, rrInput siterecovery.ReverseReplicationInput) (result siterecovery.ReplicationProtectedItemsReprotectFuture, err error)
+	ResolveHealthErrors(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, resolveHealthInput siterecovery.ResolveHealthInput) (result siterecovery.ReplicationProtectedItemsResolveHealthErrorsFuture, err error)
 	TestFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput siterecovery.TestFailoverInput) (result siterecovery.ReplicationProtectedItemsTestFailoverFuture, err error)
 	TestFailoverCleanup(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, cleanupInput siterecovery.TestFailoverCleanupInput) (result siterecovery.ReplicationProtectedItemsTestFailoverCleanupFuture, err error)
 	UnplannedFailover(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput siterecovery.UnplannedFailoverInput) (result siterecovery.ReplicationProtectedItemsUnplannedFailoverFuture, err error)
@@ -270,6 +280,13 @@ type ReplicationRecoveryPlansClientAPI interface {
 
 var _ ReplicationRecoveryPlansClientAPI = (*siterecovery.ReplicationRecoveryPlansClient)(nil)
 
+// SupportedOperatingSystemsClientAPI contains the set of methods on the SupportedOperatingSystemsClient type.
+type SupportedOperatingSystemsClientAPI interface {
+	Get(ctx context.Context) (result siterecovery.SupportedOperatingSystems, err error)
+}
+
+var _ SupportedOperatingSystemsClientAPI = (*siterecovery.SupportedOperatingSystemsClient)(nil)
+
 // ReplicationVaultHealthClientAPI contains the set of methods on the ReplicationVaultHealthClient type.
 type ReplicationVaultHealthClientAPI interface {
 	Get(ctx context.Context) (result siterecovery.VaultHealthDetails, err error)
@@ -277,3 +294,12 @@ type ReplicationVaultHealthClientAPI interface {
 }
 
 var _ ReplicationVaultHealthClientAPI = (*siterecovery.ReplicationVaultHealthClient)(nil)
+
+// ReplicationVaultSettingClientAPI contains the set of methods on the ReplicationVaultSettingClient type.
+type ReplicationVaultSettingClientAPI interface {
+	Create(ctx context.Context, vaultSettingName string, input siterecovery.VaultSettingCreationInput) (result siterecovery.VaultSetting, err error)
+	Get(ctx context.Context, vaultSettingName string) (result siterecovery.VaultSetting, err error)
+	List(ctx context.Context) (result siterecovery.VaultSettingCollectionPage, err error)
+}
+
+var _ ReplicationVaultSettingClientAPI = (*siterecovery.ReplicationVaultSettingClient)(nil)

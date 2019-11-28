@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -124,6 +125,12 @@ func newDefaultMSIPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 	if o.HTTPClient == nil {
 		o.HTTPClient = azcore.DefaultHTTPClientTransport()
 	}
+
+	// Set defaults needed for MSI retry policy
+	o.Retry.MaxTries = 5
+	o.Retry.Policy = azcore.RetryPolicyExponential
+	o.Retry.RetryDelay = 0
+	o.Retry.MaxRetryDelay = 60 * time.Second
 
 	return azcore.NewPipeline(
 		o.HTTPClient,

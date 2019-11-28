@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -68,10 +67,10 @@ func init() {
 
 func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
 	// CP: fix this implementation
-	opts := &ManagedIdentityCredentialOptions{}
-	opt := opts.Options.setDefaultValues()
-	opt.PipelineOptions = defaultMSIPipelineOptions(opt.PipelineOptions)
-	return &ManagedIdentityCredentialOptions{Options: opt}
+	// opts := &ManagedIdentityCredentialOptions{}
+	// opt := opts.Options.setDefaultValues()
+	// opt.PipelineOptions = defaultMSIPipelineOptions(opt.PipelineOptions)
+	return &ManagedIdentityCredentialOptions{}
 }
 
 func defaultMSIPipelineOptions(p azcore.PipelineOptions) azcore.PipelineOptions {
@@ -96,17 +95,17 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 	}
 
 	// TODO check this
-	if reflect.DeepEqual(options.Options, IdentityClientOptions{}) {
-		options.Options = defaultIdentityClientOpts
-	}
+	// if reflect.DeepEqual(options.Options, IdentityClientOptions{}) {
+	// 	options.Options = defaultIdentityClientOpts
+	// }
 
-	if options.Options.AuthorityHost == nil {
-		options.Options.AuthorityHost = defaultAuthorityHostURL
-	}
+	// if options.Options.AuthorityHost == nil {
+	// 	options.Options.AuthorityHost = defaultAuthorityHostURL
+	// }
 	// TODO document the use of these variables
 	return &managedIdentityClient{
-		options:                *options.Options,
-		pipeline:               newDefaultMSIPipeline(options.Options.PipelineOptions),
+		// options:                *options.Options,
+		pipeline:               newDefaultMSIPipeline(azcore.PipelineOptions{}),
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,
 		msiType:                unknown,
@@ -123,6 +122,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 	if err != nil {
 		return nil, err
 	}
+	// This condition should never be true since getMSIType returns an error in these cases
 	// if msi is unavailable or we were unable to determine the type return a nil access token
 	if currentMSI == unavailable || currentMSI == unknown {
 		// CP: maybe this should be an auth failed error?
@@ -187,7 +187,15 @@ func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID stri
 	case cloudShell:
 		req, err = c.createCloudShellAuthRequest(clientID, scopes)
 	default:
-		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment"}
+		errorMsg := ""
+		switch msiType {
+		case unavailable:
+			errorMsg = "unavailable"
+		default:
+			errorMsg = "unknown"
+		}
+
+		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment. Status: " + errorMsg}
 	}
 
 	return req, err
@@ -261,16 +269,12 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 }
 
 func (c *managedIdentityClient) imdsAvailable(ctx context.Context) bool {
-	tempCtx, cancel := context.WithTimeout(ctx, 500*time.Second)
+	tempCtx, cancel := context.WithTimeout(ctx, 500*time.Millisecond)
 	defer cancel()
 	request := c.pipeline.NewRequest(http.MethodGet, *imdsURL)
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	request.URL.RawQuery = q.Encode()
 	_, err := request.Do(tempCtx)
-	if err != nil || errors.Is(err, context.DeadlineExceeded) {
-		return false
-	}
-
-	return true
+	return err == nil
 }

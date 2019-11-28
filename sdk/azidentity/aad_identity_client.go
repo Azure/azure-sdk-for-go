@@ -265,12 +265,12 @@ func getPrivateKey(cert string) (*rsa.PrivateKey, error) {
 	}
 
 	data, rest := pem.Decode([]byte(pemBytes))
-	const key = "PRIVATE KEY"
+	const privateKeyBlock = "PRIVATE KEY"
 	// NOTE: check types of private keys
-	if data.Type != key {
+	if data.Type != privateKeyBlock {
 		for len(rest) > 0 {
 			data, rest = pem.Decode(rest)
-			if data.Type == key {
+			if data.Type == privateKeyBlock {
 				privateKeyImported, err := x509.ParsePKCS8PrivateKey(data.Bytes)
 				if err != nil {
 					return nil, fmt.Errorf("ParsePKCS8PrivateKey: %w", err)

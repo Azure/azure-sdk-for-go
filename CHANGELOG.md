@@ -1,5 +1,49 @@
 # CHANGELOG
 
+## `v37.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| azuredata | 2017-03-01-preview |
+| backup | 2019-05-13 |
+| customerlockbox | 2018-02-28-preview |
+| managedapplications | 2019-07-01 |
+| siterecovery | 2018-07-10 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| compute | 2018-04-01<br/>2018-06-01<br/>2018-10-01<br/>2019-03-01 |
+| containerregistry | 2019-06-01-preview |
+| containerservice | 2019-10-01 |
+| datashare | 2018-11-01-preview<br/>2019-11-01 |
+| hanaonazure | 2017-11-03-preview |
+| network | 2019-09-01 |
+| policyinsights | 2019-10-01 |
+| qnamaker | v4.0 |
+| securityinsight | 2017-08-01-preview |
+| sql | 2015-05-01-preview<br/>2018-06-01-preview |
+| sqlvirtualmachine | 2017-03-01-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appplatform | 2019-05-01-preview |
+| backup | 2017-07-01 |
+| cdn | 2019-06-15-preview |
+| compute | 2019-07-01 |
+| datafactory | 2018-06-01 |
+| network | 2019-08-01 |
+| resourcegraph | 2018-09-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+| sql | 2017-03-01-preview<br/>v3.0 |
+| storage | 2019-06-01 |
+| virtualmachineimagebuilder | 2019-05-01-preview |
+
 ## `v36.2.0`
 
 ### New Packages

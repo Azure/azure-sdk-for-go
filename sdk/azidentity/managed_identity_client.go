@@ -66,10 +66,6 @@ func init() {
 }
 
 func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
-	// CP: fix this implementation
-	// opts := &ManagedIdentityCredentialOptions{}
-	// opt := opts.Options.setDefaultValues()
-	// opt.PipelineOptions = defaultMSIPipelineOptions(opt.PipelineOptions)
 	return &ManagedIdentityCredentialOptions{}
 }
 
@@ -94,14 +90,6 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*manag
 		options = newDefaultManagedIdentityOptions()
 	}
 
-	// TODO check this
-	// if reflect.DeepEqual(options.Options, IdentityClientOptions{}) {
-	// 	options.Options = defaultIdentityClientOpts
-	// }
-
-	// if options.Options.AuthorityHost == nil {
-	// 	options.Options.AuthorityHost = defaultAuthorityHostURL
-	// }
 	// TODO document the use of these variables
 	return &managedIdentityClient{
 		// options:                *options.Options,

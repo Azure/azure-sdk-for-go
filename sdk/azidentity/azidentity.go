@@ -74,7 +74,6 @@ func (e *CredentialUnavailableError) Error() string {
 // this error type will return a list of Credential Unavailable errors
 type ChainedCredentialError struct {
 	ErrorList []*CredentialUnavailableError
-	Message   string
 }
 
 func (e *ChainedCredentialError) Error() string {
@@ -83,9 +82,9 @@ func (e *ChainedCredentialError) Error() string {
 		for _, err := range e.ErrorList {
 			msg += err.Error() + "\n"
 		}
-		e.Message = msg
+		return msg
 	}
-	return e.Message
+	return "Chained Token Credential: An unexpected error has occurred"
 }
 
 // IdentityClientOptions to configure requests made to Azure Identity Services
@@ -94,14 +93,16 @@ type IdentityClientOptions struct {
 	AuthorityHost   *url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com
 }
 
-// TODO this is unnecessary if we keep the functionality in the init
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
 func (c *IdentityClientOptions) setDefaultValues() *IdentityClientOptions {
-	// Invert logic if c!= nil
 	if c == nil {
-		c = &IdentityClientOptions{}
-		c.AuthorityHost = defaultAuthorityHostURL
+		c = defaultIdentityClientOpts
 	}
+
+	if c.AuthorityHost == nil {
+		c.AuthorityHost = defaultIdentityClientOpts.AuthorityHost
+	}
+
 	return c
 }
 

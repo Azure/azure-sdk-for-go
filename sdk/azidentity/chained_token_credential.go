@@ -36,29 +36,29 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 	if len(opts.Scopes) == 0 {
 		return nil, &AuthenticationFailedError{Message: "You need to include valid scopes in order to request a token with this credential"}
 	}
-	var credErr *CredentialUnavailableError
+
 	var token *azcore.AccessToken
 	var err error
 	var errList []*CredentialUnavailableError
 
 	for i := 0; i < len(c.sources); i++ {
+		var credErr *CredentialUnavailableError
 		token, err = c.sources[i].GetToken(ctx, opts)
 		if errors.As(err, &credErr) {
-			errList = append(errList, err.(*CredentialUnavailableError))
+			errList = append(errList, credErr)
+		} else if err != nil {
+			return nil, err
 		} else {
-			if token != nil && err == nil {
-				return token, nil
-			}
-			return token, &ChainedCredentialError{Message: err.Error(), ErrorList: errList}
+			return token, nil
 		}
 	}
 
-	if token == nil && len(errList) > 0 {
-		err = &ChainedCredentialError{ErrorList: errList}
-		return nil, err
+	// This condition should never be true
+	if token == nil && len(errList) == 0 {
+		return nil, nil
 	}
 
-	return token, nil
+	return nil, &ChainedCredentialError{ErrorList: errList}
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential.

@@ -33,55 +33,26 @@ type DefaultTokenCredentialOptions struct {
 // Consult the documentation of these credential types for more information on how they attempt authentication.
 func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*ChainedTokenCredential, error) {
 	cred := &DefaultTokenCredential{}
-	err := cred.getDefaultTokenCredentialChain(options)
-	if err != nil {
-		return nil, err
-	}
-	return NewChainedTokenCredential(cred.sources...)
-}
-
-func (c *DefaultTokenCredential) getDefaultTokenCredentialChain(options *DefaultTokenCredentialOptions) error {
-	errCount := 0
-	var envCred *ClientSecretCredential
-	var msiCred *ManagedIdentityCredential
-	var err error
 
 	if options == nil {
-		envCred, err = NewEnvironmentCredential(nil)
-		if err != nil {
-			errCount++
-		}
-		msiCred, err = NewManagedIdentityCredential("", nil)
-		if err != nil {
-			errCount++
-		}
+		options = &DefaultTokenCredentialOptions{}
 	}
 
 	if !options.ExcludeEnvironmentCredential {
-		envCred, err = NewEnvironmentCredential(nil)
-		if err != nil {
-			errCount++
+		envCred, err := NewEnvironmentCredential(nil)
+		if err == nil {
+			cred.sources = append(cred.sources, envCred)
+			return NewChainedTokenCredential(cred.sources...)
 		}
 	}
 
 	if !options.ExcludeMSICredential {
-		msiCred, err = NewManagedIdentityCredential("", nil)
-		if err != nil {
-			errCount++
+		msiCred, err := NewManagedIdentityCredential("", nil)
+		if err == nil {
+			cred.sources = append(cred.sources, msiCred)
+			return NewChainedTokenCredential(cred.sources...)
 		}
 	}
 
-	if errCount > 1 {
-		return &AuthenticationFailedError{Message: "Failed to find any available credentials. Make sure you are running in a Managed Identity Environment or have set the appropriate environment variables"}
-	}
-
-	if envCred != nil {
-		c.sources = append(c.sources, envCred)
-	}
-
-	if msiCred != nil {
-		c.sources = append(c.sources, msiCred)
-	}
-
-	return nil
+	return nil, &AuthenticationFailedError{Message: "Failed to find any available credentials. Make sure you are running in a Managed Identity Environment or have set the appropriate environment variables"}
 }

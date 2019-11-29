@@ -35,15 +35,19 @@ const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgm
 type AppResourceProvisioningState string
 
 const (
+	// Creating ...
+	Creating AppResourceProvisioningState = "Creating"
 	// Failed ...
 	Failed AppResourceProvisioningState = "Failed"
 	// Succeeded ...
 	Succeeded AppResourceProvisioningState = "Succeeded"
+	// Updating ...
+	Updating AppResourceProvisioningState = "Updating"
 )
 
 // PossibleAppResourceProvisioningStateValues returns an array of possible values for the AppResourceProvisioningState const type.
 func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState {
-	return []AppResourceProvisioningState{Failed, Succeeded}
+	return []AppResourceProvisioningState{Creating, Failed, Succeeded, Updating}
 }
 
 // ConfigServerState enumerates the values for config server state.
@@ -75,15 +79,15 @@ const (
 	DeploymentResourceProvisioningStateCreating DeploymentResourceProvisioningState = "Creating"
 	// DeploymentResourceProvisioningStateFailed ...
 	DeploymentResourceProvisioningStateFailed DeploymentResourceProvisioningState = "Failed"
-	// DeploymentResourceProvisioningStateProcessing ...
-	DeploymentResourceProvisioningStateProcessing DeploymentResourceProvisioningState = "Processing"
 	// DeploymentResourceProvisioningStateSucceeded ...
 	DeploymentResourceProvisioningStateSucceeded DeploymentResourceProvisioningState = "Succeeded"
+	// DeploymentResourceProvisioningStateUpdating ...
+	DeploymentResourceProvisioningStateUpdating DeploymentResourceProvisioningState = "Updating"
 )
 
 // PossibleDeploymentResourceProvisioningStateValues returns an array of possible values for the DeploymentResourceProvisioningState const type.
 func PossibleDeploymentResourceProvisioningStateValues() []DeploymentResourceProvisioningState {
-	return []DeploymentResourceProvisioningState{DeploymentResourceProvisioningStateCreating, DeploymentResourceProvisioningStateFailed, DeploymentResourceProvisioningStateProcessing, DeploymentResourceProvisioningStateSucceeded}
+	return []DeploymentResourceProvisioningState{DeploymentResourceProvisioningStateCreating, DeploymentResourceProvisioningStateFailed, DeploymentResourceProvisioningStateSucceeded, DeploymentResourceProvisioningStateUpdating}
 }
 
 // DeploymentResourceStatus enumerates the values for deployment resource status.
@@ -96,8 +100,6 @@ const (
 	DeploymentResourceStatusCompiling DeploymentResourceStatus = "Compiling"
 	// DeploymentResourceStatusFailed ...
 	DeploymentResourceStatusFailed DeploymentResourceStatus = "Failed"
-	// DeploymentResourceStatusProcessing ...
-	DeploymentResourceStatusProcessing DeploymentResourceStatus = "Processing"
 	// DeploymentResourceStatusRunning ...
 	DeploymentResourceStatusRunning DeploymentResourceStatus = "Running"
 	// DeploymentResourceStatusStopped ...
@@ -110,7 +112,7 @@ const (
 
 // PossibleDeploymentResourceStatusValues returns an array of possible values for the DeploymentResourceStatus const type.
 func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
-	return []DeploymentResourceStatus{DeploymentResourceStatusAllocating, DeploymentResourceStatusCompiling, DeploymentResourceStatusFailed, DeploymentResourceStatusProcessing, DeploymentResourceStatusRunning, DeploymentResourceStatusStopped, DeploymentResourceStatusUnknown, DeploymentResourceStatusUpgrading}
+	return []DeploymentResourceStatus{DeploymentResourceStatusAllocating, DeploymentResourceStatusCompiling, DeploymentResourceStatusFailed, DeploymentResourceStatusRunning, DeploymentResourceStatusStopped, DeploymentResourceStatusUnknown, DeploymentResourceStatusUpgrading}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
@@ -372,7 +374,7 @@ type AppResourceProperties struct {
 	Public *bool `json:"public,omitempty"`
 	// URL - READ-ONLY; URL of the App
 	URL *string `json:"url,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the App. Possible values include: 'Succeeded', 'Failed'
+	// ProvisioningState - READ-ONLY; Provisioning state of the App. Possible values include: 'Succeeded', 'Failed', 'Creating', 'Updating'
 	ProvisioningState AppResourceProvisioningState `json:"provisioningState,omitempty"`
 	// ActiveDeploymentName - Name of the active deployment of the App
 	ActiveDeploymentName *string `json:"activeDeploymentName,omitempty"`
@@ -382,6 +384,63 @@ type AppResourceProperties struct {
 	TemporaryDisk *TemporaryDisk `json:"temporaryDisk,omitempty"`
 	// PersistentDisk - Persistent disk settings
 	PersistentDisk *PersistentDisk `json:"persistentDisk,omitempty"`
+}
+
+// AppsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AppsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsCreateOrUpdateFuture) Result(client AppsClient) (ar AppResource, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "appplatform.AppsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("appplatform.AppsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ar.Response.Response, err = future.GetResult(sender); err == nil && ar.Response.Response.StatusCode != http.StatusNoContent {
+		ar, err = client.CreateOrUpdateResponder(ar.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.AppsCreateOrUpdateFuture", "Result", ar.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AppsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type AppsUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AppsUpdateFuture) Result(client AppsClient) (ar AppResource, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "appplatform.AppsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("appplatform.AppsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ar.Response.Response, err = future.GetResult(sender); err == nil && ar.Response.Response.StatusCode != http.StatusNoContent {
+		ar, err = client.UpdateResponder(ar.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "appplatform.AppsUpdateFuture", "Result", ar.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // AvailableOperations available operations of the service
@@ -983,11 +1042,11 @@ type DeploymentResourceProperties struct {
 	Source *UserSourceInfo `json:"source,omitempty"`
 	// AppName - READ-ONLY; App name of the deployment
 	AppName *string `json:"appName,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the Deployment. Possible values include: 'DeploymentResourceProvisioningStateCreating', 'DeploymentResourceProvisioningStateUpdating', 'DeploymentResourceProvisioningStateSucceeded', 'DeploymentResourceProvisioningStateFailed'
+	ProvisioningState DeploymentResourceProvisioningState `json:"provisioningState,omitempty"`
 	// DeploymentSettings - Deployment settings of the Deployment
 	DeploymentSettings *DeploymentSettings `json:"deploymentSettings,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the Deployment. Possible values include: 'DeploymentResourceProvisioningStateCreating', 'DeploymentResourceProvisioningStateProcessing', 'DeploymentResourceProvisioningStateSucceeded', 'DeploymentResourceProvisioningStateFailed'
-	ProvisioningState DeploymentResourceProvisioningState `json:"provisioningState,omitempty"`
-	// Status - READ-ONLY; Status of the Deployment. Possible values include: 'DeploymentResourceStatusUnknown', 'DeploymentResourceStatusStopped', 'DeploymentResourceStatusRunning', 'DeploymentResourceStatusFailed', 'DeploymentResourceStatusProcessing', 'DeploymentResourceStatusAllocating', 'DeploymentResourceStatusUpgrading', 'DeploymentResourceStatusCompiling'
+	// Status - READ-ONLY; Status of the Deployment. Possible values include: 'DeploymentResourceStatusUnknown', 'DeploymentResourceStatusStopped', 'DeploymentResourceStatusRunning', 'DeploymentResourceStatusFailed', 'DeploymentResourceStatusAllocating', 'DeploymentResourceStatusUpgrading', 'DeploymentResourceStatusCompiling'
 	Status DeploymentResourceStatus `json:"status,omitempty"`
 	// Active - READ-ONLY; Indicates whether the Deployment is active
 	Active *bool `json:"active,omitempty"`

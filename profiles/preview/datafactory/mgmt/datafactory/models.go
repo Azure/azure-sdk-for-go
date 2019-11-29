@@ -155,8 +155,9 @@ const (
 type DynamicsAuthenticationType = original.DynamicsAuthenticationType
 
 const (
-	Ifd       DynamicsAuthenticationType = original.Ifd
-	Office365 DynamicsAuthenticationType = original.Office365
+	AADServicePrincipal DynamicsAuthenticationType = original.AADServicePrincipal
+	Ifd                 DynamicsAuthenticationType = original.Ifd
+	Office365           DynamicsAuthenticationType = original.Office365
 )
 
 type DynamicsDeploymentType = original.DynamicsDeploymentType
@@ -393,6 +394,14 @@ const (
 	OraclePartitionOptionPhysicalPartitionsOfTable OraclePartitionOption = original.OraclePartitionOptionPhysicalPartitionsOfTable
 )
 
+type OrcCompressionCodec = original.OrcCompressionCodec
+
+const (
+	OrcCompressionCodecNone   OrcCompressionCodec = original.OrcCompressionCodecNone
+	OrcCompressionCodecSnappy OrcCompressionCodec = original.OrcCompressionCodecSnappy
+	OrcCompressionCodecZlib   OrcCompressionCodec = original.OrcCompressionCodecZlib
+)
+
 type ParameterType = original.ParameterType
 
 const (
@@ -597,8 +606,9 @@ const (
 type SsisPackageLocationType = original.SsisPackageLocationType
 
 const (
-	File   SsisPackageLocationType = original.File
-	SSISDB SsisPackageLocationType = original.SSISDB
+	File          SsisPackageLocationType = original.File
+	InlinePackage SsisPackageLocationType = original.InlinePackage
+	SSISDB        SsisPackageLocationType = original.SSISDB
 )
 
 type StoredProcedureParameterType = original.StoredProcedureParameterType
@@ -674,6 +684,7 @@ const (
 	TypeAzureDataExplorerCommand TypeBasicActivity = original.TypeAzureDataExplorerCommand
 	TypeAzureFunctionActivity    TypeBasicActivity = original.TypeAzureFunctionActivity
 	TypeAzureMLBatchExecution    TypeBasicActivity = original.TypeAzureMLBatchExecution
+	TypeAzureMLExecutePipeline   TypeBasicActivity = original.TypeAzureMLExecutePipeline
 	TypeAzureMLUpdateResource    TypeBasicActivity = original.TypeAzureMLUpdateResource
 	TypeContainer                TypeBasicActivity = original.TypeContainer
 	TypeCopy                     TypeBasicActivity = original.TypeCopy
@@ -699,6 +710,7 @@ const (
 	TypeLookup                   TypeBasicActivity = original.TypeLookup
 	TypeSetVariable              TypeBasicActivity = original.TypeSetVariable
 	TypeSQLServerStoredProcedure TypeBasicActivity = original.TypeSQLServerStoredProcedure
+	TypeSwitch                   TypeBasicActivity = original.TypeSwitch
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
 	TypeValidation               TypeBasicActivity = original.TypeValidation
 	TypeWait                     TypeBasicActivity = original.TypeWait
@@ -1015,10 +1027,12 @@ const (
 	TypeAzureDataExplorer        TypeBasicLinkedService = original.TypeAzureDataExplorer
 	TypeAzureDataLakeAnalytics   TypeBasicLinkedService = original.TypeAzureDataLakeAnalytics
 	TypeAzureDataLakeStore       TypeBasicLinkedService = original.TypeAzureDataLakeStore
+	TypeAzureFileStorage         TypeBasicLinkedService = original.TypeAzureFileStorage
 	TypeAzureFunction            TypeBasicLinkedService = original.TypeAzureFunction
 	TypeAzureKeyVault            TypeBasicLinkedService = original.TypeAzureKeyVault
 	TypeAzureMariaDB             TypeBasicLinkedService = original.TypeAzureMariaDB
 	TypeAzureML                  TypeBasicLinkedService = original.TypeAzureML
+	TypeAzureMLService           TypeBasicLinkedService = original.TypeAzureMLService
 	TypeAzureMySQL               TypeBasicLinkedService = original.TypeAzureMySQL
 	TypeAzurePostgreSQL          TypeBasicLinkedService = original.TypeAzurePostgreSQL
 	TypeAzureSearch              TypeBasicLinkedService = original.TypeAzureSearch
@@ -1044,6 +1058,7 @@ const (
 	TypeFtpServer                TypeBasicLinkedService = original.TypeFtpServer
 	TypeGoogleAdWords            TypeBasicLinkedService = original.TypeGoogleAdWords
 	TypeGoogleBigQuery           TypeBasicLinkedService = original.TypeGoogleBigQuery
+	TypeGoogleCloudStorage       TypeBasicLinkedService = original.TypeGoogleCloudStorage
 	TypeGreenplum                TypeBasicLinkedService = original.TypeGreenplum
 	TypeHBase                    TypeBasicLinkedService = original.TypeHBase
 	TypeHdfs                     TypeBasicLinkedService = original.TypeHdfs
@@ -1225,6 +1240,10 @@ type AzureDataLakeStoreSource = original.AzureDataLakeStoreSource
 type AzureDataLakeStoreWriteSettings = original.AzureDataLakeStoreWriteSettings
 type AzureDatabricksLinkedService = original.AzureDatabricksLinkedService
 type AzureDatabricksLinkedServiceTypeProperties = original.AzureDatabricksLinkedServiceTypeProperties
+type AzureFileStorageLinkedService = original.AzureFileStorageLinkedService
+type AzureFileStorageLinkedServiceTypeProperties = original.AzureFileStorageLinkedServiceTypeProperties
+type AzureFileStorageLocation = original.AzureFileStorageLocation
+type AzureFileStorageReadSettings = original.AzureFileStorageReadSettings
 type AzureFunctionActivity = original.AzureFunctionActivity
 type AzureFunctionActivityTypeProperties = original.AzureFunctionActivityTypeProperties
 type AzureFunctionLinkedService = original.AzureFunctionLinkedService
@@ -1234,8 +1253,12 @@ type AzureKeyVaultLinkedServiceTypeProperties = original.AzureKeyVaultLinkedServ
 type AzureKeyVaultSecretReference = original.AzureKeyVaultSecretReference
 type AzureMLBatchExecutionActivity = original.AzureMLBatchExecutionActivity
 type AzureMLBatchExecutionActivityTypeProperties = original.AzureMLBatchExecutionActivityTypeProperties
+type AzureMLExecutePipelineActivity = original.AzureMLExecutePipelineActivity
+type AzureMLExecutePipelineActivityTypeProperties = original.AzureMLExecutePipelineActivityTypeProperties
 type AzureMLLinkedService = original.AzureMLLinkedService
 type AzureMLLinkedServiceTypeProperties = original.AzureMLLinkedServiceTypeProperties
+type AzureMLServiceLinkedService = original.AzureMLServiceLinkedService
+type AzureMLServiceLinkedServiceTypeProperties = original.AzureMLServiceLinkedServiceTypeProperties
 type AzureMLUpdateResourceActivity = original.AzureMLUpdateResourceActivity
 type AzureMLUpdateResourceActivityTypeProperties = original.AzureMLUpdateResourceActivityTypeProperties
 type AzureMLWebServiceFile = original.AzureMLWebServiceFile
@@ -1376,6 +1399,7 @@ type DataFlowDebugCommandRequest = original.DataFlowDebugCommandRequest
 type DataFlowDebugCommandResponse = original.DataFlowDebugCommandResponse
 type DataFlowDebugPackage = original.DataFlowDebugPackage
 type DataFlowDebugPackageDebugSettings = original.DataFlowDebugPackageDebugSettings
+type DataFlowDebugResource = original.DataFlowDebugResource
 type DataFlowDebugSessionClient = original.DataFlowDebugSessionClient
 type DataFlowDebugSessionCreateFuture = original.DataFlowDebugSessionCreateFuture
 type DataFlowDebugSessionExecuteCommandFuture = original.DataFlowDebugSessionExecuteCommandFuture
@@ -1402,6 +1426,7 @@ type DatabricksSparkPythonActivityTypeProperties = original.DatabricksSparkPytho
 type Dataset = original.Dataset
 type DatasetBZip2Compression = original.DatasetBZip2Compression
 type DatasetCompression = original.DatasetCompression
+type DatasetDebugResource = original.DatasetDebugResource
 type DatasetDeflateCompression = original.DatasetDeflateCompression
 type DatasetFolder = original.DatasetFolder
 type DatasetGZipCompression = original.DatasetGZipCompression
@@ -1521,6 +1546,10 @@ type GoogleBigQueryLinkedService = original.GoogleBigQueryLinkedService
 type GoogleBigQueryLinkedServiceTypeProperties = original.GoogleBigQueryLinkedServiceTypeProperties
 type GoogleBigQueryObjectDataset = original.GoogleBigQueryObjectDataset
 type GoogleBigQuerySource = original.GoogleBigQuerySource
+type GoogleCloudStorageLinkedService = original.GoogleCloudStorageLinkedService
+type GoogleCloudStorageLinkedServiceTypeProperties = original.GoogleCloudStorageLinkedServiceTypeProperties
+type GoogleCloudStorageLocation = original.GoogleCloudStorageLocation
+type GoogleCloudStorageReadSettings = original.GoogleCloudStorageReadSettings
 type GreenplumDatasetTypeProperties = original.GreenplumDatasetTypeProperties
 type GreenplumLinkedService = original.GreenplumLinkedService
 type GreenplumLinkedServiceTypeProperties = original.GreenplumLinkedServiceTypeProperties
@@ -1585,6 +1614,7 @@ type IntegrationRuntimeConnectionInfo = original.IntegrationRuntimeConnectionInf
 type IntegrationRuntimeCustomSetupScriptProperties = original.IntegrationRuntimeCustomSetupScriptProperties
 type IntegrationRuntimeDataFlowProperties = original.IntegrationRuntimeDataFlowProperties
 type IntegrationRuntimeDataProxyProperties = original.IntegrationRuntimeDataProxyProperties
+type IntegrationRuntimeDebugResource = original.IntegrationRuntimeDebugResource
 type IntegrationRuntimeListResponse = original.IntegrationRuntimeListResponse
 type IntegrationRuntimeListResponseIterator = original.IntegrationRuntimeListResponseIterator
 type IntegrationRuntimeListResponsePage = original.IntegrationRuntimeListResponsePage
@@ -1623,6 +1653,7 @@ type LinkedIntegrationRuntimeRbacAuthorization = original.LinkedIntegrationRunti
 type LinkedIntegrationRuntimeRequest = original.LinkedIntegrationRuntimeRequest
 type LinkedIntegrationRuntimeType = original.LinkedIntegrationRuntimeType
 type LinkedService = original.LinkedService
+type LinkedServiceDebugResource = original.LinkedServiceDebugResource
 type LinkedServiceListResponse = original.LinkedServiceListResponse
 type LinkedServiceListResponseIterator = original.LinkedServiceListResponseIterator
 type LinkedServiceListResponsePage = original.LinkedServiceListResponsePage
@@ -1818,6 +1849,7 @@ type SQLServerTableDatasetTypeProperties = original.SQLServerTableDatasetTypePro
 type SQLSink = original.SQLSink
 type SQLSource = original.SQLSource
 type SSISAccessCredential = original.SSISAccessCredential
+type SSISChildPackage = original.SSISChildPackage
 type SSISExecutionCredential = original.SSISExecutionCredential
 type SSISExecutionParameter = original.SSISExecutionParameter
 type SSISLogLocation = original.SSISLogLocation
@@ -1922,6 +1954,10 @@ type StoreReadSettings = original.StoreReadSettings
 type StoreWriteSettings = original.StoreWriteSettings
 type StoredProcedureParameter = original.StoredProcedureParameter
 type SubResource = original.SubResource
+type SubResourceDebugResource = original.SubResourceDebugResource
+type SwitchActivity = original.SwitchActivity
+type SwitchActivityTypeProperties = original.SwitchActivityTypeProperties
+type SwitchCase = original.SwitchCase
 type SybaseLinkedService = original.SybaseLinkedService
 type SybaseLinkedServiceTypeProperties = original.SybaseLinkedServiceTypeProperties
 type SybaseSource = original.SybaseSource
@@ -2284,6 +2320,9 @@ func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
 }
 func PossibleOraclePartitionOptionValues() []OraclePartitionOption {
 	return original.PossibleOraclePartitionOptionValues()
+}
+func PossibleOrcCompressionCodecValues() []OrcCompressionCodec {
+	return original.PossibleOrcCompressionCodecValues()
 }
 func PossibleParameterTypeValues() []ParameterType {
 	return original.PossibleParameterTypeValues()

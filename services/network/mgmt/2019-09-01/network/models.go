@@ -7295,7 +7295,7 @@ type AzureFirewallPropertiesFormat struct {
 	HubIPAddresses *HubIPAddresses `json:"hubIpAddresses,omitempty"`
 	// Sku - The Azure Firewall Resource SKU.
 	Sku *AzureFirewallSku `json:"sku,omitempty"`
-	// AdditionalProperties - The additional properties used to further config this azure firewall
+	// AdditionalProperties - The additional properties used to further config this azure firewall.
 	AdditionalProperties map[string]*string `json:"additionalProperties"`
 }
 
@@ -17260,7 +17260,7 @@ type IPGroupPropertiesFormat struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IPAddresses - IpAddresses/IpAddressPrefixes in the IpGroups resource.
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`
-	// Firewalls - READ-ONLY; List of references to Azure resources that this IpGroups is associated with
+	// Firewalls - READ-ONLY; List of references to Azure resources that this IpGroups is associated with.
 	Firewalls *[]SubResource `json:"firewalls,omitempty"`
 }
 
@@ -23348,8 +23348,8 @@ type PrivateLinkServiceConnectionState struct {
 	Status *string `json:"status,omitempty"`
 	// Description - The reason for approval/rejection of the connection.
 	Description *string `json:"description,omitempty"`
-	// ActionRequired - A message indicating if changes on the service provider require any updates on the consumer.
-	ActionRequired *string `json:"actionRequired,omitempty"`
+	// ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
 // PrivateLinkServiceIPConfiguration the private link service ip configuration.
@@ -28315,9 +28315,9 @@ type TrafficAnalyticsProperties struct {
 
 // TrafficSelectorPolicy an traffic selector policy for a virtual network gateway connection.
 type TrafficSelectorPolicy struct {
-	// LocalAddressRanges - A collection of local address spaces in CIDR format
+	// LocalAddressRanges - A collection of local address spaces in CIDR format.
 	LocalAddressRanges *[]string `json:"localAddressRanges,omitempty"`
-	// RemoteAddressRanges - A collection of remote address spaces in CIDR format
+	// RemoteAddressRanges - A collection of remote address spaces in CIDR format.
 	RemoteAddressRanges *[]string `json:"remoteAddressRanges,omitempty"`
 }
 
@@ -28944,11 +28944,11 @@ func (future *VirtualHubRouteTableV2sDeleteFuture) Result(client VirtualHubRoute
 
 // VirtualHubRouteV2 virtualHubRouteTableV2 route.
 type VirtualHubRouteV2 struct {
-	// DestinationType - The type of destinations
+	// DestinationType - The type of destinations.
 	DestinationType *string `json:"destinationType,omitempty"`
 	// Destinations - List of all destinations.
 	Destinations *[]string `json:"destinations,omitempty"`
-	// NextHopType - The type of next hops
+	// NextHopType - The type of next hops.
 	NextHopType *string `json:"nextHopType,omitempty"`
 	// NextHops - NextHops ip address.
 	NextHops *[]string `json:"nextHops,omitempty"`
@@ -29124,9 +29124,9 @@ func (vn *VirtualNetwork) UnmarshalJSON(body []byte) error {
 // VirtualNetworkBgpCommunities bgp Communities sent over ExpressRoute with each route corresponding to a
 // prefix in this VNET.
 type VirtualNetworkBgpCommunities struct {
-	// VirtualNetworkCommunity - The BGP community associated with the virtual network
+	// VirtualNetworkCommunity - The BGP community associated with the virtual network.
 	VirtualNetworkCommunity *string `json:"virtualNetworkCommunity,omitempty"`
-	// RegionalCommunity - READ-ONLY; The BGP community associated with the region of the virtual network
+	// RegionalCommunity - READ-ONLY; The BGP community associated with the region of the virtual network.
 	RegionalCommunity *string `json:"regionalCommunity,omitempty"`
 }
 
@@ -31820,7 +31820,7 @@ type VirtualRouter struct {
 	autorest.Response `json:"-"`
 	// VirtualRouterPropertiesFormat - Properties of the Virtual Router.
 	*VirtualRouterPropertiesFormat `json:"properties,omitempty"`
-	// Etag - READ-ONLY; Gets a unique read-only string that changes whenever the resource is updated.
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -32076,14 +32076,14 @@ func NewVirtualRouterListResultPage(getNextPage func(context.Context, VirtualRou
 	return VirtualRouterListResultPage{fn: getNextPage}
 }
 
-// VirtualRouterPeering virtual Router Peering resource
+// VirtualRouterPeering virtual Router Peering resource.
 type VirtualRouterPeering struct {
 	autorest.Response `json:"-"`
 	// VirtualRouterPeeringProperties - The properties of the Virtual Router Peering.
 	*VirtualRouterPeeringProperties `json:"properties,omitempty"`
-	// Name - Gets name of the peering unique to VirtualRouter. This name can be used to access the resource.
+	// Name - Name of the virtual router peering that is unique within a virtual router.
 	Name *string `json:"name,omitempty"`
-	// Etag - READ-ONLY; Gets a unique read-only string that changes whenever the resource is updated.
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 	// Type - READ-ONLY; Peering type.
 	Type *string `json:"type,omitempty"`
@@ -32375,17 +32375,17 @@ func (future *VirtualRouterPeeringsDeleteFuture) Result(client VirtualRouterPeer
 	return
 }
 
-// VirtualRouterPropertiesFormat virtual Router definition
+// VirtualRouterPropertiesFormat virtual Router definition.
 type VirtualRouterPropertiesFormat struct {
 	// VirtualRouterAsn - VirtualRouter ASN.
 	VirtualRouterAsn *int64 `json:"virtualRouterAsn,omitempty"`
-	// VirtualRouterIps - VirtualRouter IPs
+	// VirtualRouterIps - VirtualRouter IPs.
 	VirtualRouterIps *[]string `json:"virtualRouterIps,omitempty"`
 	// HostedSubnet - The Subnet on which VirtualRouter is hosted.
 	HostedSubnet *SubResource `json:"hostedSubnet,omitempty"`
 	// HostedGateway - The Gateway on which VirtualRouter is hosted.
 	HostedGateway *SubResource `json:"hostedGateway,omitempty"`
-	// Peerings - READ-ONLY; List of references to VirtualRouterPeerings
+	// Peerings - READ-ONLY; List of references to VirtualRouterPeerings.
 	Peerings *[]SubResource `json:"peerings,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
@@ -33377,7 +33377,7 @@ type VpnServerConfiguration struct {
 	autorest.Response `json:"-"`
 	// VpnServerConfigurationProperties - Properties of the P2SVpnServer configuration.
 	*VpnServerConfigurationProperties `json:"properties,omitempty"`
-	// Etag - READ-ONLY; Gets a unique read-only string that changes whenever the resource is updated.
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -34851,7 +34851,7 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ResourceState - READ-ONLY; Resource status of the policy. Possible values include: 'WebApplicationFirewallPolicyResourceStateCreating', 'WebApplicationFirewallPolicyResourceStateEnabling', 'WebApplicationFirewallPolicyResourceStateEnabled', 'WebApplicationFirewallPolicyResourceStateDisabling', 'WebApplicationFirewallPolicyResourceStateDisabled', 'WebApplicationFirewallPolicyResourceStateDeleting'
 	ResourceState WebApplicationFirewallPolicyResourceState `json:"resourceState,omitempty"`
-	// ManagedRules - Describes the managedRules structure
+	// ManagedRules - Describes the managedRules structure.
 	ManagedRules *ManagedRulesDefinition `json:"managedRules,omitempty"`
 	// HTTPListeners - READ-ONLY; A collection of references to application gateway http listeners.
 	HTTPListeners *[]SubResource `json:"httpListeners,omitempty"`

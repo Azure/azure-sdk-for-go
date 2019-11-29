@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:9e57e16a4e809da5d6280ab4e7cb9c3d8a9d5b1065226be2d71c11d070a60e7b"
+  digest = "1:6a638b1a468a4a8b67fc80ae6a075811a932c6aea327cc28b3ef3a29fba31f4a"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -17,8 +17,8 @@
     "tracing",
   ]
   pruneopts = "UT"
-  revision = "d9a171ca366fd4acfaa99107cdc4f91877f3572e"
-  version = "v13.0.2"
+  revision = "3492b2aff5036c67228ab3c7dba3577c871db200"
+  version = "v13.3.0"
 
 [[projects]]
   digest = "1:d37f34e1e231ee4b8657d1b6153e2696b1d7341850f648f5d78151d3bc1f677b"
@@ -46,14 +46,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:052aa482c25b2d76f432c16c4b404a6a3cb9cc205a95818c7680fcec501a43b7"
+  digest = "1:463a37f152816d49cd4302edaf1f72944c3edade65ffd8b2ea25883755afa156"
   name = "github.com/dnaeon/go-vcr"
   packages = [
     "cassette",
     "recorder",
   ]
   pruneopts = "UT"
-  revision = "ac8906116758e03208f043a52754f16f2982f26d"
+  revision = "9384691f0462689770c3e930cd8aff05c7075a5b"
 
 [[projects]]
   branch = "master"
@@ -150,11 +150,11 @@
     "pkcs12/internal/rc2",
   ]
   pruneopts = "UT"
-  revision = "34f69633bfdcf9db92f698f8487115767eebef81"
+  revision = "8986dd9e96cf0a6f74da406c005ba3df38527c04"
 
 [[projects]]
   branch = "master"
-  digest = "1:18c7b936326b4919be6de0a20be857fdd3112036cdb3febfa9a5b332a4f54e27"
+  digest = "1:3a0c9d6a605d6a7c90e343ce34bdb8b894d69f6a9cbcda71351b5e48b8d754af"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -169,9 +169,10 @@
     "internal/imports",
     "internal/module",
     "internal/semver",
+    "internal/span",
   ]
   pruneopts = "UT"
-  revision = "e461004dd03ddc1b89596568ce4119c0e8152ce6"
+  revision = "6d8f1af9ccc0737695ff54584220e9967e9e661b"
 
 [[projects]]
   branch = "v1"
@@ -182,12 +183,12 @@
   revision = "41f04d3bba152ddec2103e299fed053415705330"
 
 [[projects]]
-  digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
+  digest = "1:59f10c1537d2199d9115d946927fe31165959a95190849c82ff11e05803528b0"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = "UT"
-  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
-  version = "v2.2.2"
+  revision = "f221b8435cfb71e54062f6c6e99e9ade30b124d5"
+  version = "v2.2.4"
 
 [solve-meta]
   analyzer-name = "dep"

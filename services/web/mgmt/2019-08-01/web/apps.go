@@ -41,7 +41,7 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 	return AppsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// AddPremierAddOn updates a named add-on of an app.
+// AddPremierAddOn description for Updates a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -96,7 +96,7 @@ func (client AppsClient) AddPremierAddOnPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -131,7 +131,7 @@ func (client AppsClient) AddPremierAddOnResponder(resp *http.Response) (result P
 	return
 }
 
-// AddPremierAddOnSlot updates a named add-on of an app.
+// AddPremierAddOnSlot description for Updates a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -189,7 +189,7 @@ func (client AppsClient) AddPremierAddOnSlotPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -224,7 +224,7 @@ func (client AppsClient) AddPremierAddOnSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// AnalyzeCustomHostname analyze a custom hostname.
+// AnalyzeCustomHostname description for Analyze a custom hostname.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -277,7 +277,7 @@ func (client AppsClient) AnalyzeCustomHostnamePreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -313,7 +313,7 @@ func (client AppsClient) AnalyzeCustomHostnameResponder(resp *http.Response) (re
 	return
 }
 
-// AnalyzeCustomHostnameSlot analyze a custom hostname.
+// AnalyzeCustomHostnameSlot description for Analyze a custom hostname.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -368,7 +368,7 @@ func (client AppsClient) AnalyzeCustomHostnameSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -404,7 +404,8 @@ func (client AppsClient) AnalyzeCustomHostnameSlotResponder(resp *http.Response)
 	return
 }
 
-// ApplySlotConfigToProduction applies the configuration settings from the target slot onto the current slot.
+// ApplySlotConfigToProduction description for Applies the configuration settings from the target slot onto the current
+// slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -460,7 +461,7 @@ func (client AppsClient) ApplySlotConfigToProductionPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -494,7 +495,8 @@ func (client AppsClient) ApplySlotConfigToProductionResponder(resp *http.Respons
 	return
 }
 
-// ApplySlotConfigurationSlot applies the configuration settings from the target slot onto the current slot.
+// ApplySlotConfigurationSlot description for Applies the configuration settings from the target slot onto the current
+// slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -552,7 +554,7 @@ func (client AppsClient) ApplySlotConfigurationSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -586,7 +588,7 @@ func (client AppsClient) ApplySlotConfigurationSlotResponder(resp *http.Response
 	return
 }
 
-// Backup creates a backup of an app.
+// Backup description for Creates a backup of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -648,7 +650,7 @@ func (client AppsClient) BackupPreparer(ctx context.Context, resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -683,7 +685,7 @@ func (client AppsClient) BackupResponder(resp *http.Response) (result BackupItem
 	return
 }
 
-// BackupSlot creates a backup of an app.
+// BackupSlot description for Creates a backup of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -748,7 +750,7 @@ func (client AppsClient) BackupSlotPreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -783,7 +785,209 @@ func (client AppsClient) BackupSlotResponder(resp *http.Response) (result Backup
 	return
 }
 
-// CreateDeployment create a deployment for an app, or a deployment slot.
+// CopyProductionSlot description for Copies a deployment slot to another deployment slot of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// copySlotEntity - JSON object that contains the target slot name and site config properties to override the
+// source slot config. See example.
+func (client AppsClient) CopyProductionSlot(ctx context.Context, resourceGroupName string, name string, copySlotEntity CsmCopySlotEntity) (result AppsCopyProductionSlotFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CopyProductionSlot")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
+		{TargetValue: copySlotEntity,
+			Constraints: []validation.Constraint{{Target: "copySlotEntity.TargetSlot", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "copySlotEntity.SiteConfig", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.Push", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.Push.PushSettingsProperties", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.Push.PushSettingsProperties.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
+						}},
+						{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
+								{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+							}},
+					}}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CopyProductionSlot", err.Error())
+	}
+
+	req, err := client.CopyProductionSlotPreparer(ctx, resourceGroupName, name, copySlotEntity)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CopyProductionSlot", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CopyProductionSlotSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CopyProductionSlot", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CopyProductionSlotPreparer prepares the CopyProductionSlot request.
+func (client AppsClient) CopyProductionSlotPreparer(ctx context.Context, resourceGroupName string, name string, copySlotEntity CsmCopySlotEntity) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotcopy", pathParameters),
+		autorest.WithJSON(copySlotEntity),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CopyProductionSlotSender sends the CopyProductionSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CopyProductionSlotSender(req *http.Request) (future AppsCopyProductionSlotFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CopyProductionSlotResponder handles the response to the CopyProductionSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CopyProductionSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// CopySlotSlot description for Copies a deployment slot to another deployment slot of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// copySlotEntity - JSON object that contains the target slot name and site config properties to override the
+// source slot config. See example.
+// slot - name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+func (client AppsClient) CopySlotSlot(ctx context.Context, resourceGroupName string, name string, copySlotEntity CsmCopySlotEntity, slot string) (result AppsCopySlotSlotFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CopySlotSlot")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}},
+		{TargetValue: copySlotEntity,
+			Constraints: []validation.Constraint{{Target: "copySlotEntity.TargetSlot", Name: validation.Null, Rule: true, Chain: nil},
+				{Target: "copySlotEntity.SiteConfig", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.Push", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.Push.PushSettingsProperties", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.Push.PushSettingsProperties.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
+						}},
+						{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
+								{Target: "copySlotEntity.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+							}},
+					}}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "CopySlotSlot", err.Error())
+	}
+
+	req, err := client.CopySlotSlotPreparer(ctx, resourceGroupName, name, copySlotEntity, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CopySlotSlot", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CopySlotSlotSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CopySlotSlot", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CopySlotSlotPreparer prepares the CopySlotSlot request.
+func (client AppsClient) CopySlotSlotPreparer(ctx context.Context, resourceGroupName string, name string, copySlotEntity CsmCopySlotEntity, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotcopy", pathParameters),
+		autorest.WithJSON(copySlotEntity),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CopySlotSlotSender sends the CopySlotSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) CopySlotSlotSender(req *http.Request) (future AppsCopySlotSlotFuture, err error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	var resp *http.Response
+	resp, err = autorest.SendWithSender(client, req, sd...)
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// CopySlotSlotResponder handles the response to the CopySlotSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) CopySlotSlotResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// CreateDeployment description for Create a deployment for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -838,7 +1042,7 @@ func (client AppsClient) CreateDeploymentPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -873,7 +1077,7 @@ func (client AppsClient) CreateDeploymentResponder(resp *http.Response) (result 
 	return
 }
 
-// CreateDeploymentSlot create a deployment for an app, or a deployment slot.
+// CreateDeploymentSlot description for Create a deployment for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -931,7 +1135,7 @@ func (client AppsClient) CreateDeploymentSlotPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -966,7 +1170,7 @@ func (client AppsClient) CreateDeploymentSlotResponder(resp *http.Response) (res
 	return
 }
 
-// CreateFunction create function for web site, or a deployment slot.
+// CreateFunction description for Create function for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -1015,7 +1219,7 @@ func (client AppsClient) CreateFunctionPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1056,13 +1260,12 @@ func (client AppsClient) CreateFunctionResponder(resp *http.Response) (result Fu
 	return
 }
 
-// CreateInstanceFunctionSlot create function for web site, or a deployment slot.
+// CreateInstanceFunctionSlot description for Create function for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // functionName - function name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 // functionEnvelope - function details.
 func (client AppsClient) CreateInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope FunctionEnvelope) (result AppsCreateInstanceFunctionSlotFuture, err error) {
 	if tracing.IsEnabled() {
@@ -1108,7 +1311,7 @@ func (client AppsClient) CreateInstanceFunctionSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1149,7 +1352,7 @@ func (client AppsClient) CreateInstanceFunctionSlotResponder(resp *http.Response
 	return
 }
 
-// CreateInstanceMSDeployOperation invoke the MSDeploy web app extension.
+// CreateInstanceMSDeployOperation description for Invoke the MSDeploy web app extension.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -1198,7 +1401,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1239,7 +1442,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationResponder(resp *http.Res
 	return
 }
 
-// CreateInstanceMSDeployOperationSlot invoke the MSDeploy web app extension.
+// CreateInstanceMSDeployOperationSlot description for Invoke the MSDeploy web app extension.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -1290,7 +1493,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlotPreparer(ctx context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1331,7 +1534,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlotResponder(resp *http
 	return
 }
 
-// CreateMSDeployOperation invoke the MSDeploy web app extension.
+// CreateMSDeployOperation description for Invoke the MSDeploy web app extension.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -1378,7 +1581,7 @@ func (client AppsClient) CreateMSDeployOperationPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1419,7 +1622,7 @@ func (client AppsClient) CreateMSDeployOperationResponder(resp *http.Response) (
 	return
 }
 
-// CreateMSDeployOperationSlot invoke the MSDeploy web app extension.
+// CreateMSDeployOperationSlot description for Invoke the MSDeploy web app extension.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -1468,7 +1671,7 @@ func (client AppsClient) CreateMSDeployOperationSlotPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1509,7 +1712,8 @@ func (client AppsClient) CreateMSDeployOperationSlotResponder(resp *http.Respons
 	return
 }
 
-// CreateOrUpdate creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+// CreateOrUpdate description for Creates a new web, mobile, or API app in an existing resource group, or updates an
+// existing app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
@@ -1538,9 +1742,9 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.Push.PushSettingsProperties", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.Push.PushSettingsProperties.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
 						}},
-						{Target: "siteEnvelope.SiteProperties.SiteConfig.ReservedInstanceCount", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.ReservedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-								{Target: "siteEnvelope.SiteProperties.SiteConfig.ReservedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+						{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
+								{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 							}},
 					}},
 					{Target: "siteEnvelope.SiteProperties.CloningInfo", Name: validation.Null, Rule: false,
@@ -1572,7 +1776,7 @@ func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1613,7 +1817,7 @@ func (client AppsClient) CreateOrUpdateResponder(resp *http.Response) (result Si
 	return
 }
 
-// CreateOrUpdateConfiguration updates the configuration of an app.
+// CreateOrUpdateConfiguration description for Updates the configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -1640,9 +1844,9 @@ func (client AppsClient) CreateOrUpdateConfiguration(ctx context.Context, resour
 					Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.Push.PushSettingsProperties", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.Push.PushSettingsProperties.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
 					}},
-					{Target: "siteConfig.SiteConfig.ReservedInstanceCount", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.ReservedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-							{Target: "siteConfig.SiteConfig.ReservedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
+							{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("web.AppsClient", "CreateOrUpdateConfiguration", err.Error())
@@ -1677,7 +1881,7 @@ func (client AppsClient) CreateOrUpdateConfigurationPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1712,7 +1916,7 @@ func (client AppsClient) CreateOrUpdateConfigurationResponder(resp *http.Respons
 	return
 }
 
-// CreateOrUpdateConfigurationSlot updates the configuration of an app.
+// CreateOrUpdateConfigurationSlot description for Updates the configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -1741,9 +1945,9 @@ func (client AppsClient) CreateOrUpdateConfigurationSlot(ctx context.Context, re
 					Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.Push.PushSettingsProperties", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.Push.PushSettingsProperties.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
 					}},
-					{Target: "siteConfig.SiteConfig.ReservedInstanceCount", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.ReservedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-							{Target: "siteConfig.SiteConfig.ReservedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
+							{Target: "siteConfig.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("web.AppsClient", "CreateOrUpdateConfigurationSlot", err.Error())
@@ -1779,7 +1983,7 @@ func (client AppsClient) CreateOrUpdateConfigurationSlotPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1814,8 +2018,8 @@ func (client AppsClient) CreateOrUpdateConfigurationSlotResponder(resp *http.Res
 	return
 }
 
-// CreateOrUpdateDomainOwnershipIdentifier creates a domain ownership identifier for web app, or updates an existing
-// ownership identifier.
+// CreateOrUpdateDomainOwnershipIdentifier description for Creates a domain ownership identifier for web app, or
+// updates an existing ownership identifier.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -1870,7 +2074,7 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierPreparer(ctx con
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1905,8 +2109,8 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierResponder(resp *
 	return
 }
 
-// CreateOrUpdateDomainOwnershipIdentifierSlot creates a domain ownership identifier for web app, or updates an
-// existing ownership identifier.
+// CreateOrUpdateDomainOwnershipIdentifierSlot description for Creates a domain ownership identifier for web app, or
+// updates an existing ownership identifier.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -1964,7 +2168,7 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierSlotPreparer(ctx
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1999,7 +2203,7 @@ func (client AppsClient) CreateOrUpdateDomainOwnershipIdentifierSlotResponder(re
 	return
 }
 
-// CreateOrUpdateHostNameBinding creates a hostname binding for an app.
+// CreateOrUpdateHostNameBinding description for Creates a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2054,7 +2258,7 @@ func (client AppsClient) CreateOrUpdateHostNameBindingPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2089,7 +2293,7 @@ func (client AppsClient) CreateOrUpdateHostNameBindingResponder(resp *http.Respo
 	return
 }
 
-// CreateOrUpdateHostNameBindingSlot creates a hostname binding for an app.
+// CreateOrUpdateHostNameBindingSlot description for Creates a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2147,7 +2351,7 @@ func (client AppsClient) CreateOrUpdateHostNameBindingSlotPreparer(ctx context.C
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2182,7 +2386,7 @@ func (client AppsClient) CreateOrUpdateHostNameBindingSlotResponder(resp *http.R
 	return
 }
 
-// CreateOrUpdateHybridConnection creates a new Hybrid Connection using a Service Bus relay.
+// CreateOrUpdateHybridConnection description for Creates a new Hybrid Connection using a Service Bus relay.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -2239,7 +2443,7 @@ func (client AppsClient) CreateOrUpdateHybridConnectionPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2274,7 +2478,7 @@ func (client AppsClient) CreateOrUpdateHybridConnectionResponder(resp *http.Resp
 	return
 }
 
-// CreateOrUpdateHybridConnectionSlot creates a new Hybrid Connection using a Service Bus relay.
+// CreateOrUpdateHybridConnectionSlot description for Creates a new Hybrid Connection using a Service Bus relay.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -2333,7 +2537,7 @@ func (client AppsClient) CreateOrUpdateHybridConnectionSlotPreparer(ctx context.
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2368,7 +2572,7 @@ func (client AppsClient) CreateOrUpdateHybridConnectionSlotResponder(resp *http.
 	return
 }
 
-// CreateOrUpdatePublicCertificate creates a hostname binding for an app.
+// CreateOrUpdatePublicCertificate description for Creates a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2424,7 +2628,7 @@ func (client AppsClient) CreateOrUpdatePublicCertificatePreparer(ctx context.Con
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2459,7 +2663,7 @@ func (client AppsClient) CreateOrUpdatePublicCertificateResponder(resp *http.Res
 	return
 }
 
-// CreateOrUpdatePublicCertificateSlot creates a hostname binding for an app.
+// CreateOrUpdatePublicCertificateSlot description for Creates a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2518,7 +2722,7 @@ func (client AppsClient) CreateOrUpdatePublicCertificateSlotPreparer(ctx context
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2553,8 +2757,8 @@ func (client AppsClient) CreateOrUpdatePublicCertificateSlotResponder(resp *http
 	return
 }
 
-// CreateOrUpdateRelayServiceConnection creates a new hybrid connection configuration (PUT), or updates an existing one
-// (PATCH).
+// CreateOrUpdateRelayServiceConnection description for Creates a new hybrid connection configuration (PUT), or updates
+// an existing one (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2609,7 +2813,7 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionPreparer(ctx contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2644,8 +2848,8 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionResponder(resp *htt
 	return
 }
 
-// CreateOrUpdateRelayServiceConnectionSlot creates a new hybrid connection configuration (PUT), or updates an existing
-// one (PATCH).
+// CreateOrUpdateRelayServiceConnectionSlot description for Creates a new hybrid connection configuration (PUT), or
+// updates an existing one (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2703,7 +2907,7 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlotPreparer(ctx co
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2738,7 +2942,8 @@ func (client AppsClient) CreateOrUpdateRelayServiceConnectionSlotResponder(resp 
 	return
 }
 
-// CreateOrUpdateSlot creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+// CreateOrUpdateSlot description for Creates a new web, mobile, or API app in an existing resource group, or updates
+// an existing app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
@@ -2769,9 +2974,9 @@ func (client AppsClient) CreateOrUpdateSlot(ctx context.Context, resourceGroupNa
 						Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.Push.PushSettingsProperties", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.Push.PushSettingsProperties.IsPushEnabled", Name: validation.Null, Rule: true, Chain: nil}}},
 						}},
-						{Target: "siteEnvelope.SiteProperties.SiteConfig.ReservedInstanceCount", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.ReservedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-								{Target: "siteEnvelope.SiteProperties.SiteConfig.ReservedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+						{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
+								{Target: "siteEnvelope.SiteProperties.SiteConfig.PreWarmedInstanceCount", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
 							}},
 					}},
 					{Target: "siteEnvelope.SiteProperties.CloningInfo", Name: validation.Null, Rule: false,
@@ -2804,7 +3009,7 @@ func (client AppsClient) CreateOrUpdateSlotPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2845,7 +3050,7 @@ func (client AppsClient) CreateOrUpdateSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// CreateOrUpdateSourceControl updates the source control configuration of an app.
+// CreateOrUpdateSourceControl description for Updates the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2892,7 +3097,7 @@ func (client AppsClient) CreateOrUpdateSourceControlPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2933,7 +3138,7 @@ func (client AppsClient) CreateOrUpdateSourceControlResponder(resp *http.Respons
 	return
 }
 
-// CreateOrUpdateSourceControlSlot updates the source control configuration of an app.
+// CreateOrUpdateSourceControlSlot description for Updates the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -2983,7 +3188,7 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3024,9 +3229,9 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotResponder(resp *http.Res
 	return
 }
 
-// CreateOrUpdateSwiftVirtualNetworkConnection integrates this Web App with a Virtual Network. This requires that 1)
-// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
-// delegated, and is not
+// CreateOrUpdateSwiftVirtualNetworkConnection description for Integrates this Web App with a Virtual Network. This
+// requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has
+// already been delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -3080,7 +3285,7 @@ func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionPreparer(ctx
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3115,9 +3320,9 @@ func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionResponder(re
 	return
 }
 
-// CreateOrUpdateSwiftVirtualNetworkConnectionSlot integrates this Web App with a Virtual Network. This requires that
-// 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
-// delegated, and is not
+// CreateOrUpdateSwiftVirtualNetworkConnectionSlot description for Integrates this Web App with a Virtual Network. This
+// requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has
+// already been delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -3174,7 +3379,7 @@ func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlotPreparer
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3209,8 +3414,8 @@ func (client AppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionSlotResponde
 	return
 }
 
-// CreateOrUpdateVnetConnection adds a Virtual Network connection to an app or slot (PUT) or updates the connection
-// properties (PATCH).
+// CreateOrUpdateVnetConnection description for Adds a Virtual Network connection to an app or slot (PUT) or updates
+// the connection properties (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3265,7 +3470,7 @@ func (client AppsClient) CreateOrUpdateVnetConnectionPreparer(ctx context.Contex
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3300,7 +3505,8 @@ func (client AppsClient) CreateOrUpdateVnetConnectionResponder(resp *http.Respon
 	return
 }
 
-// CreateOrUpdateVnetConnectionGateway adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
+// CreateOrUpdateVnetConnectionGateway description for Adds a gateway to a connected Virtual Network (PUT) or updates
+// it (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3360,7 +3566,7 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGatewayPreparer(ctx context
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3395,7 +3601,8 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGatewayResponder(resp *http
 	return
 }
 
-// CreateOrUpdateVnetConnectionGatewaySlot adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
+// CreateOrUpdateVnetConnectionGatewaySlot description for Adds a gateway to a connected Virtual Network (PUT) or
+// updates it (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3458,7 +3665,7 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGatewaySlotPreparer(ctx con
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3493,8 +3700,8 @@ func (client AppsClient) CreateOrUpdateVnetConnectionGatewaySlotResponder(resp *
 	return
 }
 
-// CreateOrUpdateVnetConnectionSlot adds a Virtual Network connection to an app or slot (PUT) or updates the connection
-// properties (PATCH).
+// CreateOrUpdateVnetConnectionSlot description for Adds a Virtual Network connection to an app or slot (PUT) or
+// updates the connection properties (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3552,7 +3759,7 @@ func (client AppsClient) CreateOrUpdateVnetConnectionSlotPreparer(ctx context.Co
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3587,7 +3794,7 @@ func (client AppsClient) CreateOrUpdateVnetConnectionSlotResponder(resp *http.Re
 	return
 }
 
-// Delete deletes a web, mobile, or API app, or one of the deployment slots.
+// Delete description for Deletes a web, mobile, or API app, or one of the deployment slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app to delete.
@@ -3642,7 +3849,7 @@ func (client AppsClient) DeletePreparer(ctx context.Context, resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3680,7 +3887,7 @@ func (client AppsClient) DeleteResponder(resp *http.Response) (result autorest.R
 	return
 }
 
-// DeleteBackup deletes a backup of an app by its ID.
+// DeleteBackup description for Deletes a backup of an app by its ID.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3734,7 +3941,7 @@ func (client AppsClient) DeleteBackupPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3766,7 +3973,7 @@ func (client AppsClient) DeleteBackupResponder(resp *http.Response) (result auto
 	return
 }
 
-// DeleteBackupConfiguration deletes the backup configuration of an app.
+// DeleteBackupConfiguration description for Deletes the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3818,7 +4025,7 @@ func (client AppsClient) DeleteBackupConfigurationPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3850,7 +4057,7 @@ func (client AppsClient) DeleteBackupConfigurationResponder(resp *http.Response)
 	return
 }
 
-// DeleteBackupConfigurationSlot deletes the backup configuration of an app.
+// DeleteBackupConfigurationSlot description for Deletes the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3905,7 +4112,7 @@ func (client AppsClient) DeleteBackupConfigurationSlotPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3937,7 +4144,7 @@ func (client AppsClient) DeleteBackupConfigurationSlotResponder(resp *http.Respo
 	return
 }
 
-// DeleteBackupSlot deletes a backup of an app by its ID.
+// DeleteBackupSlot description for Deletes a backup of an app by its ID.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -3994,7 +4201,7 @@ func (client AppsClient) DeleteBackupSlotPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4026,7 +4233,7 @@ func (client AppsClient) DeleteBackupSlotResponder(resp *http.Response) (result 
 	return
 }
 
-// DeleteContinuousWebJob delete a continuous web job by its ID for an app, or a deployment slot.
+// DeleteContinuousWebJob description for Delete a continuous web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -4080,7 +4287,7 @@ func (client AppsClient) DeleteContinuousWebJobPreparer(ctx context.Context, res
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4112,7 +4319,7 @@ func (client AppsClient) DeleteContinuousWebJobResponder(resp *http.Response) (r
 	return
 }
 
-// DeleteContinuousWebJobSlot delete a continuous web job by its ID for an app, or a deployment slot.
+// DeleteContinuousWebJobSlot description for Delete a continuous web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -4169,7 +4376,7 @@ func (client AppsClient) DeleteContinuousWebJobSlotPreparer(ctx context.Context,
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4201,7 +4408,7 @@ func (client AppsClient) DeleteContinuousWebJobSlotResponder(resp *http.Response
 	return
 }
 
-// DeleteDeployment delete a deployment by its ID for an app, or a deployment slot.
+// DeleteDeployment description for Delete a deployment by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4255,7 +4462,7 @@ func (client AppsClient) DeleteDeploymentPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4287,7 +4494,7 @@ func (client AppsClient) DeleteDeploymentResponder(resp *http.Response) (result 
 	return
 }
 
-// DeleteDeploymentSlot delete a deployment by its ID for an app, or a deployment slot.
+// DeleteDeploymentSlot description for Delete a deployment by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4344,7 +4551,7 @@ func (client AppsClient) DeleteDeploymentSlotPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4376,7 +4583,7 @@ func (client AppsClient) DeleteDeploymentSlotResponder(resp *http.Response) (res
 	return
 }
 
-// DeleteDomainOwnershipIdentifier deletes a domain ownership identifier for a web app.
+// DeleteDomainOwnershipIdentifier description for Deletes a domain ownership identifier for a web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4430,7 +4637,7 @@ func (client AppsClient) DeleteDomainOwnershipIdentifierPreparer(ctx context.Con
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4462,7 +4669,7 @@ func (client AppsClient) DeleteDomainOwnershipIdentifierResponder(resp *http.Res
 	return
 }
 
-// DeleteDomainOwnershipIdentifierSlot deletes a domain ownership identifier for a web app.
+// DeleteDomainOwnershipIdentifierSlot description for Deletes a domain ownership identifier for a web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4519,7 +4726,7 @@ func (client AppsClient) DeleteDomainOwnershipIdentifierSlotPreparer(ctx context
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4551,7 +4758,7 @@ func (client AppsClient) DeleteDomainOwnershipIdentifierSlotResponder(resp *http
 	return
 }
 
-// DeleteFunction delete a function for web site, or a deployment slot.
+// DeleteFunction description for Delete a function for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -4605,7 +4812,7 @@ func (client AppsClient) DeleteFunctionPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4637,7 +4844,7 @@ func (client AppsClient) DeleteFunctionResponder(resp *http.Response) (result au
 	return
 }
 
-// DeleteHostNameBinding deletes a hostname binding for an app.
+// DeleteHostNameBinding description for Deletes a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4691,7 +4898,7 @@ func (client AppsClient) DeleteHostNameBindingPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4723,7 +4930,7 @@ func (client AppsClient) DeleteHostNameBindingResponder(resp *http.Response) (re
 	return
 }
 
-// DeleteHostNameBindingSlot deletes a hostname binding for an app.
+// DeleteHostNameBindingSlot description for Deletes a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -4780,7 +4987,7 @@ func (client AppsClient) DeleteHostNameBindingSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4812,7 +5019,7 @@ func (client AppsClient) DeleteHostNameBindingSlotResponder(resp *http.Response)
 	return
 }
 
-// DeleteHybridConnection removes a Hybrid Connection from this site.
+// DeleteHybridConnection description for Removes a Hybrid Connection from this site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -4868,7 +5075,7 @@ func (client AppsClient) DeleteHybridConnectionPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4900,7 +5107,7 @@ func (client AppsClient) DeleteHybridConnectionResponder(resp *http.Response) (r
 	return
 }
 
-// DeleteHybridConnectionSlot removes a Hybrid Connection from this site.
+// DeleteHybridConnectionSlot description for Removes a Hybrid Connection from this site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -4958,7 +5165,7 @@ func (client AppsClient) DeleteHybridConnectionSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -4990,13 +5197,12 @@ func (client AppsClient) DeleteHybridConnectionSlotResponder(resp *http.Response
 	return
 }
 
-// DeleteInstanceFunctionSlot delete a function for web site, or a deployment slot.
+// DeleteInstanceFunctionSlot description for Delete a function for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // functionName - function name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) DeleteInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DeleteInstanceFunctionSlot")
@@ -5047,7 +5253,7 @@ func (client AppsClient) DeleteInstanceFunctionSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5079,8 +5285,8 @@ func (client AppsClient) DeleteInstanceFunctionSlotResponder(resp *http.Response
 	return
 }
 
-// DeleteInstanceProcess terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
-// instance in a web site.
+// DeleteInstanceProcess description for Terminate a process by its ID for a web site, or a deployment slot, or
+// specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -5137,7 +5343,7 @@ func (client AppsClient) DeleteInstanceProcessPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5169,8 +5375,8 @@ func (client AppsClient) DeleteInstanceProcessResponder(resp *http.Response) (re
 	return
 }
 
-// DeleteInstanceProcessSlot terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
-// instance in a web site.
+// DeleteInstanceProcessSlot description for Terminate a process by its ID for a web site, or a deployment slot, or
+// specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -5230,7 +5436,7 @@ func (client AppsClient) DeleteInstanceProcessSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5262,7 +5468,7 @@ func (client AppsClient) DeleteInstanceProcessSlotResponder(resp *http.Response)
 	return
 }
 
-// DeletePremierAddOn delete a premier add-on from an app.
+// DeletePremierAddOn description for Delete a premier add-on from an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5316,7 +5522,7 @@ func (client AppsClient) DeletePremierAddOnPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5348,7 +5554,7 @@ func (client AppsClient) DeletePremierAddOnResponder(resp *http.Response) (resul
 	return
 }
 
-// DeletePremierAddOnSlot delete a premier add-on from an app.
+// DeletePremierAddOnSlot description for Delete a premier add-on from an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5405,7 +5611,7 @@ func (client AppsClient) DeletePremierAddOnSlotPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5437,8 +5643,8 @@ func (client AppsClient) DeletePremierAddOnSlotResponder(resp *http.Response) (r
 	return
 }
 
-// DeleteProcess terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in
-// a web site.
+// DeleteProcess description for Terminate a process by its ID for a web site, or a deployment slot, or specific
+// scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -5492,7 +5698,7 @@ func (client AppsClient) DeleteProcessPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5524,8 +5730,8 @@ func (client AppsClient) DeleteProcessResponder(resp *http.Response) (result aut
 	return
 }
 
-// DeleteProcessSlot terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
-// instance in a web site.
+// DeleteProcessSlot description for Terminate a process by its ID for a web site, or a deployment slot, or specific
+// scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -5582,7 +5788,7 @@ func (client AppsClient) DeleteProcessSlotPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5614,7 +5820,7 @@ func (client AppsClient) DeleteProcessSlotResponder(resp *http.Response) (result
 	return
 }
 
-// DeletePublicCertificate deletes a hostname binding for an app.
+// DeletePublicCertificate description for Deletes a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5668,7 +5874,7 @@ func (client AppsClient) DeletePublicCertificatePreparer(ctx context.Context, re
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5700,7 +5906,7 @@ func (client AppsClient) DeletePublicCertificateResponder(resp *http.Response) (
 	return
 }
 
-// DeletePublicCertificateSlot deletes a hostname binding for an app.
+// DeletePublicCertificateSlot description for Deletes a hostname binding for an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5757,7 +5963,7 @@ func (client AppsClient) DeletePublicCertificateSlotPreparer(ctx context.Context
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5789,7 +5995,7 @@ func (client AppsClient) DeletePublicCertificateSlotResponder(resp *http.Respons
 	return
 }
 
-// DeleteRelayServiceConnection deletes a relay service connection by its name.
+// DeleteRelayServiceConnection description for Deletes a relay service connection by its name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5843,7 +6049,7 @@ func (client AppsClient) DeleteRelayServiceConnectionPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5875,7 +6081,7 @@ func (client AppsClient) DeleteRelayServiceConnectionResponder(resp *http.Respon
 	return
 }
 
-// DeleteRelayServiceConnectionSlot deletes a relay service connection by its name.
+// DeleteRelayServiceConnectionSlot description for Deletes a relay service connection by its name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -5932,7 +6138,7 @@ func (client AppsClient) DeleteRelayServiceConnectionSlotPreparer(ctx context.Co
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -5964,7 +6170,7 @@ func (client AppsClient) DeleteRelayServiceConnectionSlotResponder(resp *http.Re
 	return
 }
 
-// DeleteSiteExtension remove a site extension from a web site, or a deployment slot.
+// DeleteSiteExtension description for Remove a site extension from a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -6018,7 +6224,7 @@ func (client AppsClient) DeleteSiteExtensionPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6050,7 +6256,7 @@ func (client AppsClient) DeleteSiteExtensionResponder(resp *http.Response) (resu
 	return
 }
 
-// DeleteSiteExtensionSlot remove a site extension from a web site, or a deployment slot.
+// DeleteSiteExtensionSlot description for Remove a site extension from a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -6107,7 +6313,7 @@ func (client AppsClient) DeleteSiteExtensionSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6139,7 +6345,7 @@ func (client AppsClient) DeleteSiteExtensionSlotResponder(resp *http.Response) (
 	return
 }
 
-// DeleteSlot deletes a web, mobile, or API app, or one of the deployment slots.
+// DeleteSlot description for Deletes a web, mobile, or API app, or one of the deployment slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app to delete.
@@ -6196,7 +6402,7 @@ func (client AppsClient) DeleteSlotPreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6234,7 +6440,7 @@ func (client AppsClient) DeleteSlotResponder(resp *http.Response) (result autore
 	return
 }
 
-// DeleteSourceControl deletes the source control configuration of an app.
+// DeleteSourceControl description for Deletes the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6286,7 +6492,7 @@ func (client AppsClient) DeleteSourceControlPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6318,7 +6524,7 @@ func (client AppsClient) DeleteSourceControlResponder(resp *http.Response) (resu
 	return
 }
 
-// DeleteSourceControlSlot deletes the source control configuration of an app.
+// DeleteSourceControlSlot description for Deletes the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6373,7 +6579,7 @@ func (client AppsClient) DeleteSourceControlSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6405,7 +6611,8 @@ func (client AppsClient) DeleteSourceControlSlotResponder(resp *http.Response) (
 	return
 }
 
-// DeleteSwiftVirtualNetwork deletes a Swift Virtual Network connection from an app (or deployment slot).
+// DeleteSwiftVirtualNetwork description for Deletes a Swift Virtual Network connection from an app (or deployment
+// slot).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6457,7 +6664,7 @@ func (client AppsClient) DeleteSwiftVirtualNetworkPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6489,7 +6696,8 @@ func (client AppsClient) DeleteSwiftVirtualNetworkResponder(resp *http.Response)
 	return
 }
 
-// DeleteSwiftVirtualNetworkSlot deletes a Swift Virtual Network connection from an app (or deployment slot).
+// DeleteSwiftVirtualNetworkSlot description for Deletes a Swift Virtual Network connection from an app (or deployment
+// slot).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6544,7 +6752,7 @@ func (client AppsClient) DeleteSwiftVirtualNetworkSlotPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6576,7 +6784,7 @@ func (client AppsClient) DeleteSwiftVirtualNetworkSlotResponder(resp *http.Respo
 	return
 }
 
-// DeleteTriggeredWebJob delete a triggered web job by its ID for an app, or a deployment slot.
+// DeleteTriggeredWebJob description for Delete a triggered web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -6630,7 +6838,7 @@ func (client AppsClient) DeleteTriggeredWebJobPreparer(ctx context.Context, reso
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6662,13 +6870,13 @@ func (client AppsClient) DeleteTriggeredWebJobResponder(resp *http.Response) (re
 	return
 }
 
-// DeleteTriggeredWebJobSlot delete a triggered web job by its ID for an app, or a deployment slot.
+// DeleteTriggeredWebJobSlot description for Delete a triggered web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // webJobName - name of Web Job.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot. If a slot is not specified, the API deletes web job for the production
+// slot.
 func (client AppsClient) DeleteTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.DeleteTriggeredWebJobSlot")
@@ -6719,7 +6927,7 @@ func (client AppsClient) DeleteTriggeredWebJobSlotPreparer(ctx context.Context, 
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6751,7 +6959,8 @@ func (client AppsClient) DeleteTriggeredWebJobSlotResponder(resp *http.Response)
 	return
 }
 
-// DeleteVnetConnection deletes a connection from an app (or deployment slot to a named virtual network.
+// DeleteVnetConnection description for Deletes a connection from an app (or deployment slot to a named virtual
+// network.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6805,7 +7014,7 @@ func (client AppsClient) DeleteVnetConnectionPreparer(ctx context.Context, resou
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6837,7 +7046,8 @@ func (client AppsClient) DeleteVnetConnectionResponder(resp *http.Response) (res
 	return
 }
 
-// DeleteVnetConnectionSlot deletes a connection from an app (or deployment slot to a named virtual network.
+// DeleteVnetConnectionSlot description for Deletes a connection from an app (or deployment slot to a named virtual
+// network.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6894,7 +7104,7 @@ func (client AppsClient) DeleteVnetConnectionSlotPreparer(ctx context.Context, r
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -6926,8 +7136,8 @@ func (client AppsClient) DeleteVnetConnectionSlotResponder(resp *http.Response) 
 	return
 }
 
-// DiscoverBackup discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get
-// information about the databases stored in a backup.
+// DiscoverBackup description for Discovers an existing app backup that can be restored from a blob in Azure storage.
+// Use this to get information about the databases stored in a backup.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -6985,7 +7195,7 @@ func (client AppsClient) DiscoverBackupPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7020,8 +7230,8 @@ func (client AppsClient) DiscoverBackupResponder(resp *http.Response) (result Re
 	return
 }
 
-// DiscoverBackupSlot discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
-// get information about the databases stored in a backup.
+// DiscoverBackupSlot description for Discovers an existing app backup that can be restored from a blob in Azure
+// storage. Use this to get information about the databases stored in a backup.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7082,7 +7292,7 @@ func (client AppsClient) DiscoverBackupSlotPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7117,7 +7327,8 @@ func (client AppsClient) DiscoverBackupSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// GenerateNewSitePublishingPassword generates a new publishing password for an app (or deployment slot, if specified).
+// GenerateNewSitePublishingPassword description for Generates a new publishing password for an app (or deployment
+// slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7169,7 +7380,7 @@ func (client AppsClient) GenerateNewSitePublishingPasswordPreparer(ctx context.C
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7201,8 +7412,8 @@ func (client AppsClient) GenerateNewSitePublishingPasswordResponder(resp *http.R
 	return
 }
 
-// GenerateNewSitePublishingPasswordSlot generates a new publishing password for an app (or deployment slot, if
-// specified).
+// GenerateNewSitePublishingPasswordSlot description for Generates a new publishing password for an app (or deployment
+// slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7257,7 +7468,7 @@ func (client AppsClient) GenerateNewSitePublishingPasswordSlotPreparer(ctx conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7289,7 +7500,7 @@ func (client AppsClient) GenerateNewSitePublishingPasswordSlotResponder(resp *ht
 	return
 }
 
-// Get gets the details of a web, mobile, or API app.
+// Get description for Gets the details of a web, mobile, or API app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7341,7 +7552,7 @@ func (client AppsClient) GetPreparer(ctx context.Context, resourceGroupName stri
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7374,7 +7585,179 @@ func (client AppsClient) GetResponder(resp *http.Response) (result Site, err err
 	return
 }
 
-// GetAuthSettings gets the Authentication/Authorization settings of an app.
+// GetAppSettingKeyVaultReference description for Gets the config reference and status of an app
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// appSettingKey - app Setting key name.
+func (client AppsClient) GetAppSettingKeyVaultReference(ctx context.Context, resourceGroupName string, name string, appSettingKey string) (result KeyVaultReferenceResource, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetAppSettingKeyVaultReference")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetAppSettingKeyVaultReference", err.Error())
+	}
+
+	req, err := client.GetAppSettingKeyVaultReferencePreparer(ctx, resourceGroupName, name, appSettingKey)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAppSettingKeyVaultReference", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetAppSettingKeyVaultReferenceSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAppSettingKeyVaultReference", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetAppSettingKeyVaultReferenceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAppSettingKeyVaultReference", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetAppSettingKeyVaultReferencePreparer prepares the GetAppSettingKeyVaultReference request.
+func (client AppsClient) GetAppSettingKeyVaultReferencePreparer(ctx context.Context, resourceGroupName string, name string, appSettingKey string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"appSettingKey":     autorest.Encode("path", appSettingKey),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/appsettings/{appSettingKey}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetAppSettingKeyVaultReferenceSender sends the GetAppSettingKeyVaultReference request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetAppSettingKeyVaultReferenceSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetAppSettingKeyVaultReferenceResponder handles the response to the GetAppSettingKeyVaultReference request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetAppSettingKeyVaultReferenceResponder(resp *http.Response) (result KeyVaultReferenceResource, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetAppSettingsKeyVaultReferences description for Gets the config reference app settings and status of an app
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+func (client AppsClient) GetAppSettingsKeyVaultReferences(ctx context.Context, resourceGroupName string, name string) (result KeyVaultReferenceCollection, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetAppSettingsKeyVaultReferences")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetAppSettingsKeyVaultReferences", err.Error())
+	}
+
+	req, err := client.GetAppSettingsKeyVaultReferencesPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAppSettingsKeyVaultReferences", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetAppSettingsKeyVaultReferencesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAppSettingsKeyVaultReferences", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetAppSettingsKeyVaultReferencesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetAppSettingsKeyVaultReferences", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetAppSettingsKeyVaultReferencesPreparer prepares the GetAppSettingsKeyVaultReferences request.
+func (client AppsClient) GetAppSettingsKeyVaultReferencesPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/appsettings", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetAppSettingsKeyVaultReferencesSender sends the GetAppSettingsKeyVaultReferences request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetAppSettingsKeyVaultReferencesSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetAppSettingsKeyVaultReferencesResponder handles the response to the GetAppSettingsKeyVaultReferences request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetAppSettingsKeyVaultReferencesResponder(resp *http.Response) (result KeyVaultReferenceCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetAuthSettings description for Gets the Authentication/Authorization settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7426,7 +7809,7 @@ func (client AppsClient) GetAuthSettingsPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7459,7 +7842,7 @@ func (client AppsClient) GetAuthSettingsResponder(resp *http.Response) (result S
 	return
 }
 
-// GetAuthSettingsSlot gets the Authentication/Authorization settings of an app.
+// GetAuthSettingsSlot description for Gets the Authentication/Authorization settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7514,7 +7897,7 @@ func (client AppsClient) GetAuthSettingsSlotPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7547,7 +7930,7 @@ func (client AppsClient) GetAuthSettingsSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// GetBackupConfiguration gets the backup configuration of an app.
+// GetBackupConfiguration description for Gets the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7599,7 +7982,7 @@ func (client AppsClient) GetBackupConfigurationPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7632,7 +8015,7 @@ func (client AppsClient) GetBackupConfigurationResponder(resp *http.Response) (r
 	return
 }
 
-// GetBackupConfigurationSlot gets the backup configuration of an app.
+// GetBackupConfigurationSlot description for Gets the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7687,7 +8070,7 @@ func (client AppsClient) GetBackupConfigurationSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7720,7 +8103,7 @@ func (client AppsClient) GetBackupConfigurationSlotResponder(resp *http.Response
 	return
 }
 
-// GetBackupStatus gets a backup of an app by its ID.
+// GetBackupStatus description for Gets a backup of an app by its ID.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7774,7 +8157,7 @@ func (client AppsClient) GetBackupStatusPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7807,7 +8190,7 @@ func (client AppsClient) GetBackupStatusResponder(resp *http.Response) (result B
 	return
 }
 
-// GetBackupStatusSlot gets a backup of an app by its ID.
+// GetBackupStatusSlot description for Gets a backup of an app by its ID.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7864,7 +8247,7 @@ func (client AppsClient) GetBackupStatusSlotPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7897,8 +8280,8 @@ func (client AppsClient) GetBackupStatusSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// GetConfiguration gets the configuration of an app, such as platform version and bitness, default documents, virtual
-// applications, Always On, etc.
+// GetConfiguration description for Gets the configuration of an app, such as platform version and bitness, default
+// documents, virtual applications, Always On, etc.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -7950,7 +8333,7 @@ func (client AppsClient) GetConfigurationPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -7983,8 +8366,8 @@ func (client AppsClient) GetConfigurationResponder(resp *http.Response) (result 
 	return
 }
 
-// GetConfigurationSlot gets the configuration of an app, such as platform version and bitness, default documents,
-// virtual applications, Always On, etc.
+// GetConfigurationSlot description for Gets the configuration of an app, such as platform version and bitness, default
+// documents, virtual applications, Always On, etc.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8039,7 +8422,7 @@ func (client AppsClient) GetConfigurationSlotPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8072,7 +8455,7 @@ func (client AppsClient) GetConfigurationSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetConfigurationSnapshot gets a snapshot of the configuration of an app at a previous point in time.
+// GetConfigurationSnapshot description for Gets a snapshot of the configuration of an app at a previous point in time.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8126,7 +8509,7 @@ func (client AppsClient) GetConfigurationSnapshotPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8159,7 +8542,8 @@ func (client AppsClient) GetConfigurationSnapshotResponder(resp *http.Response) 
 	return
 }
 
-// GetConfigurationSnapshotSlot gets a snapshot of the configuration of an app at a previous point in time.
+// GetConfigurationSnapshotSlot description for Gets a snapshot of the configuration of an app at a previous point in
+// time.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8216,7 +8600,7 @@ func (client AppsClient) GetConfigurationSnapshotSlotPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8249,7 +8633,7 @@ func (client AppsClient) GetConfigurationSnapshotSlotResponder(resp *http.Respon
 	return
 }
 
-// GetContainerLogsZip gets the ZIP archived docker log files for the given site
+// GetContainerLogsZip description for Gets the ZIP archived docker log files for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -8301,7 +8685,7 @@ func (client AppsClient) GetContainerLogsZipPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8333,7 +8717,7 @@ func (client AppsClient) GetContainerLogsZipResponder(resp *http.Response) (resu
 	return
 }
 
-// GetContainerLogsZipSlot gets the ZIP archived docker log files for the given site
+// GetContainerLogsZipSlot description for Gets the ZIP archived docker log files for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -8387,7 +8771,7 @@ func (client AppsClient) GetContainerLogsZipSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8419,7 +8803,7 @@ func (client AppsClient) GetContainerLogsZipSlotResponder(resp *http.Response) (
 	return
 }
 
-// GetContinuousWebJob gets a continuous web job by its ID for an app, or a deployment slot.
+// GetContinuousWebJob description for Gets a continuous web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -8473,7 +8857,7 @@ func (client AppsClient) GetContinuousWebJobPreparer(ctx context.Context, resour
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8506,7 +8890,7 @@ func (client AppsClient) GetContinuousWebJobResponder(resp *http.Response) (resu
 	return
 }
 
-// GetContinuousWebJobSlot gets a continuous web job by its ID for an app, or a deployment slot.
+// GetContinuousWebJobSlot description for Gets a continuous web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -8563,7 +8947,7 @@ func (client AppsClient) GetContinuousWebJobSlotPreparer(ctx context.Context, re
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8596,7 +8980,7 @@ func (client AppsClient) GetContinuousWebJobSlotResponder(resp *http.Response) (
 	return
 }
 
-// GetDeployment get a deployment by its ID for an app, or a deployment slot.
+// GetDeployment description for Get a deployment by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8650,7 +9034,7 @@ func (client AppsClient) GetDeploymentPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8683,7 +9067,7 @@ func (client AppsClient) GetDeploymentResponder(resp *http.Response) (result Dep
 	return
 }
 
-// GetDeploymentSlot get a deployment by its ID for an app, or a deployment slot.
+// GetDeploymentSlot description for Get a deployment by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8740,7 +9124,7 @@ func (client AppsClient) GetDeploymentSlotPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8773,7 +9157,7 @@ func (client AppsClient) GetDeploymentSlotResponder(resp *http.Response) (result
 	return
 }
 
-// GetDiagnosticLogsConfiguration gets the logging configuration of an app.
+// GetDiagnosticLogsConfiguration description for Gets the logging configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8825,7 +9209,7 @@ func (client AppsClient) GetDiagnosticLogsConfigurationPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8858,7 +9242,7 @@ func (client AppsClient) GetDiagnosticLogsConfigurationResponder(resp *http.Resp
 	return
 }
 
-// GetDiagnosticLogsConfigurationSlot gets the logging configuration of an app.
+// GetDiagnosticLogsConfigurationSlot description for Gets the logging configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -8913,7 +9297,7 @@ func (client AppsClient) GetDiagnosticLogsConfigurationSlotPreparer(ctx context.
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -8946,7 +9330,7 @@ func (client AppsClient) GetDiagnosticLogsConfigurationSlotResponder(resp *http.
 	return
 }
 
-// GetDomainOwnershipIdentifier get domain ownership identifier for web app.
+// GetDomainOwnershipIdentifier description for Get domain ownership identifier for web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9000,7 +9384,7 @@ func (client AppsClient) GetDomainOwnershipIdentifierPreparer(ctx context.Contex
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9033,7 +9417,7 @@ func (client AppsClient) GetDomainOwnershipIdentifierResponder(resp *http.Respon
 	return
 }
 
-// GetDomainOwnershipIdentifierSlot get domain ownership identifier for web app.
+// GetDomainOwnershipIdentifierSlot description for Get domain ownership identifier for web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9090,7 +9474,7 @@ func (client AppsClient) GetDomainOwnershipIdentifierSlotPreparer(ctx context.Co
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9123,7 +9507,7 @@ func (client AppsClient) GetDomainOwnershipIdentifierSlotResponder(resp *http.Re
 	return
 }
 
-// GetFunction get function information by its ID for web site, or a deployment slot.
+// GetFunction description for Get function information by its ID for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -9177,7 +9561,7 @@ func (client AppsClient) GetFunctionPreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9210,7 +9594,7 @@ func (client AppsClient) GetFunctionResponder(resp *http.Response) (result Funct
 	return
 }
 
-// GetFunctionsAdminToken fetch a short lived token that can be exchanged for a master key.
+// GetFunctionsAdminToken description for Fetch a short lived token that can be exchanged for a master key.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -9262,7 +9646,7 @@ func (client AppsClient) GetFunctionsAdminTokenPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9295,7 +9679,7 @@ func (client AppsClient) GetFunctionsAdminTokenResponder(resp *http.Response) (r
 	return
 }
 
-// GetFunctionsAdminTokenSlot fetch a short lived token that can be exchanged for a master key.
+// GetFunctionsAdminTokenSlot description for Fetch a short lived token that can be exchanged for a master key.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -9349,7 +9733,7 @@ func (client AppsClient) GetFunctionsAdminTokenSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9382,7 +9766,7 @@ func (client AppsClient) GetFunctionsAdminTokenSlotResponder(resp *http.Response
 	return
 }
 
-// GetHostNameBinding get the named hostname binding for an app (or deployment slot, if specified).
+// GetHostNameBinding description for Get the named hostname binding for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9436,7 +9820,7 @@ func (client AppsClient) GetHostNameBindingPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9469,7 +9853,7 @@ func (client AppsClient) GetHostNameBindingResponder(resp *http.Response) (resul
 	return
 }
 
-// GetHostNameBindingSlot get the named hostname binding for an app (or deployment slot, if specified).
+// GetHostNameBindingSlot description for Get the named hostname binding for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -9526,7 +9910,7 @@ func (client AppsClient) GetHostNameBindingSlotPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9559,7 +9943,7 @@ func (client AppsClient) GetHostNameBindingSlotResponder(resp *http.Response) (r
 	return
 }
 
-// GetHybridConnection retrieves a specific Service Bus Hybrid Connection used by this Web App.
+// GetHybridConnection description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -9615,7 +9999,7 @@ func (client AppsClient) GetHybridConnectionPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9648,7 +10032,7 @@ func (client AppsClient) GetHybridConnectionResponder(resp *http.Response) (resu
 	return
 }
 
-// GetHybridConnectionSlot retrieves a specific Service Bus Hybrid Connection used by this Web App.
+// GetHybridConnectionSlot description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -9706,7 +10090,7 @@ func (client AppsClient) GetHybridConnectionSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9739,13 +10123,12 @@ func (client AppsClient) GetHybridConnectionSlotResponder(resp *http.Response) (
 	return
 }
 
-// GetInstanceFunctionSlot get function information by its ID for web site, or a deployment slot.
+// GetInstanceFunctionSlot description for Get function information by its ID for web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // functionName - function name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) GetInstanceFunctionSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (result FunctionEnvelope, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetInstanceFunctionSlot")
@@ -9796,7 +10179,7 @@ func (client AppsClient) GetInstanceFunctionSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9829,7 +10212,181 @@ func (client AppsClient) GetInstanceFunctionSlotResponder(resp *http.Response) (
 	return
 }
 
-// GetInstanceMSDeployLog get the MSDeploy Log for the last MSDeploy operation.
+// GetInstanceInfo description for Gets all scale-out instances of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+func (client AppsClient) GetInstanceInfo(ctx context.Context, resourceGroupName string, name string, instanceID string) (result SiteInstanceStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetInstanceInfo")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetInstanceInfo", err.Error())
+	}
+
+	req, err := client.GetInstanceInfoPreparer(ctx, resourceGroupName, name, instanceID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceInfo", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetInstanceInfoSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceInfo", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetInstanceInfoResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceInfo", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetInstanceInfoPreparer prepares the GetInstanceInfo request.
+func (client AppsClient) GetInstanceInfoPreparer(ctx context.Context, resourceGroupName string, name string, instanceID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"instanceId":        autorest.Encode("path", instanceID),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetInstanceInfoSender sends the GetInstanceInfo request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetInstanceInfoSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetInstanceInfoResponder handles the response to the GetInstanceInfo request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetInstanceInfoResponder(resp *http.Response) (result SiteInstanceStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetInstanceInfoSlot description for Gets all scale-out instances of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// slot - name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
+func (client AppsClient) GetInstanceInfoSlot(ctx context.Context, resourceGroupName string, name string, instanceID string, slot string) (result SiteInstanceStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetInstanceInfoSlot")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "GetInstanceInfoSlot", err.Error())
+	}
+
+	req, err := client.GetInstanceInfoSlotPreparer(ctx, resourceGroupName, name, instanceID, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceInfoSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetInstanceInfoSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceInfoSlot", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetInstanceInfoSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceInfoSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// GetInstanceInfoSlotPreparer prepares the GetInstanceInfoSlot request.
+func (client AppsClient) GetInstanceInfoSlotPreparer(ctx context.Context, resourceGroupName string, name string, instanceID string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"instanceId":        autorest.Encode("path", instanceID),
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetInstanceInfoSlotSender sends the GetInstanceInfoSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) GetInstanceInfoSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// GetInstanceInfoSlotResponder handles the response to the GetInstanceInfoSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) GetInstanceInfoSlotResponder(resp *http.Response) (result SiteInstanceStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetInstanceMSDeployLog description for Get the MSDeploy Log for the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -9883,7 +10440,7 @@ func (client AppsClient) GetInstanceMSDeployLogPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -9916,7 +10473,7 @@ func (client AppsClient) GetInstanceMSDeployLogResponder(resp *http.Response) (r
 	return
 }
 
-// GetInstanceMSDeployLogSlot get the MSDeploy Log for the last MSDeploy operation.
+// GetInstanceMSDeployLogSlot description for Get the MSDeploy Log for the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -9972,7 +10529,7 @@ func (client AppsClient) GetInstanceMSDeployLogSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -10005,7 +10562,7 @@ func (client AppsClient) GetInstanceMSDeployLogSlotResponder(resp *http.Response
 	return
 }
 
-// GetInstanceMsDeployStatus get the status of the last MSDeploy operation.
+// GetInstanceMsDeployStatus description for Get the status of the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -10059,7 +10616,7 @@ func (client AppsClient) GetInstanceMsDeployStatusPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -10092,7 +10649,7 @@ func (client AppsClient) GetInstanceMsDeployStatusResponder(resp *http.Response)
 	return
 }
 
-// GetInstanceMsDeployStatusSlot get the status of the last MSDeploy operation.
+// GetInstanceMsDeployStatusSlot description for Get the status of the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -10148,7 +10705,7 @@ func (client AppsClient) GetInstanceMsDeployStatusSlotPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -10181,7 +10738,8 @@ func (client AppsClient) GetInstanceMsDeployStatusSlotResponder(resp *http.Respo
 	return
 }
 
-// GetInstanceProcess get process information by its ID for a specific scaled-out instance in a web site.
+// GetInstanceProcess description for Get process information by its ID for a specific scaled-out instance in a web
+// site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -10238,7 +10796,7 @@ func (client AppsClient) GetInstanceProcessPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -10271,7 +10829,8 @@ func (client AppsClient) GetInstanceProcessResponder(resp *http.Response) (resul
 	return
 }
 
-// GetInstanceProcessDump get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
+// GetInstanceProcessDump description for Get a memory dump of a process by its ID for a specific scaled-out instance
+// in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -10328,7 +10887,7 @@ func (client AppsClient) GetInstanceProcessDumpPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -10360,8 +10919,8 @@ func (client AppsClient) GetInstanceProcessDumpResponder(resp *http.Response) (r
 	return
 }
 
-// GetInstanceProcessDumpSlot get a memory dump of a process by its ID for a specific scaled-out instance in a web
-// site.
+// GetInstanceProcessDumpSlot description for Get a memory dump of a process by its ID for a specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -10421,7 +10980,7 @@ func (client AppsClient) GetInstanceProcessDumpSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -10453,7 +11012,8 @@ func (client AppsClient) GetInstanceProcessDumpSlotResponder(resp *http.Response
 	return
 }
 
-// GetInstanceProcessModule get process information by its ID for a specific scaled-out instance in a web site.
+// GetInstanceProcessModule description for Get process information by its ID for a specific scaled-out instance in a
+// web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -10512,7 +11072,7 @@ func (client AppsClient) GetInstanceProcessModulePreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -10545,7 +11105,8 @@ func (client AppsClient) GetInstanceProcessModuleResponder(resp *http.Response) 
 	return
 }
 
-// GetInstanceProcessModuleSlot get process information by its ID for a specific scaled-out instance in a web site.
+// GetInstanceProcessModuleSlot description for Get process information by its ID for a specific scaled-out instance in
+// a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -10607,7 +11168,7 @@ func (client AppsClient) GetInstanceProcessModuleSlotPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -10640,7 +11201,8 @@ func (client AppsClient) GetInstanceProcessModuleSlotResponder(resp *http.Respon
 	return
 }
 
-// GetInstanceProcessSlot get process information by its ID for a specific scaled-out instance in a web site.
+// GetInstanceProcessSlot description for Get process information by its ID for a specific scaled-out instance in a web
+// site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -10700,7 +11262,7 @@ func (client AppsClient) GetInstanceProcessSlotPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -10733,197 +11295,8 @@ func (client AppsClient) GetInstanceProcessSlotResponder(resp *http.Response) (r
 	return
 }
 
-// GetInstanceProcessThread get thread information by Thread ID for a specific process, in a specific scaled-out
-// instance in a web site.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - site name.
-// processID - pID.
-// threadID - tID.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON
-// response from "GET api/sites/{siteName}/instances".
-func (client AppsClient) GetInstanceProcessThread(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, instanceID string) (result ProcessThreadInfo, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetInstanceProcessThread")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "GetInstanceProcessThread", err.Error())
-	}
-
-	req, err := client.GetInstanceProcessThreadPreparer(ctx, resourceGroupName, name, processID, threadID, instanceID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceProcessThread", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetInstanceProcessThreadSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceProcessThread", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetInstanceProcessThreadResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceProcessThread", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetInstanceProcessThreadPreparer prepares the GetInstanceProcessThread request.
-func (client AppsClient) GetInstanceProcessThreadPreparer(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, instanceID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"instanceId":        autorest.Encode("path", instanceID),
-		"name":              autorest.Encode("path", name),
-		"processId":         autorest.Encode("path", processID),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"threadId":          autorest.Encode("path", threadID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/threads/{threadId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetInstanceProcessThreadSender sends the GetInstanceProcessThread request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) GetInstanceProcessThreadSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetInstanceProcessThreadResponder handles the response to the GetInstanceProcessThread request. The method always
-// closes the http.Response Body.
-func (client AppsClient) GetInstanceProcessThreadResponder(resp *http.Response) (result ProcessThreadInfo, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetInstanceProcessThreadSlot get thread information by Thread ID for a specific process, in a specific scaled-out
-// instance in a web site.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - site name.
-// processID - pID.
-// threadID - tID.
-// slot - name of the deployment slot. If a slot is not specified, the API returns deployments for the
-// production slot.
-// instanceID - ID of a specific scaled-out instance. This is the value of the name property in the JSON
-// response from "GET api/sites/{siteName}/instances".
-func (client AppsClient) GetInstanceProcessThreadSlot(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, slot string, instanceID string) (result ProcessThreadInfo, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetInstanceProcessThreadSlot")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "GetInstanceProcessThreadSlot", err.Error())
-	}
-
-	req, err := client.GetInstanceProcessThreadSlotPreparer(ctx, resourceGroupName, name, processID, threadID, slot, instanceID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceProcessThreadSlot", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetInstanceProcessThreadSlotSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceProcessThreadSlot", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetInstanceProcessThreadSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetInstanceProcessThreadSlot", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetInstanceProcessThreadSlotPreparer prepares the GetInstanceProcessThreadSlot request.
-func (client AppsClient) GetInstanceProcessThreadSlotPreparer(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, slot string, instanceID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"instanceId":        autorest.Encode("path", instanceID),
-		"name":              autorest.Encode("path", name),
-		"processId":         autorest.Encode("path", processID),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"slot":              autorest.Encode("path", slot),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"threadId":          autorest.Encode("path", threadID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/threads/{threadId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetInstanceProcessThreadSlotSender sends the GetInstanceProcessThreadSlot request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) GetInstanceProcessThreadSlotSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetInstanceProcessThreadSlotResponder handles the response to the GetInstanceProcessThreadSlot request. The method always
-// closes the http.Response Body.
-func (client AppsClient) GetInstanceProcessThreadSlotResponder(resp *http.Response) (result ProcessThreadInfo, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetMigrateMySQLStatus returns the status of MySql in app migration, if one is active, and whether or not MySql in
-// app is enabled
+// GetMigrateMySQLStatus description for Returns the status of MySql in app migration, if one is active, and whether or
+// not MySql in app is enabled
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -10975,7 +11348,7 @@ func (client AppsClient) GetMigrateMySQLStatusPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11008,8 +11381,8 @@ func (client AppsClient) GetMigrateMySQLStatusResponder(resp *http.Response) (re
 	return
 }
 
-// GetMigrateMySQLStatusSlot returns the status of MySql in app migration, if one is active, and whether or not MySql
-// in app is enabled
+// GetMigrateMySQLStatusSlot description for Returns the status of MySql in app migration, if one is active, and
+// whether or not MySql in app is enabled
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -11063,7 +11436,7 @@ func (client AppsClient) GetMigrateMySQLStatusSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11096,7 +11469,7 @@ func (client AppsClient) GetMigrateMySQLStatusSlotResponder(resp *http.Response)
 	return
 }
 
-// GetMSDeployLog get the MSDeploy Log for the last MSDeploy operation.
+// GetMSDeployLog description for Get the MSDeploy Log for the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -11148,7 +11521,7 @@ func (client AppsClient) GetMSDeployLogPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11181,7 +11554,7 @@ func (client AppsClient) GetMSDeployLogResponder(resp *http.Response) (result MS
 	return
 }
 
-// GetMSDeployLogSlot get the MSDeploy Log for the last MSDeploy operation.
+// GetMSDeployLogSlot description for Get the MSDeploy Log for the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -11235,7 +11608,7 @@ func (client AppsClient) GetMSDeployLogSlotPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11268,7 +11641,7 @@ func (client AppsClient) GetMSDeployLogSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// GetMSDeployStatus get the status of the last MSDeploy operation.
+// GetMSDeployStatus description for Get the status of the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -11320,7 +11693,7 @@ func (client AppsClient) GetMSDeployStatusPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11353,7 +11726,7 @@ func (client AppsClient) GetMSDeployStatusResponder(resp *http.Response) (result
 	return
 }
 
-// GetMSDeployStatusSlot get the status of the last MSDeploy operation.
+// GetMSDeployStatusSlot description for Get the status of the last MSDeploy operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -11407,7 +11780,7 @@ func (client AppsClient) GetMSDeployStatusSlotPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11440,7 +11813,8 @@ func (client AppsClient) GetMSDeployStatusSlotResponder(resp *http.Response) (re
 	return
 }
 
-// GetNetworkTraceOperation gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTraceOperation description for Gets a named operation for a network trace capturing (or deployment slot,
+// if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -11494,7 +11868,7 @@ func (client AppsClient) GetNetworkTraceOperationPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11527,8 +11901,8 @@ func (client AppsClient) GetNetworkTraceOperationResponder(resp *http.Response) 
 	return
 }
 
-// GetNetworkTraceOperationSlot gets a named operation for a network trace capturing (or deployment slot, if
-// specified).
+// GetNetworkTraceOperationSlot description for Gets a named operation for a network trace capturing (or deployment
+// slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -11585,7 +11959,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11618,8 +11992,8 @@ func (client AppsClient) GetNetworkTraceOperationSlotResponder(resp *http.Respon
 	return
 }
 
-// GetNetworkTraceOperationSlotV2 gets a named operation for a network trace capturing (or deployment slot, if
-// specified).
+// GetNetworkTraceOperationSlotV2 description for Gets a named operation for a network trace capturing (or deployment
+// slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -11676,7 +12050,7 @@ func (client AppsClient) GetNetworkTraceOperationSlotV2Preparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11709,7 +12083,8 @@ func (client AppsClient) GetNetworkTraceOperationSlotV2Responder(resp *http.Resp
 	return
 }
 
-// GetNetworkTraceOperationV2 gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTraceOperationV2 description for Gets a named operation for a network trace capturing (or deployment slot,
+// if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -11763,7 +12138,7 @@ func (client AppsClient) GetNetworkTraceOperationV2Preparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11796,7 +12171,8 @@ func (client AppsClient) GetNetworkTraceOperationV2Responder(resp *http.Response
 	return
 }
 
-// GetNetworkTraces gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTraces description for Gets a named operation for a network trace capturing (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -11850,7 +12226,7 @@ func (client AppsClient) GetNetworkTracesPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11883,7 +12259,8 @@ func (client AppsClient) GetNetworkTracesResponder(resp *http.Response) (result 
 	return
 }
 
-// GetNetworkTracesSlot gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTracesSlot description for Gets a named operation for a network trace capturing (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -11940,7 +12317,7 @@ func (client AppsClient) GetNetworkTracesSlotPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -11973,7 +12350,8 @@ func (client AppsClient) GetNetworkTracesSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetNetworkTracesSlotV2 gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTracesSlotV2 description for Gets a named operation for a network trace capturing (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -12030,7 +12408,7 @@ func (client AppsClient) GetNetworkTracesSlotV2Preparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12063,7 +12441,8 @@ func (client AppsClient) GetNetworkTracesSlotV2Responder(resp *http.Response) (r
 	return
 }
 
-// GetNetworkTracesV2 gets a named operation for a network trace capturing (or deployment slot, if specified).
+// GetNetworkTracesV2 description for Gets a named operation for a network trace capturing (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -12117,7 +12496,7 @@ func (client AppsClient) GetNetworkTracesV2Preparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12150,7 +12529,7 @@ func (client AppsClient) GetNetworkTracesV2Responder(resp *http.Response) (resul
 	return
 }
 
-// GetPremierAddOn gets a named add-on of an app.
+// GetPremierAddOn description for Gets a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -12204,7 +12583,7 @@ func (client AppsClient) GetPremierAddOnPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12237,7 +12616,7 @@ func (client AppsClient) GetPremierAddOnResponder(resp *http.Response) (result P
 	return
 }
 
-// GetPremierAddOnSlot gets a named add-on of an app.
+// GetPremierAddOnSlot description for Gets a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -12294,7 +12673,7 @@ func (client AppsClient) GetPremierAddOnSlotPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12327,8 +12706,8 @@ func (client AppsClient) GetPremierAddOnSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// GetPrivateAccess gets data around private site access enablement and authorized Virtual Networks that can access the
-// site.
+// GetPrivateAccess description for Gets data around private site access enablement and authorized Virtual Networks
+// that can access the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -12380,7 +12759,7 @@ func (client AppsClient) GetPrivateAccessPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12413,8 +12792,8 @@ func (client AppsClient) GetPrivateAccessResponder(resp *http.Response) (result 
 	return
 }
 
-// GetPrivateAccessSlot gets data around private site access enablement and authorized Virtual Networks that can access
-// the site.
+// GetPrivateAccessSlot description for Gets data around private site access enablement and authorized Virtual Networks
+// that can access the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -12468,7 +12847,7 @@ func (client AppsClient) GetPrivateAccessSlotPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12501,7 +12880,7 @@ func (client AppsClient) GetPrivateAccessSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetProcess get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcess description for Get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -12555,7 +12934,7 @@ func (client AppsClient) GetProcessPreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12588,7 +12967,8 @@ func (client AppsClient) GetProcessResponder(resp *http.Response) (result Proces
 	return
 }
 
-// GetProcessDump get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
+// GetProcessDump description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web
+// site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -12642,7 +13022,7 @@ func (client AppsClient) GetProcessDumpPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12674,7 +13054,8 @@ func (client AppsClient) GetProcessDumpResponder(resp *http.Response) (result Re
 	return
 }
 
-// GetProcessDumpSlot get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
+// GetProcessDumpSlot description for Get a memory dump of a process by its ID for a specific scaled-out instance in a
+// web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -12731,7 +13112,7 @@ func (client AppsClient) GetProcessDumpSlotPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12763,7 +13144,7 @@ func (client AppsClient) GetProcessDumpSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// GetProcessModule get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcessModule description for Get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -12819,7 +13200,7 @@ func (client AppsClient) GetProcessModulePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12852,7 +13233,8 @@ func (client AppsClient) GetProcessModuleResponder(resp *http.Response) (result 
 	return
 }
 
-// GetProcessModuleSlot get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcessModuleSlot description for Get process information by its ID for a specific scaled-out instance in a web
+// site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -12911,7 +13293,7 @@ func (client AppsClient) GetProcessModuleSlotPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -12944,7 +13326,7 @@ func (client AppsClient) GetProcessModuleSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetProcessSlot get process information by its ID for a specific scaled-out instance in a web site.
+// GetProcessSlot description for Get process information by its ID for a specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -13001,7 +13383,7 @@ func (client AppsClient) GetProcessSlotPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -13034,190 +13416,7 @@ func (client AppsClient) GetProcessSlotResponder(resp *http.Response) (result Pr
 	return
 }
 
-// GetProcessThread get thread information by Thread ID for a specific process, in a specific scaled-out instance in a
-// web site.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - site name.
-// processID - pID.
-// threadID - tID.
-func (client AppsClient) GetProcessThread(ctx context.Context, resourceGroupName string, name string, processID string, threadID string) (result ProcessThreadInfo, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetProcessThread")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "GetProcessThread", err.Error())
-	}
-
-	req, err := client.GetProcessThreadPreparer(ctx, resourceGroupName, name, processID, threadID)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetProcessThread", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetProcessThreadSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetProcessThread", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetProcessThreadResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetProcessThread", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetProcessThreadPreparer prepares the GetProcessThread request.
-func (client AppsClient) GetProcessThreadPreparer(ctx context.Context, resourceGroupName string, name string, processID string, threadID string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"processId":         autorest.Encode("path", processID),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"threadId":          autorest.Encode("path", threadID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/threads/{threadId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetProcessThreadSender sends the GetProcessThread request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) GetProcessThreadSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetProcessThreadResponder handles the response to the GetProcessThread request. The method always
-// closes the http.Response Body.
-func (client AppsClient) GetProcessThreadResponder(resp *http.Response) (result ProcessThreadInfo, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetProcessThreadSlot get thread information by Thread ID for a specific process, in a specific scaled-out instance
-// in a web site.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - site name.
-// processID - pID.
-// threadID - tID.
-// slot - name of the deployment slot. If a slot is not specified, the API returns deployments for the
-// production slot.
-func (client AppsClient) GetProcessThreadSlot(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, slot string) (result ProcessThreadInfo, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetProcessThreadSlot")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "GetProcessThreadSlot", err.Error())
-	}
-
-	req, err := client.GetProcessThreadSlotPreparer(ctx, resourceGroupName, name, processID, threadID, slot)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetProcessThreadSlot", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.GetProcessThreadSlotSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetProcessThreadSlot", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.GetProcessThreadSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "GetProcessThreadSlot", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// GetProcessThreadSlotPreparer prepares the GetProcessThreadSlot request.
-func (client AppsClient) GetProcessThreadSlotPreparer(ctx context.Context, resourceGroupName string, name string, processID string, threadID string, slot string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"processId":         autorest.Encode("path", processID),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"slot":              autorest.Encode("path", slot),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"threadId":          autorest.Encode("path", threadID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/threads/{threadId}", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetProcessThreadSlotSender sends the GetProcessThreadSlot request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) GetProcessThreadSlotSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// GetProcessThreadSlotResponder handles the response to the GetProcessThreadSlot request. The method always
-// closes the http.Response Body.
-func (client AppsClient) GetProcessThreadSlotResponder(resp *http.Response) (result ProcessThreadInfo, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// GetPublicCertificate get the named public certificate for an app (or deployment slot, if specified).
+// GetPublicCertificate description for Get the named public certificate for an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13271,7 +13470,7 @@ func (client AppsClient) GetPublicCertificatePreparer(ctx context.Context, resou
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -13304,7 +13503,8 @@ func (client AppsClient) GetPublicCertificateResponder(resp *http.Response) (res
 	return
 }
 
-// GetPublicCertificateSlot get the named public certificate for an app (or deployment slot, if specified).
+// GetPublicCertificateSlot description for Get the named public certificate for an app (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13361,7 +13561,7 @@ func (client AppsClient) GetPublicCertificateSlotPreparer(ctx context.Context, r
 		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -13394,7 +13594,7 @@ func (client AppsClient) GetPublicCertificateSlotResponder(resp *http.Response) 
 	return
 }
 
-// GetRelayServiceConnection gets a hybrid connection configuration by its name.
+// GetRelayServiceConnection description for Gets a hybrid connection configuration by its name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13448,7 +13648,7 @@ func (client AppsClient) GetRelayServiceConnectionPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -13481,7 +13681,7 @@ func (client AppsClient) GetRelayServiceConnectionResponder(resp *http.Response)
 	return
 }
 
-// GetRelayServiceConnectionSlot gets a hybrid connection configuration by its name.
+// GetRelayServiceConnectionSlot description for Gets a hybrid connection configuration by its name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13538,7 +13738,7 @@ func (client AppsClient) GetRelayServiceConnectionSlotPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -13571,7 +13771,7 @@ func (client AppsClient) GetRelayServiceConnectionSlotResponder(resp *http.Respo
 	return
 }
 
-// GetSiteExtension get site extension information by its ID for a web site, or a deployment slot.
+// GetSiteExtension description for Get site extension information by its ID for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -13625,7 +13825,7 @@ func (client AppsClient) GetSiteExtensionPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -13658,13 +13858,12 @@ func (client AppsClient) GetSiteExtensionResponder(resp *http.Response) (result 
 	return
 }
 
-// GetSiteExtensionSlot get site extension information by its ID for a web site, or a deployment slot.
+// GetSiteExtensionSlot description for Get site extension information by its ID for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // siteExtensionID - site extension name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot. If a slot is not specified, the API uses the production slot.
 func (client AppsClient) GetSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string) (result SiteExtensionInfo, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetSiteExtensionSlot")
@@ -13715,7 +13914,7 @@ func (client AppsClient) GetSiteExtensionSlotPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -13748,7 +13947,7 @@ func (client AppsClient) GetSiteExtensionSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetSitePhpErrorLogFlag gets web app's event logs.
+// GetSitePhpErrorLogFlag description for Gets web app's event logs.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -13800,7 +13999,7 @@ func (client AppsClient) GetSitePhpErrorLogFlagPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -13833,7 +14032,7 @@ func (client AppsClient) GetSitePhpErrorLogFlagResponder(resp *http.Response) (r
 	return
 }
 
-// GetSitePhpErrorLogFlagSlot gets web app's event logs.
+// GetSitePhpErrorLogFlagSlot description for Gets web app's event logs.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -13887,7 +14086,7 @@ func (client AppsClient) GetSitePhpErrorLogFlagSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -13920,7 +14119,7 @@ func (client AppsClient) GetSitePhpErrorLogFlagSlotResponder(resp *http.Response
 	return
 }
 
-// GetSlot gets the details of a web, mobile, or API app.
+// GetSlot description for Gets the details of a web, mobile, or API app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -13974,7 +14173,7 @@ func (client AppsClient) GetSlotPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14007,7 +14206,7 @@ func (client AppsClient) GetSlotResponder(resp *http.Response) (result Site, err
 	return
 }
 
-// GetSourceControl gets the source control configuration of an app.
+// GetSourceControl description for Gets the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14059,7 +14258,7 @@ func (client AppsClient) GetSourceControlPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14092,7 +14291,7 @@ func (client AppsClient) GetSourceControlResponder(resp *http.Response) (result 
 	return
 }
 
-// GetSourceControlSlot gets the source control configuration of an app.
+// GetSourceControlSlot description for Gets the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14147,7 +14346,7 @@ func (client AppsClient) GetSourceControlSlotPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14180,7 +14379,7 @@ func (client AppsClient) GetSourceControlSlotResponder(resp *http.Response) (res
 	return
 }
 
-// GetSwiftVirtualNetworkConnection gets a Swift Virtual Network connection.
+// GetSwiftVirtualNetworkConnection description for Gets a Swift Virtual Network connection.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14232,7 +14431,7 @@ func (client AppsClient) GetSwiftVirtualNetworkConnectionPreparer(ctx context.Co
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14265,7 +14464,7 @@ func (client AppsClient) GetSwiftVirtualNetworkConnectionResponder(resp *http.Re
 	return
 }
 
-// GetSwiftVirtualNetworkConnectionSlot gets a Swift Virtual Network connection.
+// GetSwiftVirtualNetworkConnectionSlot description for Gets a Swift Virtual Network connection.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14320,7 +14519,7 @@ func (client AppsClient) GetSwiftVirtualNetworkConnectionSlotPreparer(ctx contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14353,7 +14552,7 @@ func (client AppsClient) GetSwiftVirtualNetworkConnectionSlotResponder(resp *htt
 	return
 }
 
-// GetTriggeredWebJob gets a triggered web job by its ID for an app, or a deployment slot.
+// GetTriggeredWebJob description for Gets a triggered web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -14407,7 +14606,7 @@ func (client AppsClient) GetTriggeredWebJobPreparer(ctx context.Context, resourc
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14440,7 +14639,8 @@ func (client AppsClient) GetTriggeredWebJobResponder(resp *http.Response) (resul
 	return
 }
 
-// GetTriggeredWebJobHistory gets a triggered web job's history by its ID for an app, , or a deployment slot.
+// GetTriggeredWebJobHistory description for Gets a triggered web job's history by its ID for an app, , or a deployment
+// slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -14496,7 +14696,7 @@ func (client AppsClient) GetTriggeredWebJobHistoryPreparer(ctx context.Context, 
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14529,14 +14729,14 @@ func (client AppsClient) GetTriggeredWebJobHistoryResponder(resp *http.Response)
 	return
 }
 
-// GetTriggeredWebJobHistorySlot gets a triggered web job's history by its ID for an app, , or a deployment slot.
+// GetTriggeredWebJobHistorySlot description for Gets a triggered web job's history by its ID for an app, , or a
+// deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // webJobName - name of Web Job.
 // ID - history ID.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot. If a slot is not specified, the API uses the production slot.
 func (client AppsClient) GetTriggeredWebJobHistorySlot(ctx context.Context, resourceGroupName string, name string, webJobName string, ID string, slot string) (result TriggeredJobHistory, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetTriggeredWebJobHistorySlot")
@@ -14588,7 +14788,7 @@ func (client AppsClient) GetTriggeredWebJobHistorySlotPreparer(ctx context.Conte
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14621,13 +14821,12 @@ func (client AppsClient) GetTriggeredWebJobHistorySlotResponder(resp *http.Respo
 	return
 }
 
-// GetTriggeredWebJobSlot gets a triggered web job by its ID for an app, or a deployment slot.
+// GetTriggeredWebJobSlot description for Gets a triggered web job by its ID for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // webJobName - name of Web Job.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot. If a slot is not specified, the API uses the production slot.
 func (client AppsClient) GetTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string) (result TriggeredWebJob, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.GetTriggeredWebJobSlot")
@@ -14678,7 +14877,7 @@ func (client AppsClient) GetTriggeredWebJobSlotPreparer(ctx context.Context, res
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14711,7 +14910,7 @@ func (client AppsClient) GetTriggeredWebJobSlotResponder(resp *http.Response) (r
 	return
 }
 
-// GetVnetConnection gets a virtual network the app (or deployment slot) is connected to by name.
+// GetVnetConnection description for Gets a virtual network the app (or deployment slot) is connected to by name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14765,7 +14964,7 @@ func (client AppsClient) GetVnetConnectionPreparer(ctx context.Context, resource
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14798,7 +14997,7 @@ func (client AppsClient) GetVnetConnectionResponder(resp *http.Response) (result
 	return
 }
 
-// GetVnetConnectionGateway gets an app's Virtual Network gateway.
+// GetVnetConnectionGateway description for Gets an app's Virtual Network gateway.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14854,7 +15053,7 @@ func (client AppsClient) GetVnetConnectionGatewayPreparer(ctx context.Context, r
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14887,7 +15086,7 @@ func (client AppsClient) GetVnetConnectionGatewayResponder(resp *http.Response) 
 	return
 }
 
-// GetVnetConnectionGatewaySlot gets an app's Virtual Network gateway.
+// GetVnetConnectionGatewaySlot description for Gets an app's Virtual Network gateway.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -14946,7 +15145,7 @@ func (client AppsClient) GetVnetConnectionGatewaySlotPreparer(ctx context.Contex
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -14979,7 +15178,7 @@ func (client AppsClient) GetVnetConnectionGatewaySlotResponder(resp *http.Respon
 	return
 }
 
-// GetVnetConnectionSlot gets a virtual network the app (or deployment slot) is connected to by name.
+// GetVnetConnectionSlot description for Gets a virtual network the app (or deployment slot) is connected to by name.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -15036,7 +15235,7 @@ func (client AppsClient) GetVnetConnectionSlotPreparer(ctx context.Context, reso
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15069,7 +15268,7 @@ func (client AppsClient) GetVnetConnectionSlotResponder(resp *http.Response) (re
 	return
 }
 
-// GetWebJob get webjob information for an app, or a deployment slot.
+// GetWebJob description for Get webjob information for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -15123,7 +15322,7 @@ func (client AppsClient) GetWebJobPreparer(ctx context.Context, resourceGroupNam
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15156,7 +15355,7 @@ func (client AppsClient) GetWebJobResponder(resp *http.Response) (result Job, er
 	return
 }
 
-// GetWebJobSlot get webjob information for an app, or a deployment slot.
+// GetWebJobSlot description for Get webjob information for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -15213,7 +15412,7 @@ func (client AppsClient) GetWebJobSlotPreparer(ctx context.Context, resourceGrou
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15246,7 +15445,7 @@ func (client AppsClient) GetWebJobSlotResponder(resp *http.Response) (result Job
 	return
 }
 
-// GetWebSiteContainerLogs gets the last lines of docker logs for the given site
+// GetWebSiteContainerLogs description for Gets the last lines of docker logs for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -15298,7 +15497,7 @@ func (client AppsClient) GetWebSiteContainerLogsPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15330,7 +15529,7 @@ func (client AppsClient) GetWebSiteContainerLogsResponder(resp *http.Response) (
 	return
 }
 
-// GetWebSiteContainerLogsSlot gets the last lines of docker logs for the given site
+// GetWebSiteContainerLogsSlot description for Gets the last lines of docker logs for the given site
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -15384,7 +15583,7 @@ func (client AppsClient) GetWebSiteContainerLogsSlotPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15416,7 +15615,7 @@ func (client AppsClient) GetWebSiteContainerLogsSlotResponder(resp *http.Respons
 	return
 }
 
-// InstallSiteExtension install site extension on a web site, or a deployment slot.
+// InstallSiteExtension description for Install site extension on a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -15464,7 +15663,7 @@ func (client AppsClient) InstallSiteExtensionPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15503,13 +15702,12 @@ func (client AppsClient) InstallSiteExtensionResponder(resp *http.Response) (res
 	return
 }
 
-// InstallSiteExtensionSlot install site extension on a web site, or a deployment slot.
+// InstallSiteExtensionSlot description for Install site extension on a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // siteExtensionID - site extension name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot. If a slot is not specified, the API uses the production slot.
 func (client AppsClient) InstallSiteExtensionSlot(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string) (result AppsInstallSiteExtensionSlotFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.InstallSiteExtensionSlot")
@@ -15554,7 +15752,7 @@ func (client AppsClient) InstallSiteExtensionSlotPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15593,7 +15791,7 @@ func (client AppsClient) InstallSiteExtensionSlotResponder(resp *http.Response) 
 	return
 }
 
-// IsCloneable shows whether an app can be cloned to another resource group or subscription.
+// IsCloneable description for Shows whether an app can be cloned to another resource group or subscription.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -15645,7 +15843,7 @@ func (client AppsClient) IsCloneablePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15678,7 +15876,7 @@ func (client AppsClient) IsCloneableResponder(resp *http.Response) (result SiteC
 	return
 }
 
-// IsCloneableSlot shows whether an app can be cloned to another resource group or subscription.
+// IsCloneableSlot description for Shows whether an app can be cloned to another resource group or subscription.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -15732,7 +15930,7 @@ func (client AppsClient) IsCloneableSlotPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15765,7 +15963,7 @@ func (client AppsClient) IsCloneableSlotResponder(resp *http.Response) (result S
 	return
 }
 
-// List get all apps for a subscription.
+// List description for Get all apps for a subscription.
 func (client AppsClient) List(ctx context.Context) (result AppCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.List")
@@ -15805,7 +16003,7 @@ func (client AppsClient) ListPreparer(ctx context.Context) (*http.Request, error
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15875,7 +16073,7 @@ func (client AppsClient) ListComplete(ctx context.Context) (result AppCollection
 	return
 }
 
-// ListApplicationSettings gets the application settings of an app.
+// ListApplicationSettings description for Gets the application settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -15927,7 +16125,7 @@ func (client AppsClient) ListApplicationSettingsPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -15960,7 +16158,7 @@ func (client AppsClient) ListApplicationSettingsResponder(resp *http.Response) (
 	return
 }
 
-// ListApplicationSettingsSlot gets the application settings of an app.
+// ListApplicationSettingsSlot description for Gets the application settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16015,7 +16213,7 @@ func (client AppsClient) ListApplicationSettingsSlotPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -16048,7 +16246,7 @@ func (client AppsClient) ListApplicationSettingsSlotResponder(resp *http.Respons
 	return
 }
 
-// ListAzureStorageAccounts gets the Azure storage account configurations of an app.
+// ListAzureStorageAccounts description for Gets the Azure storage account configurations of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16100,7 +16298,7 @@ func (client AppsClient) ListAzureStorageAccountsPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -16133,7 +16331,7 @@ func (client AppsClient) ListAzureStorageAccountsResponder(resp *http.Response) 
 	return
 }
 
-// ListAzureStorageAccountsSlot gets the Azure storage account configurations of an app.
+// ListAzureStorageAccountsSlot description for Gets the Azure storage account configurations of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16188,7 +16386,7 @@ func (client AppsClient) ListAzureStorageAccountsSlotPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -16221,7 +16419,7 @@ func (client AppsClient) ListAzureStorageAccountsSlotResponder(resp *http.Respon
 	return
 }
 
-// ListBackups gets existing backups of an app.
+// ListBackups description for Gets existing backups of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16274,7 +16472,7 @@ func (client AppsClient) ListBackupsPreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -16344,7 +16542,7 @@ func (client AppsClient) ListBackupsComplete(ctx context.Context, resourceGroupN
 	return
 }
 
-// ListBackupsSlot gets existing backups of an app.
+// ListBackupsSlot description for Gets existing backups of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16400,7 +16598,7 @@ func (client AppsClient) ListBackupsSlotPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -16470,9 +16668,9 @@ func (client AppsClient) ListBackupsSlotComplete(ctx context.Context, resourceGr
 	return
 }
 
-// ListBackupStatusSecrets gets status of a web app backup that may be in progress, including secrets associated with
-// the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
-// passed in the request body.
+// ListBackupStatusSecrets description for Gets status of a web app backup that may be in progress, including secrets
+// associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup
+// if a new URL is passed in the request body.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -16536,7 +16734,7 @@ func (client AppsClient) ListBackupStatusSecretsPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -16571,9 +16769,9 @@ func (client AppsClient) ListBackupStatusSecretsResponder(resp *http.Response) (
 	return
 }
 
-// ListBackupStatusSecretsSlot gets status of a web app backup that may be in progress, including secrets associated
-// with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new
-// URL is passed in the request body.
+// ListBackupStatusSecretsSlot description for Gets status of a web app backup that may be in progress, including
+// secrets associated with the backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for
+// the backup if a new URL is passed in the request body.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -16639,7 +16837,7 @@ func (client AppsClient) ListBackupStatusSecretsSlotPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -16674,7 +16872,7 @@ func (client AppsClient) ListBackupStatusSecretsSlotResponder(resp *http.Respons
 	return
 }
 
-// ListByResourceGroup gets all web, mobile, and API apps in the specified resource group.
+// ListByResourceGroup description for Gets all web, mobile, and API apps in the specified resource group.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // includeSlots - specify <strong>true</strong> to include deployment slots in results. The default is false,
@@ -16727,7 +16925,7 @@ func (client AppsClient) ListByResourceGroupPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -16800,7 +16998,7 @@ func (client AppsClient) ListByResourceGroupComplete(ctx context.Context, resour
 	return
 }
 
-// ListConfigurations list the configurations of an app
+// ListConfigurations description for List the configurations of an app
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16853,7 +17051,7 @@ func (client AppsClient) ListConfigurationsPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -16923,8 +17121,8 @@ func (client AppsClient) ListConfigurationsComplete(ctx context.Context, resourc
 	return
 }
 
-// ListConfigurationSnapshotInfo gets a list of web app configuration snapshots identifiers. Each element of the list
-// contains a timestamp and the ID of the snapshot.
+// ListConfigurationSnapshotInfo description for Gets a list of web app configuration snapshots identifiers. Each
+// element of the list contains a timestamp and the ID of the snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -16977,7 +17175,7 @@ func (client AppsClient) ListConfigurationSnapshotInfoPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -17047,8 +17245,8 @@ func (client AppsClient) ListConfigurationSnapshotInfoComplete(ctx context.Conte
 	return
 }
 
-// ListConfigurationSnapshotInfoSlot gets a list of web app configuration snapshots identifiers. Each element of the
-// list contains a timestamp and the ID of the snapshot.
+// ListConfigurationSnapshotInfoSlot description for Gets a list of web app configuration snapshots identifiers. Each
+// element of the list contains a timestamp and the ID of the snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17104,7 +17302,7 @@ func (client AppsClient) ListConfigurationSnapshotInfoSlotPreparer(ctx context.C
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -17174,7 +17372,7 @@ func (client AppsClient) ListConfigurationSnapshotInfoSlotComplete(ctx context.C
 	return
 }
 
-// ListConfigurationsSlot list the configurations of an app
+// ListConfigurationsSlot description for List the configurations of an app
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17230,7 +17428,7 @@ func (client AppsClient) ListConfigurationsSlotPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -17300,7 +17498,7 @@ func (client AppsClient) ListConfigurationsSlotComplete(ctx context.Context, res
 	return
 }
 
-// ListConnectionStrings gets the connection strings of an app.
+// ListConnectionStrings description for Gets the connection strings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17352,7 +17550,7 @@ func (client AppsClient) ListConnectionStringsPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -17385,7 +17583,7 @@ func (client AppsClient) ListConnectionStringsResponder(resp *http.Response) (re
 	return
 }
 
-// ListConnectionStringsSlot gets the connection strings of an app.
+// ListConnectionStringsSlot description for Gets the connection strings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17440,7 +17638,7 @@ func (client AppsClient) ListConnectionStringsSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -17473,7 +17671,7 @@ func (client AppsClient) ListConnectionStringsSlotResponder(resp *http.Response)
 	return
 }
 
-// ListContinuousWebJobs list continuous web jobs for an app, or a deployment slot.
+// ListContinuousWebJobs description for List continuous web jobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -17526,7 +17724,7 @@ func (client AppsClient) ListContinuousWebJobsPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -17596,7 +17794,7 @@ func (client AppsClient) ListContinuousWebJobsComplete(ctx context.Context, reso
 	return
 }
 
-// ListContinuousWebJobsSlot list continuous web jobs for an app, or a deployment slot.
+// ListContinuousWebJobsSlot description for List continuous web jobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -17652,7 +17850,7 @@ func (client AppsClient) ListContinuousWebJobsSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -17722,7 +17920,7 @@ func (client AppsClient) ListContinuousWebJobsSlotComplete(ctx context.Context, 
 	return
 }
 
-// ListDeploymentLog list deployment log for specific deployment for an app, or a deployment slot.
+// ListDeploymentLog description for List deployment log for specific deployment for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17777,7 +17975,7 @@ func (client AppsClient) ListDeploymentLogPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -17810,7 +18008,7 @@ func (client AppsClient) ListDeploymentLogResponder(resp *http.Response) (result
 	return
 }
 
-// ListDeploymentLogSlot list deployment log for specific deployment for an app, or a deployment slot.
+// ListDeploymentLogSlot description for List deployment log for specific deployment for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17868,7 +18066,7 @@ func (client AppsClient) ListDeploymentLogSlotPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -17901,7 +18099,7 @@ func (client AppsClient) ListDeploymentLogSlotResponder(resp *http.Response) (re
 	return
 }
 
-// ListDeployments list deployments for an app, or a deployment slot.
+// ListDeployments description for List deployments for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -17954,7 +18152,7 @@ func (client AppsClient) ListDeploymentsPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -18024,7 +18222,7 @@ func (client AppsClient) ListDeploymentsComplete(ctx context.Context, resourceGr
 	return
 }
 
-// ListDeploymentsSlot list deployments for an app, or a deployment slot.
+// ListDeploymentsSlot description for List deployments for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18080,7 +18278,7 @@ func (client AppsClient) ListDeploymentsSlotPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -18150,7 +18348,7 @@ func (client AppsClient) ListDeploymentsSlotComplete(ctx context.Context, resour
 	return
 }
 
-// ListDomainOwnershipIdentifiers lists ownership identifiers for domain associated with web app.
+// ListDomainOwnershipIdentifiers description for Lists ownership identifiers for domain associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18203,7 +18401,7 @@ func (client AppsClient) ListDomainOwnershipIdentifiersPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -18273,7 +18471,7 @@ func (client AppsClient) ListDomainOwnershipIdentifiersComplete(ctx context.Cont
 	return
 }
 
-// ListDomainOwnershipIdentifiersSlot lists ownership identifiers for domain associated with web app.
+// ListDomainOwnershipIdentifiersSlot description for Lists ownership identifiers for domain associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18329,7 +18527,7 @@ func (client AppsClient) ListDomainOwnershipIdentifiersSlotPreparer(ctx context.
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -18399,7 +18597,7 @@ func (client AppsClient) ListDomainOwnershipIdentifiersSlotComplete(ctx context.
 	return
 }
 
-// ListFunctions list the functions for a web site, or a deployment slot.
+// ListFunctions description for List the functions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -18452,7 +18650,7 @@ func (client AppsClient) ListFunctionsPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -18522,7 +18720,7 @@ func (client AppsClient) ListFunctionsComplete(ctx context.Context, resourceGrou
 	return
 }
 
-// ListFunctionSecrets get function secrets for a function in a web site, or a deployment slot.
+// ListFunctionSecrets description for Get function secrets for a function in a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -18576,7 +18774,7 @@ func (client AppsClient) ListFunctionSecretsPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -18609,13 +18807,12 @@ func (client AppsClient) ListFunctionSecretsResponder(resp *http.Response) (resu
 	return
 }
 
-// ListFunctionSecretsSlot get function secrets for a function in a web site, or a deployment slot.
+// ListFunctionSecretsSlot description for Get function secrets for a function in a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // functionName - function name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) ListFunctionSecretsSlot(ctx context.Context, resourceGroupName string, name string, functionName string, slot string) (result FunctionSecrets, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListFunctionSecretsSlot")
@@ -18666,7 +18863,7 @@ func (client AppsClient) ListFunctionSecretsSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -18699,7 +18896,7 @@ func (client AppsClient) ListFunctionSecretsSlotResponder(resp *http.Response) (
 	return
 }
 
-// ListHostNameBindings get hostname bindings for an app or a deployment slot.
+// ListHostNameBindings description for Get hostname bindings for an app or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18752,7 +18949,7 @@ func (client AppsClient) ListHostNameBindingsPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -18822,7 +19019,7 @@ func (client AppsClient) ListHostNameBindingsComplete(ctx context.Context, resou
 	return
 }
 
-// ListHostNameBindingsSlot get hostname bindings for an app or a deployment slot.
+// ListHostNameBindingsSlot description for Get hostname bindings for an app or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -18878,7 +19075,7 @@ func (client AppsClient) ListHostNameBindingsSlotPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -18948,187 +19145,7 @@ func (client AppsClient) ListHostNameBindingsSlotComplete(ctx context.Context, r
 	return
 }
 
-// ListHybridConnectionKeys gets the send key name and value for a Hybrid Connection.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - the name of the web app.
-// namespaceName - the namespace for this hybrid connection.
-// relayName - the relay name for this hybrid connection.
-func (client AppsClient) ListHybridConnectionKeys(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string) (result HybridConnectionKey, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListHybridConnectionKeys")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "ListHybridConnectionKeys", err.Error())
-	}
-
-	req, err := client.ListHybridConnectionKeysPreparer(ctx, resourceGroupName, name, namespaceName, relayName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeys", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListHybridConnectionKeysSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeys", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListHybridConnectionKeysResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeys", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListHybridConnectionKeysPreparer prepares the ListHybridConnectionKeys request.
-func (client AppsClient) ListHybridConnectionKeysPreparer(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"namespaceName":     autorest.Encode("path", namespaceName),
-		"relayName":         autorest.Encode("path", relayName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListHybridConnectionKeysSender sends the ListHybridConnectionKeys request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) ListHybridConnectionKeysSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListHybridConnectionKeysResponder handles the response to the ListHybridConnectionKeys request. The method always
-// closes the http.Response Body.
-func (client AppsClient) ListHybridConnectionKeysResponder(resp *http.Response) (result HybridConnectionKey, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListHybridConnectionKeysSlot gets the send key name and value for a Hybrid Connection.
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - the name of the web app.
-// namespaceName - the namespace for this hybrid connection.
-// relayName - the relay name for this hybrid connection.
-// slot - the name of the slot for the web app.
-func (client AppsClient) ListHybridConnectionKeysSlot(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string) (result HybridConnectionKey, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListHybridConnectionKeysSlot")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "ListHybridConnectionKeysSlot", err.Error())
-	}
-
-	req, err := client.ListHybridConnectionKeysSlotPreparer(ctx, resourceGroupName, name, namespaceName, relayName, slot)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeysSlot", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListHybridConnectionKeysSlotSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeysSlot", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.ListHybridConnectionKeysSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHybridConnectionKeysSlot", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListHybridConnectionKeysSlotPreparer prepares the ListHybridConnectionKeysSlot request.
-func (client AppsClient) ListHybridConnectionKeysSlotPreparer(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"namespaceName":     autorest.Encode("path", namespaceName),
-		"relayName":         autorest.Encode("path", relayName),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"slot":              autorest.Encode("path", slot),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListHybridConnectionKeysSlotSender sends the ListHybridConnectionKeysSlot request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) ListHybridConnectionKeysSlotSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListHybridConnectionKeysSlotResponder handles the response to the ListHybridConnectionKeysSlot request. The method always
-// closes the http.Response Body.
-func (client AppsClient) ListHybridConnectionKeysSlotResponder(resp *http.Response) (result HybridConnectionKey, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// ListHybridConnections retrieves all Service Bus Hybrid Connections used by this Web App.
+// ListHybridConnections description for Retrieves all Service Bus Hybrid Connections used by this Web App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -19180,7 +19197,7 @@ func (client AppsClient) ListHybridConnectionsPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -19213,7 +19230,7 @@ func (client AppsClient) ListHybridConnectionsResponder(resp *http.Response) (re
 	return
 }
 
-// ListHybridConnectionsSlot retrieves all Service Bus Hybrid Connections used by this Web App.
+// ListHybridConnectionsSlot description for Retrieves all Service Bus Hybrid Connections used by this Web App.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -19267,7 +19284,7 @@ func (client AppsClient) ListHybridConnectionsSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -19300,12 +19317,11 @@ func (client AppsClient) ListHybridConnectionsSlotResponder(resp *http.Response)
 	return
 }
 
-// ListInstanceFunctionsSlot list the functions for a web site, or a deployment slot.
+// ListInstanceFunctionsSlot description for List the functions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) ListInstanceFunctionsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result FunctionEnvelopeCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListInstanceFunctionsSlot")
@@ -19356,7 +19372,7 @@ func (client AppsClient) ListInstanceFunctionsSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -19426,7 +19442,7 @@ func (client AppsClient) ListInstanceFunctionsSlotComplete(ctx context.Context, 
 	return
 }
 
-// ListInstanceIdentifiers gets all scale-out instances of an app.
+// ListInstanceIdentifiers description for Gets all scale-out instances of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -19479,7 +19495,7 @@ func (client AppsClient) ListInstanceIdentifiersPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -19549,7 +19565,7 @@ func (client AppsClient) ListInstanceIdentifiersComplete(ctx context.Context, re
 	return
 }
 
-// ListInstanceIdentifiersSlot gets all scale-out instances of an app.
+// ListInstanceIdentifiersSlot description for Gets all scale-out instances of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -19604,7 +19620,7 @@ func (client AppsClient) ListInstanceIdentifiersSlotPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -19674,8 +19690,8 @@ func (client AppsClient) ListInstanceIdentifiersSlotComplete(ctx context.Context
 	return
 }
 
-// ListInstanceProcesses get list of processes for a web site, or a deployment slot, or for a specific scaled-out
-// instance in a web site.
+// ListInstanceProcesses description for Get list of processes for a web site, or a deployment slot, or for a specific
+// scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -19731,7 +19747,7 @@ func (client AppsClient) ListInstanceProcessesPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -19801,8 +19817,8 @@ func (client AppsClient) ListInstanceProcessesComplete(ctx context.Context, reso
 	return
 }
 
-// ListInstanceProcessesSlot get list of processes for a web site, or a deployment slot, or for a specific scaled-out
-// instance in a web site.
+// ListInstanceProcessesSlot description for Get list of processes for a web site, or a deployment slot, or for a
+// specific scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -19861,7 +19877,7 @@ func (client AppsClient) ListInstanceProcessesSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -19931,8 +19947,8 @@ func (client AppsClient) ListInstanceProcessesSlotComplete(ctx context.Context, 
 	return
 }
 
-// ListInstanceProcessModules list module information for a process by its ID for a specific scaled-out instance in a
-// web site.
+// ListInstanceProcessModules description for List module information for a process by its ID for a specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -19990,7 +20006,7 @@ func (client AppsClient) ListInstanceProcessModulesPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -20060,8 +20076,8 @@ func (client AppsClient) ListInstanceProcessModulesComplete(ctx context.Context,
 	return
 }
 
-// ListInstanceProcessModulesSlot list module information for a process by its ID for a specific scaled-out instance in
-// a web site.
+// ListInstanceProcessModulesSlot description for List module information for a process by its ID for a specific
+// scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -20122,7 +20138,7 @@ func (client AppsClient) ListInstanceProcessModulesSlotPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -20192,7 +20208,8 @@ func (client AppsClient) ListInstanceProcessModulesSlotComplete(ctx context.Cont
 	return
 }
 
-// ListInstanceProcessThreads list the threads in a process by its ID for a specific scaled-out instance in a web site.
+// ListInstanceProcessThreads description for List the threads in a process by its ID for a specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -20250,7 +20267,7 @@ func (client AppsClient) ListInstanceProcessThreadsPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -20320,8 +20337,8 @@ func (client AppsClient) ListInstanceProcessThreadsComplete(ctx context.Context,
 	return
 }
 
-// ListInstanceProcessThreadsSlot list the threads in a process by its ID for a specific scaled-out instance in a web
-// site.
+// ListInstanceProcessThreadsSlot description for List the threads in a process by its ID for a specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -20382,7 +20399,7 @@ func (client AppsClient) ListInstanceProcessThreadsSlotPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -20452,7 +20469,7 @@ func (client AppsClient) ListInstanceProcessThreadsSlotComplete(ctx context.Cont
 	return
 }
 
-// ListMetadata gets the metadata of an app.
+// ListMetadata description for Gets the metadata of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -20504,7 +20521,7 @@ func (client AppsClient) ListMetadataPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -20537,7 +20554,7 @@ func (client AppsClient) ListMetadataResponder(resp *http.Response) (result Stri
 	return
 }
 
-// ListMetadataSlot gets the metadata of an app.
+// ListMetadataSlot description for Gets the metadata of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -20592,7 +20609,7 @@ func (client AppsClient) ListMetadataSlotPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -20625,525 +20642,7 @@ func (client AppsClient) ListMetadataSlotResponder(resp *http.Response) (result 
 	return
 }
 
-// ListMetricDefinitions gets all metric definitions of an app (or deployment slot, if specified).
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - name of the app.
-func (client AppsClient) ListMetricDefinitions(ctx context.Context, resourceGroupName string, name string) (result ResourceMetricDefinitionCollectionPage, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListMetricDefinitions")
-		defer func() {
-			sc := -1
-			if result.rmdc.Response.Response != nil {
-				sc = result.rmdc.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "ListMetricDefinitions", err.Error())
-	}
-
-	result.fn = client.listMetricDefinitionsNextResults
-	req, err := client.ListMetricDefinitionsPreparer(ctx, resourceGroupName, name)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitions", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListMetricDefinitionsSender(req)
-	if err != nil {
-		result.rmdc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitions", resp, "Failure sending request")
-		return
-	}
-
-	result.rmdc, err = client.ListMetricDefinitionsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitions", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListMetricDefinitionsPreparer prepares the ListMetricDefinitions request.
-func (client AppsClient) ListMetricDefinitionsPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metricdefinitions", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListMetricDefinitionsSender sends the ListMetricDefinitions request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) ListMetricDefinitionsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListMetricDefinitionsResponder handles the response to the ListMetricDefinitions request. The method always
-// closes the http.Response Body.
-func (client AppsClient) ListMetricDefinitionsResponder(resp *http.Response) (result ResourceMetricDefinitionCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listMetricDefinitionsNextResults retrieves the next set of results, if any.
-func (client AppsClient) listMetricDefinitionsNextResults(ctx context.Context, lastResults ResourceMetricDefinitionCollection) (result ResourceMetricDefinitionCollection, err error) {
-	req, err := lastResults.resourceMetricDefinitionCollectionPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listMetricDefinitionsNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListMetricDefinitionsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listMetricDefinitionsNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListMetricDefinitionsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "listMetricDefinitionsNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListMetricDefinitionsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AppsClient) ListMetricDefinitionsComplete(ctx context.Context, resourceGroupName string, name string) (result ResourceMetricDefinitionCollectionIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListMetricDefinitions")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.ListMetricDefinitions(ctx, resourceGroupName, name)
-	return
-}
-
-// ListMetricDefinitionsSlot gets all metric definitions of an app (or deployment slot, if specified).
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - name of the app.
-// slot - name of the deployment slot. If a slot is not specified, the API will get metric definitions of the
-// production slot.
-func (client AppsClient) ListMetricDefinitionsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result ResourceMetricDefinitionCollectionPage, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListMetricDefinitionsSlot")
-		defer func() {
-			sc := -1
-			if result.rmdc.Response.Response != nil {
-				sc = result.rmdc.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "ListMetricDefinitionsSlot", err.Error())
-	}
-
-	result.fn = client.listMetricDefinitionsSlotNextResults
-	req, err := client.ListMetricDefinitionsSlotPreparer(ctx, resourceGroupName, name, slot)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitionsSlot", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListMetricDefinitionsSlotSender(req)
-	if err != nil {
-		result.rmdc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitionsSlot", resp, "Failure sending request")
-		return
-	}
-
-	result.rmdc, err = client.ListMetricDefinitionsSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitionsSlot", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListMetricDefinitionsSlotPreparer prepares the ListMetricDefinitionsSlot request.
-func (client AppsClient) ListMetricDefinitionsSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"slot":              autorest.Encode("path", slot),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metricdefinitions", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListMetricDefinitionsSlotSender sends the ListMetricDefinitionsSlot request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) ListMetricDefinitionsSlotSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListMetricDefinitionsSlotResponder handles the response to the ListMetricDefinitionsSlot request. The method always
-// closes the http.Response Body.
-func (client AppsClient) ListMetricDefinitionsSlotResponder(resp *http.Response) (result ResourceMetricDefinitionCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listMetricDefinitionsSlotNextResults retrieves the next set of results, if any.
-func (client AppsClient) listMetricDefinitionsSlotNextResults(ctx context.Context, lastResults ResourceMetricDefinitionCollection) (result ResourceMetricDefinitionCollection, err error) {
-	req, err := lastResults.resourceMetricDefinitionCollectionPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listMetricDefinitionsSlotNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListMetricDefinitionsSlotSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listMetricDefinitionsSlotNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListMetricDefinitionsSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "listMetricDefinitionsSlotNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListMetricDefinitionsSlotComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AppsClient) ListMetricDefinitionsSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result ResourceMetricDefinitionCollectionIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListMetricDefinitionsSlot")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.ListMetricDefinitionsSlot(ctx, resourceGroupName, name, slot)
-	return
-}
-
-// ListMetrics gets performance metrics of an app (or deployment slot, if specified).
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - name of the app.
-// details - specify "true" to include metric details in the response. It is "false" by default.
-// filter - return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value
-// eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
-// 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
-func (client AppsClient) ListMetrics(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListMetrics")
-		defer func() {
-			sc := -1
-			if result.rmc.Response.Response != nil {
-				sc = result.rmc.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "ListMetrics", err.Error())
-	}
-
-	result.fn = client.listMetricsNextResults
-	req, err := client.ListMetricsPreparer(ctx, resourceGroupName, name, details, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetrics", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListMetricsSender(req)
-	if err != nil {
-		result.rmc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetrics", resp, "Failure sending request")
-		return
-	}
-
-	result.rmc, err = client.ListMetricsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetrics", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListMetricsPreparer prepares the ListMetrics request.
-func (client AppsClient) ListMetricsPreparer(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if details != nil {
-		queryParameters["details"] = autorest.Encode("query", *details)
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = filter
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metrics", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListMetricsSender sends the ListMetrics request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) ListMetricsSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListMetricsResponder handles the response to the ListMetrics request. The method always
-// closes the http.Response Body.
-func (client AppsClient) ListMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listMetricsNextResults retrieves the next set of results, if any.
-func (client AppsClient) listMetricsNextResults(ctx context.Context, lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
-	req, err := lastResults.resourceMetricCollectionPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listMetricsNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListMetricsSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listMetricsNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListMetricsResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "listMetricsNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListMetricsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AppsClient) ListMetricsComplete(ctx context.Context, resourceGroupName string, name string, details *bool, filter string) (result ResourceMetricCollectionIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListMetrics")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.ListMetrics(ctx, resourceGroupName, name, details, filter)
-	return
-}
-
-// ListMetricsSlot gets performance metrics of an app (or deployment slot, if specified).
-// Parameters:
-// resourceGroupName - name of the resource group to which the resource belongs.
-// name - name of the app.
-// slot - name of the deployment slot. If a slot is not specified, the API will get metrics of the production
-// slot.
-// details - specify "true" to include metric details in the response. It is "false" by default.
-// filter - return only metrics specified in the filter (using OData syntax). For example: $filter=(name.value
-// eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
-// 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
-func (client AppsClient) ListMetricsSlot(ctx context.Context, resourceGroupName string, name string, slot string, details *bool, filter string) (result ResourceMetricCollectionPage, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListMetricsSlot")
-		defer func() {
-			sc := -1
-			if result.rmc.Response.Response != nil {
-				sc = result.rmc.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("web.AppsClient", "ListMetricsSlot", err.Error())
-	}
-
-	result.fn = client.listMetricsSlotNextResults
-	req, err := client.ListMetricsSlotPreparer(ctx, resourceGroupName, name, slot, details, filter)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricsSlot", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.ListMetricsSlotSender(req)
-	if err != nil {
-		result.rmc.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricsSlot", resp, "Failure sending request")
-		return
-	}
-
-	result.rmc, err = client.ListMetricsSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricsSlot", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// ListMetricsSlotPreparer prepares the ListMetricsSlot request.
-func (client AppsClient) ListMetricsSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string, details *bool, filter string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"name":              autorest.Encode("path", name),
-		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"slot":              autorest.Encode("path", slot),
-		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-	}
-
-	const APIVersion = "2018-02-01"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-	if details != nil {
-		queryParameters["details"] = autorest.Encode("query", *details)
-	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = filter
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metrics", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// ListMetricsSlotSender sends the ListMetricsSlot request. The method will close the
-// http.Response Body if it receives an error.
-func (client AppsClient) ListMetricsSlotSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
-}
-
-// ListMetricsSlotResponder handles the response to the ListMetricsSlot request. The method always
-// closes the http.Response Body.
-func (client AppsClient) ListMetricsSlotResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
-	err = autorest.Respond(
-		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// listMetricsSlotNextResults retrieves the next set of results, if any.
-func (client AppsClient) listMetricsSlotNextResults(ctx context.Context, lastResults ResourceMetricCollection) (result ResourceMetricCollection, err error) {
-	req, err := lastResults.resourceMetricCollectionPreparer(ctx)
-	if err != nil {
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listMetricsSlotNextResults", nil, "Failure preparing next results request")
-	}
-	if req == nil {
-		return
-	}
-	resp, err := client.ListMetricsSlotSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listMetricsSlotNextResults", resp, "Failure sending next results request")
-	}
-	result, err = client.ListMetricsSlotResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "listMetricsSlotNextResults", resp, "Failure responding to next results request")
-	}
-	return
-}
-
-// ListMetricsSlotComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AppsClient) ListMetricsSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string, details *bool, filter string) (result ResourceMetricCollectionIterator, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListMetricsSlot")
-		defer func() {
-			sc := -1
-			if result.Response().Response.Response != nil {
-				sc = result.page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	result.page, err = client.ListMetricsSlot(ctx, resourceGroupName, name, slot, details, filter)
-	return
-}
-
-// ListNetworkFeatures gets all network features used by the app (or deployment slot, if specified).
+// ListNetworkFeatures description for Gets all network features used by the app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -21197,7 +20696,7 @@ func (client AppsClient) ListNetworkFeaturesPreparer(ctx context.Context, resour
 		"view":              autorest.Encode("path", view),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -21230,7 +20729,8 @@ func (client AppsClient) ListNetworkFeaturesResponder(resp *http.Response) (resu
 	return
 }
 
-// ListNetworkFeaturesSlot gets all network features used by the app (or deployment slot, if specified).
+// ListNetworkFeaturesSlot description for Gets all network features used by the app (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -21287,7 +20787,7 @@ func (client AppsClient) ListNetworkFeaturesSlotPreparer(ctx context.Context, re
 		"view":              autorest.Encode("path", view),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -21320,7 +20820,7 @@ func (client AppsClient) ListNetworkFeaturesSlotResponder(resp *http.Response) (
 	return
 }
 
-// ListPerfMonCounters gets perfmon counters for web app.
+// ListPerfMonCounters description for Gets perfmon counters for web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -21376,7 +20876,7 @@ func (client AppsClient) ListPerfMonCountersPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -21449,7 +20949,7 @@ func (client AppsClient) ListPerfMonCountersComplete(ctx context.Context, resour
 	return
 }
 
-// ListPerfMonCountersSlot gets perfmon counters for web app.
+// ListPerfMonCountersSlot description for Gets perfmon counters for web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -21507,7 +21007,7 @@ func (client AppsClient) ListPerfMonCountersSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -21580,7 +21080,7 @@ func (client AppsClient) ListPerfMonCountersSlotComplete(ctx context.Context, re
 	return
 }
 
-// ListPremierAddOns gets the premier add-ons of an app.
+// ListPremierAddOns description for Gets the premier add-ons of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -21632,7 +21132,7 @@ func (client AppsClient) ListPremierAddOnsPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -21665,7 +21165,7 @@ func (client AppsClient) ListPremierAddOnsResponder(resp *http.Response) (result
 	return
 }
 
-// ListPremierAddOnsSlot gets the premier add-ons of an app.
+// ListPremierAddOnsSlot description for Gets the premier add-ons of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -21720,7 +21220,7 @@ func (client AppsClient) ListPremierAddOnsSlotPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -21753,8 +21253,8 @@ func (client AppsClient) ListPremierAddOnsSlotResponder(resp *http.Response) (re
 	return
 }
 
-// ListProcesses get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a
-// web site.
+// ListProcesses description for Get list of processes for a web site, or a deployment slot, or for a specific
+// scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -21807,7 +21307,7 @@ func (client AppsClient) ListProcessesPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -21877,8 +21377,8 @@ func (client AppsClient) ListProcessesComplete(ctx context.Context, resourceGrou
 	return
 }
 
-// ListProcessesSlot get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
-// in a web site.
+// ListProcessesSlot description for Get list of processes for a web site, or a deployment slot, or for a specific
+// scaled-out instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -21934,7 +21434,7 @@ func (client AppsClient) ListProcessesSlotPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -22004,7 +21504,8 @@ func (client AppsClient) ListProcessesSlotComplete(ctx context.Context, resource
 	return
 }
 
-// ListProcessModules list module information for a process by its ID for a specific scaled-out instance in a web site.
+// ListProcessModules description for List module information for a process by its ID for a specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -22059,7 +21560,7 @@ func (client AppsClient) ListProcessModulesPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -22129,8 +21630,8 @@ func (client AppsClient) ListProcessModulesComplete(ctx context.Context, resourc
 	return
 }
 
-// ListProcessModulesSlot list module information for a process by its ID for a specific scaled-out instance in a web
-// site.
+// ListProcessModulesSlot description for List module information for a process by its ID for a specific scaled-out
+// instance in a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -22188,7 +21689,7 @@ func (client AppsClient) ListProcessModulesSlotPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -22258,7 +21759,8 @@ func (client AppsClient) ListProcessModulesSlotComplete(ctx context.Context, res
 	return
 }
 
-// ListProcessThreads list the threads in a process by its ID for a specific scaled-out instance in a web site.
+// ListProcessThreads description for List the threads in a process by its ID for a specific scaled-out instance in a
+// web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -22313,7 +21815,7 @@ func (client AppsClient) ListProcessThreadsPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -22383,7 +21885,8 @@ func (client AppsClient) ListProcessThreadsComplete(ctx context.Context, resourc
 	return
 }
 
-// ListProcessThreadsSlot list the threads in a process by its ID for a specific scaled-out instance in a web site.
+// ListProcessThreadsSlot description for List the threads in a process by its ID for a specific scaled-out instance in
+// a web site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -22441,7 +21944,7 @@ func (client AppsClient) ListProcessThreadsSlotPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -22511,7 +22014,7 @@ func (client AppsClient) ListProcessThreadsSlotComplete(ctx context.Context, res
 	return
 }
 
-// ListPublicCertificates get public certificates for an app or a deployment slot.
+// ListPublicCertificates description for Get public certificates for an app or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22564,7 +22067,7 @@ func (client AppsClient) ListPublicCertificatesPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -22634,7 +22137,7 @@ func (client AppsClient) ListPublicCertificatesComplete(ctx context.Context, res
 	return
 }
 
-// ListPublicCertificatesSlot get public certificates for an app or a deployment slot.
+// ListPublicCertificatesSlot description for Get public certificates for an app or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22690,7 +22193,7 @@ func (client AppsClient) ListPublicCertificatesSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -22760,7 +22263,7 @@ func (client AppsClient) ListPublicCertificatesSlotComplete(ctx context.Context,
 	return
 }
 
-// ListPublishingCredentials gets the Git/FTP publishing credentials of an app.
+// ListPublishingCredentials description for Gets the Git/FTP publishing credentials of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22806,7 +22309,7 @@ func (client AppsClient) ListPublishingCredentialsPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -22845,7 +22348,7 @@ func (client AppsClient) ListPublishingCredentialsResponder(resp *http.Response)
 	return
 }
 
-// ListPublishingCredentialsSlot gets the Git/FTP publishing credentials of an app.
+// ListPublishingCredentialsSlot description for Gets the Git/FTP publishing credentials of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22894,7 +22397,7 @@ func (client AppsClient) ListPublishingCredentialsSlotPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -22933,7 +22436,8 @@ func (client AppsClient) ListPublishingCredentialsSlotResponder(resp *http.Respo
 	return
 }
 
-// ListPublishingProfileXMLWithSecrets gets the publishing profile for an app (or deployment slot, if specified).
+// ListPublishingProfileXMLWithSecrets description for Gets the publishing profile for an app (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -22987,7 +22491,7 @@ func (client AppsClient) ListPublishingProfileXMLWithSecretsPreparer(ctx context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23021,7 +22525,8 @@ func (client AppsClient) ListPublishingProfileXMLWithSecretsResponder(resp *http
 	return
 }
 
-// ListPublishingProfileXMLWithSecretsSlot gets the publishing profile for an app (or deployment slot, if specified).
+// ListPublishingProfileXMLWithSecretsSlot description for Gets the publishing profile for an app (or deployment slot,
+// if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -23078,7 +22583,7 @@ func (client AppsClient) ListPublishingProfileXMLWithSecretsSlotPreparer(ctx con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23112,7 +22617,8 @@ func (client AppsClient) ListPublishingProfileXMLWithSecretsSlotResponder(resp *
 	return
 }
 
-// ListRelayServiceConnections gets hybrid connections configured for an app (or deployment slot, if specified).
+// ListRelayServiceConnections description for Gets hybrid connections configured for an app (or deployment slot, if
+// specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -23164,7 +22670,7 @@ func (client AppsClient) ListRelayServiceConnectionsPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23197,7 +22703,8 @@ func (client AppsClient) ListRelayServiceConnectionsResponder(resp *http.Respons
 	return
 }
 
-// ListRelayServiceConnectionsSlot gets hybrid connections configured for an app (or deployment slot, if specified).
+// ListRelayServiceConnectionsSlot description for Gets hybrid connections configured for an app (or deployment slot,
+// if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -23252,7 +22759,7 @@ func (client AppsClient) ListRelayServiceConnectionsSlotPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23285,7 +22792,256 @@ func (client AppsClient) ListRelayServiceConnectionsSlotResponder(resp *http.Res
 	return
 }
 
-// ListSiteExtensions get list of siteextensions for a web site, or a deployment slot.
+// ListSiteBackups description for Gets existing backups of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+func (client AppsClient) ListSiteBackups(ctx context.Context, resourceGroupName string, name string) (result BackupItemCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSiteBackups")
+		defer func() {
+			sc := -1
+			if result.bic.Response.Response != nil {
+				sc = result.bic.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSiteBackups", err.Error())
+	}
+
+	result.fn = client.listSiteBackupsNextResults
+	req, err := client.ListSiteBackupsPreparer(ctx, resourceGroupName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSiteBackups", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSiteBackupsSender(req)
+	if err != nil {
+		result.bic.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSiteBackups", resp, "Failure sending request")
+		return
+	}
+
+	result.bic, err = client.ListSiteBackupsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSiteBackups", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSiteBackupsPreparer prepares the ListSiteBackups request.
+func (client AppsClient) ListSiteBackupsPreparer(ctx context.Context, resourceGroupName string, name string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listbackups", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSiteBackupsSender sends the ListSiteBackups request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSiteBackupsSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListSiteBackupsResponder handles the response to the ListSiteBackups request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSiteBackupsResponder(resp *http.Response) (result BackupItemCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSiteBackupsNextResults retrieves the next set of results, if any.
+func (client AppsClient) listSiteBackupsNextResults(ctx context.Context, lastResults BackupItemCollection) (result BackupItemCollection, err error) {
+	req, err := lastResults.backupItemCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSiteBackupsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSiteBackupsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSiteBackupsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSiteBackupsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "listSiteBackupsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSiteBackupsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppsClient) ListSiteBackupsComplete(ctx context.Context, resourceGroupName string, name string) (result BackupItemCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSiteBackups")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListSiteBackups(ctx, resourceGroupName, name)
+	return
+}
+
+// ListSiteBackupsSlot description for Gets existing backups of an app.
+// Parameters:
+// resourceGroupName - name of the resource group to which the resource belongs.
+// name - name of the app.
+// slot - name of the deployment slot. If a slot is not specified, the API will get backups of the production
+// slot.
+func (client AppsClient) ListSiteBackupsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result BackupItemCollectionPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSiteBackupsSlot")
+		defer func() {
+			sc := -1
+			if result.bic.Response.Response != nil {
+				sc = result.bic.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+[^\.]$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("web.AppsClient", "ListSiteBackupsSlot", err.Error())
+	}
+
+	result.fn = client.listSiteBackupsSlotNextResults
+	req, err := client.ListSiteBackupsSlotPreparer(ctx, resourceGroupName, name, slot)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSiteBackupsSlot", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSiteBackupsSlotSender(req)
+	if err != nil {
+		result.bic.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSiteBackupsSlot", resp, "Failure sending request")
+		return
+	}
+
+	result.bic, err = client.ListSiteBackupsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSiteBackupsSlot", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ListSiteBackupsSlotPreparer prepares the ListSiteBackupsSlot request.
+func (client AppsClient) ListSiteBackupsSlotPreparer(ctx context.Context, resourceGroupName string, name string, slot string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":              autorest.Encode("path", name),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"slot":              autorest.Encode("path", slot),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2019-08-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/listbackups", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSiteBackupsSlotSender sends the ListSiteBackupsSlot request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ListSiteBackupsSlotSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// ListSiteBackupsSlotResponder handles the response to the ListSiteBackupsSlot request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ListSiteBackupsSlotResponder(resp *http.Response) (result BackupItemCollection, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSiteBackupsSlotNextResults retrieves the next set of results, if any.
+func (client AppsClient) listSiteBackupsSlotNextResults(ctx context.Context, lastResults BackupItemCollection) (result BackupItemCollection, err error) {
+	req, err := lastResults.backupItemCollectionPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSiteBackupsSlotNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSiteBackupsSlotSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "web.AppsClient", "listSiteBackupsSlotNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSiteBackupsSlotResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "listSiteBackupsSlotNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSiteBackupsSlotComplete enumerates all values, automatically crossing page boundaries as required.
+func (client AppsClient) ListSiteBackupsSlotComplete(ctx context.Context, resourceGroupName string, name string, slot string) (result BackupItemCollectionIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSiteBackupsSlot")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListSiteBackupsSlot(ctx, resourceGroupName, name, slot)
+	return
+}
+
+// ListSiteExtensions description for Get list of siteextensions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -23338,7 +23094,7 @@ func (client AppsClient) ListSiteExtensionsPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23408,12 +23164,11 @@ func (client AppsClient) ListSiteExtensionsComplete(ctx context.Context, resourc
 	return
 }
 
-// ListSiteExtensionsSlot get list of siteextensions for a web site, or a deployment slot.
+// ListSiteExtensionsSlot description for Get list of siteextensions for a web site, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot. If a slot is not specified, the API uses the production slot.
 func (client AppsClient) ListSiteExtensionsSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result SiteExtensionInfoCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSiteExtensionsSlot")
@@ -23464,7 +23219,7 @@ func (client AppsClient) ListSiteExtensionsSlotPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23534,7 +23289,7 @@ func (client AppsClient) ListSiteExtensionsSlotComplete(ctx context.Context, res
 	return
 }
 
-// ListSitePushSettings gets the Push settings associated with web app.
+// ListSitePushSettings description for Gets the Push settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -23586,7 +23341,7 @@ func (client AppsClient) ListSitePushSettingsPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23619,7 +23374,7 @@ func (client AppsClient) ListSitePushSettingsResponder(resp *http.Response) (res
 	return
 }
 
-// ListSitePushSettingsSlot gets the Push settings associated with web app.
+// ListSitePushSettingsSlot description for Gets the Push settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -23673,7 +23428,7 @@ func (client AppsClient) ListSitePushSettingsSlotPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23706,8 +23461,8 @@ func (client AppsClient) ListSitePushSettingsSlotResponder(resp *http.Response) 
 	return
 }
 
-// ListSlotConfigurationNames gets the names of app settings and connection strings that stick to the slot (not
-// swapped).
+// ListSlotConfigurationNames description for Gets the names of app settings and connection strings that stick to the
+// slot (not swapped).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -23759,7 +23514,7 @@ func (client AppsClient) ListSlotConfigurationNamesPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23792,7 +23547,8 @@ func (client AppsClient) ListSlotConfigurationNamesResponder(resp *http.Response
 	return
 }
 
-// ListSlotDifferencesFromProduction get the difference in configuration settings between two web app slots.
+// ListSlotDifferencesFromProduction description for Get the difference in configuration settings between two web app
+// slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -23849,7 +23605,7 @@ func (client AppsClient) ListSlotDifferencesFromProductionPreparer(ctx context.C
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -23921,7 +23677,7 @@ func (client AppsClient) ListSlotDifferencesFromProductionComplete(ctx context.C
 	return
 }
 
-// ListSlotDifferencesSlot get the difference in configuration settings between two web app slots.
+// ListSlotDifferencesSlot description for Get the difference in configuration settings between two web app slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -23980,7 +23736,7 @@ func (client AppsClient) ListSlotDifferencesSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -24052,7 +23808,7 @@ func (client AppsClient) ListSlotDifferencesSlotComplete(ctx context.Context, re
 	return
 }
 
-// ListSlots gets an app's deployment slots.
+// ListSlots description for Gets an app's deployment slots.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -24105,7 +23861,7 @@ func (client AppsClient) ListSlotsPreparer(ctx context.Context, resourceGroupNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -24175,7 +23931,7 @@ func (client AppsClient) ListSlotsComplete(ctx context.Context, resourceGroupNam
 	return
 }
 
-// ListSnapshots returns all Snapshots to the user.
+// ListSnapshots description for Returns all Snapshots to the user.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - website Name.
@@ -24228,7 +23984,7 @@ func (client AppsClient) ListSnapshotsPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -24298,7 +24054,7 @@ func (client AppsClient) ListSnapshotsComplete(ctx context.Context, resourceGrou
 	return
 }
 
-// ListSnapshotsFromDRSecondary returns all Snapshots to the user from DRSecondary endpoint.
+// ListSnapshotsFromDRSecondary description for Returns all Snapshots to the user from DRSecondary endpoint.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - website Name.
@@ -24351,7 +24107,7 @@ func (client AppsClient) ListSnapshotsFromDRSecondaryPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -24421,7 +24177,7 @@ func (client AppsClient) ListSnapshotsFromDRSecondaryComplete(ctx context.Contex
 	return
 }
 
-// ListSnapshotsFromDRSecondarySlot returns all Snapshots to the user from DRSecondary endpoint.
+// ListSnapshotsFromDRSecondarySlot description for Returns all Snapshots to the user from DRSecondary endpoint.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - website Name.
@@ -24476,7 +24232,7 @@ func (client AppsClient) ListSnapshotsFromDRSecondarySlotPreparer(ctx context.Co
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -24546,7 +24302,7 @@ func (client AppsClient) ListSnapshotsFromDRSecondarySlotComplete(ctx context.Co
 	return
 }
 
-// ListSnapshotsSlot returns all Snapshots to the user.
+// ListSnapshotsSlot description for Returns all Snapshots to the user.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - website Name.
@@ -24601,7 +24357,7 @@ func (client AppsClient) ListSnapshotsSlotPreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -24671,7 +24427,7 @@ func (client AppsClient) ListSnapshotsSlotComplete(ctx context.Context, resource
 	return
 }
 
-// ListSyncFunctionTriggers this is to allow calling via powershell and ARM template.
+// ListSyncFunctionTriggers description for This is to allow calling via powershell and ARM template.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -24723,7 +24479,7 @@ func (client AppsClient) ListSyncFunctionTriggersPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -24756,12 +24512,11 @@ func (client AppsClient) ListSyncFunctionTriggersResponder(resp *http.Response) 
 	return
 }
 
-// ListSyncFunctionTriggersSlot this is to allow calling via powershell and ARM template.
+// ListSyncFunctionTriggersSlot description for This is to allow calling via powershell and ARM template.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
-// slot - name of the deployment slot. If a slot is not specified, the API will restore a backup of the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) ListSyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result FunctionSecrets, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListSyncFunctionTriggersSlot")
@@ -24811,7 +24566,7 @@ func (client AppsClient) ListSyncFunctionTriggersSlotPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -24844,7 +24599,7 @@ func (client AppsClient) ListSyncFunctionTriggersSlotResponder(resp *http.Respon
 	return
 }
 
-// ListTriggeredWebJobHistory list a triggered web job's history for an app, or a deployment slot.
+// ListTriggeredWebJobHistory description for List a triggered web job's history for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -24899,7 +24654,7 @@ func (client AppsClient) ListTriggeredWebJobHistoryPreparer(ctx context.Context,
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -24969,13 +24724,12 @@ func (client AppsClient) ListTriggeredWebJobHistoryComplete(ctx context.Context,
 	return
 }
 
-// ListTriggeredWebJobHistorySlot list a triggered web job's history for an app, or a deployment slot.
+// ListTriggeredWebJobHistorySlot description for List a triggered web job's history for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // webJobName - name of Web Job.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot. If a slot is not specified, the API uses the production slot.
 func (client AppsClient) ListTriggeredWebJobHistorySlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string) (result TriggeredJobHistoryCollectionPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListTriggeredWebJobHistorySlot")
@@ -25027,7 +24781,7 @@ func (client AppsClient) ListTriggeredWebJobHistorySlotPreparer(ctx context.Cont
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -25097,7 +24851,7 @@ func (client AppsClient) ListTriggeredWebJobHistorySlotComplete(ctx context.Cont
 	return
 }
 
-// ListTriggeredWebJobs list triggered web jobs for an app, or a deployment slot.
+// ListTriggeredWebJobs description for List triggered web jobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -25150,7 +24904,7 @@ func (client AppsClient) ListTriggeredWebJobsPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -25220,7 +24974,7 @@ func (client AppsClient) ListTriggeredWebJobsComplete(ctx context.Context, resou
 	return
 }
 
-// ListTriggeredWebJobsSlot list triggered web jobs for an app, or a deployment slot.
+// ListTriggeredWebJobsSlot description for List triggered web jobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -25276,7 +25030,7 @@ func (client AppsClient) ListTriggeredWebJobsSlotPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -25346,7 +25100,7 @@ func (client AppsClient) ListTriggeredWebJobsSlotComplete(ctx context.Context, r
 	return
 }
 
-// ListUsages gets the quota usage information of an app (or deployment slot, if specified).
+// ListUsages description for Gets the quota usage information of an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -25402,7 +25156,7 @@ func (client AppsClient) ListUsagesPreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -25475,7 +25229,7 @@ func (client AppsClient) ListUsagesComplete(ctx context.Context, resourceGroupNa
 	return
 }
 
-// ListUsagesSlot gets the quota usage information of an app (or deployment slot, if specified).
+// ListUsagesSlot description for Gets the quota usage information of an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -25534,7 +25288,7 @@ func (client AppsClient) ListUsagesSlotPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -25607,7 +25361,7 @@ func (client AppsClient) ListUsagesSlotComplete(ctx context.Context, resourceGro
 	return
 }
 
-// ListVnetConnections gets the virtual networks the app (or deployment slot) is connected to.
+// ListVnetConnections description for Gets the virtual networks the app (or deployment slot) is connected to.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -25659,7 +25413,7 @@ func (client AppsClient) ListVnetConnectionsPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -25692,7 +25446,7 @@ func (client AppsClient) ListVnetConnectionsResponder(resp *http.Response) (resu
 	return
 }
 
-// ListVnetConnectionsSlot gets the virtual networks the app (or deployment slot) is connected to.
+// ListVnetConnectionsSlot description for Gets the virtual networks the app (or deployment slot) is connected to.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -25747,7 +25501,7 @@ func (client AppsClient) ListVnetConnectionsSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -25780,7 +25534,7 @@ func (client AppsClient) ListVnetConnectionsSlotResponder(resp *http.Response) (
 	return
 }
 
-// ListWebJobs list webjobs for an app, or a deployment slot.
+// ListWebJobs description for List webjobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -25833,7 +25587,7 @@ func (client AppsClient) ListWebJobsPreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -25903,7 +25657,7 @@ func (client AppsClient) ListWebJobsComplete(ctx context.Context, resourceGroupN
 	return
 }
 
-// ListWebJobsSlot list webjobs for an app, or a deployment slot.
+// ListWebJobsSlot description for List webjobs for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -25959,7 +25713,7 @@ func (client AppsClient) ListWebJobsSlotPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26029,7 +25783,7 @@ func (client AppsClient) ListWebJobsSlotComplete(ctx context.Context, resourceGr
 	return
 }
 
-// MigrateMySQL migrates a local (in-app) MySql database to a remote MySql database.
+// MigrateMySQL description for Migrates a local (in-app) MySql database to a remote MySql database.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -26079,7 +25833,7 @@ func (client AppsClient) MigrateMySQLPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26120,7 +25874,7 @@ func (client AppsClient) MigrateMySQLResponder(resp *http.Response) (result Oper
 	return
 }
 
-// MigrateStorage restores a web app.
+// MigrateStorage description for Restores a web app.
 // Parameters:
 // subscriptionName - azure subscription.
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -26173,7 +25927,7 @@ func (client AppsClient) MigrateStoragePreparer(ctx context.Context, subscriptio
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version":      APIVersion,
 		"subscriptionName": autorest.Encode("query", subscriptionName),
@@ -26215,8 +25969,8 @@ func (client AppsClient) MigrateStorageResponder(resp *http.Response) (result St
 	return
 }
 
-// PutPrivateAccessVnet sets data around private site access enablement and authorized Virtual Networks that can access
-// the site.
+// PutPrivateAccessVnet description for Sets data around private site access enablement and authorized Virtual Networks
+// that can access the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -26269,7 +26023,7 @@ func (client AppsClient) PutPrivateAccessVnetPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26304,8 +26058,8 @@ func (client AppsClient) PutPrivateAccessVnetResponder(resp *http.Response) (res
 	return
 }
 
-// PutPrivateAccessVnetSlot sets data around private site access enablement and authorized Virtual Networks that can
-// access the site.
+// PutPrivateAccessVnetSlot description for Sets data around private site access enablement and authorized Virtual
+// Networks that can access the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -26360,7 +26114,7 @@ func (client AppsClient) PutPrivateAccessVnetSlotPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26395,7 +26149,7 @@ func (client AppsClient) PutPrivateAccessVnetSlotResponder(resp *http.Response) 
 	return
 }
 
-// RecoverSiteConfigurationSnapshot reverts the configuration of an app to a previous snapshot.
+// RecoverSiteConfigurationSnapshot description for Reverts the configuration of an app to a previous snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26449,7 +26203,7 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotPreparer(ctx context.Co
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26481,7 +26235,7 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotResponder(resp *http.Re
 	return
 }
 
-// RecoverSiteConfigurationSnapshotSlot reverts the configuration of an app to a previous snapshot.
+// RecoverSiteConfigurationSnapshotSlot description for Reverts the configuration of an app to a previous snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26538,7 +26292,7 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotSlotPreparer(ctx contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26570,8 +26324,8 @@ func (client AppsClient) RecoverSiteConfigurationSnapshotSlotResponder(resp *htt
 	return
 }
 
-// ResetProductionSlotConfig resets the configuration settings of the current slot if they were previously modified by
-// calling the API with POST.
+// ResetProductionSlotConfig description for Resets the configuration settings of the current slot if they were
+// previously modified by calling the API with POST.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26623,7 +26377,7 @@ func (client AppsClient) ResetProductionSlotConfigPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26655,8 +26409,8 @@ func (client AppsClient) ResetProductionSlotConfigResponder(resp *http.Response)
 	return
 }
 
-// ResetSlotConfigurationSlot resets the configuration settings of the current slot if they were previously modified by
-// calling the API with POST.
+// ResetSlotConfigurationSlot description for Resets the configuration settings of the current slot if they were
+// previously modified by calling the API with POST.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26711,7 +26465,7 @@ func (client AppsClient) ResetSlotConfigurationSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26743,7 +26497,7 @@ func (client AppsClient) ResetSlotConfigurationSlotResponder(resp *http.Response
 	return
 }
 
-// Restart restarts an app (or deployment slot, if specified).
+// Restart description for Restarts an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26799,7 +26553,7 @@ func (client AppsClient) RestartPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26837,7 +26591,7 @@ func (client AppsClient) RestartResponder(resp *http.Response) (result autorest.
 	return
 }
 
-// RestartSlot restarts an app (or deployment slot, if specified).
+// RestartSlot description for Restarts an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26895,7 +26649,7 @@ func (client AppsClient) RestartSlotPreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -26933,7 +26687,7 @@ func (client AppsClient) RestartSlotResponder(resp *http.Response) (result autor
 	return
 }
 
-// Restore restores a specific backup to another app (or deployment slot, if specified).
+// Restore description for Restores a specific backup to another app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -26987,7 +26741,7 @@ func (client AppsClient) RestorePreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27027,7 +26781,7 @@ func (client AppsClient) RestoreResponder(resp *http.Response) (result autorest.
 	return
 }
 
-// RestoreFromBackupBlob restores an app from a backup blob in Azure Storage.
+// RestoreFromBackupBlob description for Restores an app from a backup blob in Azure Storage.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -27079,7 +26833,7 @@ func (client AppsClient) RestoreFromBackupBlobPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27119,7 +26873,7 @@ func (client AppsClient) RestoreFromBackupBlobResponder(resp *http.Response) (re
 	return
 }
 
-// RestoreFromBackupBlobSlot restores an app from a backup blob in Azure Storage.
+// RestoreFromBackupBlobSlot description for Restores an app from a backup blob in Azure Storage.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -27174,7 +26928,7 @@ func (client AppsClient) RestoreFromBackupBlobSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27214,7 +26968,7 @@ func (client AppsClient) RestoreFromBackupBlobSlotResponder(resp *http.Response)
 	return
 }
 
-// RestoreFromDeletedApp restores a deleted web app to this web app.
+// RestoreFromDeletedApp description for Restores a deleted web app to this web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -27261,7 +27015,7 @@ func (client AppsClient) RestoreFromDeletedAppPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27301,7 +27055,7 @@ func (client AppsClient) RestoreFromDeletedAppResponder(resp *http.Response) (re
 	return
 }
 
-// RestoreFromDeletedAppSlot restores a deleted web app to this web app.
+// RestoreFromDeletedAppSlot description for Restores a deleted web app to this web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -27350,7 +27104,7 @@ func (client AppsClient) RestoreFromDeletedAppSlotPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27390,7 +27144,7 @@ func (client AppsClient) RestoreFromDeletedAppSlotResponder(resp *http.Response)
 	return
 }
 
-// RestoreSlot restores a specific backup to another app (or deployment slot, if specified).
+// RestoreSlot description for Restores a specific backup to another app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -27447,7 +27201,7 @@ func (client AppsClient) RestoreSlotPreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27487,7 +27241,7 @@ func (client AppsClient) RestoreSlotResponder(resp *http.Response) (result autor
 	return
 }
 
-// RestoreSnapshot restores a web app from a snapshot.
+// RestoreSnapshot description for Restores a web app from a snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -27538,7 +27292,7 @@ func (client AppsClient) RestoreSnapshotPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27578,7 +27332,7 @@ func (client AppsClient) RestoreSnapshotResponder(resp *http.Response) (result a
 	return
 }
 
-// RestoreSnapshotSlot restores a web app from a snapshot.
+// RestoreSnapshotSlot description for Restores a web app from a snapshot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -27631,7 +27385,7 @@ func (client AppsClient) RestoreSnapshotSlotPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27671,7 +27425,7 @@ func (client AppsClient) RestoreSnapshotSlotResponder(resp *http.Response) (resu
 	return
 }
 
-// RunTriggeredWebJob run a triggered web job for an app, or a deployment slot.
+// RunTriggeredWebJob description for Run a triggered web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -27725,7 +27479,7 @@ func (client AppsClient) RunTriggeredWebJobPreparer(ctx context.Context, resourc
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27757,13 +27511,12 @@ func (client AppsClient) RunTriggeredWebJobResponder(resp *http.Response) (resul
 	return
 }
 
-// RunTriggeredWebJobSlot run a triggered web job for an app, or a deployment slot.
+// RunTriggeredWebJobSlot description for Run a triggered web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
 // webJobName - name of Web Job.
-// slot - name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
-// production slot.
+// slot - name of the deployment slot. If a slot is not specified, the API uses the production slot.
 func (client AppsClient) RunTriggeredWebJobSlot(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.RunTriggeredWebJobSlot")
@@ -27814,7 +27567,7 @@ func (client AppsClient) RunTriggeredWebJobSlotPreparer(ctx context.Context, res
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27846,7 +27599,7 @@ func (client AppsClient) RunTriggeredWebJobSlotResponder(resp *http.Response) (r
 	return
 }
 
-// Start starts an app (or deployment slot, if specified).
+// Start description for Starts an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -27898,7 +27651,7 @@ func (client AppsClient) StartPreparer(ctx context.Context, resourceGroupName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -27930,7 +27683,7 @@ func (client AppsClient) StartResponder(resp *http.Response) (result autorest.Re
 	return
 }
 
-// StartContinuousWebJob start a continuous web job for an app, or a deployment slot.
+// StartContinuousWebJob description for Start a continuous web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -27984,7 +27737,7 @@ func (client AppsClient) StartContinuousWebJobPreparer(ctx context.Context, reso
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28016,7 +27769,7 @@ func (client AppsClient) StartContinuousWebJobResponder(resp *http.Response) (re
 	return
 }
 
-// StartContinuousWebJobSlot start a continuous web job for an app, or a deployment slot.
+// StartContinuousWebJobSlot description for Start a continuous web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -28073,7 +27826,7 @@ func (client AppsClient) StartContinuousWebJobSlotPreparer(ctx context.Context, 
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28105,7 +27858,7 @@ func (client AppsClient) StartContinuousWebJobSlotResponder(resp *http.Response)
 	return
 }
 
-// StartNetworkTrace start capturing network packets for the site.
+// StartNetworkTrace description for Start capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -28154,7 +27907,7 @@ func (client AppsClient) StartNetworkTracePreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28202,7 +27955,7 @@ func (client AppsClient) StartNetworkTraceResponder(resp *http.Response) (result
 	return
 }
 
-// StartNetworkTraceSlot start capturing network packets for the site.
+// StartNetworkTraceSlot description for Start capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -28253,7 +28006,7 @@ func (client AppsClient) StartNetworkTraceSlotPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28301,7 +28054,7 @@ func (client AppsClient) StartNetworkTraceSlotResponder(resp *http.Response) (re
 	return
 }
 
-// StartSlot starts an app (or deployment slot, if specified).
+// StartSlot description for Starts an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28355,7 +28108,7 @@ func (client AppsClient) StartSlotPreparer(ctx context.Context, resourceGroupNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28387,7 +28140,7 @@ func (client AppsClient) StartSlotResponder(resp *http.Response) (result autores
 	return
 }
 
-// StartWebSiteNetworkTrace start capturing network packets for the site (To be deprecated).
+// StartWebSiteNetworkTrace description for Start capturing network packets for the site (To be deprecated).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -28442,7 +28195,7 @@ func (client AppsClient) StartWebSiteNetworkTracePreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28484,7 +28237,7 @@ func (client AppsClient) StartWebSiteNetworkTraceResponder(resp *http.Response) 
 	return
 }
 
-// StartWebSiteNetworkTraceOperation start capturing network packets for the site.
+// StartWebSiteNetworkTraceOperation description for Start capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -28533,7 +28286,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationPreparer(ctx context.C
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28581,7 +28334,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationResponder(resp *http.R
 	return
 }
 
-// StartWebSiteNetworkTraceOperationSlot start capturing network packets for the site.
+// StartWebSiteNetworkTraceOperationSlot description for Start capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -28632,7 +28385,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlotPreparer(ctx conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28680,7 +28433,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlotResponder(resp *ht
 	return
 }
 
-// StartWebSiteNetworkTraceSlot start capturing network packets for the site (To be deprecated).
+// StartWebSiteNetworkTraceSlot description for Start capturing network packets for the site (To be deprecated).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -28737,7 +28490,7 @@ func (client AppsClient) StartWebSiteNetworkTraceSlotPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28779,7 +28532,7 @@ func (client AppsClient) StartWebSiteNetworkTraceSlotResponder(resp *http.Respon
 	return
 }
 
-// Stop stops an app (or deployment slot, if specified).
+// Stop description for Stops an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -28831,7 +28584,7 @@ func (client AppsClient) StopPreparer(ctx context.Context, resourceGroupName str
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28863,7 +28616,7 @@ func (client AppsClient) StopResponder(resp *http.Response) (result autorest.Res
 	return
 }
 
-// StopContinuousWebJob stop a continuous web job for an app, or a deployment slot.
+// StopContinuousWebJob description for Stop a continuous web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -28917,7 +28670,7 @@ func (client AppsClient) StopContinuousWebJobPreparer(ctx context.Context, resou
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -28949,7 +28702,7 @@ func (client AppsClient) StopContinuousWebJobResponder(resp *http.Response) (res
 	return
 }
 
-// StopContinuousWebJobSlot stop a continuous web job for an app, or a deployment slot.
+// StopContinuousWebJobSlot description for Stop a continuous web job for an app, or a deployment slot.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - site name.
@@ -29006,7 +28759,7 @@ func (client AppsClient) StopContinuousWebJobSlotPreparer(ctx context.Context, r
 		"webJobName":        autorest.Encode("path", webJobName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29038,7 +28791,7 @@ func (client AppsClient) StopContinuousWebJobSlotResponder(resp *http.Response) 
 	return
 }
 
-// StopNetworkTrace stop ongoing capturing network packets for the site.
+// StopNetworkTrace description for Stop ongoing capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -29090,7 +28843,7 @@ func (client AppsClient) StopNetworkTracePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29122,7 +28875,7 @@ func (client AppsClient) StopNetworkTraceResponder(resp *http.Response) (result 
 	return
 }
 
-// StopNetworkTraceSlot stop ongoing capturing network packets for the site.
+// StopNetworkTraceSlot description for Stop ongoing capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -29176,7 +28929,7 @@ func (client AppsClient) StopNetworkTraceSlotPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29208,7 +28961,7 @@ func (client AppsClient) StopNetworkTraceSlotResponder(resp *http.Response) (res
 	return
 }
 
-// StopSlot stops an app (or deployment slot, if specified).
+// StopSlot description for Stops an app (or deployment slot, if specified).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -29262,7 +29015,7 @@ func (client AppsClient) StopSlotPreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29294,7 +29047,7 @@ func (client AppsClient) StopSlotResponder(resp *http.Response) (result autorest
 	return
 }
 
-// StopWebSiteNetworkTrace stop ongoing capturing network packets for the site.
+// StopWebSiteNetworkTrace description for Stop ongoing capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -29346,7 +29099,7 @@ func (client AppsClient) StopWebSiteNetworkTracePreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29378,7 +29131,7 @@ func (client AppsClient) StopWebSiteNetworkTraceResponder(resp *http.Response) (
 	return
 }
 
-// StopWebSiteNetworkTraceSlot stop ongoing capturing network packets for the site.
+// StopWebSiteNetworkTraceSlot description for Stop ongoing capturing network packets for the site.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -29432,7 +29185,7 @@ func (client AppsClient) StopWebSiteNetworkTraceSlotPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29464,7 +29217,7 @@ func (client AppsClient) StopWebSiteNetworkTraceSlotResponder(resp *http.Respons
 	return
 }
 
-// SwapSlotSlot swaps two deployment slots of an app.
+// SwapSlotSlot description for Swaps two deployment slots of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -29516,7 +29269,7 @@ func (client AppsClient) SwapSlotSlotPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29556,7 +29309,7 @@ func (client AppsClient) SwapSlotSlotResponder(resp *http.Response) (result auto
 	return
 }
 
-// SwapSlotWithProduction swaps two deployment slots of an app.
+// SwapSlotWithProduction description for Swaps two deployment slots of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -29606,7 +29359,7 @@ func (client AppsClient) SwapSlotWithProductionPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29646,7 +29399,7 @@ func (client AppsClient) SwapSlotWithProductionResponder(resp *http.Response) (r
 	return
 }
 
-// SyncFunctionTriggers syncs function trigger metadata to the scale controller
+// SyncFunctionTriggers description for Syncs function trigger metadata to the scale controller
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -29698,7 +29451,7 @@ func (client AppsClient) SyncFunctionTriggersPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29730,12 +29483,11 @@ func (client AppsClient) SyncFunctionTriggersResponder(resp *http.Response) (res
 	return
 }
 
-// SyncFunctionTriggersSlot syncs function trigger metadata to the scale controller
+// SyncFunctionTriggersSlot description for Syncs function trigger metadata to the scale controller
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
-// slot - name of the deployment slot. If a slot is not specified, the API will restore a backup of the
-// production slot.
+// slot - name of the deployment slot.
 func (client AppsClient) SyncFunctionTriggersSlot(ctx context.Context, resourceGroupName string, name string, slot string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.SyncFunctionTriggersSlot")
@@ -29785,7 +29537,7 @@ func (client AppsClient) SyncFunctionTriggersSlotPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29817,7 +29569,7 @@ func (client AppsClient) SyncFunctionTriggersSlotResponder(resp *http.Response) 
 	return
 }
 
-// SyncRepository sync web app repository.
+// SyncRepository description for Sync web app repository.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -29869,7 +29621,7 @@ func (client AppsClient) SyncRepositoryPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29901,7 +29653,7 @@ func (client AppsClient) SyncRepositoryResponder(resp *http.Response) (result au
 	return
 }
 
-// SyncRepositorySlot sync web app repository.
+// SyncRepositorySlot description for Sync web app repository.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -29955,7 +29707,7 @@ func (client AppsClient) SyncRepositorySlotPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -29987,7 +29739,8 @@ func (client AppsClient) SyncRepositorySlotResponder(resp *http.Response) (resul
 	return
 }
 
-// Update creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+// Update description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing
+// app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
@@ -30041,7 +29794,7 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30076,7 +29829,7 @@ func (client AppsClient) UpdateResponder(resp *http.Response) (result Site, err 
 	return
 }
 
-// UpdateApplicationSettings replaces the application settings of an app.
+// UpdateApplicationSettings description for Replaces the application settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30129,7 +29882,7 @@ func (client AppsClient) UpdateApplicationSettingsPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30164,7 +29917,7 @@ func (client AppsClient) UpdateApplicationSettingsResponder(resp *http.Response)
 	return
 }
 
-// UpdateApplicationSettingsSlot replaces the application settings of an app.
+// UpdateApplicationSettingsSlot description for Replaces the application settings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30220,7 +29973,7 @@ func (client AppsClient) UpdateApplicationSettingsSlotPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30255,7 +30008,7 @@ func (client AppsClient) UpdateApplicationSettingsSlotResponder(resp *http.Respo
 	return
 }
 
-// UpdateAuthSettings updates the Authentication / Authorization settings associated with web app.
+// UpdateAuthSettings description for Updates the Authentication / Authorization settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -30308,7 +30061,7 @@ func (client AppsClient) UpdateAuthSettingsPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30343,7 +30096,7 @@ func (client AppsClient) UpdateAuthSettingsResponder(resp *http.Response) (resul
 	return
 }
 
-// UpdateAuthSettingsSlot updates the Authentication / Authorization settings associated with web app.
+// UpdateAuthSettingsSlot description for Updates the Authentication / Authorization settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -30398,7 +30151,7 @@ func (client AppsClient) UpdateAuthSettingsSlotPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30433,7 +30186,7 @@ func (client AppsClient) UpdateAuthSettingsSlotResponder(resp *http.Response) (r
 	return
 }
 
-// UpdateAzureStorageAccounts updates the Azure storage account configurations of an app.
+// UpdateAzureStorageAccounts description for Updates the Azure storage account configurations of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30486,7 +30239,7 @@ func (client AppsClient) UpdateAzureStorageAccountsPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30521,7 +30274,7 @@ func (client AppsClient) UpdateAzureStorageAccountsResponder(resp *http.Response
 	return
 }
 
-// UpdateAzureStorageAccountsSlot updates the Azure storage account configurations of an app.
+// UpdateAzureStorageAccountsSlot description for Updates the Azure storage account configurations of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30577,7 +30330,7 @@ func (client AppsClient) UpdateAzureStorageAccountsSlotPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30612,7 +30365,7 @@ func (client AppsClient) UpdateAzureStorageAccountsSlotResponder(resp *http.Resp
 	return
 }
 
-// UpdateBackupConfiguration updates the backup configuration of an app.
+// UpdateBackupConfiguration description for Updates the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30674,7 +30427,7 @@ func (client AppsClient) UpdateBackupConfigurationPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30709,7 +30462,7 @@ func (client AppsClient) UpdateBackupConfigurationResponder(resp *http.Response)
 	return
 }
 
-// UpdateBackupConfigurationSlot updates the backup configuration of an app.
+// UpdateBackupConfigurationSlot description for Updates the backup configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30774,7 +30527,7 @@ func (client AppsClient) UpdateBackupConfigurationSlotPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30809,7 +30562,7 @@ func (client AppsClient) UpdateBackupConfigurationSlotResponder(resp *http.Respo
 	return
 }
 
-// UpdateConfiguration updates the configuration of an app.
+// UpdateConfiguration description for Updates the configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30862,7 +30615,7 @@ func (client AppsClient) UpdateConfigurationPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30897,7 +30650,7 @@ func (client AppsClient) UpdateConfigurationResponder(resp *http.Response) (resu
 	return
 }
 
-// UpdateConfigurationSlot updates the configuration of an app.
+// UpdateConfigurationSlot description for Updates the configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -30953,7 +30706,7 @@ func (client AppsClient) UpdateConfigurationSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -30988,7 +30741,7 @@ func (client AppsClient) UpdateConfigurationSlotResponder(resp *http.Response) (
 	return
 }
 
-// UpdateConnectionStrings replaces the connection strings of an app.
+// UpdateConnectionStrings description for Replaces the connection strings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31041,7 +30794,7 @@ func (client AppsClient) UpdateConnectionStringsPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31076,7 +30829,7 @@ func (client AppsClient) UpdateConnectionStringsResponder(resp *http.Response) (
 	return
 }
 
-// UpdateConnectionStringsSlot replaces the connection strings of an app.
+// UpdateConnectionStringsSlot description for Replaces the connection strings of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31132,7 +30885,7 @@ func (client AppsClient) UpdateConnectionStringsSlotPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31167,7 +30920,7 @@ func (client AppsClient) UpdateConnectionStringsSlotResponder(resp *http.Respons
 	return
 }
 
-// UpdateDiagnosticLogsConfig updates the logging configuration of an app.
+// UpdateDiagnosticLogsConfig description for Updates the logging configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31236,7 +30989,7 @@ func (client AppsClient) UpdateDiagnosticLogsConfigPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31271,7 +31024,7 @@ func (client AppsClient) UpdateDiagnosticLogsConfigResponder(resp *http.Response
 	return
 }
 
-// UpdateDiagnosticLogsConfigSlot updates the logging configuration of an app.
+// UpdateDiagnosticLogsConfigSlot description for Updates the logging configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31343,7 +31096,7 @@ func (client AppsClient) UpdateDiagnosticLogsConfigSlotPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31378,8 +31131,8 @@ func (client AppsClient) UpdateDiagnosticLogsConfigSlotResponder(resp *http.Resp
 	return
 }
 
-// UpdateDomainOwnershipIdentifier creates a domain ownership identifier for web app, or updates an existing ownership
-// identifier.
+// UpdateDomainOwnershipIdentifier description for Creates a domain ownership identifier for web app, or updates an
+// existing ownership identifier.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31434,7 +31187,7 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierPreparer(ctx context.Con
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31469,8 +31222,8 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierResponder(resp *http.Res
 	return
 }
 
-// UpdateDomainOwnershipIdentifierSlot creates a domain ownership identifier for web app, or updates an existing
-// ownership identifier.
+// UpdateDomainOwnershipIdentifierSlot description for Creates a domain ownership identifier for web app, or updates an
+// existing ownership identifier.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31528,7 +31281,7 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierSlotPreparer(ctx context
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31563,7 +31316,7 @@ func (client AppsClient) UpdateDomainOwnershipIdentifierSlotResponder(resp *http
 	return
 }
 
-// UpdateHybridConnection creates a new Hybrid Connection using a Service Bus relay.
+// UpdateHybridConnection description for Creates a new Hybrid Connection using a Service Bus relay.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -31620,7 +31373,7 @@ func (client AppsClient) UpdateHybridConnectionPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31655,7 +31408,7 @@ func (client AppsClient) UpdateHybridConnectionResponder(resp *http.Response) (r
 	return
 }
 
-// UpdateHybridConnectionSlot creates a new Hybrid Connection using a Service Bus relay.
+// UpdateHybridConnectionSlot description for Creates a new Hybrid Connection using a Service Bus relay.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - the name of the web app.
@@ -31714,7 +31467,7 @@ func (client AppsClient) UpdateHybridConnectionSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31749,7 +31502,7 @@ func (client AppsClient) UpdateHybridConnectionSlotResponder(resp *http.Response
 	return
 }
 
-// UpdateMetadata replaces the metadata of an app.
+// UpdateMetadata description for Replaces the metadata of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31802,7 +31555,7 @@ func (client AppsClient) UpdateMetadataPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31837,7 +31590,7 @@ func (client AppsClient) UpdateMetadataResponder(resp *http.Response) (result St
 	return
 }
 
-// UpdateMetadataSlot replaces the metadata of an app.
+// UpdateMetadataSlot description for Replaces the metadata of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31893,7 +31646,7 @@ func (client AppsClient) UpdateMetadataSlotPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -31928,7 +31681,7 @@ func (client AppsClient) UpdateMetadataSlotResponder(resp *http.Response) (resul
 	return
 }
 
-// UpdatePremierAddOn updates a named add-on of an app.
+// UpdatePremierAddOn description for Updates a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -31983,7 +31736,7 @@ func (client AppsClient) UpdatePremierAddOnPreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32018,7 +31771,7 @@ func (client AppsClient) UpdatePremierAddOnResponder(resp *http.Response) (resul
 	return
 }
 
-// UpdatePremierAddOnSlot updates a named add-on of an app.
+// UpdatePremierAddOnSlot description for Updates a named add-on of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32076,7 +31829,7 @@ func (client AppsClient) UpdatePremierAddOnSlotPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32111,8 +31864,8 @@ func (client AppsClient) UpdatePremierAddOnSlotResponder(resp *http.Response) (r
 	return
 }
 
-// UpdateRelayServiceConnection creates a new hybrid connection configuration (PUT), or updates an existing one
-// (PATCH).
+// UpdateRelayServiceConnection description for Creates a new hybrid connection configuration (PUT), or updates an
+// existing one (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32167,7 +31920,7 @@ func (client AppsClient) UpdateRelayServiceConnectionPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32202,8 +31955,8 @@ func (client AppsClient) UpdateRelayServiceConnectionResponder(resp *http.Respon
 	return
 }
 
-// UpdateRelayServiceConnectionSlot creates a new hybrid connection configuration (PUT), or updates an existing one
-// (PATCH).
+// UpdateRelayServiceConnectionSlot description for Creates a new hybrid connection configuration (PUT), or updates an
+// existing one (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32261,7 +32014,7 @@ func (client AppsClient) UpdateRelayServiceConnectionSlotPreparer(ctx context.Co
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32296,7 +32049,7 @@ func (client AppsClient) UpdateRelayServiceConnectionSlotResponder(resp *http.Re
 	return
 }
 
-// UpdateSitePushSettings updates the Push settings associated with web app.
+// UpdateSitePushSettings description for Updates the Push settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -32352,7 +32105,7 @@ func (client AppsClient) UpdateSitePushSettingsPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32387,7 +32140,7 @@ func (client AppsClient) UpdateSitePushSettingsResponder(resp *http.Response) (r
 	return
 }
 
-// UpdateSitePushSettingsSlot updates the Push settings associated with web app.
+// UpdateSitePushSettingsSlot description for Updates the Push settings associated with web app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of web app.
@@ -32445,7 +32198,7 @@ func (client AppsClient) UpdateSitePushSettingsSlotPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32480,7 +32233,8 @@ func (client AppsClient) UpdateSitePushSettingsSlotResponder(resp *http.Response
 	return
 }
 
-// UpdateSlot creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+// UpdateSlot description for Creates a new web, mobile, or API app in an existing resource group, or updates an
+// existing app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - unique name of the app to create or update. To create or update a deployment slot, use the {slot}
@@ -32537,7 +32291,7 @@ func (client AppsClient) UpdateSlotPreparer(ctx context.Context, resourceGroupNa
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32572,8 +32326,8 @@ func (client AppsClient) UpdateSlotResponder(resp *http.Response) (result Site, 
 	return
 }
 
-// UpdateSlotConfigurationNames updates the names of application settings and connection string that remain with the
-// slot during swap operation.
+// UpdateSlotConfigurationNames description for Updates the names of application settings and connection string that
+// remain with the slot during swap operation.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32626,7 +32380,7 @@ func (client AppsClient) UpdateSlotConfigurationNamesPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32661,7 +32415,7 @@ func (client AppsClient) UpdateSlotConfigurationNamesResponder(resp *http.Respon
 	return
 }
 
-// UpdateSourceControl updates the source control configuration of an app.
+// UpdateSourceControl description for Updates the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32714,7 +32468,7 @@ func (client AppsClient) UpdateSourceControlPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32749,7 +32503,7 @@ func (client AppsClient) UpdateSourceControlResponder(resp *http.Response) (resu
 	return
 }
 
-// UpdateSourceControlSlot updates the source control configuration of an app.
+// UpdateSourceControlSlot description for Updates the source control configuration of an app.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -32805,7 +32559,7 @@ func (client AppsClient) UpdateSourceControlSlotPreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32840,9 +32594,9 @@ func (client AppsClient) UpdateSourceControlSlotResponder(resp *http.Response) (
 	return
 }
 
-// UpdateSwiftVirtualNetworkConnection integrates this Web App with a Virtual Network. This requires that 1)
-// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
-// delegated, and is not
+// UpdateSwiftVirtualNetworkConnection description for Integrates this Web App with a Virtual Network. This requires
+// that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already
+// been delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -32896,7 +32650,7 @@ func (client AppsClient) UpdateSwiftVirtualNetworkConnectionPreparer(ctx context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -32931,9 +32685,9 @@ func (client AppsClient) UpdateSwiftVirtualNetworkConnectionResponder(resp *http
 	return
 }
 
-// UpdateSwiftVirtualNetworkConnectionSlot integrates this Web App with a Virtual Network. This requires that 1)
-// "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been
-// delegated, and is not
+// UpdateSwiftVirtualNetworkConnectionSlot description for Integrates this Web App with a Virtual Network. This
+// requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has
+// already been delegated, and is not
 // in use by another App Service Plan other than the one this App is in.
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
@@ -32990,7 +32744,7 @@ func (client AppsClient) UpdateSwiftVirtualNetworkConnectionSlotPreparer(ctx con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -33025,8 +32779,8 @@ func (client AppsClient) UpdateSwiftVirtualNetworkConnectionSlotResponder(resp *
 	return
 }
 
-// UpdateVnetConnection adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
-// (PATCH).
+// UpdateVnetConnection description for Adds a Virtual Network connection to an app or slot (PUT) or updates the
+// connection properties (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33081,7 +32835,7 @@ func (client AppsClient) UpdateVnetConnectionPreparer(ctx context.Context, resou
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -33116,7 +32870,8 @@ func (client AppsClient) UpdateVnetConnectionResponder(resp *http.Response) (res
 	return
 }
 
-// UpdateVnetConnectionGateway adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
+// UpdateVnetConnectionGateway description for Adds a gateway to a connected Virtual Network (PUT) or updates it
+// (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33173,7 +32928,7 @@ func (client AppsClient) UpdateVnetConnectionGatewayPreparer(ctx context.Context
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -33208,7 +32963,8 @@ func (client AppsClient) UpdateVnetConnectionGatewayResponder(resp *http.Respons
 	return
 }
 
-// UpdateVnetConnectionGatewaySlot adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
+// UpdateVnetConnectionGatewaySlot description for Adds a gateway to a connected Virtual Network (PUT) or updates it
+// (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33268,7 +33024,7 @@ func (client AppsClient) UpdateVnetConnectionGatewaySlotPreparer(ctx context.Con
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -33303,8 +33059,8 @@ func (client AppsClient) UpdateVnetConnectionGatewaySlotResponder(resp *http.Res
 	return
 }
 
-// UpdateVnetConnectionSlot adds a Virtual Network connection to an app or slot (PUT) or updates the connection
-// properties (PATCH).
+// UpdateVnetConnectionSlot description for Adds a Virtual Network connection to an app or slot (PUT) or updates the
+// connection properties (PATCH).
 // Parameters:
 // resourceGroupName - name of the resource group to which the resource belongs.
 // name - name of the app.
@@ -33362,7 +33118,7 @@ func (client AppsClient) UpdateVnetConnectionSlotPreparer(ctx context.Context, r
 		"vnetName":          autorest.Encode("path", vnetName),
 	}
 
-	const APIVersion = "2018-02-01"
+	const APIVersion = "2019-08-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

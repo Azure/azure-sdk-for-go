@@ -72,6 +72,8 @@ func PossibleHanaInstancePowerStateEnumValues() []HanaInstancePowerStateEnum {
 type HanaInstanceSizeNamesEnum string
 
 const (
+	// S112 ...
+	S112 HanaInstanceSizeNamesEnum = "S112"
 	// S144 ...
 	S144 HanaInstanceSizeNamesEnum = "S144"
 	// S144m ...
@@ -88,6 +90,12 @@ const (
 	S224o HanaInstanceSizeNamesEnum = "S224o"
 	// S224om ...
 	S224om HanaInstanceSizeNamesEnum = "S224om"
+	// S224oo ...
+	S224oo HanaInstanceSizeNamesEnum = "S224oo"
+	// S224oom ...
+	S224oom HanaInstanceSizeNamesEnum = "S224oom"
+	// S224ooo ...
+	S224ooo HanaInstanceSizeNamesEnum = "S224ooo"
 	// S224oxm ...
 	S224oxm HanaInstanceSizeNamesEnum = "S224oxm"
 	// S224oxxm ...
@@ -122,7 +130,7 @@ const (
 
 // PossibleHanaInstanceSizeNamesEnumValues returns an array of possible values for the HanaInstanceSizeNamesEnum const type.
 func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
-	return []HanaInstanceSizeNamesEnum{S144, S144m, S192, S192m, S192xm, S224m, S224o, S224om, S224oxm, S224oxxm, S384, S384m, S384xm, S384xxm, S576m, S576xm, S72, S72m, S768, S768m, S768xm, S96, S960m}
+	return []HanaInstanceSizeNamesEnum{S112, S144, S144m, S192, S192m, S192xm, S224m, S224o, S224om, S224oo, S224oom, S224ooo, S224oxm, S224oxxm, S384, S384m, S384xm, S384xxm, S576m, S576xm, S72, S72m, S768, S768m, S768xm, S96, S960m}
 }
 
 // HanaProvisioningStatesEnum enumerates the values for hana provisioning states enum.
@@ -575,7 +583,7 @@ func (future *HanaInstancesStartFuture) Result(client HanaInstancesClient) (ar a
 type HardwareProfile struct {
 	// HardwareType - READ-ONLY; Name of the hardware type (vendor and/or their product name). Possible values include: 'CiscoUCS', 'HPE'
 	HardwareType HanaHardwareTypeNamesEnum `json:"hardwareType,omitempty"`
-	// HanaInstanceSize - READ-ONLY; Specifies the HANA instance SKU. Possible values include: 'S72m', 'S144m', 'S72', 'S144', 'S192', 'S192m', 'S192xm', 'S96', 'S384', 'S384m', 'S384xm', 'S384xxm', 'S576m', 'S576xm', 'S768', 'S768m', 'S768xm', 'S960m', 'S224o', 'S224m', 'S224om', 'S224oxm', 'S224oxxm'
+	// HanaInstanceSize - READ-ONLY; Specifies the HANA instance SKU. Possible values include: 'S72m', 'S144m', 'S72', 'S144', 'S192', 'S192m', 'S192xm', 'S96', 'S112', 'S224m', 'S224o', 'S224om', 'S224oo', 'S224oom', 'S224ooo', 'S224oxm', 'S224oxxm', 'S384', 'S384m', 'S384xm', 'S384xxm', 'S576m', 'S576xm', 'S768', 'S768m', 'S768xm', 'S960m'
 	HanaInstanceSize HanaInstanceSizeNamesEnum `json:"hanaInstanceSize,omitempty"`
 }
 

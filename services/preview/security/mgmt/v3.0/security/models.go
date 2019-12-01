@@ -141,6 +141,25 @@ func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 	return []AssessedResourceType{AssessedResourceTypeAdditionalData, AssessedResourceTypeContainerRegistryVulnerability, AssessedResourceTypeServerVulnerabilityAssessment, AssessedResourceTypeSQLServerVulnerability}
 }
 
+// AssessmentType enumerates the values for assessment type.
+type AssessmentType string
+
+const (
+	// BuiltIn Azure Security Center managed assessments
+	BuiltIn AssessmentType = "BuiltIn"
+	// CustomerManaged User assessments pushed directly by the user or other third party to Azure Security
+	// Center
+	CustomerManaged AssessmentType = "CustomerManaged"
+	// CustomPolicy User defined policies that are automatically ingested from Azure Policy to Azure Security
+	// Center
+	CustomPolicy AssessmentType = "CustomPolicy"
+)
+
+// PossibleAssessmentTypeValues returns an array of possible values for the AssessmentType const type.
+func PossibleAssessmentTypeValues() []AssessmentType {
+	return []AssessmentType{BuiltIn, CustomerManaged, CustomPolicy}
+}
+
 // AutoProvision enumerates the values for auto provision.
 type AutoProvision string
 
@@ -154,6 +173,27 @@ const (
 // PossibleAutoProvisionValues returns an array of possible values for the AutoProvision const type.
 func PossibleAutoProvisionValues() []AutoProvision {
 	return []AutoProvision{AutoProvisionOff, AutoProvisionOn}
+}
+
+// Category enumerates the values for category.
+type Category string
+
+const (
+	// Compute ...
+	Compute Category = "Compute"
+	// Data ...
+	Data Category = "Data"
+	// IdentityAndAccess ...
+	IdentityAndAccess Category = "IdentityAndAccess"
+	// IoT ...
+	IoT Category = "IoT"
+	// Networking ...
+	Networking Category = "Networking"
+)
+
+// PossibleCategoryValues returns an array of possible values for the Category const type.
+func PossibleCategoryValues() []Category {
+	return []Category{Compute, Data, IdentityAndAccess, IoT, Networking}
 }
 
 // ConfigurationStatus enumerates the values for configuration status.
@@ -400,6 +440,23 @@ const (
 // PossibleFileTypeValues returns an array of possible values for the FileType const type.
 func PossibleFileTypeValues() []FileType {
 	return []FileType{FileTypeDll, FileTypeExe, FileTypeExecutable, FileTypeMsi, FileTypeScript, FileTypeUnknown}
+}
+
+// ImplementationEffort enumerates the values for implementation effort.
+type ImplementationEffort string
+
+const (
+	// High ...
+	High ImplementationEffort = "High"
+	// Low ...
+	Low ImplementationEffort = "Low"
+	// Moderate ...
+	Moderate ImplementationEffort = "Moderate"
+)
+
+// PossibleImplementationEffortValues returns an array of possible values for the ImplementationEffort const type.
+func PossibleImplementationEffortValues() []ImplementationEffort {
+	return []ImplementationEffort{High, Low, Moderate}
 }
 
 // Issue enumerates the values for issue.
@@ -689,19 +746,19 @@ func PossibleRecommendationTypeValues() []RecommendationType {
 type ReportedSeverity string
 
 const (
-	// High ...
-	High ReportedSeverity = "High"
-	// Informational ...
-	Informational ReportedSeverity = "Informational"
-	// Low ...
-	Low ReportedSeverity = "Low"
-	// Medium ...
-	Medium ReportedSeverity = "Medium"
+	// ReportedSeverityHigh ...
+	ReportedSeverityHigh ReportedSeverity = "High"
+	// ReportedSeverityInformational ...
+	ReportedSeverityInformational ReportedSeverity = "Informational"
+	// ReportedSeverityLow ...
+	ReportedSeverityLow ReportedSeverity = "Low"
+	// ReportedSeverityMedium ...
+	ReportedSeverityMedium ReportedSeverity = "Medium"
 )
 
 // PossibleReportedSeverityValues returns an array of possible values for the ReportedSeverity const type.
 func PossibleReportedSeverityValues() []ReportedSeverity {
-	return []ReportedSeverity{High, Informational, Low, Medium}
+	return []ReportedSeverity{ReportedSeverityHigh, ReportedSeverityInformational, ReportedSeverityLow, ReportedSeverityMedium}
 }
 
 // ResourceStatus enumerates the values for resource status.
@@ -894,6 +951,33 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 	return []SubAssessmentStatusCode{SubAssessmentStatusCodeHealthy, SubAssessmentStatusCodeNotApplicable, SubAssessmentStatusCodeUnhealthy}
 }
 
+// Threats enumerates the values for threats.
+type Threats string
+
+const (
+	// AccountBreach ...
+	AccountBreach Threats = "AccountBreach"
+	// DataExfiltration ...
+	DataExfiltration Threats = "DataExfiltration"
+	// DataSpillage ...
+	DataSpillage Threats = "DataSpillage"
+	// DenialOfService ...
+	DenialOfService Threats = "DenialOfService"
+	// ElevationOfPrivilege ...
+	ElevationOfPrivilege Threats = "ElevationOfPrivilege"
+	// MaliciousInsider ...
+	MaliciousInsider Threats = "MaliciousInsider"
+	// MissingCoverage ...
+	MissingCoverage Threats = "MissingCoverage"
+	// ThreatResistance ...
+	ThreatResistance Threats = "ThreatResistance"
+)
+
+// PossibleThreatsValues returns an array of possible values for the Threats const type.
+func PossibleThreatsValues() []Threats {
+	return []Threats{AccountBreach, DataExfiltration, DataSpillage, DenialOfService, ElevationOfPrivilege, MaliciousInsider, MissingCoverage, ThreatResistance}
+}
+
 // Type enumerates the values for type.
 type Type string
 
@@ -930,6 +1014,23 @@ const (
 // PossibleUnmaskedIPLoggingStatusValues returns an array of possible values for the UnmaskedIPLoggingStatus const type.
 func PossibleUnmaskedIPLoggingStatusValues() []UnmaskedIPLoggingStatus {
 	return []UnmaskedIPLoggingStatus{UnmaskedIPLoggingStatusDisabled, UnmaskedIPLoggingStatusEnabled}
+}
+
+// UserImpact enumerates the values for user impact.
+type UserImpact string
+
+const (
+	// UserImpactHigh ...
+	UserImpactHigh UserImpact = "High"
+	// UserImpactLow ...
+	UserImpactLow UserImpact = "Low"
+	// UserImpactModerate ...
+	UserImpactModerate UserImpact = "Moderate"
+)
+
+// PossibleUserImpactValues returns an array of possible values for the UserImpact const type.
+func PossibleUserImpactValues() []UserImpact {
+	return []UserImpact{UserImpactHigh, UserImpactLow, UserImpactModerate}
 }
 
 // ValueType enumerates the values for value type.
@@ -1486,7 +1587,7 @@ type AlertProperties struct {
 	RemediationSteps *string `json:"remediationSteps,omitempty"`
 	// ActionTaken - READ-ONLY; The action that was taken as a response to the alert (Active, Blocked etc.)
 	ActionTaken *string `json:"actionTaken,omitempty"`
-	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Estimated severity of this alert. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// CompromisedEntity - READ-ONLY; The entity that the incident happened on
 	CompromisedEntity *string `json:"compromisedEntity,omitempty"`
@@ -2065,6 +2166,248 @@ func (page AscLocationListPage) Values() []AscLocation {
 // Creates a new instance of the AscLocationListPage type.
 func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
 	return AscLocationListPage{fn: getNextPage}
+}
+
+// AssessmentMetadata security assessment metadata
+type AssessmentMetadata struct {
+	autorest.Response             `json:"-"`
+	*AssessmentMetadataProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AssessmentMetadata.
+func (am AssessmentMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if am.AssessmentMetadataProperties != nil {
+		objectMap["properties"] = am.AssessmentMetadataProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AssessmentMetadata struct.
+func (am *AssessmentMetadata) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var assessmentMetadataProperties AssessmentMetadataProperties
+				err = json.Unmarshal(*v, &assessmentMetadataProperties)
+				if err != nil {
+					return err
+				}
+				am.AssessmentMetadataProperties = &assessmentMetadataProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				am.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				am.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				am.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// AssessmentMetadataList list of security assessment metadata
+type AssessmentMetadataList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY
+	Value *[]AssessmentMetadata `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// AssessmentMetadataListIterator provides access to a complete listing of AssessmentMetadata values.
+type AssessmentMetadataListIterator struct {
+	i    int
+	page AssessmentMetadataListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AssessmentMetadataListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AssessmentMetadataListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AssessmentMetadataListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AssessmentMetadataListIterator) Response() AssessmentMetadataList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AssessmentMetadataListIterator) Value() AssessmentMetadata {
+	if !iter.page.NotDone() {
+		return AssessmentMetadata{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AssessmentMetadataListIterator type.
+func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
+	return AssessmentMetadataListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (aml AssessmentMetadataList) IsEmpty() bool {
+	return aml.Value == nil || len(*aml.Value) == 0
+}
+
+// assessmentMetadataListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (aml AssessmentMetadataList) assessmentMetadataListPreparer(ctx context.Context) (*http.Request, error) {
+	if aml.NextLink == nil || len(to.String(aml.NextLink)) < 1 {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(aml.NextLink)))
+}
+
+// AssessmentMetadataListPage contains a page of AssessmentMetadata values.
+type AssessmentMetadataListPage struct {
+	fn  func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)
+	aml AssessmentMetadataList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AssessmentMetadataListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentMetadataListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	next, err := page.fn(ctx, page.aml)
+	if err != nil {
+		return err
+	}
+	page.aml = next
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AssessmentMetadataListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AssessmentMetadataListPage) NotDone() bool {
+	return !page.aml.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AssessmentMetadataListPage) Response() AssessmentMetadataList {
+	return page.aml
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AssessmentMetadataListPage) Values() []AssessmentMetadata {
+	if page.aml.IsEmpty() {
+		return nil
+	}
+	return *page.aml.Value
+}
+
+// Creates a new instance of the AssessmentMetadataListPage type.
+func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
+	return AssessmentMetadataListPage{fn: getNextPage}
+}
+
+// AssessmentMetadataProperties describes properties of an assessment metadata.
+type AssessmentMetadataProperties struct {
+	// DisplayName - User friendly display name of the assessment
+	DisplayName *string `json:"displayName,omitempty"`
+	// PolicyDefinitionID - READ-ONLY; Azure resource ID of the policy definition that turns this assessment calculation on
+	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	// Description - Human readable description of the assessment
+	Description *string `json:"description,omitempty"`
+	// RemediationDescription - Human readable description of what you should do to mitigate this security issue
+	RemediationDescription *string     `json:"remediationDescription,omitempty"`
+	Category               *[]Category `json:"category,omitempty"`
+	// Severity - The severity level of the assessment. Possible values include: 'SeverityLow', 'SeverityMedium', 'SeverityHigh'
+	Severity Severity `json:"severity,omitempty"`
+	// UserImpact - The user impact of the assessment. Possible values include: 'UserImpactLow', 'UserImpactModerate', 'UserImpactHigh'
+	UserImpact UserImpact `json:"userImpact,omitempty"`
+	// ImplementationEffort - The implementation effort required to remediate this assessment. Possible values include: 'Low', 'Moderate', 'High'
+	ImplementationEffort ImplementationEffort `json:"implementationEffort,omitempty"`
+	Threats              *[]Threats           `json:"threats,omitempty"`
+	// Preview - True if this assessment is in preview release status
+	Preview *bool `json:"preview,omitempty"`
+	// AssessmentType - BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure Policy definition. Possible values include: 'BuiltIn', 'CustomPolicy', 'CustomerManaged'
+	AssessmentType AssessmentType `json:"assessmentType,omitempty"`
 }
 
 // AtaExternalSecuritySolution represents an ATA security solution which sends logs to an OMS workspace
@@ -6241,7 +6584,7 @@ type IoTSecurityAggregatedAlertProperties struct {
 	AggregatedDateUtc *date.Date `json:"aggregatedDateUtc,omitempty"`
 	// VendorName - READ-ONLY; Name of the organization that raised the alert.
 	VendorName *string `json:"vendorName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Assessed alert severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed alert severity. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// RemediationSteps - READ-ONLY; Recommended steps for remediation.
 	RemediationSteps *string `json:"remediationSteps,omitempty"`
@@ -6521,7 +6864,7 @@ type IoTSecurityAggregatedRecommendationProperties struct {
 	DetectedBy *string `json:"detectedBy,omitempty"`
 	// RemediationSteps - READ-ONLY; Recommended steps for remediation
 	RemediationSteps *string `json:"remediationSteps,omitempty"`
-	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// HealthyDevices - READ-ONLY; Number of healthy devices within the IoT Security solution.
 	HealthyDevices *int32 `json:"healthyDevices,omitempty"`
@@ -6545,7 +6888,7 @@ type IoTSecurityAlertedDevice struct {
 type IoTSecurityDeviceAlert struct {
 	// AlertDisplayName - READ-ONLY; Display name of the alert
 	AlertDisplayName *string `json:"alertDisplayName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Assessed Alert severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed Alert severity. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// AlertsCount - READ-ONLY; Number of alerts raised for this alert type.
 	AlertsCount *int32 `json:"alertsCount,omitempty"`
@@ -6556,7 +6899,7 @@ type IoTSecurityDeviceAlert struct {
 type IoTSecurityDeviceRecommendation struct {
 	// RecommendationDisplayName - READ-ONLY; Display name of the recommendation.
 	RecommendationDisplayName *string `json:"recommendationDisplayName,omitempty"`
-	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'Informational', 'Low', 'Medium', 'High'
+	// ReportedSeverity - READ-ONLY; Assessed recommendation severity. Possible values include: 'ReportedSeverityInformational', 'ReportedSeverityLow', 'ReportedSeverityMedium', 'ReportedSeverityHigh'
 	ReportedSeverity ReportedSeverity `json:"reportedSeverity,omitempty"`
 	// DevicesCount - READ-ONLY; Number of devices with this recommendation.
 	DevicesCount *int32 `json:"devicesCount,omitempty"`

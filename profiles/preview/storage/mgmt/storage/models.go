@@ -89,6 +89,13 @@ const (
 	DirectoryServiceOptionsNone  DirectoryServiceOptions = original.DirectoryServiceOptionsNone
 )
 
+type EnabledProtocols = original.EnabledProtocols
+
+const (
+	NFS EnabledProtocols = original.NFS
+	SMB EnabledProtocols = original.SMB
+)
+
 type GeoReplicationStatus = original.GeoReplicationStatus
 
 const (
@@ -238,6 +245,14 @@ type ReasonCode = original.ReasonCode
 const (
 	NotAvailableForSubscription ReasonCode = original.NotAvailableForSubscription
 	QuotaID                     ReasonCode = original.QuotaID
+)
+
+type RootSquashType = original.RootSquashType
+
+const (
+	AllSquash    RootSquashType = original.AllSquash
+	NoRootSquash RootSquashType = original.NoRootSquash
+	RootSquash   RootSquashType = original.RootSquash
 )
 
 type RoutingChoice = original.RoutingChoice
@@ -548,6 +563,9 @@ func PossibleDefaultActionValues() []DefaultAction {
 func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return original.PossibleDirectoryServiceOptionsValues()
 }
+func PossibleEnabledProtocolsValues() []EnabledProtocols {
+	return original.PossibleEnabledProtocolsValues()
+}
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return original.PossibleGeoReplicationStatusValues()
 }
@@ -604,6 +622,9 @@ func PossibleReasonCodeValues() []ReasonCode {
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()
+}
+func PossibleRootSquashTypeValues() []RootSquashType {
+	return original.PossibleRootSquashTypeValues()
 }
 func PossibleRoutingChoiceValues() []RoutingChoice {
 	return original.PossibleRoutingChoiceValues()

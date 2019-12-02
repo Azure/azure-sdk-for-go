@@ -159,6 +159,21 @@ func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return []DirectoryServiceOptions{DirectoryServiceOptionsAADDS, DirectoryServiceOptionsAD, DirectoryServiceOptionsNone}
 }
 
+// EnabledProtocols enumerates the values for enabled protocols.
+type EnabledProtocols string
+
+const (
+	// NFS ...
+	NFS EnabledProtocols = "NFS"
+	// SMB ...
+	SMB EnabledProtocols = "SMB"
+)
+
+// PossibleEnabledProtocolsValues returns an array of possible values for the EnabledProtocols const type.
+func PossibleEnabledProtocolsValues() []EnabledProtocols {
+	return []EnabledProtocols{NFS, SMB}
+}
+
 // GeoReplicationStatus enumerates the values for geo replication status.
 type GeoReplicationStatus string
 
@@ -479,6 +494,23 @@ const (
 // PossibleReasonCodeValues returns an array of possible values for the ReasonCode const type.
 func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{NotAvailableForSubscription, QuotaID}
+}
+
+// RootSquashType enumerates the values for root squash type.
+type RootSquashType string
+
+const (
+	// AllSquash ...
+	AllSquash RootSquashType = "AllSquash"
+	// NoRootSquash ...
+	NoRootSquash RootSquashType = "NoRootSquash"
+	// RootSquash ...
+	RootSquash RootSquashType = "RootSquash"
+)
+
+// PossibleRootSquashTypeValues returns an array of possible values for the RootSquashType const type.
+func PossibleRootSquashTypeValues() []RootSquashType {
+	return []RootSquashType{AllSquash, NoRootSquash, RootSquash}
 }
 
 // RoutingChoice enumerates the values for routing choice.
@@ -2178,6 +2210,10 @@ type FileShareProperties struct {
 	Metadata map[string]*string `json:"metadata"`
 	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 100000.
 	ShareQuota *int32 `json:"shareQuota,omitempty"`
+	// EnabledProtocols - Immutable property for file shares protocol. Possible values include: 'SMB', 'NFS'
+	EnabledProtocols EnabledProtocols `json:"enabledProtocols,omitempty"`
+	// RootSquash - Reduction of the access rights for the remote superuser. Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
+	RootSquash RootSquashType `json:"rootSquash,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FileShareProperties.
@@ -2188,6 +2224,12 @@ func (fsp FileShareProperties) MarshalJSON() ([]byte, error) {
 	}
 	if fsp.ShareQuota != nil {
 		objectMap["shareQuota"] = fsp.ShareQuota
+	}
+	if fsp.EnabledProtocols != "" {
+		objectMap["enabledProtocols"] = fsp.EnabledProtocols
+	}
+	if fsp.RootSquash != "" {
+		objectMap["rootSquash"] = fsp.RootSquash
 	}
 	return json.Marshal(objectMap)
 }

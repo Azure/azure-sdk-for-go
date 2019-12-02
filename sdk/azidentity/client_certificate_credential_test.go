@@ -12,9 +12,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func Test_SecretCreateAuthRequest_Pass(t *testing.T) {
-	cred := NewClientSecretCredential("expected_tenant", "expected_client", "secret", nil)
-	req, err := cred.client.createClientSecretAuthRequest(cred.tenantID, cred.clientID, cred.clientSecret, []string{"http://storage.azure.com/.default"})
+func Test_CertificateCreateAuthRequest_Pass(t *testing.T) {
+	cred, err := NewClientCertificateCredential("expected_tenant", "expected_client", "certificate_path", nil)
+	if err != nil {
+		t.Fatalf("Failed to instantiate credential")
+	}
+	req, err := cred.client.createClientCertificateAuthRequest(cred.tenantID, cred.clientID, cred.clientCertificate, []string{"http://storage.azure.com/.default"})
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %w", err)
 	}
@@ -56,7 +59,7 @@ func Test_SecretCreateAuthRequest_Pass(t *testing.T) {
 	}
 }
 
-func Test_SecretGetToken_Success(t *testing.T) {
+func Test_CertificateGetToken_Success(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.AppendResponse(mock.WithBody(`{"access_token": "ey0....", "expires_in": 3600}`))
 	tempURL := srv.URL()
@@ -72,7 +75,7 @@ func Test_SecretGetToken_Success(t *testing.T) {
 	close()
 }
 
-func Test_SecretGetToken_NilScope(t *testing.T) {
+func Test_CertificateGetToken_NilScope(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.AppendResponse(mock.WithBody(`{"access_token": "ey0....", "expires_in": 3600}`))
 	tempURL := srv.URL()
@@ -88,7 +91,7 @@ func Test_SecretGetToken_NilScope(t *testing.T) {
 	close()
 }
 
-func Test_SecretGetToken_InvalidCredentials(t *testing.T) {
+func Test_CertificateGetToken_InvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	tempURL := srv.URL()

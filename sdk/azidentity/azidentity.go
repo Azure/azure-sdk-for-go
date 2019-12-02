@@ -80,6 +80,7 @@ type ChainedCredentialError struct {
 	ErrorList []*CredentialUnavailableError
 }
 
+// IsNotRetriable allows retry policy to stop execution in case it receives a CredentialUnavailableError
 func (e *CredentialUnavailableError) IsNotRetriable() bool {
 	return true
 }

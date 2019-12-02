@@ -11,11 +11,20 @@ import (
 )
 
 // Server is a wrapper around an httptest.Server.
+// The serving of requests is not safe for concurrent use
+// which is ok for right now as each test creates is own
+// server and doesn't create additional go routines.
 type Server struct {
-	srv    *httptest.Server
+	srv *httptest.Server
+
+	// static is the static response, if this is not nil it's always returned.
 	static *mockResponse
-	resp   []mockResponse
-	req    int
+
+	// resp is the queue of responses.  each response is taken from the front.
+	resp []mockResponse
+
+	// count tracks the number of requests that have been made.
+	count int
 }
 
 // NewServer creates a new Server object.
@@ -66,8 +75,10 @@ func (s *Server) URL() url.URL {
 }
 
 // Do implements the azcore.Transport interface on Server.
+// Calling this when the response queue is empty and no static
+// response has been set will cause a panic.
 func (s *Server) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
-	s.req++
+	s.count++
 	// error responses are returned here
 	if s.isErrorResp() {
 		resp := s.getResponse()
@@ -80,9 +91,9 @@ func (s *Server) serveHTTP(w http.ResponseWriter, req *http.Request) {
 	s.getResponse().write(w)
 }
 
-// Requests returns the number of times an HTTP request was made
+// Requests returns the number of times an HTTP request was made.
 func (s *Server) Requests() int {
-	return s.req
+	return s.count
 }
 
 // AppendError appends the error to the end of the response queue.
@@ -172,9 +183,9 @@ func WithStatusCode(c int) ResponseOption {
 }
 
 // WithBody sets the HTTP response's body to the specified value.
-func WithBody(s string) ResponseOption {
+func WithBody(b []byte) ResponseOption {
 	return fnRespOpt(func(mr *mockResponse) {
-		mr.body = []byte(s)
+		mr.body = b
 	})
 }
 

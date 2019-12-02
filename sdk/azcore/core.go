@@ -136,3 +136,9 @@ func NopCloser(rs io.ReadSeeker) ReadSeekCloser {
 
 // IterationDone is returned by an iterator's Next method when iteration is complete.
 var IterationDone = errors.New("no more items in iterator")
+
+// Retrier provides methods describing if an error should be considered as transient.
+type Retrier interface {
+	// IsNotRetriable returns true for error types that are not retriable.
+	IsNotRetriable() bool
+}

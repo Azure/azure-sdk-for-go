@@ -956,21 +956,21 @@ type Threats string
 
 const (
 	// AccountBreach ...
-	AccountBreach Threats = "AccountBreach"
+	AccountBreach Threats = "accountBreach"
 	// DataExfiltration ...
-	DataExfiltration Threats = "DataExfiltration"
+	DataExfiltration Threats = "dataExfiltration"
 	// DataSpillage ...
-	DataSpillage Threats = "DataSpillage"
+	DataSpillage Threats = "dataSpillage"
 	// DenialOfService ...
-	DenialOfService Threats = "DenialOfService"
+	DenialOfService Threats = "denialOfService"
 	// ElevationOfPrivilege ...
-	ElevationOfPrivilege Threats = "ElevationOfPrivilege"
+	ElevationOfPrivilege Threats = "elevationOfPrivilege"
 	// MaliciousInsider ...
-	MaliciousInsider Threats = "MaliciousInsider"
+	MaliciousInsider Threats = "maliciousInsider"
 	// MissingCoverage ...
-	MissingCoverage Threats = "MissingCoverage"
+	MissingCoverage Threats = "missingCoverage"
 	// ThreatResistance ...
-	ThreatResistance Threats = "ThreatResistance"
+	ThreatResistance Threats = "threatResistance"
 )
 
 // PossibleThreatsValues returns an array of possible values for the Threats const type.

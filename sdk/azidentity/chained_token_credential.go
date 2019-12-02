@@ -33,10 +33,6 @@ func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedToken
 
 // GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the first non default AccessToken.
 func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	if len(opts.Scopes) == 0 {
-		return nil, &AuthenticationFailedError{Message: "You need to include valid scopes in order to request a token with this credential"}
-	}
-
 	var token *azcore.AccessToken
 	var err error
 	var errList []*CredentialUnavailableError

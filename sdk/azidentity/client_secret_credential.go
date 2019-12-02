@@ -35,9 +35,6 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	if len(opts.Scopes) == 0 {
-		return nil, &AuthenticationFailedError{Message: "You need to include valid scopes in order to request a token with this credential"}
-	}
 	return c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, opts.Scopes)
 }
 

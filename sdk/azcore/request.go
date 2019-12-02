@@ -23,6 +23,10 @@ const (
 	contentTypeAppXML  = "application/xml"
 )
 
+const (
+	contentTypeAppXML = "application/xml"
+)
+
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
 type Request struct {
 	*http.Request

@@ -19,7 +19,7 @@ const (
 )
 
 const (
-	defaultMaxRetries = 4
+	defaultMaxTries = 4
 )
 
 // RetryOptions configures the retry policy's behavior.

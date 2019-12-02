@@ -49,6 +49,10 @@ func (e *AuthenticationFailedError) Error() string {
 	return e.Message + ": " + e.Description
 }
 
+func (e *AuthenticationFailedError) IsNotRetriable() bool {
+	return true
+}
+
 func newAuthenticationFailedError(resp *azcore.Response) error {
 	authFailed := &AuthenticationFailedError{}
 	err := json.Unmarshal(resp.Payload, authFailed)
@@ -74,6 +78,10 @@ func (e *CredentialUnavailableError) Error() string {
 // this error type will return a list of Credential Unavailable errors
 type ChainedCredentialError struct {
 	ErrorList []*CredentialUnavailableError
+}
+
+func (e *CredentialUnavailableError) IsNotRetriable() bool {
+	return true
 }
 
 func (e *ChainedCredentialError) Error() string {

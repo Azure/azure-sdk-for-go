@@ -2,7 +2,6 @@ package azidentity
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"testing"
 
@@ -14,7 +13,7 @@ func Test_GetToken_CloudShell(t *testing.T) {
 	if err != nil {
 		fmt.Println("Managed ID error: ", err)
 	} else {
-		managedAT, err := managedClient.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"https://storage.azure.com"}})
+		managedAT, err := managedClient.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 		if err != nil {
 			fmt.Println("Error: ", err)
 		} else {
@@ -23,19 +22,19 @@ func Test_GetToken_CloudShell(t *testing.T) {
 	}
 }
 
-func Test_GetToken_NilScopes(t *testing.T) {
-	managedClient, err := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
-	if err != nil {
-		t.Fatalf("Received an unexpected error when creating a New ManagedIdentityCredential")
-	}
+// func Test_GetToken_NilScopes(t *testing.T) {
+// 	managedClient, err := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
+// 	if err != nil {
+// 		t.Fatalf("Received an unexpected error when creating a New ManagedIdentityCredential")
+// 	}
 
-	_, err = managedClient.GetToken(context.Background(), azcore.TokenRequestOptions{})
-	if err != nil {
-		var authFailed *AuthenticationFailedError
-		if !errors.As(err, &authFailed) {
-			t.Fatalf("Expected an AuthenticationFailedError, but instead got: %T", err)
-		}
-	} else {
-		t.Fatalf("Expected an error but did not receive one.")
-	}
-}
+// 	_, err = managedClient.GetToken(context.Background(), azcore.TokenRequestOptions{})
+// 	if err != nil {
+// 		var authFailed *AuthenticationFailedError
+// 		if !errors.As(err, &authFailed) {
+// 			t.Fatalf("Expected an AuthenticationFailedError, but instead got: %T", err)
+// 		}
+// 	} else {
+// 		t.Fatalf("Expected an error but did not receive one.")
+// 	}
+// }

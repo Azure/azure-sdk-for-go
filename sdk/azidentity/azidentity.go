@@ -45,7 +45,11 @@ type AuthenticationFailedError struct {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	return e.Message
+	msg := e.Message
+	if len(e.Description) > 0 {
+		msg += " " + e.Description
+	}
+	return msg
 }
 
 // IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError
@@ -110,6 +114,9 @@ func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
 
 	if c.AuthorityHost == nil {
 		c.AuthorityHost = defaultTokenCredentialOpts.AuthorityHost
+	}
+	if c.AuthorityHost.String()[len(c.AuthorityHost.String())-1:] != "/" {
+		c.AuthorityHost.Path = c.AuthorityHost.Path + "/"
 	}
 
 	return c

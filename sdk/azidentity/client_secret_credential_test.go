@@ -12,9 +12,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
+const (
+	tenantID                 = "expected_tenant"
+	clientID                 = "expected_client"
+	secret                   = "secret"
+	wrongSecret              = "wrong_secret"
+	scope                    = "http://storage.azure.com/.default"
+	defaultTestAuthorityHost = "login.microsoftonline.com"
+)
+
 func Test_SecretCreateAuthRequest_Pass(t *testing.T) {
-	cred := NewClientSecretCredential("expected_tenant", "expected_client", "secret", nil)
-	req, err := cred.client.createClientSecretAuthRequest(cred.tenantID, cred.clientID, cred.clientSecret, []string{"http://storage.azure.com/.default"})
+	cred := NewClientSecretCredential(tenantID, clientID, secret, nil)
+	req, err := cred.client.createClientSecretAuthRequest(cred.tenantID, cred.clientID, cred.clientSecret, []string{scope})
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %w", err)
 	}
@@ -35,19 +44,19 @@ func Test_SecretCreateAuthRequest_Pass(t *testing.T) {
 		reqQueryParams[f[0]] = f[1]
 	}
 
-	if reqQueryParams[qpClientID] != "expected_client" {
+	if reqQueryParams[qpClientID] != clientID {
 		t.Fatalf("Unexpected client ID in the client_id header")
 	}
 
-	if reqQueryParams[qpClientSecret] != "secret" {
+	if reqQueryParams[qpClientSecret] != secret {
 		t.Fatalf("Unexpected secret in the client_secret header")
 	}
 
-	if reqQueryParams[qpScope] != url.QueryEscape("http://storage.azure.com/.default") {
+	if reqQueryParams[qpScope] != url.QueryEscape(scope) {
 		t.Fatalf("Unexpected scope in scope header")
 	}
 
-	if req.Request.URL.Host != "login.microsoftonline.com" {
+	if req.Request.URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
 
@@ -58,46 +67,34 @@ func Test_SecretCreateAuthRequest_Pass(t *testing.T) {
 
 func Test_SecretGetToken_Success(t *testing.T) {
 	srv, close := mock.NewServer()
-	srv.AppendResponse(mock.WithBody(`{"access_token": "ey0....", "expires_in": 3600}`))
-	tempURL := srv.URL()
-	testURL, err := url.Parse(tempURL.String() + "/")
-	if err != nil {
-		t.Fatalf("Unable to parse url")
-	}
-	cred := NewClientSecretCredential("expected_tenant", "expected_client", "expected_secret", &IdentityClientOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: testURL})
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
+	srvURL := srv.URL()
+	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
+	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
-	close()
 }
 
-func Test_SecretGetToken_NilScope(t *testing.T) {
-	srv, close := mock.NewServer()
-	srv.AppendResponse(mock.WithBody(`{"access_token": "ey0....", "expires_in": 3600}`))
-	tempURL := srv.URL()
-	testURL, err := url.Parse(tempURL.String() + "/")
-	if err != nil {
-		t.Fatalf("Unable to parse url")
-	}
-	cred := NewClientSecretCredential("expected_tenant", "expected_client", "expected_secret", &IdentityClientOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: testURL})
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{})
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one.")
-	}
-	close()
-}
+// func Test_SecretGetToken_NilScope(t *testing.T) {
+// 	srv, close := mock.NewServer()
+// 	defer close()
+// 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
+// 	srvURL := srv.URL()
+// 	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
+// 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{})
+// 	if err == nil {
+// 		t.Fatalf("Expected an error but did not receive one.")
+// 	}
+// }
 
 func Test_SecretGetToken_InvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	tempURL := srv.URL()
-	testURL, err := url.Parse(tempURL.String() + "/")
-	if err != nil {
-		t.Fatalf("Unable to parse url")
-	}
-	cred := NewClientSecretCredential("expected_tenant", "expected_client", "wrong_secret", &IdentityClientOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: testURL})
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
+	srvURL := srv.URL()
+	cred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
+	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}

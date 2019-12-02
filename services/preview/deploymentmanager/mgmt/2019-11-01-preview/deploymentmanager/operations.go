@@ -76,10 +76,6 @@ func (client OperationsClient) List(ctx context.Context) (result OperationsList,
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
-	}
-
 	const APIVersion = "2019-11-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
@@ -88,7 +84,7 @@ func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request,
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.DeploymentManager/operations", pathParameters),
+		autorest.WithPath("/providers/Microsoft.DeploymentManager/operations"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

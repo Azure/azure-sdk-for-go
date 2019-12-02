@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -24,14 +23,14 @@ var (
 )
 
 var (
-	defaultAuthorityHostURL   *url.URL
-	defaultIdentityClientOpts *IdentityClientOptions
+	defaultAuthorityHostURL    *url.URL
+	defaultTokenCredentialOpts *TokenCredentialOptions
 )
 
 func init() {
 	// The error check is handled in azidentity_test.go
 	defaultAuthorityHostURL, _ = url.Parse(defaultAuthorityHost)
-	defaultIdentityClientOpts = &IdentityClientOptions{AuthorityHost: defaultAuthorityHostURL}
+	defaultTokenCredentialOpts = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
 }
 
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
@@ -97,19 +96,19 @@ func (e *ChainedCredentialError) Error() string {
 }
 
 // IdentityClientOptions to configure requests made to Azure Identity Services
-type IdentityClientOptions struct {
+type TokenCredentialOptions struct {
 	PipelineOptions azcore.PipelineOptions
 	AuthorityHost   *url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com
 }
 
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
-func (c *IdentityClientOptions) setDefaultValues() *IdentityClientOptions {
+func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
 	if c == nil {
-		c = defaultIdentityClientOpts
+		c = defaultTokenCredentialOpts
 	}
 
 	if c.AuthorityHost == nil {
-		c.AuthorityHost = defaultIdentityClientOpts.AuthorityHost
+		c.AuthorityHost = defaultTokenCredentialOpts.AuthorityHost
 	}
 
 	return c
@@ -138,9 +137,6 @@ func newDefaultMSIPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 
 	// Set defaults needed for MSI retry policy
 	o.Retry.MaxTries = 5
-	o.Retry.Policy = azcore.RetryPolicyExponential
-	o.Retry.RetryDelay = 0
-	o.Retry.MaxRetryDelay = 60 * time.Second
 
 	return azcore.NewPipeline(
 		o.HTTPClient,

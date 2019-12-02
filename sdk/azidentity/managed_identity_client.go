@@ -46,7 +46,7 @@ const (
 // ManagedIdentityClient provides the base for authenticating with Managed Identities on Azure VMs and Cloud Shell
 // This type initializes a default azcore.Pipeline and IdentityClientOptions.
 type managedIdentityClient struct {
-	options                IdentityClientOptions
+	options                TokenCredentialOptions
 	pipeline               azcore.Pipeline
 	imdsAPIVersion         string
 	imdsAvailableTimeoutMS int
@@ -72,10 +72,7 @@ func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
 func defaultMSIPipelineOptions(p azcore.PipelineOptions) azcore.PipelineOptions {
 	if reflect.DeepEqual(p, azcore.PipelineOptions{}) {
 		if reflect.DeepEqual(p.Retry, azcore.RetryOptions{}) {
-			p.Retry.Policy = azcore.RetryPolicyExponential
 			p.Retry.MaxTries = 5
-			p.Retry.RetryDelay = 0 * time.Second
-			p.Retry.MaxRetryDelay = 60 * time.Second
 		}
 	}
 	return p

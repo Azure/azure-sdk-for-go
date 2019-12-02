@@ -26,7 +26,7 @@ type ClientCertificateCredential struct {
 // clientID: The client (application) ID of the service principal.
 // clientCertificate: The path to the client certificate that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *IdentityClientOptions) (*ClientCertificateCredential, error) {
+func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *TokenCredentialOptions) (*ClientCertificateCredential, error) {
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
 		return nil, fmt.Errorf("Certificate file not found in path: %s", clientCertificate)

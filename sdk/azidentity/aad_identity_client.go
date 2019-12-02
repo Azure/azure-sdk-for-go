@@ -41,7 +41,7 @@ const (
 // AADIdentityClient provides the base for authenticating with Client Secret Credentials, Client Certificate Credentials
 // and Environment Credentials. This type initializes a default azcore.Pipeline and IdentityClientOptions.
 type aadIdentityClient struct {
-	options  IdentityClientOptions
+	options  TokenCredentialOptions
 	pipeline azcore.Pipeline
 }
 
@@ -49,7 +49,7 @@ type aadIdentityClient struct {
 // that are passed into it along with a default pipeline.
 // options: IdentityClientOptions that adds policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
-func newAADIdentityClient(options *IdentityClientOptions) *aadIdentityClient {
+func newAADIdentityClient(options *TokenCredentialOptions) *aadIdentityClient {
 	options = options.setDefaultValues()
 	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(options.PipelineOptions)}
 }

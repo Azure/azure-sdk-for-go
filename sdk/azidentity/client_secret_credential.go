@@ -26,7 +26,7 @@ type ClientSecretCredential struct {
 // clientID: The client (application) ID of the service principal.
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *IdentityClientOptions) *ClientSecretCredential {
+func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *TokenCredentialOptions) *ClientSecretCredential {
 	return &ClientSecretCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: newAADIdentityClient(options)}
 }
 

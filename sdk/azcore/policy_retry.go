@@ -23,7 +23,7 @@ const (
 )
 
 const (
-	defaultMaxRetries = 4
+	defaultMaxTries = 4
 )
 
 // RetryOptions configures the retry policy's behavior.
@@ -92,7 +92,7 @@ func (o RetryOptions) defaults() RetryOptions {
 
 	// Set defaults if unspecified
 	if o.MaxTries == 0 {
-		o.MaxTries = defaultMaxRetries
+		o.MaxTries = defaultMaxTries
 	}
 	switch o.Policy {
 	default:
@@ -178,9 +178,14 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		tryCancel()
 		logf("Err=%v, response=%v\n", err, resp)
 
-		// if there is no error and the response code isn't in the list of retry codes then we're done
-		// TODO: if this is a failure to get an access token don't retry
 		if err == nil && !resp.hasStatusCode(p.options.StatusCodes...) {
+			// if there is no error and the response code isn't in the list of retry codes then we're done.
+			return
+		} else if ctx.Err() != nil {
+			// don't retry if the parent context has been cancelled or its deadline exceeded
+			return
+		} else if retrier, ok := err.(Retrier); ok && retrier.IsNotRetriable() {
+			// the error says it's not retriable so don't retry
 			return
 		}
 

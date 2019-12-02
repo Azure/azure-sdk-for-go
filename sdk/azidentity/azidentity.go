@@ -29,6 +29,10 @@ func (e *AuthenticationFailedError) Error() string {
 	return e.Message + ": " + e.Description
 }
 
+func (e *AuthenticationFailedError) IsNotRetriable() bool {
+	return true
+}
+
 func newAuthenticationFailedError(resp *azcore.Response) error {
 	var authFailed *AuthenticationFailedError
 	err := json.Unmarshal(resp.Payload, authFailed)
@@ -47,6 +51,10 @@ type CredentialUnavailableError struct {
 
 func (e *CredentialUnavailableError) Error() string {
 	return e.Message
+}
+
+func (e *CredentialUnavailableError) IsNotRetriable() bool {
+	return true
 }
 
 // AggregateError a specific error type for the chained token credential

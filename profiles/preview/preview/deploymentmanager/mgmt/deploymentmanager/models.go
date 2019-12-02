@@ -19,7 +19,7 @@
 
 package deploymentmanager
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/deploymentmanager/mgmt/2018-09-01-preview/deploymentmanager"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/deploymentmanager/mgmt/2019-11-01-preview/deploymentmanager"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -32,9 +32,31 @@ const (
 	Incremental DeploymentMode = original.Incremental
 )
 
+type RestAuthLocation = original.RestAuthLocation
+
+const (
+	Header RestAuthLocation = original.Header
+	Query  RestAuthLocation = original.Query
+)
+
+type RestMatchQuantifier = original.RestMatchQuantifier
+
+const (
+	All RestMatchQuantifier = original.All
+	Any RestMatchQuantifier = original.Any
+)
+
+type RestRequestMethod = original.RestRequestMethod
+
+const (
+	GET  RestRequestMethod = original.GET
+	POST RestRequestMethod = original.POST
+)
+
 type StepType = original.StepType
 
 const (
+	StepTypeHealthCheck    StepType = original.StepTypeHealthCheck
 	StepTypeStepProperties StepType = original.StepTypeStepProperties
 	StepTypeWait           StepType = original.StepTypeWait
 )
@@ -46,6 +68,13 @@ const (
 	TypeSas            Type = original.TypeSas
 )
 
+type TypeBasicHealthCheckStepAttributes = original.TypeBasicHealthCheckStepAttributes
+
+const (
+	TypeHealthCheckStepAttributes TypeBasicHealthCheckStepAttributes = original.TypeHealthCheckStepAttributes
+	TypeREST                      TypeBasicHealthCheckStepAttributes = original.TypeREST
+)
+
 type ArtifactSource = original.ArtifactSource
 type ArtifactSourceProperties = original.ArtifactSourceProperties
 type ArtifactSourcePropertiesModel = original.ArtifactSourcePropertiesModel
@@ -54,19 +83,35 @@ type Authentication = original.Authentication
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type BasicAuthentication = original.BasicAuthentication
+type BasicHealthCheckStepAttributes = original.BasicHealthCheckStepAttributes
 type BasicStepProperties = original.BasicStepProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type HealthCheckStepAttributes = original.HealthCheckStepAttributes
+type HealthCheckStepProperties = original.HealthCheckStepProperties
 type Identity = original.Identity
-type ListOperation = original.ListOperation
+type ListArtifactSource = original.ListArtifactSource
+type ListRollout = original.ListRollout
+type ListServiceResource = original.ListServiceResource
+type ListServiceTopologyResource = original.ListServiceTopologyResource
+type ListServiceUnitResource = original.ListServiceUnitResource
+type ListStepResource = original.ListStepResource
 type Message = original.Message
 type Operation = original.Operation
 type OperationDetail = original.OperationDetail
 type OperationsClient = original.OperationsClient
+type OperationsList = original.OperationsList
 type PrePostStep = original.PrePostStep
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
 type ResourceOperation = original.ResourceOperation
+type RestHealthCheck = original.RestHealthCheck
+type RestHealthCheckStepAttributes = original.RestHealthCheckStepAttributes
+type RestParameters = original.RestParameters
+type RestRequest = original.RestRequest
+type RestRequestAuthentication = original.RestRequestAuthentication
+type RestResponse = original.RestResponse
+type RestResponseRegex = original.RestResponseRegex
 type Rollout = original.Rollout
 type RolloutOperationInfo = original.RolloutOperationInfo
 type RolloutProperties = original.RolloutProperties
@@ -154,8 +199,20 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleDeploymentModeValues() []DeploymentMode {
 	return original.PossibleDeploymentModeValues()
 }
+func PossibleRestAuthLocationValues() []RestAuthLocation {
+	return original.PossibleRestAuthLocationValues()
+}
+func PossibleRestMatchQuantifierValues() []RestMatchQuantifier {
+	return original.PossibleRestMatchQuantifierValues()
+}
+func PossibleRestRequestMethodValues() []RestRequestMethod {
+	return original.PossibleRestRequestMethodValues()
+}
 func PossibleStepTypeValues() []StepType {
 	return original.PossibleStepTypeValues()
+}
+func PossibleTypeBasicHealthCheckStepAttributesValues() []TypeBasicHealthCheckStepAttributes {
+	return original.PossibleTypeBasicHealthCheckStepAttributesValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

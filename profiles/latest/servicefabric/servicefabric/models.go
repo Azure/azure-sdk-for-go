@@ -19,7 +19,7 @@
 
 package servicefabric
 
-import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/6.5/servicefabric"
+import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/7.0/servicefabric"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -40,6 +40,20 @@ const (
 	ApplicationPackageCleanupPolicyDefault   ApplicationPackageCleanupPolicy = original.ApplicationPackageCleanupPolicyDefault
 	ApplicationPackageCleanupPolicyInvalid   ApplicationPackageCleanupPolicy = original.ApplicationPackageCleanupPolicyInvalid
 	ApplicationPackageCleanupPolicyManual    ApplicationPackageCleanupPolicy = original.ApplicationPackageCleanupPolicyManual
+)
+
+type ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeState
+
+const (
+	ApplicationResourceUpgradeStateCompletedRollback     ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeStateCompletedRollback
+	ApplicationResourceUpgradeStateCompletedRollforward  ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeStateCompletedRollforward
+	ApplicationResourceUpgradeStateFailed                ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeStateFailed
+	ApplicationResourceUpgradeStateInvalid               ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeStateInvalid
+	ApplicationResourceUpgradeStateProvisioningTarget    ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeStateProvisioningTarget
+	ApplicationResourceUpgradeStateRollingBack           ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeStateRollingBack
+	ApplicationResourceUpgradeStateRollingForward        ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeStateRollingForward
+	ApplicationResourceUpgradeStateUnprovisioningCurrent ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeStateUnprovisioningCurrent
+	ApplicationResourceUpgradeStateUnprovisioningTarget  ApplicationResourceUpgradeState = original.ApplicationResourceUpgradeStateUnprovisioningTarget
 )
 
 type ApplicationScopedVolumeKind = original.ApplicationScopedVolumeKind
@@ -279,12 +293,14 @@ const (
 type DeploymentStatus = original.DeploymentStatus
 
 const (
-	DeploymentStatusActivating   DeploymentStatus = original.DeploymentStatusActivating
-	DeploymentStatusActive       DeploymentStatus = original.DeploymentStatusActive
-	DeploymentStatusDeactivating DeploymentStatus = original.DeploymentStatusDeactivating
-	DeploymentStatusDownloading  DeploymentStatus = original.DeploymentStatusDownloading
-	DeploymentStatusInvalid      DeploymentStatus = original.DeploymentStatusInvalid
-	DeploymentStatusUpgrading    DeploymentStatus = original.DeploymentStatusUpgrading
+	DeploymentStatusActivating      DeploymentStatus = original.DeploymentStatusActivating
+	DeploymentStatusActive          DeploymentStatus = original.DeploymentStatusActive
+	DeploymentStatusDeactivating    DeploymentStatus = original.DeploymentStatusDeactivating
+	DeploymentStatusDownloading     DeploymentStatus = original.DeploymentStatusDownloading
+	DeploymentStatusFailed          DeploymentStatus = original.DeploymentStatusFailed
+	DeploymentStatusInvalid         DeploymentStatus = original.DeploymentStatusInvalid
+	DeploymentStatusRanToCompletion DeploymentStatus = original.DeploymentStatusRanToCompletion
+	DeploymentStatusUpgrading       DeploymentStatus = original.DeploymentStatusUpgrading
 )
 
 type DiagnosticsSinkKind = original.DiagnosticsSinkKind
@@ -326,6 +342,20 @@ const (
 	EntryPointStatusStarting EntryPointStatus = original.EntryPointStatusStarting
 	EntryPointStatusStopped  EntryPointStatus = original.EntryPointStatusStopped
 	EntryPointStatusStopping EntryPointStatus = original.EntryPointStatusStopping
+)
+
+type EnvironmentVariableType = original.EnvironmentVariableType
+
+const (
+	ClearText            EnvironmentVariableType = original.ClearText
+	KeyVaultReference    EnvironmentVariableType = original.KeyVaultReference
+	SecretValueReference EnvironmentVariableType = original.SecretValueReference
+)
+
+type ExecutionPolicyType = original.ExecutionPolicyType
+
+const (
+	RunToCompletion ExecutionPolicyType = original.RunToCompletion
 )
 
 type FabricErrorCodes = original.FabricErrorCodes
@@ -567,6 +597,14 @@ const (
 	HostTypeContainerHost HostType = original.HostTypeContainerHost
 	HostTypeExeHost       HostType = original.HostTypeExeHost
 	HostTypeInvalid       HostType = original.HostTypeInvalid
+)
+
+type ImageRegistryPasswordType = original.ImageRegistryPasswordType
+
+const (
+	ImageRegistryPasswordTypeClearText            ImageRegistryPasswordType = original.ImageRegistryPasswordTypeClearText
+	ImageRegistryPasswordTypeKeyVaultReference    ImageRegistryPasswordType = original.ImageRegistryPasswordTypeKeyVaultReference
+	ImageRegistryPasswordTypeSecretValueReference ImageRegistryPasswordType = original.ImageRegistryPasswordTypeSecretValueReference
 )
 
 type ImpactLevel = original.ImpactLevel
@@ -856,10 +894,11 @@ const (
 type MoveCost = original.MoveCost
 
 const (
-	High   MoveCost = original.High
-	Low    MoveCost = original.Low
-	Medium MoveCost = original.Medium
-	Zero   MoveCost = original.Zero
+	High     MoveCost = original.High
+	Low      MoveCost = original.Low
+	Medium   MoveCost = original.Medium
+	VeryHigh MoveCost = original.VeryHigh
+	Zero     MoveCost = original.Zero
 )
 
 type NetworkKind = original.NetworkKind
@@ -1169,6 +1208,13 @@ const (
 	RestartPartitionModeOnlyActiveSecondaries  RestartPartitionMode = original.RestartPartitionModeOnlyActiveSecondaries
 )
 
+type RestartPolicy = original.RestartPolicy
+
+const (
+	Never     RestartPolicy = original.Never
+	OnFailure RestartPolicy = original.OnFailure
+)
+
 type RestoreState = original.RestoreState
 
 const (
@@ -1203,6 +1249,15 @@ type RetentionPolicyTypeBasicBasicRetentionPolicyDescription = original.Retentio
 const (
 	RetentionPolicyTypeBasic1                     RetentionPolicyTypeBasicBasicRetentionPolicyDescription = original.RetentionPolicyTypeBasic1
 	RetentionPolicyTypeRetentionPolicyDescription RetentionPolicyTypeBasicBasicRetentionPolicyDescription = original.RetentionPolicyTypeRetentionPolicyDescription
+)
+
+type RollingUpgradeMode = original.RollingUpgradeMode
+
+const (
+	RollingUpgradeModeInvalid           RollingUpgradeMode = original.RollingUpgradeModeInvalid
+	RollingUpgradeModeMonitored         RollingUpgradeMode = original.RollingUpgradeModeMonitored
+	RollingUpgradeModeUnmonitoredAuto   RollingUpgradeMode = original.RollingUpgradeModeUnmonitoredAuto
+	RollingUpgradeModeUnmonitoredManual RollingUpgradeMode = original.RollingUpgradeModeUnmonitoredManual
 )
 
 type SafetyCheckKind = original.SafetyCheckKind
@@ -1242,10 +1297,18 @@ const (
 	ScheduleKindTimeBased                 ScheduleKind = original.ScheduleKindTimeBased
 )
 
+type Scheme = original.Scheme
+
+const (
+	HTTP  Scheme = original.HTTP
+	HTTPS Scheme = original.HTTPS
+)
+
 type SecretKind = original.SecretKind
 
 const (
-	InlinedValue SecretKind = original.InlinedValue
+	InlinedValue               SecretKind = original.InlinedValue
+	KeyVaultVersionedReference SecretKind = original.KeyVaultVersionedReference
 )
 
 type ServiceCorrelationScheme = original.ServiceCorrelationScheme
@@ -1433,6 +1496,14 @@ const (
 	ServiceTypeRegistrationStatusRegistered ServiceTypeRegistrationStatus = original.ServiceTypeRegistrationStatusRegistered
 )
 
+type SettingType = original.SettingType
+
+const (
+	SettingTypeClearText            SettingType = original.SettingTypeClearText
+	SettingTypeKeyVaultReference    SettingType = original.SettingTypeKeyVaultReference
+	SettingTypeSecretValueReference SettingType = original.SettingTypeSecretValueReference
+)
+
 type SizeTypes = original.SizeTypes
 
 const (
@@ -1471,6 +1542,13 @@ const (
 	TypeRequireDomain                     Type = original.TypeRequireDomain
 	TypeRequireDomainDistribution         Type = original.TypeRequireDomainDistribution
 	TypeServicePlacementPolicyDescription Type = original.TypeServicePlacementPolicyDescription
+)
+
+type TypeBasicExecutionPolicy = original.TypeBasicExecutionPolicy
+
+const (
+	TypeExecutionPolicy TypeBasicExecutionPolicy = original.TypeExecutionPolicy
+	TypeRunToCompletion TypeBasicExecutionPolicy = original.TypeRunToCompletion
 )
 
 type UpgradeDomainState = original.UpgradeDomainState
@@ -1567,6 +1645,7 @@ type ApplicationParameter = original.ApplicationParameter
 type ApplicationProcessExitedEvent = original.ApplicationProcessExitedEvent
 type ApplicationProperties = original.ApplicationProperties
 type ApplicationResourceDescription = original.ApplicationResourceDescription
+type ApplicationResourceUpgradeProgressInfo = original.ApplicationResourceUpgradeProgressInfo
 type ApplicationScopedVolume = original.ApplicationScopedVolume
 type ApplicationScopedVolumeCreationParameters = original.ApplicationScopedVolumeCreationParameters
 type ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk = original.ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk
@@ -1619,6 +1698,7 @@ type BasicClusterEvent = original.BasicClusterEvent
 type BasicDeployedServiceReplicaDetailInfo = original.BasicDeployedServiceReplicaDetailInfo
 type BasicDeployedServiceReplicaInfo = original.BasicDeployedServiceReplicaInfo
 type BasicDiagnosticsSinkProperties = original.BasicDiagnosticsSinkProperties
+type BasicExecutionPolicy = original.BasicExecutionPolicy
 type BasicFabricEvent = original.BasicFabricEvent
 type BasicHealthEvaluation = original.BasicHealthEvaluation
 type BasicNetworkResourceProperties = original.BasicNetworkResourceProperties
@@ -1706,6 +1786,7 @@ type CodePackageEntryPointStatistics = original.CodePackageEntryPointStatistics
 type ComposeDeploymentStatusInfo = original.ComposeDeploymentStatusInfo
 type ComposeDeploymentUpgradeDescription = original.ComposeDeploymentUpgradeDescription
 type ComposeDeploymentUpgradeProgressInfo = original.ComposeDeploymentUpgradeProgressInfo
+type ConfigParameterOverride = original.ConfigParameterOverride
 type ContainerAPIRequestBody = original.ContainerAPIRequestBody
 type ContainerAPIResponse = original.ContainerAPIResponse
 type ContainerAPIResult = original.ContainerAPIResult
@@ -1755,6 +1836,7 @@ type DiagnosticsDescription = original.DiagnosticsDescription
 type DiagnosticsRef = original.DiagnosticsRef
 type DiagnosticsSinkProperties = original.DiagnosticsSinkProperties
 type DisableBackupDescription = original.DisableBackupDescription
+type DiskInfo = original.DiskInfo
 type DoublePropertyValue = original.DoublePropertyValue
 type EnableBackupDescription = original.EnableBackupDescription
 type EndpointProperties = original.EndpointProperties
@@ -1770,6 +1852,7 @@ type EnvironmentVariable = original.EnvironmentVariable
 type Epoch = original.Epoch
 type EventHealthEvaluation = original.EventHealthEvaluation
 type ExecutingFaultsChaosEvent = original.ExecutingFaultsChaosEvent
+type ExecutionPolicy = original.ExecutionPolicy
 type ExternalStoreProvisionApplicationTypeDescription = original.ExternalStoreProvisionApplicationTypeDescription
 type FabricCodeVersionInfo = original.FabricCodeVersionInfo
 type FabricConfigVersionInfo = original.FabricConfigVersionInfo
@@ -1808,6 +1891,7 @@ type IdentityItemDescription = original.IdentityItemDescription
 type ImageRegistryCredential = original.ImageRegistryCredential
 type ImageStoreContent = original.ImageStoreContent
 type ImageStoreCopyDescription = original.ImageStoreCopyDescription
+type ImageStoreInfo = original.ImageStoreInfo
 type InlinedValueSecretResourceProperties = original.InlinedValueSecretResourceProperties
 type Int64PropertyValue = original.Int64PropertyValue
 type Int64RangePartitionInformation = original.Int64RangePartitionInformation
@@ -1816,6 +1900,7 @@ type InvokeQuorumLossResult = original.InvokeQuorumLossResult
 type KeyValueStoreReplicaStatus = original.KeyValueStoreReplicaStatus
 type ListApplicationEvent = original.ListApplicationEvent
 type ListClusterEvent = original.ListClusterEvent
+type ListConfigParameterOverride = original.ListConfigParameterOverride
 type ListContainerInstanceEvent = original.ListContainerInstanceEvent
 type ListDeployedCodePackageInfo = original.ListDeployedCodePackageInfo
 type ListDeployedServicePackageInfo = original.ListDeployedServicePackageInfo
@@ -1936,6 +2021,11 @@ type PartitionSafetyCheck = original.PartitionSafetyCheck
 type PartitionSchemeDescription = original.PartitionSchemeDescription
 type PartitionsHealthEvaluation = original.PartitionsHealthEvaluation
 type PrimaryReplicatorStatus = original.PrimaryReplicatorStatus
+type Probe = original.Probe
+type ProbeExec = original.ProbeExec
+type ProbeHTTPGet = original.ProbeHTTPGet
+type ProbeHTTPGetHeaders = original.ProbeHTTPGetHeaders
+type ProbeTCPSocket = original.ProbeTCPSocket
 type PropertyBatchDescriptionList = original.PropertyBatchDescriptionList
 type PropertyBatchInfo = original.PropertyBatchInfo
 type PropertyBatchInfoModel = original.PropertyBatchInfoModel
@@ -1991,6 +2081,7 @@ type ResumeApplicationUpgradeDescription = original.ResumeApplicationUpgradeDesc
 type ResumeClusterUpgradeDescription = original.ResumeClusterUpgradeDescription
 type RetentionPolicyDescription = original.RetentionPolicyDescription
 type RollingUpgradeUpdateDescription = original.RollingUpgradeUpdateDescription
+type RunToCompletionExecutionPolicy = original.RunToCompletionExecutionPolicy
 type SafetyCheck = original.SafetyCheck
 type SafetyCheckWrapper = original.SafetyCheckWrapper
 type ScalingMechanismDescription = original.ScalingMechanismDescription
@@ -2050,6 +2141,7 @@ type ServiceTypeHealthPolicyMapItem = original.ServiceTypeHealthPolicyMapItem
 type ServiceTypeInfo = original.ServiceTypeInfo
 type ServiceTypeManifest = original.ServiceTypeManifest
 type ServiceUpdateDescription = original.ServiceUpdateDescription
+type ServiceUpgradeProgress = original.ServiceUpgradeProgress
 type ServicesHealthEvaluation = original.ServicesHealthEvaluation
 type Setting = original.Setting
 type SingletonPartitionInformation = original.SingletonPartitionInformation
@@ -2099,6 +2191,7 @@ type UpgradeOrchestrationServiceStateSummary = original.UpgradeOrchestrationServ
 type UploadChunkRange = original.UploadChunkRange
 type UploadSession = original.UploadSession
 type UploadSessionInfo = original.UploadSessionInfo
+type UsageInfo = original.UsageInfo
 type ValidationFailedChaosEvent = original.ValidationFailedChaosEvent
 type VolumeProperties = original.VolumeProperties
 type VolumeProviderParametersAzureFile = original.VolumeProviderParametersAzureFile
@@ -2175,6 +2268,9 @@ func PossibleApplicationDefinitionKindValues() []ApplicationDefinitionKind {
 }
 func PossibleApplicationPackageCleanupPolicyValues() []ApplicationPackageCleanupPolicy {
 	return original.PossibleApplicationPackageCleanupPolicyValues()
+}
+func PossibleApplicationResourceUpgradeStateValues() []ApplicationResourceUpgradeState {
+	return original.PossibleApplicationResourceUpgradeStateValues()
 }
 func PossibleApplicationScopedVolumeKindValues() []ApplicationScopedVolumeKind {
 	return original.PossibleApplicationScopedVolumeKindValues()
@@ -2269,6 +2365,12 @@ func PossibleEntityKindValues() []EntityKind {
 func PossibleEntryPointStatusValues() []EntryPointStatus {
 	return original.PossibleEntryPointStatusValues()
 }
+func PossibleEnvironmentVariableTypeValues() []EnvironmentVariableType {
+	return original.PossibleEnvironmentVariableTypeValues()
+}
+func PossibleExecutionPolicyTypeValues() []ExecutionPolicyType {
+	return original.PossibleExecutionPolicyTypeValues()
+}
 func PossibleFabricErrorCodesValues() []FabricErrorCodes {
 	return original.PossibleFabricErrorCodesValues()
 }
@@ -2298,6 +2400,9 @@ func PossibleHostIsolationModeValues() []HostIsolationMode {
 }
 func PossibleHostTypeValues() []HostType {
 	return original.PossibleHostTypeValues()
+}
+func PossibleImageRegistryPasswordTypeValues() []ImageRegistryPasswordType {
+	return original.PossibleImageRegistryPasswordTypeValues()
 }
 func PossibleImpactLevelValues() []ImpactLevel {
 	return original.PossibleImpactLevelValues()
@@ -2470,6 +2575,9 @@ func PossibleResourceStatusValues() []ResourceStatus {
 func PossibleRestartPartitionModeValues() []RestartPartitionMode {
 	return original.PossibleRestartPartitionModeValues()
 }
+func PossibleRestartPolicyValues() []RestartPolicy {
+	return original.PossibleRestartPolicyValues()
+}
 func PossibleRestoreStateValues() []RestoreState {
 	return original.PossibleRestoreStateValues()
 }
@@ -2482,6 +2590,9 @@ func PossibleRetentionPolicyTypeBasicBasicRetentionPolicyDescriptionValues() []R
 func PossibleRetentionPolicyTypeValues() []RetentionPolicyType {
 	return original.PossibleRetentionPolicyTypeValues()
 }
+func PossibleRollingUpgradeModeValues() []RollingUpgradeMode {
+	return original.PossibleRollingUpgradeModeValues()
+}
 func PossibleSafetyCheckKindValues() []SafetyCheckKind {
 	return original.PossibleSafetyCheckKindValues()
 }
@@ -2493,6 +2604,9 @@ func PossibleScalingTriggerKindValues() []ScalingTriggerKind {
 }
 func PossibleScheduleKindValues() []ScheduleKind {
 	return original.PossibleScheduleKindValues()
+}
+func PossibleSchemeValues() []Scheme {
+	return original.PossibleSchemeValues()
 }
 func PossibleSecretKindValues() []SecretKind {
 	return original.PossibleSecretKindValues()
@@ -2560,6 +2674,9 @@ func PossibleServiceStatusValues() []ServiceStatus {
 func PossibleServiceTypeRegistrationStatusValues() []ServiceTypeRegistrationStatus {
 	return original.PossibleServiceTypeRegistrationStatusValues()
 }
+func PossibleSettingTypeValues() []SettingType {
+	return original.PossibleSettingTypeValues()
+}
 func PossibleSizeTypesValues() []SizeTypes {
 	return original.PossibleSizeTypesValues()
 }
@@ -2568,6 +2685,9 @@ func PossibleStateValues() []State {
 }
 func PossibleStorageKindValues() []StorageKind {
 	return original.PossibleStorageKindValues()
+}
+func PossibleTypeBasicExecutionPolicyValues() []TypeBasicExecutionPolicy {
+	return original.PossibleTypeBasicExecutionPolicyValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

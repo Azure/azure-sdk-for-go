@@ -104,17 +104,17 @@ func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorit
 type JSONWebKeyOperation string
 
 const (
-	// Decrypt ...
+	// Decrypt Decrypts a single block of encrypted data
 	Decrypt JSONWebKeyOperation = "decrypt"
-	// Encrypt ...
+	// Encrypt Encrypts an arbitrary sequence of bytes using an encryption key that is stored in a key vault
 	Encrypt JSONWebKeyOperation = "encrypt"
-	// Sign ...
+	// Sign Creates a signature from a digest using the specified key
 	Sign JSONWebKeyOperation = "sign"
-	// UnwrapKey ...
+	// UnwrapKey Unwraps a symmetric key using the specified key that was initially used for wrapping that key
 	UnwrapKey JSONWebKeyOperation = "unwrapKey"
-	// Verify ...
+	// Verify Verifies a signature using a specified key
 	Verify JSONWebKeyOperation = "verify"
-	// WrapKey ...
+	// WrapKey Wraps a symmetric key using a specified key
 	WrapKey JSONWebKeyOperation = "wrapKey"
 )
 
@@ -2056,8 +2056,9 @@ type JSONWebKey struct {
 	// Kid - Key identifier.
 	Kid *string `json:"kid,omitempty"`
 	// Kty - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40. Possible values include: 'EC', 'ECHSM', 'RSA', 'RSAHSM', 'Oct'
-	Kty    JSONWebKeyType `json:"kty,omitempty"`
-	KeyOps *[]string      `json:"key_ops,omitempty"`
+	Kty JSONWebKeyType `json:"kty,omitempty"`
+	// KeyOps - Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
+	KeyOps *[]JSONWebKeyOperation `json:"key_ops,omitempty"`
 	// N - RSA modulus. (a URL-encoded base64 string)
 	N *string `json:"n,omitempty"`
 	// E - RSA public exponent. (a URL-encoded base64 string)

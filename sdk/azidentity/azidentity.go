@@ -45,7 +45,7 @@ type AuthenticationFailedError struct {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	return e.Message + ": " + e.Description
+	return e.Message
 }
 
 // IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError

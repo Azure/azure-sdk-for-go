@@ -489,9 +489,9 @@ func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationR
 type OperatingSystemStateTypes string
 
 const (
-	// Generalized ...
+	// Generalized Generalized image. Needs to be provisioned during deployment time.
 	Generalized OperatingSystemStateTypes = "Generalized"
-	// Specialized ...
+	// Specialized Specialized image. Contains already provisioned OS Disk.
 	Specialized OperatingSystemStateTypes = "Specialized"
 )
 
@@ -850,13 +850,13 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 type StorageAccountTypes string
 
 const (
-	// StorageAccountTypesPremiumLRS ...
+	// StorageAccountTypesPremiumLRS Premium_LRS for StorageAccountType.
 	StorageAccountTypesPremiumLRS StorageAccountTypes = "Premium_LRS"
-	// StorageAccountTypesStandardLRS ...
+	// StorageAccountTypesStandardLRS Standard_LRS for StorageAccountType.
 	StorageAccountTypesStandardLRS StorageAccountTypes = "Standard_LRS"
-	// StorageAccountTypesStandardSSDLRS ...
+	// StorageAccountTypesStandardSSDLRS StandardSSD_LRS for StorageAccountType.
 	StorageAccountTypesStandardSSDLRS StorageAccountTypes = "StandardSSD_LRS"
-	// StorageAccountTypesUltraSSDLRS ...
+	// StorageAccountTypesUltraSSDLRS UltraSSD_LRS for StorageAccountType.
 	StorageAccountTypesUltraSSDLRS StorageAccountTypes = "UltraSSD_LRS"
 )
 

@@ -43,13 +43,13 @@ func NewDeploymentsClientWithBaseURI(baseURI string, subscriptionID string) Depl
 
 // CreateOrUpdate create a new Deployment or update an exiting Deployment.
 // Parameters:
-// deploymentResource - parameters for the create or update operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
 // appName - the name of the App resource.
 // deploymentName - the name of the Deployment resource.
-func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, deploymentResource DeploymentResource, resourceGroupName string, serviceName string, appName string, deploymentName string) (result DeploymentsCreateOrUpdateFuture, err error) {
+// deploymentResource - parameters for the create or update operation
+func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource) (result DeploymentsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeploymentsClient.CreateOrUpdate")
 		defer func() {
@@ -81,7 +81,7 @@ func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, deploymentRe
 		return result, validation.NewError("appplatform.DeploymentsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, deploymentResource, resourceGroupName, serviceName, appName, deploymentName)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.DeploymentsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -97,7 +97,7 @@ func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, deploymentRe
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DeploymentsClient) CreateOrUpdatePreparer(ctx context.Context, deploymentResource DeploymentResource, resourceGroupName string, serviceName string, appName string, deploymentName string) (*http.Request, error) {
+func (client DeploymentsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource DeploymentResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appName":           autorest.Encode("path", appName),
 		"deploymentName":    autorest.Encode("path", deploymentName),

@@ -8,6 +8,7 @@ require (
 replace (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore => ../../azcore
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity => ../../azidentity
+	github.com/Azure/azure-sdk-for-go/sdk/internal => ../../internal
 )
 
 go 1.13

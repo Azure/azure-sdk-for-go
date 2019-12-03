@@ -36,9 +36,10 @@ type payloadJWT struct {
 // createClientAssertionJWT build the JWT header, payload and signature,
 // then returns a string for the JWT assertion
 func createClientAssertionJWT(clientID string, audience string, clientCertificate string) (string, error) {
+	// TODO: open cert file here and pass to spkiFingerprint and getPrivateKey
 	fingerprint, err := spkiFingerprint(clientCertificate)
 	if err != nil {
-		return "", fmt.Errorf("spkiFingerprint: %w", err)
+		return "", err
 	}
 
 	headerData := headerJWT{
@@ -49,7 +50,7 @@ func createClientAssertionJWT(clientID string, audience string, clientCertificat
 
 	headerJSON, err := json.Marshal(headerData)
 	if err != nil {
-		return "", fmt.Errorf("Marshal: %w", err)
+		return "", fmt.Errorf("Marshal headerJWT: %w", err)
 	}
 	header := base64.RawURLEncoding.EncodeToString(headerJSON)
 
@@ -64,7 +65,7 @@ func createClientAssertionJWT(clientID string, audience string, clientCertificat
 
 	payloadJSON, err := json.Marshal(payloadData)
 	if err != nil {
-		return "", fmt.Errorf("Marshal: %w", err)
+		return "", fmt.Errorf("Marshal payloadJWT: %w", err)
 	}
 	payload := base64.RawURLEncoding.EncodeToString(payloadJSON)
 	result := header + "." + payload
@@ -74,12 +75,12 @@ func createClientAssertionJWT(clientID string, audience string, clientCertificat
 
 	privateKey, err := getPrivateKey(clientCertificate)
 	if err != nil {
-		return "", fmt.Errorf("createClientAssertionJWT: %w", err)
+		return "", err
 	}
 
 	signed, err := rsa.SignPKCS1v15(cryptoRand, privateKey, crypto.SHA256, hashedSum[:])
 	if err != nil {
-		return "", fmt.Errorf("SignPKCS1v15: %w", err)
+		return "", err
 	}
 
 	signature := base64.RawURLEncoding.EncodeToString(signed)

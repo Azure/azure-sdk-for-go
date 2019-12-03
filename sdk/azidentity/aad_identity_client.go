@@ -41,7 +41,7 @@ const (
 // AADIdentityClient provides the base for authenticating with Client Secret Credentials, Client Certificate Credentials
 // and Environment Credentials. This type initializes a default azcore.Pipeline and IdentityClientOptions.
 type aadIdentityClient struct {
-	options  IdentityClientOptions
+	options  TokenCredentialOptions
 	pipeline azcore.Pipeline
 }
 
@@ -49,14 +49,9 @@ type aadIdentityClient struct {
 // that are passed into it along with a default pipeline.
 // options: IdentityClientOptions that adds policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
-func newAADIdentityClient(options *IdentityClientOptions) *aadIdentityClient {
+func newAADIdentityClient(options *TokenCredentialOptions) *aadIdentityClient {
 	options = options.setDefaultValues()
 	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(options.PipelineOptions)}
-}
-
-func newAADIdentityClientWithPipeline(options *IdentityClientOptions, pipeline azcore.Pipeline) *aadIdentityClient {
-	options = options.setDefaultValues()
-	return &aadIdentityClient{options: *options, pipeline: pipeline}
 }
 
 // Authenticate creates a client secret authentication request and returns the resulting Access Token or
@@ -77,11 +72,16 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return nil, err
 	}
 
-	// TODO: look into HasStatusCode
-	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated {
+	// This should never happen under normal conditions
+	if resp == nil {
+		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
+	// TODO reproduce nil response error
 	return nil, newAuthenticationFailedError(resp)
 }
 
@@ -102,15 +102,20 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 	if err != nil {
 		return nil, err
 	}
-	// TODO: look into HasStatusCode
-	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated {
+
+	// This should never happen under normal conditions
+	if resp == nil {
+		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
 	return nil, newAuthenticationFailedError(resp)
 }
 
-func (c aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
+func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
 	value := &azcore.AccessToken{}
 	if err := json.Unmarshal(res.Payload, &value); err != nil {
 		return nil, fmt.Errorf("azcore.AccessToken: %w", err)
@@ -130,7 +135,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 	if err != nil {
 		return nil, err
 	}
-	// TODO: consider moving to its own func
+
 	data := url.Values{}
 	data.Set(qpGrantType, "client_credentials")
 	data.Set(qpClientID, clientID)
@@ -154,7 +159,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	if err != nil {
 		return nil, err
 	}
-	// TODO: test for failures to see error returned to user
+
 	clientAssertion, err := createClientAssertionJWT(clientID, urlStr, clientCertificate)
 	if err != nil {
 		return nil, err
@@ -198,7 +203,12 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 		return nil, fmt.Errorf("AuthenticateUsernamePassword: %w", err)
 	}
 
-	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusCreated {
+	// This should never happen under normal conditions
+	if resp == nil {
+		return nil, &AuthenticationFailedError{Message: "Something unexpected happened with the request and received a nil response"}
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
@@ -250,12 +260,12 @@ func getPrivateKey(cert string) (*rsa.PrivateKey, error) {
 	}
 
 	data, rest := pem.Decode([]byte(pemBytes))
-	const key = "PRIVATE KEY"
+	const privateKeyBlock = "PRIVATE KEY"
 	// NOTE: check types of private keys
-	if data.Type != key {
+	if data.Type != privateKeyBlock {
 		for len(rest) > 0 {
 			data, rest = pem.Decode(rest)
-			if data.Type == key {
+			if data.Type == privateKeyBlock {
 				privateKeyImported, err := x509.ParsePKCS8PrivateKey(data.Bytes)
 				if err != nil {
 					return nil, fmt.Errorf("ParsePKCS8PrivateKey: %w", err)

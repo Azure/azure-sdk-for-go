@@ -43,12 +43,12 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 
 // CreateOrUpdate create a new App or update an exiting App.
 // Parameters:
-// appResource - parameters for the create or update operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
 // appName - the name of the App resource.
-func (client AppsClient) CreateOrUpdate(ctx context.Context, appResource AppResource, resourceGroupName string, serviceName string, appName string) (result AppsCreateOrUpdateFuture, err error) {
+// appResource - parameters for the create or update operation
+func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource) (result AppsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdate")
 		defer func() {
@@ -82,7 +82,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, appResource AppReso
 		return result, validation.NewError("appplatform.AppsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, appResource, resourceGroupName, serviceName, appName)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, appName, appResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -98,7 +98,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, appResource AppReso
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, appResource AppResource, resourceGroupName string, serviceName string, appName string) (*http.Request, error) {
+func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appName":           autorest.Encode("path", appName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

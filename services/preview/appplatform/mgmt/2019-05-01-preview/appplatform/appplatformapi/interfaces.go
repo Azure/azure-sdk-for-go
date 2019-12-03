@@ -26,7 +26,7 @@ import (
 // ServicesClientAPI contains the set of methods on the ServicesClient type.
 type ServicesClientAPI interface {
 	CheckNameAvailability(ctx context.Context, location string, availabilityParameters appplatform.NameAvailabilityParameters) (result appplatform.NameAvailability, err error)
-	CreateOrUpdate(ctx context.Context, resource appplatform.ServiceResource, resourceGroupName string, serviceName string) (result appplatform.ServicesCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource appplatform.ServiceResource) (result appplatform.ServicesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string) (result appplatform.ServicesDeleteFuture, err error)
 	DisableTestEndpoint(ctx context.Context, resourceGroupName string, serviceName string) (result autorest.Response, err error)
 	EnableTestEndpoint(ctx context.Context, resourceGroupName string, serviceName string) (result appplatform.TestKeys, err error)
@@ -42,7 +42,7 @@ var _ ServicesClientAPI = (*appplatform.ServicesClient)(nil)
 
 // AppsClientAPI contains the set of methods on the AppsClient type.
 type AppsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, appResource appplatform.AppResource, resourceGroupName string, serviceName string, appName string) (result appplatform.AppsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource appplatform.AppResource) (result appplatform.AppsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, appName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, syncStatus string) (result appplatform.AppResource, err error)
 	GetResourceUploadURL(ctx context.Context, resourceGroupName string, serviceName string, appName string) (result appplatform.ResourceUploadDefinition, err error)
@@ -54,7 +54,7 @@ var _ AppsClientAPI = (*appplatform.AppsClient)(nil)
 
 // BindingsClientAPI contains the set of methods on the BindingsClient type.
 type BindingsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, bindingResource appplatform.BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (result appplatform.BindingResource, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource appplatform.BindingResource) (result appplatform.BindingResource, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string) (result appplatform.BindingResource, err error)
 	List(ctx context.Context, resourceGroupName string, serviceName string, appName string) (result appplatform.BindingResourceCollectionPage, err error)
@@ -65,7 +65,7 @@ var _ BindingsClientAPI = (*appplatform.BindingsClient)(nil)
 
 // DeploymentsClientAPI contains the set of methods on the DeploymentsClient type.
 type DeploymentsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, deploymentResource appplatform.DeploymentResource, resourceGroupName string, serviceName string, appName string, deploymentName string) (result appplatform.DeploymentsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource appplatform.DeploymentResource) (result appplatform.DeploymentsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string) (result appplatform.DeploymentResource, err error)
 	GetLogFileURL(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string) (result appplatform.LogFileURLResponse, err error)

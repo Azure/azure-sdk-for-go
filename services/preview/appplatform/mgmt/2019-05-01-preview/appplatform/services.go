@@ -834,11 +834,11 @@ func (client ServicesClient) ListTestKeysResponder(resp *http.Response) (result 
 
 // RegenerateTestKey regenerate a test key for a Service.
 // Parameters:
-// regenerateTestKeyRequest - parameters for the operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
-func (client ServicesClient) RegenerateTestKey(ctx context.Context, regenerateTestKeyRequest RegenerateTestKeyRequestPayload, resourceGroupName string, serviceName string) (result TestKeys, err error) {
+// regenerateTestKeyRequest - parameters for the operation
+func (client ServicesClient) RegenerateTestKey(ctx context.Context, resourceGroupName string, serviceName string, regenerateTestKeyRequest RegenerateTestKeyRequestPayload) (result TestKeys, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.RegenerateTestKey")
 		defer func() {
@@ -849,7 +849,7 @@ func (client ServicesClient) RegenerateTestKey(ctx context.Context, regenerateTe
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RegenerateTestKeyPreparer(ctx, regenerateTestKeyRequest, resourceGroupName, serviceName)
+	req, err := client.RegenerateTestKeyPreparer(ctx, resourceGroupName, serviceName, regenerateTestKeyRequest)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.ServicesClient", "RegenerateTestKey", nil, "Failure preparing request")
 		return
@@ -871,7 +871,7 @@ func (client ServicesClient) RegenerateTestKey(ctx context.Context, regenerateTe
 }
 
 // RegenerateTestKeyPreparer prepares the RegenerateTestKey request.
-func (client ServicesClient) RegenerateTestKeyPreparer(ctx context.Context, regenerateTestKeyRequest RegenerateTestKeyRequestPayload, resourceGroupName string, serviceName string) (*http.Request, error) {
+func (client ServicesClient) RegenerateTestKeyPreparer(ctx context.Context, resourceGroupName string, serviceName string, regenerateTestKeyRequest RegenerateTestKeyRequestPayload) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),
@@ -915,11 +915,11 @@ func (client ServicesClient) RegenerateTestKeyResponder(resp *http.Response) (re
 
 // Update operation to update an exiting Service.
 // Parameters:
-// resource - parameters for the update operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
-func (client ServicesClient) Update(ctx context.Context, resource ServiceResource, resourceGroupName string, serviceName string) (result ServicesUpdateFuture, err error) {
+// resource - parameters for the update operation
+func (client ServicesClient) Update(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource) (result ServicesUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.Update")
 		defer func() {
@@ -930,7 +930,7 @@ func (client ServicesClient) Update(ctx context.Context, resource ServiceResourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, resource, resourceGroupName, serviceName)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceName, resource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.ServicesClient", "Update", nil, "Failure preparing request")
 		return
@@ -946,7 +946,7 @@ func (client ServicesClient) Update(ctx context.Context, resource ServiceResourc
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ServicesClient) UpdatePreparer(ctx context.Context, resource ServiceResource, resourceGroupName string, serviceName string) (*http.Request, error) {
+func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),

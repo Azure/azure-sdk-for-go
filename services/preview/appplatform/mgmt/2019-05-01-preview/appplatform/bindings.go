@@ -408,13 +408,13 @@ func (client BindingsClient) ListComplete(ctx context.Context, resourceGroupName
 
 // Update operation to update an exiting Binding.
 // Parameters:
-// bindingResource - parameters for the update operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
 // appName - the name of the App resource.
 // bindingName - the name of the Binding resource.
-func (client BindingsClient) Update(ctx context.Context, bindingResource BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (result BindingResource, err error) {
+// bindingResource - parameters for the update operation
+func (client BindingsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource BindingResource) (result BindingResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BindingsClient.Update")
 		defer func() {
@@ -425,7 +425,7 @@ func (client BindingsClient) Update(ctx context.Context, bindingResource Binding
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, bindingResource, resourceGroupName, serviceName, appName, bindingName)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceName, appName, bindingName, bindingResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.BindingsClient", "Update", nil, "Failure preparing request")
 		return
@@ -447,7 +447,7 @@ func (client BindingsClient) Update(ctx context.Context, bindingResource Binding
 }
 
 // UpdatePreparer prepares the Update request.
-func (client BindingsClient) UpdatePreparer(ctx context.Context, bindingResource BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (*http.Request, error) {
+func (client BindingsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource BindingResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appName":           autorest.Encode("path", appName),
 		"bindingName":       autorest.Encode("path", bindingName),

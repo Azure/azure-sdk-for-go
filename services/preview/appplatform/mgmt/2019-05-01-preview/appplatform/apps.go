@@ -508,12 +508,12 @@ func (client AppsClient) ListComplete(ctx context.Context, resourceGroupName str
 
 // Update operation to update an exiting App.
 // Parameters:
-// appResource - parameters for the update operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
 // appName - the name of the App resource.
-func (client AppsClient) Update(ctx context.Context, appResource AppResource, resourceGroupName string, serviceName string, appName string) (result AppsUpdateFuture, err error) {
+// appResource - parameters for the update operation
+func (client AppsClient) Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource) (result AppsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Update")
 		defer func() {
@@ -524,7 +524,7 @@ func (client AppsClient) Update(ctx context.Context, appResource AppResource, re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UpdatePreparer(ctx, appResource, resourceGroupName, serviceName, appName)
+	req, err := client.UpdatePreparer(ctx, resourceGroupName, serviceName, appName, appResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "Update", nil, "Failure preparing request")
 		return
@@ -540,7 +540,7 @@ func (client AppsClient) Update(ctx context.Context, appResource AppResource, re
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AppsClient) UpdatePreparer(ctx context.Context, appResource AppResource, resourceGroupName string, serviceName string, appName string) (*http.Request, error) {
+func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appName":           autorest.Encode("path", appName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

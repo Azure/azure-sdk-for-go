@@ -43,7 +43,9 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 		if errors.As(err, &credErr) {
 			errList = append(errList, credErr)
 		} else if err != nil {
-			return nil, err
+			// TODO: check this proposal
+			errList = append(errList, &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: err.Error()})
+			break
 		} else {
 			return token, nil
 		}

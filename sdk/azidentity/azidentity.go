@@ -48,6 +48,7 @@ func (e *AuthenticationFailedError) Error() string {
 	return e.Message + ": " + e.Description
 }
 
+// IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError
 func (e *AuthenticationFailedError) IsNotRetriable() bool {
 	return true
 }

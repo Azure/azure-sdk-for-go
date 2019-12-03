@@ -107,3 +107,35 @@ func Test_ChainedGetToken_Success(t *testing.T) {
 		t.Fatalf("Received an incorrect time in the response")
 	}
 }
+
+func Test_ChainedGetToken_CredUnavailable(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
+	srvURL := srv.URL()
+	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
+	if err != nil {
+		t.Fatalf("")
+	}
+
+	// secCred := NewClientSecretCredential("expected_tenant", "client", "secret", &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
+	// envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
+	// if err != nil {
+	// 	t.Fatalf("Failed to create environment credential: %v", err)
+	// }
+	cred, err := NewChainedTokenCredential(msiCred)
+	if err != nil {
+		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)
+	}
+
+	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to get a token but expected none")
+	}
+	if tk.Token != "new_token" {
+		t.Fatalf("Received an incorrect access token")
+	}
+	if tk.ExpiresIn != "3600" {
+		t.Fatalf("Received an incorrect time in the response")
+	}
+}

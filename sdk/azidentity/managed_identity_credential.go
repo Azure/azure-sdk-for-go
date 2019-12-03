@@ -10,7 +10,8 @@ import (
 )
 
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure a Managed Identity Credential
-type ManagedIdentityCredentialOptions struct{}
+type ManagedIdentityCredentialOptions struct {
+}
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in Azure VMs,
 // App Service and Azure Functions applications, as well as inside of Azure Cloud Shell. More information about configuring managed identities can be found here:

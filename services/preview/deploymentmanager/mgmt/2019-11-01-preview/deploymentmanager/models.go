@@ -1034,7 +1034,7 @@ type RolloutProperties struct {
 	// TargetServiceTopologyID - The resource Id of the service topology from which service units are being referenced in step groups to be deployed.
 	TargetServiceTopologyID *string `json:"targetServiceTopologyId,omitempty"`
 	// StepGroups - The list of step groups that define the orchestration.
-	StepGroups *[]Step `json:"stepGroups,omitempty"`
+	StepGroups *[]StepGroup `json:"stepGroups,omitempty"`
 	// Status - READ-ONLY; The current status of the rollout.
 	Status *string `json:"status,omitempty"`
 	// TotalRetryAttempts - READ-ONLY; The cardinal count of total number of retries performed on the rollout at a given time.
@@ -1181,7 +1181,7 @@ type RolloutRequestProperties struct {
 	// TargetServiceTopologyID - The resource Id of the service topology from which service units are being referenced in step groups to be deployed.
 	TargetServiceTopologyID *string `json:"targetServiceTopologyId,omitempty"`
 	// StepGroups - The list of step groups that define the orchestration.
-	StepGroups *[]Step `json:"stepGroups,omitempty"`
+	StepGroups *[]StepGroup `json:"stepGroups,omitempty"`
 }
 
 // RolloutsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1722,8 +1722,8 @@ func (future *ServiceUnitsCreateOrUpdateFuture) Result(client ServiceUnitsClient
 	return
 }
 
-// Step the properties that define an Azure Deployment Manager step.
-type Step struct {
+// StepGroup the properties that define a Step group in a rollout.
+type StepGroup struct {
 	// Name - The name of the step group.
 	Name *string `json:"name,omitempty"`
 	// DependsOnStepGroups - The list of step group names on which this step group depends on.

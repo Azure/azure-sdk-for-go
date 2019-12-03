@@ -518,9 +518,9 @@ func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationR
 type OperatingSystemStateTypes string
 
 const (
-	// Generalized ...
+	// Generalized Generalized image. Needs to be provisioned during deployment time.
 	Generalized OperatingSystemStateTypes = "Generalized"
-	// Specialized ...
+	// Specialized Specialized image. Contains already provisioned OS Disk.
 	Specialized OperatingSystemStateTypes = "Specialized"
 )
 

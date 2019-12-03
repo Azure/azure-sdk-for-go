@@ -850,13 +850,13 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 type StorageAccountTypes string
 
 const (
-	// StorageAccountTypesPremiumLRS Premium_LRS for StorageAccountType.
+	// StorageAccountTypesPremiumLRS ...
 	StorageAccountTypesPremiumLRS StorageAccountTypes = "Premium_LRS"
-	// StorageAccountTypesStandardLRS Standard_LRS for StorageAccountType.
+	// StorageAccountTypesStandardLRS ...
 	StorageAccountTypesStandardLRS StorageAccountTypes = "Standard_LRS"
-	// StorageAccountTypesStandardSSDLRS StandardSSD_LRS for StorageAccountType.
+	// StorageAccountTypesStandardSSDLRS ...
 	StorageAccountTypesStandardSSDLRS StorageAccountTypes = "StandardSSD_LRS"
-	// StorageAccountTypesUltraSSDLRS UltraSSD_LRS for StorageAccountType.
+	// StorageAccountTypesUltraSSDLRS ...
 	StorageAccountTypesUltraSSDLRS StorageAccountTypes = "UltraSSD_LRS"
 )
 

@@ -17,16 +17,11 @@ import (
 // recommended outside of prototyping when more secure credentials can be used.
 type UsernamePasswordCredential struct {
 	azcore.TokenCredential
-
-	client *aadIdentityClient
-
-	TenantID string // Gets the Azure Active Directory tenant (directory) Id of the service principal
-
-	ClientID string // Gets the client (application) ID of the service principal
-
-	Username string // Gets the user account's user name
-
-	Password string // Gets the user account's password
+	client   *aadIdentityClient
+	tenantID string // Gets the Azure Active Directory tenant (directory) Id of the service principal
+	clientID string // Gets the client (application) ID of the service principal
+	username string // Gets the user account's user name
+	password string // Gets the user account's password
 }
 
 // NewUsernamePasswordCredential constructs a new UsernamePasswordCredential with the details needed to authenticate against Azure Active Directory with
@@ -36,14 +31,19 @@ type UsernamePasswordCredential struct {
 // - username: A user's account username
 // - password: A user's account password
 // - options: The options configure the management of the requests sent to the Azure Active Directory service.
-func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *IdentityClientOptions) (*UsernamePasswordCredential, error) {
-	return &UsernamePasswordCredential{TenantID: tenantID, ClientID: clientID, Username: username, Password: password, client: newAADIdentityClient(options)}, nil
+func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *TokenCredentialOptions) (*UsernamePasswordCredential, error) {
+	return &UsernamePasswordCredential{tenantID: tenantID, clientID: clientID, username: username, password: password, client: newAADIdentityClient(options)}, nil
 }
 
 // GetToken obtains a token from the Azure Active Directory service, using the specified username and password.
 // - scopes: The list of scopes for which the token will have access.
 // - ctx: controlling the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c UsernamePasswordCredential) GetToken(ctx context.Context, scopes []string) (*azcore.AccessToken, error) {
-	return c.client.authenticateUsernamePassword(ctx, c.TenantID, c.ClientID, c.Username, c.Password, scopes)
+func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	return c.client.authenticateUsernamePassword(ctx, c.tenantID, c.clientID, c.username, c.password, opts.Scopes)
+}
+
+// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential.
+func (c *UsernamePasswordCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return newBearerTokenPolicy(c, options)
 }

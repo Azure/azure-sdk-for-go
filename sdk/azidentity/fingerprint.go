@@ -34,8 +34,8 @@ func (f fingerprint) String() string {
 func spkiFingerprint(cert string) (fingerprint, error) {
 	privateKeyFile, err := os.Open(cert)
 	defer privateKeyFile.Close()
-	if err != nil {
-		return fingerprint{}, fmt.Errorf("File not found in path: %w", err)
+	if err != nil { // TODO: check os error message
+		return fingerprint{}, fmt.Errorf("%s: %w", cert, err)
 	}
 
 	pemFileInfo, err := privateKeyFile.Stat()
@@ -49,11 +49,11 @@ func spkiFingerprint(cert string) (fingerprint, error) {
 	_, err = buffer.Read(pemBytes)
 	// Get first block of PEM file
 	data, rest := pem.Decode([]byte(pemBytes))
-
-	if data.Type != "CERTIFICATE" {
+	const certificateBlock = "CERTIFICATE"
+	if data.Type != certificateBlock {
 		for len(rest) > 0 {
 			data, rest = pem.Decode(rest)
-			if data.Type == "CERTIFICATE" {
+			if data.Type == certificateBlock {
 				// Sign the CERTIFICATE block with SHA1
 				h := sha1.New()
 				h.Write(data.Bytes)

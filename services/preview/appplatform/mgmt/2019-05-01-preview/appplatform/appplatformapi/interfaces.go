@@ -34,8 +34,8 @@ type ServicesClientAPI interface {
 	List(ctx context.Context, resourceGroupName string) (result appplatform.ServiceResourceListPage, err error)
 	ListBySubscription(ctx context.Context) (result appplatform.ServiceResourceListPage, err error)
 	ListTestKeys(ctx context.Context, resourceGroupName string, serviceName string) (result appplatform.TestKeys, err error)
-	RegenerateTestKey(ctx context.Context, regenerateTestKeyRequest appplatform.RegenerateTestKeyRequestPayload, resourceGroupName string, serviceName string) (result appplatform.TestKeys, err error)
-	Update(ctx context.Context, resource appplatform.ServiceResource, resourceGroupName string, serviceName string) (result appplatform.ServicesUpdateFuture, err error)
+	RegenerateTestKey(ctx context.Context, resourceGroupName string, serviceName string, regenerateTestKeyRequest appplatform.RegenerateTestKeyRequestPayload) (result appplatform.TestKeys, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, resource appplatform.ServiceResource) (result appplatform.ServicesUpdateFuture, err error)
 }
 
 var _ ServicesClientAPI = (*appplatform.ServicesClient)(nil)
@@ -47,7 +47,7 @@ type AppsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, syncStatus string) (result appplatform.AppResource, err error)
 	GetResourceUploadURL(ctx context.Context, resourceGroupName string, serviceName string, appName string) (result appplatform.ResourceUploadDefinition, err error)
 	List(ctx context.Context, resourceGroupName string, serviceName string) (result appplatform.AppResourceCollectionPage, err error)
-	Update(ctx context.Context, appResource appplatform.AppResource, resourceGroupName string, serviceName string, appName string) (result appplatform.AppsUpdateFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource appplatform.AppResource) (result appplatform.AppsUpdateFuture, err error)
 }
 
 var _ AppsClientAPI = (*appplatform.AppsClient)(nil)
@@ -58,7 +58,7 @@ type BindingsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string) (result appplatform.BindingResource, err error)
 	List(ctx context.Context, resourceGroupName string, serviceName string, appName string) (result appplatform.BindingResourceCollectionPage, err error)
-	Update(ctx context.Context, bindingResource appplatform.BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (result appplatform.BindingResource, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource appplatform.BindingResource) (result appplatform.BindingResource, err error)
 }
 
 var _ BindingsClientAPI = (*appplatform.BindingsClient)(nil)
@@ -74,7 +74,7 @@ type DeploymentsClientAPI interface {
 	Restart(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string) (result appplatform.DeploymentsRestartFuture, err error)
 	Start(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string) (result appplatform.DeploymentsStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string) (result appplatform.DeploymentsStopFuture, err error)
-	Update(ctx context.Context, deploymentResource appplatform.DeploymentResource, resourceGroupName string, serviceName string, appName string, deploymentName string) (result appplatform.DeploymentsUpdateFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, serviceName string, appName string, deploymentName string, deploymentResource appplatform.DeploymentResource) (result appplatform.DeploymentsUpdateFuture, err error)
 }
 
 var _ DeploymentsClientAPI = (*appplatform.DeploymentsClient)(nil)

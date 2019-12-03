@@ -17,6 +17,8 @@ const (
 	clientID                 = "expected_client"
 	secret                   = "secret"
 	wrongSecret              = "wrong_secret"
+	tokenValue               = "new_token"
+	tokenExpiresIn           = "3600"
 	scope                    = "http://storage.azure.com/.default"
 	defaultTestAuthorityHost = "login.microsoftonline.com"
 )
@@ -76,18 +78,6 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
 }
-
-// func Test_SecretGetToken_NilScope(t *testing.T) {
-// 	srv, close := mock.NewServer()
-// 	defer close()
-// 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
-// 	srvURL := srv.URL()
-// 	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
-// 	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{})
-// 	if err == nil {
-// 		t.Fatalf("Expected an error but did not receive one.")
-// 	}
-// }
 
 func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()

@@ -5,7 +5,7 @@ package azidentity
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"os"
 	"testing"
 
@@ -33,10 +33,10 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
 	}
-	secCred := NewClientSecretCredential("expected_tenant", "client", "secret", nil)
+	secCred := NewClientSecretCredential(tenantID, clientID, secret, nil)
 	envCred, err := NewEnvironmentCredential(nil)
 	if err != nil {
-		t.Fatalf("Could not find the appropriate environment credentials")
+		t.Fatalf("Could not find appropriate environment credentials")
 	}
 	cred, err := NewChainedTokenCredential(secCred, envCred)
 	if err != nil {
@@ -51,28 +51,22 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 }
 func TestChainedTokenCredential_NilCredentialInChain(t *testing.T) {
 	var unavailableError *CredentialUnavailableError
-	cred := NewClientSecretCredential("expected_tenant", "client", "secret", nil)
+	cred := NewClientSecretCredential(tenantID, clientID, secret, nil)
 
-	_, err := NewChainedTokenCredential(cred, nil, cred)
+	_, err := NewChainedTokenCredential(cred, nil)
 	if err != nil {
-		switch i := err.(type) {
-		case *CredentialUnavailableError:
-		default:
-			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %t", err, unavailableError, i)
+		if !errors.As(err, &unavailableError) {
+			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %t", err, unavailableError, err)
 		}
 	}
 }
 
 func TestChainedTokenCredential_NilChain(t *testing.T) {
 	var unavailableError *CredentialUnavailableError
-
 	_, err := NewChainedTokenCredential()
 	if err != nil {
-		switch i := err.(type) {
-		case *CredentialUnavailableError:
-			fmt.Println("Received: ", err.Error())
-		default:
-			t.Errorf("Actual error: %v, Expected error: %v, wrong type %t", err, unavailableError, i)
+		if !errors.As(err, &unavailableError) {
+			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %t", err, unavailableError, err)
 		}
 	}
 }
@@ -86,7 +80,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
 	srvURL := srv.URL()
-	secCred := NewClientSecretCredential("expected_tenant", "client", "secret", &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
+	secCred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
 	envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
 	if err != nil {
 		t.Fatalf("Failed to create environment credential: %v", err)
@@ -95,15 +89,14 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)
 	}
-
 	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to get a token but expected none")
 	}
-	if tk.Token != "new_token" {
+	if tk.Token != tokenValue {
 		t.Fatalf("Received an incorrect access token")
 	}
-	if tk.ExpiresIn != "3600" {
+	if tk.ExpiresIn != tokenExpiresIn {
 		t.Fatalf("Received an incorrect time in the response")
 	}
 }
@@ -114,7 +107,7 @@ func TestChainedTokenCredential_GetTokenCredentialUnavailable(t *testing.T) {
 	srv.AppendError(&CredentialUnavailableError{})
 	msiCred, err := NewManagedIdentityCredential("", nil)
 	if err != nil {
-		t.Fatalf("")
+		t.Fatalf("Failed to create a new ManagedIdentityCredential: %v", err)
 	}
 
 	// secCred := NewClientSecretCredential("expected_tenant", "client", "secret", &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
@@ -126,10 +119,8 @@ func TestChainedTokenCredential_GetTokenCredentialUnavailable(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)
 	}
-
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	fmt.Println(err)
 }

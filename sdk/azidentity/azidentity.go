@@ -115,7 +115,7 @@ func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
 	if c.AuthorityHost == nil {
 		c.AuthorityHost = defaultTokenCredentialOpts.AuthorityHost
 	}
-	if c.AuthorityHost.String()[len(c.AuthorityHost.String())-1:] != "/" {
+	if len(c.AuthorityHost.Path) == 0 || c.AuthorityHost.Path[len(c.AuthorityHost.Path)-1:] != "/" {
 		c.AuthorityHost.Path = c.AuthorityHost.Path + "/"
 	}
 

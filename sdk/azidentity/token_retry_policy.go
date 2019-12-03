@@ -29,7 +29,7 @@ func (p *msiRetryPolicy) Do(ctx context.Context, req *azcore.Request) (resp *azc
 		http.StatusTooManyRequests,     // 429
 		http.StatusInternalServerError, // 500
 		http.StatusBadGateway,          // 502
-		http.StatusServiceUnavailable,  // 503  TODO look into this
+		http.StatusServiceUnavailable,  // 503
 		http.StatusGatewayTimeout,      // 504
 	}
 	// extra retry status codes specific to IMDS

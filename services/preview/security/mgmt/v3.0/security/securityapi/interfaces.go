@@ -298,14 +298,11 @@ type SubAssessmentsClientAPI interface {
 
 var _ SubAssessmentsClientAPI = (*security.SubAssessmentsClient)(nil)
 
-// AutomationsClientAPI contains the set of methods on the AutomationsClient type.
-type AutomationsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.Automation, err error)
-	Delete(ctx context.Context, resourceGroupName string, automationName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, automationName string) (result security.Automation, err error)
-	List(ctx context.Context) (result security.AutomationListPage, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.AutomationListPage, err error)
-	Validate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.AutomationValidationStatus, err error)
+// AssessmentsClientAPI contains the set of methods on the AssessmentsClient type.
+type AssessmentsClientAPI interface {
+	Create(ctx context.Context, resourceID string, assessmentName string, body security.Assessment) (result security.Assessment, err error)
+	Get(ctx context.Context, resourceID string, assessmentName string, expand security.ExpandEnum) (result security.Assessment, err error)
+	List(ctx context.Context, scope string) (result security.AssessmentListPage, err error)
 }
 
-var _ AutomationsClientAPI = (*security.AutomationsClient)(nil)
+var _ AssessmentsClientAPI = (*security.AssessmentsClient)(nil)

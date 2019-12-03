@@ -128,11 +128,11 @@ func (client ServicesClient) CheckNameAvailabilityResponder(resp *http.Response)
 
 // CreateOrUpdate create a new Service or update an exiting Service.
 // Parameters:
-// resource - parameters for the create or update operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
-func (client ServicesClient) CreateOrUpdate(ctx context.Context, resource ServiceResource, resourceGroupName string, serviceName string) (result ServicesCreateOrUpdateFuture, err error) {
+// resource - parameters for the create or update operation
+func (client ServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource) (result ServicesCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServicesClient.CreateOrUpdate")
 		defer func() {
@@ -156,7 +156,7 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, resource Servic
 		return result, validation.NewError("appplatform.ServicesClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resource, resourceGroupName, serviceName)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, resource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.ServicesClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -172,7 +172,7 @@ func (client ServicesClient) CreateOrUpdate(ctx context.Context, resource Servic
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ServicesClient) CreateOrUpdatePreparer(ctx context.Context, resource ServiceResource, resourceGroupName string, serviceName string) (*http.Request, error) {
+func (client ServicesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"serviceName":       autorest.Encode("path", serviceName),

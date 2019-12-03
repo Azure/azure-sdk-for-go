@@ -42,13 +42,13 @@ func NewBindingsClientWithBaseURI(baseURI string, subscriptionID string) Binding
 
 // CreateOrUpdate create a new Binding or update an exiting Binding.
 // Parameters:
-// bindingResource - parameters for the create or update operation
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
 // serviceName - the name of the Service resource.
 // appName - the name of the App resource.
 // bindingName - the name of the Binding resource.
-func (client BindingsClient) CreateOrUpdate(ctx context.Context, bindingResource BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (result BindingResource, err error) {
+// bindingResource - parameters for the create or update operation
+func (client BindingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource BindingResource) (result BindingResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BindingsClient.CreateOrUpdate")
 		defer func() {
@@ -59,7 +59,7 @@ func (client BindingsClient) CreateOrUpdate(ctx context.Context, bindingResource
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, bindingResource, resourceGroupName, serviceName, appName, bindingName)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, serviceName, appName, bindingName, bindingResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appplatform.BindingsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -81,7 +81,7 @@ func (client BindingsClient) CreateOrUpdate(ctx context.Context, bindingResource
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client BindingsClient) CreateOrUpdatePreparer(ctx context.Context, bindingResource BindingResource, resourceGroupName string, serviceName string, appName string, bindingName string) (*http.Request, error) {
+func (client BindingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, serviceName string, appName string, bindingName string, bindingResource BindingResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"appName":           autorest.Encode("path", appName),
 		"bindingName":       autorest.Encode("path", bindingName),

@@ -130,6 +130,82 @@ func (client AssessmentsClient) CreateResponder(resp *http.Response) (result Ass
 	return
 }
 
+// Delete delete a security assessment on your resource. An assessment metadata that describes this assessment must be
+// predefined with the same name before inserting the assessment result
+// Parameters:
+// resourceID - the identifier of the resource.
+// assessmentName - the Assessment Key - Unique key for the assessment type
+func (client AssessmentsClient) Delete(ctx context.Context, resourceID string, assessmentName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AssessmentsClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.DeletePreparer(ctx, resourceID, assessmentName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "Delete", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.DeleteSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "Delete", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// DeletePreparer prepares the Delete request.
+func (client AssessmentsClient) DeletePreparer(ctx context.Context, resourceID string, assessmentName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"assessmentName": autorest.Encode("path", assessmentName),
+		"resourceId":     autorest.Encode("path", resourceID),
+	}
+
+	const APIVersion = "2019-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeleteSender sends the Delete request. The method will close the
+// http.Response Body if it receives an error.
+func (client AssessmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	return autorest.SendWithSender(client, req, sd...)
+}
+
+// DeleteResponder handles the response to the Delete request. The method always
+// closes the http.Response Body.
+func (client AssessmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get get a security assessment on your scanned resource
 // Parameters:
 // resourceID - the identifier of the resource.

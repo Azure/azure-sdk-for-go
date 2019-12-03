@@ -27,6 +27,7 @@ type AlertsClientAPI = original.AlertsClientAPI
 type AllowedConnectionsClientAPI = original.AllowedConnectionsClientAPI
 type AssessmentsClientAPI = original.AssessmentsClientAPI
 type AutoProvisioningSettingsClientAPI = original.AutoProvisioningSettingsClientAPI
+type AutomationsClientAPI = original.AutomationsClientAPI
 type ComplianceResultsClientAPI = original.ComplianceResultsClientAPI
 type CompliancesClientAPI = original.CompliancesClientAPI
 type ContactsClientAPI = original.ContactsClientAPI

@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"encoding/json"
+	"net/http"
 	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -13,6 +14,24 @@ import (
 const (
 	defaultAuthorityHost = "https://login.microsoftonline.com/"
 )
+
+var (
+	successStatusCodes = [2]int{
+		http.StatusOK,      // 200
+		http.StatusCreated, // 201
+	}
+)
+
+var (
+	defaultAuthorityHostURL    *url.URL
+	defaultTokenCredentialOpts *TokenCredentialOptions
+)
+
+func init() {
+	// The error check is handled in azidentity_test.go
+	defaultAuthorityHostURL, _ = url.Parse(defaultAuthorityHost)
+	defaultTokenCredentialOpts = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
+}
 
 // AuthenticationFailedError is a struct used to marshal responses when authentication has failed
 type AuthenticationFailedError struct {
@@ -29,12 +48,13 @@ func (e *AuthenticationFailedError) Error() string {
 	return e.Message + ": " + e.Description
 }
 
+// IsNotRetriable allows retry policy to stop execution in case it receives a AuthenticationFailedError
 func (e *AuthenticationFailedError) IsNotRetriable() bool {
 	return true
 }
 
 func newAuthenticationFailedError(resp *azcore.Response) error {
-	var authFailed *AuthenticationFailedError
+	authFailed := &AuthenticationFailedError{}
 	err := json.Unmarshal(resp.Payload, authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
@@ -46,45 +66,52 @@ func newAuthenticationFailedError(resp *azcore.Response) error {
 
 // CredentialUnavailableError an error type returned when the conditions required to create a credential do not exist
 type CredentialUnavailableError struct {
-	Message string
+	CredentialType string
+	Message        string
 }
 
 func (e *CredentialUnavailableError) Error() string {
-	return e.Message
+	return e.CredentialType + ": " + e.Message
 }
 
+// ChainedCredentialError an error specific to ChainedTokenCredential and DefaultTokenCredential
+// this error type will return a list of Credential Unavailable errors
+type ChainedCredentialError struct {
+	ErrorList []*CredentialUnavailableError
+}
+
+// IsNotRetriable allows retry policy to stop execution in case it receives a CredentialUnavailableError
 func (e *CredentialUnavailableError) IsNotRetriable() bool {
 	return true
 }
 
-// AggregateError a specific error type for the chained token credential
-type AggregateError struct {
-	Msg     string
-	Err     error
-	ErrList []error
-}
-
-func (e *AggregateError) Error() string {
-	errString := ""
-	for _, err := range e.ErrList {
-		errString += "\n" + err.Error()
+func (e *ChainedCredentialError) Error() string {
+	if len(e.ErrorList) > 0 {
+		msg := ""
+		for _, err := range e.ErrorList {
+			msg += err.Error() + "\n"
+		}
+		return msg
 	}
-
-	return errString
+	return "Chained Token Credential: An unexpected error has occurred"
 }
 
-// IdentityClientOptions to configure requests made to Azure Identity Services
-type IdentityClientOptions struct {
+// TokenCredentialOptions to configure requests made to Azure Identity Services
+type TokenCredentialOptions struct {
 	PipelineOptions azcore.PipelineOptions
 	AuthorityHost   *url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com
 }
 
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
-func (c *IdentityClientOptions) setDefaultValues() *IdentityClientOptions {
+func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
 	if c == nil {
-		c = &IdentityClientOptions{}
-		c.AuthorityHost, _ = url.Parse(defaultAuthorityHost)
+		c = defaultTokenCredentialOpts
 	}
+
+	if c.AuthorityHost == nil {
+		c.AuthorityHost = defaultTokenCredentialOpts.AuthorityHost
+	}
+
 	return c
 }
 
@@ -99,6 +126,24 @@ func newDefaultPipeline(o azcore.PipelineOptions) azcore.Pipeline {
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(o.Retry),
+		azcore.NewRequestLogPolicy(o.LogOptions))
+}
+
+// NewDefaultMSIPipeline creates a Pipeline using the specified pipeline options needed
+// for a Managed Identity, such as a MSI specific retry policy
+func newDefaultMSIPipeline(o azcore.PipelineOptions) azcore.Pipeline {
+	if o.HTTPClient == nil {
+		o.HTTPClient = azcore.DefaultHTTPClientTransport()
+	}
+
+	// Set defaults needed for MSI retry policy
+	o.Retry.MaxTries = 5
+
+	return azcore.NewPipeline(
+		o.HTTPClient,
+		azcore.NewTelemetryPolicy(o.Telemetry),
+		azcore.NewUniqueRequestIDPolicy(),
+		NewMSIRetryPolicy(o.Retry),
 		azcore.NewRequestLogPolicy(o.LogOptions))
 }
 

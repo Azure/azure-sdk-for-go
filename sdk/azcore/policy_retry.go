@@ -178,7 +178,7 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		tryCancel()
 		logf("Err=%v, response=%v\n", err, resp)
 
-		if err == nil && !resp.hasStatusCode(p.options.StatusCodes...) {
+		if err == nil && !resp.HasStatusCode(p.options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
 			return
 		} else if ctx.Err() != nil {

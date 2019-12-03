@@ -27,7 +27,7 @@ type Response struct {
 
 // CheckStatusCode returns a RequestError if the Response's status code isn't one of the specified values.
 func (r *Response) CheckStatusCode(statusCodes ...int) error {
-	if !r.hasStatusCode(statusCodes...) {
+	if !r.HasStatusCode(statusCodes...) {
 		msg := r.Status
 		if len(r.Payload) > 0 {
 			msg = string(r.Payload)
@@ -38,7 +38,7 @@ func (r *Response) CheckStatusCode(statusCodes ...int) error {
 }
 
 // hasStatusCode returns true if the Response's status code is one of the specified values.
-func (r *Response) hasStatusCode(statusCodes ...int) bool {
+func (r *Response) HasStatusCode(statusCodes ...int) bool {
 	if r == nil {
 		return false
 	}

@@ -20,7 +20,24 @@ type ServiceClient struct {
 	p azcore.Pipeline
 }
 
-func NewServiceClient(endpoint string, cred azcore.Credential, options azcore.PipelineOptions) (*ServiceClient, error) {
+// ServiceClientOptions is used to configure the default policies associated
+// with the ServiceClient.  Pass a zero-value instance to use default values.
+type ServiceClientOptions struct {
+	// HTTPClient sets the transport for making HTTP requests.
+	// Leave this as nil to use the default HTTP transport.
+	HTTPClient azcore.Transport
+
+	// LogOptions configures the built-in request logging policy behavior.
+	LogOptions azcore.RequestLogOptions
+
+	// Retry configures the built-in retry policy behavior.
+	Retry azcore.RetryOptions
+
+	// Telemetry configures the built-in telemetry policy behavior.
+	Telemetry azcore.TelemetryOptions
+}
+
+func NewServiceClient(endpoint string, cred azcore.Credential, options ServiceClientOptions) (*ServiceClient, error) {
 	p := azcore.NewPipeline(options.HTTPClient,
 		azcore.NewTelemetryPolicy(options.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),

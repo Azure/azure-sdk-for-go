@@ -26,7 +26,7 @@ func ExampleServiceClient_ListContainers() {
 	cred := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
 	client, err := NewServiceClient(endpoint,
 		cred,
-		azcore.PipelineOptions{})
+		ServiceClientOptions{})
 	if err != nil {
 		panic(err)
 	}

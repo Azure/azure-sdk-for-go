@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"reflect"
 	"strings"
 	"time"
 
@@ -66,35 +65,24 @@ func init() {
 }
 
 func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
-	return &ManagedIdentityCredentialOptions{}
-}
-
-func defaultMSIPipelineOptions(p azcore.PipelineOptions) azcore.PipelineOptions {
-	if reflect.DeepEqual(p, azcore.PipelineOptions{}) {
-		if reflect.DeepEqual(p.Retry, azcore.RetryOptions{}) {
-			p.Retry.MaxTries = 5
-		}
+	return &ManagedIdentityCredentialOptions{
+		HTTPClient: azcore.DefaultHTTPClientTransport(),
 	}
-	return p
 }
 
 // NewManagedIdentityClient creates a new instance of the ManagedIdentityClient with the IdentityClientOptions
 // that are passed into it along with a default pipeline.
 // options: IdentityClientOptions that adds policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
-func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) (*managedIdentityClient, error) {
-	if options == nil {
-		options = newDefaultManagedIdentityOptions()
-	}
-
+func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *managedIdentityClient {
+	options = options.setDefaultValues()
 	// TODO document the use of these variables
 	return &managedIdentityClient{
-		// options:                *options.Options,
-		pipeline:               newDefaultMSIPipeline(azcore.PipelineOptions{}),
+		pipeline:               newDefaultMSIPipeline(options),
 		imdsAPIVersion:         imdsAPIVersion,
 		imdsAvailableTimeoutMS: 500,
 		msiType:                unknown,
-	}, nil
+	}
 }
 
 // Authenticate creates an authentication request for a Managed Identity and returns the resulting Access Token or

@@ -13,47 +13,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func initChainedTokenCredentialTest() (*ChainedTokenCredential, error) {
+func initChainedTokenCredentialTest() error {
 	err := os.Setenv("AZURE_TENANT_ID", tenantID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	err = os.Setenv("AZURE_CLIENT_ID", clientID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	err = os.Setenv("AZURE_CLIENT_SECRET", secret)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
-	srvURL := srv.URL()
-	secCred := NewClientSecretCredential("expected_tenant", "client", "secret", &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
-	envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
-	if err != nil {
-		return nil, err
-	}
-	cred, err := NewChainedTokenCredential(secCred, envCred)
-	if err != nil {
-		return nil, err
-	}
-
-	return cred, nil
+	return nil
 }
 func TestChainedTokenCredentialSuccess(t *testing.T) {
-	err := os.Setenv("AZURE_TENANT_ID", tenantID)
+	err := initChainedTokenCredentialTest()
 	if err != nil {
-		t.Fatalf("Unable to set AZURE_TENANT_ID")
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", clientID)
-	if err != nil {
-		t.Fatalf("Unable to set AZURE_CLIENT_ID")
-	}
-	err = os.Setenv("AZURE_CLIENT_SECRET", secret)
-	if err != nil {
-		t.Fatalf("Unable to set AZURE_CLIENT_SECRET")
+		t.Fatalf("Could not set environment variables for testing: %v", err)
 	}
 	secCred := NewClientSecretCredential("expected_tenant", "client", "secret", nil)
 	envCred, err := NewEnvironmentCredential(nil)
@@ -100,17 +78,9 @@ func TestNilChain(t *testing.T) {
 }
 
 func Test_ChainedGetToken_Success(t *testing.T) {
-	err := os.Setenv("AZURE_TENANT_ID", tenantID)
+	err := initChainedTokenCredentialTest()
 	if err != nil {
-		t.Fatalf("")
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", clientID)
-	if err != nil {
-		t.Fatalf("")
-	}
-	err = os.Setenv("AZURE_CLIENT_SECRET", secret)
-	if err != nil {
-		t.Fatalf("")
+		t.Fatalf("Could not set environment variables for testing: %v", err)
 	}
 	srv, close := mock.NewServer()
 	defer close()
@@ -119,11 +89,11 @@ func Test_ChainedGetToken_Success(t *testing.T) {
 	secCred := NewClientSecretCredential("expected_tenant", "client", "secret", &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
 	envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
 	if err != nil {
-		t.Fatalf("")
+		t.Fatalf("Failed to create environment credential: %v", err)
 	}
 	cred, err := NewChainedTokenCredential(secCred, envCred)
 	if err != nil {
-		t.Fatalf("")
+		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)
 	}
 
 	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})

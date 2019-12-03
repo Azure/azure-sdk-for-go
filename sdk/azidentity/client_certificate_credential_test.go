@@ -17,7 +17,7 @@ const (
 	wrongCertificatePath = "wrong_certificate_path.pem"
 )
 
-func Test_CertificateCreateAuthRequest_Pass(t *testing.T) {
+func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
 	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, nil)
 	if err != nil {
 		t.Fatalf("Failed to instantiate credential")
@@ -61,7 +61,7 @@ func Test_CertificateCreateAuthRequest_Pass(t *testing.T) {
 	}
 }
 
-func Test_CertificateGetToken_Success(t *testing.T) {
+func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
 	srvURL := srv.URL()
@@ -76,7 +76,7 @@ func Test_CertificateGetToken_Success(t *testing.T) {
 	close()
 }
 
-func Test_CertificateGetToken_InvalidCredentials(t *testing.T) {
+func TestClientCertificateCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srvURL := srv.URL()

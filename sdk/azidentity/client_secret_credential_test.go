@@ -21,7 +21,7 @@ const (
 	defaultTestAuthorityHost = "login.microsoftonline.com"
 )
 
-func Test_SecretCreateAuthRequest_Pass(t *testing.T) {
+func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 	cred := NewClientSecretCredential(tenantID, clientID, secret, nil)
 	req, err := cred.client.createClientSecretAuthRequest(cred.tenantID, cred.clientID, cred.clientSecret, []string{scope})
 	if err != nil {
@@ -65,7 +65,7 @@ func Test_SecretCreateAuthRequest_Pass(t *testing.T) {
 	}
 }
 
-func Test_SecretGetToken_Success(t *testing.T) {
+func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "ey0....", "expires_in": 3600}`)))
@@ -89,7 +89,7 @@ func Test_SecretGetToken_Success(t *testing.T) {
 // 	}
 // }
 
-func Test_SecretGetToken_InvalidCredentials(t *testing.T) {
+func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srvURL := srv.URL()

@@ -28,7 +28,7 @@ func initChainedTokenCredentialTest() error {
 	}
 	return nil
 }
-func TestChainedTokenCredentialSuccess(t *testing.T) {
+func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 	err := initChainedTokenCredentialTest()
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
@@ -49,7 +49,7 @@ func TestChainedTokenCredentialSuccess(t *testing.T) {
 	}
 
 }
-func TestNilCredentialInChain(t *testing.T) {
+func TestChainedTokenCredential_NilCredentialInChain(t *testing.T) {
 	var unavailableError *CredentialUnavailableError
 	cred := NewClientSecretCredential("expected_tenant", "client", "secret", nil)
 
@@ -63,7 +63,7 @@ func TestNilCredentialInChain(t *testing.T) {
 	}
 }
 
-func TestNilChain(t *testing.T) {
+func TestChainedTokenCredential_NilChain(t *testing.T) {
 	var unavailableError *CredentialUnavailableError
 
 	_, err := NewChainedTokenCredential()
@@ -77,7 +77,7 @@ func TestNilChain(t *testing.T) {
 	}
 }
 
-func Test_ChainedGetToken_Success(t *testing.T) {
+func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	err := initChainedTokenCredentialTest()
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
@@ -108,12 +108,11 @@ func Test_ChainedGetToken_Success(t *testing.T) {
 	}
 }
 
-func Test_ChainedGetToken_CredUnavailable(t *testing.T) {
+func TestChainedTokenCredential_GetTokenCredentialUnavailable(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
-	srvURL := srv.URL()
-	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
+	srv.AppendError(&CredentialUnavailableError{})
+	msiCred, err := NewManagedIdentityCredential("", nil)
 	if err != nil {
 		t.Fatalf("")
 	}
@@ -128,14 +127,9 @@ func Test_ChainedGetToken_CredUnavailable(t *testing.T) {
 		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)
 	}
 
-	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-	if err != nil {
-		t.Fatalf("Received an error when attempting to get a token but expected none")
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
 	}
-	if tk.Token != "new_token" {
-		t.Fatalf("Received an incorrect access token")
-	}
-	if tk.ExpiresIn != "3600" {
-		t.Fatalf("Received an incorrect time in the response")
-	}
+	fmt.Println(err)
 }

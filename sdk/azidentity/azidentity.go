@@ -96,7 +96,7 @@ func (e *ChainedCredentialError) Error() string {
 	return "Chained Token Credential: An unexpected error has occurred"
 }
 
-// IdentityClientOptions to configure requests made to Azure Identity Services
+// TokenCredentialOptions to configure requests made to Azure Identity Services
 type TokenCredentialOptions struct {
 	PipelineOptions azcore.PipelineOptions
 	AuthorityHost   *url.URL // The host of the Azure Active Directory authority. The default is https://login.microsoft.com

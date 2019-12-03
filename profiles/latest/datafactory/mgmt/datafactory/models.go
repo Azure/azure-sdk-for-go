@@ -1139,6 +1139,7 @@ const (
 	TypeAzureBlobStorageWriteSettings   TypeBasicStoreWriteSettings = original.TypeAzureBlobStorageWriteSettings
 	TypeAzureDataLakeStoreWriteSettings TypeBasicStoreWriteSettings = original.TypeAzureDataLakeStoreWriteSettings
 	TypeFileServerWriteSettings         TypeBasicStoreWriteSettings = original.TypeFileServerWriteSettings
+	TypeSftpWriteSettings               TypeBasicStoreWriteSettings = original.TypeSftpWriteSettings
 	TypeStoreWriteSettings              TypeBasicStoreWriteSettings = original.TypeStoreWriteSettings
 )
 
@@ -1937,6 +1938,7 @@ type SftpLocation = original.SftpLocation
 type SftpReadSettings = original.SftpReadSettings
 type SftpServerLinkedService = original.SftpServerLinkedService
 type SftpServerLinkedServiceTypeProperties = original.SftpServerLinkedServiceTypeProperties
+type SftpWriteSettings = original.SftpWriteSettings
 type ShopifyLinkedService = original.ShopifyLinkedService
 type ShopifyLinkedServiceTypeProperties = original.ShopifyLinkedServiceTypeProperties
 type ShopifyObjectDataset = original.ShopifyObjectDataset

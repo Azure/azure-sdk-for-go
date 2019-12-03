@@ -3290,6 +3290,165 @@ type MongoIndexOptions struct {
 	Unique *bool `json:"unique,omitempty"`
 }
 
+// NotebookWorkspace a notebook workspace resource
+type NotebookWorkspace struct {
+	autorest.Response `json:"-"`
+	// NotebookWorkspaceProperties - Resource properties.
+	*NotebookWorkspaceProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NotebookWorkspace.
+func (nw NotebookWorkspace) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nw.NotebookWorkspaceProperties != nil {
+		objectMap["properties"] = nw.NotebookWorkspaceProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for NotebookWorkspace struct.
+func (nw *NotebookWorkspace) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var notebookWorkspaceProperties NotebookWorkspaceProperties
+				err = json.Unmarshal(*v, &notebookWorkspaceProperties)
+				if err != nil {
+					return err
+				}
+				nw.NotebookWorkspaceProperties = &notebookWorkspaceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				nw.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				nw.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				nw.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// NotebookWorkspaceConnectionInfoResult the connection info for the given notebook workspace
+type NotebookWorkspaceConnectionInfoResult struct {
+	autorest.Response `json:"-"`
+	// Authtoken - Specifies auth token used for connecting to Notebook server (uses token-based auth).
+	Authtoken *string `json:"authtoken,omitempty"`
+	// NotebookServerEndpoint - Specifies the endpoint of Notebook server.
+	NotebookServerEndpoint *string `json:"notebookServerEndpoint,omitempty"`
+}
+
+// NotebookWorkspaceCreateParameters parameters to create a notebook workspace resource
+type NotebookWorkspaceCreateParameters struct {
+	// ID - READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// NotebookWorkspaceListResult a list of notebook workspace resources
+type NotebookWorkspaceListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of notebook workspace resources
+	Value *[]NotebookWorkspace `json:"value,omitempty"`
+}
+
+// NotebookWorkspaceProperties properties of a notebook workspace resource.
+type NotebookWorkspaceProperties struct {
+	// NotebookServerEndpoint - READ-ONLY; Specifies the endpoint of Notebook server.
+	NotebookServerEndpoint *string `json:"notebookServerEndpoint,omitempty"`
+	// Status - READ-ONLY; Status of the notebook workspace. Possible values are: Creating, Online, Deleting, Failed, Updating.
+	Status *string `json:"status,omitempty"`
+}
+
+// NotebookWorkspacesCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type NotebookWorkspacesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *NotebookWorkspacesCreateFuture) Result(client NotebookWorkspacesClient) (nw NotebookWorkspace, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if nw.Response.Response, err = future.GetResult(sender); err == nil && nw.Response.Response.StatusCode != http.StatusNoContent {
+		nw, err = client.CreateResponder(nw.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesCreateFuture", "Result", nw.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// NotebookWorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type NotebookWorkspacesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *NotebookWorkspacesDeleteFuture) Result(client NotebookWorkspacesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // Operation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}

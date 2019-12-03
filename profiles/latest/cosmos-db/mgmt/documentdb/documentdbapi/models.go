@@ -31,6 +31,7 @@ type DatabaseAccountsClientAPI = original.DatabaseAccountsClientAPI
 type DatabaseClientAPI = original.DatabaseClientAPI
 type GremlinResourcesClientAPI = original.GremlinResourcesClientAPI
 type MongoDBResourcesClientAPI = original.MongoDBResourcesClientAPI
+type NotebookWorkspacesClientAPI = original.NotebookWorkspacesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PartitionKeyRangeIDClientAPI = original.PartitionKeyRangeIDClientAPI
 type PartitionKeyRangeIDRegionClientAPI = original.PartitionKeyRangeIDRegionClientAPI

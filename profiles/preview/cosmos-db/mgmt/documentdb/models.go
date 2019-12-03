@@ -285,6 +285,14 @@ type MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture = original.MongoDBRes
 type MongoIndex = original.MongoIndex
 type MongoIndexKeys = original.MongoIndexKeys
 type MongoIndexOptions = original.MongoIndexOptions
+type NotebookWorkspace = original.NotebookWorkspace
+type NotebookWorkspaceConnectionInfoResult = original.NotebookWorkspaceConnectionInfoResult
+type NotebookWorkspaceCreateParameters = original.NotebookWorkspaceCreateParameters
+type NotebookWorkspaceListResult = original.NotebookWorkspaceListResult
+type NotebookWorkspaceProperties = original.NotebookWorkspaceProperties
+type NotebookWorkspacesClient = original.NotebookWorkspacesClient
+type NotebookWorkspacesCreateFuture = original.NotebookWorkspacesCreateFuture
+type NotebookWorkspacesDeleteFuture = original.NotebookWorkspacesDeleteFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -437,6 +445,12 @@ func NewMongoDBResourcesClient(subscriptionID string) MongoDBResourcesClient {
 }
 func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string) MongoDBResourcesClient {
 	return original.NewMongoDBResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNotebookWorkspacesClient(subscriptionID string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClient(subscriptionID)
+}
+func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

@@ -231,3 +231,16 @@ type GremlinResourcesClientAPI interface {
 }
 
 var _ GremlinResourcesClientAPI = (*documentdb.GremlinResourcesClient)(nil)
+
+// NotebookWorkspacesClientAPI contains the set of methods on the NotebookWorkspacesClient type.
+type NotebookWorkspacesClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string, createParameters documentdb.NotebookWorkspaceCreateParameters) (result documentdb.NotebookWorkspacesCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result documentdb.NotebookWorkspacesDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result documentdb.NotebookWorkspace, err error)
+	GetConnectionInfo(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result documentdb.NotebookWorkspaceConnectionInfoResult, err error)
+	ListByDatabaseAccount(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.NotebookWorkspaceListResult, err error)
+	RegenerateAuthToken(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result autorest.Response, err error)
+	Start(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result autorest.Response, err error)
+}
+
+var _ NotebookWorkspacesClientAPI = (*documentdb.NotebookWorkspacesClient)(nil)

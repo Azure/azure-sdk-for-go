@@ -70,7 +70,7 @@ func (client SavedSearchesClient) CreateOrUpdate(ctx context.Context, resourceGr
 					{Target: "parameters.SavedSearchProperties.Query", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.SavedSearchProperties.Version", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.SavedSearchProperties.Version", Name: validation.InclusiveMaximum, Rule: int64(2), Chain: nil},
-							{Target: "parameters.SavedSearchProperties.Version", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+							{Target: "parameters.SavedSearchProperties.Version", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("operationalinsights.SavedSearchesClient", "CreateOrUpdate", err.Error())

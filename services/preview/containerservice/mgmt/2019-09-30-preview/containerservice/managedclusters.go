@@ -92,7 +92,7 @@ func (client ManagedClustersClient) CreateOrUpdate(ctx context.Context, resource
 								Chain: []validation.Constraint{{Target: "parameters.ManagedClusterProperties.NetworkProfile.LoadBalancerProfile.ManagedOutboundIPs", Name: validation.Null, Rule: false,
 									Chain: []validation.Constraint{{Target: "parameters.ManagedClusterProperties.NetworkProfile.LoadBalancerProfile.ManagedOutboundIPs.Count", Name: validation.Null, Rule: false,
 										Chain: []validation.Constraint{{Target: "parameters.ManagedClusterProperties.NetworkProfile.LoadBalancerProfile.ManagedOutboundIPs.Count", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
-											{Target: "parameters.ManagedClusterProperties.NetworkProfile.LoadBalancerProfile.ManagedOutboundIPs.Count", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+											{Target: "parameters.ManagedClusterProperties.NetworkProfile.LoadBalancerProfile.ManagedOutboundIPs.Count", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 										}},
 									}},
 								}},

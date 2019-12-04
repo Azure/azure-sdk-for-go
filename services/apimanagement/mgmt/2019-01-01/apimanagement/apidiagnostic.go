@@ -78,7 +78,7 @@ func (client APIDiagnosticClient) CreateOrUpdate(ctx context.Context, resourceGr
 					{Target: "parameters.DiagnosticContractProperties.Sampling", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "parameters.DiagnosticContractProperties.Sampling.Percentage", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "parameters.DiagnosticContractProperties.Sampling.Percentage", Name: validation.InclusiveMaximum, Rule: int64(100), Chain: nil},
-								{Target: "parameters.DiagnosticContractProperties.Sampling.Percentage", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+								{Target: "parameters.DiagnosticContractProperties.Sampling.Percentage", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 							}},
 						}},
 					{Target: "parameters.DiagnosticContractProperties.Frontend", Name: validation.Null, Rule: false,
@@ -503,10 +503,10 @@ func (client APIDiagnosticClient) ListByService(ctx context.Context, resourceGro
 				{Target: "apiid", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: top,
 			Constraints: []validation.Constraint{{Target: "top", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}},
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}}}); err != nil {
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("apimanagement.APIDiagnosticClient", "ListByService", err.Error())
 	}
 

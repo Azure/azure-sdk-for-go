@@ -33,8 +33,11 @@ var _ OperationsClientAPI = (*azurestack.OperationsClient)(nil)
 // ProductsClientAPI contains the set of methods on the ProductsClient type.
 type ProductsClientAPI interface {
 	Get(ctx context.Context, resourceGroup string, registrationName string, productName string) (result azurestack.Product, err error)
+	GetProduct(ctx context.Context, resourceGroup string, registrationName string, productName string, deviceConfiguration *azurestack.DeviceConfiguration) (result azurestack.Product, err error)
+	GetProducts(ctx context.Context, resourceGroup string, registrationName string, deviceConfiguration *azurestack.DeviceConfiguration) (result azurestack.ProductList, err error)
 	List(ctx context.Context, resourceGroup string, registrationName string) (result azurestack.ProductListPage, err error)
 	ListDetails(ctx context.Context, resourceGroup string, registrationName string, productName string) (result azurestack.ExtendedProduct, err error)
+	UploadLog(ctx context.Context, resourceGroup string, registrationName string, productName string, marketplaceProductLogUpdate *azurestack.MarketplaceProductLogUpdate) (result azurestack.ProductLog, err error)
 }
 
 var _ ProductsClientAPI = (*azurestack.ProductsClient)(nil)

@@ -29,6 +29,52 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
 
+// Category enumerates the values for category.
+type Category string
+
+const (
+	// ADFS ...
+	ADFS Category = "ADFS"
+	// AzureAD ...
+	AzureAD Category = "AzureAD"
+)
+
+// PossibleCategoryValues returns an array of possible values for the Category const type.
+func PossibleCategoryValues() []Category {
+	return []Category{ADFS, AzureAD}
+}
+
+// CompatibilityIssue enumerates the values for compatibility issue.
+type CompatibilityIssue string
+
+const (
+	// ADFSIdentitySystemRequired ...
+	ADFSIdentitySystemRequired CompatibilityIssue = "ADFSIdentitySystemRequired"
+	// AzureADIdentitySystemRequired ...
+	AzureADIdentitySystemRequired CompatibilityIssue = "AzureADIdentitySystemRequired"
+	// CapacityBillingModelRequired ...
+	CapacityBillingModelRequired CompatibilityIssue = "CapacityBillingModelRequired"
+	// ConnectionToAzureRequired ...
+	ConnectionToAzureRequired CompatibilityIssue = "ConnectionToAzureRequired"
+	// ConnectionToInternetRequired ...
+	ConnectionToInternetRequired CompatibilityIssue = "ConnectionToInternetRequired"
+	// DevelopmentBillingModelRequired ...
+	DevelopmentBillingModelRequired CompatibilityIssue = "DevelopmentBillingModelRequired"
+	// DisconnectedEnvironmentRequired ...
+	DisconnectedEnvironmentRequired CompatibilityIssue = "DisconnectedEnvironmentRequired"
+	// HigherDeviceVersionRequired ...
+	HigherDeviceVersionRequired CompatibilityIssue = "HigherDeviceVersionRequired"
+	// LowerDeviceVersionRequired ...
+	LowerDeviceVersionRequired CompatibilityIssue = "LowerDeviceVersionRequired"
+	// PayAsYouGoBillingModelRequired ...
+	PayAsYouGoBillingModelRequired CompatibilityIssue = "PayAsYouGoBillingModelRequired"
+)
+
+// PossibleCompatibilityIssueValues returns an array of possible values for the CompatibilityIssue const type.
+func PossibleCompatibilityIssueValues() []CompatibilityIssue {
+	return []CompatibilityIssue{ADFSIdentitySystemRequired, AzureADIdentitySystemRequired, CapacityBillingModelRequired, ConnectionToAzureRequired, ConnectionToInternetRequired, DevelopmentBillingModelRequired, DisconnectedEnvironmentRequired, HigherDeviceVersionRequired, LowerDeviceVersionRequired, PayAsYouGoBillingModelRequired}
+}
+
 // ComputeRole enumerates the values for compute role.
 type ComputeRole string
 
@@ -100,6 +146,18 @@ type ActivationKeyResult struct {
 	autorest.Response `json:"-"`
 	// ActivationKey - Azure Stack activation key.
 	ActivationKey *string `json:"activationKey,omitempty"`
+}
+
+// Compatibility product compatibility
+type Compatibility struct {
+	// IsCompatible - Tells if product is compatible with current device
+	IsCompatible *bool `json:"isCompatible,omitempty"`
+	// Message - Short error message if any compatibility issues are found
+	Message *string `json:"message,omitempty"`
+	// Description - Full error message if any compatibility issues are found
+	Description *string `json:"description,omitempty"`
+	// Issues - List of all issues found
+	Issues *[]CompatibilityIssue `json:"issues,omitempty"`
 }
 
 // CustomerSubscription customer subscription.
@@ -349,6 +407,14 @@ type DataDiskImage struct {
 	SourceBlobSasURI *string `json:"sourceBlobSasUri,omitempty"`
 }
 
+// DeviceConfiguration device Configuration.
+type DeviceConfiguration struct {
+	// DeviceVersion - READ-ONLY; Version of the device.
+	DeviceVersion *string `json:"deviceVersion,omitempty"`
+	// IdentitySystem - READ-ONLY; Identity system of the device. Possible values include: 'AzureAD', 'ADFS'
+	IdentitySystem Category `json:"identitySystem,omitempty"`
+}
+
 // Display contains the localized display information for this particular operation or action.
 type Display struct {
 	// Provider - The localized, friendly version of the resource provider name.
@@ -573,6 +639,18 @@ type IconUris struct {
 	Small *string `json:"small,omitempty"`
 	// Hero - URI to hero icon.
 	Hero *string `json:"hero,omitempty"`
+}
+
+// MarketplaceProductLogUpdate update details for product log.
+type MarketplaceProductLogUpdate struct {
+	// Operation - READ-ONLY; Operation to log.
+	Operation *string `json:"operation,omitempty"`
+	// Status - READ-ONLY; Operation status to log.
+	Status *string `json:"status,omitempty"`
+	// Error - READ-ONLY; Error related to the operation.
+	Error *string `json:"error,omitempty"`
+	// Details - READ-ONLY; Error details related to operation.
+	Details *string `json:"details,omitempty"`
 }
 
 // Operation describes the supported REST operation.
@@ -980,6 +1058,33 @@ func NewProductListPage(getNextPage func(context.Context, ProductList) (ProductL
 	return ProductListPage{fn: getNextPage}
 }
 
+// ProductLog product action log.
+type ProductLog struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Log ID.
+	ID *string `json:"id,omitempty"`
+	// ProductID - READ-ONLY; Logged product ID.
+	ProductID *string `json:"productId,omitempty"`
+	// SubscriptionID - READ-ONLY; Logged subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// RegistrationName - READ-ONLY; Logged registration name.
+	RegistrationName *string `json:"registrationName,omitempty"`
+	// ResourceGroupName - READ-ONLY; Logged resource group name.
+	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
+	// Operation - READ-ONLY; Logged operation.
+	Operation *string `json:"operation,omitempty"`
+	// StartDate - READ-ONLY; Operation start datetime.
+	StartDate *string `json:"startDate,omitempty"`
+	// EndDate - READ-ONLY; Operation end datetime.
+	EndDate *string `json:"endDate,omitempty"`
+	// Status - READ-ONLY; Operation status.
+	Status *string `json:"status,omitempty"`
+	// Error - READ-ONLY; Operation error data.
+	Error *string `json:"error,omitempty"`
+	// Details - READ-ONLY; Operation error details.
+	Details *string `json:"details,omitempty"`
+}
+
 // ProductNestedProperties properties portion of the product resource.
 type ProductNestedProperties struct {
 	// DisplayName - The display name of the product.
@@ -1016,6 +1121,8 @@ type ProductNestedProperties struct {
 	ProductKind *string `json:"productKind,omitempty"`
 	// ProductProperties - Additional properties for the product.
 	ProductProperties *ProductProperties `json:"productProperties,omitempty"`
+	// Compatibility - Product compatibility with current device.
+	Compatibility *Compatibility `json:"compatibility,omitempty"`
 }
 
 // ProductProperties additional properties of the product

@@ -5,6 +5,7 @@ package azcore
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"math/rand"
 	"net/http"
@@ -160,9 +161,12 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		}
 		defer rwbody.realClose()
 	}
-	for try := int32(1); try <= p.options.MaxTries; try++ {
+	try := int32(1)
+	for {
 		resp = nil // reset
-		logf("\n=====> Try=%d\n", try)
+		if Log().Should(LogRetry) {
+			Log().Write(LogRetry, fmt.Sprintf("\n=====> Try=%d\n", try))
+		}
 
 		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
 		// the stream may not be at offset 0 when we first get it and we want the same behavior for the
@@ -176,7 +180,9 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		tryCtx, tryCancel := context.WithTimeout(ctx, p.options.TryTimeout)
 		resp, err = req.Do(tryCtx) // Make the request
 		tryCancel()
-		logf("Err=%v, response=%v\n", err, resp)
+		if Log().Should(LogRetry) {
+			Log().Write(LogRetry, fmt.Sprintf("Err=%v, response=%v\n", err, resp))
+		}
 
 		if err == nil && !resp.HasStatusCode(p.options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
@@ -192,21 +198,27 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		// drain before retrying so nothing is leaked
 		resp.Drain()
 
+		if try == p.options.MaxTries {
+			// max number of tries has been reached, don't sleep again
+			return
+		}
+
 		// use the delay from retry-after if available
 		delay, ok := resp.RetryAfter()
 		if !ok {
 			delay = p.options.calcDelay(try)
 		}
-		logf("Try=%d, Delay=%v\n", try, delay)
+		if Log().Should(LogRetry) {
+			Log().Write(LogRetry, fmt.Sprintf("Try=%d, Delay=%v\n", try, delay))
+		}
 		select {
 		case <-time.After(delay):
-			// no-op
+			try++
 		case <-ctx.Done():
 			err = ctx.Err()
 			return
 		}
 	}
-	return // Not retryable or too many retries; return the last response/error
 }
 
 // ********** The following type/methods implement the retryableRequestBody (a ReadSeekCloser)
@@ -237,6 +249,3 @@ func (b *retryableRequestBody) realClose() error {
 	}
 	return nil
 }
-
-// According to https://github.com/golang/go/wiki/CompilerOptimizations, the compiler will inline this method and hopefully optimize all calls to it away
-var logf = func(format string, a ...interface{}) {}

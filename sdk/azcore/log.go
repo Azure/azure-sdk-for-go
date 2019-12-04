@@ -11,6 +11,7 @@ const (
 	LogError        LogClassification = "Error"
 	LogRequest      LogClassification = "Request"
 	LogResponse     LogClassification = "Response"
+	LogRetry        LogClassification = "Retry"
 	LogSlowResponse LogClassification = "SlowResponse"
 )
 

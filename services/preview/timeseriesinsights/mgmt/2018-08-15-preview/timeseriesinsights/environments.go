@@ -66,7 +66,7 @@ func (client EnvironmentsClient) CreateOrUpdate(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "parameters.Sku", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.Sku.Capacity", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "parameters.Sku.Capacity", Name: validation.InclusiveMaximum, Rule: int64(10), Chain: nil},
-						{Target: "parameters.Sku.Capacity", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+						{Target: "parameters.Sku.Capacity", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 					}},
 				}}}}}); err != nil {
 		return result, validation.NewError("timeseriesinsights.EnvironmentsClient", "CreateOrUpdate", err.Error())

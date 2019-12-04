@@ -377,11 +377,11 @@ func (client PatternClient) ListIntentPatterns(ctx context.Context, appID uuid.U
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}},
 		{TargetValue: take,
 			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(500), Chain: nil},
-					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "take", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("authoring.PatternClient", "ListIntentPatterns", err.Error())
 	}
@@ -479,11 +479,11 @@ func (client PatternClient) ListPatterns(ctx context.Context, appID uuid.UUID, v
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: skip,
 			Constraints: []validation.Constraint{{Target: "skip", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}}}},
+				Chain: []validation.Constraint{{Target: "skip", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}}}},
 		{TargetValue: take,
 			Constraints: []validation.Constraint{{Target: "take", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "take", Name: validation.InclusiveMaximum, Rule: int64(500), Chain: nil},
-					{Target: "take", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil},
+					{Target: "take", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("authoring.PatternClient", "ListPatterns", err.Error())
 	}

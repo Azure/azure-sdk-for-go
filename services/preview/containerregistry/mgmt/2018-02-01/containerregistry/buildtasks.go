@@ -78,7 +78,7 @@ func (client BuildTasksClient) Create(ctx context.Context, resourceGroupName str
 					{Target: "buildTaskCreateParameters.BuildTaskProperties.Platform", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "buildTaskCreateParameters.BuildTaskProperties.Timeout", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "buildTaskCreateParameters.BuildTaskProperties.Timeout", Name: validation.InclusiveMaximum, Rule: int64(28800), Chain: nil},
-							{Target: "buildTaskCreateParameters.BuildTaskProperties.Timeout", Name: validation.InclusiveMinimum, Rule: 300, Chain: nil},
+							{Target: "buildTaskCreateParameters.BuildTaskProperties.Timeout", Name: validation.InclusiveMinimum, Rule: int64(300), Chain: nil},
 						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("containerregistry.BuildTasksClient", "Create", err.Error())

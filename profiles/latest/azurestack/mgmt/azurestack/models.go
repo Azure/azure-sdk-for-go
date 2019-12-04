@@ -29,6 +29,28 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type Category = original.Category
+
+const (
+	ADFS    Category = original.ADFS
+	AzureAD Category = original.AzureAD
+)
+
+type CompatibilityIssue = original.CompatibilityIssue
+
+const (
+	ADFSIdentitySystemRequired      CompatibilityIssue = original.ADFSIdentitySystemRequired
+	AzureADIdentitySystemRequired   CompatibilityIssue = original.AzureADIdentitySystemRequired
+	CapacityBillingModelRequired    CompatibilityIssue = original.CapacityBillingModelRequired
+	ConnectionToAzureRequired       CompatibilityIssue = original.ConnectionToAzureRequired
+	ConnectionToInternetRequired    CompatibilityIssue = original.ConnectionToInternetRequired
+	DevelopmentBillingModelRequired CompatibilityIssue = original.DevelopmentBillingModelRequired
+	DisconnectedEnvironmentRequired CompatibilityIssue = original.DisconnectedEnvironmentRequired
+	HigherDeviceVersionRequired     CompatibilityIssue = original.HigherDeviceVersionRequired
+	LowerDeviceVersionRequired      CompatibilityIssue = original.LowerDeviceVersionRequired
+	PayAsYouGoBillingModelRequired  CompatibilityIssue = original.PayAsYouGoBillingModelRequired
+)
+
 type ComputeRole = original.ComputeRole
 
 const (
@@ -62,6 +84,7 @@ const (
 
 type ActivationKeyResult = original.ActivationKeyResult
 type BaseClient = original.BaseClient
+type Compatibility = original.Compatibility
 type CustomerSubscription = original.CustomerSubscription
 type CustomerSubscriptionList = original.CustomerSubscriptionList
 type CustomerSubscriptionListIterator = original.CustomerSubscriptionListIterator
@@ -69,12 +92,14 @@ type CustomerSubscriptionListPage = original.CustomerSubscriptionListPage
 type CustomerSubscriptionProperties = original.CustomerSubscriptionProperties
 type CustomerSubscriptionsClient = original.CustomerSubscriptionsClient
 type DataDiskImage = original.DataDiskImage
+type DeviceConfiguration = original.DeviceConfiguration
 type Display = original.Display
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type ExtendedProduct = original.ExtendedProduct
 type ExtendedProductProperties = original.ExtendedProductProperties
 type IconUris = original.IconUris
+type MarketplaceProductLogUpdate = original.MarketplaceProductLogUpdate
 type Operation = original.Operation
 type OperationList = original.OperationList
 type OperationListIterator = original.OperationListIterator
@@ -86,6 +111,7 @@ type ProductLink = original.ProductLink
 type ProductList = original.ProductList
 type ProductListIterator = original.ProductListIterator
 type ProductListPage = original.ProductListPage
+type ProductLog = original.ProductLog
 type ProductNestedProperties = original.ProductNestedProperties
 type ProductProperties = original.ProductProperties
 type ProductsClient = original.ProductsClient
@@ -156,6 +182,12 @@ func NewRegistrationsClientWithBaseURI(baseURI string, subscriptionID string) Re
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCategoryValues() []Category {
+	return original.PossibleCategoryValues()
+}
+func PossibleCompatibilityIssueValues() []CompatibilityIssue {
+	return original.PossibleCompatibilityIssueValues()
 }
 func PossibleComputeRoleValues() []ComputeRole {
 	return original.PossibleComputeRoleValues()

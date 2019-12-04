@@ -996,10 +996,10 @@ func (client BaseClient) GenerateThumbnail(ctx context.Context, width int32, hei
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: width,
 			Constraints: []validation.Constraint{{Target: "width", Name: validation.InclusiveMaximum, Rule: int64(1024), Chain: nil},
-				{Target: "width", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
+				{Target: "width", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}},
 		{TargetValue: height,
 			Constraints: []validation.Constraint{{Target: "height", Name: validation.InclusiveMaximum, Rule: int64(1024), Chain: nil},
-				{Target: "height", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
+				{Target: "height", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}},
 		{TargetValue: imageURL,
 			Constraints: []validation.Constraint{{Target: "imageURL.URL", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("computervision.BaseClient", "GenerateThumbnail", err.Error())
@@ -1099,10 +1099,10 @@ func (client BaseClient) GenerateThumbnailInStream(ctx context.Context, width in
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: width,
 			Constraints: []validation.Constraint{{Target: "width", Name: validation.InclusiveMaximum, Rule: int64(1024), Chain: nil},
-				{Target: "width", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}},
+				{Target: "width", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}},
 		{TargetValue: height,
 			Constraints: []validation.Constraint{{Target: "height", Name: validation.InclusiveMaximum, Rule: int64(1024), Chain: nil},
-				{Target: "height", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil}}}}); err != nil {
+				{Target: "height", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil}}}}); err != nil {
 		return result, validation.NewError("computervision.BaseClient", "GenerateThumbnailInStream", err.Error())
 	}
 

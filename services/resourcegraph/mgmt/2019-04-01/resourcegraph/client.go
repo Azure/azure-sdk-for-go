@@ -74,10 +74,10 @@ func (client BaseClient) Resources(ctx context.Context, query QueryRequest) (res
 				{Target: "query.Options", Name: validation.Null, Rule: false,
 					Chain: []validation.Constraint{{Target: "query.Options.Top", Name: validation.Null, Rule: false,
 						Chain: []validation.Constraint{{Target: "query.Options.Top", Name: validation.InclusiveMaximum, Rule: int64(1000), Chain: nil},
-							{Target: "query.Options.Top", Name: validation.InclusiveMinimum, Rule: 1, Chain: nil},
+							{Target: "query.Options.Top", Name: validation.InclusiveMinimum, Rule: int64(1), Chain: nil},
 						}},
 						{Target: "query.Options.Skip", Name: validation.Null, Rule: false,
-							Chain: []validation.Constraint{{Target: "query.Options.Skip", Name: validation.InclusiveMinimum, Rule: 0, Chain: nil}}},
+							Chain: []validation.Constraint{{Target: "query.Options.Skip", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}},
 					}}}}}); err != nil {
 		return result, validation.NewError("resourcegraph.BaseClient", "Resources", err.Error())
 	}

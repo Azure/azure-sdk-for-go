@@ -3366,8 +3366,8 @@ func (nw *NotebookWorkspace) UnmarshalJSON(body []byte) error {
 // NotebookWorkspaceConnectionInfoResult the connection info for the given notebook workspace
 type NotebookWorkspaceConnectionInfoResult struct {
 	autorest.Response `json:"-"`
-	// Authtoken - Specifies auth token used for connecting to Notebook server (uses token-based auth).
-	Authtoken *string `json:"authtoken,omitempty"`
+	// AuthToken - Specifies auth token used for connecting to Notebook server (uses token-based auth).
+	AuthToken *string `json:"authToken,omitempty"`
 	// NotebookServerEndpoint - Specifies the endpoint of Notebook server.
 	NotebookServerEndpoint *string `json:"notebookServerEndpoint,omitempty"`
 }
@@ -5944,12 +5944,23 @@ func (future *TableResourcesUpdateTableThroughputFuture) Result(client TableReso
 
 // ThroughputSettingsGetProperties the properties of an Azure Cosmos DB resource throughput
 type ThroughputSettingsGetProperties struct {
+	Resource *ThroughputSettingsGetPropertiesResource `json:"resource,omitempty"`
+}
+
+// ThroughputSettingsGetPropertiesResource ...
+type ThroughputSettingsGetPropertiesResource struct {
 	// Throughput - Value of the Cosmos DB resource throughput
 	Throughput *int32 `json:"throughput,omitempty"`
 	// MinimumThroughput - READ-ONLY; The minimum throughput of the resource
 	MinimumThroughput *string `json:"minimumThroughput,omitempty"`
 	// OfferReplacePending - READ-ONLY; The throughput replace is pending
 	OfferReplacePending *string `json:"offerReplacePending,omitempty"`
+	// Rid - READ-ONLY; A system generated property. A unique identifier.
+	Rid *string `json:"_rid,omitempty"`
+	// Ts - READ-ONLY; A system generated property that denotes the last updated timestamp of the resource.
+	Ts interface{} `json:"_ts,omitempty"`
+	// Etag - READ-ONLY; A system generated property representing the resource etag required for optimistic concurrency control.
+	Etag *string `json:"_etag,omitempty"`
 }
 
 // ThroughputSettingsGetResults an Azure Cosmos DB resource throughput.

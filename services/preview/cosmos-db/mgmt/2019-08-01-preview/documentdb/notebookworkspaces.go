@@ -45,9 +45,8 @@ func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID strin
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
-// notebookWorkspaceName - the name of the notebook workspace resource.
 // createParameters - the notebook workspace to create for the current database account.
-func (client NotebookWorkspacesClient) Create(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string, createParameters NotebookWorkspaceCreateParameters) (result NotebookWorkspacesCreateFuture, err error) {
+func (client NotebookWorkspacesClient) Create(ctx context.Context, resourceGroupName string, accountName string, createParameters NotebookWorkspaceCreateParameters) (result NotebookWorkspacesCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookWorkspacesClient.Create")
 		defer func() {
@@ -70,7 +69,7 @@ func (client NotebookWorkspacesClient) Create(ctx context.Context, resourceGroup
 		return result, validation.NewError("documentdb.NotebookWorkspacesClient", "Create", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, accountName, notebookWorkspaceName, createParameters)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, accountName, createParameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesClient", "Create", nil, "Failure preparing request")
 		return
@@ -86,12 +85,11 @@ func (client NotebookWorkspacesClient) Create(ctx context.Context, resourceGroup
 }
 
 // CreatePreparer prepares the Create request.
-func (client NotebookWorkspacesClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string, createParameters NotebookWorkspaceCreateParameters) (*http.Request, error) {
+func (client NotebookWorkspacesClient) CreatePreparer(ctx context.Context, resourceGroupName string, accountName string, createParameters NotebookWorkspaceCreateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":           autorest.Encode("path", accountName),
-		"notebookWorkspaceName": autorest.Encode("path", notebookWorkspaceName),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-08-01"
@@ -103,7 +101,7 @@ func (client NotebookWorkspacesClient) CreatePreparer(ctx context.Context, resou
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/default", pathParameters),
 		autorest.WithJSON(createParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -139,8 +137,7 @@ func (client NotebookWorkspacesClient) CreateResponder(resp *http.Response) (res
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
-// notebookWorkspaceName - the name of the notebook workspace resource.
-func (client NotebookWorkspacesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result NotebookWorkspacesDeleteFuture, err error) {
+func (client NotebookWorkspacesClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result NotebookWorkspacesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookWorkspacesClient.Delete")
 		defer func() {
@@ -163,7 +160,7 @@ func (client NotebookWorkspacesClient) Delete(ctx context.Context, resourceGroup
 		return result, validation.NewError("documentdb.NotebookWorkspacesClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName, notebookWorkspaceName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesClient", "Delete", nil, "Failure preparing request")
 		return
@@ -179,12 +176,11 @@ func (client NotebookWorkspacesClient) Delete(ctx context.Context, resourceGroup
 }
 
 // DeletePreparer prepares the Delete request.
-func (client NotebookWorkspacesClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (*http.Request, error) {
+func (client NotebookWorkspacesClient) DeletePreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":           autorest.Encode("path", accountName),
-		"notebookWorkspaceName": autorest.Encode("path", notebookWorkspaceName),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-08-01"
@@ -195,7 +191,7 @@ func (client NotebookWorkspacesClient) DeletePreparer(ctx context.Context, resou
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -225,12 +221,11 @@ func (client NotebookWorkspacesClient) DeleteResponder(resp *http.Response) (res
 	return
 }
 
-// Get gets the notework workspace for a Cosmos DB account.
+// Get gets the notebook workspace for a Cosmos DB account.
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
-// notebookWorkspaceName - the name of the notebook workspace resource.
-func (client NotebookWorkspacesClient) Get(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result NotebookWorkspace, err error) {
+func (client NotebookWorkspacesClient) Get(ctx context.Context, resourceGroupName string, accountName string) (result NotebookWorkspace, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookWorkspacesClient.Get")
 		defer func() {
@@ -253,7 +248,7 @@ func (client NotebookWorkspacesClient) Get(ctx context.Context, resourceGroupNam
 		return result, validation.NewError("documentdb.NotebookWorkspacesClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, accountName, notebookWorkspaceName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesClient", "Get", nil, "Failure preparing request")
 		return
@@ -275,12 +270,11 @@ func (client NotebookWorkspacesClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // GetPreparer prepares the Get request.
-func (client NotebookWorkspacesClient) GetPreparer(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (*http.Request, error) {
+func (client NotebookWorkspacesClient) GetPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":           autorest.Encode("path", accountName),
-		"notebookWorkspaceName": autorest.Encode("path", notebookWorkspaceName),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-08-01"
@@ -291,7 +285,7 @@ func (client NotebookWorkspacesClient) GetPreparer(ctx context.Context, resource
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/default", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -320,8 +314,7 @@ func (client NotebookWorkspacesClient) GetResponder(resp *http.Response) (result
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
-// notebookWorkspaceName - the name of the notebook workspace resource.
-func (client NotebookWorkspacesClient) GetConnectionInfo(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result NotebookWorkspaceConnectionInfoResult, err error) {
+func (client NotebookWorkspacesClient) GetConnectionInfo(ctx context.Context, resourceGroupName string, accountName string) (result NotebookWorkspaceConnectionInfoResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookWorkspacesClient.GetConnectionInfo")
 		defer func() {
@@ -344,7 +337,7 @@ func (client NotebookWorkspacesClient) GetConnectionInfo(ctx context.Context, re
 		return result, validation.NewError("documentdb.NotebookWorkspacesClient", "GetConnectionInfo", err.Error())
 	}
 
-	req, err := client.GetConnectionInfoPreparer(ctx, resourceGroupName, accountName, notebookWorkspaceName)
+	req, err := client.GetConnectionInfoPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesClient", "GetConnectionInfo", nil, "Failure preparing request")
 		return
@@ -366,12 +359,11 @@ func (client NotebookWorkspacesClient) GetConnectionInfo(ctx context.Context, re
 }
 
 // GetConnectionInfoPreparer prepares the GetConnectionInfo request.
-func (client NotebookWorkspacesClient) GetConnectionInfoPreparer(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (*http.Request, error) {
+func (client NotebookWorkspacesClient) GetConnectionInfoPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":           autorest.Encode("path", accountName),
-		"notebookWorkspaceName": autorest.Encode("path", notebookWorkspaceName),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-08-01"
@@ -382,7 +374,7 @@ func (client NotebookWorkspacesClient) GetConnectionInfoPreparer(ctx context.Con
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/getConnectionInfo", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/default/getConnectionInfo", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -500,8 +492,7 @@ func (client NotebookWorkspacesClient) ListByDatabaseAccountResponder(resp *http
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
-// notebookWorkspaceName - the name of the notebook workspace resource.
-func (client NotebookWorkspacesClient) RegenerateAuthToken(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result autorest.Response, err error) {
+func (client NotebookWorkspacesClient) RegenerateAuthToken(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookWorkspacesClient.RegenerateAuthToken")
 		defer func() {
@@ -524,7 +515,7 @@ func (client NotebookWorkspacesClient) RegenerateAuthToken(ctx context.Context, 
 		return result, validation.NewError("documentdb.NotebookWorkspacesClient", "RegenerateAuthToken", err.Error())
 	}
 
-	req, err := client.RegenerateAuthTokenPreparer(ctx, resourceGroupName, accountName, notebookWorkspaceName)
+	req, err := client.RegenerateAuthTokenPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesClient", "RegenerateAuthToken", nil, "Failure preparing request")
 		return
@@ -546,12 +537,11 @@ func (client NotebookWorkspacesClient) RegenerateAuthToken(ctx context.Context, 
 }
 
 // RegenerateAuthTokenPreparer prepares the RegenerateAuthToken request.
-func (client NotebookWorkspacesClient) RegenerateAuthTokenPreparer(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (*http.Request, error) {
+func (client NotebookWorkspacesClient) RegenerateAuthTokenPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":           autorest.Encode("path", accountName),
-		"notebookWorkspaceName": autorest.Encode("path", notebookWorkspaceName),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-08-01"
@@ -562,7 +552,7 @@ func (client NotebookWorkspacesClient) RegenerateAuthTokenPreparer(ctx context.C
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/regenerateAuthToken", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/default/regenerateAuthToken", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -590,8 +580,7 @@ func (client NotebookWorkspacesClient) RegenerateAuthTokenResponder(resp *http.R
 // Parameters:
 // resourceGroupName - name of an Azure resource group.
 // accountName - cosmos DB database account name.
-// notebookWorkspaceName - the name of the notebook workspace resource.
-func (client NotebookWorkspacesClient) Start(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (result autorest.Response, err error) {
+func (client NotebookWorkspacesClient) Start(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookWorkspacesClient.Start")
 		defer func() {
@@ -614,7 +603,7 @@ func (client NotebookWorkspacesClient) Start(ctx context.Context, resourceGroupN
 		return result, validation.NewError("documentdb.NotebookWorkspacesClient", "Start", err.Error())
 	}
 
-	req, err := client.StartPreparer(ctx, resourceGroupName, accountName, notebookWorkspaceName)
+	req, err := client.StartPreparer(ctx, resourceGroupName, accountName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "documentdb.NotebookWorkspacesClient", "Start", nil, "Failure preparing request")
 		return
@@ -636,12 +625,11 @@ func (client NotebookWorkspacesClient) Start(ctx context.Context, resourceGroupN
 }
 
 // StartPreparer prepares the Start request.
-func (client NotebookWorkspacesClient) StartPreparer(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName string) (*http.Request, error) {
+func (client NotebookWorkspacesClient) StartPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"accountName":           autorest.Encode("path", accountName),
-		"notebookWorkspaceName": autorest.Encode("path", notebookWorkspaceName),
-		"resourceGroupName":     autorest.Encode("path", resourceGroupName),
-		"subscriptionId":        autorest.Encode("path", client.SubscriptionID),
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2019-08-01"
@@ -652,7 +640,7 @@ func (client NotebookWorkspacesClient) StartPreparer(ctx context.Context, resour
 	preparer := autorest.CreatePreparer(
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/start", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/default/start", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

@@ -10,7 +10,24 @@ import (
 )
 
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure a Managed Identity Credential
-type ManagedIdentityCredentialOptions struct{}
+type ManagedIdentityCredentialOptions struct {
+	// HTTPClient sets the transport for making HTTP requests.
+	// Leave this as nil to use the default HTTP transport.
+	HTTPClient azcore.Transport
+
+	// LogOptions configures the built-in request logging policy behavior.
+	LogOptions azcore.RequestLogOptions
+
+	// Telemetry configures the built-in telemetry policy behavior.
+	Telemetry azcore.TelemetryOptions
+}
+
+func (m *ManagedIdentityCredentialOptions) setDefaultValues() *ManagedIdentityCredentialOptions {
+	if m == nil {
+		m = defaultMSIOpts
+	}
+	return m
+}
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in Azure VMs,
 // App Service and Azure Functions applications, as well as inside of Azure Cloud Shell. More information about configuring managed identities can be found here:
@@ -24,13 +41,8 @@ type ManagedIdentityCredential struct {
 // clientID: The client id to authenticate for a user assigned managed identity.  More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
 // options: Options that allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
-	client, err := newManagedIdentityClient(options)
-	if err != nil {
-		return nil, err
-	}
-
-	return &ManagedIdentityCredential{clientID: clientID, client: client}, nil
+func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) *ManagedIdentityCredential {
+	return &ManagedIdentityCredential{clientID: clientID, client: newManagedIdentityClient(options)}
 }
 
 // GetToken obtains an AccessToken from the Managed Identity service if available.

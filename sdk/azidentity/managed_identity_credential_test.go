@@ -10,26 +10,18 @@ import (
 )
 
 func Test_GetToken_CloudShell(t *testing.T) {
-	managedClient, err := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
+	managedClient := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
+	managedAT, err := managedClient.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"https://storage.azure.com"}})
 	if err != nil {
-		fmt.Println("Managed ID error: ", err)
+		fmt.Println("Error: ", err)
 	} else {
-		managedAT, err := managedClient.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"https://storage.azure.com"}})
-		if err != nil {
-			fmt.Println("Error: ", err)
-		} else {
-			fmt.Println(managedAT)
-		}
+		fmt.Println(managedAT)
 	}
 }
 
 func Test_GetToken_NilScopes(t *testing.T) {
-	managedClient, err := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
-	if err != nil {
-		t.Fatalf("Received an unexpected error when creating a New ManagedIdentityCredential")
-	}
-
-	_, err = managedClient.GetToken(context.Background(), azcore.TokenRequestOptions{})
+	managedClient := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
+	_, err := managedClient.GetToken(context.Background(), azcore.TokenRequestOptions{})
 	if err != nil {
 		var authFailed *AuthenticationFailedError
 		if !errors.As(err, &authFailed) {

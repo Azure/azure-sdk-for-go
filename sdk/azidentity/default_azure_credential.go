@@ -47,11 +47,8 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 	}
 
 	if !options.ExcludeMSICredential {
-		msiCred, err := NewManagedIdentityCredential("", nil)
-		if err == nil {
-			cred.sources = append(cred.sources, msiCred)
-			return NewChainedTokenCredential(cred.sources...)
-		}
+		cred.sources = append(cred.sources, NewManagedIdentityCredential("", nil))
+		return NewChainedTokenCredential(cred.sources...)
 	}
 
 	return nil, &AuthenticationFailedError{Message: "Failed to find any available credentials. Make sure you are running in a Managed Identity Environment or have set the appropriate environment variables"}

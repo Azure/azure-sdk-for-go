@@ -175,29 +175,6 @@ func TestRetryPolicyRequestTimedOut(t *testing.T) {
 	}
 }
 
-func TestRetryPolicyFixedDelaySuccessWithRetry(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
-	srv.AppendResponse()
-	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{
-		Policy:     RetryPolicyFixed,
-		RetryDelay: retryDelay,
-	}))
-	req := pl.NewRequest(http.MethodGet, srv.URL())
-	resp, err := req.Do(context.Background())
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	if r := srv.Requests(); r != 3 {
-		t.Fatalf("wrong retry count, got %d expected %d", r, 3)
-	}
-}
-
 type fatalError struct {
 	s string
 }
@@ -217,7 +194,6 @@ func TestRetryPolicyIsNotRetriable(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
 	srv.AppendError(theErr)
 	pl := NewPipeline(srv, NewRetryPolicy(RetryOptions{
-		Policy:     RetryPolicyFixed,
 		RetryDelay: retryDelay,
 	}))
 	req := pl.NewRequest(http.MethodGet, srv.URL())

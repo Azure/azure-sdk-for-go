@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	certificatePath      = "../../../testPEM.pem"
+	certificatePath      = "certificate.pem"
 	wrongCertificatePath = "wrong_certificate_path.pem"
 )
 

@@ -99,22 +99,6 @@ func (p Pipeline) NewRequest(httpMethod string, endpoint url.URL) *Request {
 	}
 }
 
-// PipelineOptions is used to configure a request policy pipeline's retry policy and logging.
-type PipelineOptions struct {
-	// Retry configures the built-in retry policy behavior.
-	Retry RetryOptions
-
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry TelemetryOptions
-
-	// HTTPClient sets the transport for making HTTP requests.
-	// Leave this as nil to use the default HTTP transport.
-	HTTPClient Transport
-
-	// LogOptions configures the built-in request logging policy behavior.
-	LogOptions RequestLogOptions
-}
-
 // ReadSeekCloser is the interface that groups the io.ReadCloser and io.Seeker interfaces.
 type ReadSeekCloser interface {
 	io.ReadCloser

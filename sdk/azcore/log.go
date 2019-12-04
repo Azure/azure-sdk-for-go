@@ -71,6 +71,11 @@ func (l *Logger) Write(cls LogClassification, message string) {
 	l.lst(cls, message)
 }
 
+// for testing purposes
+func (l *Logger) resetClassifications() {
+	l.cls = nil
+}
+
 var log Logger
 
 // Log returns the process-wide logger.

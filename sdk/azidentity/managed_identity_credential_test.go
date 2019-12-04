@@ -13,13 +13,9 @@ func TestManagedIdentityCredential_GetTokenInCloudShell(t *testing.T) {
 	if len(msiEndpoint) == 0 {
 		t.Skip()
 	}
-	managedClient, err := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
-	if err != nil {
-		t.Fatalf("Could not create managed identity credential")
-	} else {
-		_, err := managedClient.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	msiCred := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
+	_, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 		if err != nil {
 			t.Fatalf("Received an error when attempting to retrieve a token")
 		}
 	}
-}

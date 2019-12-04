@@ -7,10 +7,22 @@ package azcore
 type LogClassification string
 
 const (
-	// LogError
-	LogError        LogClassification = "Error"
-	LogRequest      LogClassification = "Request"
-	LogResponse     LogClassification = "Response"
+	// LogError entries contain detailed error information.
+	// This includes the error message and stack trace.
+	LogError LogClassification = "Error"
+
+	// LogRequest entries contain information about HTTP requests.
+	// This includes information like the URL, query parameters, and headers.
+	LogRequest LogClassification = "Request"
+
+	// LogResponse entries contain information about HTTP responses.
+	// This includes information like the HTTP status code, headers, and request URL.
+	LogResponse LogClassification = "Response"
+
+	// LogRetryPolicy entries contain information specific to the retry policy in use.
+	LogRetryPolicy LogClassification = "RetryPolicy"
+
+	// LogSlowResponse entries contain information for responses that take longer than the specified threshold.
 	LogSlowResponse LogClassification = "SlowResponse"
 )
 
@@ -57,6 +69,11 @@ func (l *Logger) Write(cls LogClassification, message string) {
 		return
 	}
 	l.lst(cls, message)
+}
+
+// for testing purposes
+func (l *Logger) resetClassifications() {
+	l.cls = nil
 }
 
 var log Logger

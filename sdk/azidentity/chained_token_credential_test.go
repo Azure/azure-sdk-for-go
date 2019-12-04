@@ -109,12 +109,6 @@ func TestChainedTokenCredential_GetTokenCredentialUnavailable(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create a new ManagedIdentityCredential: %v", err)
 	}
-
-	// secCred := NewClientSecretCredential("expected_tenant", "client", "secret", &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
-	// envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
-	// if err != nil {
-	// 	t.Fatalf("Failed to create environment credential: %v", err)
-	// }
 	cred, err := NewChainedTokenCredential(msiCred)
 	if err != nil {
 		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)

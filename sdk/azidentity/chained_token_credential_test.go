@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"net/http"
 	"os"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func initChainedTokenCredentialTest() error {
+func initEnvironmentVarsForTest() error {
 	err := os.Setenv("AZURE_TENANT_ID", tenantID)
 	if err != nil {
 		return err
@@ -28,8 +29,24 @@ func initChainedTokenCredentialTest() error {
 	}
 	return nil
 }
+
+func resetEnvironmentVarsForTest() error {
+	err := os.Setenv("AZURE_TENANT_ID", "")
+	if err != nil {
+		return err
+	}
+	err = os.Setenv("AZURE_CLIENT_ID", "")
+	if err != nil {
+		return err
+	}
+	err = os.Setenv("AZURE_CLIENT_SECRET", "")
+	if err != nil {
+		return err
+	}
+	return nil
+}
 func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
-	err := initChainedTokenCredentialTest()
+	err := initEnvironmentVarsForTest()
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
 	}
@@ -56,7 +73,7 @@ func TestChainedTokenCredential_NilCredentialInChain(t *testing.T) {
 	_, err := NewChainedTokenCredential(cred, nil)
 	if err != nil {
 		if !errors.As(err, &unavailableError) {
-			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %t", err, unavailableError, err)
+			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %T", err, unavailableError, err)
 		}
 	}
 }
@@ -66,13 +83,13 @@ func TestChainedTokenCredential_NilChain(t *testing.T) {
 	_, err := NewChainedTokenCredential()
 	if err != nil {
 		if !errors.As(err, &unavailableError) {
-			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %t", err, unavailableError, err)
+			t.Fatalf("Actual error: %v, Expected error: %v, wrong type %T", err, unavailableError, err)
 		}
 	}
 }
 
 func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
-	err := initChainedTokenCredentialTest()
+	err := initEnvironmentVarsForTest()
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
 	}
@@ -80,8 +97,8 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "expires_in": 3600}`)))
 	srvURL := srv.URL()
-	secCred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
-	envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{PipelineOptions: azcore.PipelineOptions{HTTPClient: srv}, AuthorityHost: &srvURL})
+	secCred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
 	if err != nil {
 		t.Fatalf("Failed to create environment credential: %v", err)
 	}
@@ -101,20 +118,23 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
-func TestChainedTokenCredential_GetTokenCredentialUnavailable(t *testing.T) {
+func TestChainedTokenCredential_GetToken(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
-	srv.AppendError(&CredentialUnavailableError{})
-	msiCred, err := NewManagedIdentityCredential("", nil)
-	if err != nil {
-		t.Fatalf("Failed to create a new ManagedIdentityCredential: %v", err)
-	}
-	cred, err := NewChainedTokenCredential(msiCred)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	testURL := srv.URL()
+	secCred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &testURL})
+	msiCred := NewManagedIdentityCredential("", nil)
+	cred, err := NewChainedTokenCredential(msiCred, secCred)
 	if err != nil {
 		t.Fatalf("Failed to create ChainedTokenCredential: %v", err)
 	}
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
+	}
+	var chainedError *ChainedCredentialError
+	if !errors.As(err, &chainedError) {
+		t.Fatalf("Expected Error Type: ChainedCredentialError, ReceivedErrorType: %T", err)
 	}
 }

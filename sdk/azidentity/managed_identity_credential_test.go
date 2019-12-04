@@ -15,7 +15,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShell(t *testing.T) {
 	}
 	msiCred := NewManagedIdentityCredential("", newDefaultManagedIdentityOptions())
 	_, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-		if err != nil {
-			t.Fatalf("Received an error when attempting to retrieve a token")
-		}
+	if err != nil {
+		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
+}
